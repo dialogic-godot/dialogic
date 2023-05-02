@@ -54,7 +54,7 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 	var character_directory: Dictionary = editors_manager.resource_helper.character_directory
 	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
 	if resources_list.is_empty():
-		resources_list = ProjectSettings.get_setting('dialogic/editor/last_resources', [])
+		resources_list = DialogicUtil.get_editor_setting('last_resources', [])
 		if !current_file in resources_list:
 			resources_list.append(current_file)
 	
@@ -82,7 +82,7 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
 				idx += 1
 	%ResourcesList.sort_items_by_text()
-	ProjectSettings.set_setting('dialogic/editor/last_resources', resources_list)
+	DialogicUtil.set_editor_setting('last_resources', resources_list)
 
 
 func _on_resources_list_item_selected(index:int) -> void:
@@ -95,10 +95,10 @@ func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_but
 	# If clicked with the middle mouse button, remove the item from the list
 	if mouse_button_index == 3:
 		var new_list := []
-		for entry in ProjectSettings.get_setting('dialogic/editor/last_resources', []):
+		for entry in DialogicUtil.get_editor_setting('last_resources', []):
 			if entry != %ResourcesList.get_item_metadata(index):
 				new_list.append(entry)
-		ProjectSettings.set_setting('dialogic/editor/last_resources', new_list)
+		DialogicUtil.set_editor_setting('last_resources', new_list)
 		%ResourcesList.remove_item(index)
 
 func _on_search_text_changed(new_text:String) -> void:

@@ -120,7 +120,7 @@ func _ready() -> void:
 	setup_portrait_settings_tab()
 	
 	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
-	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
+	%PreviewMode.select(DialogicUtil.get_editor_setting('character_preview_mode', 0))
 	_on_PreviewMode_item_selected(%PreviewMode.selected)
 	
 	## General Styling
@@ -503,8 +503,7 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 	if index == PreviewModes.Real or index == null:
 		%RealSizeRemotePivotTransform.update_position = true
 	update_preview()
-	ProjectSettings.set_setting('dialogic/editor/character_preview_mode', index)
-	ProjectSettings.save()
+	DialogicUtil.set_editor_setting('character_preview_mode', 0)
 
 
 func _on_full_preview_available_rect_resized():

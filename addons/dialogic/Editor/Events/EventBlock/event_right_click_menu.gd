@@ -12,8 +12,8 @@ func _ready():
 	add_separator()
 	add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete")
 	
-	var menu_background = load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres")
+	var menu_background := StyleBoxFlat.new()
 	menu_background.bg_color = get_parent().get_theme_color("base_color", "Editor")
-	theme.set_stylebox('panel', 'PopupMenu', menu_background)
-	theme.set_stylebox('hover', 'PopupMenu', StyleBoxEmpty.new())
-	theme.set_color('font_color_hover', 'PopupMenu', get_parent().get_theme_color("accent_color", "Editor"))
+	add_theme_stylebox_override('panel', menu_background)
+	add_theme_stylebox_override('hover', get_theme_stylebox("FocusViewport", "EditorStyles"))
+	add_theme_color_override('font_color_hover', get_parent().get_theme_color("accent_color", "Editor"))

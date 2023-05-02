@@ -4,7 +4,7 @@ extends ScrollContainer
 signal active_theme_changed
 
 var ListItem = preload("res://addons/dialogic/Events/LayoutEditor/Components/StyleItem.tscn")
-@onready var active_layout = DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
+@onready var active_layout = ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
 
 
 func add_item(data) -> void:

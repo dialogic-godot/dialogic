@@ -360,7 +360,7 @@ func get_character_resource(character_name:String) -> DialogicCharacter:
 
 
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
-	if DialogicUtil.get_project_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
+	if ProjectSettings.get_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
 		if !Dialogic.current_state_info.has('rpg_last_portrait'):
 			Dialogic.current_state_info['rpg_last_portraits'] = {}
 		
@@ -374,9 +374,9 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 		var char_joined := false
 		for joined_character in dialogic.current_state_info.portraits:
 			if not character or (joined_character != character.resource_path):
-				var AnimationName :String= DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
+				var AnimationName :String= ProjectSettings.get_setting('dialogic/animations/leave_default', 
 	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
-				var AnimationLength :float= DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
+				var AnimationLength :float= ProjectSettings.get_setting('dialogic/animations/leave_default_length', 0.5) 
 					
 				var anim := animate_portrait(load(joined_character), AnimationName, AnimationLength)
 				
@@ -385,8 +385,8 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 				char_joined = true
 		
 		if (not char_joined) and character and portrait in character.portraits:
-			var AnimationName :String= DialogicUtil.get_project_setting('dialogic/animations/join_default', 
+			var AnimationName :String= ProjectSettings.get_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))
-			var AnimationLength :float= DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
+			var AnimationLength :float= ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
 			add_portrait(character, portrait, 1, false)
 			var anim := animate_portrait(character, AnimationName, AnimationLength)

@@ -193,7 +193,7 @@ func get_property_translation_key(property_name:String) -> String:
 
 ## Call this whenever you are using a translatable property
 func get_property_translated(property_name:String) -> String:
-	if !_translation_id.is_empty() and DialogicUtil.get_project_setting('dialogic/translation/enabled', false):
+	if !_translation_id.is_empty() and ProjectSettings.get_setting('dialogic/translation/enabled', false):
 		var translation = tr(get_property_translation_key(property_name))
 		# if no translation is found tr() returns the id, but we want to fallback to the original
 		return translation if translation != _translation_id else _get_property_original_translation(property_name)
@@ -222,13 +222,20 @@ func update_text_version() -> void:
 
 ## Used by timeline processor (DGH).
 func _load_from_string(string:String) -> void:
+	_load_custom_defaults()
 	if '#id:' in string and can_be_translated():
 		_translation_id = string.get_slice('#id:', 1).strip_edges()
 		from_text(string.get_slice('#id:', 0))
-		event_node_ready = true
 	else:
 		from_text(string)
-		event_node_ready = true
+	event_node_ready = true
+
+
+## Assigns the custom defaults
+func _load_custom_defaults():
+	for default_prop in DialogicUtil.get_custom_event_defaults(event_name):
+		if default_prop in self:
+			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])
 
 
 ## Used by the timeline processor (DGH).
@@ -258,8 +265,9 @@ func get_shortcode_parameters() -> Dictionary:
 func to_text() -> String:
 	var result_string : String = "["+self.get_shortcode()
 	var params : Dictionary = get_shortcode_parameters()
+	var custom_defaults :Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	for parameter in params.keys():
-		if get(params[parameter]["property"]) != params[parameter]["default"]:
+		if get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default):
 			if typeof(get(params[parameter]["property"])) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter]["property"]).resource_path)+'"'
 			elif typeof(get(params[parameter]["property"])) == TYPE_STRING:
@@ -294,7 +302,7 @@ func from_text(string:String) -> void:
 ## has to return true, if the given string can be interpreted as this event
 ## by default it uses the shortcode formta, but can be overridden
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges().begins_with('['+get_shortcode()):
+	if string.strip_edges().begins_with('['+get_shortcode()+' ') or string.strip_edges().begins_with('['+get_shortcode()+']'):
 		return true
 	return false
 
@@ -322,9 +330,12 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ################################################################################
 
 func _get_icon() -> Resource:
+	var _icon_file_name = "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
 	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
-		return load(self.get_script().get_path().get_base_dir() + "/icon.png")
-	return load("res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg")
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
+	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
+	return load(_icon_file_name)
 
 
 func set_default_color(value) -> void:

@@ -37,7 +37,7 @@ func _register() -> void:
 	
 	$VisualEditor.load_event_buttons()
 	
-	current_editor_mode = DialogicUtil.get_project_setting('dialogic/editor/timeline_editor_mode', 0)
+	current_editor_mode = DialogicUtil.get_editor_setting('timeline_editor_mode', 0)
 	
 	match current_editor_mode:
 		0:
@@ -86,8 +86,7 @@ func play_timeline():
 	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 	
 	# Save the current opened timeline
-	ProjectSettings.set_setting('dialogic/editor/current_timeline_path', current_resource.resource_path)
-	ProjectSettings.save()
+	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
 	
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
@@ -110,16 +109,17 @@ func toggle_editor_mode():
 			$VisualEditor.show()
 			editor_mode_toggle_button.text = "Text Editor"
 	
-	ProjectSettings.set_setting('dialogic/editor/timeline_editor_mode', current_editor_mode)
-	ProjectSettings.save()
+	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
 func _on_resource_unsaved():
-	current_resource.set_meta("timeline_not_saved", true)
+	if current_resource:
+		current_resource.set_meta("timeline_not_saved", true)
 
 
 func _on_resource_saved():
-	current_resource.set_meta("timeline_not_saved", false)
+	if current_resource:
+		current_resource.set_meta("timeline_not_saved", false)
 
 
 func new_timeline(path:String) -> void:

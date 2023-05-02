@@ -320,7 +320,7 @@ func _ready():
 
 
 func color_names(text:String) -> String:
-	if !DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false):
+	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
 	
 	var counter := 0
@@ -334,7 +334,7 @@ func color_names(text:String) -> String:
 
 func collect_character_names() -> void:
 	#don't do this at all if we're not using autocolor names to begin with
-	if !DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false):
+	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return 
 	
 	character_colors = {}
@@ -370,7 +370,7 @@ func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
 		text_node.speed = float(argument)
 	else:
-		text_node.speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
+		text_node.speed = ProjectSettings.get_setting('dialogic/text/speed', 0.01)
 
 
 func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:

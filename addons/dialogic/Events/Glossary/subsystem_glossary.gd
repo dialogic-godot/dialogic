@@ -14,7 +14,7 @@ var enabled := true
 
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
 	glossaries = []
-	for path in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
+	for path in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 		add_glossary(path)
 
 
@@ -24,8 +24,8 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
 
 func parse_glossary(text:String) -> String:
 	if !enabled: return text
-	var def_case_sensitive :bool = DialogicUtil.get_project_setting('dialogic/glossary/default_case_sensitive', true)
-	var def_color : Color= DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
+	var def_case_sensitive :bool = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
+	var def_color : Color= ProjectSettings.get_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
 	var regex := RegEx.new()
 	for glossary in glossaries:
 		if !glossary.enabled:

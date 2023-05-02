@@ -37,12 +37,12 @@ func set_setting(value, setting:String)  -> void:
 	ProjectSettings.save()
 
 func _open(argument:Variant = null) -> void:
-	%DefaultColor.color = DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
-	%DefaultCaseSensitive.button_pressed = DialogicUtil.get_project_setting('dialogic/glossary/default_case_sensitive', true)
+	%DefaultColor.color = ProjectSettings.get_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
+	%DefaultCaseSensitive.button_pressed = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
 	
 	%GlossaryList.clear()
 	var idx := 0
-	for file in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
+	for file in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 		if FileAccess.file_exists(file):
 			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
 		else:
@@ -94,7 +94,7 @@ func _on_load_glossary_file_pressed() -> void:
 	find_parent('EditorView').godot_file_dialog(load_glossary_file, '*.tres', EditorFileDialog.FILE_MODE_OPEN_FILE, 'Select glossary resource')
 
 func load_glossary_file(path:String) -> void:
-	var list :Array= DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', [])
+	var list :Array= ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 	if not path in list:
 		list.append(path)
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
@@ -106,7 +106,7 @@ func load_glossary_file(path:String) -> void:
 
 func _on_delete_glossary_file_pressed() -> void:
 	if len(%GlossaryList.get_selected_items()) != 0:
-		var list :Array = DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', [])
+		var list :Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 		list.erase(%GlossaryList.get_item_tooltip(
 			%GlossaryList.get_selected_items()[0]))
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
