@@ -2,10 +2,10 @@
 extends HBoxContainer
 
 func refresh():
-	%Autosave.button_pressed = DialogicUtil.get_project_setting('dialogic/save/autosave', false)
-	%AutosaveMode.select(DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0))
-	%DefaultSaveSlotName.text = DialogicUtil.get_project_setting('dialogic/save/default_slot', 'Default')
-	%AutosaveDelay.value = DialogicUtil.get_project_setting('dialogic/save/autosave_delay', 60)
+	%Autosave.button_pressed = ProjectSettings.get_setting('dialogic/save/autosave', false)
+	%AutosaveMode.select(ProjectSettings.get_setting('dialogic/save/autosave_mode', 0))
+	%DefaultSaveSlotName.text = ProjectSettings.get_setting('dialogic/save/default_slot', 'Default')
+	%AutosaveDelay.value = ProjectSettings.get_setting('dialogic/save/autosave_delay', 60)
 	%AutosaveDelayContainer.visible = %AutosaveMode.selected == 1
 
 func _on_Autosave_toggled(button_pressed):

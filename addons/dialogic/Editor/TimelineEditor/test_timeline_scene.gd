@@ -5,7 +5,7 @@ func _ready() -> void:
 	if !ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
-	var dialog_scene_path: String = DialogicUtil.get_project_setting(
+	var dialog_scene_path: String = ProjectSettings.get_setting(
 		'dialogic/layout/layout_scene',
 		DialogicUtil.get_default_layout()
 	)
@@ -19,7 +19,7 @@ func _ready() -> void:
 			scene.position = get_viewport_rect().size/2.0
 
 	randomize()
-	var current_timeline: String = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
+	var current_timeline: String = DialogicUtil.get_editor_setting('current_timeline_path')
 	Dialogic.start_timeline(current_timeline)
 	Dialogic.timeline_ended.connect(get_tree().quit)
 	Dialogic.signal_event.connect(recieve_event_signal)

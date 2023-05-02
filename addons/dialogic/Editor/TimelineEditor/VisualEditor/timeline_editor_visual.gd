@@ -73,8 +73,6 @@ func save_timeline() -> void:
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 	
-	## Also save sidebar size
-	ProjectSettings.set_setting('dialogic/editor/visual_timeline_editor_sidebar', %RightSidebar.size.x)
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
@@ -133,14 +131,16 @@ func _on_batch_loaded():
 		indent_events()
 		await get_tree().process_frame
 		load_batch(_batches)
-	else:
-		if opener_events_stack:
-			for ev in opener_events_stack:
-				create_end_branch_event(%Timeline.get_child_count(), ev)
-		opener_events_stack = []
-		indent_events()
-		_building_timeline = false
-		add_extra_scroll_area_to_timeline()
+		return
+	
+	if opener_events_stack:
+		for ev in opener_events_stack:
+			create_end_branch_event(%Timeline.get_child_count(), ev)
+	opener_events_stack = []
+	indent_events()
+	_building_timeline = false
+	add_extra_scroll_area_to_timeline()
+
 
 
 func clear_timeline_nodes():
@@ -163,6 +163,8 @@ func _ready():
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
 	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
+	
+
 
 
 func load_event_buttons() -> void:
@@ -195,13 +197,13 @@ func load_event_buttons() -> void:
 		while event_resource.event_sorting_index < %RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
 	
-	# Margins
+	# Resize RightSidebar
 	var _scale := DialogicUtil.get_editor_scale()
 	%RightSidebar.custom_minimum_size.x = 50 * _scale
 	
-	$View.split_offset = -ProjectSettings.get_setting('dialogic/editor/visual_timeline_editor_sidebar', 200)
-	sidebar_collapsed = !%RightSidebar.size.y < 150*_scale
+	$View.split_offset = -200*_scale
 	_on_right_sidebar_resized()
+	
 
 ################################################################################
 ##				CLEANUP
@@ -912,9 +914,9 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 	indent_events()
 
 
-func _on_right_sidebar_resized() -> void:
+func _on_right_sidebar_resized():
 	var _scale := DialogicUtil.get_editor_scale()
-	if %RightSidebar.size.x < 150*_scale and !sidebar_collapsed:
+	if %RightSidebar.size.x < 160*_scale and !sidebar_collapsed:
 		sidebar_collapsed = true
 		for con in %RightSidebar.get_node('EventContainer').get_children():
 			if con.get_child_count() == 0:
@@ -925,7 +927,7 @@ func _on_right_sidebar_resized() -> void:
 				for button in con.get_children():
 					button.toggle_name(false)
 		
-	elif  %RightSidebar.size.x > 150*_scale and sidebar_collapsed:
+	elif %RightSidebar.size.x > 160*_scale and sidebar_collapsed:
 		sidebar_collapsed = false
 		for con in %RightSidebar.get_node('EventContainer').get_children():
 			if con.get_child_count() == 0:

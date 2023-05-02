@@ -464,7 +464,7 @@ func start(timeline, single_instance = true) -> Node:
 	if single_instance:
 		# if none exists, create a new one
 		if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
-			scene = load(DialogicUtil.get_project_setting(
+			scene = load(ProjectSettings.get_setting(
 							'dialogic/layout/layout_scene', 
 							DialogicUtil.get_default_layout())
 						).instantiate()

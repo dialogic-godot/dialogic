@@ -94,7 +94,7 @@ func _on_submit_extension_button_pressed() -> void:
 	if %NameEdit.text.is_empty():
 		return
 
-	var extensions_folder :String = DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
+	var extensions_folder :String = ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
 
 	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
 	DirAccess.make_dir_recursive_absolute(extensions_folder)

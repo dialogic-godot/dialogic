@@ -2,11 +2,11 @@
 extends HBoxContainer
 
 func refresh() -> void:
-	%Autofocus.button_pressed = DialogicUtil.get_project_setting('dialogic/choices/autofocus_first', true)
-	var delay_value:float = DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2)
+	%Autofocus.button_pressed = ProjectSettings.get_setting('dialogic/choices/autofocus_first', true)
+	var delay_value:float = ProjectSettings.get_setting('dialogic/choices/delay', 0.2)
 	%Delay.value = delay_value
-	%FalseBehaviour.select(DialogicUtil.get_project_setting('dialogic/choices/def_false_behaviour', 0))
-	%HotkeyType.select(DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0))
+	%FalseBehaviour.select(ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0))
+	%HotkeyType.select(ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0))
 
 
 func _on_Autofocus_toggled(button_pressed: bool) -> void:

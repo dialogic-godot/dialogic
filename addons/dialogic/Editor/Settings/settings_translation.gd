@@ -26,12 +26,12 @@ func _ready() -> void:
 
 func refresh() -> void:
 	loading = true
-	%TransEnabled.button_pressed = DialogicUtil.get_project_setting('dialogic/translation/enabled', false)
+	%TransEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/enabled', false)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
-	%OrigLocale.set_value(DialogicUtil.get_project_setting('dialogic/translation/original_locale', TranslationServer.get_tool_locale()))
-	%TransMode.select(DialogicUtil.get_project_setting('dialogic/translation/file_mode', 1))
-	%TransFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/translation/translation_folder', ''))
-	%TestingLocale.set_value(DialogicUtil.get_project_setting('internationalization/locale/test', ''))
+	%OrigLocale.set_value(ProjectSettings.get_setting('dialogic/translation/original_locale', TranslationServer.get_tool_locale()))
+	%TransMode.select(ProjectSettings.get_setting('dialogic/translation/file_mode', 1))
+	%TransFolderPicker.set_value(ProjectSettings.get_setting('dialogic/translation/translation_folder', ''))
+	%TestingLocale.set_value(ProjectSettings.get_setting('internationalization/locale/test', ''))
 	loading = false
 
 

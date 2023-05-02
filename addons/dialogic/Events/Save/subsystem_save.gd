@@ -32,7 +32,7 @@ func clear_game_state():
 ## If you want to change to the current slot use save(Dialogic.Save.get_latest_slot())
 func save(slot_name:String = '', is_autosave:bool = false, thumbnail_mode:THUMBNAIL_MODE=THUMBNAIL_MODE.TAKE_AND_STORE, slot_info :Dictionary = {}):
 	# check if to save (if this is an autosave)
-	if is_autosave and !DialogicUtil.get_project_setting('dialogic/save/autosave', false):
+	if is_autosave and !ProjectSettings.get_setting('dialogic/save/autosave', false):
 		return
 	
 	if slot_name.is_empty():
@@ -173,7 +173,7 @@ func get_slot_path(slot_name:String) -> String:
 
 ## Returns the default slot name defined in the dialogic settings
 func get_default_slot() -> String:
-	return DialogicUtil.get_project_setting('dialogic/save/default_slot', 'Default')
+	return ProjectSettings.get_setting('dialogic/save/default_slot', 'Default')
 
 
 ## Returns the latest slot or empty if nothing was saved yet
@@ -260,20 +260,20 @@ func _ready() -> void:
 
 
 func _on_autosave_timer_timeout() -> void:
-	if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
+	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
 		save('', true)
-	autosave_timer.start(DialogicUtil.get_project_setting('dialogic/save/autosave_delay', 60))
+	autosave_timer.start(ProjectSettings.get_setting('dialogic/save/autosave_delay', 60))
 
 
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
 	if event is DialogicJumpEvent:
-		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
+		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
 			save('', true)
 	if event is DialogicTextEvent:
-		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
+		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
 			save('', true)
 
 
 func autosave_start_end() -> void:
-	if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
+	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
 		save('', true)
