@@ -43,3 +43,5 @@ alignment = 0
 expand_icon = true
 script = ExtResource("1_s43sc")
 visible_name = "S"
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
