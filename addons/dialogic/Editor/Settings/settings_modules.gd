@@ -54,6 +54,7 @@ func _on_search_text_changed(new_text:String) -> void:
 		filter.text = ""
 		filter.set_meta("counter", 0)
 	
+	var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	
 	for child in %Tree.get_root().get_children():
 		if new_text.to_lower() in child.get_text(0).to_lower() or new_text.is_empty():
@@ -77,7 +78,12 @@ func _on_search_text_changed(new_text:String) -> void:
 		for sub_child in child.get_children():
 			if sub_child.visible:
 				child.add_button(0, sub_child.get_icon(0), counter, false, sub_child.get_text(0))
-				child.set_button_color(0, counter, sub_child.get_icon_modulate(0))
+				if sub_child.get_metadata(0)['type'] == 'Event' and sub_child.get_metadata(0)['hidden']: 
+					var color : Color = sub_child.get_icon_modulate(0)
+					color.a = 0.5
+					child.set_button_color(0, counter, color)
+				else:
+					child.set_button_color(0, counter, sub_child.get_icon_modulate(0))
 				counter += 1
 				any_visible = true
 		child.visible = any_visible
@@ -88,12 +94,13 @@ func _on_search_text_changed(new_text:String) -> void:
 func load_modules_tree() -> void:
 	%Tree.clear()
 	var root :TreeItem = %Tree.create_item()
-	
 	var cached_events :Array = get_parent().get_parent().editors_manager.resource_helper.event_script_cache
+	var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var indexers := DialogicUtil.get_indexers()
 	for i in indexers:
 		var module_item :TreeItem = %Tree.create_item(root)
 		module_item.set_text(0, i.get_script().resource_path.trim_suffix('/index.gd').get_file())
+		module_item.set_metadata(0, {'type':'Module'})
 		
 		# Events
 		for ev in i._get_events():
@@ -103,7 +110,11 @@ func load_modules_tree() -> void:
 				if cached_event.get_script().resource_path == ev:
 					event_item.set_text(0, cached_event.event_name + " Event")
 					event_item.set_icon_modulate(0, cached_event.event_color)
-					event_item.set_metadata(0, {'type':'Event', 'event':cached_event})
+					var hidden :bool = cached_event.event_name in hidden_events
+					event_item.set_metadata(0, {'type':'Event', 'event':cached_event, 'hidden':hidden})
+					event_item.add_button(0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"), 0, false, "Toggle Event Button Visibility")
+					if hidden:
+						event_item.set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
 			event_item.set_meta('filter_button', %Filter_Events)
 			event_item.visible = %Filter_Events.button_pressed
 		
@@ -174,8 +185,29 @@ func load_modules_tree() -> void:
 
 
 func _on_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
-	item.collapsed = false
-	%Tree.set_selected(item.get_child(id), 0)
+	match item.get_metadata(0)['type']:
+		'Module':
+			item.collapsed = false
+			%Tree.set_selected(item.get_child(id), 0)
+		'Event':
+			# Visibility item clicked
+			if id == 0:
+				var meta :Dictionary= item.get_metadata(0)
+				if meta['hidden']:
+					item.set_button(0, 0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"))
+					item.get_parent().set_button_color(0, item.get_index(), item.get_icon_modulate(0))
+					if item == %Tree.get_selected():
+						%VisibilityToggle.button_pressed = true
+				else:
+					item.set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
+					var color : Color = item.get_icon_modulate(0)
+					color.a = 0.5
+					item.get_parent().set_button_color(0, item.get_index(), color)
+					if item == %Tree.get_selected():
+						%VisibilityToggle.button_pressed = false
+				meta['hidden'] = !meta['hidden']
+				item.set_metadata(0, meta)
+				change_event_visibility(meta['event'], !meta['hidden'])
 
 
 func _on_tree_item_selected() -> void:
@@ -183,11 +215,13 @@ func _on_tree_item_selected() -> void:
 	
 	var metadata :Variant = selected_item.get_metadata(0)
 	
+	%Title.text = selected_item.get_text(0)
+	$Scroll/Settings/EventDefaultsPanel.hide()
+	%Icon.texture = null
+	%ExternalLink.hide()
+	%VisibilityToggle.hide()
+	
 	if metadata is Dictionary:
-		%Title.text = selected_item.get_text(0)
-		$Scroll/Settings/EventDefaultsPanel.hide()
-		%Icon.texture = null
-		%ExternalLink.hide()
 		match metadata.type:
 			'Event':
 				%GeneralInfo.text = "Events can be used in timelines and do all kinds of things. They often interact with subsystems and dialogic nodes."
@@ -200,6 +234,13 @@ func _on_tree_item_selected() -> void:
 					%ExternalLink.show()
 					%ExternalLink.set_meta('url', metadata.event.help_page_path)
 				%Icon.texture = metadata.event._get_icon()
+				if !metadata.event.disable_editor_button:
+					%VisibilityToggle.show()
+					%VisibilityToggle.button_pressed = !metadata.event.event_name in DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+					if %VisibilityToggle.button_pressed:
+						%VisibilityToggle.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+					else:
+						%VisibilityToggle.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 			# -------------------------------------------------
 			'Subsystem':
 				%GeneralInfo.text = "Subsystems hold specialized functionality. They mostly manage communication between events and dialogic nodes. Often they provide handy methods that can be accessed by the user like this: Dialogic.Subsystem.a_method()."
@@ -221,13 +262,42 @@ func _on_tree_item_selected() -> void:
 			# -------------------------------------------------
 			'_':
 				%GeneralInfo.text = ""
-				
 
 
 func _on_external_link_pressed():
 	if %ExternalLink.has_meta('url'):
 		OS.shell_open(%ExternalLink.get_meta('url'))
 
+
+func change_event_visibility(event:DialogicEvent, visibility:bool) -> void:
+	if event:
+		var list :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+		if visibility:
+			list.erase(event.event_name)
+		else:
+			list.append(event.event_name)
+		DialogicUtil.set_editor_setting('hidden_event_buttons', list)
+		force_event_button_list_update()
+
+
+func _on_visibility_toggle_toggled(button_pressed:bool) -> void:
+	change_event_visibility(%Tree.get_selected().get_metadata(0).event, button_pressed)
+	
+	if button_pressed:
+		%VisibilityToggle.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+		%Tree.get_selected().set_button(0, 0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"))
+		%Tree.get_selected().get_parent().set_button_color(0, %Tree.get_selected().get_index(), %Tree.get_selected().get_icon_modulate(0))
+	else:
+		%VisibilityToggle.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
+		%Tree.get_selected().set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
+		var color : Color = %Tree.get_selected().get_icon_modulate(0)
+		color.a = 0.5
+		%Tree.get_selected().get_parent().set_button_color(0, %Tree.get_selected().get_index(), color)
+	
+
+
+func force_event_button_list_update() -> void:
+	find_parent('EditorsManager').editors['Timeline Editor'].node.get_node('VisualEditor').load_event_buttons()
 
 ################################################################################
 ##						EVENT DEFAULT SETTINGS
@@ -298,7 +368,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 
 func set_event_default_override(prop:String, value:Variant) -> void:
 	var event_default_overrides :Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
-	var event = %Tree.get_selected().get_metadata(0).event
+	var event :DialogicEvent = %Tree.get_selected().get_metadata(0).event
 	
 	if not event_default_overrides.has(event.event_name):
 		event_default_overrides[event.event_name] = {}
@@ -306,6 +376,8 @@ func set_event_default_override(prop:String, value:Variant) -> void:
 	event_default_overrides[event.event_name][prop] = value
 	
 	ProjectSettings.set_setting('dialogic/event_default_overrides', event_default_overrides)
+
+
 
 
 func _on_event_default_string_submitted(text:String, prop:String) -> void:
@@ -322,3 +394,4 @@ func _on_event_default_value_changed(prop:String, value:Vector2) -> void:
 
 func _on_event_default_bool_toggled(value:bool, prop:String) -> void:
 	set_event_default_override(prop, value)
+
