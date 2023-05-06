@@ -15,7 +15,7 @@ signal variable_was_set(info:Dictionary)
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	# loading default variables
 	if ! clear_flag & Dialogic.ClearFlags.KeepVariables:
-		dialogic.current_state_info['variables'] = DialogicUtil.get_project_setting('dialogic/variables', {}).duplicate()
+		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate()
 
 
 func load_game_state():
