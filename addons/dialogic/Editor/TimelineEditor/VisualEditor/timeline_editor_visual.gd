@@ -154,10 +154,18 @@ func _ready():
 
 
 func load_event_buttons() -> void:
+	# Clear previous event buttons
+	for child in %RightSidebar.get_child(0).get_children():
+		if child is FlowContainer:
+			for button in child.get_children():
+				button.queue_free()
+	
 	var scripts: Array = get_parent().editors_manager.resource_helper.get_event_scripts()
 	
 	# Event buttons
 	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
+	
+	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	
 	for event_script in scripts:
 		var event_resource: Variant
@@ -167,7 +175,12 @@ func load_event_buttons() -> void:
 		else:
 			event_resource = event_script
 		
-		if event_resource.disable_editor_button == true: continue
+		if event_resource.disable_editor_button == true: 
+			continue
+		
+		if event_resource.event_name in hidden_buttons: 
+			continue
+		
 		var button :Button = buttonScene.instantiate()
 		button.resource = event_resource
 		button.visible_name = event_resource.event_name
@@ -178,7 +191,6 @@ func load_event_buttons() -> void:
 		button.event_sorting_index = event_resource.event_sorting_index
 
 		button.button_up.connect(_add_event_button_pressed.bind(event_resource))
-		
 		%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < %RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
