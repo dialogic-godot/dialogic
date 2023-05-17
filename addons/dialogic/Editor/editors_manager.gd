@@ -167,7 +167,8 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 		mode,
 		title,
 		default_name,
-		true
+		true,
+		"Do not use \"'()!;:/\\*# in character or timeline names!"
 	)
 
 

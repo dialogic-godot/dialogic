@@ -32,7 +32,7 @@ func _register() -> void:
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
 			'Add Character',
 			self)
-	add_character_button.pressed.connect(_on_create_timeline_button_pressed)
+	add_character_button.pressed.connect(_on_create_character_button_pressed)
 	$NoCharacterScreen.show()
 
 
@@ -511,7 +511,7 @@ func _on_full_preview_available_rect_resized():
 		update_preview()
 
 
-func _on_create_timeline_button_pressed():
+func _on_create_character_button_pressed():
 	editors_manager.show_add_resource_dialog(
 			new_character, 
 			'*.dch; DialogicCharacter',
