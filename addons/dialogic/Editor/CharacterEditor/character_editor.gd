@@ -11,12 +11,14 @@ signal portrait_selected()
 enum PreviewModes {Full, Real}
 
 # Current state
-var current_preview_mode = PreviewModes.Full
-var loading = false
+var current_preview_mode :int = PreviewModes.Full
+var loading := false
 var current_previewed_scene = null
 
 # References
-var selected_item: TreeItem 
+var selected_item: TreeItem
+
+var def_portrait_path :String= DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 
 ##############################################################################
 ##							RESOURCE LOGIC
@@ -32,7 +34,7 @@ func _register() -> void:
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
 			'Add Character',
 			self)
-	add_character_button.pressed.connect(_on_create_timeline_button_pressed)
+	add_character_button.pressed.connect(_on_create_character_button_pressed)
 	$NoCharacterScreen.show()
 
 
@@ -445,8 +447,8 @@ func update_preview() -> void:
 				node.queue_free()
 			current_previewed_scene = null
 			if current_portrait_data.get('scene', '').is_empty():
-				if FileAccess.file_exists("res://addons/dialogic/Events/Character/default_portrait.tscn"):
-					current_previewed_scene = load("res://addons/dialogic/Events/Character/default_portrait.tscn").instantiate()
+				if FileAccess.file_exists(def_portrait_path):
+					current_previewed_scene = load(def_portrait_path).instantiate()
 					current_previewed_scene.set_meta('path', '')
 			else:
 				if FileAccess.file_exists(current_portrait_data.get('scene')):
@@ -511,7 +513,7 @@ func _on_full_preview_available_rect_resized():
 		update_preview()
 
 
-func _on_create_timeline_button_pressed():
+func _on_create_character_button_pressed():
 	editors_manager.show_add_resource_dialog(
 			new_character, 
 			'*.dch; DialogicCharacter',

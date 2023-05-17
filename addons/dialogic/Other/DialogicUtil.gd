@@ -77,6 +77,11 @@ static func guess_resource(extension:String, identifier:String) -> String:
 	return ""
 
 
+static func get_module_path(name:String, builtin:=true) -> String:
+	if builtin:
+		return "res://addons/dialogic/Modules".path_join(name)
+	else:
+		return ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions').path_join(name)
 
 
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
@@ -85,8 +90,8 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	
 	var indexers : Array[DialogicIndexer] = []
 	
-	for file in listdir("res://addons/dialogic/Events/", false):
-		var possible_script:String = "res://addons/dialogic/Events/" + file + "/index.gd"
+	for file in listdir(DialogicUtil.get_module_path(''), false):
+		var possible_script:String = DialogicUtil.get_module_path(file).path_join("index.gd")
 		if FileAccess.file_exists(possible_script):
 			indexers.append(load(possible_script).new())
 	
@@ -184,7 +189,7 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 
 
 static func get_default_layout() -> String:
-	return "res://addons/dialogic/Events/DefaultStyles/Default/DialogicDefaultLayout.tscn"
+	return DialogicUtil.get_module_path('DefaultStyles').path_join("Default/DialogicDefaultLayout.tscn")
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:

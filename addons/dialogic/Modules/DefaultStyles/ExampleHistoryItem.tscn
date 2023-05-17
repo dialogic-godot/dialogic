@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/ExampleHistoryItem.gd" id="1_dgoja"]
+[ext_resource type="Texture2D" uid="uid://bvqgwmds7enrv" path="res://icon.svg" id="2_ywvym"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.780392, 0.780392, 0.780392, 0.156863)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="HistoryItem" type="PanelContainer"]
+offset_left = -37.0
+offset_top = 510.0
+offset_right = 1085.0
+offset_bottom = 555.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_upgjp")
+script = ExtResource("1_dgoja")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_ywvym")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="NameLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="TextBox" type="RichTextLabel" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "Some tex"
+fit_content = true
