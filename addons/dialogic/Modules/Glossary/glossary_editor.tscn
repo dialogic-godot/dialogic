@@ -1,0 +1,296 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Glossary/glossary_editor.gd" id="1_tf3p1"]
+[ext_resource type="Texture2D" uid="uid://cenut3sc5cul0" path="res://addons/dialogic/Modules/Glossary/add-glossary.svg" id="2_0elx7"]
+
+[sub_resource type="Image" id="Image_lmipc"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_usv66"]
+image = SubResource("Image_lmipc")
+
+[node name="GlossaryEditor" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_tf3p1")
+
+[node name="Entries" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = -200
+
+[node name="Settings" type="VBoxContainer" parent="Entries"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="Glossaries" type="TabContainer" parent="Entries/Settings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Glossaries" type="VBoxContainer" parent="Entries/Settings/Glossaries"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.69
+
+[node name="HBox" type="HBoxContainer" parent="Entries/Settings/Glossaries/Glossaries"]
+layout_mode = 2
+
+[node name="AddGlossaryFile" type="Button" parent="Entries/Settings/Glossaries/Glossaries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "New Glossary"
+icon = ExtResource("2_0elx7")
+
+[node name="LoadGlossaryFile" type="Button" parent="Entries/Settings/Glossaries/Glossaries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Import Glossary File"
+icon = SubResource("ImageTexture_usv66")
+
+[node name="DeleteGlossaryFile" type="Button" parent="Entries/Settings/Glossaries/Glossaries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Delete Glossary"
+icon = SubResource("ImageTexture_usv66")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Entries/Settings/Glossaries/Glossaries"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GlossaryList" type="ItemList" parent="Entries/Settings/Glossaries/Glossaries/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="Entries/Settings"]
+layout_mode = 2
+
+[node name="Defaults" type="VBoxContainer" parent="Entries/Settings/TabContainer"]
+layout_mode = 2
+
+[node name="DefaultsColor" type="HBoxContainer" parent="Entries/Settings/TabContainer/Defaults"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Entries/Settings/TabContainer/Defaults/DefaultsColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color"
+
+[node name="DefaultColor" type="ColorPickerButton" parent="Entries/Settings/TabContainer/Defaults/DefaultsColor"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="DefCaseSensitive" type="HBoxContainer" parent="Entries/Settings/TabContainer/Defaults"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Entries/Settings/TabContainer/Defaults/DefCaseSensitive"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Case sensitive"
+
+[node name="DefaultCaseSensitive" type="CheckBox" parent="Entries/Settings/TabContainer/Defaults/DefCaseSensitive"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSplit" type="HSplitContainer" parent="Entries"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Tabs" type="TabContainer" parent="Entries/HSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Entries" type="VBoxContainer" parent="Entries/HSplit/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.69
+
+[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/Tabs/Entries"]
+layout_mode = 2
+
+[node name="AddGlossaryEntry" type="Button" parent="Entries/HSplit/Tabs/Entries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "New Glossary Entry"
+icon = SubResource("ImageTexture_usv66")
+
+[node name="DeleteGlossaryEntry" type="Button" parent="Entries/HSplit/Tabs/Entries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Delete Glossary Entry"
+icon = SubResource("ImageTexture_usv66")
+
+[node name="EntrySearch" type="LineEdit" parent="Entries/HSplit/Tabs/Entries/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search"
+right_icon = SubResource("ImageTexture_usv66")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Entries/HSplit/Tabs/Entries"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EntryList" type="ItemList" parent="Entries/HSplit/Tabs/Entries/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_neighbor_right = NodePath("../../../../EntryEditor/Tabs/Entry Settings/EntrySettings/HBox/EntryName")
+
+[node name="EntryEditor" type="ScrollContainer" parent="Entries/HSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+metadata/_edit_layout_mode = 1
+
+[node name="Tabs" type="TabContainer" parent="Entries/HSplit/EntryEditor"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Entry Settings" type="VBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EntrySettings" type="GridContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 13
+columns = 2
+
+[node name="Label2" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Name"
+
+[node name="HBox2" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+
+[node name="EntryName" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../../../../../../Tabs/Entries/ScrollContainer/EntryList")
+placeholder_text = "MyEntry"
+caret_blink = true
+
+[node name="EntryCaseSensitive" type="Button" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Case sensitive"
+toggle_mode = true
+icon = SubResource("ImageTexture_usv66")
+flat = true
+
+[node name="Label3" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Alternatives"
+
+[node name="EntryAlternatives" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+
+[node name="Label4" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Title"
+
+[node name="EntryTitle" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+
+[node name="Label5" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Text"
+
+[node name="EntryText" type="TextEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+focus_next = NodePath("../EntryExtra")
+wrap_mode = 1
+
+[node name="Label6" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Extra"
+
+[node name="EntryExtra" type="TextEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+wrap_mode = 1
+
+[node name="Label8" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Enabled"
+
+[node name="EntryEnabled" type="CheckBox" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+
+[node name="Label7" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Color"
+
+[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+layout_mode = 2
+
+[node name="EntryCustomColor" type="CheckBox" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EntryColor" type="ColorPickerButton" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/AddGlossaryFile" to="." method="_on_add_glossary_file_pressed"]
+[connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/LoadGlossaryFile" to="." method="_on_load_glossary_file_pressed"]
+[connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/DeleteGlossaryFile" to="." method="_on_delete_glossary_file_pressed"]
+[connection signal="pressed" from="Entries/HSplit/Tabs/Entries/HBox/AddGlossaryEntry" to="." method="_on_add_glossary_entry_pressed"]
+[connection signal="pressed" from="Entries/HSplit/Tabs/Entries/HBox/DeleteGlossaryEntry" to="." method="_on_delete_glossary_entry_pressed"]
+[connection signal="text_changed" from="Entries/HSplit/Tabs/Entries/HBox/EntrySearch" to="." method="_on_entry_search_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2/EntryName" to="." method="_on_entry_name_text_changed"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2/EntryCaseSensitive" to="." method="_on_entry_case_sensitive_toggled"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryAlternatives" to="." method="_on_entry_alternatives_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryTitle" to="." method="_on_entry_title_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryText" to="." method="_on_entry_text_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryExtra" to="." method="_on_entry_extra_text_changed"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryEnabled" to="." method="_on_entry_enabled_toggled"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox/EntryCustomColor" to="." method="_on_entry_custom_color_toggled"]
+[connection signal="color_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox/EntryColor" to="." method="_on_entry_color_color_changed"]

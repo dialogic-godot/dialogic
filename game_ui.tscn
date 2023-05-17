@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bodlkbe7qcbqs"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="1_7xoxi"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="1_pyeja"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="2_0chsi"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="2_8o2ju"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="1_7xoxi"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="1_pyeja"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="2_0chsi"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="2_8o2ju"]
 [ext_resource type="Texture2D" uid="uid://bvqgwmds7enrv" path="res://icon.svg" id="3_y357o"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3_yr5sj"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3_yr5sj"]
 
 [node name="GameUI" type="CanvasLayer"]
 
