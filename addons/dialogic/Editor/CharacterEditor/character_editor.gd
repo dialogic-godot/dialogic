@@ -11,7 +11,7 @@ signal portrait_selected()
 enum PreviewModes {Full, Real}
 
 # Current state
-var current_preview_mode := PreviewModes.Full
+var current_preview_mode :int = PreviewModes.Full
 var loading := false
 var current_previewed_scene = null
 

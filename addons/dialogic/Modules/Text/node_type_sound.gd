@@ -23,8 +23,8 @@ extends AudioStreamPlayer
 @export var ignore_characters:String = ' .,'
 
 var characters_since_last_sound: int = 0
-var base_pitch := pitch_scale
-var base_volume := volume_db
+var base_pitch :float = pitch_scale
+var base_volume :float = volume_db
 var RNG := RandomNumberGenerator.new()
 
 var current_overwrite_data := {}
@@ -75,8 +75,6 @@ func _on_continued_revealing_text(new_character:String) -> void:
 	stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, sounds.size() - 1)]
 	
 	#choose a random pitch and volume
-	print(pitch_scale)
-	print("base", base_pitch, " ", pitch_variance)
 	pitch_scale = max(0, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
 	volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
 	
