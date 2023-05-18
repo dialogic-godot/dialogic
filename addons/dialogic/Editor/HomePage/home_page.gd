@@ -20,7 +20,7 @@ func _ready():
 	%BottomPanel.self_modulate = get_theme_color("dark_color_3", "Editor")
 
 	%RandomTipLabel.add_theme_color_override("font_color", get_theme_color("property_color_z", "Editor"))
-	%RandomTipMoreButton.icon = get_theme_icon("ArrowRight", "EditorIcons")
+	%RandomTipMoreButton.icon = get_theme_icon("ExternalLink", "EditorIcons")
 
 
 
