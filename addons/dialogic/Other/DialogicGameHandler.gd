@@ -173,7 +173,7 @@ func get_full_state() -> Dictionary:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
 
-	return current_state_info
+	return current_state_info.duplicate(true)
 
 
 func load_full_state(state_info:Dictionary) -> void:

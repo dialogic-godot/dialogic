@@ -77,7 +77,7 @@ func save_file(slot_name:String, file_name:String, data:Variant) -> void:
 			add_empty_slot(slot_name)
 		
 		var file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
-		file.store_var(data, true)
+		file.store_var(data)
 
 
 ## Loads a file from a given list and returns the contained info as a variable.
@@ -87,7 +87,7 @@ func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
 	var path := get_slot_path(slot_name).path_join(file_name)
 	
 	if FileAccess.file_exists(path):
-		var data = FileAccess.open(path, FileAccess.READ).get_var(true)
+		var data = FileAccess.open(path, FileAccess.READ).get_var()
 		return data
 	return default
 
