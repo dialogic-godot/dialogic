@@ -23,6 +23,7 @@ func _ready():
 	%RandomTipMoreButton.icon = get_theme_icon("ArrowRight", "EditorIcons")
 
 
+
 func _register():
 	editors_manager.register_simple_editor(self)
 	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
@@ -46,9 +47,6 @@ func _on_discord_button_pressed() -> void:
 func _on_wiki_button_pressed() -> void:
 	OS.shell_open("https://github.com/coppolaemilio/dialogic/wiki")
 
-
-#func _on_restart_box_button_pressed():
-#	find_parent('EditorView').plugin_reference.get_editor_interface().restart_editor()
 
 func _on_wiki_getting_started_button_pressed():
 	OS.shell_open("https://github.com/coppolaemilio/dialogic/wiki/Tutorial:-Getting-Started")
