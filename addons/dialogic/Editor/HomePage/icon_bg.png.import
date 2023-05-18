@@ -2,23 +2,23 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbhj1tkuuwapw"
-path="res://.godot/imported/vn-background-1.png-546d1557f06a6973d9215bbb99760e26.ctex"
+uid="uid://cvmlp5nxb2rer"
+path="res://.godot/imported/icon_bg.png-5937ce0a857c4a8a9d624ea9ebf09a97.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"
-dest_files=["res://.godot/imported/vn-background-1.png-546d1557f06a6973d9215bbb99760e26.ctex"]
+source_file="res://addons/dialogic/Editor/HomePage/icon_bg.png"
+dest_files=["res://.godot/imported/icon_bg.png-5937ce0a857c4a8a9d624ea9ebf09a97.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
