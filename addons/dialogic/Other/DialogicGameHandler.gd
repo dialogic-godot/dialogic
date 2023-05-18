@@ -173,7 +173,7 @@ func get_full_state() -> Dictionary:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
 
-	return current_state_info
+	return current_state_info.duplicate(true)
 
 
 func load_full_state(state_info:Dictionary) -> void:
@@ -461,7 +461,13 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 ##						FOR END USER
 ################################################################################
-func start(timeline, single_instance = true) -> Node:
+func start(timeline, single_instance := true) -> Node:
+	var scene := add_layout_node(single_instance)
+	Dialogic.start_timeline(timeline)
+	return scene
+
+
+func add_layout_node(single_instance := true) -> Node:
 	var scene :Node = null
 	if single_instance:
 		# if none exists, create a new one
@@ -476,13 +482,10 @@ func start(timeline, single_instance = true) -> Node:
 				)
 			get_parent().call_deferred("add_child", scene)
 			get_tree().set_meta('dialogic_layout_node', scene)
-			scene.ready.connect(clear.bind(ClearFlags.KeepVariables))
-			scene.ready.connect(start_timeline.bind(timeline))
 		# otherwise use existing scene
 		else:
 			scene = get_tree().get_meta('dialogic_layout_node', null)
 			scene.show()
-			Dialogic.start_timeline(timeline)
 	return scene
 
 
