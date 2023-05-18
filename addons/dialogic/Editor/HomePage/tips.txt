@@ -1,0 +1,2 @@
+Dialogic variables can be changed from timelines [b]and[/b] scripts! They can be used in conditions and inside of texts!; editor://VariablesEditor
+You can create [b]custom modules[/b] for dialogic, including events, subsystems, text effects, ui layouts and even editors!; editor://Settings->General
