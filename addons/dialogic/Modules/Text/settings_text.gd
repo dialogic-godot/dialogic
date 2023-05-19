@@ -88,7 +88,7 @@ func add_autopause_set(text:String, time:float) -> void:
 	%AutoPauseSets.add_child(hbox)
 	var remove_btn := Button.new()
 	remove_btn.icon = get_theme_icon('Remove', 'EditorIcons')
-	remove_btn.pressed.connect(_on_remove_autopauses_set.bind(hbox))
+	remove_btn.pressed.connect(_on_remove_autopauses_set_pressed.bind(hbox))
 	hbox.add_child(remove_btn)
 	var line_edit := LineEdit.new()
 	line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -102,5 +102,5 @@ func add_autopause_set(text:String, time:float) -> void:
 	hbox.add_child(spin_box)
 
 
-func _on_remove_autopauses_set(set: HBoxContainer):
+func _on_remove_autopauses_set_pressed(set: HBoxContainer):
 	set.queue_free()
