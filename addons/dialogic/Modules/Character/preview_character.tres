@@ -14,7 +14,7 @@ mirror = false
 default_portrait = "preview"
 portraits = {
 "preview": {
-"image": "res://addons/dialogic/Events/Character/preview_character.png"
+"image": "res://addons/dialogic/Editor/Images/preview_character.png"
 }
 }
 custom_info = {}

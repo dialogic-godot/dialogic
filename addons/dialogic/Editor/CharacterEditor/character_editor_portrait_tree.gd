@@ -7,6 +7,11 @@ var editor = find_parent('Character Editor')
 var current_group_nodes := {}
 
 
+func _ready() -> void:
+	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Duplicate', 'EditorIcons'))
+	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Remove', 'EditorIcons'))
+
+
 func clear_tree() -> void:
 	clear()
 	current_group_nodes = {}
@@ -18,17 +23,14 @@ func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_it
 	item.set_metadata(0, portrait_data)
 	if portrait_name == editor.current_resource.default_portrait:
 		item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
-	item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
-	item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
 	return item
 
 
 func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root()) -> TreeItem:
 	var item :TreeItem = %PortraitTree.create_item(parent_item)
-	item.set_icon(0, get_theme_icon("Groups", "EditorIcons"))
+	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 	item.set_text(0, goup_name)
 	item.set_metadata(0, {'group':true})
-	item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
 	return item
 
 
@@ -58,13 +60,18 @@ func create_necessary_group_items(path:String) -> TreeItem:
 	return last_item
 
 
+func _on_item_mouse_selected(pos:Vector2, mouse_button_index):
+	if mouse_button_index == MOUSE_BUTTON_RIGHT:
+		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
+		
+
+
 ################################################################################
 ##					DRAG AND DROP
 ################################################################################
 
 func _get_drag_data(position:Vector2) -> Variant:
-	set_drop_mode_flags(DROP_MODE_ON_ITEM)
-	
+	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+get_selected().get_text(0)
 	preview.add_theme_stylebox_override('normal', get_theme_stylebox("Background", "EditorStyles"))
@@ -88,17 +95,21 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 			if test_item == get_root():
 				break
 	
+	var drop_section := get_drop_section_at_position(position)
 	var parent := get_root()
 	if to_item:
 		parent = to_item.get_parent()
 	
-	if to_item and to_item.get_metadata(0).has('group'):
+	if to_item and to_item.get_metadata(0).has('group') and drop_section == 1:
 		parent = to_item
 	
 	var new_item := copy_branch_or_item(item, parent)
 	
-	if to_item and !to_item.get_metadata(0).has('group'):
+	if to_item and !to_item.get_metadata(0).has('group') and drop_section == 1:
 		new_item.move_after(to_item)
+	
+	if drop_section == -1:
+		new_item.move_before(to_item)
 	
 	item.free()
 
@@ -113,3 +124,4 @@ func copy_branch_or_item(item:TreeItem, new_parent:TreeItem) -> TreeItem:
 	for child in item.get_children():
 		copy_branch_or_item(child, new_item)
 	return new_item
+

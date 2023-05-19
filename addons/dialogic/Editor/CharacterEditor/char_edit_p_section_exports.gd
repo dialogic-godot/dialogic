@@ -1,5 +1,5 @@
 @tool
-extends DialogicCharacterEditorPortraitSettingsTab
+extends DialogicCharacterEditorPortraitSection
 
 ## Tab that allows setting values of exported scene variables
 ## for custom portrait scenes
@@ -7,17 +7,25 @@ extends DialogicCharacterEditorPortraitSettingsTab
 var current_portrait_data := {}
 
 func _ready() -> void:
-	get_parent().set_tab_icon(get_index(), get_theme_icon("EditInternal", "EditorIcons"))
 	add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+	
+	$Label.add_theme_color_override("font_color",  get_theme_color("readonly_color", "Editor"))
+
 
 func _load_portrait_data(data:Dictionary) -> void:
+	_recheck(data)
+
+func _recheck(data:Dictionary):
 	if data.get('scene', '').is_empty():
-		get_parent().set_tab_hidden(get_index(), true)
+		hide()
+		get_parent().get_child(get_index()-1).hide()
+		get_parent().get_child(get_index()+1).hide()
 	else:
-		get_parent().set_tab_hidden(get_index(), false)
-	
+		get_parent().get_child(get_index()-1).show()
+
 		current_portrait_data = data
 		load_portrait_scene_export_variables()
+
 
 func load_portrait_scene_export_variables():
 	var scene = null
@@ -56,6 +64,9 @@ func load_portrait_scene_export_variables():
 			title.add_theme_stylebox_override('normal', get_theme_stylebox("ContextualToolbar", "EditorStyles"))
 			$Grid.add_child(title)
 			$Grid.add_child(Control.new())
+	
+	$Label.visible = $Grid.get_child_count() == 0
+
 
 func set_export_override(property_name:String, value:String = "") -> void:
 	var data:Dictionary = selected_item.get_metadata(0)

@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://crke8suvv52c6"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.gd" id="1_76vf2"]
+[ext_resource type="PackedScene" uid="uid://dtimnsj014cu" path="res://addons/dialogic/Editor/Events/Fields/Vector2.tscn" id="2_c8kyi"]
+
+[node name="Layout" type="HFlowContainer"]
+offset_right = 428.0
+offset_bottom = 128.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_76vf2")
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Ignore Main Scale: "
+
+[node name="IgnoreScale" type="CheckBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This portrait will ignore the main scale."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="PortraitScale" type="SpinBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "A scale to be applied on top of the main scale 
+(unless ignore main scale is pressed)."
+value = 100.0
+allow_greater = true
+suffix = "%"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "Offset:"
+
+[node name="PortraitOffset" parent="HBoxContainer2" instance=ExtResource("2_c8kyi")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Offset that is applied on top of the main portrait offset."
+
+[node name="MirrorOption" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MirrorOption"]
+layout_mode = 2
+text = "Mirror:"
+
+[node name="PortraitMirror" type="CheckBox" parent="MirrorOption"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Mirroring that is applied on top of the main portrait mirror."
+
+[connection signal="toggled" from="IgnoreScale" to="." method="_on_ignore_scale_toggled"]
+[connection signal="value_changed" from="HBoxContainer/PortraitScale" to="." method="_on_portrait_scale_value_changed"]
+[connection signal="value_changed" from="HBoxContainer2/PortraitOffset" to="." method="_on_portrait_offset_value_changed"]
+[connection signal="toggled" from="MirrorOption/PortraitMirror" to="." method="_on_portrait_mirror_toggled"]

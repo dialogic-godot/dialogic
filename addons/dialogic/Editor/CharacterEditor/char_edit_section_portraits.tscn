@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.gd" id="1_6sxsl"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="2_birla"]
+[ext_resource type="PackedScene" uid="uid://dtimnsj014cu" path="res://addons/dialogic/Editor/Events/Fields/Vector2.tscn" id="3_vcvin"]
+
+[node name="Portraits" type="GridContainer"]
+offset_right = 453.0
+offset_bottom = 141.0
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 6
+columns = 2
+script = ExtResource("1_6sxsl")
+
+[node name="Label5" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Default:"
+
+[node name="DefaultPortraitPicker" parent="." instance=ExtResource("2_birla")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Select Default Portrait"
+fit_text_length = false
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Main Scale:"
+
+[node name="MainScale" type="SpinBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+value = 100.0
+allow_greater = true
+alignment = 1
+suffix = "%"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Main Offset:"
+
+[node name="MainOffset" parent="." instance=ExtResource("3_vcvin")]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Main Mirror:"
+
+[node name="MainMirror" type="CheckBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8

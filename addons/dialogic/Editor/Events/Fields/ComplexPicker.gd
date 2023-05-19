@@ -15,6 +15,7 @@ var file_extension : String = ""
 var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
 @export var enable_pretty_name : bool = false
+@export var fit_text_length : bool = true
 
 var resource_icon : Texture = null:
 	get:
@@ -71,6 +72,7 @@ func _ready():
 	var scale: float = DialogicUtil.get_editor_scale()
 	%SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%Search.placeholder_text = placeholder_text
+	%Search.expand_to_text_length = fit_text_length
 	%Suggestions.add_theme_stylebox_override('bg', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	%Suggestions.hide()
 	%Suggestions.item_selected.connect(suggestion_selected)
@@ -153,6 +155,8 @@ func get_default_suggestions(input:String) -> Dictionary:
 
 
 func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_BUTTON_LEFT) -> void:
+	if button_index != MOUSE_BUTTON_LEFT:
+		return
 	if %Suggestions.is_item_disabled(index):
 		return
 	
@@ -174,7 +178,7 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 	emit_signal("value_changed", property_name, current_value)
 
 func _input(event:InputEvent):
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if %Suggestions.visible:
 			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
 				hide_suggestions()

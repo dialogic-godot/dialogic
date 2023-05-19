@@ -14,7 +14,7 @@ func _ready():
 	%Delete.tooltip_text = "Delete"
 	%ChangeSoundFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ChangeSoundFolderButton.tooltip_text = "Change sounds folder"
-	%Fold.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+	%Fold.icon = get_theme_icon("Forward", "EditorIcons")
 	%Fold.tooltip_text = "Fold/Unfold"
 	%Play.icon = get_theme_icon("Play", "EditorIcons")
 	%Play.tooltip_text = "Preview"
@@ -51,9 +51,9 @@ func something_changed(fake_arg= ''): emit_signal("changed")
 func _on_Fold_toggled(button_pressed):
 	%Fold.button_pressed = button_pressed
 	if button_pressed:
-		%Fold.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
+		%Fold.icon = get_theme_icon("Forward", "EditorIcons")
 	else:
-		%Fold.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+		%Fold.icon = get_theme_icon("Collapse", "EditorIcons")
 	%Content.visible = !button_pressed
 
 func _on_Delete_pressed():
@@ -70,12 +70,12 @@ func file_folder_selected(path):
 
 func preview():
 	if %SoundFolder.tooltip_text.is_empty(): return
-	$DialogicNode_TypeSounds.load_overwrite(get_data())
+	$Preview.load_overwrite(get_data())
 	var preview_timer = Timer.new()
 	DialogicUtil.update_timer_process_callback(preview_timer)
 	add_child(preview_timer)
 	preview_timer.start(ProjectSettings.get_setting('text/speed', 0.01))
 	for i in range(20):
-		$DialogicNode_TypeSounds._on_continued_revealing_text("a")
+		$Preview._on_continued_revealing_text("a")
 		await preview_timer.timeout
 	preview_timer.queue_free()

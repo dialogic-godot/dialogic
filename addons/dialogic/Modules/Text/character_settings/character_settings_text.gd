@@ -1,5 +1,5 @@
 @tool
-extends DialogicCharacterEditorMainTab
+extends DialogicCharacterEditorMainSection
 
 ## Character editor tab that allows editing typing sound moods.
 
@@ -17,6 +17,7 @@ func _load_character(character:DialogicCharacter):
 	
 	for mood in character.custom_info.get('sound_moods', {}):
 		create_mood_item(character.custom_info.sound_moods[mood])
+	
 
 
 func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
@@ -43,6 +44,7 @@ func _ready():
 	character_editor.portrait_selected.connect(_on_portrait_selected)
 	%PortraitMood.get_suggestions_func = mood_suggestions
 	%DefaultMood.get_suggestions_func = mood_suggestions
+	%AddMood.icon = get_theme_icon("Add", "EditorIcons")
 
 
 func _on_portrait_selected(portrait_name:String, data:Dictionary) -> void:
@@ -91,3 +93,4 @@ func _on_default_mood_value_changed(property_name:String, value:Variant):
 	data['sound_mood_default'] = value
 	set_portrait_data(data)
 	changed.emit()
+
