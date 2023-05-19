@@ -10,5 +10,5 @@ func _get_subsystems() -> Array:
 	return [{'name':'Styles', 'script':this_folder.path_join('subsystem_styles.gd')}]
 
 
-func _get_character_editor_tabs() -> Array:
+func _get_character_editor_sections() -> Array:
 	return [this_folder.path_join('character_settings_style.tscn')]

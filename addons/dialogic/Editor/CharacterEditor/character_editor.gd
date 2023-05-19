@@ -147,22 +147,25 @@ func _ready() -> void:
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
 	# Add general tab
-	add_settings_section("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.tscn", %MainSettingsSections)
-	add_settings_section("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn", %MainSettingsSections)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.tscn").instantiate(), %MainSettingsSections)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
 	
-	# Load main tabs from subsystems/events
+	
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main.tscn").instantiate(), %PortraitSettingsSection)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.tscn").instantiate(), %PortraitSettingsSection)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn").instantiate(), %PortraitSettingsSection)
+	
+	# Load custom sections from modules
 	for indexer in DialogicUtil.get_indexers():
-		for main_tab in indexer._get_character_editor_tabs():
-			add_settings_section(main_tab, %MainSettingsSections)
-	
-	add_settings_section("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main.tscn", %PortraitSettingsSection)
-	add_settings_section("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.tscn", %PortraitSettingsSection)
-	add_settings_section("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn", %PortraitSettingsSection)
+		for path in indexer._get_character_editor_sections():
+			var scene :Control = load(path).instantiate()
+			if scene is DialogicCharacterEditorMainSection:
+				add_settings_section(scene, %MainSettingsSections)
+			elif scene is DialogicCharacterEditorPortraitSection:
+				add_settings_section(scene, %PortraitSettingsSection)
 
 
-
-func add_settings_section(scene_path:String, parent:Node) ->  void:
-	var edit: Control =  load(scene_path).instantiate()
+func add_settings_section(edit:Control, parent:Node) ->  void:
 	edit.changed.connect(something_changed)
 	edit.character_editor = self
 	if edit.has_signal('update_preview'):
@@ -187,6 +190,13 @@ func add_settings_section(scene_path:String, parent:Node) ->  void:
 	if !edit.name == "General":
 		_on_section_button_pressed(button)
 
+
+func get_settings_section_by_name(name:String, main:=true) -> Node:
+	if main:
+		return %MainSettingsSections.get_node(name)
+	else:
+		return %PortraitSettingsSection.get_node(name)
+		
 
 func _on_section_button_pressed(button:Button) -> void:
 	if button.get_parent().get_child(button.get_index()+1).visible:

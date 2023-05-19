@@ -12,13 +12,13 @@ func _load_character(character:DialogicCharacter):
 	for mood in %Moods.get_children():
 		mood.queue_free()
 	
-	%PortraitMood.set_value('')
 	%DefaultMood.set_value(character.custom_info.get('sound_moods_default', ''))
 	
 	for mood in character.custom_info.get('sound_moods', {}):
 		create_mood_item(character.custom_info.sound_moods[mood])
 	
-
+	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(%Moods.get_child_count() != 0)
+	print("l", %Moods.get_child_count() != 0)
 
 func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 	var moods := {}
@@ -41,15 +41,9 @@ func set_portrait_data(data:Dictionary) -> void:
 
 
 func _ready():
-	character_editor.portrait_selected.connect(_on_portrait_selected)
-	%PortraitMood.get_suggestions_func = mood_suggestions
 	%DefaultMood.get_suggestions_func = mood_suggestions
 	%AddMood.icon = get_theme_icon("Add", "EditorIcons")
 
-
-func _on_portrait_selected(portrait_name:String, data:Dictionary) -> void:
-	%PortraitMood.set_value(data.get('sound_mood', ''))
-	%PortraitMoodLabel.text = 'Mood for "%s":'%portrait_name
 
 
 ################################################################################
@@ -62,11 +56,13 @@ func _on_AddMood_pressed() -> void:
 
 
 func create_mood_item(data:Dictionary) -> void:
-	var new_mood = load(get_script().resource_path.get_base_dir().path_join('ui_mood_item.tscn')).instantiate()
+	var new_mood :Control = load(get_script().resource_path.get_base_dir().path_join('ui_mood_item.tscn')).instantiate()
 	%Moods.add_child(new_mood)
 	new_mood.load_data(data)
-	new_mood.duplicate.connect(duplicate_mood_item.bind(new_mood))
+	new_mood.duplicate_request.connect(duplicate_mood_item.bind(new_mood))
 	new_mood.changed.connect(emit_signal.bind('changed'))
+	
+	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(true)
 
 
 func duplicate_mood_item(item:Control) -> void:
@@ -81,16 +77,12 @@ func mood_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func _on_PortraitMood_value_changed(property_name:String, value:Variant):
-	var data: Dictionary = get_portrait_data()
-	data['sound_mood'] = value
-	set_portrait_data(data)
-	changed.emit()
-
-
 func _on_default_mood_value_changed(property_name:String, value:Variant):
 	var data: Dictionary = get_portrait_data()
 	data['sound_mood_default'] = value
 	set_portrait_data(data)
 	changed.emit()
 
+
+func _on_moods_child_exiting_tree(node):
+	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(%Moods.get_child_count()-1 != 0)

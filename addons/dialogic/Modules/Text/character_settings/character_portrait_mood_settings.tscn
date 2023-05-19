@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvfiv5uhmkqq7"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/character_settings/character_portrait_mood_settings.gd" id="1_5ni5u"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="1_oggvu"]
+
+[node name="Typing Sound Mood" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ni5u")
+
+[node name="PortraitMoodLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sound Mood:"
+
+[node name="PortraitMood" parent="." instance=ExtResource("1_oggvu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Select Mood"
+
+[connection signal="value_changed" from="PortraitMood" to="." method="_on_portrait_mood_value_changed"]

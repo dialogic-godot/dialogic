@@ -1,7 +1,7 @@
 @tool
 extends PanelContainer
 
-signal duplicate
+signal duplicate_request
 signal changed
 
 func _ready():
@@ -9,7 +9,7 @@ func _ready():
 	%Name.tooltip_text = "Mood name"
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")
 	%Duplicate.tooltip_text = "Duplicate"
-	%Duplicate.button_up.connect(emit_signal.bind("duplicate"))
+	%Duplicate.button_up.connect(emit_signal.bind("duplicate_request"))
 	%Delete.icon = get_theme_icon("Remove", "EditorIcons")
 	%Delete.tooltip_text = "Delete"
 	%ChangeSoundFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
