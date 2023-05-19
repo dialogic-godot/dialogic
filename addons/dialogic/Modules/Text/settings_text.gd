@@ -73,8 +73,8 @@ func save_autopauses() -> void:
 	var dictionary := {}
 	for i in %AutoPauseSets.get_children():
 		if i.get_index() != 0:
-			if i.get_child(0).text:
-				dictionary[i.get_child(0).text] = i.get_child(1).value
+			if i.get_child(1).text:
+				dictionary[i.get_child(1).text] = i.get_child(2).value
 	ProjectSettings.set_setting('dialogic/text/autopauses', dictionary)
 	ProjectSettings.save()
 
@@ -86,6 +86,10 @@ func _on_add_autopauses_set_pressed():
 func add_autopause_set(text:String, time:float) -> void:
 	var hbox := HBoxContainer.new()
 	%AutoPauseSets.add_child(hbox)
+	var remove_btn := Button.new()
+	remove_btn.icon = get_theme_icon('Remove', 'EditorIcons')
+	remove_btn.pressed.connect(_on_remove_autopauses_set.bind(hbox))
+	hbox.add_child(remove_btn)
 	var line_edit := LineEdit.new()
 	line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	line_edit.placeholder_text = 'e.g. "?!.,;:"'
@@ -97,3 +101,6 @@ func add_autopause_set(text:String, time:float) -> void:
 	spin_box.value = time
 	hbox.add_child(spin_box)
 
+
+func _on_remove_autopauses_set(set: HBoxContainer):
+	set.queue_free()
