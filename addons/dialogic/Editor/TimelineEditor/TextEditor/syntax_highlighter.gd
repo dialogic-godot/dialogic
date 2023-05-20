@@ -84,13 +84,14 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 		return dict
 	
 	if str_line.strip_edges().begins_with("["):
-		var result:= shortcode_regex.search(str_line)
-		if result:
-			dict[result.get_start('id')] = {"color":shortcode_color}
-			dict[result.get_end('id')] = {"color":normal_color}
-			if result.get_string('args'):
-				color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
-		return dict
+		if !text_effects_regex.search(str_line.get_slice(' ', 0)):
+			var result:= shortcode_regex.search(str_line)
+			if result:
+				dict[result.get_start('id')] = {"color":shortcode_color}
+				dict[result.get_end('id')] = {"color":normal_color}
+				if result.get_string('args'):
+					color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
+			return dict
 	
 	if str_line.strip_edges().begins_with('-'):
 		dict[0] = {'color':choice_color}
