@@ -96,4 +96,11 @@ func add_autopause_set(text:String, time:float) -> void:
 	spin_box.step = 0.01
 	spin_box.value = time
 	hbox.add_child(spin_box)
+	var remove_btn := Button.new()
+	remove_btn.icon = get_theme_icon('Remove', 'EditorIcons')
+	remove_btn.pressed.connect(_on_remove_autopauses_set_pressed.bind(hbox))
+	hbox.add_child(remove_btn)
 
+
+func _on_remove_autopauses_set_pressed(set: HBoxContainer):
+	set.queue_free()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cf3qks3v18xmr"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/settings_text.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
@@ -114,39 +114,28 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_oy8x6")
 text = "Auto-Pauses"
 
-[node name="AutoPauseSets" type="VBoxContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AutoPauseSets" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/AutoPauseSets"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/AutoPauseSets"]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="VBoxContainer/AutoPauseSets/HBoxContainer"]
+[node name="Label6" type="Label" parent="VBoxContainer/ScrollContainer/AutoPauseSets/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Adds pauses after certain letters."
 script = ExtResource("3_wiy0g")
 
-[node name="Add" type="Button" parent="VBoxContainer/AutoPauseSets/HBoxContainer"]
+[node name="Add" type="Button" parent="VBoxContainer/ScrollContainer/AutoPauseSets/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Add set"
-
-[node name="AutoPauses1" type="HBoxContainer" parent="VBoxContainer/AutoPauseSets"]
-layout_mode = 2
-
-[node name="Letters" type="LineEdit" parent="VBoxContainer/AutoPauseSets/AutoPauses1"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "e.g. \"?!,.:;\""
-
-[node name="PauseTime" type="SpinBox" parent="VBoxContainer/AutoPauseSets/AutoPauses1"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 0.1
-step = 0.01
-value = 0.1
-suffix = "s"
 
 [node name="VSeparator" type="VSeparator" parent="."]
 layout_mode = 2
@@ -193,4 +182,4 @@ Learn more about bbcode in the official godot docs."
 [connection signal="toggled" from="VBoxContainer/TextboxHidden/TextboxHidden" to="." method="_on_textbox_hidden_toggled"]
 [connection signal="toggled" from="VBoxContainer/Autoadvance/Autoadvance" to="." method="_on_Autoadvance_toggled"]
 [connection signal="value_changed" from="VBoxContainer/Autoadvance/AutoadvanceDelay" to="." method="_on_AutoadvanceDelay_value_changed"]
-[connection signal="pressed" from="VBoxContainer/AutoPauseSets/HBoxContainer/Add" to="." method="_on_add_autopauses_set_pressed"]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/AutoPauseSets/HBoxContainer/Add" to="." method="_on_add_autopauses_set_pressed"]
