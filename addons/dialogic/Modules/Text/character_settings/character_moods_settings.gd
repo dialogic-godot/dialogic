@@ -18,7 +18,7 @@ func _load_character(character:DialogicCharacter):
 		create_mood_item(character.custom_info.sound_moods[mood])
 	
 	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(%Moods.get_child_count() != 0)
-	print("l", %Moods.get_child_count() != 0)
+
 
 func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 	var moods := {}
