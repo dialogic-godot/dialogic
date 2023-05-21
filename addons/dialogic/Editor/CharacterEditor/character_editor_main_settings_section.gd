@@ -1,5 +1,5 @@
 @tool
-class_name DialogicCharacterEditorMainTab
+class_name DialogicCharacterEditorMainSection
 extends Control
 
 ## Base class for all character editor main tabs. Methods should be overriden.

@@ -14,8 +14,10 @@ func _get_settings_pages() -> Array:
 	return [this_folder.path_join('settings_text.tscn')]
 
 
-func _get_character_editor_tabs() -> Array:
-	return [this_folder.path_join('character_settings/character_settings_text.tscn')]
+func _get_character_editor_sections() -> Array:
+	return [this_folder.path_join('character_settings/character_moods_settings.tscn'), 
+		this_folder.path_join('character_settings/character_portrait_mood_settings.tscn'), 
+	]
 
 
 func _get_text_effects() -> Array[Dictionary]:

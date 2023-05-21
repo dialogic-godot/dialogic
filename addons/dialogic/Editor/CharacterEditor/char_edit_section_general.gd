@@ -1,5 +1,5 @@
 @tool
-extends DialogicCharacterEditorMainTab
+extends DialogicCharacterEditorMainSection
 
 ## The general character settings tab
 

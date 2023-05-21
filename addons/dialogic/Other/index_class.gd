@@ -30,7 +30,7 @@ func _get_settings_pages() -> Array:
 	return []
 
 
-func _get_character_editor_tabs() -> Array:
+func _get_character_editor_sections() -> Array:
 	return []
 
 
