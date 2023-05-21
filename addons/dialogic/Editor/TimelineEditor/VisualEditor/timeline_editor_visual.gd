@@ -42,6 +42,9 @@ func something_changed():
 
 
 func save_timeline() -> void:
+	if !is_inside_tree():
+		return
+	
 	# return if resource is unchanged
 	if get_parent().current_resource_state != DialogicEditor.ResourceStates.Unsaved:
 		return
@@ -49,13 +52,11 @@ func save_timeline() -> void:
 	# create a list of text versions of all the events with the right indent
 	var new_events := []
 	var indent := 0
-	
 	for event in %Timeline.get_children():
-		
 		if 'event_name' in event.resource:
 			event.resource.update_text_version() 
 			new_events.append(event.resource)
-
+	
 	if !get_parent().current_resource:
 		return
 
@@ -68,6 +69,11 @@ func save_timeline() -> void:
 	get_parent().current_resource.set_meta("unsaved", false)
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_timeline()
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
