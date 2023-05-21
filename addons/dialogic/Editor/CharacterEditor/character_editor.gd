@@ -230,9 +230,9 @@ func setup_portrait_list_tab() -> void:
 	## Portrait section styling/connections
 	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
 	%AddPortraitButton.pressed.connect(add_portrait)
-	%AddPortraitGroupButton.icon = get_theme_icon("Filesystem", "EditorIcons")
+	%AddPortraitGroupButton.icon = load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg")
 	%AddPortraitGroupButton.pressed.connect(add_portrait_group)
-	%ImportPortraitsButton.icon = load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg")
+	%ImportPortraitsButton.icon = get_theme_icon("Load", "EditorIcons")
 	%ImportPortraitsButton.pressed.connect(open_portrait_folder_select)
 	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
 	%PortraitSearch.text_changed.connect(filter_portrait_list)
