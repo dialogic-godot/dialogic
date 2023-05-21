@@ -56,7 +56,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Jump"
 	set_default_color('Color3')
-	event_category = Category.Timeline
+	event_category = "Timeline"
 	event_sorting_index = 0
 	expand_by_default = false
 

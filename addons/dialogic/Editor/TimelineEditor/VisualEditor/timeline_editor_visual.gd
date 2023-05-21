@@ -166,6 +166,10 @@ func load_event_buttons() -> void:
 	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
 	
 	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var sections := {}
+	
+	for child in %RightSidebar.get_child(0).get_children():
+		child.queue_free()
 	
 	for event_script in scripts:
 		var event_resource: Variant
@@ -187,13 +191,40 @@ func load_event_buttons() -> void:
 		button.event_icon = event_resource._get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
-		button.event_category = event_resource.event_category
 		button.event_sorting_index = event_resource.event_sorting_index
-
+		
 		button.button_up.connect(_add_event_button_pressed.bind(event_resource))
-		%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
-		while event_resource.event_sorting_index < %RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
-			%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
+		
+		if !event_resource.event_category in sections:
+			var section := VBoxContainer.new()
+			section.name = event_resource.event_category
+			
+			var section_header := HBoxContainer.new()
+			section_header.add_child(Label.new())
+			section_header.get_child(0).text = event_resource.event_category
+			section_header.get_child(0).size_flags_horizontal = SIZE_SHRINK_BEGIN
+			section_header.add_child(HSeparator.new())
+			section_header.get_child(1).size_flags_horizontal = SIZE_EXPAND_FILL
+			section.add_child(section_header)
+			
+			var button_container := FlowContainer.new()
+			section.add_child(button_container)
+			
+			sections[event_resource.event_category] = button_container
+			%RightSidebar.get_child(0).add_child(section)
+			
+		
+		sections[event_resource.event_category].add_child(button)
+		
+		# Sort event button
+		while event_resource.event_sorting_index < sections[event_resource.event_category].get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
+			sections[event_resource.event_category].move_child(button, button.get_index()-1)
+	
+	var sections_order := DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	# Sort event sections
+	for section in sections_order:
+		if %RightSidebar.get_child(0).has_node(section):
+			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section), sections_order.find(section))
 	
 	# Resize RightSidebar
 	var _scale := DialogicUtil.get_editor_scale()
@@ -878,22 +909,24 @@ func _on_right_sidebar_resized():
 	var _scale := DialogicUtil.get_editor_scale()
 	if %RightSidebar.size.x < 160*_scale and !sidebar_collapsed:
 		sidebar_collapsed = true
-		for con in %RightSidebar.get_node('EventContainer').get_children():
-			if con.get_child_count() == 0:
-				continue
-			if con.get_child(0) is Label:
-				con.get_child(0).hide()
-			elif con.get_child(0) is Button:
-				for button in con.get_children():
-					button.toggle_name(false)
+		for section in %RightSidebar.get_node('EventContainer').get_children():
+			for con in section.get_children():
+				if con.get_child_count() == 0:
+					continue
+				if con.get_child(0) is Label:
+					con.get_child(0).hide()
+				elif con.get_child(0) is Button:
+					for button in con.get_children():
+						button.toggle_name(false)
 		
 	elif %RightSidebar.size.x > 160*_scale and sidebar_collapsed:
 		sidebar_collapsed = false
-		for con in %RightSidebar.get_node('EventContainer').get_children():
-			if con.get_child_count() == 0:
-				continue
-			if con.get_child(0) is Label:
-				con.get_child(0).show()
-			elif con.get_child(0) is Button:
-				for button in con.get_children():
-					button.toggle_name(true)
+		for section in %RightSidebar.get_node('EventContainer').get_children():
+			for con in section.get_children():
+				if con.get_child_count() == 0:
+					continue
+				if con.get_child(0) is Label:
+					con.get_child(0).show()
+				elif con.get_child(0) is Button:
+					for button in con.get_children():
+						button.toggle_name(true)
