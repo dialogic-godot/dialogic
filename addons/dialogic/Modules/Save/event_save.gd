@@ -34,7 +34,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Save"
 	set_default_color('Color6')
-	event_category = Category.Other
+	event_category = "Other"
 	event_sorting_index = 9
 
 

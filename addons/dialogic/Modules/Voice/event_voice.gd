@@ -34,7 +34,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Voice"
 	set_default_color('Color5')
-	event_category = Category.Audio
+	event_category = "Audio"
 	event_sorting_index = 5
 	expand_by_default = false
 

@@ -30,7 +30,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Change Style"
 	set_default_color('Color4')
-	event_category = Category.Other
+	event_category = "Other"
 	event_sorting_index = 1
 
 

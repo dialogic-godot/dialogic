@@ -47,7 +47,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 func _init() -> void:
 	event_name = "Text Input"
 	set_default_color('Color3')
-	event_category = Category.Other
+	event_category = "Other"
 	event_sorting_index = 6
 	continue_at_end = true
 	expand_by_default = false

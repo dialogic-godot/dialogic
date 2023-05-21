@@ -9,7 +9,6 @@ extends Button
 	set(texture):
 		event_icon = texture
 		icon = event_icon
-@export var event_category:int = 0
 @export var event_sorting_index:int = 0
 @export var resource:DialogicEvent
 @export var dialogic_color_name:String = ''

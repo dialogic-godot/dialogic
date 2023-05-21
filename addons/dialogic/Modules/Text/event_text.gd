@@ -111,7 +111,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Text"
 	set_default_color('Color1')
-	event_category = Category.Main
+	event_category = "Main"
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	continue_at_end = false
