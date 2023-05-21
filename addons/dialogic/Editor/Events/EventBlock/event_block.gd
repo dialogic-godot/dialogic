@@ -356,7 +356,8 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	
-	%ExpandButton.icon = get_theme_icon("Tools", "EditorIcons")
+	%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
 	
 	
 	if resource:
@@ -392,6 +393,10 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	if button_pressed and !body_was_build:
 		build_editor(false, true)
 	%ExpandButton.set_pressed_no_signal(button_pressed)
+	if button_pressed:
+		%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+	else:
+		%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	get_parent().get_parent().queue_redraw()
