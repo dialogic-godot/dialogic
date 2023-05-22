@@ -56,4 +56,4 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('text', ValueType.SinglelineText, '#')
+	add_header_edit('text', ValueType.SinglelineText, '#','',{'autofocus':true})
