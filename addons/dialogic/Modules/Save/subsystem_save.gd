@@ -59,7 +59,7 @@ func save(slot_name:String = '', is_autosave:bool = false, thumbnail_mode:THUMBN
 ## If no slot is given, the default slot is used.
 ## To check if something is saved in that slot use has_slot(). 
 ## If the slot does not exist, this method will fail. 
-func load(slot_name:String):
+func load(slot_name:String=""):
 	if slot_name.is_empty(): slot_name = get_default_slot()
 	
 	if !has_slot(slot_name):
