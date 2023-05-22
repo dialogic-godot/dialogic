@@ -67,6 +67,8 @@ var disable_editor_button: bool = false
 var expand_by_default : bool = true
 ## The URL to open when right_click>Documentation is selected 
 var help_page_path : String = ""
+## Is the event block created by a button?
+var created_by_button : bool = false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
