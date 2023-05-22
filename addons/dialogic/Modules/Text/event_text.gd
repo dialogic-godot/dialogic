@@ -115,6 +115,8 @@ func _init() -> void:
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	continue_at_end = false
+	autofocus_field_index = 2
+	autofocus_relative_path = "/TextEdit"
 
 
 ################################################################################
