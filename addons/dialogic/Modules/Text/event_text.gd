@@ -239,7 +239,7 @@ func build_event_editor():
 			'placeholder' 		: "(Don't change)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'character != null and !has_no_portraits()')
-	add_body_edit('text', ValueType.MultilineText)
+	add_body_edit('text', ValueType.MultilineText, '', '', {'autofocus' = true})
 
 func do_any_characters_exist() -> bool:
 	return !DialogicUtil.list_resources_of_type(".dch").is_empty()

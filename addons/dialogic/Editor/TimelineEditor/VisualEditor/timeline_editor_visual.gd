@@ -686,6 +686,8 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 	var resource := event_resource.duplicate()
 	resource._load_custom_defaults()
 	
+	resource.created_by_button = true
+	
 	TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
 	if event_resource.can_contain_events:
 		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(resource, at_index, true, true))
@@ -694,6 +696,8 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 		TimelineUndoRedo.add_do_method(add_event_node.bind(resource, at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 1))
 	TimelineUndoRedo.commit_action()
+	
+	resource.created_by_button = false
 	
 	something_changed()
 	scroll_to_piece(at_index)

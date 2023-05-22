@@ -61,6 +61,6 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('time', ValueType.Float)
+	add_header_edit('time', ValueType.Float, '','', {'autofocus':true})
 	add_header_label('seconds.')
 	add_body_edit('hide_text', ValueType.Bool, 'Hide text box:')

@@ -404,7 +404,8 @@ func build_event_editor() -> void:
 			{'empty_text' 		: 'Character', 
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
-			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			'autofocus'			: true})
 	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
 	
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 

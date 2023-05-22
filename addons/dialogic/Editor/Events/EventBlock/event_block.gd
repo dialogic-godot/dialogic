@@ -287,6 +287,11 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 				field_list.append({'node': left_label, 'condition':p.condition, 'location':p.location})
 			if right_label: 
 				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
+		
+		### --------------------------------------------------------------------
+		### 4. GETTING THE PATH OF THE FIELD WE WANT TO FOCUS (in case we want)
+		if resource.created_by_button and p.display_info.get('autofocus', false) and editor_node.has_method('take_autofocus'):
+			editor_node.take_autofocus()
 	
 	if build_body:
 #		has_body_content = true

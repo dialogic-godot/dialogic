@@ -15,3 +15,5 @@ func text_changed(value = ""):
 func set_value(value):
 	$TextEdit.text = str(value)
 	
+func take_autofocus():
+	$TextEdit.grab_focus()
