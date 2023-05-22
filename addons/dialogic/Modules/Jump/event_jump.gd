@@ -93,7 +93,8 @@ func build_event_editor():
 		'file_extension': '.dtl',
 		'suggestions_func': get_timeline_suggestions,
 		'editor_icon': ["TripleBar", "EditorIcons"],
-		'empty_text': '(this timeline)'
+		'empty_text': '(this timeline)',
+		'autofocus':true
 	})
 	add_header_edit("label_name", ValueType.SinglelineText, "at", '', {'placeholder':'the beginning'})
 	add_body_edit("return_after", ValueType.Bool, "Return to this spot after completed?")
