@@ -78,3 +78,7 @@ func _on_value_text_submitted(new_text):
 
 func _on_value_focus_exited():
 	_on_value_text_submitted($Value.text)
+
+
+func take_autofocus():
+	$Value.grab_focus()
