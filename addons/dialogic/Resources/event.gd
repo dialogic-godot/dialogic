@@ -70,11 +70,6 @@ var help_page_path : String = ""
 ## Is the event block created by a button?
 var created_by_button : bool = false
 
-## Which field in the event block we want to autofocus
-var autofocus_field_index : int = -1 # -1 for NONE
-## Relative path of the field we want to autofocus in case we need access to a child of it
-var autofocus_relative_path : String = ""
-
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
 var _editor_node : Control = null

@@ -132,7 +132,6 @@ func toggle_collapse(toggled:bool) -> void:
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 	var current_body_container :HFlowContainer = null
-	var nodepath_to_focus : NodePath
 	
 	if build_body and body_was_build: build_body = false
 	if build_body:
@@ -291,9 +290,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 		### --------------------------------------------------------------------
 		### 4. GETTING THE PATH OF THE FIELD WE WANT TO FOCUS (in case we want)
-		if(resource.autofocus_field_index != -1 and resource.created_by_button):
-			if(p == resource.editor_list[resource.autofocus_field_index]):
-				nodepath_to_focus = str(editor_node.get_path()) + resource.autofocus_relative_path
+		if resource.created_by_button and p.display_info.get('autofocus', false) and editor_node.has_method('take_autofocus'):
+			editor_node.take_autofocus()
 	
 	if build_body:
 #		has_body_content = true
@@ -303,7 +301,6 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			body_container.visible = false
 		
 	recalculate_field_visibility()
-	focus_field(nodepath_to_focus)
 
 
 func recalculate_field_visibility() -> void:
@@ -329,9 +326,6 @@ func recalculate_field_visibility() -> void:
 				printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
 	%ExpandButton.visible = has_any_enabled_body_content
 
-func focus_field(path) -> void:
-	if(!path.is_empty()):
-		get_node(path).grab_focus()
 
 func set_property(property_name:String, value:Variant) -> void:
 	resource.set(property_name, value)
