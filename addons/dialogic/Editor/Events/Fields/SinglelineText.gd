@@ -24,3 +24,6 @@ func _on_text_changed(value := "") -> void:
 
 func set_value(value:String) -> void:
 	text = str(value)
+
+func take_autofocus():
+	grab_focus()
