@@ -266,7 +266,8 @@ func to_text() -> String:
 	var params : Dictionary = get_shortcode_parameters()
 	var custom_defaults :Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	for parameter in params.keys():
-		if get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default):
+		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
+		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
 			if typeof(get(params[parameter]["property"])) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter]["property"]).resource_path)+'"'
 			elif typeof(get(params[parameter]["property"])) == TYPE_STRING:

@@ -3,7 +3,6 @@ class_name DialogicCharacterEvent
 extends DialogicEvent
 ## Event that allows to manipulate character portraits.
 
-enum PortraitModes {VisualNovel, RPG}
 enum ActionTypes {Join, Leave, Update}
 
 
