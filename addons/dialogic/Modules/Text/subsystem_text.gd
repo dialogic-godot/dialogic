@@ -3,6 +3,7 @@ extends DialogicSubsystem
 ## Subsystem that handles showing of dialog text (+text effects & modifiers), name label, and next indicator
 
 
+signal about_to_show_text(info:Dictionary)
 signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
@@ -61,12 +62,17 @@ func resume() -> void:
 ##					MAIN METHODS
 ####################################################################################################
 
-## Shows the given text on all visible DialogText nodes.
-## Instant can be used to skip all reveiling.
-func update_dialog_text(text:String, instant:bool= false) -> String:
+## Applies modifiers, effects and coloring to the text
+func parse_text(text:String) -> String:
 	text = parse_text_modifiers(text)
 	text = parse_text_effects(text)
 	text = color_names(text)
+	return text
+
+
+## Shows the given text on all visible DialogText nodes.
+## Instant can be used to skip all revieling.
+func update_dialog_text(text:String, instant:bool= false) -> String:
 	
 	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
 		if text.is_empty():
@@ -127,6 +133,7 @@ func set_autoadvance(enabled:=true, wait_time:Variant=1.0, temp:= false) -> void
 	else:
 		dialogic.current_state_info['autoadvance']['enabled'] = enabled
 		dialogic.current_state_info['autoadvance']['wait_time'] = wait_time
+
 
 func set_manualadvance(enabled:=true, temp:= false) -> void:
 	if !dialogic.current_state_info.has('manual_advance'):

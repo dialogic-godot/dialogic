@@ -78,6 +78,8 @@ func _execute() -> void:
 	if dialogic.has_subsystem('Glossary'):
 		final_text = dialogic.Glossary.parse_glossary(final_text)
 	
+	final_text = dialogic.Text.parse_text(final_text)
+	dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
 	final_text = await dialogic.Text.update_dialog_text(final_text)
 	
 	#Plays the audio region for the current line.
@@ -240,7 +242,7 @@ func build_event_editor():
 			'placeholder' 		: "(Don't change)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'character != null and !has_no_portraits()')
-	add_body_edit('text', ValueType.MultilineText, '', '', {'autofocus' = true})
+	add_body_edit('text', ValueType.MultilineText)
 
 func do_any_characters_exist() -> bool:
 	return !DialogicUtil.list_resources_of_type(".dch").is_empty()
