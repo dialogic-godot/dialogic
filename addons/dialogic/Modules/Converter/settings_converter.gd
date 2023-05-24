@@ -28,92 +28,86 @@ func _on_verify_pressed():
 	%OutputLog.text = ""
 	
 	if FileAccess.file_exists("res://dialogic/settings.cfg"):
-		%OutputLog.text += "[√] Dialogic 1.x data [color=green]found![/color]\r\n"
+		%OutputLog.text += "[√] Dialogic 1.x settings data [color=green]found![/color]\r\n"
+	else:
+		%OutputLog.text += "[X] Dialogic 1.x settings data [color=red]not found![/color]\r\n"
+		%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
+		return
+	
+	if FileAccess.file_exists("res://dialogic/definitions.json"):
+		%OutputLog.text += "[√] Dialogic 1.x definitions [color=green]found![/color]\r\n"
+	else:
+		%OutputLog.text += "[X] Dialogic 1.x definitions [color=red]not found![/color]\r\n"
+		%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
+		return
+	
+	%OutputLog.text += "\r\n"
+	
+	%OutputLog.text += "Verifying data:\r\n"
+	var file := FileAccess.open("res://dialogic/folder_structure.json", FileAccess.READ)
+	var fileContent := file.get_as_text()
+	var json_object := JSON.new()
+	
+	var error := json_object.parse(fileContent)
+	
+	if error == OK:
+		folderStructure = json_object.get_data()
+	else:
+		print("JSON Parse Error: ", json_object.get_error_message(), " in ", error, " at line ", json_object.get_error_line())
+		%OutputLog.text += "Dialogic 1.x folder structure [color=red]could not[/color] be read!\r\n"
+		%OutputLog.text += "Please check the output log for the error the JSON parser encountered.\r\n"
+		return
+	
+	%OutputLog.text += "Dialogic 1.x folder structure read successfully!\r\n"
+	
+	recursive_search("Timeline", folderStructure["folders"]["Timelines"], "/")
+	recursive_search("Character", folderStructure["folders"]["Characters"], "/")
+	recursive_search("Definition", folderStructure["folders"]["Definitions"], "/")
+	recursive_search("Theme", folderStructure["folders"]["Themes"], "/")
+	
+	
+	%OutputLog.text += "Timelines found: " + str(timelineFolderBreakdown.size()) + "\r\n"
+	%OutputLog.text += "Characters found: " + str(characterFolderBreakdown.size()) + "\r\n"
+	%OutputLog.text += "Definitions found: " + str(definitionFolderBreakdown.size()) + "\r\n"
+	%OutputLog.text += "Themes found: " + str(themeFolderBreakdown.size()) + "\r\n"
+	
+	%OutputLog.text += "\r\n"
+	%OutputLog.text += "Verifying count of JSON files for match with folder structure:\r\n"
+	
+	var timelinesDirectory = list_files_in_directory("res://dialogic/timelines")
+	if timelinesDirectory.size() ==  timelineFolderBreakdown.size():
+		%OutputLog.text += "Timeline files found: [color=green]" + str(timelinesDirectory.size()) + "[/color]\r\n"
+	else:
+		%OutputLog.text += "Timeline files found: [color=red]" + str(timelinesDirectory.size()) + "[/color]\r\n"
+		%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
+	
+	var characterDirectory = list_files_in_directory("res://dialogic/characters")
+	if characterDirectory.size() ==  characterFolderBreakdown.size():
+		%OutputLog.text += "Character files found: [color=green]" + str(characterDirectory.size()) + "[/color]\r\n"
+	else:
+		%OutputLog.text += "Character files found: [color=red]" + str(characterDirectory.size()) + "[/color]\r\n"
+		%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
 		
-		if FileAccess.file_exists("res://dialogic/definitions.json"):
-			%OutputLog.text += "[√] Dialogic 1.x definitions [color=green]found![/color]\r\n"
-		else:
-			%OutputLog.text += "[X] Dialogic 1.x definitions [color=red]not found![/color]\r\n"
-			%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
-			return
-			
-		if FileAccess.file_exists("res://dialogic/settings.cfg"):
-			%OutputLog.text += "[√] Dialogic 1.x settings [color=green]found![/color]\r\n"
-		else:
-			%OutputLog.text += "[X] Dialogic 1.x settings [color=red]not found![/color]\r\n"
-			%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
-			return
-		
-		%OutputLog.text += "\r\n"
-		
-		%OutputLog.text += "Verifying data:\r\n"
-		var file := FileAccess.open("res://dialogic/folder_structure.json", FileAccess.READ)
-		var fileContent = file.get_as_text()
-		var json_object = JSON.new()
-		
-		var error = json_object.parse(fileContent)
-		
-		if error == OK:
-			folderStructure = json_object.get_data()
-			#print(folderStructure)
-		else:
-			print("JSON Parse Error: ", json_object.get_error_message(), " in ", error, " at line ", json_object.get_error_line())
-			%OutputLog.text += "Dialogic 1.x folder structure [color=red]could not[/color] be read!\r\n"
-			%OutputLog.text += "Please check the output log for the error the JSON parser encountered.\r\n"
-			return
-		#folderStructure = json_object.get_data()
-		
-		%OutputLog.text += "Dialogic 1.x folder structure read successfully!\r\n"
-		
-		#I'm going to build a new, simpler tree here, as the folder structure is too complicated
-			
-		
-		recursive_search("Timeline", folderStructure["folders"]["Timelines"], "/")
-		recursive_search("Character", folderStructure["folders"]["Characters"], "/")
-		recursive_search("Definition", folderStructure["folders"]["Definitions"], "/")
-		recursive_search("Theme", folderStructure["folders"]["Themes"], "/")
-		
-		
-		%OutputLog.text += "Timelines found: " + str(timelineFolderBreakdown.size()) + "\r\n"
-		%OutputLog.text += "Characters found: " + str(characterFolderBreakdown.size()) + "\r\n"
-		%OutputLog.text += "Definitions found: " + str(definitionFolderBreakdown.size()) + "\r\n"
-		%OutputLog.text += "Themes found: " + str(themeFolderBreakdown.size()) + "\r\n"
-		
-		%OutputLog.text += "\r\n"
-		%OutputLog.text += "Verifying count of JSON files for match with folder structure:\r\n"
-		
-		var timelinesDirectory = list_files_in_directory("res://dialogic/timelines")
-		if timelinesDirectory.size() ==  timelineFolderBreakdown.size():
-			%OutputLog.text += "Timeline files found: [color=green]" + str(timelinesDirectory.size()) + "[/color]\r\n"
-		else:
-			%OutputLog.text += "Timeline files found: [color=red]" + str(timelinesDirectory.size()) + "[/color]\r\n"
-			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
-		
-		var characterDirectory = list_files_in_directory("res://dialogic/characters")
-		if characterDirectory.size() ==  characterFolderBreakdown.size():
-			%OutputLog.text += "Character files found: [color=green]" + str(characterDirectory.size()) + "[/color]\r\n"
-		else:
-			%OutputLog.text += "Character files found: [color=red]" + str(characterDirectory.size()) + "[/color]\r\n"
-			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
-			
-		
-		file = FileAccess.open("res://dialogic/definitions.json",FileAccess.READ)
-		fileContent = file.get_as_text()
-		json_object = JSON.new()
-		
-		error = json_object.parse(fileContent)
-		
-		if error == OK:
-			definitionsFile = json_object.get_data()
-			#print(folderStructure)
-		else:
-			print("JSON Parse Error: ", json_object.get_error_message(), " in ", error, " at line ", json_object.get_error_line())
-			%OutputLog.text += "Dialogic 1.x definitions file [color=red]could not[/color] be read!\r\n"
-			%OutputLog.text += "Please check the output log for the error the JSON parser encountered.\r\n"
-			return
-		
-		
-		
+	
+	
+	file = FileAccess.open("res://dialogic/definitions.json",FileAccess.READ)
+	fileContent = file.get_as_text()
+	json_object = JSON.new()
+	
+	error = json_object.parse(fileContent)
+	
+	if error == OK:
+		definitionsFile = json_object.get_data()
+		#print(folderStructure)
+	elif definitionFolderBreakdown.size() == 0:
+		%OutputLog.text += "[i]No definitions could be loaded, but that is probably correct as no definitions seem to exist.[/i]\n"
+	else:
+		print("JSON Parse Error: ", json_object.get_error_message(), " in ", error, " at line ", json_object.get_error_line())
+		%OutputLog.text += "Dialogic 1.x definitions file [color=red]could not[/color] be read!\r\n"
+		%OutputLog.text += "Please check the output log for the error the JSON parser encountered.\r\n"
+		return
+	
+	if definitionsFile:
 		for variable in definitionsFile["variables"]:
 			var varPath = definitionFolderBreakdown[variable["id"]]
 			var variableInfo = {}
@@ -134,7 +128,7 @@ func _on_verify_pressed():
 			variableInfo["extra"] = variable["extra"]
 			variableInfo["glossary_type"] = variable["type"]
 			definitionFolderBreakdown[variable["id"]] = variableInfo
-			
+		
 		if (definitionsFile["glossary"].size() + definitionsFile["variables"].size())  ==  definitionFolderBreakdown.size():
 			%OutputLog.text += "Definitions found: [color=green]" + str((definitionsFile["glossary"].size() + definitionsFile["variables"].size())) + "[/color]\r\n"
 			%OutputLog.text += " • Glossaries found: " + str(definitionsFile["glossary"].size()) + "\r\n"
@@ -143,42 +137,39 @@ func _on_verify_pressed():
 			%OutputLog.text += "Definition files found: [color=red]" + str(definitionsFile.size()) + "[/color]\r\n"
 			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
 			
-		var themeDirectory = list_files_in_directory("res://dialogic/themes")
-		if themeDirectory.size() ==  themeFolderBreakdown.size():
-			%OutputLog.text += "Theme files found: [color=green]" + str(themeDirectory.size()) + "[/color]\r\n"
-		else:
-			%OutputLog.text += "Theme files found: [color=red]" + str(themeDirectory.size()) + "[/color]\r\n"
-			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
-			
-		# dirty check for the variable subsystem, as properly calling has subsystem is complicated currently
-		varSubsystemInstalled = file.file_exists(DialogicUtil.get_module_path('Variable').path_join("event_variable.gd"))
-		
-		if !varSubsystemInstalled:
-			%OutputLog.text += "[color=yellow]Variable subsystem is not present in this Dialogic! Variables will not be converted![/color]"
-			
-		%OutputLog.text += "\r\n"
-		
-		%OutputLog.text += "Initial integrity check completed!\r\n"
-		
-		if DirAccess.dir_exists_absolute(conversionRootFolder): 
-			%OutputLog.text += "[color=yellow]Conversion folder already exists, coverting will overwrite existing files.[/color]\r\n"
-		else:
-			%OutputLog.text += conversionRootFolder
-			%OutputLog.text += "Folders are being created in " + conversionRootFolder + ". Converted files will be located there.\r\n"
-			var directory = DirAccess.open("res://")
-			directory.make_dir(conversionRootFolder)
-			var sub_directory = DirAccess.open(conversionRootFolder)
-			sub_directory.open(conversionRootFolder)	
-			sub_directory.make_dir("characters")
-			sub_directory.make_dir("timelines")
-			sub_directory.make_dir("themes")
-		
-		conversionReady = true
-		$RightPanel/Begin.disabled = false
-		
+	var themeDirectory = list_files_in_directory("res://dialogic/themes")
+	if themeDirectory.size() ==  themeFolderBreakdown.size():
+		%OutputLog.text += "Theme files found: [color=green]" + str(themeDirectory.size()) + "[/color]\r\n"
 	else:
-		%OutputLog.text += "[X] Dialogic 1.x data [color=red]not found![/color]\r\n"
-		%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
+		%OutputLog.text += "Theme files found: [color=red]" + str(themeDirectory.size()) + "[/color]\r\n"
+		%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
+		
+	# dirty check for the variable subsystem, as properly calling has subsystem is complicated currently
+	varSubsystemInstalled = file.file_exists(DialogicUtil.get_module_path('Variable').path_join("event_variable.gd"))
+	
+	if !varSubsystemInstalled:
+		%OutputLog.text += "[color=yellow]Variable subsystem is not present in this Dialogic! Variables will not be converted![/color]"
+		
+	%OutputLog.text += "\r\n"
+	
+	%OutputLog.text += "Initial integrity check completed!\r\n"
+	
+	if DirAccess.dir_exists_absolute(conversionRootFolder): 
+		%OutputLog.text += "[color=yellow]Conversion folder already exists, coverting will overwrite existing files.[/color]\r\n"
+	else:
+#		%OutputLog.text += conversionRootFolder
+		%OutputLog.text += "[color=lightsalmon]Folders are being created in " + conversionRootFolder + ". Converted files will be located there.[/color]\r\n"
+		var directory = DirAccess.open("res://")
+		directory.make_dir(conversionRootFolder)
+		var sub_directory = DirAccess.open(conversionRootFolder)
+		sub_directory.open(conversionRootFolder)	
+		sub_directory.make_dir("characters")
+		sub_directory.make_dir("timelines")
+		sub_directory.make_dir("themes")
+	
+	conversionReady = true
+	$RightPanel/Begin.disabled = false
+		
 
 
 func list_files_in_directory(path):
@@ -247,7 +238,7 @@ func convertTimelines():
 		if error == OK:
 			contents = json_object.get_data()
 			var fileName = contents["metadata"]["name"]
-			%OutputLog.text += "Name: " + fileName + ", " + str(contents["events"].size()) + " timeline events"
+			%OutputLog.text += "Name: " + fileName + ", " + str(contents["events"].size()) + " timeline events\n"
 			
 			var dir_timelines = conversionRootFolder + "/timelines"
 			if not DirAccess.dir_exists_absolute(dir_timelines + folderPath): 
@@ -502,7 +493,9 @@ func convertTimelines():
 							#print ("bracnh depth now" + str(depth))
 						"dialogic_012":
 							#If event
-							var valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+							var valueLookup = "broken variable"
+							if definitionFolderBreakdown.size():
+								valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
 							
 							eventLine += "if "
 							eventLine += valueLookup
@@ -538,7 +531,11 @@ func convertTimelines():
 								
 								
 								eventLine += "VAR "
-								eventLine += variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+								if definitionFolderBreakdown.size():
+									eventLine += variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+								else:
+									eventLine += "{broken_variable}"
+									
 								eventLine += " = "
 								
 								if "set_random" in event:
@@ -1024,7 +1021,12 @@ func convertSettings():
 	
 
 
+
 func _on_check_box_toggled(button_pressed):
-	print("box checked")
+	var message := "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
 	prefixCharacters = button_pressed
-	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
+	if button_pressed:
+		%OutputLog.text += message
+	else:
+		%OutputLog.text = %OutputLog.text.replace(message, '')
+	
