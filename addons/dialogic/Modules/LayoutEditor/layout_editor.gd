@@ -187,7 +187,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 
 func set_export_override(property_name:String, value:String = "") -> void:
 	var export_overrides:Dictionary = ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
-	if !value.is_empty():
+	if str_to_var(value) != customization_editor_info[property_name]['orig']:
 		export_overrides[property_name] = value
 		customization_editor_info[property_name]['reset'].disabled = false
 	else:
@@ -196,6 +196,7 @@ func set_export_override(property_name:String, value:String = "") -> void:
 
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
 
+
 func _on_export_override_reset(property_name:String) -> void:
 	var export_overrides:Dictionary = ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
 	export_overrides.erase(property_name)
@@ -203,10 +204,11 @@ func _on_export_override_reset(property_name:String) -> void:
 	customization_editor_info[property_name]['reset'].disabled = true
 	set_customization_value(property_name, customization_editor_info[property_name]['orig'])
 
+
 func set_customization_value(property_name:String, value:Variant) -> void:
 	var node : Node = customization_editor_info[property_name]['node']
 	if node is CheckBox:
-		node.pressed = value
+		node.button_pressed = value
 	elif node is LineEdit:
 		node.text = value
 	elif node.has_method('set_value'):
