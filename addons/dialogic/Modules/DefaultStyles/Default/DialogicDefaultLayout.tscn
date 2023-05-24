@@ -232,6 +232,11 @@ shadow_size = 5
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+next_indicator_enabled = null
+next_indicator_animation = null
+next_indicator_texture = null
+next_indicator_show_on_questions = null
+next_indicator_show_on_autoadvance = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -435,8 +440,8 @@ script = ExtResource("2")
 script = ExtResource("10")
 play_every_character = 0
 
-[node name="DNextIndicator" type="Control" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
-visible = false
+[node name="NextIndicator" type="Control" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
