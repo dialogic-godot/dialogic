@@ -224,7 +224,7 @@ func build_event_editor():
 	add_header_edit('value', ValueType.SinglelineText, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
 	add_header_edit('value', ValueType.Float, '', '', {}, '!name.is_empty()  and _value_type == 1')
 	add_header_edit('value', ValueType.ComplexPicker, '', '', 
-			{'suggestions_func' : get_value_suggestions}, 
+			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
 			'!name.is_empty() and _value_type == 2')
 	add_header_label('a number between', '_value_type == 4')
 	add_header_edit('random_min', ValueType.Integer, '', 'and', {}, '!name.is_empty() and  _value_type == 4')

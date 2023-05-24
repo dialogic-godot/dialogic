@@ -9,6 +9,8 @@ signal character_moved(info:Dictionary)
 signal position_changed(info:Dictionary)
 
 
+enum PortraitModes {VisualNovel, RPG}
+
 ## The default portrait scene.
 var default_portrait_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_portrait.tscn'))
 
@@ -361,7 +363,7 @@ func get_character_resource(character_name:String) -> DialogicCharacter:
 
 
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
-	if ProjectSettings.get_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
+	if ProjectSettings.get_setting('dialogic/portrait_mode', 0) == PortraitModes.RPG:
 		if !Dialogic.current_state_info.has('rpg_last_portrait'):
 			Dialogic.current_state_info['rpg_last_portraits'] = {}
 		

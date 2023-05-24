@@ -367,7 +367,7 @@ func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
 		text_node.speed = float(argument)
 	else:
-		text_node.speed = ProjectSettings.get_setting('dialogic/text/speed', 0.01)
+		text_node.speed = dialogic.Settings.get_setting('text_speed', 0.01)
 
 
 func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:

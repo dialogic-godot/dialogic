@@ -97,6 +97,7 @@ func _execute() -> void:
 	else:
 		dialogic.Text.show_next_indicators()
 		finish()
+	
 	if dialogic.has_subsystem('History'):
 		if character:
 			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})

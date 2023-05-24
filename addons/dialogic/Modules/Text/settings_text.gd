@@ -4,7 +4,7 @@ extends HBoxContainer
 func refresh():
 	%Info.add_theme_color_override('default_color', get_theme_color("accent_color", "Editor"))
 	
-	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/speed', 0.01)
+	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/settings/text_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
 	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
@@ -14,6 +14,7 @@ func refresh():
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
 	load_autopauses(ProjectSettings.get_setting('dialogic/text/autopauses', {}))
+
 
 func _about_to_close():
 	save_autopauses()
@@ -34,7 +35,7 @@ func _on_Skippable_toggled(button_pressed):
 
 
 func _on_DefaultSpeed_value_changed(value):
-	ProjectSettings.set_setting('dialogic/text/speed', value)
+	ProjectSettings.set_setting('dialogic/settings/text_speed', value)
 	ProjectSettings.save()
 
 
