@@ -59,20 +59,23 @@ func _ready() -> void:
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
-func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> void:
+# Method to start a timeline without adding a layout scene.
+# @timeline can be either a loaded timeline resource or a path to a timeline file.
+# @label_or_idx can be a label (string) or index (int) to skip to immediatly.
+func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
-	if typeof(timeline_resource) == TYPE_STRING:
+	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if timeline_resource.contains("res://"):
-			timeline_resource = load(timeline_resource)
+		if timeline.contains("res://"):
+			timeline = load(timeline)
 		else: 
-			timeline_resource = load(find_timeline(timeline_resource))
-		if timeline_resource == null:
+			timeline = load(find_timeline(timeline))
+		if timeline == null:
 			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 			return
-	timeline_resource = process_timeline(timeline_resource)
+	timeline = process_timeline(timeline)
 	
-	current_timeline = timeline_resource
+	current_timeline = timeline
 	current_timeline_events = current_timeline.events
 	current_event_idx = -1
 	
@@ -461,31 +464,52 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 ##						FOR END USER
 ################################################################################
-func start(timeline, single_instance := true) -> Node:
-	var scene := add_layout_node(single_instance)
-	Dialogic.start_timeline(timeline)
+# Method to start a timeline AND ensure that a layout scene is present.
+# For argument info, checkout start_timeline() and add_layout_node()
+# -> returns the layout node 
+func start(timeline:Variant, label:Variant="") -> Node:
+	var scene := add_layout_node()
+	Dialogic.start_timeline(timeline, label)
 	return scene
 
 
-func add_layout_node(single_instance := true) -> Node:
+# Makes sure the layout scene is instanced and will show it if it was hidden.
+# The layout scene will always be added to the tree root. 
+# If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
+func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
 	var scene :Node = null
-	if single_instance:
-		# if none exists, create a new one
-		if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
-			scene = load(ProjectSettings.get_setting(
-							'dialogic/layout/layout_scene', 
-							DialogicUtil.get_default_layout())
-						).instantiate()
-			DialogicUtil.apply_scene_export_overrides(
-				scene, 
-				ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
-				)
-			get_parent().call_deferred("add_child", scene)
-			get_tree().set_meta('dialogic_layout_node', scene)
-		# otherwise use existing scene
-		else:
-			scene = get_tree().get_meta('dialogic_layout_node', null)
-			scene.show()
+	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
+		scene = get_tree().get_meta('dialogic_layout_node', null)
+	
+	# create a new one if none exists or a different one was requested
+	if !is_instance_valid(scene) or (!scene_path.is_empty() and scene.get_meta('scene_path', scene_path) != scene_path):
+		if is_instance_valid(scene):
+			scene.queue_free()
+		
+		if scene_path.is_empty():
+			scene_path = ProjectSettings.get_setting(
+						'dialogic/layout/layout_scene', 
+						DialogicUtil.get_default_layout())
+		
+		scene = load(scene_path).instantiate()
+		scene.set_meta('scene_path', scene_path)
+		
+		get_parent().call_deferred("add_child", scene)
+		get_tree().set_meta('dialogic_layout_node', scene)
+	
+	# otherwise use existing scene
+	else:
+		scene = get_tree().get_meta('dialogic_layout_node', null)
+		scene.show()
+	
+	# apply custom export overrides everytime
+	if export_overrides.is_empty():
+		DialogicUtil.apply_scene_export_overrides(
+			scene, 
+			ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
+	else:
+		DialogicUtil.apply_scene_export_overrides(scene, export_overrides)
+	
 	return scene
 
 
