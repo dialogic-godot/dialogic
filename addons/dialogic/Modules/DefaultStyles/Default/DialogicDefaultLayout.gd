@@ -26,10 +26,13 @@ enum Alignments {Left, Center, Right}
 @export var name_label_box_modulate : Color = box_modulate
 @export var name_label_alignment := Alignments.Left
 
-## FOR TESTING PURPOSES
+
 func _ready():
 	add_to_group('dialogic_main_node')
-	
+
+
+## Called by dialogic whenever export overrides might change
+func _apply_export_overrides():
 	## FONT SETTINGS
 	%DialogicNode_DialogText.alignment = text_alignment
 	

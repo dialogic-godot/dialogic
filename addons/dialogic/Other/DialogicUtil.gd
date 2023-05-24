@@ -196,6 +196,8 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 	for i in export_overrides:
 		if i in node:
 			node.set(i, str_to_var(export_overrides[i]))
+	if node.has_method('_apply_export_overrides'):
+		node._apply_export_overrides()
 
 static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, methods:Dictionary) -> Control:
 	var input :Control = null
