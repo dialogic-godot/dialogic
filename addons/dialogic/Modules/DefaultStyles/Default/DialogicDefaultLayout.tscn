@@ -457,6 +457,7 @@ script = ExtResource("15_ptoy3")
 
 [node name="NameLabelHolder" type="Control" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder"]
 unique_name_in_owner = true
@@ -479,18 +480,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 15
 text = "S"
 script = ExtResource("3")
-
-[node name="Something" type="Control" parent="DefaultStyle"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 2.0
-grow_horizontal = 2
-grow_vertical = 0
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1
