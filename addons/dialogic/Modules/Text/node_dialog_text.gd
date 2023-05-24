@@ -10,9 +10,12 @@ enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
 @export var alignment : ALIGNMENT = ALIGNMENT.LEFT
 
+@export var enabled := true
 var revealing := false
 var speed:float = 0.01
 var speed_counter:float = 0
+
+
 
 func _ready() -> void:
 	# add to necessary
@@ -22,9 +25,11 @@ func _ready() -> void:
 	text = ""
 
 
-
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
+	if !enabled:
+		return
+	
 	speed = Dialogic.Settings.get_setting('text_speed', 0.01)
 	text = _text
 	if alignment == ALIGNMENT.CENTER:
@@ -35,6 +40,7 @@ func reveal_text(_text:String) -> void:
 	revealing = true
 	speed_counter = 0
 	emit_signal('started_revealing_text')
+
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
