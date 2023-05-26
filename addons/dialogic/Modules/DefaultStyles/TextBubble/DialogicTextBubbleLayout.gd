@@ -16,13 +16,14 @@ func _ready():
 	fallback_bubble.get_node('Tail').hide()
 	fallback_bubble.safe_zone = 0
 	fallback_bubble.base_direction = Vector2.ZERO
-	
+	fallback_bubble.name = "Fallback Bubble"
 	add_child(fallback_bubble)
 
 
 func register_character(character:DialogicCharacter, node:Node2D):
 	var new_bubble := preload("res://addons/dialogic/Modules/DefaultStyles/TextBubble/TextBubble.tscn").instantiate()
 	new_bubble.speaker_node = node
+	new_bubble.name = character.resource_path.get_file().trim_suffix("."+character.resource_path.get_extension()) + "Bubble"
 	add_child(new_bubble)
 	bubbles.append({'node':node, 'bubble':new_bubble, 'character':character})
 
@@ -37,3 +38,6 @@ func _on_dialogic_text_event(info:Dictionary):
 			b.bubble.close()
 	if no_bubble_open:
 		fallback_bubble.open()
+	else:
+		fallback_bubble.close()
+		

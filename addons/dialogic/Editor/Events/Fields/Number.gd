@@ -22,10 +22,7 @@ func _ready():
 	$Value.add_theme_stylebox_override('focus', get_theme_stylebox('focus', 'LineEdit'))
 
 func set_value(new_value) -> void:
-	if new_value:
-		_on_value_text_submitted(str(new_value))
-	else:
-		_on_value_text_submitted(str(value))
+	_on_value_text_submitted(str(new_value))
 	$Value.tooltip_text = tooltip_text
 	
 func get_value():
@@ -68,8 +65,10 @@ func _on_value_text_submitted(new_text):
 	new_text = new_text.trim_suffix(suffix)
 	if new_text.is_valid_float():
 		var temp:float = min(max(new_text.to_float(), min), max)
-		if !enforce_step or temp/step == round(temp/step):
+		if !enforce_step or is_equal_approx(temp/step, round(temp/step)):
 			value = temp
+		else:
+			value = snapped(temp, step)
 	elif allow_string:
 		value = new_text
 	$Value.text = str(value)+suffix

@@ -7,8 +7,9 @@ extends AudioStreamPlayer
 
 ## Usefull if you want to change the sounds of different node's sounds
 @export var enabled := true
+enum Modes {Interrupt, Overlap, Await}
 ## If true, interrupts the current sound to play a new one
-@export var interrupt := true
+@export var mode := Modes.Interrupt
 ## Array of sounds. Will pick a random one each time.
 @export var sounds: Array[AudioStream] = []
 ## A sound to be played as the last sound.
@@ -40,22 +41,22 @@ func _ready():
 
 
 func _on_started_revealing_text() -> void:
-	if !enabled:
+	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
 	characters_since_last_sound = 0
 
 
 func _on_continued_revealing_text(new_character:String) -> void:
-	if !enabled:
+	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
-		
+	
 	# don't play if a voice-track is running
 	if !Engine.is_editor_hint() and get_parent() is DialogicNode_DialogText:
 		if Dialogic.has_subsystem("Voice") and Dialogic.Voice.is_running():
 			return
 	
 	# if sound playing and can't interrupt
-	if playing and !interrupt:
+	if playing and current_overwrite_data.get('mode', mode) == Modes.Await:
 		return
 	
 	# if no sounds were given
@@ -67,20 +68,31 @@ func _on_continued_revealing_text(new_character:String) -> void:
 		return
 	
 	characters_since_last_sound += 1
-	if characters_since_last_sound < play_every_character:
+	if characters_since_last_sound < current_overwrite_data.get('skip_characters', play_every_character-1)+1:
 		return
+	
 	characters_since_last_sound = 0
 	
+	var audio_player : AudioStreamPlayer = self
+	if current_overwrite_data.get('mode', mode) == Modes.Overlap:
+		audio_player = AudioStreamPlayer.new()
+		audio_player.bus = bus
+		add_child(audio_player)
+	elif current_overwrite_data.get('mode', mode) == Modes.Interrupt:
+		stop()
+	
 	#choose the random sound
-	stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, sounds.size() - 1)]
+	audio_player.stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, sounds.size() - 1)]
 	
 	#choose a random pitch and volume
-	pitch_scale = max(0, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
-	volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
+	audio_player.pitch_scale = max(0, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
+	audio_player.volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
 	
 	#play the sound
-	play()
-
+	audio_player.play(0)
+	
+	if current_overwrite_data.get('mode', mode) == Modes.Overlap:
+		audio_player.finished.connect(audio_player.queue_free)
 
 
 func _on_finished_revealing_text() -> void:
@@ -91,16 +103,18 @@ func _on_finished_revealing_text() -> void:
 
 func load_overwrite(dictionary:Dictionary) -> void:
 	current_overwrite_data = dictionary
-	if dictionary.has('sound_folder'):
-		current_overwrite_data['sounds'] = load_sounds_from_folder(dictionary.sound_folder)
+	if dictionary.has('sound_path'):
+		current_overwrite_data['sounds'] = load_sounds_from_path(dictionary.sound_path)
 
 
-func load_sounds_from_folder(folder:String) -> Array:
-	var x_sounds := []
-	for i in DialogicUtil.listdir(folder, true, false, true):
-		if i.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(i) is AudioStream:
-			x_sounds.append(load(i))
-	return x_sounds
+func load_sounds_from_path(path:String) -> Array:
+	if path.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(path) is AudioStream:
+		return [load(path)]
+	var _sounds := []
+	for file in DialogicUtil.listdir(path, true, false, true):
+		if file.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(file) is AudioStream:
+			_sounds.append(load(file))
+	return _sounds
 
 
 ############# USER INTERFACE ###################################################

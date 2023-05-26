@@ -4,10 +4,11 @@ extends DialogicCharacterEditorPortraitSection
 
 func _ready() -> void:
 	%PortraitMood.get_suggestions_func = mood_suggestions
+	%PortraitMood.resource_icon = get_theme_icon("AudioStreamPlayer", "EditorIcons")
 
 
 func _load_portrait_data(data:Dictionary):
-	%PortraitMood.set_value(data.get('mood'))
+	%PortraitMood.set_value(data.get('sound_mood'))
 
 
 func update_visibility(show:=true):
@@ -27,6 +28,6 @@ func _on_portrait_mood_value_changed(property_name:String, value:String):
 
 func mood_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
-	for child in character_editor.get_settings_section_by_name('Typing Sounds').get_node('%Moods').get_children():
-		suggestions[child.get_data().name] = {'value':child.get_data().name}
+	for mood in character_editor.get_settings_section_by_name('Typing Sounds').current_moods_info:
+		suggestions[mood] = {'value':mood}
 	return suggestions
