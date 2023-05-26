@@ -43,7 +43,6 @@ func _ready():
 func _on_started_revealing_text() -> void:
 	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
-	print(get_path())
 	characters_since_last_sound = 0
 
 
