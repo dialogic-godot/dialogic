@@ -237,6 +237,12 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 					input.value = value
 		TYPE_FLOAT:
 			input = SpinBox.new()
+			input.step = 0.01
+			if ',' in property_info.hint_string:
+				input.min_value = float(property_info.hint_string.get_slice(',', 0))
+				input.max_value = float(property_info.hint_string.get_slice(',', 1))
+				if property_info.hint_string.count(',') > 1:
+					input.step = float(property_info.hint_string.get_slice(',', 2))
 			input.value_changed.connect(methods.get('float').bind(property_info['name']))
 			if value != null:
 				input.value = value

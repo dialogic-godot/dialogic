@@ -195,6 +195,7 @@ func set_export_override(property_name:String, value:String = "") -> void:
 		customization_editor_info[property_name]['reset'].disabled = true
 
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
+	ProjectSettings.save()
 
 
 func _on_export_override_reset(property_name:String) -> void:
@@ -203,6 +204,7 @@ func _on_export_override_reset(property_name:String) -> void:
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
 	customization_editor_info[property_name]['reset'].disabled = true
 	set_customization_value(property_name, customization_editor_info[property_name]['orig'])
+	ProjectSettings.save()
 
 
 func set_customization_value(property_name:String, value:Variant) -> void:

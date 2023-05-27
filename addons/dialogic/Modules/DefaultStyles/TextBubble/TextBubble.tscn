@@ -13,7 +13,7 @@ _data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_4meji"]
-_data = [Vector2(0, 0), 0.0, 0.161733, 0, 0, Vector2(1, 1), 2.89773, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.61284, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_q6qf6"]
@@ -25,25 +25,29 @@ fractal_type = 0
 cellular_jitter = 0.15
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kr7hw"]
+seamless = true
 noise = SubResource("FastNoiseLite_lsfnp")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0momr"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ejxnv"]
 noise_type = 2
+frequency = 0.012
 fractal_type = 0
-cellular_jitter = 0.15
+cellular_jitter = 0.008
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gnq3a"]
-noise = SubResource("FastNoiseLite_0momr")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4la3x"]
+seamless = true
+noise = SubResource("FastNoiseLite_ejxnv")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
 shader = ExtResource("2_1mhvf")
-shader_parameter/radius = 0.25
-shader_parameter/ratio = Vector2(1, 1)
-shader_parameter/crease = 0.1
-shader_parameter/texture_scale = 0.1
-shader_parameter/texture_offset = Vector2(0.1, 0.1)
+shader_parameter/radius = 1.39
+shader_parameter/ratio = Vector2(2.251, 1)
+shader_parameter/crease = 0.12
+shader_parameter/speed = 2.53
+shader_parameter/texture_scale = 0.24
+shader_parameter/texture_offset = 172.5
 shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
-shader_parameter/spikes_sampler = SubResource("NoiseTexture2D_gnq3a")
+shader_parameter/spikes_sampler = SubResource("NoiseTexture2D_4la3x")
 shader_parameter/curve_sampler = SubResource("CurveTexture_q6qf6")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
@@ -60,7 +64,7 @@ shadow_size = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4yjl"]
 draw_center = false
 border_width_bottom = 3
-border_color = Color(0.227451, 0.227451, 0.227451, 1)
+border_color = Color(0, 0, 0, 0.498039)
 
 [node name="TextBubble" type="Control"]
 layout_mode = 3
@@ -74,15 +78,10 @@ width_curve = SubResource("Curve_0j8nu")
 [node name="Background" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_60xbe")
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -1.0
-offset_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -69.0
+offset_top = -21.0
+offset_right = 225.0
+offset_bottom = 79.0
 mouse_filter = 2
 
 [node name="DialogText" type="RichTextLabel" parent="."]
@@ -112,10 +111,9 @@ script = ExtResource("4_7bm4b")
 [node name="NameLabel" type="PanelContainer" parent="DialogText"]
 layout_mode = 1
 anchors_preset = -1
-offset_left = -4.0
-offset_top = -29.0
-offset_right = 7.0
-offset_bottom = -3.0
+offset_left = 16.0
+offset_top = -26.0
+offset_right = 27.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
 script = ExtResource("5_371j3")
@@ -132,7 +130,9 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 5.0
 offset_top = -31.0
+offset_right = -4.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 2
@@ -140,36 +140,32 @@ alignment = 2
 [node name="DialogicNode_ChoiceButton" type="Button" parent="DialogText/ChoiceContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
-theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
 theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "Yes!"
+text = "A"
 flat = true
 script = ExtResource("7_0tnh1")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="DialogText/ChoiceContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
-theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
 theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "Yes!"
+text = "A"
 flat = true
 script = ExtResource("7_0tnh1")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="DialogText/ChoiceContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
-theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
 theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "Yes!"
+text = "A"
+flat = true
+script = ExtResource("7_0tnh1")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="DialogText/ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "A"
 flat = true
 script = ExtResource("7_0tnh1")
 
