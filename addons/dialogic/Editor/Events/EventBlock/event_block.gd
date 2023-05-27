@@ -237,7 +237,6 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 				editor_node.icon = p.display_info.icon
 			editor_node.flat = true
 			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
-			editor_node.tooltip_text = p.display_info.tooltip
 			editor_node.pressed.connect(p.display_info.callable)
 		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:
@@ -268,6 +267,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
+		editor_node.tooltip_text = p.display_info.get('tooltip', '')
 		var left_label :Label = null 
 		var right_label :Label = null
 		if !p.get('left_text', '').is_empty():
@@ -349,6 +349,8 @@ func _update_color() -> void:
 ################################################################################
 
 func _ready():
+	resized.connect(get_parent().get_parent().queue_redraw)
+	
 	## DO SOME STYLING
 	var _scale := DialogicUtil.get_editor_scale()
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
@@ -404,7 +406,6 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 		%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 	expanded = button_pressed
 	body_container.visible = button_pressed
-	get_parent().get_parent().queue_redraw()
 	body_container.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
 
 

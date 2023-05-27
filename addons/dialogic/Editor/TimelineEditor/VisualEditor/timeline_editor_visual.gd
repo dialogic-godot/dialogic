@@ -266,7 +266,7 @@ func _on_event_block_gui_input(event, item: Node):
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			if !%TimelineArea.dragging:
-				%TimelineArea.start_dragging(%TimelineArea.DragTypes.ExistingEvents, get_events_indexed(selected_items))
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.ExistingEvents, get_events_indexed(selected_items, EndBranchMode.Only_Single))
 
 
 func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void:
@@ -377,7 +377,7 @@ func _input(event:InputEvent) -> void:
 			var events_list := paste_check()
 			var paste_position := -1
 			if selected_items:
-				paste_position = selected_items[-1].get_index()
+				paste_position = selected_items[-1].get_index()+1
 			else:
 				paste_position = %Timeline.get_child_count()-1
 			if events_list:
@@ -436,13 +436,32 @@ func _input(event:InputEvent) -> void:
 #################### DELETING, COPY, PASTE #####################################
 ################################################################################
 
-func get_events_indexed(events:Array) -> Dictionary:
+enum EndBranchMode {Force_No_Single, Only_Single}
+# Force_No_Single = End branches are effected if their parent is selected, not alone
+#    -> for delete, copy, cut, paste (to avoid lonly end branches)
+# Only_Single = Single End branches are allowed alone and are not effected if only the parent is selected
+#    -> for moving events
+
+func get_events_indexed(events:Array, end_branch_mode:=EndBranchMode.Force_No_Single) -> Dictionary:
 	var indexed_dict := {}
 	for event in events:
-		if not event.resource is DialogicEndBranchEvent:
-			indexed_dict[event.get_index()] = event.resource.to_text()
+		# do not collect selected end branches (e.g. on delete, copy, etc.)
+		if event.resource is DialogicEndBranchEvent and end_branch_mode == EndBranchMode.Force_No_Single:
+			continue
+		
+		indexed_dict[event.get_index()] = event.resource.to_text()
+		
+		# store an end branch if it is selected or connected to a selected event
+		if end_branch_mode == EndBranchMode.Force_No_Single:
 			if 'end_node' in event and event.end_node:
-				indexed_dict[event.end_node.get_index()] = event.end_node.resource.to_text()+str(event.get_index())
+				event = event.end_node
+				indexed_dict[event.get_index()] = event.resource.to_text()
+		
+		if event.resource is DialogicEndBranchEvent:
+			if event.parent_node in events: # add local index
+				indexed_dict[event.get_index()] += str(events.find(event.parent_node))
+			else: # add global index
+				indexed_dict[event.get_index()] += '#'+str(event.parent_node.get_index())
 	return indexed_dict
 
 
@@ -472,7 +491,11 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		event_resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
 		event_resource.from_text(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
-			events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
+			var idx :String= indexed_events[event_idx].trim_prefix('<<END BRANCH>>')
+			if idx.begins_with('#'): # a global index
+				events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(int(idx.trim_prefix('#')))))
+			else: # a local index (index in the added events list)
+				events.append(create_end_branch_event(%Timeline.get_child_count(), events[int(idx)]))
 			%Timeline.move_child(events[-1], event_idx)
 		else:
 			events.append(add_event_node(event_resource))
@@ -480,11 +503,13 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		
 	selected_items = events
 	visual_update_selection()
+	indent_events()
 
 
 func delete_events_indexed(indexed_events:Dictionary) -> void:
 	select_indexed_events(indexed_events)
 	delete_selected_events()
+	indent_events()
 
 
 func delete_selected_events() -> void:
@@ -498,13 +523,14 @@ func delete_selected_events() -> void:
 		next_node = null
 	
 	for event in selected_items:
-		if event.resource is DialogicEndBranchEvent:
-			continue
-		if 'end_node' in event and event.end_node != null:
+		if 'end_node' in event and event.end_node != null and is_instance_valid(event.end_node):
+			if !is_instance_valid(event.end_node.get_parent()): return
 			event.end_node.get_parent().remove_child(event.end_node)
 			event.end_node.queue_free()
-		event.get_parent().remove_child(event)
-		event.queue_free()
+		if is_instance_valid(event):
+			if !is_instance_valid(event.get_parent()): return
+			event.get_parent().remove_child(event)
+			event.queue_free()
 	
 	# select next
 	if (next_node != null):
@@ -523,11 +549,13 @@ func delete_selected_events() -> void:
 func cut_selected_events() -> void:
 	copy_selected_events()
 	delete_selected_events()
+	indent_events()
 
 
 func cut_events_indexed(indexed_events:Dictionary) -> void:
 	select_indexed_events(indexed_events)
 	cut_selected_events()
+	indent_events()
 
 
 func copy_selected_events() -> void:
@@ -536,6 +564,11 @@ func copy_selected_events() -> void:
 	var event_copy_array := []
 	for item in selected_items:
 		event_copy_array.append(item.resource.to_text())
+		if item.resource is DialogicEndBranchEvent:
+			if item.parent_node in selected_items: # add local index
+				event_copy_array[-1] += str(selected_items.find(item.parent_node))
+			else: # add global index
+				event_copy_array[-1] += '#'+str(item.parent_node.get_index())
 	var _json := JSON.new()
 	DisplayServer.clipboard_set(_json.stringify(
 		{
@@ -563,27 +596,32 @@ func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	for i in range(0, amount):
 		selected_items.append(%Timeline.get_child(at_index + i))
 	delete_selected_events()
+	indent_events()
 
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:	
 	var new_items := []
 	for c in range(len(event_list)):
-		var item = event_list[c]
-		if typeof(item) == TYPE_STRING:
-			var resource: Variant
-			if get_parent().editors_manager.resource_helper:
-				for i in get_parent().editors_manager.resource_helper.get_event_scripts():
-					if i._test_event_string(item):
-						resource = i.duplicate()
-						break
-				if resource['event_name'] == 'Character' or resource['event_name'] == 'Text':
-					resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
-				resource.from_text(item)
-			else:
-				printerr("[Dialogic] Unable to access resource_helper!")
-				continue
-			if item:
-				new_items.append(add_event_node(resource, at_index+c))
+		var item :String = event_list[c]
+		var resource: Variant
+		if get_parent().editors_manager.resource_helper:
+			for i in get_parent().editors_manager.resource_helper.get_event_scripts():
+				if i._test_event_string(item):
+					resource = i.duplicate()
+					break
+			resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
+			resource.from_text(item)
+		else:
+			printerr("[Dialogic] Unable to access resource_helper!")
+			continue
+		if resource is DialogicEndBranchEvent:
+			var idx :String= item.trim_prefix('<<END BRANCH>>')
+			if idx.begins_with('#'): # a global index
+				new_items.append(create_end_branch_event(at_index+c, %Timeline.get_child(int(idx.trim_prefix('#')))))
+			else: # a local index (index in the added events list)
+				new_items.append(create_end_branch_event(at_index+c, new_items[int(idx)]))
+		else:
+			new_items.append(add_event_node(resource, at_index+c))
 	selected_items = new_items
 	something_changed()
 	sort_selection()
@@ -710,6 +748,7 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
 	if event_resource is DialogicEndBranchEvent:
+		print("wait what")
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
 	if event_resource['event_node_ready'] == false:
