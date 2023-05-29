@@ -4,7 +4,7 @@ func _get_layout_scenes() -> Array:
 	return scan_styles("res://addons/dialogic/Modules/DefaultStyles/")
 
 
-func scan_styles(path):
+func scan_styles(path) -> Array:
 	var dir := DirAccess.open(path)
 	var style_list := []
 	if dir:
