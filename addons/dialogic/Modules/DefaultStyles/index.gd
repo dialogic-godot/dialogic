@@ -1,29 +1,30 @@
 extends DialogicIndexer
 
-func _get_layout_scenes() -> Array[Dictionary]:
-	return [
-		{
-			'name': 'Visual Novel', 
-			'path': this_folder.path_join('/Default/DialogicDefaultLayout.tscn'),
-			'author': 'Jowan Spooner',
-			'description': "The default scene. Supports all events and settings.",
-			'preview_image': [this_folder.path_join('default_layout.png')],
-			'folder_to_copy': this_folder.path_join('/Default'), 
-		},
-		{
-			'name': 'Text Bubble',
-			'path': this_folder.path_join('TextBubble/DialogicTextBubbleLayout.tscn'),
-			'author': 'Jowan Spooner',
-			'description': "An example textbubble. Only supports basic text and choice interactions (no portraits, text input, etc.).",
-			'preview_image': [this_folder.path_join('textbubble.png')],
-			'folder_to_copy': this_folder.path_join('/TextBubble'), 
-		},
-		{
-			'name': 'RPG Single Portrait',
-			'path': this_folder.path_join('RPG_BoxPortrait/DialogicRPGLayout.tscn'),
-			'author': 'Jowan Spooner',
-			'description': "An example RPG layout. Comes with only 1 portrait position (intended to be used with RPG-portrait mode).",
-			'preview_image': [this_folder.path_join('rpg_box1.png')],
-			'folder_to_copy': this_folder.path_join('/RPG_BoxPortrait'), 
-		},
-	]
+func _get_layout_scenes() -> Array:
+	return scan_styles("res://addons/dialogic/Modules/DefaultStyles/")
+
+
+func scan_styles(path):
+	var dir := DirAccess.open(path)
+	var style_list := []
+	if dir:
+		dir.list_dir_begin()
+		var dir_name := dir.get_next()
+		while dir_name != "":
+			if dir.current_is_dir():
+				if dir.file_exists(dir_name.path_join('style.cfg')):
+					var config := ConfigFile.new()
+					var config_path: String = path.path_join(dir_name).path_join('style.cfg')
+					var default_image_path: String = path.path_join(dir_name).path_join('preview.png')
+					config.load(config_path)
+					style_list.append(
+						{
+							'name': config.get_value('style', 'name', 'Unnamed Layout'),
+							'path': path.path_join(dir_name).path_join(config.get_value('style', 'scene')),
+							'author': config.get_value('style', 'author', 'Anonymous'),
+							'description': config.get_value('style', 'descriptin', 'No description'),
+							'preview_image': [config.get_value('style', 'image', default_image_path)]
+						}
+					)
+			dir_name = dir.get_next()
+	return style_list
