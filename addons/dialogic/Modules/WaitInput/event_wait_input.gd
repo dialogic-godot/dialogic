@@ -4,12 +4,14 @@ extends DialogicEvent
 
 ## Event that waits for input before continuing.
 
+var hide_textbox := true
+
 ################################################################################
 ## 						EXECUTE
 ################################################################################
 
 func _execute() -> void:
-	dialogic.Text.hide_text_boxes()
+	if hide_textbox: dialogic.Text.hide_text_boxes()
 	dialogic.current_state = Dialogic.states.IDLE
 	finish()
 
@@ -32,3 +34,14 @@ func _init() -> void:
 
 func get_shortcode() -> String:
 	return "wait_input"
+
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name : property_info
+		"hide_text" :  {"property": "hide_textbox", 	"default": true, 
+						"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
+	}
+
+
+func build_event_editor():
+	add_body_edit('hide_textbox', ValueType.Bool, 'Hide text box:')
