@@ -94,7 +94,7 @@ func _execute() -> void:
 	#end of dialog
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Text.show_next_indicators(true)
-		dialogic.Choices.show_current_choices()
+		dialogic.Choices.show_current_choices(false)
 		dialogic.current_state = dialogic.states.AWAITING_CHOICE
 	elif Dialogic.Text.should_autoadvance():
 		dialogic.Text.show_next_indicators(false, true)

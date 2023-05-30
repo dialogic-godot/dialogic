@@ -3,6 +3,8 @@ extends Node
 
 var autoadvance_timer := Timer.new()
 
+signal dialogic_action()
+
 ################################################################################
 ## 						INPUT
 ################################################################################
@@ -14,9 +16,10 @@ func _input(event:InputEvent) -> void:
 			Dialogic.handle_next_event()
 			autoadvance_timer.stop()
 		
-		elif Dialogic.current_state == Dialogic.states.SHOWING_TEXT:
-			if Dialogic.Text.can_skip():
-				Dialogic.Text.skip_text_animation()
+		elif Dialogic.current_state == Dialogic.states.SHOWING_TEXT and Dialogic.Text.can_skip():
+			Dialogic.Text.skip_text_animation()
+		
+		dialogic_action.emit()
 
 
 ####################################################################################################
