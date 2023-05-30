@@ -22,7 +22,7 @@ var inline: bool = false
 var inline_signal_argument: String
 ## Only usefull if [inline] is true. If true, the command can only be used once. 
 ## If false it will not stop listening to the signal (with that argument).
-var inline_single_use: bool = false
+var inline_single_use: bool = true
 
 
 ################################################################################
@@ -38,16 +38,17 @@ func _execute() -> void:
 	if not "/" in path and dialogic.get_node('/root').has_node(path):
 		path = "/root/"+path
 	
-	var n = dialogic.get_node_or_null(path)
+	var n :Node = dialogic.get_node_or_null(path)
 	if n:
 		if n.has_method(method):
 			if inline:
 				dialogic.text_signal.connect(_call_on_signal, CONNECT_PERSIST)
 			elif wait:
-				await n.callv(method, arguments).completed
+				await n.callv(method, arguments)
 			else:
 				n.callv(method, arguments)
-	
+	else:
+		printerr('[Dialogic] Call node event failed because of invalid path.')
 	finish()
 
 
@@ -108,9 +109,9 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('method', ValueType.SinglelineText, 'Call method')
 	add_header_edit('path', ValueType.SinglelineText, 'in object')
-	add_body_edit('wait', ValueType.Bool, 'Wait for method to finsih:')
-	add_body_edit('inline', ValueType.Bool, 'Use as inline Command:')
-	add_body_edit('inline_signal_argument', ValueType.SinglelineText, 'Inline Signal Name', '', {}, 'inline == true')
-	add_body_edit('inline_single_use', ValueType.Bool, 'Single Use:', '', {}, 'inline == true')
+	add_body_edit('inline', ValueType.Bool, 'Inline Command:', '', {'tooltip':"If enabled, the method won't be called instantly. Only when a signal is emmited inside the following text event will it be called."})
+	add_body_edit('inline_signal_argument', ValueType.SinglelineText, 'Inline Signal Argument', '', {'tooltip':"For example if set to 'Hello' the method can be called with [signal=Hello] in the next text event."}, 'inline == true')
+	add_body_edit('inline_single_use', ValueType.Bool, 'Single Use:', '', {'tooltip':"By default calling via in-text signal only works once. Uncheck this to make the event keep listening. \nThis only stays valid during this dialog."}, 'inline == true')
+	add_body_edit('wait', ValueType.Bool, 'Wait:', '', {'tooltip':'Will wait for the method to finish. Only relevant for methods with `await` in them.'}, 'inline == false')
 	add_body_line_break()
 	add_body_edit('arguments', ValueType.StringArray, 'Arguments:')

@@ -15,11 +15,10 @@ alignment = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Top Text"
 
-[node name="AddButton" type="Button" parent="Editing"]
+[node name="Add" type="Button" parent="Editing"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Add Value"
 
 [node name="Values" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -31,4 +30,4 @@ layout_mode = 2
 [node name="Value2" parent="Values" instance=ExtResource("1")]
 layout_mode = 2
 
-[connection signal="pressed" from="Editing/AddButton" to="." method="_on_AddButton_pressed"]
+[connection signal="pressed" from="Editing/Add" to="." method="_on_AddButton_pressed"]
