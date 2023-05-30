@@ -38,8 +38,27 @@ func hide_all_choices() -> void:
 
 
 ## Lists all current choices and shows buttons.
-func show_current_choices() -> void:
+func show_current_choices(instant:=true) -> void:
 	hide_all_choices()
+	choice_blocker.stop()
+	
+	var reveal_delay := float(ProjectSettings.get_setting('dialogic/choices/reveal_delay', 0.0))
+	var reveal_by_input :bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
+	
+	if !instant and (reveal_delay != 0 or reveal_by_input):
+		if reveal_delay != 0:
+			choice_blocker.start(reveal_delay)
+			choice_blocker.timeout.connect(show_current_choices)
+		if reveal_by_input:
+			Dialogic.Text.input_handler.dialogic_action.connect(show_current_choices)
+		return
+	
+	if choice_blocker.timeout.is_connected(show_current_choices):
+		choice_blocker.timeout.disconnect(show_current_choices)
+	if Dialogic.Text.input_handler.dialogic_action.is_connected(show_current_choices):
+		Dialogic.Text.input_handler.dialogic_action.disconnect(show_current_choices)
+	
+	
 	var button_idx := 1
 	last_question_info = {'choices':[]}
 	for choice_index in get_current_choice_indexes():

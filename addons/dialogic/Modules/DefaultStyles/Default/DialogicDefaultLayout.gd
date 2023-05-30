@@ -42,6 +42,9 @@ func _ready():
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides():
+	if !is_inside_tree():
+		await ready
+	
 	## FONT SETTINGS
 	%DialogicNode_DialogText.alignment = text_alignment
 	
@@ -78,6 +81,7 @@ func _apply_export_overrides():
 	
 	%NameLabelPanel.self_modulate = name_label_box_modulate
 	
+	%NameLabelPanel.position.x = 0
 	%NameLabelPanel.anchor_left = name_label_alignment/2.0
 	%NameLabelPanel.anchor_right = name_label_alignment/2.0
 	%NameLabelPanel.grow_horizontal = [1, 2, 0][name_label_alignment]

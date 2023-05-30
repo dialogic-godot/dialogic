@@ -274,8 +274,10 @@ func _request_code_completion(force):
 		if symbol == '[':
 			# suggest shortcodes if a shortcode event has just begun
 			for shortcode in completion_shortcodes.keys():
-				add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
-		
+				if completion_shortcodes[shortcode].get_shortcode_parameters().is_empty():
+					add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
+				else:
+					add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
 		else:
 			# suggest either parameters or values
 			var current_shortcode := completion_shortcode_getter_regex.search(line)

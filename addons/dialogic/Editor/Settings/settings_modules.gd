@@ -73,7 +73,7 @@ func _on_search_text_changed(new_text:String) -> void:
 		
 		for i in range(child.get_button_count(0)):
 			child.erase_button(0, child.get_button_count(0)-1)
-		var any_visible = false
+		var any_visible := false
 		var counter := 0
 		for sub_child in child.get_children():
 			if sub_child.visible:
@@ -87,7 +87,6 @@ func _on_search_text_changed(new_text:String) -> void:
 				counter += 1
 				any_visible = true
 		child.visible = any_visible
-#		child.collapsed = %Collapse.button_pressed
 
 
 
@@ -320,6 +319,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 		var current_value :Variant = params[prop].default
 		if event_default_overrides.get(event.event_name, {}).has(params[prop].property):
 			current_value = event_default_overrides.get(event.event_name, {}).get(params[prop].property)
+		
 		match typeof(event.get(params[prop].property)):
 			TYPE_STRING:
 				editor_node = LineEdit.new()

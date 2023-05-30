@@ -8,13 +8,24 @@ signal continued_revealing_text(new_character)
 signal finished_revealing_text()
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
-@export var alignment : ALIGNMENT = ALIGNMENT.LEFT
-
 @export var enabled := true
+@export var alignment : ALIGNMENT = ALIGNMENT.LEFT
+@export var textbox_root : Node = self
+
+@export var hide_when_empty := false
+
 var revealing := false
 var speed:float = 0.01
 var speed_counter:float = 0
 
+
+
+func _set(property, what):
+	if property == 'text' and typeof(what) == TYPE_STRING:
+		text = what
+		if hide_when_empty:
+			visible = !what.is_empty()
+		return true
 
 
 func _ready() -> void:
@@ -32,6 +43,7 @@ func reveal_text(_text:String) -> void:
 	
 	speed = Dialogic.Settings.get_setting('text_speed', 0.01)
 	text = _text
+	show()
 	if alignment == ALIGNMENT.CENTER:
 		text = '[center]'+text
 	elif alignment == ALIGNMENT.RIGHT:
@@ -44,16 +56,18 @@ func reveal_text(_text:String) -> void:
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
-	if visible_characters < get_total_character_count():
+	if visible_characters <= get_total_character_count():
 		revealing = false
 		await Dialogic.Text.execute_effects(visible_characters, self, false)
 		if visible_characters == -1:
 			return
 		revealing = true
 		visible_characters += 1
-		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-2])
+		if visible_characters > -1 and visible_characters <= len(get_parsed_text()):
+			emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-1])
 	else:
 		finish_text()
+
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
@@ -174,15 +174,15 @@ _data = {
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3vpc"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-expand_margin_left = 15.0
-expand_margin_top = 15.0
-expand_margin_right = 15.0
-expand_margin_bottom = 15.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
 bg_color = Color(1, 1, 1, 1)
@@ -210,33 +210,9 @@ expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnmvp"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.6, 0.576471, 0.54902, 0.956863)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(0.733333, 0.670588, 0.627451, 1)
-border_blend = true
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color(0.823529, 0.803922, 0.756863, 1)
-shadow_size = 5
-
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-next_indicator_enabled = null
-next_indicator_animation = null
-next_indicator_texture = null
-next_indicator_show_on_questions = null
-next_indicator_show_on_autoadvance = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -406,24 +382,24 @@ grow_vertical = 0
 [node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle/DialogTextAnimationParent"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-custom_minimum_size = Vector2(550, 110)
+custom_minimum_size = Vector2(500, 110)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -275.0
-offset_top = -143.0
-offset_right = 275.0
-offset_bottom = -33.0
+offset_left = -294.0
+offset_top = -154.0
+offset_right = 294.0
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset = Vector2(275, 60)
 theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
@@ -435,6 +411,7 @@ bbcode_enabled = true
 text = "Some default text"
 visible_characters_behavior = 1
 script = ExtResource("2")
+textbox_root = NodePath("..")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText"]
 script = ExtResource("10")
@@ -470,7 +447,7 @@ self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 layout_mode = 1
 offset_left = -10.0
 offset_top = -49.0
-offset_right = 1.0
+offset_right = -1.0
 offset_bottom = -24.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wpkyg")
 script = ExtResource("23")
@@ -595,103 +572,6 @@ rotation = 0.75799
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
-
-[node name="SpecialStyle" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("12")
-style_name = "Special"
-
-[node name="Choices" type="VBoxContainer" parent="SpecialStyle"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -208.0
-offset_top = -276.0
-offset_right = -27.0
-offset_bottom = -30.0
-grow_horizontal = 0
-grow_vertical = 0
-alignment = 2
-metadata/_edit_layout_mode = 1
-
-[node name="DialogicNode_ChoiceButton1" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton2" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton3" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton4" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton5" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton6" type="Button" parent="SpecialStyle/Choices"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Text"
-script = ExtResource("4")
-
-[node name="PanelContainer" type="PanelContainer" parent="SpecialStyle"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -204.0
-offset_top = 26.0
-offset_right = 202.0
-offset_bottom = 95.0
-grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nnmvp")
-metadata/_edit_layout_mode = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="SpecialStyle/PanelContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SpecialStyle/PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="DialogicNode_NameLabel" type="Label" parent="SpecialStyle/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Name"
-horizontal_alignment = 1
-script = ExtResource("3")
-use_character_color = false
-
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="SpecialStyle/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Some default text"
-script = ExtResource("2")
 
 [node name="ExampleHistoryScene" parent="." instance=ExtResource("22_854kg")]
 history_font_normal = ExtResource("23_gyqve")
