@@ -58,16 +58,15 @@ func _get_text_modifiers() -> Array[Dictionary]:
 
 
 ## Helper that allows scanning sub directories that might be styles
-func scan_for_layouts() -> Array:
+func scan_for_layouts() -> Array[Dictionary]:
 	var dir := DirAccess.open(this_folder)
-	var style_list := []
+	var style_list :Array[Dictionary] = []
 	if !dir:
 		return style_list
-	
 	dir.list_dir_begin()
 	var dir_name := dir.get_next()
 	while dir_name != "":
-		if dir.current_is_dir() or !dir.file_exists(dir_name.path_join('style.cfg')):
+		if !dir.current_is_dir() or !dir.file_exists(dir_name.path_join('style.cfg')):
 			dir_name = dir.get_next()
 			continue
 		var config := ConfigFile.new()
