@@ -55,3 +55,32 @@ func _get_text_effects() -> Array[Dictionary]:
 ## Should return array of dictionaries with the same arguments as _get_text_effects()
 func _get_text_modifiers() -> Array[Dictionary]:
 	return []
+
+
+## Helper that allows scanning sub directories that might be styles
+func scan_for_layouts() -> Array[Dictionary]:
+	var dir := DirAccess.open(this_folder)
+	var style_list :Array[Dictionary] = []
+	if !dir:
+		return style_list
+	dir.list_dir_begin()
+	var dir_name := dir.get_next()
+	while dir_name != "":
+		if !dir.current_is_dir() or !dir.file_exists(dir_name.path_join('style.cfg')):
+			dir_name = dir.get_next()
+			continue
+		var config := ConfigFile.new()
+		var config_path: String = this_folder.path_join(dir_name).path_join('style.cfg')
+		var default_image_path: String = this_folder.path_join(dir_name).path_join('preview.png')
+		config.load(config_path)
+		style_list.append(
+			{
+				'name': config.get_value('style', 'name', 'Unnamed Layout'),
+				'path': this_folder.path_join(dir_name).path_join(config.get_value('style', 'scene')),
+				'author': config.get_value('style', 'author', 'Anonymous'),
+				'description': config.get_value('style', 'descriptin', 'No description'),
+				'preview_image': [config.get_value('style', 'image', default_image_path)]
+			})
+		dir_name = dir.get_next()
+	
+	return style_list
