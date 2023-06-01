@@ -1,66 +1,84 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cgc2samfe5ghg"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_ih78e"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6"]
-[ext_resource type="Texture2D" uid="uid://dch8fuekijffp" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="9"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smrwn"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.447059, 0.282353, 0.109804, 1)
+skew = Vector2(0.079, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_775n1"]
+bg_color = Color(0.266667, 0.172549, 0.0823529, 1)
+skew = Vector2(0.073, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="RPG_ExampleNode" type="CanvasLayer"]
 layer = 3
 
-[node name="TextureRect" type="TextureRect" parent="."]
-self_modulate = Color(0.435294, 0.32549, 0.168627, 1)
+[node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -354.0
-offset_top = -206.0
-offset_right = 362.0
-offset_bottom = -47.0
+offset_left = -352.0
+offset_top = -204.0
+offset_right = 359.0
+offset_bottom = -49.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("7")
-expand_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_smrwn")
 
-[node name="ColorRect" type="ColorRect" parent="TextureRect"]
-show_behind_parent = true
-layout_mode = 0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 152.0
-offset_bottom = 152.0
-color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+[node name="HBox" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
 
-[node name="DialogicNode_PortraitContainer" type="Control" parent="TextureRect"]
-anchors_preset = 0
-offset_left = 9.0
-offset_top = 10.0
-offset_right = 147.0
-offset_bottom = 149.0
-script = ExtResource("2_ih78e")
-size_mode = 2
+[node name="Panel" type="Panel" parent="PanelContainer/HBox"]
+clip_children = 2
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_775n1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+[node name="DialogicNode_PortraitContainer" type="Control" parent="PanelContainer/HBox/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 164.0
-offset_top = 12.0
-offset_right = -20.0
-offset_bottom = -16.0
+offset_left = -9.0
+offset_top = -2.0
+offset_right = 9.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("2_ih78e")
+mode = 1
+portrait_prefix = "Faces/"
+size_mode = 2
+debug_character_portrait = "speaker"
 
-[node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DialogicNode_NameLabel" type="Label" parent="PanelContainer/HBox/VBoxContainer"]
 layout_mode = 2
 text = "Name"
 script = ExtResource("6")
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="PanelContainer/HBox/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -68,41 +86,41 @@ text = "Some text"
 scroll_following = true
 script = ExtResource("3")
 
-[node name="VBoxContainer" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="PanelContainer/HBox/VBoxContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true
 script = ExtResource("9")
 
-[node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true
 script = ExtResource("9")
 
-[node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true
 script = ExtResource("9")
 
-[node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true
 script = ExtResource("9")
 
-[node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true
 script = ExtResource("9")
 
-[node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="PanelContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Text"
 flat = true

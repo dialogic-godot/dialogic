@@ -63,6 +63,7 @@ func register_character(character:DialogicCharacter, node:Node2D):
 	new_bubble.character = character
 	new_bubble.name = character.resource_path.get_file().trim_suffix("."+character.resource_path.get_extension()) + "Bubble"
 	add_child(new_bubble)
+	bubble_apply_overrides(new_bubble)
 	bubbles.append(new_bubble)
 
 

@@ -333,6 +333,7 @@ func _request_code_completion(force):
 		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:', syntax_highlighter.code_flow_color)
 		
 		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', syntax_highlighter.keyword_VAR_color)
+		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', syntax_highlighter.keyword_SETTING_color)
 		
 		suggest_characters(CodeEdit.KIND_CLASS)
 	
