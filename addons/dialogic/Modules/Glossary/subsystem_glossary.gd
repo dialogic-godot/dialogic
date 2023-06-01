@@ -47,7 +47,7 @@ func parse_glossary(text:String) -> String:
 
 
 func add_glossary(path:String) -> void:
-	if FileAccess.file_exists(path):
+	if FileAccess.file_exists(path) or FileAccess.file_exists(path+".remap"):
 		var x = load(path)
 		if x is DialogicGlossary:
 			glossaries.append(x)
