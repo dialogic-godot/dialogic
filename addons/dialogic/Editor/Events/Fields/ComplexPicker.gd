@@ -67,7 +67,6 @@ func _ready():
 	%BG.add_theme_stylebox_override('panel', get_theme_stylebox('normal', 'LineEdit'))
 	%Focus.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'LineEdit'))
 	%Search.text_changed.connect(_on_Search_text_changed)
-	%Search.focus_entered.connect(_on_Search_focus_entered)
 	%Search.text_submitted.connect(_on_Search_text_entered)
 	var scale: float = DialogicUtil.get_editor_scale()
 	%SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
@@ -140,6 +139,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 		current_selected = -1
 	%Search.grab_focus()
 
+
 func get_default_suggestions(input:String) -> Dictionary:
 	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
 	var suggestions: Dictionary = {}
@@ -185,18 +185,45 @@ func _input(event:InputEvent):
 		if %Suggestions.visible:
 			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
 				hide_suggestions()
+		
 
 func hide_suggestions() -> void:
 	%SelectButton.button_pressed = false
 	%Suggestions.hide()
 
-func _on_Search_focus_entered() -> void:
-	if %Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
-		_on_Search_text_changed("")
 
 func _on_SelectButton_toggled(button_pressed:bool) -> void:
 	if button_pressed:
 		_on_Search_text_changed('', true)
+
+func _on_focus_entered():
+	%Search.grab_focus()
+
+
+
+func _on_search_gui_input(event):
+	if event is InputEventKey and (event.keycode == KEY_DOWN or event.keycode == KEY_UP) and event.pressed:
+		if !%Suggestions.visible:
+			_on_Search_text_changed('', true)
+			current_selected = -1
+		if event.keycode == KEY_DOWN:
+			current_selected = wrapi(current_selected+1, 0, %Suggestions.item_count)
+		if event.keycode == KEY_UP:
+			current_selected = wrapi(current_selected-1, 0, %Suggestions.item_count)
+		%Suggestions.select(current_selected)
+		%Suggestions.ensure_current_is_visible()
+
+func _on_search_focus_entered():
+	if %Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
+		_on_Search_text_changed("")
+	%Search.call_deferred('select_all')
+	%Focus.show()
+
+
+func _on_search_focus_exited():
+	%Focus.hide()
+	if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
+		hide_suggestions()
 
 ################################################################################
 ##	 					DRAG AND DROP
@@ -227,26 +254,3 @@ func _drop_data(position, data) -> void:
 		set_value(file)
 		emit_signal("value_changed", property_name, file)
 
-
-func _on_focus_entered():
-	%Search.grab_focus()
-
-func _on_search_gui_input(event):
-	if event is InputEventKey and (event.keycode == KEY_DOWN or event.keycode == KEY_UP) and event.pressed:
-		if !%Suggestions.visible:
-			_on_Search_text_changed('', true)
-			current_selected = -1
-		if event.keycode == KEY_DOWN:
-			current_selected = wrapi(current_selected+1, 0, %Suggestions.item_count)
-		if event.keycode == KEY_UP:
-			current_selected = wrapi(current_selected-1, 0, %Suggestions.item_count)
-		%Suggestions.select(current_selected)
-		%Suggestions.ensure_current_is_visible()
-
-func _on_search_focus_entered():
-	%Focus.show()
-
-func _on_search_focus_exited():
-	%Focus.hide()
-	if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
-		hide_suggestions()
