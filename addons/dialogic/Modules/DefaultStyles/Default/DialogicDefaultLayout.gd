@@ -18,7 +18,6 @@ enum Alignments {Left, Center, Right}
 @export var box_size : Vector2 = Vector2(550, 110)
 
 @export_subgroup("Name Label")
-#@export var name_label_alignment = Alignments.Left
 @export var name_label_font_size := 15
 @export_file('*.ttf') var name_label_font : String = ""
 @export var name_label_use_character_color := true

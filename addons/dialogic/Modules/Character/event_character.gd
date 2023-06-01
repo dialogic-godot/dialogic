@@ -71,99 +71,46 @@ func _execute() -> void:
 	match action_type:
 		ActionTypes.Join:
 			if character:
-				if !dialogic.Portraits.is_character_joined(character):
-					var n = dialogic.Portraits.add_portrait(character, portrait, position, mirrored, z_index, extra_data)
-					
-					if n:
-						if animation_name.is_empty():
-							animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', 
-			get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))
-							animation_length = ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
-							animation_wait = ProjectSettings.get_setting('dialogic/animations/join_default_wait', true)
-						if animation_name:
-							var anim:DialogicAnimation = dialogic.Portraits.animate_portrait(character, animation_name, animation_length, animation_repeats)
-							
-							if animation_wait:
-								dialogic.current_state = Dialogic.states.ANIMATING
-								await anim.finished
-								dialogic.current_state = Dialogic.states.IDLE
-						
-						if dialogic.has_subsystem('History'):
-							dialogic.History.store_simple_history_entry(character.display_name + " joined", event_name, {'character': character.display_name, 'mode':'Join'})
-					
-				else:
-					dialogic.Portraits.change_portrait(character, portrait, false)
-					if animation_name.is_empty():
-						animation_length = ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
-					dialogic.Portraits.move_portrait(character, position, animation_length)
-					
-					
+				if dialogic.has_subsystem('History') and !dialogic.Portraits.is_character_joined(character):
+					dialogic.History.store_simple_history_entry(character.display_name + " joined", event_name, {'character': character.display_name, 'mode':'Join'})
+			
+				await dialogic.Portraits.join_character(character, portrait, position, mirrored, z_index, extra_data, animation_name, animation_length, animation_wait)
+
 		ActionTypes.Leave:
 			if _character_from_directory == '--All--':
-				if animation_name.is_empty():
-					animation_name = ProjectSettings.get_setting('dialogic/animations/leave_default', 
-							get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
-					animation_length = ProjectSettings.get_setting('dialogic/animations/leave_default_length', 0.5) 
-					animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
-				
-				if animation_name:
-					for chara in dialogic.Portraits.get_joined_characters():
-						var anim = dialogic.Portraits.animate_portrait(chara, animation_name, animation_length, animation_repeats)
-						
-						anim.finished.connect(dialogic.Portraits.remove_portrait.bind(chara))
-						
-						if animation_wait:
-							dialogic.current_state = Dialogic.states.ANIMATING
-							await anim.finished
-							dialogic.current_state = Dialogic.states.IDLE
-				
-				else:
-					for chara in dialogic.Portraits.get_joined_characters():
-						dialogic.Portraits.remove_portrait(chara)
-				
-				if dialogic.has_subsystem('History'):
+				if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
-					
-			elif character:
-				if dialogic.Portraits.is_character_joined(character):
-					if animation_name.is_empty():
-						animation_name = ProjectSettings.get_setting('dialogic/animations/leave_default', 
-								get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
-						animation_length = ProjectSettings.get_setting('dialogic/animations/leave_default_length', 0.5) 
-						animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
-					
-					if animation_name:
-						var anim = dialogic.Portraits.animate_portrait(character, animation_name, animation_length, animation_repeats)
-						
-						anim.finished.connect(dialogic.Portraits.remove_portrait.bind(character))
-						
-						if animation_wait:
-							dialogic.current_state = Dialogic.states.ANIMATING
-							await anim.finished
-							dialogic.current_state = Dialogic.states.IDLE
-					else:
-						dialogic.Portraits.remove_portrait(character)
-					if dialogic.has_subsystem('History'):
-						dialogic.History.store_simple_history_entry(character.display_name+" left", event_name, {'character': character.display_name, 'mode':'Leave'})
+				
+				await dialogic.Portraits.leave_all_characters(animation_name, animation_length, animation_wait)
 			
+			elif character:
+				if dialogic.has_subsystem('History') and dialogic.Portraits.is_character_joined(character):
+					dialogic.History.store_simple_history_entry(character.display_name+" left", event_name, {'character': character.display_name, 'mode':'Leave'})
+				
+				await dialogic.Portraits.leave_character(character, animation_name, animation_length, animation_wait)
+		
 		ActionTypes.Update:
-			if character:
-				if dialogic.Portraits.is_character_joined(character):
-					dialogic.Portraits.change_portrait(character, portrait, false)
-					dialogic.Portraits.change_portrait_mirror(character, mirrored)
-					if _update_zindex:
-						dialogic.Portraits.change_portrait_z_index(character, z_index)
-					if position != 0:
-						dialogic.Portraits.move_portrait(character, position, position_move_time)
-					
-					if animation_name:
-						var anim = dialogic.Portraits.animate_portrait(character, animation_name, animation_length, animation_repeats)
-						
-						if animation_wait:
-							dialogic.current_state = Dialogic.states.ANIMATING
-							await anim.finished
-							dialogic.current_state = Dialogic.states.IDLE
-					
+			if !character or !dialogic.Portraits.is_character_joined(character):
+				finish()
+				return
+			
+			dialogic.Portraits.change_character_portrait(character, portrait, false)
+			dialogic.Portraits.change_character_mirror(character, mirrored)
+			
+			if _update_zindex:
+				dialogic.Portraits.change_character_z_index(character, z_index)
+			
+			if position != 0:
+				dialogic.Portraits.move_character(character, position, position_move_time)
+			
+			if animation_name:
+				var anim :DialogicAnimation = dialogic.Portraits.animate_character(character, animation_name, animation_length, animation_repeats)
+				
+				if animation_wait:
+					dialogic.current_state = Dialogic.states.ANIMATING
+					await anim.finished
+					dialogic.current_state = Dialogic.states.IDLE
+			
 	finish()
 
 

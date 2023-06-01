@@ -14,7 +14,6 @@ func _ready():
 func refresh():
 	%CustomAnimationsFolder.resource_icon = get_theme_icon("Folder", "EditorIcons")
 	%CustomAnimationsFolder.set_value(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'))
-	%PortraitMode.select(ProjectSettings.get_setting('dialogic/portrait_mode', 0))
 	
 	%JoinDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 	%LeaveDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
@@ -77,9 +76,4 @@ func list_animations() -> Array:
 
 func custom_anims_folder_selected(setting:String, path:String):
 	ProjectSettings.set_setting('dialogic/animations/custom_folder', path)
-	ProjectSettings.save()
-
-
-func _on_PortraitMode_item_selected(index):
-	ProjectSettings.set_setting('dialogic/portrait_mode', index)
 	ProjectSettings.save()

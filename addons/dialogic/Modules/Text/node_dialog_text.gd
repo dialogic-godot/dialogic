@@ -64,7 +64,7 @@ func continue_reveal() -> void:
 		revealing = true
 		visible_characters += 1
 		if visible_characters > -1 and visible_characters <= len(get_parsed_text()):
-			emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-1])
+			continued_revealing_text.emit(get_parsed_text()[visible_characters-1])
 	else:
 		finish_text()
 

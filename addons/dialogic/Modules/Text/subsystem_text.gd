@@ -63,10 +63,17 @@ func resume() -> void:
 ####################################################################################################
 
 ## Applies modifiers, effects and coloring to the text
-func parse_text(text:String) -> String:
-	text = parse_text_modifiers(text)
-	text = parse_text_effects(text)
-	text = color_names(text)
+func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true, effects:= true, color_names:= true) -> String:
+	if variables and dialogic.has_subsystem('VAR'):
+		text = dialogic.VAR.parse_variables(text)
+	if glossary and dialogic.has_subsystem('Glossary'):
+		text = dialogic.Glossary.parse_glossary(text)
+	if modifiers:
+		text = parse_text_modifiers(text)
+	if effects:
+		text = parse_text_effects(text)
+	if color_names:
+		text = color_names(text)
 	return text
 
 
@@ -256,16 +263,21 @@ func collect_text_effects() -> void:
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
 	parsed_text_effect_info.clear()
+	var rtl := RichTextLabel.new()
+	rtl.bbcode_enabled = true
 	var position_correction := 0
+	var bbcode_correction := 0
 	for effect_match in text_effects_regex.search_all(text):
+		rtl.text = text.substr(0, effect_match.get_start())
+		bbcode_correction = effect_match.get_start()-len(rtl.get_parsed_text())
 		# append [index] = [command, value] to effects dict
-		parsed_text_effect_info.append({'index':effect_match.get_start()-position_correction, 'execution_info':text_effects[effect_match.get_string('command')], 'value': effect_match.get_string('value').strip_edges()})
+		parsed_text_effect_info.append({'index':effect_match.get_start()-position_correction-bbcode_correction, 'execution_info':text_effects[effect_match.get_string('command')], 'value': effect_match.get_string('value').strip_edges()})
 		
-		## TODO MIGHT BE BROKEN, because I had to replace string.erase for godot 4
 		text = text.substr(0,effect_match.get_start()-position_correction)+text.substr(effect_match.get_start()-position_correction+len(effect_match.get_string()))
 		
 		position_correction += len(effect_match.get_string())
 	text = text.replace('\\[', '[')
+	rtl.queue_free()
 	return text
 
 
@@ -313,12 +325,12 @@ func _ready():
 	collect_text_effects()
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
-	input_handler = Node.new()
+	
 	autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?![\\w\\s]*[\\]\\}])')] = autopause_data[i]
-		
+		autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*[\\]\\}]|$))')] = autopause_data[i]
+	input_handler = Node.new()
 	input_handler.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler)
 
