@@ -34,6 +34,8 @@ enum Alignments {Left, Center, Right}
 @export var next_indicator_show_on_questions := true
 @export var next_indicator_show_on_autoadvance := false
 
+@export_subgroup('Portraits')
+@export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FitScaleHeight
 
 func _ready():
 	add_to_group('dialogic_main_node')
@@ -94,4 +96,7 @@ func _apply_export_overrides():
 			%NextIndicator.texture = load(next_indicator_texture)
 		%NextIndicator.show_on_questions = next_indicator_show_on_questions
 		%NextIndicator.show_on_autoadvance = next_indicator_show_on_autoadvance
-
+	
+	## PORTRAIT SETTINGS
+	for child in %Portraits.get_children():
+		child.size_mode = portrait_size_mode

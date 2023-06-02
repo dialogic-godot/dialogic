@@ -385,14 +385,14 @@ func duplicate_item(item:TreeItem) -> void:
 
 
 func _input(event:InputEvent) -> void:
-	if !is_visible_in_tree() or !name+'/' in str(get_viewport().gui_get_focus_owner().get_path()):
+	if !is_visible_in_tree() or (get_viewport().gui_get_focus_owner()!= null and !name+'/' in str(get_viewport().gui_get_focus_owner().get_path())):
 		return
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_F2 and %PortraitTree.get_selected():
 			%PortraitTree.get_selected().set_editable(0, true)
 			%PortraitTree.edit_selected()
 			get_viewport().set_input_as_handled()
-		elif event.keycode == KEY_DELETE and %PortraitTree.get_selected():
+		elif event.keycode == KEY_DELETE and get_viewport().gui_get_focus_owner() is Tree and %PortraitTree.get_selected():
 			delete_portrait_item(%PortraitTree.get_selected())
 			get_viewport().set_input_as_handled()
 
