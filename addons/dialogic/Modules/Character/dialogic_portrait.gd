@@ -1,4 +1,4 @@
-class_name DialogicDefaultPortrait
+class_name DialogicPortrait
 extends Node
 
 ## Default portrait class.

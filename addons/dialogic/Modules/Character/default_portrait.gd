@@ -1,5 +1,5 @@
 @tool
-extends DialogicDefaultPortrait
+extends DialogicPortrait
 
 ## Default portrait scene.
 
