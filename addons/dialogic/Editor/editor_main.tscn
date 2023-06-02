@@ -27,7 +27,7 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8d6a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_127tv"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -93,11 +93,10 @@ script = ExtResource("4_6cx8s")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Change the look of the dialog in your game"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_n8d6a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_127tv")
 
 [node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
 unique_name_in_owner = true
@@ -112,11 +111,9 @@ theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_1qqdn")
 [node name="HomePage" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("4_vey4f")]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 60
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("5_e5v7u")]
-visible = false
 layout_mode = 2
 metadata/_tab_name = "Timeline"
 
@@ -131,6 +128,14 @@ layout_mode = 2
 
 [node name="ResourceHelper" type="Node" parent="Margin/EditorsManager"]
 script = ExtResource("7_1xvr0")
+
+[node name="ReferenceManager" type="Node" parent="Margin/EditorsManager"]
+
+[node name="ReplaceHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
+
+[node name="TimelineHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
+
+[node name="VariableHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
