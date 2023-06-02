@@ -10,6 +10,7 @@ var drag_preview :Control = null
 
 var parent_Group :Control = null
 
+var reference_manager : Node = null
 
 ################################################################################
 ##				FUNCTIONALITY
@@ -40,10 +41,15 @@ func add_data(data:Dictionary) -> void:
 			%Content.add_child(Group)
 			Group.update()
 			Group.load_data(key, data[key], self)
+
+			Group.reference_manager = reference_manager
 		else:
 			var field :Control = load(FieldScenePath).instantiate()
 			%Content.add_child(field)
 			field.load_data(key, data[key], self)
+
+			field.variable_value_changed.connect(reference_manager._on_variable_value_changed)
+			field.variable_removed.connect(reference_manager._on_variable_removed)
 
 func check_data() -> void:
 	var names := []

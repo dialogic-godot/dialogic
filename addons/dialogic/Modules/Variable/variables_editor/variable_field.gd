@@ -4,6 +4,11 @@ extends PanelContainer
 var parent_Group :Control = null
 var preview_scene = get_script().resource_path.get_base_dir().path_join("variable_drag_preview.tscn")
 
+var old_value : String = ""
+var new_value : String = ""
+
+signal variable_value_changed(old_value, new_value)
+signal variable_removed(variable)
 
 ################################################################################
 ##				FUNCTIONALITY
@@ -67,6 +72,7 @@ func _ready() -> void:
 
 
 func _on_DeleteButton_pressed() -> void:
+	variable_removed.emit(%NameEdit.text)
 	queue_free()
 
 
@@ -78,12 +84,24 @@ func _on_NameEdit_gui_input(event:InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func _on_NameEdit_focus_entered() -> void:
+	old_value = %NameEdit.text
+
+
 func _on_NameEdit_focus_exited() -> void:
 	_on_name_edit_text_submitted(%NameEdit.text)
 
 
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	%NameEdit.text = new_text.replace(' ', '_')
+
+	new_value = %NameEdit.text
+
+	if old_value != new_value:
+		variable_value_changed.emit(old_value, new_value)
+	
+	old_value = new_value
+
 	disable_name_edit()
 
 

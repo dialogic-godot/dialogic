@@ -14,6 +14,10 @@ var resource_helper: Node:
 	get:
 		return get_node("ResourceHelper")
 
+var reference_manager: Node:
+	get:
+		return get_node("ReferenceManager")
+
 ## Information on supported resources and registered editors
 var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://de6yhw4r8jqb3"]
+[gd_scene load_steps=17 format=3 uid="uid://de6yhw4r8jqb3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://dlskc36c5hrwv" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn" id="6_y5x3e"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
 [ext_resource type="PackedScene" uid="uid://dganirw26brfb" path="res://addons/dialogic/Editor/Settings/settings_editor.tscn" id="7_lqfl7"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/References/reference_manager.gd" id="10_jpnuu"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/References/replace_handler.gd" id="11_md88o"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/References/timeline_handler.gd" id="12_6cdtw"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/References/variable_handler.gd" id="13_sl7x1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lxu4"]
 content_margin_left = 4.0
@@ -130,12 +134,16 @@ layout_mode = 2
 script = ExtResource("7_1xvr0")
 
 [node name="ReferenceManager" type="Node" parent="Margin/EditorsManager"]
+script = ExtResource("10_jpnuu")
 
 [node name="ReplaceHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
+script = ExtResource("11_md88o")
 
 [node name="TimelineHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
+script = ExtResource("12_6cdtw")
 
 [node name="VariableHandler" type="Node" parent="Margin/EditorsManager/ReferenceManager"]
+script = ExtResource("13_sl7x1")
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)

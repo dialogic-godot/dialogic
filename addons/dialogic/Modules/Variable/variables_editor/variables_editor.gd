@@ -16,6 +16,8 @@ func _open(argument:Variant = null):
 	%MainVariableGroup.update()
 	%MainVariableGroup.load_data('Variables', ProjectSettings.get_setting('dialogic/variables', {}))
 
+	%MainVariableGroup.reference_manager = editors_manager.reference_manager
+
 func _save():
 	ProjectSettings.set_setting('dialogic/variables', %MainVariableGroup.get_data())
 	ProjectSettings.save()
