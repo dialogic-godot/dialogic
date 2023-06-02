@@ -7,11 +7,13 @@ extends DialogicEditor
 var editor_mode_toggle_button : Button
 var current_editor_mode: int = 0 # 0 = visal, 1 = text
 
+signal timeline_saved(timeline)
 
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:
 	resource_unsaved.connect(_on_resource_unsaved)
 	resource_saved.connect(_on_resource_saved)
+	timeline_saved.connect(editors_manager.reference_manager._on_timeline_saved)
 	
 	# register editor
 	editors_manager.register_resource_editor('dtl', self)
@@ -120,6 +122,8 @@ func _on_resource_unsaved():
 func _on_resource_saved():
 	if current_resource:
 		current_resource.set_meta("timeline_not_saved", false)
+	
+	timeline_saved.emit(current_resource)
 
 
 func new_timeline(path:String) -> void:

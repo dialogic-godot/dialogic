@@ -11,13 +11,16 @@ var timeline_references : Dictionary = {}
 # }
 var variable_references : Dictionary = {}
 
+## TIMELINES
+
+func _on_timeline_saved(timeline: DialogicTimeline):
+	print("TIMELINE SAVED::" + str(timeline))
+	
 
 ## VARIABLES
 
 func _on_variable_value_changed(old_value: String, new_value: String):
 	print("OLD::" + old_value + "::NEW::" + new_value)
-	pass
 
 func _on_variable_removed(variable: String):
 	print("REMOVED::" + variable)
-	pass
