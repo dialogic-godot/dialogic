@@ -214,6 +214,7 @@ func _change_portrait_z_index(character_node:Node2D, z_index:int, update_zindex:
 
 
 func _remove_portrait(character_node:Node2D) -> void:
+	character_node.get_parent().remove_child(character_node)
 	character_node.queue_free()
 
 
