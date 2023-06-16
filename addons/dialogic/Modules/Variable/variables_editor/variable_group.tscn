@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://glhi311f3lw5"]
+[gd_scene load_steps=8 format=3 uid="uid://glhi311f3lw5"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Variable/variables_editor/variable_group.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://qhuk0fuwxbtq" path="res://addons/dialogic/Modules/Variable/add-variable.svg" id="2_fps1u"]
+[ext_resource type="Texture2D" uid="uid://babwe22dqjta" path="res://addons/dialogic/Editor/Images/Pieces/add-folder.svg" id="3_iwkll"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7k4ja"]
 content_margin_left = 5.0
@@ -17,7 +18,7 @@ corner_radius_top_left = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id="Image_52btc"]
+[sub_resource type="Image" id="Image_liwq5"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -26,8 +27,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_q204v"]
-image = SubResource("Image_52btc")
+[sub_resource type="ImageTexture" id="ImageTexture_futpu"]
+image = SubResource("Image_liwq5")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rhdj5"]
 
@@ -49,7 +50,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 6
-texture = SubResource("ImageTexture_q204v")
+texture = SubResource("ImageTexture_futpu")
 expand_mode = 2
 stretch_mode = 3
 
@@ -84,21 +85,21 @@ flat = true
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add new Group"
-icon = SubResource("ImageTexture_q204v")
+icon = ExtResource("3_iwkll")
 flat = true
 
 [node name="DuplicateButton" type="Button" parent="sw/MainBar"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Duplicate Group"
-icon = SubResource("ImageTexture_q204v")
+icon = SubResource("ImageTexture_futpu")
 flat = true
 
 [node name="DeleteButton" type="Button" parent="sw/MainBar"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete Group"
-icon = SubResource("ImageTexture_q204v")
+icon = SubResource("ImageTexture_futpu")
 flat = true
 
 [node name="FoldButton" type="Button" parent="sw/MainBar"]
@@ -106,7 +107,7 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Hide/Show content"
 toggle_mode = true
-icon = SubResource("ImageTexture_q204v")
+icon = SubResource("ImageTexture_futpu")
 flat = true
 
 [node name="ContentKeeper" type="HBoxContainer" parent="sw"]
@@ -155,6 +156,7 @@ theme_override_constants/separation = 0
 
 [connection signal="gui_input" from="." to="." method="_on_VariableGroup_gui_input"]
 [connection signal="mouse_exited" from="." to="." method="_on_VariableGroup_mouse_exited"]
+[connection signal="focus_entered" from="sw/MainBar/NameEdit" to="." method="_on_NameEdit_focus_entered"]
 [connection signal="focus_exited" from="sw/MainBar/NameEdit" to="." method="_on_NameEdit_focus_exited"]
 [connection signal="gui_input" from="sw/MainBar/NameEdit" to="." method="_on_NameEdit_gui_input"]
 [connection signal="text_submitted" from="sw/MainBar/NameEdit" to="." method="_on_name_edit_text_submitted"]

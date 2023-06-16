@@ -1,7 +1,6 @@
 @tool
 extends Node
 
-
 const TIMELINE_REF_SETTINGS_PATH = 'dialogic/references/timelines'
 const VARIABLE_REF_SETTINGS_PATH = 'dialogic/references/variables'
 
@@ -72,5 +71,33 @@ func _on_variable_value_changed(old_value: String, new_value: String):
 
 func _on_variable_removed(variable: String):
 	$VariableHandler.remove_key_in_references(variable)
+
+#	ProjectSettings.set_setting(VARIABLE_REF_SETTINGS_PATH, variable_references)
+
+func _on_variable_group_value_changed(old_group: String, new_group: String):
+	var keysContainingOldGroup : Array = []
+	for key in variable_references.keys():
+		if key.begins_with(old_group):
+			keysContainingOldGroup.append(key)
+	
+	if keysContainingOldGroup.is_empty():
+		printerr("There is no variable reference with the group: " + old_group)
+		return
+
+	for old_key in keysContainingOldGroup:
+		var new_key = old_key.replace(old_group, new_group)
+		var old_key_formatted = $VariableHandler.format_as_variable(old_key)
+		var new_key_formatted = $VariableHandler.format_as_variable(new_key)
+		$VariableHandler.update_key_in_references(old_key, new_key)
+		$ReplaceHandler.replace(old_key_formatted, new_key_formatted, variable_references[new_key])
+
+#	ProjectSettings.set_setting(VARIABLE_REF_SETTINGS_PATH, variable_references)
+	
+
+func _on_variable_group_removed(variable_group: String):
+	var keysContainingOldGroup : Array = []
+	for key in variable_references.keys():
+		if key.begins_with(variable_group):
+			$VariableHandler.remove_key_in_references(key)
 
 #	ProjectSettings.set_setting(VARIABLE_REF_SETTINGS_PATH, variable_references)

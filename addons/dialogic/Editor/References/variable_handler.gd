@@ -26,7 +26,6 @@ func remove_key_in_references(variable: String):
 
 
 func store_timeline(timeline: DialogicTimeline):
-	print(timeline_references)
 	for variable in timeline_references[timeline][VARIABLES]:
 		if !variable_references.has(variable):
 			printerr("Variable: " + variable + ". Don't exist in the current project!")

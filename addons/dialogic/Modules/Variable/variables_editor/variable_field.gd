@@ -7,8 +7,8 @@ var preview_scene = get_script().resource_path.get_base_dir().path_join("variabl
 var old_value : String = ""
 var new_value : String = ""
 
-signal variable_value_changed(old_value, new_value)
-signal variable_removed(variable)
+signal variable_value_changed(old_value: String, new_value: String)
+signal variable_removed(variable: String)
 
 ################################################################################
 ##				FUNCTIONALITY
@@ -85,6 +85,10 @@ func _on_NameEdit_gui_input(event:InputEvent) -> void:
 
 
 func _on_NameEdit_focus_entered() -> void:
+	if parent_Group:
+		old_value = parent_Group.get_group_path() + %NameEdit.text
+		return
+
 	old_value = %NameEdit.text
 
 
@@ -95,13 +99,15 @@ func _on_NameEdit_focus_exited() -> void:
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	%NameEdit.text = new_text.replace(' ', '_')
 
-	new_value = %NameEdit.text
+	if parent_Group:
+		new_value = parent_Group.get_group_path() + %NameEdit.text
+	else:
+		new_value = %NameEdit.text
 
 	if old_value != new_value:
 		variable_value_changed.emit(old_value, new_value)
 	
 	old_value = new_value
-
 	disable_name_edit()
 
 

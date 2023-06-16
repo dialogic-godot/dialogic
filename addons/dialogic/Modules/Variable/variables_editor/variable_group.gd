@@ -12,6 +12,12 @@ var parent_Group :Control = null
 
 var reference_manager : Node = null
 
+var old_value : String = ""
+var new_value : String = ""
+
+signal variable_group_value_changed(old_value: String, new_value: String)
+signal variable_group_removed(variable_group: String)
+
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
@@ -24,6 +30,30 @@ func get_data() -> Dictionary:
 	for child in %Content.get_children():
 		data[child.get_item_name()] = child.get_data()
 	return data
+	
+func get_group_path() -> String:
+	if MainGroup:
+		return ""
+
+	if parent_Group.MainGroup:
+		return %NameEdit.text + '.'
+
+	# Get parent groups
+	var parent_groups : Array = []
+	var current := parent_Group
+	while !current.MainGroup:
+		parent_groups.append(current.get_item_name() + '.')
+		current = current.parent_Group
+	
+	parent_groups.reverse()
+
+	# Create variable path
+	var path = ""
+
+	for group in parent_groups:
+		path = path + group
+
+	return path + %NameEdit.text + '.'
 
 func load_data(group_name:String , data:Dictionary, _parent_Group:Control = null) -> void:
 	if not MainGroup:
@@ -43,10 +73,19 @@ func add_data(data:Dictionary) -> void:
 			Group.load_data(key, data[key], self)
 
 			Group.reference_manager = reference_manager
+			Group.variable_group_value_changed.connect(reference_manager._on_variable_group_value_changed)
+			Group.variable_group_removed.connect(reference_manager._on_variable_group_removed)
 		else:
 			var field :Control = load(FieldScenePath).instantiate()
 			%Content.add_child(field)
 			field.load_data(key, data[key], self)
+
+			# Get reference manager from MainGroup
+			if reference_manager == null:
+				var current := parent_Group
+				while !current.MainGroup:
+					current = current.parent_Group
+				reference_manager = current.reference_manager
 
 			field.variable_value_changed.connect(reference_manager._on_variable_value_changed)
 			field.variable_removed.connect(reference_manager._on_variable_removed)
@@ -188,6 +227,7 @@ func no_warning() -> void:
 	modulate = Color(1,1,1,1)
 
 func _on_DeleteButton_pressed() -> void:
+	variable_group_removed.emit(get_group_path())
 	queue_free()
 
 
@@ -217,7 +257,17 @@ func _on_NameEdit_gui_input(event:InputEvent) -> void:
 		if not MainGroup:
 			%NameEdit.editable = true
 
+func _on_NameEdit_focus_entered() -> void:
+	old_value = get_group_path()
+
 func _on_name_edit_text_submitted(new_text:String) -> void:
+	%NameEdit.text = %NameEdit.text.replace(' ', '_')
+	new_value = get_group_path()
+
+	if old_value != new_value:
+		variable_group_value_changed.emit(old_value, new_value)
+
+	old_value = new_value
 	disable_name_edit()
 
 func _on_NameEdit_focus_exited() -> void:
