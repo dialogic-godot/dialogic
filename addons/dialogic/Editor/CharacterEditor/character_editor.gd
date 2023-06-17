@@ -60,8 +60,6 @@ func _open_resource(resource:Resource) -> void:
 			%CharacterName.text = character.unique_short_path
 	
 	$NoCharacterScreen.hide()
-	
-	
 
 
 func _save() -> void:
@@ -239,6 +237,8 @@ func setup_portrait_list_tab() -> void:
 	
 	%PortraitTree.item_selected.connect(load_selected_portrait)
 	%PortraitTree.item_edited.connect(_on_item_edited)
+	%PortraitTree.item_activated.connect(func(): %PortraitTree.get_selected().set_editable(0, true); %PortraitTree.edit_selected())
+
 
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
@@ -273,7 +273,10 @@ func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary=
 			parent = %PortraitTree.get_selected()
 		else:
 			parent = %PortraitTree.get_selected().get_parent()
-	%PortraitTree.add_portrait_item(portrait_name, portrait_data, parent).select(0)
+	var item :TreeItem = %PortraitTree.add_portrait_item(portrait_name, portrait_data, parent)
+	item.set_editable(0, true)
+	item.select(0)
+	%PortraitTree.call_deferred('edit_selected')
 	something_changed()
 
 
@@ -281,7 +284,10 @@ func add_portrait_group() -> void:
 	var parent_item :TreeItem = %PortraitTree.get_root()
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent_item = %PortraitTree.get_selected()
-	%PortraitTree.add_portrait_group("Group", parent_item)
+	var item :TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
+	item.set_editable(0, true)
+	item.select(0)
+	%PortraitTree.call_deferred('edit_selected')
 
 
 func load_portrait_tree() -> void:
@@ -343,10 +349,10 @@ func list_portraits(tree_items:Array[TreeItem], dict:Dictionary = {}, path_prefi
 func load_selected_portrait():
 	if selected_item and is_instance_valid(selected_item):
 		selected_item.set_editable(0, false)
-
+	
 	selected_item = %PortraitTree.get_selected()
-
-	if selected_item and !selected_item.get_metadata(0).has('group'):
+	
+	if selected_item and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PortraitSettingsSection.show()
 		var current_portrait_data :Dictionary = selected_item.get_metadata(0)
 		portrait_selected.emit(%PortraitTree.get_full_item_name(selected_item), current_portrait_data)
@@ -378,6 +384,17 @@ func duplicate_item(item:TreeItem) -> void:
 	%PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0).duplicate(true), item.get_parent()).select(0)
 
 
+func _input(event:InputEvent) -> void:
+	if !is_visible_in_tree() or (get_viewport().gui_get_focus_owner()!= null and !name+'/' in str(get_viewport().gui_get_focus_owner().get_path())):
+		return
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F2 and %PortraitTree.get_selected():
+			%PortraitTree.get_selected().set_editable(0, true)
+			%PortraitTree.edit_selected()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_DELETE and get_viewport().gui_get_focus_owner() is Tree and %PortraitTree.get_selected():
+			delete_portrait_item(%PortraitTree.get_selected())
+			get_viewport().set_input_as_handled()
 
 func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# DELETE BUTTON
@@ -410,6 +427,7 @@ func _on_item_edited():
 	if selected_item:
 		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == current_resource.default_portrait:
 			current_resource.default_portrait = %PortraitTree.get_full_item_name(selected_item)
+		selected_item.set_editable(0, false)
 	update_preview()
 
 
@@ -420,7 +438,7 @@ func _on_item_edited():
 
 func update_preview() -> void:
 	%ScenePreviewWarning.hide()
-	if selected_item and is_instance_valid(selected_item) and !selected_item.get_metadata(0).has('group'):
+	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 		
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)

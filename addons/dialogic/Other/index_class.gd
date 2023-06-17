@@ -78,7 +78,7 @@ func scan_for_layouts() -> Array[Dictionary]:
 				'name': config.get_value('style', 'name', 'Unnamed Layout'),
 				'path': this_folder.path_join(dir_name).path_join(config.get_value('style', 'scene')),
 				'author': config.get_value('style', 'author', 'Anonymous'),
-				'description': config.get_value('style', 'descriptin', 'No description'),
+				'description': config.get_value('style', 'description', 'No description'),
 				'preview_image': [config.get_value('style', 'image', default_image_path)]
 			})
 		dir_name = dir.get_next()

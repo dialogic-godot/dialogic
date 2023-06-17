@@ -60,10 +60,10 @@ func create_necessary_group_items(path:String) -> TreeItem:
 	return last_item
 
 
-func _on_item_mouse_selected(pos:Vector2, mouse_button_index):
+func _on_item_mouse_selected(pos:Vector2, mouse_button_index:int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
+		$PortraitRightClickMenu.set_item_disabled(0, get_selected().get_metadata(0).has('group'))
 		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
-		
 
 
 ################################################################################

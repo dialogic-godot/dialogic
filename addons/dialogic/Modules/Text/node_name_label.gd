@@ -18,4 +18,6 @@ func _set(property, what):
 		text = what
 		if hide_when_empty:
 			visible = !what.is_empty()
+		else:
+			show()
 		return true

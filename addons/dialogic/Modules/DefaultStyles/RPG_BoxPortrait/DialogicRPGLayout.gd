@@ -1,9 +1,9 @@
-@tool
 extends CanvasLayer
 
 enum Alignments {Left, Center, Right}
+enum LimitedAlignments {Left=0, Right=1}
 
-@export_group("Main")
+@export_group('Main')
 @export_subgroup("Text")
 @export var text_alignment :Alignments= Alignments.Left
 @export var text_size := 15
@@ -13,31 +13,27 @@ enum Alignments {Left, Center, Right}
 @export_file('*.ttf') var italic_font:String = ""
 @export_file('*.ttf') var bold_italic_font:String = ""
 
-@export_subgroup("Box")
-@export var box_modulate : Color = Color(0.00784313771874, 0.00784313771874, 0.00784313771874, 0.84313726425171)
-@export var box_size : Vector2 = Vector2(550, 110)
-
 @export_subgroup("Name Label")
 @export var name_label_alignment := Alignments.Left
 @export var name_label_font_size := 15
 @export var name_label_color := Color.WHITE
 @export var name_label_use_character_color := true
 @export_file('*.ttf') var name_label_font : String = ""
-@export var name_label_box_modulate : Color = box_modulate
-@export var name_label_box_offset := Vector2.ZERO
+@export var name_label_hide_when_no_character := false
 
+@export_group('Box & Portrait')
+@export_subgroup("Box")
+@export var box_modulate : Color = Color(0.47247135639191, 0.31728461384773, 0.16592600941658)
+@export var box_size : Vector2 = Vector2(600, 160)
+@export var box_distance := 25
+@export var box_corner_radius := 5
+@export var box_padding := 10
+@export_range(-0.3, 0.3) var box_tilt := 0.079
 
-@export_group("Other")
-@export_subgroup("Next Indicator")
-@export var next_indicator_enabled := true
-@export_enum('bounce', 'blink', 'none') var next_indicator_animation := 0
-@export_file("*.png","*.svg") var next_indicator_texture := ''
-@export var next_indicator_show_on_questions := true
-@export var next_indicator_show_on_autoadvance := false
-
-
-@export_subgroup('Portraits')
-@export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FitScaleHeight
+@export_subgroup('Portrait')
+@export var portrait_stretch_factor = 0.3
+@export var portrait_position :LimitedAlignments = LimitedAlignments.Left
+@export var portrait_bg_modulate := Color(0, 0, 0, 0.5137255191803)
 
 
 ## Called by dialogic whenever export overrides might change
@@ -65,9 +61,22 @@ func _apply_export_overrides():
 		%DialogicNode_DialogText.add_theme_font_override("bold_italics_font", load(bold_italic_font))
 	
 	## BOX SETTINGS
-	%DialogTextPanel.self_modulate = box_modulate
-	%DialogTextPanel.custom_minimum_size = box_size
-	%TextInputPanel.self_modulate = box_modulate
+	%Panel.self_modulate = box_modulate
+	%Panel.size = box_size
+	%Panel.position = Vector2(-box_size.x/2, -box_size.y-box_distance)
+	%PortraitPanel.size_flags_stretch_ratio = portrait_stretch_factor
+	
+	var stylebox :StyleBoxFlat = %Panel.get_theme_stylebox('panel', 'PanelContainer')
+	stylebox.set_corner_radius_all(box_corner_radius)
+	stylebox.set_content_margin_all(box_padding)
+	stylebox.skew.x = box_tilt
+	
+	## PORTRAIT SETTINGS
+	%PortraitBackgroundColor.color = portrait_bg_modulate
+	%PortraitPanel.get_parent().move_child(%PortraitPanel, portrait_position)
+	stylebox = %PortraitPanel.get_theme_stylebox('panel', 'Panel')
+	stylebox.set_corner_radius_all(box_corner_radius)
+	stylebox.skew.x = box_tilt
 	
 	## NAME LABEL SETTINGS
 	%DialogicNode_NameLabel.add_theme_font_size_override("font_size", name_label_font_size)
@@ -76,26 +85,7 @@ func _apply_export_overrides():
 		%DialogicNode_NameLabel.add_theme_font_override('font', load(name_label_font))
 	
 	%DialogicNode_NameLabel.add_theme_color_override("font_color", name_label_color)
-	
 	%DialogicNode_NameLabel.use_character_color = name_label_use_character_color
+	%DialogicNode_NameLabel.horizontal_alignment = name_label_alignment
 	
-	%NameLabelPanel.self_modulate = name_label_box_modulate
-	
-	%NameLabelPanel.position = name_label_box_offset+Vector2(0, -50)
-	%NameLabelPanel.anchor_left = name_label_alignment/2.0
-	%NameLabelPanel.anchor_right = name_label_alignment/2.0
-	%NameLabelPanel.grow_horizontal = [1, 2, 0][name_label_alignment]
-	
-	## NEXT INDICATOR SETTINGS
-	if !next_indicator_enabled:
-		%NextIndicator.queue_free()
-	else:
-		%NextIndicator.animation = next_indicator_animation
-		if FileAccess.file_exists(next_indicator_texture):
-			%NextIndicator.texture = load(next_indicator_texture)
-		%NextIndicator.show_on_questions = next_indicator_show_on_questions
-		%NextIndicator.show_on_autoadvance = next_indicator_show_on_autoadvance
-	
-	## PORTRAIT SETTINGS
-	for child in %Portraits.get_children():
-		child.size_mode = portrait_size_mode
+	%DialogicNode_NameLabel.hide_when_empty = name_label_hide_when_no_character
