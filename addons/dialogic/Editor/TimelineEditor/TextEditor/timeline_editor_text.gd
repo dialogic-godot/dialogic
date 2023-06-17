@@ -339,7 +339,7 @@ func _request_code_completion(force):
 	
 	# Text Event Suggestions
 	else:
-		if not ':' in line and symbol == '(':
+		if not ':' in line.substr(0, get_caret_column()) and symbol == '(':
 			var character := completion_text_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(character)
 		if symbol == '[':

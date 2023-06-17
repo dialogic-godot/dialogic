@@ -1,7 +1,7 @@
 class_name DialogicPortrait
 extends Node
 
-## Default portrait class.
+## Default portrait class. Should be extended by custom portraits.
 
 ## Stores the character that this scene displays.
 var character: DialogicCharacter

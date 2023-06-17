@@ -47,9 +47,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 				# remove previous backgrounds
 				for old_bg in node.get_children():
 					
-					if old_bg.has_method('_fade_out'):
-						old_bg._fade_out(fade_time)
-					elif "modulate" in old_bg:
+					if !old_bg._fade_out(fade_time) and "modulate" in old_bg:
 						var tween := old_bg.create_tween()
 						tween.tween_property(old_bg, "modulate", Color.TRANSPARENT, fade_time)
 						tween.tween_callback(old_bg.queue_free)
@@ -70,10 +68,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 					if new_node.has_method('_update_background'):
 						new_node._update_background(argument, fade_time)
 					
-					if new_node.has_method('_fade_in'):
-						new_node._fade_in(fade_time)
-					
-					elif "modulate" in new_node:
+					if !new_node._fade_in(fade_time) and "modulate" in new_node:
 						new_node.modulate = Color.TRANSPARENT
 						var tween := new_node.create_tween()
 						tween.tween_property(new_node, "modulate", Color.WHITE, fade_time)
