@@ -117,7 +117,7 @@ static func str_to_bool(boolstring:String) -> bool:
 	return true if boolstring == "true" else false
 
 
-static func logical_convert(value:String) -> Variant:
+static func logical_convert(value:Variant) -> Variant:
 	if typeof(value) == TYPE_STRING:
 		if value.is_valid_int():
 			return value.to_int()
