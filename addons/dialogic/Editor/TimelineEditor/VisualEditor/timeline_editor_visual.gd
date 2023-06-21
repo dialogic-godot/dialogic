@@ -315,8 +315,9 @@ func _input(event:InputEvent) -> void:
 		return
 	if !((event is InputEventKey or !event is InputEventWithModifiers) and is_visible_in_tree()):
 		return
-	if !event.pressed:
-		return
+	if "pressed" in event:
+		if !event.pressed:
+			return
 	match event.as_text():
 		"Ctrl+Z": # UNDO
 			TimelineUndoRedo.undo()
