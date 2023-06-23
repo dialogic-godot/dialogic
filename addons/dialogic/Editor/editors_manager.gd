@@ -13,7 +13,9 @@ signal editor_changed(previous, current)
 var resource_helper: Node:
 	get:
 		return get_node("ResourceHelper")
-
+var reference_manager: Node:
+	get:
+		return get_node("../../ReferenceManager")
 ## Information on supported resources and registered editors
 var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null
@@ -62,10 +64,10 @@ func register_simple_editor(editor:DialogicEditor) -> void:
 
 
 ## Call to add an icon button. These buttons are always visible.
-func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor) -> Node:
+func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor=null) -> Node:
 	var button: Button = sidebar.add_icon_button(icon, tooltip)
-	editors[editor.name]['buttons'].append(button)
-	button.pressed.connect(_on_sidebar_button_pressed.bind(button, editor.name))
+	if editor != null:
+		editors[editor.name]['buttons'].append(button)
 	return button
 
 
@@ -73,7 +75,6 @@ func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor) -> Nod
 func add_custom_button(label:String, icon:Texture, editor:DialogicEditor) -> Node:
 	var button: Button = toolbar.add_custom_button(label, icon)
 	editors[editor.name]['buttons'].append(button)
-	button.pressed.connect(_on_sidebar_button_pressed.bind(button, editor.name))
 	button.hide()
 	return button
 
@@ -209,9 +210,6 @@ func save_current_state() -> void:
 ################################################################################
 ## 						HELPERS
 ################################################################################
-
-func _on_sidebar_button_pressed(button:Button, editor_name:String) -> void:
-	pass
 
 
 func get_current_editor() -> DialogicEditor:

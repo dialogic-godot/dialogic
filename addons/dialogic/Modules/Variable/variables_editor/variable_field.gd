@@ -1,9 +1,12 @@
 @tool
 extends PanelContainer
 
+
+var variables_editor :Control = null
 var parent_Group :Control = null
 var preview_scene = get_script().resource_path.get_base_dir().path_join("variable_drag_preview.tscn")
 
+var previous_name :String = ""
 
 ################################################################################
 ##				FUNCTIONALITY
@@ -20,6 +23,7 @@ func get_data() -> String:
 func load_data(var_name:String, var_value:String, _Group:Control) -> void:
 	parent_Group = _Group
 	%NameEdit.text = var_name
+	previous_name = var_name
 	%ValueEdit.text = var_value
 	%NameEdit.grab_focus()
 	%NameEdit.editable = true
@@ -84,6 +88,9 @@ func _on_NameEdit_focus_exited() -> void:
 
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	%NameEdit.text = new_text.replace(' ', '_')
+	if %NameEdit.text != previous_name:
+		variables_editor.variable_renamed(previous_name, %NameEdit.text)
+		previous_name = %NameEdit.text
 	disable_name_edit()
 
 

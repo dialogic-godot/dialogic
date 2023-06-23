@@ -1,6 +1,8 @@
 @tool
 extends PanelContainer
 
+var variables_editor :Control = null
+
 @export var MainGroup: bool = false
 var GroupScenePath :String = get_script().resource_path.get_base_dir().path_join("variable_group.tscn")
 var FieldScenePath :String = get_script().resource_path.get_base_dir().path_join("variable_field.tscn")
@@ -10,7 +12,7 @@ var drag_preview :Control = null
 
 var parent_Group :Control = null
 
-
+var previous_path :String = ""
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
@@ -18,32 +20,55 @@ var parent_Group :Control = null
 func get_item_name() -> String:
 	return %NameEdit.text
 
+func get_group_path() -> String:
+	if MainGroup:
+		return ""
+
+	if parent_Group.MainGroup:
+		return %NameEdit.text
+
+	# Get parent groups
+	var path :String= %NameEdit.text
+	var current := parent_Group
+	while !current.MainGroup:
+		path = current.get_item_name() + '.' + path
+		current = current.parent_Group
+	
+	return path
+
+
 func get_data() -> Dictionary:
-	var data = {}
+	var data := {}
 	for child in %Content.get_children():
 		data[child.get_item_name()] = child.get_data()
 	return data
+
 
 func load_data(group_name:String , data:Dictionary, _parent_Group:Control = null) -> void:
 	if not MainGroup:
 		%NameEdit.text = group_name
 		parent_Group = _parent_Group
+		previous_path = get_group_path()
 	else:
 		clear()
 	
 	add_data(data)
 
+
 func add_data(data:Dictionary) -> void:
 	for key in data.keys():
 		if typeof(data[key]) == TYPE_DICTIONARY:
-			var Group :Control = load(GroupScenePath).instantiate()
-			%Content.add_child(Group)
-			Group.update()
-			Group.load_data(key, data[key], self)
+			var group :Control = load(GroupScenePath).instantiate()
+			group.variables_editor = variables_editor
+			%Content.add_child(group)
+			group.update()
+			group.load_data(key, data[key], self)
 		else:
 			var field :Control = load(FieldScenePath).instantiate()
+			field.variables_editor = variables_editor
 			%Content.add_child(field)
 			field.load_data(key, data[key], self)
+
 
 func check_data() -> void:
 	var names := []
@@ -217,7 +242,11 @@ func _on_name_edit_text_submitted(new_text:String) -> void:
 func _on_NameEdit_focus_exited() -> void:
 	disable_name_edit()
 
+
 func disable_name_edit() -> void:
+	if get_group_path() != previous_path:
+		variables_editor.group_renamed(previous_path, get_group_path(), get_data())
+		previous_path = get_group_path()
 	%NameEdit.editable = false
 	check_data()
 
