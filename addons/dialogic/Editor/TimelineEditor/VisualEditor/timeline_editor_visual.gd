@@ -88,12 +88,13 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	if get_parent().current_resource.events.size() == 0:
 		pass
 	else: 
-		if typeof(get_parent().current_resource.events[0]) == TYPE_STRING:
-			get_parent().current_resource.events_processed = false
-			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
+		await get_parent().current_resource.process()
+		
 		if get_parent().current_resource.events.size() == 0:
 			return
+		
 		var data := resource.events
+		print(data[0])
 		var page := 1
 		var batch_size := 10
 		_batches = []

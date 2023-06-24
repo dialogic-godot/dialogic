@@ -204,7 +204,6 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		var timeline_events := timeline_text.split('\n')
 		timeline_file.close()
 		
-		
 		var offset_correction := 0
 		for replacement in replacement_info:
 			if replacement.timeline != timeline_path:

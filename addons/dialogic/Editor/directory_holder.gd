@@ -4,6 +4,7 @@ extends Node
 ## Node that holds timeline and character directories for use in editor.
 
 
+
 # barebones instance of DGH, with local Editor references to the event cache and charcater directory
 var dialogic_handler: Node 
 
@@ -37,6 +38,8 @@ func rebuild_event_script_cache() -> Array:
 		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 		event_script_cache.push_front(DialogicEndBranchEvent.new())
 		event_script_cache.push_back(DialogicTextEvent.new())
+		
+		Engine.set_meta("dialogic_event_cache", event_script_cache)
 	
 	return event_script_cache
 
@@ -46,7 +49,6 @@ func rebuild_character_directory() -> void:
 	if dialogic_handler != null:		
 		dialogic_handler.rebuild_character_directory()	
 		character_directory = dialogic_handler.character_directory
-		Engine.set_meta("dialogic_character_directory", character_directory)
 
 
 func rebuild_timeline_directory() -> void:
@@ -54,7 +56,6 @@ func rebuild_timeline_directory() -> void:
 	if dialogic_handler != null:		
 		dialogic_handler.rebuild_timeline_directory()	
 		timeline_directory = dialogic_handler.timeline_directory
-		Engine.set_meta("dialogic_timeline_directory", timeline_directory)
 
 
 func get_event_scripts() -> Array:
@@ -62,8 +63,3 @@ func get_event_scripts() -> Array:
 		return event_script_cache
 	else:
 		return rebuild_event_script_cache()
-
-
-func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-	return dialogic_handler.process_timeline(timeline)
-
