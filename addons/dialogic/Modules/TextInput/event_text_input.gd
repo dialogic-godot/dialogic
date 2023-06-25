@@ -26,7 +26,7 @@ var allow_empty : bool = false
 func _execute() -> void:
 	dialogic.current_state = Dialogic.states.WAITING
 	dialogic.TextInput.show_text_input(text, default, placeholder, allow_empty)
-	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed)
+	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed, CONNECT_ONE_SHOT)
 
 
 func _on_DialogicTextInput_input_confirmed(input:String) -> void:
