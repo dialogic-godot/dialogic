@@ -72,12 +72,10 @@ func set_export_override(property_name:String, value:String = "") -> void:
 	var data:Dictionary = selected_item.get_metadata(0)
 	if !data.has('export_overrides'):
 		data['export_overrides'] = {}
-	
 	if !value.is_empty():
 		data['export_overrides'][property_name] = value
 	else:
 		data['export_overrides'].erase(property_name)
-	
 	changed.emit()
 	update_preview.emit()
 
@@ -97,7 +95,7 @@ func _on_export_number_submitted(value:float, property_name:String) -> void:
 	set_export_override(property_name, var_to_str(value))
 
 func _on_export_file_submitted(property_name:String, value:String) -> void:
-	set_export_override(property_name, value)
+	set_export_override(property_name, var_to_str(value))
 
 func _on_export_string_enum_submitted(value:int, property_name:String, list:PackedStringArray):
 	set_export_override(property_name, list[value])
