@@ -2,7 +2,7 @@
 extends DialogicCharacterEditorMainSection
 
 ## The general portrait settings section
-
+var loading := false
 
 func _ready() -> void:
 	# Connecting all necessary signals
@@ -19,6 +19,8 @@ func _ready() -> void:
 
 # Make sure preview get's updated when portrait settings change
 func main_portrait_settings_update(_something=null, _value=null) -> void:
+	if loading: 
+		return
 	character_editor.current_resource.scale = %MainScale.value/100.0
 	character_editor.current_resource.offset = %MainOffset.current_value
 	character_editor.current_resource.mirror = %MainMirror.button_pressed
@@ -32,12 +34,13 @@ func default_portrait_changed(property:String, value:String) -> void:
 
 
 func _load_character(resource:DialogicCharacter) -> void:
+	loading = true
 	%DefaultPortraitPicker.set_value(resource.default_portrait)
 	
 	%MainScale.value = 100*resource.scale
 	%MainOffset.set_value(resource.offset)
 	%MainMirror.button_pressed = resource.mirror
-
+	loading = false
 
 func _save_changes(resource:DialogicCharacter) -> DialogicCharacter:
 	# Portrait settings

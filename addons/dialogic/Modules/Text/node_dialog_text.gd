@@ -13,6 +13,7 @@ enum ALIGNMENT {LEFT, CENTER, RIGHT}
 @export var textbox_root : Node = self
 
 @export var hide_when_empty := false
+@export var start_hidden := true
 
 var revealing := false
 var speed:float = 0.01
@@ -24,7 +25,7 @@ func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
 		text = what
 		if hide_when_empty:
-			visible = !what.is_empty()
+			textbox_root.visible = !what.is_empty()
 		return true
 
 
@@ -33,6 +34,8 @@ func _ready() -> void:
 	add_to_group('dialogic_dialog_text')
 	
 	bbcode_enabled = true
+	if start_hidden:
+		textbox_root.hide()
 	text = ""
 
 

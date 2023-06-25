@@ -469,6 +469,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 # -> returns the layout node 
 func start(timeline:Variant, label:Variant="") -> Node:
 	var scene := add_layout_node()
+	Dialogic.clear(ClearFlags.KeepVariables)
 	Dialogic.start_timeline(timeline, label)
 	return scene
 
@@ -477,8 +478,12 @@ func start(timeline:Variant, label:Variant="") -> Node:
 # The layout scene will always be added to the tree root. 
 # If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
 func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
+	
+	if ProjectSettings.get_setting('dialogic/layout/mode', 0) == 2:
+		return null
+	
 	var scene :Node = null
-	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
+	if get_tree().has_meta('dialogic_layout_node') and is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
 		scene = get_tree().get_meta('dialogic_layout_node', null)
 	
 	# create a new one if none exists or a different one was requested
@@ -527,6 +532,6 @@ func _on_timeline_ended():
 
 
 func has_active_layout_node() -> bool:
-	if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
+	if !get_tree().has_meta('dialogic_layout_node') or !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
 		return false
 	return true

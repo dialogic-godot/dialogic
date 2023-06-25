@@ -37,6 +37,10 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.start_hidden:
+			text_node.textbox_root.hide()
+	
 	set_manualadvance(true)
 
 
