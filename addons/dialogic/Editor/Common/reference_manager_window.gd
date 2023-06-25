@@ -30,7 +30,7 @@ func add_portrait_ref_change(old_name:String, new_name:String, character_name:St
 
 
 func open():
-	popup_centered_ratio(0.6)
+	popup_centered_ratio(0.4)
 	move_to_foreground()
 	grab_focus()
 	$ReferenceManager.open()

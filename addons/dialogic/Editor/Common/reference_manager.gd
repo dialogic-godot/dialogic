@@ -8,6 +8,14 @@ var reference_changes :Array[Dictionary] = []
 
 func _ready():
 	%FindList.hide()
+	
+	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")
+	%Replace.icon = get_theme_icon("ArrowRight", "EditorIcons")
+	%TitleTooltip.texture = get_theme_icon("NodeInfo", "EditorIcons")
+	%TitleTooltip.modulate = get_theme_color("readonly_color", "Editor")
+	
+	%State.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+	
 	self_modulate = get_theme_color("base_color", "Editor")
 
 
@@ -179,9 +187,10 @@ func _on_replace_pressed() -> void:
 		
 		if item.is_checked(0):
 			to_be_repalced.append(item.get_metadata(0))
+			to_be_repalced[-1]['f_item'] = item
 			if !item.get_metadata(0).timeline in affected_timelines:
 				affected_timelines.append(item.get_metadata(0).timeline)
-	
+	print(to_be_repalced)
 	replace(affected_timelines, to_be_repalced)
 
 
@@ -205,12 +214,13 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		var timeline_events := timeline_text.split('\n')
 		timeline_file.close()
 		
+		var idx := 1
 		var offset_correction := 0
 		for replacement in replacement_info:
 			if replacement.timeline != timeline_path:
 				continue
 			
-			%State.text = "Searching '"+timeline_path+"' for "+replacement.info.what+' -> '+replacement.info.forwhat
+			%State.text = "Replacing in '"+timeline_path + "' ("+str(idx)+"/"+str(len(replacement_info))+")"
 			
 			if 'replace' in replacement.match.names:
 				timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
@@ -221,7 +231,7 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 			
 			replacement.info.count -= 1
 			replacement.info.item.set_text(2, str(replacement.info.count))
-			
+			replacement.f_item.set_custom_bg_color(1, get_theme_color("success_color", "Editor").darkened(0.8))
 			progress += 1
 			%SearchProgress.value = 100.0/max_progress*progress
 		
@@ -237,7 +247,9 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		find_parent('EditorView').editors_manager.edit_resource(load(reopen_timeline), false, true)
 	
 	update_count_coloring()
-	%Replace.disabled = false
+	
+	%Replace.disabled = true
+	%CheckButton.disabled = false
 	%SearchProgress.hide()
 	%State.text = "Done Replacing"
 
@@ -251,8 +263,8 @@ func close():
 			continue
 		if item.get_text(2) != "" and int(item.get_text(2)) == 0:
 			reference_changes.erase(item.get_metadata(0))
-			
+
+
 func _on_back_pressed():
 	%FindList.hide()
 	%ChangeList.show()
-
