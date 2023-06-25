@@ -29,7 +29,7 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdpli"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5bdf"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -99,7 +99,7 @@ text = "Create and edit dialogic variables and their default values"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cdpli")
+theme_override_styles/panel = SubResource("StyleBoxFlat_c5bdf")
 
 [node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
 unique_name_in_owner = true
@@ -148,7 +148,6 @@ content_scale_aspect = 4
 script = ExtResource("10_xbkrt")
 
 [node name="ReferenceManager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
-self_modulate = Color(0, 0, 0, 1)
 
 [connection signal="tab_changed" from="Margin/EditorsManager/HSplit/VBox/Editors" to="Margin/EditorsManager" method="_on_editors_tab_changed"]
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]

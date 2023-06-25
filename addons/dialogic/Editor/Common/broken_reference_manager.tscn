@@ -10,7 +10,7 @@ content_margin_bottom = 5.0
 bg_color = Color(1, 1, 1, 1)
 
 [node name="Control" type="PanelContainer"]
-self_modulate = Color(0.113725, 0.133333, 0.160784, 1)
+self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -55,11 +55,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.5
-text = "Because dialogics timelines are pure text files, it can often happen that references break. 
+text = "Because dialogics timelines are pure text files, it can often happen that references (like variables, portraits, character names, etc.) break. 
 
 This manager allows you to fix broken references by replacing them. 
 
-Note: Items that weren't found are automatically removed from the list when closing this window."
+Dialogic will automatically add items to this list, when you rename already existing things. After such changes you should check if there are any broken references."
 autowrap_mode = 3
 
 [node name="HBox" type="HBoxContainer" parent="VBoxContainer/ChangeList"]
@@ -68,6 +68,7 @@ alignment = 1
 
 [node name="CheckButton2" type="Button" parent="VBoxContainer/ChangeList/HBox"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Add Reference"
 
@@ -78,6 +79,7 @@ text = "Check for References"
 
 [node name="FindList" type="VBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -120,7 +122,6 @@ text = "Replace"
 
 [connection signal="button_clicked" from="VBoxContainer/ChangeList/HSplitContainer/ChangeTree" to="." method="_on_change_tree_button_clicked"]
 [connection signal="item_edited" from="VBoxContainer/ChangeList/HSplitContainer/ChangeTree" to="." method="_on_change_tree_item_edited"]
-[connection signal="pressed" from="VBoxContainer/ChangeList/HBox/CheckButton2" to="." method="_on_check_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ChangeList/HBox/CheckButton" to="." method="_on_check_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/FindList/HBox/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="VBoxContainer/FindList/HBox/Replace" to="." method="_on_replace_pressed"]

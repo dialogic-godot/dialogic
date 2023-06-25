@@ -37,7 +37,6 @@ func _on_text_editor_text_changed():
 	request_code_completion(true)
 
 
-
 func clear_timeline():
 	text = ''
 

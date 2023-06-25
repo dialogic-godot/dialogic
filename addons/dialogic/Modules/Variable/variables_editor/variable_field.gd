@@ -8,6 +8,9 @@ var preview_scene = get_script().resource_path.get_base_dir().path_join("variabl
 
 var previous_name :String = ""
 
+# a flag that will be set when created with a New Group button
+# prevents any changes as being counted as broken references
+var actually_new :bool = false
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
@@ -88,7 +91,7 @@ func _on_NameEdit_focus_exited() -> void:
 
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	%NameEdit.text = new_text.replace(' ', '_')
-	if %NameEdit.text != previous_name:
+	if %NameEdit.text != previous_name and !actually_new:
 		variables_editor.variable_renamed(previous_name, %NameEdit.text)
 		previous_name = %NameEdit.text
 	disable_name_edit()

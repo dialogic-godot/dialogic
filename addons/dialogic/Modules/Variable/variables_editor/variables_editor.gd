@@ -8,6 +8,7 @@ func _register() -> void:
 
 
 func _ready() -> void:
+	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	await get_tree().process_frame
 	get_parent().set_tab_title(get_index(), 'Variables')
 	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir().get_base_dir() + "/variable.svg"))

@@ -98,7 +98,6 @@ func open_finder(replacements:Array[Dictionary]):
 		timeline_file.close()
 		for regex_info in regexes:
 			%State.text = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
-			print("Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat)
 			for i in regex_info[0].search_all(timeline_text):
 				finds.append({
 					'match':i,
@@ -187,9 +186,11 @@ func _on_replace_pressed() -> void:
 
 
 func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> void:
-	var timeline_editor = find_parent('EditorsManager').editors['Timeline Editor'].node
-	if timeline_editor.current_resource in timelines:
-		find_parent('EditorsManager').clear_editor(timeline_editor)
+	var reopen_timeline := ""
+	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline Editor'].node
+	if timeline_editor.current_resource != null and timeline_editor.current_resource.resource_path in timelines:
+		reopen_timeline = timeline_editor.current_resource.resource_path
+		find_parent('EditorView').editors_manager.clear_editor(timeline_editor)
 	
 	%SearchProgress.value = 0
 	%SearchProgress.show()
@@ -210,13 +211,12 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 				continue
 			
 			%State.text = "Searching '"+timeline_path+"' for "+replacement.info.what+' -> '+replacement.info.forwhat
-			print("Searching '"+timeline_path+"' for "+replacement.info.what+' -> '+replacement.info.forwhat)
 			
 			if 'replace' in replacement.match.names:
-				timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()+offset_correction)
+				timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
 				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string('replace'))
 			else:
-				timeline_text = timeline_text.substr(0, replacement.match.get_start()+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()+offset_correction)
+				timeline_text = timeline_text.substr(0, replacement.match.get_start()+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
 				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string())
 			
 			replacement.info.count -= 1
@@ -228,6 +228,13 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		timeline_file = FileAccess.open(timeline_path, FileAccess.WRITE)
 		timeline_file.store_string(timeline_text)
 		timeline_file.close()
+		
+		if ResourceLoader.has_cached(timeline_path):
+			var tml := load(timeline_path)
+			tml.from_text(timeline_text)
+	
+	if !reopen_timeline.is_empty():
+		find_parent('EditorView').editors_manager.edit_resource(load(reopen_timeline), false, true)
 	
 	update_count_coloring()
 	%Replace.disabled = false

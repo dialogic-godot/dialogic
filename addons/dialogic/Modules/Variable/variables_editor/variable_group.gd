@@ -13,6 +13,10 @@ var drag_preview :Control = null
 var parent_Group :Control = null
 
 var previous_path :String = ""
+# a flag that will be set when created with a New Group button
+# prevents any changes as being counted as broken references
+var actually_new :bool = false
+
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
@@ -55,19 +59,21 @@ func load_data(group_name:String , data:Dictionary, _parent_Group:Control = null
 	add_data(data)
 
 
-func add_data(data:Dictionary) -> void:
+func add_data(data:Dictionary, actually_new:=false) -> void:
 	for key in data.keys():
 		if typeof(data[key]) == TYPE_DICTIONARY:
 			var group :Control = load(GroupScenePath).instantiate()
 			group.variables_editor = variables_editor
 			%Content.add_child(group)
 			group.update()
+			group.actually_new = actually_new
 			group.load_data(key, data[key], self)
 		else:
 			var field :Control = load(FieldScenePath).instantiate()
 			field.variables_editor = variables_editor
 			%Content.add_child(field)
 			field.load_data(key, data[key], self)
+			field.actually_new = actually_new
 
 
 func check_data() -> void:
@@ -215,11 +221,11 @@ func _on_DuplicateButton_pressed() -> void:
 
 
 func _on_NewGroup_pressed() -> void:
-	add_data({'New Group':{}})
+	add_data({'New Group':{}}, true)
 
 
 func _on_NewVariable_pressed() -> void:
-	add_data({'New Variable':""})
+	add_data({'New Variable':""}, true)
 
 
 func _on_FoldButton_toggled(button_pressed:bool) -> void:
@@ -236,15 +242,17 @@ func _on_NameEdit_gui_input(event:InputEvent) -> void:
 		if not MainGroup:
 			%NameEdit.editable = true
 
+
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	disable_name_edit()
+
 
 func _on_NameEdit_focus_exited() -> void:
 	disable_name_edit()
 
 
 func disable_name_edit() -> void:
-	if get_group_path() != previous_path:
+	if get_group_path() != previous_path and !actually_new:
 		variables_editor.group_renamed(previous_path, get_group_path(), get_data())
 		previous_path = get_group_path()
 	%NameEdit.editable = false

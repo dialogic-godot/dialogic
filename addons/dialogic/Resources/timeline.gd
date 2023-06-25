@@ -103,6 +103,9 @@ func as_text() -> String:
 
 
 func process() -> void:
+	if typeof(events[0]) == TYPE_STRING:
+		events_processed = false
+	
 	# if the timeline is already processed
 	if events_processed:
 		for event in events:

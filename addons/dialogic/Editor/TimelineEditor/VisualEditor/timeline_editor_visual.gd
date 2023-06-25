@@ -94,7 +94,6 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			return
 		
 		var data := resource.events
-		print(data[0])
 		var page := 1
 		var batch_size := 10
 		_batches = []
