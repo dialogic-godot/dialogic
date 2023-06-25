@@ -215,7 +215,6 @@ expand_margin_bottom = 5.0
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-name_label_box_offset = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -365,10 +364,6 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 576.0
-offset_top = 648.0
-offset_right = 576.0
-offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 0
 
