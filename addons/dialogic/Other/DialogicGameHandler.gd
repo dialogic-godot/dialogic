@@ -478,6 +478,10 @@ func start(timeline:Variant, label:Variant="") -> Node:
 # The layout scene will always be added to the tree root. 
 # If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
 func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
+	
+	if ProjectSettings.get_setting('dialogic/layout/mode', 0) == 2:
+		return null
+	
 	var scene :Node = null
 	if get_tree().has_meta('dialogic_layout_node') and is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
 		scene = get_tree().get_meta('dialogic_layout_node', null)
