@@ -1,7 +1,11 @@
 @tool
 extends SyntaxHighlighter
 
-## Syntax highlighter for the dialogic text timeline editor.
+## Syntax highlighter for the dialogic text timeline editor and text events in the visual editor.
+
+enum Modes {TextEventOnly, FullHighlighting}
+var mode := Modes.FullHighlighting
+
 
 ## RegEx's
 var word_regex := RegEx.new()
@@ -74,6 +78,7 @@ func _init():
 	text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	character_event_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
+
 func _get_line_syntax_highlighting(line:int) -> Dictionary:
 	var str_line := get_text_edit().get_line(line)
 	
@@ -82,74 +87,77 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 
 	dict = color_translation_id(dict, str_line)
 	
-	if str_line.strip_edges().begins_with('#'):
-		dict[0] = {'color':comment_color}
-		return dict
-	
-	if str_line.strip_edges().begins_with("["):
-		if !text_effects_regex.search(str_line.get_slice(' ', 0)):
-			var result:= shortcode_regex.search(str_line)
-			if result:
-				dict[result.get_start('id')] = {"color":shortcode_color}
-				dict[result.get_end('id')] = {"color":normal_color}
-				if result.get_string('args'):
-					color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
+	if mode == Modes.FullHighlighting:
+		if str_line.strip_edges().begins_with('#'):
+			dict[0] = {'color':comment_color}
+			return dict
+		
+		if str_line.strip_edges().begins_with("["):
+			if !text_effects_regex.search(str_line.get_slice(' ', 0)):
+				var result:= shortcode_regex.search(str_line)
+				if result:
+					dict[result.get_start('id')] = {"color":shortcode_color}
+					dict[result.get_end('id')] = {"color":normal_color}
+					if result.get_string('args'):
+						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
+				return dict
+		
+		if str_line.strip_edges().begins_with('-'):
+			dict[0] = {'color':choice_color}
+			if '[' in str_line:
+				dict[str_line.find('[')] = {"color":normal_color}
+				dict = color_word(dict, code_flow_color, str_line, 'if', str_line.find('['), str_line.find(']'))
+				dict = color_condition(dict, str_line, str_line.find('['), str_line.find(']'))
+			return dict
+		
+		for word in ['if', 'elif', 'else']:
+			if str_line.strip_edges().begins_with(word):
+				dict[str_line.find(word)] = {"color":code_flow_color}
+				dict[str_line.find(word)+len(word)] = {"color":normal_color}
+				dict = color_condition(dict, str_line)
+				return dict
+		
+		for word in ['Join', 'Update', 'Leave']:
+			if str_line.strip_edges().begins_with(word):
+				dict[str_line.find(word)] = {"color":character_event_color}
+				dict[str_line.find(word)+len(word)] = {"color":normal_color}
+				var result := character_event_regex.search(str_line)
+				if result.get_string('name'):
+					dict[result.get_start('name')] = {"color":character_name_color}
+					dict[result.get_end('name')] = {"color":normal_color}
+				if result.get_string('portrait'):
+					dict[result.get_start('portrait')] = {"color":character_portrait_color}
+					dict[result.get_end('portrait')] = {"color":normal_color}
+				if result.get_string('shortcode'):
+					dict = color_shortcode_content(dict, str_line, result.get_start('shortcode'), result.get_end('shortcode'))
+				return dict
+		
+		if str_line.strip_edges().begins_with('VAR'):
+			dict[str_line.find('VAR')] = {"color":keyword_VAR_color}
+			dict[str_line.find('VAR')+3] = {"color":normal_color}
+			dict = color_region(dict, string_color, str_line, '"', '"', str_line.find('VAR'))
+			dict = color_region(dict, variable_color, str_line, '{', '}', str_line.find('VAR'))
+			return dict
+		
+		if str_line.strip_edges().begins_with('Setting'):
+			dict[str_line.find('Setting')] = {"color":keyword_SETTING_color}
+			dict[str_line.find('Setting')+7] = {"color":normal_color}
+			dict = color_word(dict, keyword_SETTING_color, str_line, 'reset')
+			dict = color_region(dict, string_color, str_line, '"', '"')
+			dict = color_region(dict, variable_color, str_line, '{', '}')
 			return dict
 	
-	if str_line.strip_edges().begins_with('-'):
-		dict[0] = {'color':choice_color}
-		if '[' in str_line:
-			dict[str_line.find('[')] = {"color":normal_color}
-			dict = color_word(dict, code_flow_color, str_line, 'if', str_line.find('['), str_line.find(']'))
-			dict = color_condition(dict, str_line, str_line.find('['), str_line.find(']'))
-		return dict
-	
-	for word in ['if', 'elif', 'else']:
-		if str_line.strip_edges().begins_with(word):
-			dict[str_line.find(word)] = {"color":code_flow_color}
-			dict[str_line.find(word)+len(word)] = {"color":normal_color}
-			dict = color_condition(dict, str_line)
-			return dict
-	
-	for word in ['Join', 'Update', 'Leave']:
-		if str_line.strip_edges().begins_with(word):
-			dict[str_line.find(word)] = {"color":character_event_color}
-			dict[str_line.find(word)+len(word)] = {"color":normal_color}
-			var result := character_event_regex.search(str_line)
-			if result.get_string('name'):
-				dict[result.get_start('name')] = {"color":character_name_color}
-				dict[result.get_end('name')] = {"color":normal_color}
-			if result.get_string('portrait'):
-				dict[result.get_start('portrait')] = {"color":character_portrait_color}
-				dict[result.get_end('portrait')] = {"color":normal_color}
-			if result.get_string('shortcode'):
-				dict = color_shortcode_content(dict, str_line, result.get_start('shortcode'), result.get_end('shortcode'))
-			return dict
-	
-	if str_line.strip_edges().begins_with('VAR'):
-		dict[str_line.find('VAR')] = {"color":keyword_VAR_color}
-		dict[str_line.find('VAR')+3] = {"color":normal_color}
-		dict = color_region(dict, string_color, str_line, '"', '"', str_line.find('VAR'))
-		dict = color_region(dict, variable_color, str_line, '{', '}', str_line.find('VAR'))
-		return dict
-	
-	if str_line.strip_edges().begins_with('Setting'):
-		dict[str_line.find('Setting')] = {"color":keyword_SETTING_color}
-		dict[str_line.find('Setting')+7] = {"color":normal_color}
-		dict = color_word(dict, keyword_SETTING_color, str_line, 'reset')
-		dict = color_region(dict, string_color, str_line, '"', '"')
-		dict = color_region(dict, variable_color, str_line, '{', '}')
-		return dict
 	
 	var result := text_event_regex.search(str_line)
 	if !result:
 		return dict
-	if result.get_string('name'):
-		dict[result.get_start('name')] = {"color":character_name_color}
-		dict[result.get_end('name')] = {"color":normal_color}
-	if result.get_string('portrait'):
-		dict[result.get_start('portrait')] = {"color":character_portrait_color}
-		dict[result.get_end('portrait')] = {"color":normal_color}
+	if mode == Modes.FullHighlighting:
+		if result.get_string('name'):
+			dict[result.get_start('name')] = {"color":character_name_color}
+			dict[result.get_end('name')] = {"color":normal_color}
+		if result.get_string('portrait'):
+			dict[result.get_start('portrait')] = {"color":character_portrait_color}
+			dict[result.get_end('portrait')] = {"color":normal_color}
 	if result.get_string('text'):
 		var effects_result = text_effects_regex.search_all(str_line)
 		for eff in effects_result:
