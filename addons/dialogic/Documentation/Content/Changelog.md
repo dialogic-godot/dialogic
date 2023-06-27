@@ -7,7 +7,7 @@
 * Name Label aligns properly when name sizes vary
 * Un-hard coded the position offsets for the character positions. They now are relative to the viewport. Thanks @rretureau for the work 1000 commits ago!
 * Changing the DB value in an audio event no longer overwrites the value in the Audio Bus. It now adjusts the current value instead.
-
+* Added better support for adding variables to already published games #1278
 
 ## v1.4.5
 * Added focus style options for themes [[CptFubar](https://github.com/CptFubar)]
