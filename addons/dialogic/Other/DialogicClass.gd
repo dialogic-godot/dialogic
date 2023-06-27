@@ -249,22 +249,33 @@ static func export(dialog_node = null) -> Dictionary:
 	if dialog_node:
 		current_dialog_info = dialog_node.get_current_state_info()
 	
+	var game_state = null
+	if Engine.get_main_loop().has_meta('game_state'):
+		game_state = Engine.get_main_loop().get_meta('game_state')
+	
 	# return it
 	return {
 		'definitions': _get_definitions(),
-		'state': Engine.get_main_loop().get_meta('game_state'),
+		'state': game_state,
 		'dialog_state': current_dialog_info
 	}
 
 
 # this loads a dictionary with GAME STATE, DEFINITIONS and DIALOG_STATE 
-static func import(data: Dictionary) -> void:
+static func import(data: Dictionary, refreshDefinitionFirst=false) -> void:
 	## Tell the future we want to use the imported data
 	Engine.get_main_loop().set_meta('current_save_lot', '/')
 	
-	# load the data
-	Engine.get_main_loop().set_meta('definitions', data['definitions'])
-	Engine.get_main_loop().set_meta('game_state', data['state'])
+	 # load the data
+	if refreshDefinitionFirst:
+		var newDef =  DialogicResources.get_default_definitions()
+		newDef.merge(data['definitions'], false)
+		
+		Engine.get_main_loop().set_meta('definitions', newDef)
+	else:
+		Engine.get_main_loop().set_meta('definitions', data['definitions'])
+	
+	Engine.get_main_loop().set_meta('game_state', data.get('game_state', null))
 	Engine.get_main_loop().set_meta('last_dialog_state', data.get('dialog_state', null))
 	set_current_timeline(get_saved_state_general_key('timeline'))
 
