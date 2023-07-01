@@ -11,7 +11,7 @@ extends DialogicEvent
 
 func _execute() -> void:
 	for character in dialogic.Portraits.get_joined_characters():
-		dialogic.Portraits.remove_portrait(character)
+		dialogic.Portraits.remove_character(character)
 	dialogic.end_timeline()
 
 
