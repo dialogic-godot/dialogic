@@ -942,17 +942,28 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 	if index == 0:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
-	elif index == 2:
-		move_block_up(item)
-		something_changed()
-		indent_events()
-	elif index == 3:
-		move_block_down(item)
-		something_changed()
-		indent_events()
+	elif index == 2 or index == 3:
+		if index == 2:
+			TimelineUndoRedo.create_action("[D] Move event up.")
+			TimelineUndoRedo.add_do_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()), -1))
+			TimelineUndoRedo.add_undo_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()-1), 1))
+		else:
+			TimelineUndoRedo.create_action("[D] Move event down.")
+			TimelineUndoRedo.add_do_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()), 1))
+			TimelineUndoRedo.add_undo_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()+1), -1))
+		TimelineUndoRedo.add_do_method(indent_events)
+		TimelineUndoRedo.add_do_method(something_changed)
+		TimelineUndoRedo.add_undo_method(indent_events)
+		TimelineUndoRedo.add_undo_method(something_changed)
+		TimelineUndoRedo.commit_action()
 	elif index == 5:
-		delete_selected_events()
-	indent_events()
+		var events_indexed := get_events_indexed([item])
+		TimelineUndoRedo.create_action("[D] Deleting 1 event.")
+		TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))
+		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
+		TimelineUndoRedo.commit_action()
+		indent_events()
+		something_changed()
 
 
 func _on_right_sidebar_resized():
