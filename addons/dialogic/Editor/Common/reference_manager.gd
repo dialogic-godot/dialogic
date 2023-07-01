@@ -96,14 +96,18 @@ func open_finder(replacements:Array[Dictionary]):
 			regexes.append([regex, i])
 	
 	var finds : Array[Dictionary] = []
-	
 	var max_progress := len(DialogicUtil.list_resources_of_type('.dtl')) * len(regexes)
 	var progress := 0
+	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
+		
 		%State.text = "Loading '"+timeline_path+"'"
+		
 		var timeline_file := FileAccess.open(timeline_path, FileAccess.READ)
 		var timeline_text :String = timeline_file.get_as_text()
+		var timeline_events : PackedStringArray = timeline_text.split('\n')
 		timeline_file.close()
+
 		for regex_info in regexes:
 			%State.text = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
 			for i in regex_info[0].search_all(timeline_text):
@@ -112,10 +116,11 @@ func open_finder(replacements:Array[Dictionary]):
 				 	'timeline':timeline_path,
 					'info': regex_info[1], 
 					'line_number': timeline_text.count('\n', 0, i.get_start())+1,
-					'line':timeline_text.substr(max(timeline_text.rfind('\n', i.get_start()), 0), timeline_text.find('\n', i.get_end())-timeline_text.rfind('\n', i.get_start()))
+					'line': timeline_text.substr(max(timeline_text.rfind('\n', i.get_start()), 0), timeline_text.find('\n', i.get_end())-timeline_text.rfind('\n', i.get_start())),
+					'line_start': timeline_text.rfind('\n', i.get_start())
 					})
 				regex_info[1]['count'] += 1
-				
+			
 			progress += 1
 			%SearchProgress.value = 100.0/max_progress*progress
 	
@@ -190,7 +195,7 @@ func _on_replace_pressed() -> void:
 			to_be_repalced[-1]['f_item'] = item
 			if !item.get_metadata(0).timeline in affected_timelines:
 				affected_timelines.append(item.get_metadata(0).timeline)
-	print(to_be_repalced)
+#	print(to_be_repalced)
 	replace(affected_timelines, to_be_repalced)
 
 
@@ -206,6 +211,8 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	var max_progress := len(replacement_info)
 	var progress := 0
 	
+	replacement_info.sort_custom(func(a,b): return a.match.get_start() < b.match.get_start())
+	
 	for timeline_path in timelines:
 		%State.text = "Loading '"+timeline_path+"'"
 		
@@ -217,17 +224,19 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		var idx := 1
 		var offset_correction := 0
 		for replacement in replacement_info:
+#			print(replacement)
+#			print(replacement.match.get_start())
 			if replacement.timeline != timeline_path:
 				continue
 			
 			%State.text = "Replacing in '"+timeline_path + "' ("+str(idx)+"/"+str(len(replacement_info))+")"
-			
 			if 'replace' in replacement.match.names:
 				timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
 				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string('replace'))
 			else:
 				timeline_text = timeline_text.substr(0, replacement.match.get_start()+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
 				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string())
+#			print(timeline_text)
 			
 			replacement.info.count -= 1
 			replacement.info.item.set_text(2, str(replacement.info.count))
@@ -253,6 +262,15 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	%SearchProgress.hide()
 	%State.text = "Done Replacing"
 
+
+#func replace_match(line:String, replacement:Dictionary, offset_correction:int) -> int:
+#	if 'replace' in replacement.match.names:
+#		timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
+#		offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string('replace'))
+#	else:
+#		timeline_text = timeline_text.substr(0, replacement.match.get_start()+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
+#		offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string())
+#
 
 func close():
 	var item :TreeItem = %ChangeTree.get_root()
