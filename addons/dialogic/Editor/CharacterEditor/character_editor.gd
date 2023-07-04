@@ -60,6 +60,7 @@ func _open_resource(resource:Resource) -> void:
 			%CharacterName.text = character.unique_short_path
 	
 	$NoCharacterScreen.hide()
+	%PortraitChangeInfo.hide()
 
 
 func _save() -> void:
@@ -141,6 +142,7 @@ func _ready() -> void:
 	%PortraitSettingsSection.add_theme_stylebox_override('tab_selected', tab_panel)
 	%PortraitSettingsSection.add_theme_constant_override('side_margin', 5)
 	
+	%PortraitChangeWarning.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
@@ -237,7 +239,7 @@ func setup_portrait_list_tab() -> void:
 	
 	%PortraitTree.item_selected.connect(load_selected_portrait)
 	%PortraitTree.item_edited.connect(_on_item_edited)
-	%PortraitTree.item_activated.connect(func(): %PortraitTree.get_selected().set_editable(0, true); %PortraitTree.edit_selected())
+	%PortraitTree.item_activated.connect(_on_item_activated)
 
 
 func open_portrait_folder_select() -> void:
@@ -274,6 +276,7 @@ func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary=
 		else:
 			parent = %PortraitTree.get_selected().get_parent()
 	var item :TreeItem = %PortraitTree.add_portrait_item(portrait_name, portrait_data, parent)
+	item.set_meta('new', true)
 	item.set_editable(0, true)
 	item.select(0)
 	%PortraitTree.call_deferred('edit_selected')
@@ -285,6 +288,7 @@ func add_portrait_group() -> void:
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent_item = %PortraitTree.get_selected()
 	var item :TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
+	item.set_meta('new', true)
 	item.set_editable(0, true)
 	item.select(0)
 	%PortraitTree.call_deferred('edit_selected')
@@ -352,6 +356,7 @@ func load_selected_portrait():
 	
 	selected_item = %PortraitTree.get_selected()
 	
+	
 	if selected_item and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PortraitSettingsSection.show()
 		var current_portrait_data :Dictionary = selected_item.get_metadata(0)
@@ -368,9 +373,9 @@ func load_selected_portrait():
 		%PortraitSettingsSection.hide()
 		update_preview()
 	
-	if selected_item:
-		await get_tree().create_timer(0.01).timeout
-		selected_item.set_editable(0, true)
+#	if selected_item:
+#		await get_tree().create_timer(0.01).timeout
+#		selected_item.set_editable(0, true)
 
 
 func delete_portrait_item(item:TreeItem) -> void:
@@ -397,11 +402,14 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
+	# RENAME BUTTON
+	if id == 0:
+		_on_item_activated()
 	# DELETE BUTTON
-	if id == 1:
+	if id == 2:
 		delete_portrait_item(%PortraitTree.get_selected())
 	# DUPLICATE ITEM
-	elif id == 0:
+	elif id == 1:
 		duplicate_item(%PortraitTree.get_selected())
 
 
@@ -416,7 +424,6 @@ func update_default_portrait_star(default_portrait_name:String) -> void:
 			if %PortraitTree.get_full_item_name(item) == default_portrait_name:
 				item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
 			item_list.append_array(item.get_children())
-			
 			if item_list.is_empty():
 				break
 
@@ -428,9 +435,33 @@ func _on_item_edited():
 		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == current_resource.default_portrait:
 			current_resource.default_portrait = %PortraitTree.get_full_item_name(selected_item)
 		selected_item.set_editable(0, false)
+		
+		if !selected_item.has_meta('new') and %PortraitTree.get_full_item_name(selected_item) != selected_item.get_meta('previous_name'):
+			report_name_change(selected_item)
+			%PortraitChangeInfo.show()
 	update_preview()
 
 
+func _on_item_activated(): 
+	if %PortraitTree.get_selected() == null:
+		return
+	%PortraitTree.get_selected().set_editable(0, true)
+	%PortraitTree.edit_selected()
+
+
+func report_name_change(item:TreeItem) -> void:
+	if item.get_metadata(0).has('group'):
+		for s_item in item.get_children():
+			if s_item.get_metadata(0).has('group') or !s_item.has_meta('new'):
+				report_name_change(s_item)
+	else:
+		editors_manager.reference_manager.add_portrait_ref_change(
+			item.get_meta('previous_name'),
+			%PortraitTree.get_full_item_name(item),
+			[editors_manager.resource_helper.get_character_short_path(current_resource)])
+	item.set_meta('previous_name', %PortraitTree.get_full_item_name(item))
+	%PortraitChangeInfo.show()
+	
 
 ##############################################################################
 ##							PREVIEW
@@ -531,3 +562,7 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 		%FitPreview_Toggle.icon = get_theme_icon("CenterContainer", "EditorIcons")
 	DialogicUtil.set_editor_setting('character_preview_fit', button_pressed)
 	update_preview()
+
+
+func _on_reference_manger_button_pressed():
+	editors_manager.reference_manager.open()

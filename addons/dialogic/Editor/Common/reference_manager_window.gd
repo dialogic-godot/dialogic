@@ -21,13 +21,15 @@ func add_variable_ref_change(old_name:String, new_name:String) -> void:
 		$ReferenceManager.open()
 
 
-func add_portrait_ref_change(old_name:String, new_name:String, character_name:String):
+func add_portrait_ref_change(old_name:String, new_name:String, character_names:PackedStringArray):
 	$ReferenceManager.reference_changes.append(
 		{'what':old_name,
 		'forwhat':new_name,
-		'regex':['\\((?<replace>'+old_name+')\\)'],
+		'regex':['^[^:(]*\\((?<replace>'+old_name+')\\)', '\\[\\s*portrait\\s*=(?<replace>\\s*'+old_name+'\\s*)\\]'],
 		'regex_replacement':new_name,
-		'category':'Portrait of '+ character_name}
+		'category':'Portrait of '+ character_names[0], 
+		'character_names':character_names,
+		}
 	)
 	if visible:
 		$ReferenceManager.open()

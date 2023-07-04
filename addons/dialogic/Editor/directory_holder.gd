@@ -51,6 +51,13 @@ func rebuild_character_directory() -> void:
 		character_directory = dialogic_handler.character_directory
 
 
+func get_character_short_path(resource:DialogicCharacter) -> String:
+	for chr in character_directory.values():
+		if chr.resource == resource:
+			return chr.unique_short_path
+	return resource.resource_path.get_file().trim_suffix(resource.resource_path.get_extension())
+
+
 func rebuild_timeline_directory() -> void:
 	timeline_directory = {}
 	if dialogic_handler != null:		
