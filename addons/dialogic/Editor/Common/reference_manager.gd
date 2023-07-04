@@ -88,7 +88,7 @@ func open_finder(replacements:Array[Dictionary]):
 	var regexes : Array[Array] = []
 	
 	for i in replacements:
-		if !i.character_names.is_empty():
+		if i.has('character_names') and !i.character_names.is_empty():
 			i['character_regex'] = RegEx.create_from_string("(Join|Update|Leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
 	
 		for regex_string in i.regex:
