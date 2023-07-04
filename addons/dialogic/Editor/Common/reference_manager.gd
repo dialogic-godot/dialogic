@@ -201,7 +201,6 @@ func _on_replace_pressed() -> void:
 			to_be_repalced[-1]['f_item'] = item
 			if !item.get_metadata(0).timeline in affected_timelines:
 				affected_timelines.append(item.get_metadata(0).timeline)
-#	print(to_be_repalced)
 	replace(affected_timelines, to_be_repalced)
 
 
