@@ -63,6 +63,10 @@ func _open_resource(resource:Resource) -> void:
 	%PortraitChangeInfo.hide()
 
 
+func _open(extra_info:Variant="") -> void:
+	%PortraitChangeInfo.hide()
+
+
 func _save() -> void:
 	if ! visible or not current_resource:
 		return

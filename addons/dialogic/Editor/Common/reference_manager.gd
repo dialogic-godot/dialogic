@@ -6,6 +6,8 @@ extends PanelContainer
 var reference_changes :Array[Dictionary] = []
 
 
+enum Where {Everywhere, ByCharacter, TextsOnly}
+
 func _ready():
 	%FindList.hide()
 	
@@ -21,6 +23,7 @@ func _ready():
 
 func open():
 	show()
+	%ReplacementPanel.hide()
 	%FindList.hide()
 	%ChangeTree.clear()
 	%ChangeTree.create_item()
@@ -40,6 +43,7 @@ func open():
 		
 		var item :TreeItem = %ChangeTree.create_item(parent)
 		item.set_text(1, i.what+" -> "+i.forwhat)
+		item.add_button(1, get_theme_icon("Edit", "EditorIcons"), 1, false, 'Edit')
 		item.add_button(1, get_theme_icon("Remove", "EditorIcons"), 0, false, 'Remove Change from List')
 		item.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
 		item.set_checked(0, true)
@@ -56,6 +60,9 @@ func _on_change_tree_button_clicked(item:TreeItem, column, id, mouse_button_inde
 			item.free()
 		
 		%CheckButton.disabled = false
+	
+	if id == 1:
+		%ReplacementPanel.open_existing(item, item.get_metadata(0))
 
 
 func _on_change_tree_item_edited():
@@ -89,8 +96,8 @@ func open_finder(replacements:Array[Dictionary]):
 	
 	for i in replacements:
 		if i.has('character_names') and !i.character_names.is_empty():
-			i['character_regex'] = RegEx.create_from_string("(Join|Update|Leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
-	
+			i['character_regex'] = RegEx.create_from_string("(?m)^(Join|Update|Leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
+		
 		for regex_string in i.regex:
 			var regex := RegEx.create_from_string(regex_string)
 			regexes.append([regex, i])
@@ -108,21 +115,23 @@ func open_finder(replacements:Array[Dictionary]):
 		timeline_file.close()
 
 		for regex_info in regexes:
+			
 			%State.text = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
 			for i in regex_info[0].search_all(timeline_text):
 				if regex_info[1].has('character_regex'):
-					if regex_info[1].character_regex.search(get_line(timeline_text, i.get_start())) == null:
+					if regex_info[1].character_regex.search(get_line(timeline_text, i.get_start()+1)) == null:
 						continue
+				
 				finds.append({
-					'match':i,
-				 	'timeline':timeline_path,
-					'info': regex_info[1], 
-					'line_number': timeline_text.count('\n', 0, i.get_start())+1,
-					'line': timeline_text.substr(max(timeline_text.rfind('\n', i.get_start()), 0), timeline_text.find('\n', i.get_end())-timeline_text.rfind('\n', i.get_start())),
-					'line_start': timeline_text.rfind('\n', i.get_start())
-					})
+				'match':i,
+			 	'timeline':timeline_path,
+				'info': regex_info[1], 
+				'line_number': timeline_text.count('\n', 0, i.get_start())+1,
+				'line': timeline_text.substr(max(timeline_text.rfind('\n', i.get_start()), 0), timeline_text.find('\n', i.get_end())-timeline_text.rfind('\n', i.get_start())),
+				'line_start': timeline_text.rfind('\n', i.get_start())
+				})
 				regex_info[1]['count'] += 1
-			
+				
 			progress += 1
 			%SearchProgress.value = 100.0/max_progress*progress
 	
@@ -164,6 +173,7 @@ func open_finder(replacements:Array[Dictionary]):
 		%State.text = "Done Searching: Nothing found!"
 	else:
 		%Replace.grab_focus()
+
 
 func get_line(string:String, at_index:int) -> String:
 	return string.substr(max(string.rfind('\n', at_index), 0), string.find('\n', at_index)-string.rfind('\n', at_index))

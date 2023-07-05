@@ -3,8 +3,6 @@ extends Node
 
 ## Node that holds timeline and character directories for use in editor.
 
-
-
 # barebones instance of DGH, with local Editor references to the event cache and charcater directory
 var dialogic_handler: Node 
 

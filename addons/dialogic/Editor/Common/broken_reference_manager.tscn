@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7lmt5cp7bxcm"]
+[gd_scene load_steps=8 format=3 uid="uid://c7lmt5cp7bxcm"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/reference_manager.gd" id="1_3tomk"]
-[ext_resource type="Texture2D" uid="uid://mc7a24bcvjo3" path="res://addons/dialogic/Editor/Images/Pieces/open-icon.svg" id="2_y51ii"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/ReferenceManager_AddReplacementPanel.gd" id="2_vtwcs"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_x5bo4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkp0w"]
 content_margin_left = 5.0
@@ -10,7 +11,33 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(1, 1, 1, 1)
 
-[node name="Control" type="PanelContainer"]
+[sub_resource type="Image" id="Image_rifi4"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_l25nn"]
+image = SubResource("Image_rifi4")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1dnp"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
+[node name="ReferenceManager" type="PanelContainer"]
 self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,6 +65,7 @@ text = "(Possibly) Broken Reference Manager"
 
 [node name="TitleTooltip" type="TextureRect" parent="VBoxContainer/ChangeList/HBox2"]
 unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 tooltip_text = "Because dialogics timelines are pure text files, it can often happen that 
 references (like variables, portraits, character names, etc.) break. 
@@ -47,14 +75,138 @@ This manager allows you to fix broken references by replacing them.
 Dialogic will automatically add items to this list, when you rename already 
 existing things. After such changes you should check if there are any 
 broken references."
-texture = ExtResource("2_y51ii")
+texture = SubResource("ImageTexture_l25nn")
 stretch_mode = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/ChangeList"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ChangeList"]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ChangeList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"HeaderSmall"
 text = "Recent renames:"
 autowrap_mode = 3
+
+[node name="AddButton" type="Button" parent="VBoxContainer/ChangeList/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("ImageTexture_l25nn")
+
+[node name="ReplacementPanel" type="PanelContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton"]
+unique_name_in_owner = true
+visible = false
+top_level = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 0
+offset_left = 736.0
+offset_top = 98.0
+offset_right = 1136.0
+offset_bottom = 308.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_p1dnp")
+script = ExtResource("2_vtwcs")
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Custom Replacement"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Old" type="LineEdit" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Old"
+
+[node name="Label2" type="Label" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+layout_mode = 2
+text = "->"
+
+[node name="New" type="LineEdit" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type: "
+horizontal_alignment = 2
+
+[node name="Type" type="OptionButton" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 5
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Pure Text"
+popup/item_0/id = 0
+popup/item_1/text = "Variable"
+popup/item_1/id = 1
+popup/item_2/text = "Portrait"
+popup/item_2/id = 2
+popup/item_3/text = "Character (Ref)"
+popup/item_3/id = 3
+popup/item_3/disabled = true
+popup/item_4/text = "Timeline (Ref)"
+popup/item_4/id = 4
+popup/item_4/disabled = true
+
+[node name="PureTextFlags" type="HBoxContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="MatchCase" type="CheckBox" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/PureTextFlags"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Match Case"
+
+[node name="WholeWords" type="CheckBox" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/PureTextFlags"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Whole Words"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Where: "
+horizontal_alignment = 2
+
+[node name="Where" type="OptionButton" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Everywhere"
+popup/item_0/id = 0
+popup/item_1/text = "Only for Character"
+popup/item_1/id = 1
+popup/item_2/text = "Texts only"
+popup/item_2/id = 2
+
+[node name="Character" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4" instance=ExtResource("3_x5bo4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add/Save"
 
 [node name="ChangeTree" type="Tree" parent="VBoxContainer/ChangeList"]
 unique_name_in_owner = true
@@ -79,9 +231,11 @@ text = "Add Reference"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Check Selected"
+icon = SubResource("ImageTexture_l25nn")
 
 [node name="FindList" type="VBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 2
@@ -107,6 +261,7 @@ alignment = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "State"
 
 [node name="Back" type="Button" parent="VBoxContainer/FindList/HBox"]
@@ -118,12 +273,17 @@ text = "Back"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Replace Selected"
+icon = SubResource("ImageTexture_l25nn")
 
 [node name="SearchProgress" type="ProgressBar" parent="VBoxContainer/FindList/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[connection signal="resized" from="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel" to="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel" method="_on_resized"]
+[connection signal="item_selected" from="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3/Type" to="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel" method="_on_type_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4/Where" to="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel" method="_on_where_item_selected"]
+[connection signal="pressed" from="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/AddButton" to="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel" method="save"]
 [connection signal="button_clicked" from="VBoxContainer/ChangeList/ChangeTree" to="." method="_on_change_tree_button_clicked"]
 [connection signal="item_edited" from="VBoxContainer/ChangeList/ChangeTree" to="." method="_on_change_tree_item_edited"]
 [connection signal="pressed" from="VBoxContainer/ChangeList/HBox/CheckButton" to="." method="_on_check_button_pressed"]
