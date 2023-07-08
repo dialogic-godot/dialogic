@@ -145,6 +145,7 @@ horizontal_alignment = 2
 [node name="Type" type="OptionButton" parent="VBoxContainer/ChangeList/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "This decides the regexes for searching. Pure text allows you to enter your own regex into into \"Old\". "
 item_count = 5
 selected = 0
 fit_to_longest_item = false
