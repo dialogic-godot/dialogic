@@ -29,7 +29,7 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_040p5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51arp"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -95,11 +95,11 @@ script = ExtResource("4_6cx8s")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Create and edit dialogic variables and their default values"
+text = "Change the look of the dialog in your game"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_040p5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_51arp")
 
 [node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
 unique_name_in_owner = true
@@ -138,8 +138,8 @@ size = Vector2i(207, 100)
 
 [node name="ReferenceManager" type="Window" parent="."]
 disable_3d = true
-initial_position = 2
 title = "Changed Reference Manager"
+initial_position = 2
 size = Vector2i(858, 442)
 visible = false
 wrap_controls = true
@@ -147,7 +147,7 @@ content_scale_mode = 1
 content_scale_aspect = 4
 script = ExtResource("10_xbkrt")
 
-[node name="ReferenceManager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
+[node name="Manager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
 
 [connection signal="tab_changed" from="Margin/EditorsManager/HSplit/VBox/Editors" to="Margin/EditorsManager" method="_on_editors_tab_changed"]
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
