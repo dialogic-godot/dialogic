@@ -808,7 +808,7 @@ static func list_dir(path: String) -> Array:
 ##							DIALOGIC FLAT LOADER
 ## *****************************************************************************
 
-static func get_flat_folders_list() -> Dictionary:
+static func get_flat_folders_list(include_folders: bool = true) -> Dictionary:
 	var timeline_folder_breakdown = {}
 	var character_folder_breakdown = {}
 	var definition_folder_breakdown = {}
@@ -848,13 +848,13 @@ static func get_flat_folders_list() -> Dictionary:
 	for timeline in structure['Timelines'].keys():
 		if ".json" in timeline:
 			timeline_folder_breakdown[structure['Timelines'][timeline]['path']] = structure['Timelines'][timeline]
-		else:
+		elif include_folders:
 			timeline_folder_breakdown[timeline] = structure['Timelines'][timeline]
 
 	for character in structure['Characters'].keys():
 		if ".json" in character:
 			character_folder_breakdown[structure['Characters'][character]['path']] = structure['Characters'][character]
-		else:
+		elif include_folders:
 			character_folder_breakdown[character] = structure['Characters'][character]
 
 
@@ -862,14 +862,14 @@ static func get_flat_folders_list() -> Dictionary:
 		
 		if !"/." in definition:
 			definition_folder_breakdown[structure['Definitions'][definition]['path']] = structure['Definitions'][definition]
-		else:
+		elif include_folders:
 			definition_folder_breakdown[definition] = structure['Definitions'][definition]
 
 
 	for theme in structure['Themes'].keys():
 		if ".json" in theme:
 			theme_folder_breakdown[structure['Themes'][theme]['path']] = structure['Themes'][theme]		
-		else:
+		elif include_folders:
 			theme_folder_breakdown[theme] = structure['Themes'][theme]
 			
 	var flatten = {}
