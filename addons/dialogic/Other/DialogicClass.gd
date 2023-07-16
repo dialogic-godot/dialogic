@@ -262,12 +262,12 @@ static func export(dialog_node = null) -> Dictionary:
 
 
 # this loads a dictionary with GAME STATE, DEFINITIONS and DIALOG_STATE 
-static func import(data: Dictionary, refreshDefinitionFirst=false) -> void:
+static func import(data: Dictionary, rebuld_definitions=false) -> void:
 	## Tell the future we want to use the imported data
 	Engine.get_main_loop().set_meta('current_save_lot', '/')
 	
 	 # load the data
-	if refreshDefinitionFirst:
+	if rebuld_definitions:
 		var newDef =  DialogicResources.get_default_definitions()
 		newDef.merge(data['definitions'], false)
 		
