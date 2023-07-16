@@ -303,11 +303,15 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 	return OK
 
 static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary, drop_position = 0):
-
+	#itll trigger if you decide not to move a folder
+	if original_data['original_step'] == destination_data['step']:
+		return OK
+	
 	#abort if its trying to move folder to wrong tree
 	if original_data['category'] != destination_data['category']:
 		return ERR_INVALID_DATA
-	
+
+	var original_position = original_data['original_step']
 	var insert_position = destination_data['step']
 	#adjust for the drop position
 	if 	drop_position != -1:
@@ -315,7 +319,7 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	
 	# check if the name is allowed
 	var new_path = destination_data['path']
-
+	
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+destination_data['path'].split("/")[-1]+"' already exists in the target folder '"+original_data['path']+"'.")
 		return ERR_ALREADY_EXISTS
@@ -348,9 +352,12 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 		else:
 			new_array.append(flat_structure[tree +"_Array"][idx])
 			
+	if (original_position < insert_position):
+		insert_position = insert_position - rename_array.size()
+			
 	#now merge in and replace the original ones		
 	while rename_array.size() > 0:
-		new_array.insert(insert_position, rename_array.pop_back())
+			new_array.insert(insert_position, rename_array.pop_back())
 	
 	#return ERR_INVALID_DATA
 	

@@ -867,7 +867,7 @@ func drop_data(position, data):
 	# dragging a folder
 	if data['item_type'] == 'folder':
 		# on a folder
-		if 'Root' in item.get_metadata(0)['editor']:
+		if 'Root' in item.get_metadata(0)['editor']: 
 			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 	# dragging a file
 	elif data['item_type'] == 'file':
@@ -891,7 +891,7 @@ func get_drag_data(position):
 	# if it is a folder and it's not one of the root folders
 	if 'Root' in item.get_metadata(0)['editor'] and item.get_parent().get_parent():
 		instance_drag_preview(item.get_icon(0), item.get_text(0))
-		return {'item_type': 'folder', 'name': item.get_metadata(0)['name'], 'orig_path': get_item_folder(item, ""), 'category': item.get_metadata(0)['category']}
+		return {'item_type': 'folder', 'name': item.get_metadata(0)['name'], 'orig_path': get_item_folder(item, ""), 'category': item.get_metadata(0)['category'], 'original_step': item.get_metadata(0)['step']}
 	else:
 		if item.get_metadata(0).has('file'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))

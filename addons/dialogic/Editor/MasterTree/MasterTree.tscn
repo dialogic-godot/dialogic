@@ -8,14 +8,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -874.0
 rect_min_size = Vector2( 150, 0 )
-custom_colors/drop_position_color = Color( 0.321569, 0.529412, 0.815686, 0 )
 allow_rmb_select = true
 hide_root = true
-drop_mode_flags = 1
+drop_mode_flags = 3
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="RenamerReset" type="Timer" parent="."]
 one_shot = true
