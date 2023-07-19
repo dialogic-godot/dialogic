@@ -2,6 +2,7 @@
 extends Node
 
 var autoadvance_timer := Timer.new()
+var skip_delay_timer := Timer.new()
 
 signal dialogic_action()
 
@@ -11,6 +12,11 @@ signal dialogic_action()
 func _input(event:InputEvent) -> void:
 	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if Dialogic.paused: return
+		
+		if skip_delay_timer.wait_time > 0.0:
+			if skip_delay_timer.time_left > 0.0:
+				return
+			skip_delay_timer.start()
 		
 		if Dialogic.current_state == Dialogic.states.IDLE and Dialogic.Text.can_manual_advance():
 			Dialogic.handle_next_event()
@@ -30,6 +36,9 @@ func _ready() -> void:
 	add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
+	add_child(skip_delay_timer)
+	skip_delay_timer.one_shot = true
+	skip_delay_timer.wait_time = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 
 
 func _on_text_finished(info:Dictionary) -> void:
@@ -51,6 +60,8 @@ func get_autoadvance_time_left() -> float:
 
 func pause() -> void:
 	autoadvance_timer.paused = true
+	skip_delay_timer.paused = true
 
 func resume() -> void:
 	autoadvance_timer.paused = false
+	skip_delay_timer.paused = false
