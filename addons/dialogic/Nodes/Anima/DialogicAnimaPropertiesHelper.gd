@@ -57,7 +57,11 @@ static func get_rotation(node: Node):
 
 static func set_2D_pivot(node: Node, pivot: int) -> void:
 	var size: Vector2 = get_size(node)
-
+	
+	# If node does not contain offset, just pivot from origin.
+	if node.get('offset') == null:
+		return
+	
 	match pivot:
 		PIVOT.TOP_CENTER:
 			if node is Control:

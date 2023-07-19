@@ -683,6 +683,10 @@ func event_handler(event: Dictionary):
 			## PLEASE UPDATE THIS! BUT HOW? 
 			emit_signal("event_start", "action", event)
 			set_state(state.WAITING)
+			
+			#Animations safe for custom portraits with no animation-wait
+			var safeAnimations = ['1-fade_in.gd', '[No Animation]']
+			
 			if event['character'] == '':# No character found on the event. Skip.
 				_load_next_event()
 			else:
@@ -714,7 +718,7 @@ func event_handler(event: Dictionary):
 					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
 					p.z_index = event.get('z_index', 0)
 					
-					if event.get('animation_wait', false):
+					if (p.get('custom_instance') != null or event.get('animation_wait', false)) and !(event.get('animation', '[No Animation]') in safeAnimations):
 						yield(p, 'animation_finished')
 					
 			
@@ -731,7 +735,7 @@ func event_handler(event: Dictionary):
 							if is_instance_valid(p) and p.character_data['file'] == event['character']:
 								event = insert_animation_data(event, 'leave', 'fade_out_down.gd')
 								p.animate(event.get('animation', 'instant_out.gd'), event.get('animation_length', 1), 1, true)
-								if event.get('animation_wait', false):
+								if (p.get('custom_instance') != null or event.get('animation_wait', false)) and event.get('animation', 'instant_out.gd') != "instant_out.gd":
 									yield(p, 'animation_finished')
 				
 				# UPDATE MODE -------------------------------------------
@@ -759,9 +763,13 @@ func event_handler(event: Dictionary):
 									$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
 									portrait.z_index = event.get('z_index', 0)
 								
+								# Covers edge case of changing timeline with custom portraits causing infinite yields
+								if event.get('animation') == '[Default]':
+									event = insert_animation_data(event, 'join', 'fade_in_up.gd')
+								
 								portrait.animate(event.get('animation', '[No Animation]'), event.get('animation_length', 1), event.get('animation_repeat', 1))
 								
-								if event.get('animation_wait', false) and event.get('animation', '[No Animation]') != "[No Animation]":
+								if portrait.get('custom_instance') != null or (event.get('animation_wait', false) and event.get('animation', '[No Animation]') != "[No Animation]"):
 									yield(portrait, 'animation_finished')
 				set_state(state.READY)
 				_load_next_event()
