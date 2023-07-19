@@ -9,6 +9,7 @@
 * Changing the DB value in an audio event no longer overwrites the value in the Audio Bus. It now adjusts the current value instead.
 * Added better support for adding variables to already published games #1278 [[Iodine](https://github.com/Iodinex64)]
 * Added option in themes to show 'disabled' choices [[celthim](https://github.com/celthim)]
+* Fixed crashes related to using 'anima' animations with custom portrait nodes
 
 ## v1.4.5
 * Added focus style options for themes [[CptFubar](https://github.com/CptFubar)]
