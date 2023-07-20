@@ -507,3 +507,88 @@ static func get_resource_folder_structure() -> Dictionary:
 
 static func save_resource_folder_structure(data):
 	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
+	
+static func get_resource_folder_flat_structure() -> Dictionary:
+	# Convert the folder structure from the JSON file into a simpler one that doesn't require recursive loops
+	var flat_structure = {}
+	flat_structure['Timelines'] = {}
+	flat_structure['Characters'] = {}
+	flat_structure['Definitions'] = {}
+	flat_structure['Themes'] = {}
+	
+	
+	var json_structure = get_resource_folder_structure()
+	
+	flat_structure = recursive_search("Timelines", json_structure["folders"]["Timelines"], "/", flat_structure)
+	flat_structure = recursive_search("Characters", json_structure["folders"]["Characters"], "/", flat_structure)
+	flat_structure = recursive_search("Definitions", json_structure["folders"]["Definitions"], "/", flat_structure)
+	flat_structure = recursive_search("Themes", json_structure["folders"]["Themes"], "/", flat_structure)
+	
+	return flat_structure
+	
+static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
+	# Convert the flat folder structure back into the nested dictionary to be able to save to JSON
+	var nested_structure = {}
+	nested_structure['files'] = []
+	nested_structure['folders'] = {}
+	nested_structure['folders']['Characters'] = {}
+	nested_structure['folders']['Definitions'] = {}
+	nested_structure['folders']['Themes'] = {}
+	nested_structure['folders']['Timelines'] = {}
+	
+	var structure_keys = {"Characters":"Characters", "Definitions":"Definitions", "Themes":"Themes", "Timelines":"Timelines"}
+	
+	
+	for key in structure_keys:
+		
+		var nested = {} 
+		nested['folders'] = {}
+		nested['files'] = []
+		for flat_key in flat_tree[key].keys():
+				nested = recursive_build(flat_key.right(1), flat_tree[key][flat_key], nested)
+		nested_structure['folders'][key] = nested	
+			
+	
+	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], nested_structure)
+				
+		
+	
+	return {}
+	
+static func recursive_search(currentCheck, currentDictionary, currentFolder, structure_dictionary):
+	structure_dictionary[currentCheck][currentFolder + "."] = currentDictionary['metadata']
+	
+	for structureFolder in currentDictionary["folders"]:
+		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/", structure_dictionary)
+		
+	for structureFile in currentDictionary["files"]:
+		match currentCheck:
+			"Timelines": structure_dictionary['Timelines'][structureFile] = currentFolder
+			"Characters":  structure_dictionary['Characters'][structureFile] = currentFolder
+			"Definitions":  structure_dictionary['Definitions'][structureFile] = currentFolder
+			"Themes":  structure_dictionary['Themes'][structureFile] = currentFolder
+	
+	return structure_dictionary
+
+static func recursive_build(build_path, meta, current_dictionary):
+	var passer = {}
+	passer['folders'] = {}
+	passer['files'] = []
+	if '/' in build_path: 
+		var current_step = build_path.split('/', true, 1)[0]
+		if !current_dictionary['folders'].has(current_step):
+			current_dictionary['folders'][current_step] = passer
+			
+		current_dictionary['folders'][current_step] = recursive_build(build_path.split('/', true, 1)[1], meta,current_dictionary['folders'][current_step])
+		
+		return current_dictionary		
+	else:
+		if build_path == ".":
+			current_dictionary['metadata'] = meta
+		else:
+			current_dictionary['files'].append(meta['file'])
+		
+		return current_dictionary
+		
+		
+

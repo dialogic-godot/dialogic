@@ -43,6 +43,7 @@ signal editor_selected(selected)
 
 func _ready():
 	editor_reference = find_parent('EditorView')
+
 	# Tree Settings
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -90,7 +91,7 @@ func _ready():
 		# set info
 		sub_tree.set_text(0, tree_info[0])
 		sub_tree.collapsed = DialogicUtil.get_folder_meta(tree_info[0], 'folded')
-		sub_tree.set_metadata(0, {'editor': tree_info[1]})
+		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '', 'step': 0, "name": "", 'category': tree_info[0]})
 		# set the correct tree variable
 		match tree_info[0]:
 			"Timelines":
@@ -143,15 +144,133 @@ func _ready():
 ## *****************************************************************************
 
 func build_full_tree(selected_item: String = ''):
-	# Adding timelines
-	build_timelines(selected_item)
-	# Adding characters
-	build_characters(selected_item)
-	# Adding Definitions
-	build_definitions(selected_item)
-	# Adding Themes
-	build_themes(selected_item)
 
+	
+	# Adding timelines
+	build_flat_tree_items("Timelines")
+	# Adding characters
+	build_flat_tree_items("Characters")
+	# Adding Definitions
+	build_flat_tree_items("Definitions")
+	# Adding Themes
+	build_flat_tree_items("Themes")
+	
+	# force redraw control
+	update()
+	
+func build_flat_tree_items(current_tree: String=''):
+	current_tree = current_tree + "_Array"
+	#break if the flat_structure isn't built yet so it doesn't throw an error, which happens at plugin start
+	if !current_tree in editor_reference.flat_structure:
+		return
+		
+	var current_root
+	var editor
+	var depth_stack = []
+	
+	match (current_tree):
+		"Timelines_Array":
+			current_root = timelines_tree
+			_clear_tree_children(timelines_tree)
+			editor = "Timeline Root"
+		"Characters_Array": 
+			current_root = characters_tree
+			_clear_tree_children(characters_tree)
+			editor = "Character Root"
+		"Definitions_Array":
+			current_root = definitions_tree
+			_clear_tree_children(definitions_tree)
+			editor = "Definition Root"
+		"Themes_Array":
+			current_root = themes_tree
+			_clear_tree_children(themes_tree)
+			editor = "Theme Root"
+	
+	depth_stack.push_back({"path": "/", "object": current_root})
+	
+	var step = -1
+	for entry in editor_reference.flat_structure[current_tree]:
+		step = step + 1
+		#Skip the root folder 
+		if entry['key'] == "/.":
+			continue
+		
+		if (filter_tree_term == '') or (filter_tree_term.to_lower() in entry['key'].to_lower()):
+			pass
+		else:
+			continue
+		
+		#check where we are in the stack
+		while !(depth_stack[-1]["path"] in entry['key']) and depth_stack.size() > 1:
+			var popped = depth_stack.pop_back()
+		
+		current_root = depth_stack[-1]["object"]
+		
+		if "folded" in entry['value']:
+			# folder add
+			var folder_item:TreeItem= tree.create_item(current_root)
+			# set text and icon
+			var folder_name = entry['key'].split("/")[-2]
+			folder_item.set_text(0, folder_name)
+			folder_item.set_tooltip(0, str(step) + ": " + entry['key'])
+			folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
+			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
+			# set metadata
+			var stripped_path = entry['key'].rstrip("/.").rstrip(folder_name)
+			folder_item.set_metadata(0, {'editor': editor,'editortype': 'folder', 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree.rstrip('_Array'), 'step': step})
+			# set collapsed
+			folder_item.collapsed = entry['value']['folded']
+			current_root = folder_item	
+			depth_stack.push_back({"path": entry['key'].rstrip("."), "object": folder_item})
+			
+		else:
+			#file add
+			var resource_data = entry['value']
+			
+			var item = tree.create_item(current_root)
+			resource_data['category']= current_tree.rstrip('_Array')
+			resource_data['editortype'] = 'file'
+			# set the text
+			if resource_data.has('name'):
+				item.set_text(0, resource_data['name'])
+				resource_data['path'] = entry['key'].rstrip(resource_data['name'])
+			else:
+				item.set_text(0, resource_data['file'])
+				resource_data['path'] = entry['key'].rstrip(resource_data['file'])
+				resource_data['name'] = resource_data['file']
+			if not get_constant("dark_theme", "Editor"):
+				item.set_icon_modulate(0, get_color("property_color", "Editor"))
+			# set it as editable
+			resource_data['editable'] = true
+			# resource specific changes
+			match current_tree:
+				"Timelines_Array":
+					item.set_icon(0, timeline_icon)
+					resource_data['editor'] = 'Timeline'
+					resource_data['step'] = step
+				"Characters_Array":
+					item.set_icon(0, character_icon)
+					resource_data['editor'] = 'Character'
+					resource_data['step'] = step
+					if resource_data.has('color'):
+						item.set_icon_modulate(0, resource_data['color'])
+				"Definitions_Array":
+					if resource_data['type'] == 0:
+						item.set_icon(0, definition_icon)
+						resource_data['editor'] = 'Value'
+						resource_data['step'] = step
+					else:
+						item.set_icon(0, glossary_icon)
+						resource_data['editor'] = 'GlossaryEntry'
+						resource_data['step'] = step
+				"Themes_Array":
+					item.set_icon(0, theme_icon)
+					resource_data['editor'] = 'Theme'
+					resource_data['step'] = step
+			
+			item.set_metadata(0, resource_data)
+			item.set_tooltip(0, str(step) + ": " +entry['key'])
+	
 
 func _clear_tree_children(parent: TreeItem):
 	while parent.get_children() != null:
@@ -193,19 +312,26 @@ func build_resource_folder(parent_folder_item:TreeItem, folder_data:Dictionary, 
 func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String, meta_folder_info:Dictionary):
 	# create item
 	var folder_item:TreeItem= tree.create_item(parent_item)
+
+	var parent_path = parent_item.get_metadata(0)['path']
+	var current_tree = parent_item.get_metadata(0)['category'].rstrip("_Array")
 	# set text and icon
 	folder_item.set_text(0, folder_name)
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 	folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	# set metadata
-	folder_item.set_metadata(0, {'editor': editor, 'editable': true})
+	folder_item.set_metadata(0, {'editor': editor,'editortype':'folder', 'editable': true, "name": folder_name, "path:": parent_path, "category": current_tree})
 	# set collapsed
 	if filter_tree_term.empty():
 		folder_item.collapsed = meta_folder_info['folded']
+	# add to flat table
+	editor_reference.editor_reference.flat_structure[parent_path + "/"  + "folder_name" + "/."] = {"color": null, "folded": folder_item.collapsed}
 	return folder_item
 
 
 func _add_resource_item(resource_type, parent_item, resource_data, select):
+	resource_data['category'] = resource_type
+	resource_data['editortype'] = 'file'
 	# create item
 	var item = tree.create_item(parent_item)
 	# set the text
@@ -248,41 +374,29 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 func build_timelines(selected_item: String=''):
 	_clear_tree_children(timelines_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_timelines_folder_structure()
-	build_resource_folder(timelines_tree, structure, selected_item, "Timeline Root", "Timeline")
-
+	build_flat_tree_items("Timelines")
 
 ## CHARACTERS
 func build_characters(selected_item: String=''):
 	_clear_tree_children(characters_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_characters_folder_structure()
-	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
-
+	build_flat_tree_items("Characters")
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):
 	_clear_tree_children(definitions_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_definitions_folder_structure()
-	build_resource_folder(definitions_tree, structure, selected_item, "Definition Root", "Definition")
-
+	build_flat_tree_items("Definitions")
 
 ## THEMES
 func build_themes(selected_item: String=''):
 	_clear_tree_children(themes_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_theme_folder_structure()
-	build_resource_folder(themes_tree, structure, selected_item, "Theme Root", "Theme")
-
+	build_flat_tree_items("Themes")
 
 func _on_item_collapsed(item: TreeItem):
 	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor'] and not 'Documentation' in item.get_metadata(0)['editor']:
-		DialogicUtil.set_folder_meta(get_item_folder(item, ''), 'folded', item.collapsed)
+		DialogicUtil.set_folder_meta(editor_reference.flat_structure, item.get_metadata(0), 'folded', item.collapsed)
 
 func build_documentation(selected_item: String=''):
 	var child = documentation_tree.get_children()
@@ -310,6 +424,7 @@ func _on_item_selected():
 			show_timeline_editor()
 		'Character':
 			character_editor.load_character(metadata['file'])
+			character_editor.set_meta('tree_position', metadata['step'])
 			show_character_editor()
 		'Value':
 			value_editor.load_definition(metadata['id'])
@@ -505,7 +620,7 @@ func _on_item_rmb_selected(position):
 func get_item_folder(item: TreeItem, root : String):
 	if not item:
 		return root
-	var current_path:String = get_item_path(item)
+	var current_path:String = get_item_path(item)['path']
 	if not "Root" in item.get_metadata(0)['editor']:
 		current_path = DialogicUtil.get_parent_path(current_path)
 	if not current_path.begins_with(root):
@@ -513,10 +628,13 @@ func get_item_folder(item: TreeItem, root : String):
 	return current_path
 
 
-func get_item_path(item: TreeItem) -> String:
+func get_item_path(item: TreeItem) -> Dictionary:
 	if item == null:
-		return ''
-	return create_item_path_recursive(item, "").trim_suffix("/")
+		return {'path': "", 'step': '0'}
+	
+	if 	!'path' in item.get_metadata(0):
+		return {'path': "/", 'step': '0'}
+	return {'path': item.get_metadata(0)['path'], 'step': item.get_metadata(0)['step']}
 
 
 func create_item_path_recursive(item:TreeItem, path:String) -> String:
@@ -536,7 +654,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
 	elif id == 1: # Copy to clipboard
-		OS.set_clipboard(get_item_path(get_selected()).replace('Timelines', ''))
+		OS.set_clipboard(get_item_path(get_selected())['path'].replace('Timelines', ''))
 	elif id == 2: # Copy File name
 		OS.set_clipboard(get_selected().get_metadata(0).get('file'))
 	elif id == 3: # Remove
@@ -586,8 +704,8 @@ func _on_TimelineRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Timeline
 		new_timeline()
 	if id == 1: # add subfolder
-		DialogicUtil.add_folder(get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
-		build_timelines()
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
+		build_flat_tree_items("Timelines")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
 			return
@@ -599,9 +717,9 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Character
 		new_character()
 	if id == 1: # add subfolder
-		DialogicUtil.add_folder(get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
 		
-		build_characters()
+		build_flat_tree_items("Characters")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
 			return
@@ -615,8 +733,8 @@ func _on_DefinitionRootPopupMenu_id_pressed(id):
 	if id == 1: # Add Glossary Definition
 		new_glossary_entry()
 	if id == 2: # add subfolder
-		DialogicUtil.add_folder(get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
-		build_definitions()
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
+		build_flat_tree_items("Definitions")
 	if id == 3: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
 			return
@@ -628,8 +746,8 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Theme
 		new_theme()
 	if id == 1: # add subfolder
-		DialogicUtil.add_folder(get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
-		build_themes()
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
+		build_flat_tree_items("Themes")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
 			return
@@ -647,78 +765,98 @@ func _on_DocumentationPopupMenu_id_pressed(id):
 # it will be added to the selected folder (if it's a timeline folder) or the Timeline root folder
 func new_timeline():
 	var timeline = editor_reference.get_node('MainPanel/TimelineEditor').create_timeline()
-	var folder = get_item_folder(get_selected(), "Timelines")
-	DialogicUtil.add_file_to_folder(folder, timeline['metadata']['file'])
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Timelines",folder, timeline['metadata']['file'])
 	build_timelines(timeline['metadata']['file'])
-	rename_selected()
+	hide_all_editors()
+	#rename_selected()
 
 
 # creates a new character and opens it
 # it will be added to the selected folder (if it's a character folder) or the Character root folder
 func new_character():
 	var character = editor_reference.get_node("MainPanel/CharacterEditor").create_character()
-	var folder = get_item_folder(get_selected(), "Characters")
-	DialogicUtil.add_file_to_folder(folder, character['metadata']['file'])
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Characters",folder, character['metadata']['file'])
 	build_characters(character['metadata']['file'])
-	rename_selected()
+	hide_all_editors()
+	#rename_selected()
 
 # creates a new theme and opens it
 # it will be added to the selected folder (if it's a theme folder) or the Theme root folder
 func new_theme():
 	var theme_file = editor_reference.get_node("MainPanel/ThemeEditor").create_theme()
-	var folder = get_item_folder(get_selected(), "Themes")
-	DialogicUtil.add_file_to_folder(folder, theme_file)
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Themes",folder, theme_file)
 	build_themes(theme_file)
-	rename_selected()
+	hide_all_editors()
+	#rename_selected()
 
 # creates a new value and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_value_definition():
 	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
-	var folder = get_item_folder(get_selected(), "Definitions")
-	DialogicUtil.add_file_to_folder(folder, definition_id)
+	var folder = get_selected().get_metadata(0)
+	folder['type'] = 0
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
-	rename_selected()
+	hide_all_editors()
+	#rename_selected()
 
 # creates a new glossary entry and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_glossary_entry():
 	var definition_id = editor_reference.get_node("MainPanel/GlossaryEntryEditor").create_glossary_entry()
-	var folder = get_item_folder(get_selected(), "Definitions")
-	DialogicUtil.add_file_to_folder(folder, definition_id)
+	var folder = get_selected().get_metadata(0)
+	folder['type'] = 1
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
-	rename_selected()
+	hide_all_editors()
+	#rename_selected()
 	
+func update_definition_entry(text):
+	# special funciton needed for name changes to the two definition types
+	var current = get_selected().get_metadata(0)
 
 func remove_selected():
 	var item = get_selected()
-	item.free()
-	timelines_tree.select(0)
+	var folder = get_selected().get_metadata(0)
+	if folder['editortype'] == "folder":
+		DialogicUtil.remove_folder(editor_reference.flat_structure, folder['category'], folder, false)
+	else:
+		DialogicUtil.remove_file_from_folder(editor_reference.flat_structure, folder['category'], folder)
 	settings_editor.update_data()
+	hide_all_editors()
+	build_flat_tree_items(folder['category'])
 
 
 func rename_selected():
 	yield(get_tree(), "idle_frame")
 	_start_rename()
 	edit_selected()
+	hide_all_editors()
 
 ## *****************************************************************************
 ##					 		DRAGGING ITEMS
 ## *****************************************************************************
 
 func can_drop_data(position, data) -> bool:
+	if tree.drop_mode_flags == DROP_MODE_DISABLED:
+		tree.set_drop_mode_flags(DROP_MODE_ON_ITEM | DROP_MODE_INBETWEEN)
+		
 	var item = get_item_at_position(position)
 	if item == null:
 		return false
 	# if the data isn't empty and it's a valid DICT
 	if data != null and data is Dictionary and data.has('item_type'):
-		# if it's not trying to add a folder to a file
-		if not (data['item_type'] == "folder" and not 'Root' in item.get_metadata(0)["editor"]):
-			# if it's the same type of folder as before
-			if get_item_folder(item, '').split("/")[0] == data['orig_path'].split("/")[0]:
-				# make sure the folder/item is not a subfolder of the original folder
-				if data['item_type'] == "file" or (not get_item_folder(item, '').begins_with(data['orig_path'])):
-					return true
+		# if the item is the same category as the original
+		if item.get_metadata(0)['category'] == data['category']:
+			#if we're moving to the root, no further checks needed
+			if item.get_metadata(0)['step'] == 0:
+				return true
+			# if the folders not moving a root folder into a subfolder of itself
+			if not ((data['item_type'] == "folder" and item.get_metadata(0)["editortype"] == "folder") and (data['orig_path'] + data['name']) in item.get_metadata(0)['path']):
+				return true
 	return false
 
 func drop_data(position, data):
@@ -726,27 +864,26 @@ func drop_data(position, data):
 	var drop_section = get_drop_section_at_position(position)
 	if not data.has('item_type'):
 		return
-	if data['orig_path'] == get_item_folder(item, ''):
-		return
 	# dragging a folder
 	if data['item_type'] == 'folder':
 		# on a folder
-		if 'Root' in item.get_metadata(0)['editor']:
-			DialogicUtil.move_folder_to_folder(data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+		if 'Root' in item.get_metadata(0)['editor']: 
+			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 	# dragging a file
 	elif data['item_type'] == 'file':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
 			if data.has('file_name'):
-				DialogicUtil.move_file_to_folder(data['file_name'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 			elif data.has('resource_id'):
-				DialogicUtil.move_file_to_folder(data['resource_id'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 				pass # WORK TODO
 		# on a file
 		else:
-			DialogicUtil.move_file_to_folder(data['file_name'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+			DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 	dragging_item.queue_free()
 	dragging_item = null
+	
 	build_full_tree()
 
 func get_drag_data(position):
@@ -754,14 +891,14 @@ func get_drag_data(position):
 	# if it is a folder and it's not one of the root folders
 	if 'Root' in item.get_metadata(0)['editor'] and item.get_parent().get_parent():
 		instance_drag_preview(item.get_icon(0), item.get_text(0))
-		return {'item_type': 'folder', 'orig_path': get_item_folder(item, "")}
+		return {'item_type': 'folder', 'name': item.get_metadata(0)['name'], 'orig_path': get_item_folder(item, ""), 'category': item.get_metadata(0)['category'], 'original_step': item.get_metadata(0)['step']}
 	else:
 		if item.get_metadata(0).has('file'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))
-			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'file_name':item.get_metadata(0)['file']}
+			return {'item_type': 'file', 'orig_path': item.get_metadata(0)['path'], 'file_name':item.get_metadata(0)['file'], 'category': item.get_metadata(0)['category'], 'name': item.get_metadata(0)['name'], 'original_step': item.get_metadata(0)['step']}
 		elif item.get_metadata(0).has('id'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))
-			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'resource_id':item.get_metadata(0)['id']}
+			return {'item_type': 'file', 'orig_path': item.get_metadata(0)['path'], 'resource_id':item.get_metadata(0)['id'], 'category': item.get_metadata(0)['category'], 'name': item.get_metadata(0)['name'], 'original_step': item.get_metadata(0)['step']}
 	return null
 
 func instance_drag_preview(icon, text):
@@ -778,6 +915,7 @@ func _process(delta):
 		else:
 			dragging_item.queue_free()
 			dragging_item = null
+
 
 
 ## *****************************************************************************
@@ -798,7 +936,7 @@ func _start_rename():
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	if metadata.has("editable") and metadata["editable"]:
-		item_path_before_edit = get_item_path(item)
+		item_path_before_edit = get_item_path(item)['path']
 		item.set_editable(0, true)
 		$RenamerReset.start(0.5)
 
@@ -808,34 +946,44 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Timelines', metadata, item.get_text(0))
 		save_current_resource()
 		build_timelines(metadata['file'])
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Themes', metadata, item.get_text(0))
 		build_themes(metadata['file'])
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Characters', metadata, item.get_text(0))
 		save_current_resource()
 		build_characters(metadata['file'])
 	if metadata['editor'] == 'Value':
 		value_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		value_editor._on_name_changed(item.get_text(0))
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Definitions', metadata, item.get_text(0))
 		save_current_resource()
 		build_definitions(metadata['id'])
 	if metadata['editor'] == 'GlossaryEntry':
 		glossary_entry_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		glossary_entry_editor._on_name_changed(item.get_text(0))
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Definitions', metadata, item.get_text(0))
 		save_current_resource()
 		build_definitions(metadata['id'])
 
 	if "Root" in metadata['editor']:
 		if item.get_text(0) == item_path_before_edit.split("/")[-1]:
 			return 
-		var result = DialogicUtil.rename_folder(item_path_before_edit, item.get_text(0))
+		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, metadata['category'], metadata, item.get_text(0))
 		if result != OK:
-			item.set_text(0, item_path_before_edit.split("/")[-1])
+			item.set_text(0, item.get_text(0))
+			
+		
+		build_flat_tree_items(metadata['category'])
+		
+	hide_all_editors()
 			
 ## *****************************************************************************
 ##					 		AUTO SAVING
@@ -853,6 +1001,10 @@ func save_current_resource():
 			if metadata['editor'] == 'Timeline':
 				timeline_editor.save_timeline()
 			if metadata['editor'] == 'Character':
+				if character_editor.has_meta('current_color'):
+					editor_reference.flat_structure['Characters_Array'][character_editor.get_meta('tree_position')]['value']['color'] = character_editor.get_meta('current_color')
+				else:
+					character_editor.set_meta('current_color', Color.white)	
 				character_editor.save_character()
 			if metadata['editor'] == 'Value':
 				value_editor.save_definition()
@@ -874,15 +1026,12 @@ func _on_filter_tree_edit_changed(value):
 		definitions_tree.collapsed = false
 		themes_tree.collapsed = false
 	else:
-		timelines_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		characters_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		definitions_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		themes_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+		timelines_tree.collapsed = editor_reference.flat_structure['Timelines']['/.']['folded']
+		characters_tree.collapsed = editor_reference.flat_structure['Characters']['/.']['folded']
+		definitions_tree.collapsed = editor_reference.flat_structure['Definitions']['/.']['folded']
+		themes_tree.collapsed = editor_reference.flat_structure['Themes']['/.']['folded']
 	
-	if get_selected():
-		build_full_tree(get_selected().get_metadata(0).get('file', ''))
-	else:
-		build_full_tree()
+	build_full_tree()
 	
 	# This was merged, not sure if it is properly placed
 	build_documentation()

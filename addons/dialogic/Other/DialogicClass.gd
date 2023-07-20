@@ -10,8 +10,18 @@ extends Node
 ## Trying to follow this documentation convention: https://github.com/godotengine/godot/pull/41095
 class_name Dialogic
 
+## Preloader function, loads and prepares the tree into the Engine meta
+## Not necessary to run separately, it will be run by Dialogic.start() the first time if it's not present
+## But useful to speed up loading
+## This might be slower than the older way, though, so best to do with some other loading
+## If for any reason during game runtime this needs to be rebuilt, Engine.get_main_loop().remove_meta('dialogic_tree') will make it run on next Dialogic.start()
 
-## Refactor the start function for 2.0 there should be a cleaner way to do it :)
+static func prepare(): 
+
+	var flat_structure = DialogicUtil.get_flat_folders_list(false) 
+
+	Engine.get_main_loop().set_meta('dialogic_tree', flat_structure)
+
 
 ## Starts the dialog for the given timeline and returns a Dialog node.
 ## You must then add it manually to the scene to display the dialog.
@@ -36,6 +46,9 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	var dialog_node = null
 	var canvas_dialog_node = null
 	var returned_dialog_node = null
+	
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
+		prepare()
 	
 	if use_canvas_instead:
 		var canvas_dialog_script = load("res://addons/dialogic/Nodes/canvas_dialog_node.gd")
@@ -87,9 +100,19 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	
 	# else get the file from the name
 	var timeline_file = _get_timeline_file_from_name(timeline)
-	if timeline_file:
+	if timeline_file != "":
 		dialog_node.timeline = timeline_file
 		dialog_node.timeline_name = timeline
+		return returned_dialog_node
+	else:
+		dialog_node.dialog_script = {
+			"events":[
+				{"event_id":'dialogic_001',
+				"character":"",
+				"portrait":"",
+				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
+			}]
+		}
 		return returned_dialog_node
 	
 	# Just in case everything else fails.
@@ -136,7 +159,7 @@ static func next_event(discreetly: bool = false):
 ## does not. 
 static func timeline_exists(timeline: String):
 	var timeline_file = _get_timeline_file_from_name(timeline)
-	if timeline_file:
+	if timeline_file != "":
 		return true
 	else:
 		return false
@@ -452,97 +475,49 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 
 # tries to find the path of a given timeline 
 static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
-	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
+	if timeline_name_path == "":
+		return ""
 	
-	# Checks for slash in the name, and uses the folder search if there is 
-	if '/' in timeline_name_path:
-		#Add leading slash if its a path and it is missing, for paths that have subfolders but no leading slash 
-		if(timeline_name_path.left(1) != '/'):
-			timeline_name_path = "/" + timeline_name_path
-		var parts = timeline_name_path.split('/', false)
+	#First add the leading slash if it is missing so algorithm works properly
+	if(timeline_name_path.left(1) != '/'):
+		timeline_name_path = "/" + timeline_name_path
+		
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
+		prepare()
+
+
+	var timelines = Engine.get_main_loop().get_meta('dialogic_tree')['Timelines']
 	
-		# First check if it's a timeline in the root folder
-		if parts.size() == 1:
-			for t in DialogicUtil.get_timeline_list():
-				for f in timelines['files']:
-					if t['file'] == f && t['name'] == parts[0]:
-						return t['file']
-		if parts.size() > 1:
-			var current_data
-			var current_depth = 0
-			for p in parts:
-				if current_depth == 0:
-					# Starting the crawl
-					if (timelines['folders'].has(p) ):
-						current_data = timelines['folders'][p]
-					else:
-						return ''
-				elif current_depth == parts.size() - 1:
-					# The final destination
-					for t in DialogicUtil.get_timeline_list():
-						for f in current_data['files']:
-							if t['file'] == f && t['name'] == p:
-								return t['file']
-							
-				else:
-					# Still going deeper
-					if (current_data['folders'].size() > 0):
-						if p in current_data['folders']:
-							current_data = current_data['folders'][p]
-						else:
-							return ''
-					else:
-						return ''
-				current_depth += 1
-		return ''
+	if timeline_name_path in timelines:
+		if 'file' in timelines[timeline_name_path]:
+			return timelines[timeline_name_path]['file']
+		else:
+			#return an invalid filename
+			return "not_found.json"
 	else:
-		# Searching for any timeline that could match that name
-		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline_name_path:
-				return t['file']
+		#step through each one in turn to find the first matching string
+		for path in timelines.keys():
+			#if timeline_name_path in path:
+			if path.ends_with(timeline_name_path):
+				return timelines[path]['file']
 	return ''
 
 static func _get_variable_from_file_name(variable_name_path: String) -> String:
 	#First add the leading slash if it is missing so algorithm works properly
 	if(variable_name_path.left(1) != '/'):
 		variable_name_path = "/" + variable_name_path
-
-	var definitions = DialogicUtil.get_full_resource_folder_structure()['folders']['Definitions']
-	var parts = variable_name_path.split('/', false)
-	
-	# Check the root if it's a variable in the root folder 
-	if parts.size() == 1:
-		for t in _get_definitions()['variables']:
-			for f in definitions['files']:
-				if t['id'] == f && t['name'] == parts[0]:
-					return t['id']
-	if parts.size() > 1:
-		var current_data
-		var current_depth = 0
 		
-		for p in parts:
-			if current_depth == 0:
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
+		prepare()
 
-				# Starting the crawl
-				if (definitions['folders'].has(p)):
-					current_data = definitions['folders'][p]
-				else:
-					return ''
-			elif current_depth == parts.size() - 1:
-				# The final destination
-				for t in _get_definitions()['variables']:
-					for f in current_data['files']:
-						if t['id'] == f && t['name'] == p:
-							return t['id']
-							
-			else:
-				# Still going deeper
-				if (current_data['folders'].size() > 0):
-					if p in current_data['folders']:
-						current_data = current_data['folders'][p]
-					else:
-						return ''
-				else:
-					return ''
-			current_depth += 1
+
+	var definitions = Engine.get_main_loop().get_meta('dialogic_tree')['Definitions']
+	
+	if variable_name_path in definitions:
+		return definitions[variable_name_path]['id']
+	else:
+		#step through each one in turn to find the first matching string
+		for path in definitions.keys():
+			if path.ends_with(variable_name_path):
+				return definitions[path]['id']
 	return ''

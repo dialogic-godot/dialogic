@@ -212,125 +212,270 @@ static func get_folder_at_path(path):
 	return folder_data
 
 
-## SETTERS
-static func set_folder_content_recursive(path_array: Array, orig_data: Dictionary, new_data: Dictionary) -> Dictionary:
-	if len(path_array) == 1:
-		if path_array[0] in orig_data['folders'].keys():
-			if new_data.empty():
-				orig_data['folders'].erase(path_array[0])
-			else:
-				orig_data["folders"][path_array[0]] = new_data
-	else:
-		var current_folder = path_array.pop_front()
-		orig_data["folders"][current_folder] = set_folder_content_recursive(path_array, orig_data["folders"][current_folder], new_data)
-	return orig_data
-
-static func set_folder_at_path(path: String, data:Dictionary):
-	var orig_structure = get_full_resource_folder_structure()
-	var new_data = set_folder_content_recursive(path.split("/"), orig_structure, data)
-	DialogicResources.save_resource_folder_structure(new_data)
-	return OK
 
 ## FOLDER METADATA
-static func set_folder_meta(folder_path: String, key:String, value):
-	var data = get_folder_at_path(folder_path)
-	data['metadata'][key] = value
-	set_folder_at_path(folder_path, data)
+static func set_folder_meta(flat_structure:Dictionary, item: Dictionary, key:String, value):
+	if 'category' in item:
+		if flat_structure[item['category'] + "_Array"][item['step']]['value'][key] != value:
+			flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
+			
+			flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
+			DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 static func get_folder_meta(folder_path: String, key:String):
 	return get_folder_at_path(folder_path)['metadata'][key]
 
 
 ## FOLDER FUNCTIONS
-static func add_folder(path:String, folder_name:String):
+static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
+	#first find the parent folder from here
 	# check if the name is allowed
-	if folder_name in get_folder_at_path(path)['folders'].keys():
-		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path+"'.")
+	var new_path = path['path'] + path['name'] + "/" + folder_name + "/."
+	if new_path in flat_structure[tree]:
+		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	
-	var folder_data = get_folder_at_path(path)
-	folder_data['folders'][folder_name] = {"folders":{}, "files":[], 'metadata':{'color':null, 'folded':false}}
-	set_folder_at_path(path, folder_data)
+	flat_structure[tree + "_Array"].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
 	
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	return OK
 
-static func remove_folder(folder_path:String, delete_files:bool = true):
-	#print("[D] Removing 'Folder' "+folder_path)
-	for folder in get_folder_at_path(folder_path)['folders']:
-		remove_folder(folder_path+"/"+folder, delete_files)
+static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:Dictionary, delete_files:bool = true):
+	print(folder_data)
+	flat_structure[tree +"_Array"].remove(folder_data['step'])
 	
 	if delete_files:
-		for file in get_folder_at_path(folder_path)['files']:
-			#print("[D] Removing file ", file)
-			match folder_path.split("/")[0]:
-				'Timelines':
-					DialogicResources.delete_timeline(file)
-				'Characters':
-					DialogicResources.delete_character(file)
-				'Definitions':
-					DialogicResources.delete_default_definition(file)
-				'Themes':
-					DialogicResources.delete_theme(file)
-	set_folder_at_path(folder_path, {})
+		var folder_root = folder_data['path'] + "/" + folder_data['name'] + "/" 
+		
+		var new_array = []
+		
+		for idx in flat_structure[tree +"_Array"].size():
+			if not folder_root in flat_structure[tree +"_Array"][idx]['key']:
+				new_array.push_back(flat_structure[tree +"_Array"][idx])
+				
+		flat_structure[tree +"_Array"] = new_array	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 
-static func rename_folder(path:String, new_folder_name:String):
+		
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
+static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictionary, new_folder_name:String):
+	#forward slashes are disallowed in names, we will replace them with a hyphen
+	new_folder_name = new_folder_name.replace("/", "-")
+	
 	# check if the name is allowed
-	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
-		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
+	var new_path = path['path']  + new_folder_name + "/."
+	
+	if new_path in flat_structure[tree]:
+		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"++path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	elif new_folder_name.empty():
 		return ERR_PRINTER_ON_FIRE
 		
+	var old_path = flat_structure[tree + "_Array"][path['step']]['key'].rstrip(".")
+	flat_structure[tree + "_Array"][path['step']]['key'] = new_path
 	
-	# save the content
-	var folder_content = get_folder_at_path(path)
+	for idx in flat_structure[tree + "_Array"].size():
+		flat_structure[tree + "_Array"][idx]['key'] = flat_structure[tree + "_Array"][idx]['key'].replace(old_path, new_path.rstrip("."))
 	
-	# remove the old folder BUT NOT THE FILES !!!!!
-	remove_folder(path, false)
 	
-	# add the new folder
-	add_folder(get_parent_path(path), new_folder_name)
-	var new_path = get_parent_path(path)+ "/"+new_folder_name
-	set_folder_at_path(new_path, folder_content)
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
+	
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 	return OK
 
-static func move_folder_to_folder(orig_path, target_folder):
-	# check if the name is allowed
-	if orig_path.split("/")[-1] in get_folder_at_path(target_folder)['folders'].keys():
-		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder '"+target_folder+"'.")
-		return ERR_ALREADY_EXISTS
+static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary, drop_position = 0):
+	#itll trigger if you decide not to move a folder
+	if original_data['original_step'] == destination_data['step']:
+		return OK
 	
-	# save the content
-	var folder_content = get_folder_at_path(orig_path)
+	#abort if its trying to move folder to wrong tree
+	if original_data['category'] != destination_data['category']:
+		return ERR_INVALID_DATA
+
+	var original_position = original_data['original_step']
+	var insert_position = destination_data['step']
+	#adjust for the drop position
+	if 	drop_position != -1:
+		insert_position = insert_position + 1	
+	
+	# check if the name is allowed
+	var new_path = destination_data['path']
+	
+	if new_path in flat_structure[tree]:
+		print("[D] A folder with the name '"+destination_data['path'].split("/")[-1]+"' already exists in the target folder '"+original_data['path']+"'.")
+		return ERR_ALREADY_EXISTS
+
 	
 	# remove the old folder BUT DON'T DELETE THE FILES!!!!!!!!!!!
 	# took me ages to find this when I forgot it..
-	remove_folder(orig_path, false)
 	
-	# add the new folder
-	var folder_name = orig_path.split("/")[-1]
-	add_folder(target_folder, folder_name)
-	var new_path = target_folder+ "/"+folder_name
-	set_folder_at_path(new_path, folder_content)
+	var new_array=[]
+	var rename_array = []
+	
+	#where we drop it will depend on the position. if we're targeting either above or below, we want to put it at the same level, not subfolder
+	var original_folder = ""
+	var replace_folder = ""
+	if drop_position != -1:
+		original_folder = original_data['orig_path'] + original_data['name'] + '/'
+		replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name'] + '/'
+	else: 
+		original_folder = original_data['orig_path'] + original_data['name'] + '/'
+		replace_folder = destination_data['path'] + original_data['name'] + '/'
+	
+	
+	#first iterate through and find all the items that need to be renamed
+	for idx in flat_structure[tree +"_Array"].size():
+		if original_folder in flat_structure[tree +"_Array"][idx]['key']:
+			var item = flat_structure[tree +"_Array"][idx].duplicate()
+			item['key'] = item['key'].replace(original_folder, replace_folder)
+			if 'path' in item['value']:
+				item['value']['path'] = item['value']['path'].replace(original_folder, replace_folder)
+			rename_array.append(item)
+		else:
+			new_array.append(flat_structure[tree +"_Array"][idx])
+			
+	if (original_position < insert_position):
+		insert_position = insert_position - rename_array.size()
+			
+	#now merge in and replace the original ones		
+	while rename_array.size() > 0:
+			new_array.insert(insert_position, rename_array.pop_back())
+	
+	#return ERR_INVALID_DATA
+	
+	flat_structure[tree +"_Array"] = new_array	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
+	
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	
 	return OK
 
 ## FILE FUNCTIONS
-static func move_file_to_folder(file_name, orig_folder, target_folder):
-	remove_file_from_folder(orig_folder, file_name)
-	add_file_to_folder(target_folder, file_name)
+static func move_file_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary, drop_position = 0):
+	#abort if its trying to move folder to wrong tree
+	if original_data['category'] != destination_data['category']:
+		return ERR_INVALID_DATA
 
-static func add_file_to_folder(folder_path, file_name):
-	var folder_data = get_folder_at_path(folder_path)
-	folder_data["files"].append(file_name)
-	set_folder_at_path(folder_path, folder_data)
+	var insert_position = destination_data['step']
+	#adjust for the drop position
+	if 	drop_position != -1:
+		insert_position = insert_position + 1	
+	
+	#check to make sure the next item is a file, because if not we need to roll down to the next file at the same level
+	if 'folded' in flat_structure[tree +"_Array"][destination_data['step']]['value']:
+		var destination_folder = ""
+		if drop_position == -1:
+			destination_folder = destination_data['path']
+		else:
+			destination_folder = destination_data['path'] + destination_data['name'] + "/"
+		
+		#var destination_path = 
+		var searching = true
+		while searching:
+			insert_position = insert_position + 1
+			if 'folded' in flat_structure[tree +"_Array"][insert_position]['value']:
+				if ! destination_folder in flat_structure[tree +"_Array"][insert_position]['key']:
+					searching = false
+			else: 
+				if flat_structure[tree +"_Array"][insert_position]['value']['path'] == destination_folder: 
+					searching = false
+			continue
+				#if flat_structure[tree +"_Array"][insert_position]['key']:
+					#flat_structure[tree +"_Array"][insert_position]['value']['path'] != destination_data['path'] + destination_data['folder'] + "/"
+					
 
-static func remove_file_from_folder(folder_path, file_name):
-	var folder_data = get_folder_at_path(folder_path)
-	folder_data["files"].erase(file_name)
-	set_folder_at_path(folder_path, folder_data)
+	#if the file came from before where we are moving it to, we need to decrease the position since orders being changed
+	if original_data['original_step'] < destination_data['step']:
+		insert_position = insert_position - 1
+		
+	
+	var moving = flat_structure[tree +"_Array"].pop_at(original_data['original_step'])
+	
+	if destination_data['editortype'] == "folder":
+		if drop_position != -1:
+			moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'] + destination_data['name'] + "/")
+			moving['value']['path'] = destination_data['path'] + destination_data['name'] + "/"
+		else:
+			moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
+			moving['value']['path'] = destination_data['path']
+		
+	else:
+		moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
+		moving['value']['path'] = destination_data['path']
+	
+	flat_structure[tree +"_Array"].insert(insert_position, moving)
+	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
+
+static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
+	var insert_position_data = flat_structure[tree + "_Array"][path['step']]
+	var insert_position = path['step']
+	#advance the position to scroll past the subfolders if inserting from top of a folder
+	
+	var current_position = flat_structure[tree + "_Array"][insert_position]['key'].rstrip("/.")
+	if insert_position == 0:
+		current_position = "/"
+	while insert_position + 1 < flat_structure[tree + "_Array"].size():
+		
+		var next_position = flat_structure[tree + "_Array"][insert_position + 1]['key']
+		if  next_position.trim_prefix(current_position).count('/') == 0 or next_position.trim_prefix(current_position) == next_position:
+			break
+		insert_position = insert_position + 1
+	
+	if existing_data.empty():
+		var new_data = {}
+		
+		if "/." in insert_position_data['key']:
+			new_data['key'] = insert_position_data['key'].rstrip('.') + file_name
+			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['key'].rstrip('.')}	
+		else: 
+			new_data['key'] = insert_position_data['value']['path'] + file_name
+			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['value']['path']}	
+		
+		if tree == "Definitions":
+			new_data['value']['type'] = path['type']
+			new_data['value']['id'] = file_name
+			if path['type'] == 0:
+				new_data['value']['name'] = "New value"
+				new_data['key'] = insert_position_data['key'].rstrip('.') + "New value"
+			elif path['type'] == 1:
+				new_data['value']['name'] = "New glossary entry"
+				new_data['key'] = insert_position_data['key'].rstrip('.') + "New glossary entry"
+				
+		flat_structure[tree + "_Array"].insert(insert_position + 1, new_data)
+	else:
+		existing_data['key'] = path['path'] + "/" + existing_data['value']['name']
+		existing_data['value']['path'] = path['path']
+		flat_structure[tree + "_Array"].insert(insert_position + 1, existing_data)
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
+static func remove_file_from_folder(flat_structure:Dictionary, tree:String,  path:Dictionary):
+	flat_structure[tree +"_Array"].remove(path['step'])
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
+static func rename_file(flat_structure:Dictionary, tree:String,  path:Dictionary, new_name:String):
+	#forward slashes are disallowed in names, we will replace them with a hyphen
+	new_name = new_name.replace("/", "-")
+	
+	var insert_position = path['step']
+
+	flat_structure[tree + "_Array"][insert_position]['key'] = flat_structure[tree + "_Array"][insert_position]['value']['path'] + new_name
+	flat_structure[tree + "_Array"][insert_position]['value']['name'] = new_name
+
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 ## STRUCTURE UPDATES
 #should be called when files got deleted and on program start
@@ -381,6 +526,62 @@ static func beautify_filename(animation_name: String) -> String:
 	else:
 		a_string = a_string.capitalize()
 	return a_string
+	
+static func flat_structure_to_editor_array(flat_structure: Dictionary, tree:String="all") -> Dictionary:
+	if tree != "all":
+		flat_structure[tree + '_Array'] = []
+		
+		for key in flat_structure[tree].keys():
+			flat_structure[tree+ '_Array'].push_back({'key': key, 'value': flat_structure[tree][key]})
+	else:
+		
+		flat_structure['Timelines_Array'] = []
+		flat_structure['Characters_Array'] = []
+		flat_structure['Definitions_Array'] = []
+		flat_structure['Themes_Array'] = []
+		
+		for key in flat_structure['Timelines'].keys():
+			flat_structure['Timelines_Array'].push_back({'key': key, 'value': flat_structure['Timelines'][key]})
+
+		for key in flat_structure['Characters'].keys():
+			flat_structure['Characters_Array'].push_back({'key': key, 'value': flat_structure['Characters'][key]})
+			
+		for key in flat_structure['Definitions'].keys():
+			flat_structure['Definitions_Array'].push_back({'key': key, 'value': flat_structure['Definitions'][key]})
+			
+		for key in flat_structure['Themes'].keys():
+			flat_structure['Themes_Array'].push_back({'key': key, 'value': flat_structure['Themes'][key]})
+			
+	return flat_structure
+	
+static func editor_array_to_flat_structure(flat_structure: Dictionary, tree:String="all") -> Dictionary:
+	if tree != "all":
+		flat_structure[tree] = {}
+		
+		for idx in flat_structure[tree + '_Array'].size():
+			flat_structure[tree][flat_structure[tree + '_Array'][idx]['key']] = flat_structure[tree + '_Array'][idx]['value']
+		
+	else:
+		flat_structure['Timelines'] = {}
+		flat_structure['Characters'] = {}
+		flat_structure['Definitions'] = {}
+		flat_structure['Themes'] = {}
+		
+		for idx in flat_structure['Timelines_Array'].size():
+			flat_structure['Timelines'][flat_structure['Timelines_Array'][idx]['key']] = flat_structure['Timelines_Array'][idx]['value']
+			
+		for idx in flat_structure['Characters_Array'].size():
+			flat_structure['Characters'][flat_structure['Characters_Array'][idx]['key']] = flat_structure['Characters_Array'][idx]['value']
+			
+		for idx in flat_structure['Definitions_Array'].size():
+			flat_structure['Definitions'][flat_structure['Definitions_Array'][idx]['key']] = flat_structure['Definitions_Array'][idx]['value']
+			
+		for idx in flat_structure['Themes_Array'].size():
+			flat_structure['Themes'][flat_structure['Themes_Array'][idx]['key']] = flat_structure['Themes_Array'][idx]['value']
+			
+		
+	return flat_structure
+
 
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
@@ -597,6 +798,99 @@ static func list_dir(path: String) -> Array:
 		files += [file]
 		file = dir.get_next()
 	return files
+	
+## *****************************************************************************
+##							DIALOGIC FLAT LOADER
+## *****************************************************************************
+
+static func get_flat_folders_list(include_folders: bool = true) -> Dictionary:
+	
+	var timeline_folder_breakdown = {}
+	var character_folder_breakdown = {}
+	var definition_folder_breakdown = {}
+	var theme_folder_breakdown = {}
+	
+	# load the main folder strucutre, and then use the DialogicUtils to match their names
+	var structure = DialogicResources.get_resource_folder_flat_structure()
+	var timeline_list = get_timeline_list()
+	var character_list = get_character_list()
+	var definition_list = get_default_definitions_list()
+	var theme_list = get_theme_list()
+	
+	
+	# populate the data from the resources
+	for timeline in timeline_list:
+		if timeline['file'] in structure['Timelines']:
+			if "/" in timeline['name']:
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following timeline needs to be renamed, please update references in your code:   " + timeline['name'])
+				print("    This warning will continue until you change the name of this timeline")		
+			timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name'].replace("/","-")
+			structure['Timelines'][timeline['file']]= timeline
+	
+	for character in character_list:
+		if character['file'] in structure['Characters']:
+			if "/" in character['name']:
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following character needs to be renamed, please update references in your code:   " + character['name'])
+				print("    This warning will continue until you change the name of this character")
+			character['path'] = structure['Characters'][character['file']] + character['name'].replace("/","-")
+			structure['Characters'][character['file']]= character
+		
+	for definition in definition_list:
+		if definition['id'] in structure['Definitions']:
+			if "/" in definition['name']:
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following definition needs to be renamed, please update references in your code:   " + definition['name'])
+				print("    This warning will continue until you change the name of this definition")
+			definition['path'] = structure['Definitions'][definition['id']] + definition['name'].replace("/","-")
+			definition['file'] = definition['id']
+			structure['Definitions'][definition['id']]= definition
+		
+	for theme in theme_list:
+		if theme['file'] in structure['Themes']:
+			if "/" in theme['name']:
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following theme needs to be renamed, please update references in your code:   " + theme['name'])
+				print("    This warning will continue until you change the name of this theme")
+			theme['path'] = structure['Themes'][theme['file']] + theme['name'].replace("/","-")
+			structure['Themes'][theme['file']]= theme
+		
+	# After that we put them in the order we need to make the folder paths easiest to use
+	for timeline in structure['Timelines'].keys():
+		if ".json" in timeline:
+			timeline_folder_breakdown[structure['Timelines'][timeline]['path']] = structure['Timelines'][timeline]
+		elif include_folders:
+			timeline_folder_breakdown[timeline] = structure['Timelines'][timeline]
+
+	for character in structure['Characters'].keys():
+		if ".json" in character:
+			character_folder_breakdown[structure['Characters'][character]['path']] = structure['Characters'][character]
+		elif include_folders:
+			character_folder_breakdown[character] = structure['Characters'][character]
+
+
+	for definition in structure['Definitions'].keys():
+		
+		if !"/." in definition:
+			definition_folder_breakdown[structure['Definitions'][definition]['path']] = structure['Definitions'][definition]
+		elif include_folders:
+			definition_folder_breakdown[definition] = structure['Definitions'][definition]
+
+
+	for theme in structure['Themes'].keys():
+		if ".json" in theme:
+			theme_folder_breakdown[structure['Themes'][theme]['path']] = structure['Themes'][theme]		
+		elif include_folders:
+			theme_folder_breakdown[theme] = structure['Themes'][theme]
+			
+	var flatten = {}
+	flatten['Timelines'] = timeline_folder_breakdown
+	flatten['Characters'] = character_folder_breakdown
+	flatten['Definitions'] = definition_folder_breakdown
+	flatten['Themes'] = theme_folder_breakdown
+	
+	return flatten
 
 
 ## *****************************************************************************
@@ -629,3 +923,5 @@ class DialgicSorter:
 
 	static func sort_resources(a: Dictionary, b: Dictionary):
 		return get_compare_value(a).to_lower() < get_compare_value(b).to_lower()
+
+

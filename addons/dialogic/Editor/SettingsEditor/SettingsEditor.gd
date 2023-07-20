@@ -250,7 +250,6 @@ func _on_hotkey_action_key_presssed(settingName = 'choice_hotkey_1') -> void:
 
 
 func _on_default_action_key_item_selected(index, settingName = 'default_action_key') -> void:
-	print(nodes[settingName].text)
 	set_value('input', settingName, nodes[settingName].text)
 
 
