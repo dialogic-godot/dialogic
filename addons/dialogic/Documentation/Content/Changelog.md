@@ -1,6 +1,6 @@
 # Changelog
 ## v1.5.0
-* The entire file structure has been changed to use dictionaries keyed to the 'folder path', removing vast amounts of looping and drastically increasing editor speed for large projects with many nested folders [[thebardsrc](https://github.com/thebardsrc)]
+* The entire file structure has been changed to use dictionaries keyed to the 'folder path', removing vast amounts of looping and drastically increasing editor speed for large projects with many nested folders [[Exelia](https://github.com/exelia-antonov)]
 * timeline_end and timeline_start properly return name of timelines when a Change Timeline Event occurs [[zaknafean](https://github.com/zaknafean)]
 * timeline_changed signal added. Emitted during a Change Timeline Event, returns old_timeline_name and new_timeline_name
 * portrait_changed signal added. Emitted whenever a new portrait takes focus. Returns a reference to the portrait.
@@ -8,7 +8,7 @@
 * Un-hard coded the position offsets for the character positions. They now are relative to the viewport. Thanks @rretureau for the work 1000 commits ago!
 * Changing the DB value in an audio event no longer overwrites the value in the Audio Bus. It now adjusts the current value instead.
 * Added better support for adding variables to already published games #1278 [[Iodine](https://github.com/Iodinex64)]
-* Added option in themes to show 'disabled' choices [[celthim](https://github.com/celthim)]
+* Added option in themes to show 'disabled' choices [[Celthim](https://github.com/celthim)]
 * Fixed crashes related to using 'anima' animations with custom portrait nodes
 
 ## v1.4.5
