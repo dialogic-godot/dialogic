@@ -292,11 +292,11 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 	elif new_folder_name.empty():
 		return ERR_PRINTER_ON_FIRE
 		
-	var old_path = flat_structure[tree + "_Array"][path['step']]['key'].rstrip("/.")
+	var old_path = flat_structure[tree + "_Array"][path['step']]['key'].rstrip(".")
 	flat_structure[tree + "_Array"][path['step']]['key'] = new_path
 	
 	for idx in flat_structure[tree + "_Array"].size():
-		flat_structure[tree + "_Array"][idx]['key'] = flat_structure[tree + "_Array"][idx]['key'].replace(old_path, new_path.rstrip("/."))
+		flat_structure[tree + "_Array"][idx]['key'] = flat_structure[tree + "_Array"][idx]['key'].replace(old_path, new_path.rstrip("."))
 	
 	
 	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
@@ -338,11 +338,12 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	var original_folder = ""
 	var replace_folder = ""
 	if drop_position != -1:
-		original_folder = original_data['orig_path'] + original_data['name']
-		replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name']
+		original_folder = original_data['orig_path'] + original_data['name'] + '/'
+		replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name'] + '/'
 	else: 
-		original_folder = original_data['orig_path'] + original_data['name']
-		replace_folder = destination_data['path'] + original_data['name']
+		original_folder = original_data['orig_path'] + original_data['name'] + '/'
+		replace_folder = destination_data['path'] + original_data['name'] + '/'
+	
 	
 	#first iterate through and find all the items that need to be renamed
 	for idx in flat_structure[tree +"_Array"].size():
@@ -839,42 +840,38 @@ static func get_flat_folders_list(include_folders: bool = true) -> Dictionary:
 	for timeline in timeline_list:
 		if timeline['file'] in structure['Timelines']:
 			if "/" in timeline['name']:
-				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names. Files with a forward slash in the name will have them replaced with a minus.")
-				print("[D]: The following timeline was renamed, please update references in your code:" + timeline['name'])
-				print("[D] This warning will continue until you change the name of this timeline in the Dialogic tree")
-				timeline['name'] = timeline['name'].replace("/","-")				
-			timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name']
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following timeline needs to be renamed, please update references in your code:   " + timeline['name'])
+				print("    This warning will continue until you change the name of this timeline")		
+			timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name'].replace("/","-")
 			structure['Timelines'][timeline['file']]= timeline
 	
 	for character in character_list:
 		if character['file'] in structure['Characters']:
 			if "/" in character['name']:
-				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names. Files with a forward slash in the name will have them replaced with a minus.")
-				print("[D] The following character was renamed, please update references in your code:" + character['name'])
-				print("[D] This warning will continue until you change the name of this character in the Dialogic tree")
-				character['name'] = character['name'].replace("/","-")
-			character['path'] = structure['Characters'][character['file']] + character['name']
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following character needs to be renamed, please update references in your code:   " + character['name'])
+				print("    This warning will continue until you change the name of this character")
+			character['path'] = structure['Characters'][character['file']] + character['name'].replace("/","-")
 			structure['Characters'][character['file']]= character
 		
 	for definition in definition_list:
 		if definition['id'] in structure['Definitions']:
 			if "/" in definition['name']:
-				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names. Files with a forward slash in the name will have them replaced with a minus.")
-				print("[D]: The following definition renamed, please update references in your code:" + definition['name'])
-				print("[D] This warning will continue until you change the name of this definition in the Dialogic tree")
-				definition['name'] = definition['name'].replace("/","-")
-			definition['path'] = structure['Definitions'][definition['id']] + definition['name']
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following definition needs to be renamed, please update references in your code:   " + definition['name'])
+				print("    This warning will continue until you change the name of this definition")
+			definition['path'] = structure['Definitions'][definition['id']] + definition['name'].replace("/","-")
 			definition['file'] = definition['id']
 			structure['Definitions'][definition['id']]= definition
 		
 	for theme in theme_list:
 		if theme['file'] in structure['Themes']:
 			if "/" in theme['name']:
-				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names. Files with a forward slash in the name will have them replaced with a minus.")
-				print("[D]: The following theme was renamed, please update references in your code:" + theme['name'])
-				print("[D] This warning will continue until you change the name of this theme in the Dialogic tree")
-				theme['name'] = theme['name'].replace("/","-")
-			theme['path'] = structure['Themes'][theme['file']] + theme['name']
+				print("[D] Warning: Dialogic 1.5 makes internal changes that disallow forward slashes in file and folder names")
+				print("    The following theme needs to be renamed, please update references in your code:   " + theme['name'])
+				print("    This warning will continue until you change the name of this theme")
+			theme['path'] = structure['Themes'][theme['file']] + theme['name'].replace("/","-")
 			structure['Themes'][theme['file']]= theme
 		
 	# After that we put them in the order we need to make the folder paths easiest to use
