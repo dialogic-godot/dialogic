@@ -507,10 +507,15 @@ func _on_text_completed():
 		
 		var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
 		$OptionsDelayedInput.start(waiting_until_options_enabled)
-
+		
+		var show_choices = current_theme.get_value('disabled_choices', 'show', false)
 		for o in current_event['options']:
-			if _should_add_choice_button(o):
-				add_choice_button(o)
+			var is_valid_choice = _should_add_choice_button(o)
+			if show_choices:
+				var choice_button = add_choice_button(o)
+				choice_button.disabled = !is_valid_choice
+			elif is_valid_choice:
+					add_choice_button(o)
 		
 		# Auto focus
 		$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")

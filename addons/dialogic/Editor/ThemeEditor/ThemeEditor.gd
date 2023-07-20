@@ -110,7 +110,7 @@ onready var n : Dictionary = {
 	
 	
 	# Choice Buttons
-	
+	'show_disabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/VBoxContainer/GridContainer/ChoiceShow",
 	'button_fixed': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize",
 	'button_fixed_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX",
 	'button_fixed_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY",
@@ -472,6 +472,9 @@ func load_theme(filename):
 	n['name_horizontal_offset'].value = theme.get_value('name', 'horizontal_offset', 0)
 	
 	n['name_position'].select(theme.get_value('name', 'position', 0))
+	
+	# Choice Buttons
+	n['show_disabled'].pressed = theme.get_value('disabled_choices', 'show', false)
 	
 	# Audio
 	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
@@ -1021,6 +1024,15 @@ func _on_CustomButtonsButton_pressed():
 	editor_reference.godot_dialog_connect(self, "_on_custom_button_selected")
 
 
+func _on_choice_show_toggled(button_pressed) -> void:
+	if loading:
+		return
+	
+	DialogicResources.set_theme_value(current_theme, 'disabled_choices', 'show', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+	_update_name_fields_editable()
+
+
 ## ------------ 		GLOSSARY  TAB	 	------------------------------------
 
 ## TITLE FONT
@@ -1132,5 +1144,3 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 func _on_audio_data_updated(section):
 	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
 	_on_PreviewButton_pressed()
-
-
