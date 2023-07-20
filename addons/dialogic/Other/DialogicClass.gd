@@ -496,10 +496,9 @@ static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
 			return "not_found.json"
 	else:
 		#step through each one in turn to find the first matching string
-		var path_length = timeline_name_path.length()
 		for path in timelines.keys():
 			#if timeline_name_path in path:
-			if path.substr(-path_length) == timeline_name_path:
+			if path.ends_with(timeline_name_path):
 				return timelines[path]['file']
 	return ''
 
@@ -518,8 +517,7 @@ static func _get_variable_from_file_name(variable_name_path: String) -> String:
 		return definitions[variable_name_path]['id']
 	else:
 		#step through each one in turn to find the first matching string
-		var path_length = variable_name_path.length()
 		for path in definitions.keys():
-			if path.substr(-path_length) == variable_name_path:
+			if path.ends_with(variable_name_path):
 				return definitions[path]['id']
 	return ''
