@@ -212,24 +212,6 @@ static func get_folder_at_path(path):
 	return folder_data
 
 
-## SETTERS
-static func set_folder_content_recursive(path_array: Array, orig_data: Dictionary, new_data: Dictionary) -> Dictionary:
-	if len(path_array) == 1:
-		if path_array[0] in orig_data['folders'].keys():
-			if new_data.empty():
-				orig_data['folders'].erase(path_array[0])
-			else:
-				orig_data["folders"][path_array[0]] = new_data
-	else:
-		var current_folder = path_array.pop_front()
-		orig_data["folders"][current_folder] = set_folder_content_recursive(path_array, orig_data["folders"][current_folder], new_data)
-	return orig_data
-
-static func set_folder_at_path(path: String, data:Dictionary):
-	var orig_structure = get_full_resource_folder_structure()
-	var new_data = set_folder_content_recursive(path.split("/"), orig_structure, data)
-	DialogicResources.save_resource_folder_structure(new_data)
-	return OK
 
 ## FOLDER METADATA
 static func set_folder_meta(flat_structure:Dictionary, item: Dictionary, key:String, value):
