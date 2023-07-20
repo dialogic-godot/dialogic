@@ -201,7 +201,7 @@ func build_flat_tree_items(current_tree: String=''):
 			continue
 		
 		#check where we are in the stack
-		while !(depth_stack[-1]["path"] in entry['key'].rsplit("/", true,1)[0]) and depth_stack.size() > 1:
+		while !(depth_stack[-1]["path"] in entry['key']) and depth_stack.size() > 1:
 			var popped = depth_stack.pop_back()
 		
 		current_root = depth_stack[-1]["object"]
@@ -221,7 +221,7 @@ func build_flat_tree_items(current_tree: String=''):
 			# set collapsed
 			folder_item.collapsed = entry['value']['folded']
 			current_root = folder_item	
-			depth_stack.push_back({"path": entry['key'].rstrip("/."), "object": folder_item})
+			depth_stack.push_back({"path": entry['key'].rstrip("."), "object": folder_item})
 			
 		else:
 			#file add
