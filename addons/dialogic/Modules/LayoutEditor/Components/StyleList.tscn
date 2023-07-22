@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/LayoutEditor/Components/StyleList.gd" id="1_kcrrr"]
+
+[node name="StyleList" type="ScrollContainer"]
+offset_bottom = 0.303999
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_kcrrr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15

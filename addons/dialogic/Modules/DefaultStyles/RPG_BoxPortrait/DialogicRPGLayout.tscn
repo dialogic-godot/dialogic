@@ -1,0 +1,166 @@
+[gd_scene load_steps=8 format=3 uid="uid://cgc2samfe5ghg"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/RPG_BoxPortrait/DialogicRPGLayout.gd" id="1_ry4cs"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_ih78e"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="9"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smrwn"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.088, 0)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_775n1"]
+bg_color = Color(0.254902, 0.254902, 0.254902, 1)
+skew = Vector2(0.073, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="RPG_ExampleNode" type="CanvasLayer"]
+layer = 3
+script = ExtResource("1_ry4cs")
+
+[node name="Anchor" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Panel" type="PanelContainer" parent="Anchor"]
+unique_name_in_owner = true
+self_modulate = Color(0.533333, 0.376471, 0.176471, 1)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -89.0
+offset_top = -66.0
+offset_right = 112.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_smrwn")
+
+[node name="HBox" type="HBoxContainer" parent="Anchor/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PortraitPanel" type="Panel" parent="Anchor/Panel/HBox"]
+unique_name_in_owner = true
+clip_children = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+theme_override_styles/panel = SubResource("StyleBoxFlat_775n1")
+
+[node name="PortraitBackgroundColor" type="ColorRect" parent="Anchor/Panel/HBox/PortraitPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -123.0
+offset_right = 123.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.231373)
+
+[node name="DialogicNode_PortraitContainer" type="Control" parent="Anchor/Panel/HBox/PortraitPanel/PortraitBackgroundColor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 4.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_ih78e")
+mode = 1
+portrait_prefix = "Faces/"
+size_mode = 2
+debug_character_portrait = "speaker"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Anchor/Panel/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DialogicNode_NameLabel" type="Label" parent="Anchor/Panel/HBox/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Name"
+script = ExtResource("6")
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Anchor/Panel/HBox/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+text = "Some text"
+scroll_following = true
+script = ExtResource("3")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Anchor/Panel/HBox/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="Anchor/Panel/HBox/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")

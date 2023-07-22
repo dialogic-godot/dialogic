@@ -1,0 +1,172 @@
+[gd_scene load_steps=18 format=3 uid="uid://dlx7jcvm52tyw"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/TextBubble/TextBubble.gd" id="1_jdhpk"]
+[ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultStyles/TextBubble/speech_bubble.gdshader" id="2_1mhvf"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_syv35"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="4_7bm4b"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/HideWithChild.gd" id="5_371j3"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6_5gd03"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="7_0tnh1"]
+
+[sub_resource type="Curve" id="Curve_0j8nu"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_4meji"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.61284, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_q6qf6"]
+curve = SubResource("Curve_4meji")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lsfnp"]
+noise_type = 0
+fractal_type = 0
+cellular_jitter = 0.15
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kr7hw"]
+seamless = true
+noise = SubResource("FastNoiseLite_lsfnp")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ejxnv"]
+noise_type = 2
+frequency = 0.012
+fractal_type = 0
+cellular_jitter = 0.008
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4la3x"]
+seamless = true
+noise = SubResource("FastNoiseLite_ejxnv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
+shader = ExtResource("2_1mhvf")
+shader_parameter/radius = 1.39
+shader_parameter/ratio = Vector2(2.251, 1)
+shader_parameter/crease = 0.12
+shader_parameter/speed = 2.53
+shader_parameter/texture_scale = 0.24
+shader_parameter/texture_offset = 172.5
+shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
+shader_parameter/spikes_sampler = SubResource("NoiseTexture2D_4la3x")
+shader_parameter/curve_sampler = SubResource("CurveTexture_q6qf6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.901961, 0.901961, 0.901961, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.278431)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4yjl"]
+draw_center = false
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 0.498039)
+
+[node name="TextBubble" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_jdhpk")
+
+[node name="Tail" type="Line2D" parent="."]
+width = 96.0
+width_curve = SubResource("Curve_0j8nu")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_60xbe")
+layout_mode = 1
+offset_left = -69.0
+offset_top = -21.0
+offset_right = 225.0
+offset_bottom = 79.0
+mouse_filter = 2
+
+[node name="DialogText" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -13.0
+offset_right = 53.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Some Text"
+scroll_active = false
+visible_characters_behavior = 1
+script = ExtResource("3_syv35")
+
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogText"]
+script = ExtResource("4_7bm4b")
+
+[node name="NameLabel" type="PanelContainer" parent="DialogText"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 16.0
+offset_top = -26.0
+offset_right = 27.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
+script = ExtResource("5_371j3")
+
+[node name="NameLabel" type="Label" parent="DialogText/NameLabel"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+script = ExtResource("6_5gd03")
+
+[node name="ChoiceContainer" type="HBoxContainer" parent="DialogText"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -31.0
+offset_right = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="DialogText/ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "A"
+flat = true
+script = ExtResource("7_0tnh1")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="DialogText/ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "A"
+flat = true
+script = ExtResource("7_0tnh1")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="DialogText/ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "A"
+flat = true
+script = ExtResource("7_0tnh1")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="DialogText/ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "A"
+flat = true
+script = ExtResource("7_0tnh1")
+
+[connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]

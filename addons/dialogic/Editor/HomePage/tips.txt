@@ -1,0 +1,11 @@
+Dialogic variables can be changed from timelines [b]and[/b] scripts! They can be used in conditions and inside of texts!; editor://VariablesEditor
+You can create [b]custom modules[/b] for dialogic, including events, subsystems, text effects, ui layouts and even editors!; editor://Settings->General
+If there are events you never need, you can hide them from the list in the editor!; editor://Settings->Modules
+Did you know that dialogic supports translations? It does!; editor://Settings->Translations
+You can use [b]bbcode effects[/b] in text events! What are they though???; https://docs.godotengine.org/en/latest/tutorials/ui/bbcode_in_richtextlabel.html
+Writing [/i][Oh hi, Hello you, Well\, well][i] in a text event will pick a random one of the three strings!
+There are a number of cool text effects like [pause=x], [speed=x] and [portrait=x]. Try them out!; editor://Settings->DialogText
+You can use scenes as portraits! This gives you basically limiteless freedom.; https://github.com/coppolaemilio/dialogic/wiki/Tutorial:-Custom-Portraits
+You can use scenes as backgrounds. This way they can be animated or whatever you want!
+Dialogic has a built in save and load system! It's pretty powerful!; editor://Settings->Saving
+You can add multiple glossary files, each containing words that can be hovered for information!; editor://GlossaryEditor

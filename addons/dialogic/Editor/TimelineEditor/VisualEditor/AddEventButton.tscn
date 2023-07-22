@@ -38,8 +38,9 @@ tooltip_text = "S"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_qx31r")
 theme_override_styles/hover = SubResource("StyleBoxFlat_n1o16")
-text = "S"
 alignment = 0
 expand_icon = true
 script = ExtResource("1_s43sc")
 visible_name = "S"
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]

@@ -57,8 +57,10 @@ func parent_node_changed() -> void:
 		end_control.refresh()
 
 
-## Called on creation of the parent event provides an end control
+## Called on creation if the parent event provides an end control
 func add_end_control(control:Control) -> void:
+	if !control:
+		return
 	add_child(control)
 	control.size_flags_vertical = SIZE_SHRINK_CENTER
 	if "parent_resource" in control:

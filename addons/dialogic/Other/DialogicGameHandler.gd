@@ -1,6 +1,7 @@
 extends Node
 
 enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
+enum ClearFlags {FullClear=0, KeepVariables=1, TimelineInfoOnly=2}
 
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
@@ -58,20 +59,23 @@ func _ready() -> void:
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
-func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> void:
+# Method to start a timeline without adding a layout scene.
+# @timeline can be either a loaded timeline resource or a path to a timeline file.
+# @label_or_idx can be a label (string) or index (int) to skip to immediatly.
+func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
-	if typeof(timeline_resource) == TYPE_STRING:
+	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if timeline_resource.contains("res://"):
-			timeline_resource = load(timeline_resource)
+		if timeline.contains("res://"):
+			timeline = load(timeline)
 		else: 
-			timeline_resource = load(find_timeline(timeline_resource))
-		if timeline_resource == null:
+			timeline = load(find_timeline(timeline))
+		if timeline == null:
 			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 			return
-	timeline_resource = process_timeline(timeline_resource)
+	timeline = process_timeline(timeline)
 	
-	current_timeline = timeline_resource
+	current_timeline = timeline
 	current_timeline_events = current_timeline.events
 	current_event_idx = -1
 	
@@ -105,7 +109,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 func end_timeline() -> void:
 	current_timeline = null
 	current_timeline_events = []
-	clear()
+	clear(ClearFlags.TimelineInfoOnly)
 	timeline_ended.emit()
 
 
@@ -145,10 +149,14 @@ func handle_event(event_index:int) -> void:
 	event_handled.emit(current_timeline_events[event_index])
 
 
-
-func clear() -> bool:
-	for subsystem in get_children():
-		subsystem.clear_game_state()
+# resets dialogics state fully or partially
+# by using the clear flags you can specify what info should be kept
+# for example at timeline end usually it doesn't clear node or subsystem info
+func clear(clear_flags:=ClearFlags.FullClear) -> bool:
+	
+	if !clear_flags & ClearFlags.TimelineInfoOnly:
+		for subsystem in get_children():
+			subsystem.clear_game_state(clear_flags)
 	
 	# Resetting variables
 	current_timeline = null
@@ -156,8 +164,6 @@ func clear() -> bool:
 	current_timeline_events = []
 	current_state = states.IDLE
 	return true
-
-
 
 ################################################################################
 ## 						SAVING & LOADING
@@ -170,12 +176,11 @@ func get_full_state() -> Dictionary:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
 
-	return current_state_info
+	return current_state_info.duplicate(true)
 
 
 func load_full_state(state_info:Dictionary) -> void:
-	for subsystem in get_children():
-		subsystem.clear_game_state()
+	clear()
 	current_state_info = state_info
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
@@ -459,26 +464,57 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 ##						FOR END USER
 ################################################################################
-func start(timeline, single_instance = true) -> Node:
+# Method to start a timeline AND ensure that a layout scene is present.
+# For argument info, checkout start_timeline() and add_layout_node()
+# -> returns the layout node 
+func start(timeline:Variant, label:Variant="") -> Node:
+	var scene := add_layout_node()
+	Dialogic.clear(ClearFlags.KeepVariables)
+	Dialogic.start_timeline(timeline, label)
+	return scene
+
+
+# Makes sure the layout scene is instanced and will show it if it was hidden.
+# The layout scene will always be added to the tree root. 
+# If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
+func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
+	
+	if ProjectSettings.get_setting('dialogic/layout/mode', 0) == 2:
+		return null
+	
 	var scene :Node = null
-	if single_instance:
-		# if none exists, create a new one
-		if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
-			scene = load(DialogicUtil.get_project_setting(
-							'dialogic/layout/layout_scene', 
-							DialogicUtil.get_default_layout())
-						).instantiate()
-			DialogicUtil.apply_scene_export_overrides(
-				scene, 
-				ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
-				)
-			get_parent().call_deferred("add_child", scene)
-			get_tree().set_meta('dialogic_layout_node', scene)
-		# otherwise use existing scene
-		else:
-			scene = get_tree().get_meta('dialogic_layout_node', null)
-			scene.show()
-	Dialogic.start_timeline(timeline)
+	if get_tree().has_meta('dialogic_layout_node') and is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
+		scene = get_tree().get_meta('dialogic_layout_node', null)
+	
+	# create a new one if none exists or a different one was requested
+	if !is_instance_valid(scene) or (!scene_path.is_empty() and scene.get_meta('scene_path', scene_path) != scene_path):
+		if is_instance_valid(scene):
+			scene.queue_free()
+		
+		if scene_path.is_empty():
+			scene_path = ProjectSettings.get_setting(
+						'dialogic/layout/layout_scene', 
+						DialogicUtil.get_default_layout())
+		
+		scene = load(scene_path).instantiate()
+		scene.set_meta('scene_path', scene_path)
+		
+		get_parent().call_deferred("add_child", scene)
+		get_tree().set_meta('dialogic_layout_node', scene)
+	
+	# otherwise use existing scene
+	else:
+		scene = get_tree().get_meta('dialogic_layout_node', null)
+		scene.show()
+	
+	# apply custom export overrides everytime
+	if export_overrides.is_empty():
+		DialogicUtil.apply_scene_export_overrides(
+			scene, 
+			ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
+	else:
+		DialogicUtil.apply_scene_export_overrides(scene, export_overrides)
+	
 	return scene
 
 
@@ -496,6 +532,6 @@ func _on_timeline_ended():
 
 
 func has_active_layout_node() -> bool:
-	if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
+	if !get_tree().has_meta('dialogic_layout_node') or !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
 		return false
 	return true

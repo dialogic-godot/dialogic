@@ -8,6 +8,8 @@ var property_name : String
 
 const ArrayValue = "res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn"
 
+func _ready():
+	%Add.icon = get_theme_icon("Add", "EditorIcons")
 
 func set_value(value:Array) -> void:
 	for child in %Values.get_children():

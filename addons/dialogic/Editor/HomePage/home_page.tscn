@@ -1,47 +1,184 @@
-[gd_scene load_steps=10 format=3 uid="uid://cqy73hshqqgga"]
+[gd_scene load_steps=23 format=3 uid="uid://cqy73hshqqgga"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page.gd" id="1_6g38w"]
-[ext_resource type="Texture2D" uid="uid://bjcfcigfdrfex" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="2_3lw3i"]
+[ext_resource type="Texture2D" uid="uid://cvmlp5nxb2rer" path="res://addons/dialogic/Editor/HomePage/icon_bg.png" id="1_ed1g1"]
 [ext_resource type="Texture2D" uid="uid://bt87p6qlso0ya" path="res://addons/dialogic/Editor/Images/dialogic-logo.svg" id="3_3leok"]
-[ext_resource type="PackedScene" uid="uid://bbaphnheyups7" path="res://addons/dialogic/Editor/HomePage/home_page_box.tscn" id="4_hn0gf"]
-[ext_resource type="Texture2D" uid="uid://bbhj1tkuuwapw" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png" id="4_jm73p"]
-[ext_resource type="Texture2D" uid="uid://ikvwvpcgu1l5" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png" id="5_w572g"]
-[ext_resource type="Texture2D" uid="uid://bk3k0docutll2" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" id="6_p1dg6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imi2d"]
+draw_center = false
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.796078, 0.572549, 0.933333, 0.0627451)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2afh"]
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="Gradient" id="Gradient_lt7uf"]
+colors = PackedColorArray(0.296484, 0.648457, 1, 1, 0.732014, 0.389374, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2klx3"]
+gradient = SubResource("Gradient_lt7uf")
+fill_from = Vector2(0.151515, 0.272727)
+fill_to = Vector2(1, 1)
 
 [sub_resource type="Gradient" id="Gradient_1gns2"]
-offsets = PackedFloat32Array(0, 0.302013, 0.872483)
-colors = PackedColorArray(0.0472289, 0.145483, 0.295484, 0.513726, 0.365323, 0.360806, 0.260695, 0, 0.615686, 0.615686, 0.615686, 0.592157)
+offsets = PackedFloat32Array(0.302013, 0.872483)
+colors = PackedColorArray(0.365323, 0.360806, 0.260695, 0, 0.615686, 0.615686, 0.615686, 0.592157)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_u0aw3"]
 gradient = SubResource("Gradient_1gns2")
 fill = 1
-fill_from = Vector2(0.5, 0.5)
+fill_from = Vector2(0.497835, 0.493506)
 fill_to = Vector2(1, 1)
 
-[node name="HomePage" type="VBoxContainer"]
+[sub_resource type="FontVariation" id="FontVariation_vepxx"]
+variation_embolden = 2.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_w8q1h"]
+font = SubResource("FontVariation_vepxx")
+font_size = 40
+outline_size = 14
+outline_color = Color(0.0901961, 0.0901961, 0.0901961, 0.258824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7ka2"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es88k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ce6uo"]
+content_margin_left = 7.0
+content_margin_top = 7.0
+content_margin_right = 7.0
+content_margin_bottom = 7.0
+bg_color = Color(0.803922, 0.352941, 1, 0.141176)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_elu6e"]
+variation_embolden = 1.1
+
+[sub_resource type="FontVariation" id="FontVariation_5kbdj"]
+variation_transform = Transform2D(1, 0.239, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_g0m61"]
+variation_embolden = 1.43
+variation_transform = Transform2D(1, 0.343, 0, 1, 0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8dvw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ckyhx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.470588, 0.196078, 0.6, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1doy"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.470588, 0.196078, 0.6, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Image" id="Image_7i135"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ibxar"]
+image = SubResource("Image_7i135")
+
+[node name="HomePage" type="TextureRect"]
+self_modulate = Color(0, 0, 0, 0.2)
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -568.0
-offset_top = 8.0
-offset_right = -76.0
-offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 22
+texture = ExtResource("1_ed1g1")
+expand_mode = 1
+stretch_mode = 3
 script = ExtResource("1_6g38w")
 
-[node name="Header" type="TextureRect" parent="."]
-self_modulate = Color(0.223529, 0.223529, 0.223529, 1)
-clip_contents = true
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HomePageBox" type="VBoxContainer" parent="CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 350)
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Panel" type="Panel" parent="CenterContainer/HomePageBox"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_imi2d")
+
+[node name="Header2" type="Panel" parent="CenterContainer/HomePageBox/Panel"]
+clip_children = 1
+clip_contents = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
-texture = ExtResource("2_3lw3i")
-expand_mode = 1
-stretch_mode = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_n2afh")
 
-[node name="Vignette" type="TextureRect" parent="Header"]
+[node name="BG" type="TextureRect" parent="CenterContainer/HomePageBox/Panel/Header2"]
+modulate = Color(0.65098, 0.65098, 0.65098, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = SubResource("GradientTexture2D_2klx3")
+expand_mode = 1
+
+[node name="Vignette" type="TextureRect" parent="CenterContainer/HomePageBox/Panel/Header2"]
+modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,15 +190,15 @@ grow_vertical = 2
 texture = SubResource("GradientTexture2D_u0aw3")
 expand_mode = 1
 
-[node name="Logo" type="TextureRect" parent="Header"]
+[node name="Logo" type="TextureRect" parent="CenterContainer/HomePageBox/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 21.0
-offset_top = 25.0
-offset_right = -21.0
-offset_bottom = -25.0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = -23.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -70,117 +207,178 @@ texture = ExtResource("3_3leok")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VersionLabel" type="Label" parent="Header"]
+[node name="Label" type="Label" parent="CenterContainer/HomePageBox/Panel/Logo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 155.0
+offset_top = -37.0
+offset_right = 185.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.201447
+text = "2"
+label_settings = SubResource("LabelSettings_w8q1h")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HomePageBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="BottomPanel" type="PanelContainer" parent="CenterContainer/HomePageBox/MarginContainer"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p7ka2")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+
+[node name="CenterContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.4
+theme_override_constants/separation = -2
+
+[node name="Label" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 2
+text = "Documentation"
+
+[node name="WikiButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Wiki"
+flat = true
+alignment = 0
+
+[node name="WikiGettingStartedButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Getting Started"
+flat = true
+alignment = 0
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 2
+text = "Get in touch"
+
+[node name="BugRequestButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Bug / Request"
+flat = true
+alignment = 0
+
+[node name="DiscordButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Discord"
+flat = true
+alignment = 0
+
+[node name="DonateButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Donate"
+flat = true
+alignment = 0
+
+[node name="CenterContainer2" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="WelcomeText" type="RichTextLabel" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_es88k")
+bbcode_enabled = true
+text = "[center]Welcome to dialogic, a plugin that let's you easily create stories and dialogs for your game!"
+fit_content = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="TipBox" type="MarginContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 20
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ce6uo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = -7
+alignment = 1
+
+[node name="RandomTipLabel" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.843137)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Random Tip"
+
+[node name="RandomTip" type="RichTextLabel" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/bold_font = SubResource("FontVariation_elu6e")
+theme_override_fonts/italics_font = SubResource("FontVariation_5kbdj")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_g0m61")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a8dvw")
+bbcode_enabled = true
+text = "[i]You can[/i] [b]create custom[/b] events, [i][b]subsystems, text effects and even editors for[/b][i] [code]dialogic!"
+fit_content = true
+
+[node name="RandomTipMoreButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer/RandomTip"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -73.0
-offset_top = -34.0
-offset_right = 77.0
-offset_bottom = -8.0
-grow_horizontal = 2
+offset_left = -33.0
+offset_top = -7.0
+offset_right = -3.0
+offset_bottom = 23.0
+grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 15
-text = "2.0-Alpha-6 (for Godot 4 RC1)"
+tooltip_text = "Sounds cool!"
+theme_override_styles/normal = SubResource("StyleBoxFlat_ckyhx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l1doy")
+icon = SubResource("ImageTexture_ibxar")
+expand_icon = true
 
-[node name="CenterContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Spacer" type="Control" parent="CenterContainer"]
-custom_minimum_size = Vector2(75, 0)
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_scroll_mode = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="BoxHolder" type="HFlowContainer" parent="CenterContainer/ScrollContainer/MarginContainer"]
+[node name="VersionLabel" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 2
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 20
-alignment = 1
+theme_override_font_sizes/font_size = 10
+text = "2.0-Alpha-7 (for Godot 4.0.2 stable)"
+horizontal_alignment = 2
 
-[node name="WelcomeBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
-custom_minimum_size = Vector2(165, 0)
-layout_mode = 2
-size_flags_vertical = 0
-title = "Welcome!"
-content = "Welcome to dialogic! Easily create visual novels or dialogs for your game."
-image = ExtResource("4_jm73p")
-
-[node name="WikiBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
-custom_minimum_size = Vector2(165, 0)
-layout_mode = 2
-size_flags_vertical = 0
-title = "How to start:"
-content = "If you are new to dialogic, check out the beginners guide in the wiki."
-image = ExtResource("6_p1dg6")
-button = "Beginners guide"
-
-[node name="RestartBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
-custom_minimum_size = Vector2(165, 0)
-layout_mode = 2
-size_flags_vertical = 0
-title = "Just installed?"
-content = "If you've just installed dialogic you might need to restart godot once, so all scripts load correctly!"
-image = ExtResource("2_3lw3i")
-button = "Restart now"
-
-[node name="BugBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
-custom_minimum_size = Vector2(165, 0)
-layout_mode = 2
-size_flags_vertical = 0
-title = "Something broken!?"
-content = "You found a bug? Or feel like something could be improved? Create a github issue to let us know!"
-image = ExtResource("2_3lw3i")
-button = "New issue"
-
-[node name="SharingBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
-custom_minimum_size = Vector2(165, 0)
-layout_mode = 2
-size_flags_vertical = 0
-title = "Making something?"
-content = "We always like to hear about cool things being made with dialogic. Let us know what you are using it for!"
-image = ExtResource("5_w572g")
-button = "Join Discord"
-
-[node name="Spacer2" type="Control" parent="CenterContainer"]
-custom_minimum_size = Vector2(75, 0)
-layout_mode = 2
-
-[node name="HBoxContainer" type="ScrollContainer" parent="."]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="MarginContainer" type="HBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="HBoxContainer/MarginContainer"]
-layout_mode = 2
-
-[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/WikiBox" to="." method="_on_wiki_box_button_pressed"]
-[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/RestartBox" to="." method="_on_restart_box_button_pressed"]
-[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/BugBox" to="." method="_on_bug_box_button_pressed"]
-[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/SharingBox" to="." method="_on_sharing_box_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/WikiButton" to="." method="_on_wiki_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/WikiGettingStartedButton" to="." method="_on_wiki_getting_started_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/BugRequestButton" to="." method="_on_bug_request_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/DiscordButton" to="." method="_on_discord_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/DonateButton" to="." method="_on_donate_button_pressed"]

@@ -41,7 +41,7 @@ func _ready() -> void:
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
 	load_saved_state()
-	used_resources_cache = ProjectSettings.get_setting('dialogic/editor/last_resources', [])
+	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
 	for res in used_resources_cache:
 		if !FileAccess.file_exists(res):
 			used_resources_cache.erase(res)
@@ -167,7 +167,8 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 		mode,
 		title,
 		default_name,
-		true
+		true,
+		"Do not use \"'()!;:/\\*# in character or timeline names!"
 	)
 
 
@@ -188,21 +189,21 @@ func _on_resource_unsaved(editor:DialogicEditor):
 
 ## Tries opening the last resource
 func load_saved_state() -> void:
-	var current_resources: Dictionary = DialogicUtil.get_project_setting('dialogic/editor/current_resources', {})
+	var current_resources: Dictionary = DialogicUtil.get_editor_setting('current_resources', {})
 	for editor in current_resources.keys():
 		editors[editor]['node']._open_resource(load(current_resources[editor]))
-		
-	var current_editor: String = DialogicUtil.get_project_setting('dialogic/editor/current_editor', 'HomePage')
+	
+	var current_editor: String = DialogicUtil.get_editor_setting('current_editor', 'HomePage')
 	open_editor(editors[current_editor]['node'])
 
 
 func save_current_state() -> void:
-	ProjectSettings.set_setting('dialogic/editor/current_editor', current_editor.name)
+	DialogicUtil.set_editor_setting('current_editor', current_editor.name)
 	var current_resources: Dictionary = {}
 	for editor in editors.values():
 		if editor['node'].current_resource != null:
 			current_resources[editor['node'].name] = editor['node'].current_resource.resource_path
-	ProjectSettings.set_setting('dialogic/editor/current_resources', current_resources)
+	DialogicUtil.set_editor_setting('current_resources', current_resources)
 
 
 ################################################################################
@@ -216,6 +217,6 @@ func _on_sidebar_button_pressed(button:Button, editor_name:String) -> void:
 func get_current_editor() -> DialogicEditor:
 	return current_editor
 
+
 func _exit_tree():
-	ProjectSettings.set_setting('dialogic/editor/last/resources', used_resources_cache)
-	ProjectSettings.save()
+	DialogicUtil.set_editor_setting('last_resources', used_resources_cache)

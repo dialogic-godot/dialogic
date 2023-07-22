@@ -1,0 +1,259 @@
+[gd_scene load_steps=10 format=3 uid="uid://8ad1pwbjuqpt"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/character_settings/character_moods_settings.gd" id="1_3px07"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="2_e1vyd"]
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/Number.tscn" id="3_yjcns"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_yscws"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y7t05"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Image" id="Image_ff1hv"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_01qx8"]
+image = SubResource("Image_ff1hv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40fkd"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 0.0588235)
+border_width_left = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxg6q"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="Typing Sounds" type="VBoxContainer"]
+offset_right = 443.0
+offset_bottom = 144.0
+script = ExtResource("1_3px07")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ListPanel" type="PanelContainer" parent="VBox"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y7t05")
+
+[node name="Vbox" type="VBoxContainer" parent="VBox/ListPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBox/ListPanel/Vbox"]
+layout_mode = 2
+alignment = 2
+
+[node name="Add" type="Button" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Add type sound mood"
+icon = SubResource("ImageTexture_01qx8")
+
+[node name="Duplicate" type="Button" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Duplicate"
+icon = SubResource("ImageTexture_01qx8")
+
+[node name="Delete" type="Button" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Delete mood"
+icon = SubResource("ImageTexture_01qx8")
+
+[node name="VSeparator" type="VSeparator" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+layout_mode = 2
+
+[node name="Play" type="Button" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Preview"
+icon = SubResource("ImageTexture_01qx8")
+
+[node name="Default" type="Button" parent="VBox/ListPanel/Vbox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Default"
+toggle_mode = true
+icon = SubResource("ImageTexture_01qx8")
+
+[node name="MoodList" type="ItemList" parent="VBox/ListPanel/Vbox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="Settings" type="PanelContainer" parent="VBox/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_40fkd")
+
+[node name="Grid" type="GridContainer" parent="VBox/Margin/Settings"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="VBox/Margin/Settings/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Mood name"
+text = "New Mood"
+placeholder_text = "Enter Mood Name"
+caret_blink = true
+
+[node name="NameWarning" type="TextureRect" parent="VBox/Margin/Settings/Grid/Name"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -31.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("ImageTexture_01qx8")
+stretch_mode = 3
+
+[node name="Label6" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "Mode:"
+
+[node name="Mode" type="OptionButton" parent="VBox/Margin/Settings/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Interrupt = The next sound will stop the previous
+Overlap = Multiple sounds may play at once
+Await = A sound will only be played if the previous has finished"
+item_count = 3
+selected = 0
+popup/item_0/text = "Interrupt"
+popup/item_0/id = 0
+popup/item_1/text = "Overlap"
+popup/item_1/id = 1
+popup/item_2/text = "Await"
+popup/item_2/id = 2
+
+[node name="Label4" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "File/Folder:"
+
+[node name="SoundFolder" parent="VBox/Margin/Settings/Grid" instance=ExtResource("2_e1vyd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oxg6q")
+file_filter = "*.ogg, *.mp3, *.wav"
+file_mode = 3
+
+[node name="Label2" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "Pitch:"
+
+[node name="Pitch" type="HBoxContainer" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+theme_override_constants/separation = -6
+alignment = 2
+
+[node name="PitchBase" parent="VBox/Margin/Settings/Grid/Pitch" instance=ExtResource("3_yjcns")]
+unique_name_in_owner = true
+layout_mode = 2
+enforce_step = false
+max = 4.0
+
+[node name="Label4" type="Label" parent="VBox/Margin/Settings/Grid/Pitch"]
+layout_mode = 2
+text = "+/-  "
+
+[node name="PitchVariance" parent="VBox/Margin/Settings/Grid/Pitch" instance=ExtResource("3_yjcns")]
+unique_name_in_owner = true
+layout_mode = 2
+enforce_step = false
+
+[node name="Label3" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "Volume:"
+
+[node name="Volume" type="HBoxContainer" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+theme_override_constants/separation = -6
+alignment = 2
+
+[node name="VolumeBase" parent="VBox/Margin/Settings/Grid/Volume" instance=ExtResource("3_yjcns")]
+unique_name_in_owner = true
+layout_mode = 2
+min = -60.0
+max = 30.0
+
+[node name="Label4" type="Label" parent="VBox/Margin/Settings/Grid/Volume"]
+layout_mode = 2
+text = "+/-  "
+
+[node name="VolumeVariance" parent="VBox/Margin/Settings/Grid/Volume" instance=ExtResource("3_yjcns")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="VBox/Margin/Settings/Grid"]
+layout_mode = 2
+text = "Skip:"
+
+[node name="Skip" parent="VBox/Margin/Settings/Grid" instance=ExtResource("3_yjcns")]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+step = 1.0
+
+[node name="Preview" type="AudioStreamPlayer" parent="."]
+script = ExtResource("5_yscws")
+play_every_character = 0
+
+[connection signal="pressed" from="VBox/ListPanel/Vbox/HBoxContainer/Add" to="." method="_on_add_pressed"]
+[connection signal="pressed" from="VBox/ListPanel/Vbox/HBoxContainer/Duplicate" to="." method="_on_duplicate_pressed"]
+[connection signal="pressed" from="VBox/ListPanel/Vbox/HBoxContainer/Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="VBox/ListPanel/Vbox/HBoxContainer/Play" to="." method="preview"]
+[connection signal="toggled" from="VBox/ListPanel/Vbox/HBoxContainer/Default" to="." method="_on_default_toggled"]
+[connection signal="item_selected" from="VBox/ListPanel/Vbox/MoodList" to="." method="_on_mood_list_item_selected"]
+[connection signal="focus_exited" from="VBox/Margin/Settings/Grid/Name" to="." method="_on_name_focus_exited"]
+[connection signal="text_changed" from="VBox/Margin/Settings/Grid/Name" to="." method="_on_name_text_changed"]
+[connection signal="text_submitted" from="VBox/Margin/Settings/Grid/Name" to="." method="_on_name_text_submitted"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://fgplvp0f3giu"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Style/character_settings_style.gd" id="2"]
+
+[node name="Style" type="VBoxContainer"]
+offset_right = 280.0
+offset_bottom = 79.0
+script = ExtResource("2")
+
+[node name="Style" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Style"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Style:"
+
+[node name="StyleName" type="LineEdit" parent="Style"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="InfoLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Whenever this character speaks, dialogic will switch to this style. It has to be defined in the layout scene and is a pretty advanced feature."
+autowrap_mode = 3

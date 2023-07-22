@@ -274,8 +274,10 @@ func _request_code_completion(force):
 		if symbol == '[':
 			# suggest shortcodes if a shortcode event has just begun
 			for shortcode in completion_shortcodes.keys():
-				add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
-		
+				if completion_shortcodes[shortcode].get_shortcode_parameters().is_empty():
+					add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
+				else:
+					add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
 		else:
 			# suggest either parameters or values
 			var current_shortcode := completion_shortcode_getter_regex.search(line)
@@ -331,12 +333,13 @@ func _request_code_completion(force):
 		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:', syntax_highlighter.code_flow_color)
 		
 		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', syntax_highlighter.keyword_VAR_color)
+		add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', syntax_highlighter.keyword_SETTING_color)
 		
 		suggest_characters(CodeEdit.KIND_CLASS)
 	
 	# Text Event Suggestions
 	else:
-		if not ':' in line and symbol == '(':
+		if not ':' in line.substr(0, get_caret_column()) and symbol == '(':
 			var character := completion_text_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(character)
 		if symbol == '[':
@@ -367,7 +370,7 @@ func suggest_portraits(character_name:String) -> void:
 
 # Helper that adds all variable paths as options
 func suggest_variables():
-	for variable in DialogicUtil.list_variables(DialogicUtil.get_project_setting('dialogic/variables')):
+	for variable in DialogicUtil.list_variables(ProjectSettings.get_setting('dialogic/variables')):
 		add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, get_theme_icon("MemberProperty", "EditorIcons"), '}')
 
 

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="DialogicCharacter" load_steps=2 format=3 uid="uid://dykf1j17ct5mo"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Resources/character.gd" id="1_qsljv"]
+
+[resource]
+script = ExtResource("1_qsljv")
+display_name = "Preview"
+nicknames = [""]
+color = Color(1, 1, 1, 1)
+description = ""
+scale = 1.0
+offset = Vector2(0, 0)
+mirror = false
+default_portrait = "character"
+portraits = {
+"character": {
+"image": "res://addons/dialogic/Editor/Images/preview_character.png",
+"offset": Vector2(0, 0)
+},
+"speaker": {
+"image": "res://addons/dialogic/Editor/Images/preview_character_speaker.png",
+"offset": Vector2(0, 0)
+}
+}
+custom_info = {
+"sound_mood_default": "",
+"sound_moods": {},
+"style": ""
+}
+metadata/timeline_not_saved = true

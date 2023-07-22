@@ -1,22 +1,30 @@
-[gd_scene load_steps=11 format=3 uid="uid://ysqbusmy0qma"]
+[gd_scene load_steps=10 format=3 uid="uid://ysqbusmy0qma"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.gd" id="1_8smxc"]
 [ext_resource type="Theme" uid="uid://cqst728xxipcw" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="2_x0fhp"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/TimelineArea.gd" id="3_sap1x"]
-[ext_resource type="StyleBox" uid="uid://c8k6tbipodsg" path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" id="4_cqp1m"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventBlock/event_right_click_menu.gd" id="4_ugiq6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ncv0v"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_folm8"]
+bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="Theme" id="Theme_ycwn2"]
-PopupMenu/colors/font_color_hover = Color(0.44, 0.73, 0.98, 1)
-PopupMenu/styles/hover = SubResource("StyleBoxEmpty_ncv0v")
-PopupMenu/styles/panel = ExtResource("4_cqp1m")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u2g72"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
 
-[sub_resource type="Image" id="Image_wmnvf"]
+[sub_resource type="Image" id="Image_jfdb4"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -25,8 +33,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_o5wl4"]
-image = SubResource("Image_wmnvf")
+[sub_resource type="ImageTexture" id="ImageTexture_h7inq"]
+image = SubResource("Image_jfdb4")
 
 [node name="TimelineVisualEditor" type="MarginContainer"]
 anchors_preset = 15
@@ -44,7 +52,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_x0fhp")
-split_offset = 7
 
 [node name="TimelineArea" type="ScrollContainer" parent="View"]
 unique_name_in_owner = true
@@ -63,25 +70,27 @@ theme_override_constants/separation = 5
 
 [node name="EventPopupMenu" type="PopupMenu" parent="View/TimelineArea"]
 unique_name_in_owner = true
-theme = SubResource("Theme_ycwn2")
+size = Vector2i(165, 124)
+theme_override_styles/panel = SubResource("StyleBoxFlat_folm8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_u2g72")
 item_count = 6
 item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_o5wl4")
+item_0/icon = SubResource("ImageTexture_h7inq")
 item_0/id = 0
 item_1/text = ""
 item_1/id = -1
 item_1/separator = true
 item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_o5wl4")
+item_2/icon = SubResource("ImageTexture_h7inq")
 item_2/id = 2
 item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_o5wl4")
+item_3/icon = SubResource("ImageTexture_h7inq")
 item_3/id = 3
 item_4/text = ""
 item_4/id = -1
 item_4/separator = true
 item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_o5wl4")
+item_5/icon = SubResource("ImageTexture_h7inq")
 item_5/id = 5
 script = ExtResource("4_ugiq6")
 
@@ -89,127 +98,15 @@ script = ExtResource("4_ugiq6")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+size_flags_stretch_ratio = 0.2
 horizontal_scroll_mode = 0
 
 [node name="EventContainer" type="VBoxContainer" parent="View/RightSidebar"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer6"]
-visible = false
-layout_mode = 2
-text = "Main"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer6"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer0" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer5"]
-visible = false
-layout_mode = 2
-text = "Logic"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer5"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer1" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer3"]
-visible = false
-layout_mode = 2
-text = "Timeline"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer3"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer2" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label4" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
-visible = false
-layout_mode = 2
-text = "Audio"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer3" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label5" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-text = "Godot"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer4" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="OtherContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label6" type="Label" parent="View/RightSidebar/EventContainer/OtherContainer"]
-visible = false
-layout_mode = 2
-text = "Other"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/OtherContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer5" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HelpersContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
-[node name="Label6" type="Label" parent="View/RightSidebar/EventContainer/HelpersContainer"]
-visible = false
-layout_mode = 2
-text = "Helpers"
-
-[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HelpersContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FlexContainer6" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Spacer" type="Control" parent="View/RightSidebar/EventContainer"]
-layout_mode = 2
-
+[connection signal="drag_completed" from="View/TimelineArea" to="." method="_on_timeline_area_drag_completed"]
 [connection signal="index_pressed" from="View/TimelineArea/EventPopupMenu" to="." method="_on_event_popup_menu_index_pressed"]
 [connection signal="resized" from="View/RightSidebar" to="." method="_on_right_sidebar_resized"]

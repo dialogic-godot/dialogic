@@ -1,0 +1,113 @@
+[gd_scene load_steps=6 format=3 uid="uid://cp463rpri5j8a"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/settings_portraits.gd" id="2"]
+[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_i6l15"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_mdfuu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hvc1v"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="Portraits" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="Animations" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Title" type="Label" parent="Animations"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_i6l15")
+text = "Animations
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Animations"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Animations/HBoxContainer"]
+layout_mode = 2
+text = "Custom anims folder"
+
+[node name="CustomAnimationsFolder" parent="Animations/HBoxContainer" instance=ExtResource("4_mdfuu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hvc1v")
+file_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Animations"]
+layout_mode = 2
+
+[node name="Title2" type="Label" parent="Animations"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_i6l15")
+text = "Default Animations
+"
+
+[node name="DefaultIn" type="HBoxContainer" parent="Animations"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Animations/DefaultIn"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Default Join"
+
+[node name="JoinDefault" parent="Animations/DefaultIn" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+enable_pretty_name = true
+
+[node name="JoinDefaultLength" type="SpinBox" parent="Animations/DefaultIn"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+
+[node name="JoinDefaultWait" type="CheckButton" parent="Animations/DefaultIn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wait:"
+
+[node name="DefaultOut" type="HBoxContainer" parent="Animations"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Animations/DefaultOut"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Default Leave"
+
+[node name="LeaveDefault" parent="Animations/DefaultOut" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+enable_pretty_name = true
+
+[node name="LeaveDefaultLength" type="SpinBox" parent="Animations/DefaultOut"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+
+[node name="LeaveDefaultWait" type="CheckButton" parent="Animations/DefaultOut"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wait:"
+
+[connection signal="value_changed" from="Animations/DefaultIn/JoinDefault" to="." method="_on_JoinDefault_value_changed"]
+[connection signal="value_changed" from="Animations/DefaultIn/JoinDefaultLength" to="." method="_on_JoinDefaultLength_value_changed"]
+[connection signal="toggled" from="Animations/DefaultIn/JoinDefaultWait" to="." method="_on_JoinDefaultWait_toggled"]
+[connection signal="value_changed" from="Animations/DefaultOut/LeaveDefault" to="." method="_on_LeaveDefault_value_changed"]
+[connection signal="value_changed" from="Animations/DefaultOut/LeaveDefaultLength" to="." method="_on_LeaveDefaultLength_value_changed"]
+[connection signal="toggled" from="Animations/DefaultOut/LeaveDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]

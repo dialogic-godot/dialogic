@@ -22,11 +22,12 @@ func _ready() -> void:
 	# Colors
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
 
-	for n in $"%Colors".get_children():
+	for n in %Colors.get_children():
 		n.color_changed.connect(_on_color_change.bind(n))
 
 	# Extension creator
 	%ExtensionCreator.hide()
+
 
 func refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
@@ -39,6 +40,49 @@ func refresh() -> void:
 	for n in %Colors.get_children():
 		n.custom_minimum_size = Vector2(50 ,50)*scale
 		n.color = color_palette[n.name]
+	
+	%SectionList.clear()
+	%SectionList.create_item()
+	var cached_events :Array[DialogicEvent] = get_parent().get_parent().editors_manager.resource_helper.event_script_cache
+	var sections := []
+	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	for ev in cached_events:
+		if !ev.event_category in sections:
+			sections.append(ev.event_category)
+			var item :TreeItem = %SectionList.create_item(null)
+			item.set_text(0, ev.event_category)
+			item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
+			item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
+			if ev.event_category in section_order:
+				
+				item.move_before(item.get_parent().get_child(min(section_order.find(ev.event_category),item.get_parent().get_child_count()-1)))
+	
+	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
+	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
+
+
+func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_index):
+	if id == 0:
+		item.move_before(item.get_parent().get_child(item.get_index()-1))
+	else:
+		item.move_after(item.get_parent().get_child(item.get_index()+1))
+	for child in %SectionList.get_root().get_children():
+		child.set_button_disabled(0, 0, false)
+		child.set_button_disabled(0, 1, false)
+	
+	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
+	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
+	
+	var sections := []
+	for child in %SectionList.get_root().get_children():
+		sections.append(child.get_text(0))
+	
+	DialogicUtil.set_editor_setting('event_section_order', sections)
+	force_event_button_list_reload()
+
+
+func force_event_button_list_reload() -> void:
+	find_parent('EditorsManager').editors['Timeline Editor'].node.get_node('VisualEditor').load_event_buttons()
 
 
 func _on_color_change(color: Color, who) -> void:
@@ -93,7 +137,7 @@ func _on_submit_extension_button_pressed() -> void:
 	if %NameEdit.text.is_empty():
 		return
 
-	var extensions_folder :String = DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
+	var extensions_folder :String = ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
 
 	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
 	DirAccess.make_dir_recursive_absolute(extensions_folder)
@@ -124,7 +168,7 @@ func _execute() -> void:
 # Set fixed settings of this event
 func _init() -> void:
 	event_name = \""""+%NameEdit.text.capitalize()+"""\"
-	event_category = Category.Other
+	event_category = "Other"
 
 \n
 ################################################################################
@@ -162,7 +206,7 @@ func build_event_editor() -> void:
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	pass
 
 func load_game_state():
@@ -183,4 +227,5 @@ func load_game_state():
 	%CreateExtensionButton.show()
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	force_event_button_list_reload()
 
