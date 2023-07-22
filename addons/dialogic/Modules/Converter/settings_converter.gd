@@ -699,9 +699,11 @@ func convertTimelines():
 						var newString = r_string.substr(1,r_string.length()-2)
 
 						if "timeline" in line:
-							newString = "\"" + timelineFolderBreakdown[newString].replace(".cnv", ".dtl") + "\""
+							if newString in timelineFolderBreakdown.keys():
+								newString = "\"" + timelineFolderBreakdown[newString].replace(".cnv", ".dtl") + "\""
 						if "label" in line:
-							newString = "\"" + anchorNames[newString] + "\""
+							if newString in anchorNames.keys():
+								newString = "\"" + anchorNames[newString] + "\""
 						if "style" in line:
 							var prev = newString
 							var config = ConfigFile.new()
