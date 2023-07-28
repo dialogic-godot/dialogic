@@ -15,7 +15,6 @@ func _ready() -> void:
 func _on_text_changed(value := "") -> void:
 	emit_signal("value_changed", property_name, text)
 	request_code_completion(true)
-	print_tree_pretty()
 
 
 func set_value(value:Variant) -> void:
