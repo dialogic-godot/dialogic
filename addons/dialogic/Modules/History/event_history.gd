@@ -4,12 +4,12 @@ extends DialogicEvent
 
 ## Event that allows clearing, pausing and resuming of history functionality.
 
-enum ActionTypes {Clear, Pause, Resume}
+enum Actions {CLEAR, PAUSE, RESUME}
 
 ### Settings
 
 ## The type of action: Clear, Pause or Resume
-var action_type := ActionTypes.Pause
+var action := Actions.PAUSE
 
 
 ################################################################################
@@ -17,12 +17,12 @@ var action_type := ActionTypes.Pause
 ################################################################################
 
 func _execute() -> void:
-	match action_type:
-		ActionTypes.Clear:
+	match action:
+		Actions.CLEAR:
 			dialogic.History.full_history = []
-		ActionTypes.Pause:
+		Actions.PAUSE:
 			dialogic.History.full_history_enabled = false
-		ActionTypes.Resume:
+		Actions.RESUME:
 			dialogic.History.full_history_enabled = true
 	
 	finish()
@@ -50,7 +50,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 		: property_info
-		"action" 			: {"property": "action_type", "default": ActionTypes.Pause, 
+		"action" 			: {"property": "action", "default": Actions.PAUSE, 
 								"suggestions": func(): return {"Clear":{'value':'0'}, "Pause":{'value':'1'}, "Resume":{'value':'2'}}},
 	}
 
@@ -59,19 +59,19 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action_type', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [
 			{
 				'label': 'Pause History',
-				'value': ActionTypes.Pause,
+				'value': Actions.PAUSE,
 			},
 			{
 				'label': 'Resume History',
-				'value': ActionTypes.Resume,
+				'value': Actions.RESUME,
 			},
 			{
 				'label': 'Clear History',
-				'value': ActionTypes.Clear,
+				'value': Actions.CLEAR,
 			},
 		]
 		})

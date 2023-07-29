@@ -11,11 +11,11 @@ signal resource_unsaved()
 var current_resource: Resource
 
 ## State of the current resource
-enum ResourceStates {Saved, Unsaved}
+enum ResourceStates {SAVED, UNSAVED}
 var current_resource_state: ResourceStates:
 	set(value):
 		current_resource_state = value
-		if value == ResourceStates.Saved:
+		if value == ResourceStates.SAVED:
 			resource_saved.emit()
 		else:
 			resource_unsaved.emit()

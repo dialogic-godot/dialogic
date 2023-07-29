@@ -10,7 +10,7 @@ signal returned_from_jump(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	dialogic.current_state_info['jump_stack'] = []
 
 

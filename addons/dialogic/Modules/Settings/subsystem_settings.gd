@@ -15,7 +15,7 @@ var settings := {}
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	_reload_settings()
 
 

@@ -69,14 +69,14 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('file_path', ValueType.File, 'Play', '', 
+	add_header_edit('file_path', ValueType.FILE, 'Play', '', 
 			{'file_filter' 	: "*.mp3, *.ogg, *.wav; Supported Audio Files", 
 			'placeholder' 	: "No music", 
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
-	add_body_edit('fade_length', ValueType.Float, 'Fade Time:')
-	add_body_edit('volume', ValueType.Decibel, 'Volume:', '', {}, '!file_path.is_empty()')
-	add_body_edit('audio_bus', ValueType.SinglelineText, 'Audio Bus:', '', {}, '!file_path.is_empty()')
-	add_body_edit('loop', ValueType.Bool, 'Loop:', '', {}, '!file_path.is_empty()')
+	add_body_edit('fade_length', ValueType.FLOAT, 'Fade Time:')
+	add_body_edit('volume', ValueType.DECIBEL, 'Volume:', '', {}, '!file_path.is_empty()')
+	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, 'Audio Bus:', '', {}, '!file_path.is_empty()')
+	add_body_edit('loop', ValueType.BOOL, 'Loop:', '', {}, '!file_path.is_empty()')
 
 
 func get_bus_suggestions() -> Dictionary:

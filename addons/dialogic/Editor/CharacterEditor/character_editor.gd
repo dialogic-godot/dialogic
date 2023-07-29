@@ -75,7 +75,7 @@ func _save() -> void:
 			current_resource = child._save_changes(current_resource)
 	
 	ResourceSaver.save(current_resource, current_resource.resource_path)
-	current_resource_state = ResourceStates.Saved
+	current_resource_state = ResourceStates.SAVED
 	editors_manager.resource_helper.rebuild_character_directory()
 
 
@@ -210,7 +210,7 @@ func _on_section_button_pressed(button:Button) -> void:
 
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 	if not loading:
-		current_resource_state = ResourceStates.Unsaved
+		current_resource_state = ResourceStates.UNSAVED
 		editors_manager.save_current_resource() #TODO, should this happen?
 
 

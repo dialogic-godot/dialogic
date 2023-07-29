@@ -5,17 +5,17 @@ extends DialogicEvent
 ## Event that allows changing a dialogic variable or a property of an autoload.
 
 
-enum Operations {Set, Add, Substract, Multiply, Divide}
+enum Operations {SET, ADD, SUBSTRACT, MULTIPLY, DIVIDE}
 
 ## Settings
 
 ## Name/Path of the variable that should be changed.
 var name: String = ""
 ## The operation to perform.
-var operation: int = Operations.Set:
+var operation: int = Operations.SET:
 	set(value):
 		operation = value
-		if operation != Operations.Set and _value_type == 0:
+		if operation != Operations.SET and _value_type == 0:
 			_value_type = 1
 			ui_update_needed.emit()
 		update_editor_warning()
@@ -46,20 +46,20 @@ func _execute() -> void:
 				2: the_value = dialogic.VAR.get_variable('{'+value+'}')
 				1,3,4: the_value = dialogic.VAR.get_variable(value)
 			
-			if operation != Operations.Set and str(orig).is_valid_float() and str(the_value).is_valid_float():
+			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
 				orig = float(orig)
 				the_value = float(the_value)
 				match operation:
-					Operations.Add:
+					Operations.ADD:
 						dialogic.VAR.set_variable(name, orig+the_value)
-					Operations.Substract:
+					Operations.SUBSTRACT:
 						dialogic.VAR.set_variable(name, orig-the_value)
-					Operations.Multiply:
+					Operations.MULTIPLY:
 						dialogic.VAR.set_variable(name, orig*the_value)
-					Operations.Divide:
+					Operations.DIVIDE:
 						dialogic.VAR.set_variable(name, orig/the_value)
 				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			elif operation == Operations.Set:
+			elif operation == Operations.SET:
 				dialogic.VAR.set_variable(name, the_value)
 				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
 			else:
@@ -91,15 +91,15 @@ func to_text() -> String:
 	if name:
 		string += "{" + name + "}"
 		match operation:
-			Operations.Set:
+			Operations.SET:
 				string+= " = "
-			Operations.Add:
+			Operations.ADD:
 				string+= " += "
-			Operations.Substract:
+			Operations.SUBSTRACT:
 				string+= " -= "
-			Operations.Multiply:
+			Operations.MULTIPLY:
 				string+= " *= "
-			Operations.Divide:
+			Operations.DIVIDE:
 				string+= " /= "
 		
 		value = str(value)
@@ -125,15 +125,15 @@ func from_text(string:String) -> void:
 	name = result.get_string('name').strip_edges().replace("{", "").replace("}", "")
 	match result.get_string('operation').strip_edges():
 		'=':
-			operation = Operations.Set
+			operation = Operations.SET
 		'-=':
-			operation = Operations.Substract
+			operation = Operations.SUBSTRACT
 		'+=':
-			operation = Operations.Add
+			operation = Operations.ADD
 		'*=':
-			operation = Operations.Multiply
+			operation = Operations.MULTIPLY
 		'/=':
-			operation = Operations.Divide
+			operation = Operations.DIVIDE
 	
 	if result.get_string('value'):
 		value = result.get_string('value').strip_edges()
@@ -166,37 +166,37 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.ComplexPicker, '', '', 
+	add_header_edit('name', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func' 	: get_var_suggestions, 
 			'editor_icon' 			: ["ClassList", "EditorIcons"],
 			'placeholder'			:'Select Variable'}
 			)
-	add_header_edit('operation', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [
 			{
 				'label': 'to be',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/set.svg"),
-				'value': Operations.Set
+				'value': Operations.SET
 			},{
 				'label': 'to itself plus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/plus.svg"),
-				'value': Operations.Add
+				'value': Operations.ADD
 			},{
 				'label': 'to itself minus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/minus.svg"),
-				'value': Operations.Substract
+				'value': Operations.SUBSTRACT
 			},{
 				'label': 'to itself multiplied by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/multiply.svg"),
-				'value': Operations.Multiply
+				'value': Operations.MULTIPLY
 			},{
 				'label': 'to itself divided by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/divide.svg"),
-				'value': Operations.Divide
+				'value': Operations.DIVIDE
 			}
 		]
 	}, '!name.is_empty()')
-	add_header_edit('_value_type', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [
 			{
 				'label': 'String',
@@ -221,14 +221,14 @@ func build_event_editor():
 			}],
 		'symbol_only':true}, 
 		'!name.is_empty()')
-	add_header_edit('value', ValueType.SinglelineText, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
-	add_header_edit('value', ValueType.Float, '', '', {}, '!name.is_empty()  and _value_type == 1')
-	add_header_edit('value', ValueType.ComplexPicker, '', '', 
+	add_header_edit('value', ValueType.SINGLELINE_TEXT, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
+	add_header_edit('value', ValueType.FLOAT, '', '', {}, '!name.is_empty()  and _value_type == 1')
+	add_header_edit('value', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
 			'!name.is_empty() and _value_type == 2')
 	add_header_label('a number between', '_value_type == 4')
-	add_header_edit('random_min', ValueType.Integer, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
-	add_header_edit('random_max', ValueType.Integer, '', '', {}, '!name.is_empty() and _value_type == 4')
+	add_header_edit('random_min', ValueType.INTEGER, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
+	add_header_edit('random_max', ValueType.INTEGER, '', '', {}, '!name.is_empty() and _value_type == 4')
 	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["ExternalLink", "EditorIcons"])
 
 func get_var_suggestions(filter:String) -> Dictionary:
@@ -258,7 +258,7 @@ func _on_variable_editor_pressed():
 
 
 func update_editor_warning() -> void:
-	if _value_type == 0 and operation != Operations.Set:
+	if _value_type == 0 and operation != Operations.SET:
 		ui_update_warning.emit('You cannot do this operation with a string!')
 	else:
 		ui_update_warning.emit('')

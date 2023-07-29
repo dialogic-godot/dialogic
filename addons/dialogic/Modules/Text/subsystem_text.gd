@@ -29,7 +29,7 @@ var autopauses := {}
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
@@ -94,7 +94,7 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 				if Dialogic.Animation.is_animating():
 					await Dialogic.Animation.finished
 	
-	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
+	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):

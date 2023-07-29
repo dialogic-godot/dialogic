@@ -12,7 +12,7 @@ var hide_textbox := true
 
 func _execute() -> void:
 	if hide_textbox: dialogic.Text.hide_text_boxes()
-	dialogic.current_state = Dialogic.states.IDLE
+	dialogic.current_state = Dialogic.States.IDLE
 	finish()
 
 ################################################################################
@@ -44,4 +44,4 @@ func get_shortcode_parameters() -> Dictionary:
 
 
 func build_event_editor():
-	add_body_edit('hide_textbox', ValueType.Bool, 'Hide text box:')
+	add_body_edit('hide_textbox', ValueType.BOOL, 'Hide text box:')

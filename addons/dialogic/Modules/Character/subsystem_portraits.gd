@@ -9,8 +9,6 @@ signal character_moved(info:Dictionary)
 signal position_changed(info:Dictionary)
 
 
-enum PortraitModes {VisualNovel, RPG}
-
 ## The default portrait scene.
 var default_portrait_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_portrait.tscn'))
 
@@ -21,7 +19,7 @@ var _portrait_holder_reference: Node = null
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_character(load(character))
 	dialogic.current_state_info['portraits'] = {}
@@ -234,9 +232,9 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		if animation_name.is_empty():
 			animation_length = ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await get_tree().create_timer(animation_length).timeout
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 		move_character(character, position_idx, animation_length)
 		change_character_mirror(character, mirrored)
 		return
@@ -266,9 +264,9 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		var anim:DialogicAnimation = _animate_portrait(character_node, animation_name, animation_length)
 		
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 	
 	return character_node
 
@@ -390,9 +388,9 @@ func leave_character(character:DialogicCharacter, animation_name :String = "", a
 		anim.finished.connect(remove_character.bind(character))
 		
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 	else:
 		remove_character(character)
 
@@ -407,9 +405,9 @@ func leave_all_characters(animation_name:String="", animation_length:float= 0, a
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 	
 	if animation_wait:
-		dialogic.current_state = Dialogic.states.ANIMATING
+		dialogic.current_state = Dialogic.States.ANIMATING
 		await get_tree().create_timer(animation_length).timeout
-		dialogic.current_state = Dialogic.states.IDLE
+		dialogic.current_state = Dialogic.States.IDLE
 
 
 ## Removes the given characters portrait. Only works with joined characters

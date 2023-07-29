@@ -4,7 +4,7 @@ extends DialogicEvent
 
 ## Event that allows adding choices. Needs to go after a text event (or another choices EndBranch).
 
-enum ElseActions {Hide, Disable, Default}
+enum ElseActions {HIDE, DISABLE, DEFAULT}
 
 
 ### Settings
@@ -13,7 +13,7 @@ var text :String = ""
 ## If not empty this condition will determine if this choice is active.
 var condition: String = ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
-var else_action: = ElseActions.Default
+var else_action: = ElseActions.DEFAULT
 ## The text that is displayed if [condition] is false and [else_action] is Disable. 
 ## If empty [text] will be used for disabled button as well.
 var disabled_text: String = ""
@@ -73,9 +73,9 @@ func to_text() -> String:
 	
 	
 	var shortcode = '['
-	if else_action == ElseActions.Hide:
+	if else_action == ElseActions.HIDE:
 		shortcode += 'else="hide"'
-	elif else_action == ElseActions.Disable:
+	elif else_action == ElseActions.DISABLE:
 		shortcode += 'else="disable"'
 	
 	if disabled_text:
@@ -97,9 +97,9 @@ func from_text(string:String) -> void:
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		else_action = {
-			'default':ElseActions.Default, 
-			'hide':ElseActions.Hide,
-			'disable':ElseActions.Disable}.get(shortcode_params.get('else', ''), ElseActions.Default)
+			'default':ElseActions.DEFAULT, 
+			'hide':ElseActions.HIDE,
+			'disable':ElseActions.DISABLE}.get(shortcode_params.get('else', ''), ElseActions.DEFAULT)
 		
 		disabled_text = shortcode_params.get('alt_text', '')
 
@@ -132,29 +132,29 @@ func _get_property_original_translation(property:String) -> String:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit("text", ValueType.SinglelineText, '','', {'autofocus':true})
-	add_body_edit("condition", ValueType.Condition, 'if ')
-	add_body_edit("else_action", ValueType.FixedOptionSelector, 'else ', '', {
+	add_header_edit("text", ValueType.SINGLELINE_TEXT, '','', {'autofocus':true})
+	add_body_edit("condition", ValueType.CONDITION, 'if ')
+	add_body_edit("else_action", ValueType.FIXED_OPTION_SELECTOR, 'else ', '', {
 		'selector_options': [
 			{
 				'label': 'Default',
-				'value': ElseActions.Default,
+				'value': ElseActions.DEFAULT,
 			},
 			{
 				'label': 'Hide',
-				'value': ElseActions.Hide,
+				'value': ElseActions.HIDE,
 			},
 			{
 				'label': 'Disable',
-				'value': ElseActions.Disable,
+				'value': ElseActions.DISABLE,
 			}
 		]}, '!condition.is_empty()')
-	add_body_edit("disabled_text", ValueType.SinglelineText, 'Disabled text:', '', 
+	add_body_edit("disabled_text", ValueType.SINGLELINE_TEXT, 'Disabled text:', '', 
 			{'placeholder':'(Empty for same)'}, 'allow_alt_text()')
 
 
 func allow_alt_text() -> bool:
 	return condition and (
-		else_action == ElseActions.Disable or 
-		(else_action == ElseActions.Default and 
+		else_action == ElseActions.DISABLE or 
+		(else_action == ElseActions.DEFAULT and 
 		ProjectSettings.get_setting("dialogic/choices/def_false_behaviour", 0) == 1))

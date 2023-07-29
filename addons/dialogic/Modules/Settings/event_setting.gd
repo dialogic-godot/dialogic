@@ -7,22 +7,22 @@ extends DialogicEvent
 
 ### Settings
 
-enum Modes {Set, Reset, ResetAll}
+enum Modes {SET, RESET, RESET_ALL}
 
 ## The name of the setting to save to. 
 var name: String = ""
 var _value_type := 0
 var value: Variant = ""
 
-var mode := Modes.Set
+var mode := Modes.SET
 
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
 
 func _execute() -> void:
-	if mode == Modes.Reset or mode == Modes.ResetAll:
-		if !name.is_empty() and mode != Modes.ResetAll:
+	if mode == Modes.RESET or mode == Modes.RESET_ALL:
+		if !name.is_empty() and mode != Modes.RESET_ALL:
 			dialogic.Settings.reset_setting(name)
 		else:
 			dialogic.Settings.reset_all()
@@ -62,13 +62,13 @@ func _get_icon() -> Resource:
 
 func to_text() -> String:
 	var string := "Setting "
-	if mode == Modes.Reset:
+	if mode == Modes.RESET:
 		string += "reset "
 	
-	if !name.is_empty() and mode != Modes.ResetAll:
+	if !name.is_empty() and mode != Modes.RESET_ALL:
 		string += '"' + name + '"'
 	
-	if mode == Modes.Set:
+	if mode == Modes.SET:
 		string += " = "
 		value = str(value)
 		match _value_type:
@@ -90,12 +90,12 @@ func from_text(string:String) -> void:
 		return
 	
 	if result.get_string('reset'):
-		mode = Modes.Reset
+		mode = Modes.RESET
 	
 	name = result.get_string('name').strip_edges()
 	
-	if name.is_empty() and mode == Modes.Reset:
-		mode = Modes.ResetAll
+	if name.is_empty() and mode == Modes.RESET:
+		mode = Modes.RESET_ALL
 	
 	if result.get_string('value'):
 		value = result.get_string('value').strip_edges()
@@ -122,24 +122,24 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('mode', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('mode', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [{
 				'label': 'Set',
-				'value': Modes.Set,
+				'value': Modes.SET,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
 			},{
 				'label': 'Reset',
-				'value': Modes.Reset,
+				'value': Modes.RESET,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
 			},{
 				'label': 'Reset All',
-				'value': Modes.ResetAll,
+				'value': Modes.RESET_ALL,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
 			},
 			]})
 	
-	add_header_edit('name', ValueType.ComplexPicker, '', '', {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
-	add_header_edit('_value_type', ValueType.FixedOptionSelector, 'to', '', {
+	add_header_edit('name', ValueType.COMPLEX_PICKER, '', '', {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
+	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, 'to', '', {
 		'selector_options': [
 			{
 				'label': 'String',
@@ -160,9 +160,9 @@ func build_event_editor():
 			}],
 		'symbol_only':true}, 
 		'!name.is_empty() and mode == 0')
-	add_header_edit('value', ValueType.SinglelineText, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
-	add_header_edit('value', ValueType.Float, '', '', {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
-	add_header_edit('value', ValueType.ComplexPicker, '', '', 
+	add_header_edit('value', ValueType.SINGLELINE_TEXT, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
+	add_header_edit('value', ValueType.FLOAT, '', '', {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
+	add_header_edit('value', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
 			'!name.is_empty() and _value_type == 2 and mode == 0')
 
