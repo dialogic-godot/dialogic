@@ -4,12 +4,12 @@ extends Control
 
 ## Node that defines a position for dialogic portraits and how to display portrait at that position. 
 
-enum Modes {
-	Position, ## This container has an index and can be joined/moved to with the Character Event
-	Speaker,  ## This container has no index and is joined/left automatically based on the speaker.
+enum PositionModes {
+	POSITION, ## This container has an index and can be joined/moved to with the Character Event
+	SPEAKER,  ## This container has no index and is joined/left automatically based on the speaker.
 	}
 
-@export var mode := Modes.Position
+@export var mode := PositionModes.POSITION
 
 @export_subgroup('Mode: Position')
 ## The position this node corresponds to.
@@ -22,9 +22,9 @@ enum Modes {
 @export var portrait_prefix := ''
 
 @export_subgroup('Portrait Placement')
-enum SizeModes {Keep, FitStretch, FitIgnoreScale, FitScaleHeight}
+enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 ## Defines how to affect the scale of the portrait
-@export var size_mode : SizeModes = SizeModes.FitScaleHeight :
+@export var size_mode : SizeModes = SizeModes.FIT_SCALE_HEIGHT :
 	set(mode):
 		size_mode = mode
 		_update_debug_portrait_size_position()
@@ -37,9 +37,9 @@ enum SizeModes {Keep, FitStretch, FitIgnoreScale, FitScaleHeight}
 
 
 @export_group('Origin', 'origin')
-enum OriginAnchors {TopLeft, TopCenter, TopRight, LeftMiddle, Center, RightMiddle, BottomLeft, BottomCenter, BottomRight}
+enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_MIDDLE, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT}
 ## The portrait will be placed relative to this point in the container.
-@export var origin_anchor : OriginAnchors = OriginAnchors.BottomCenter :
+@export var origin_anchor : OriginAnchors = OriginAnchors.BOTTOM_CENTER :
 	set(anchor):
 		origin_anchor = anchor
 		_update_debug_origin()
@@ -72,9 +72,9 @@ var default_debug_character := load(DialogicUtil.get_module_path('Character').pa
 
 func _ready():
 	match mode:
-		Modes.Position:
+		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
-		Modes.Speaker:
+		PositionModes.SPEAKER:
 			add_to_group('dialogic_portrait_con_speaker')
 	
 	if Engine.is_editor_hint():
@@ -104,22 +104,22 @@ func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> 
 	transform.position = _get_origin_position()
 
 	# Mode that ignores the containers size
-	if size_mode == SizeModes.Keep:
+	if size_mode == SizeModes.KEEP:
 		transform.size = Vector2(1,1)*character_scale
 	
 	# Mode that makes sure neither height nor width go out of container
-	elif size_mode == SizeModes.FitIgnoreScale:
+	elif size_mode == SizeModes.FIT_IGNORE_SCALE:
 		if size.x/size.y < portrait_rect.size.x/portrait_rect.size.y:
 			transform.size = Vector2(1,1) * size.x/portrait_rect.size.x
 		else:
 			transform.size = Vector2(1,1) * size.y/portrait_rect.size.y
 	
 	# Mode that stretches the portrait to fill the whole container 
-	elif size_mode == SizeModes.FitStretch:
+	elif size_mode == SizeModes.FIT_STRETCH:
 		transform.size = size/portrait_rect.size
 	
 	# Mode that size the character so 100% size fills the height
-	elif size_mode == SizeModes.FitScaleHeight:
+	elif size_mode == SizeModes.FIT_SCALE_HEIGHT:
 		transform.size = Vector2(1,1) * size.y/portrait_rect.size.y*character_scale
 		
 	return transform
@@ -148,7 +148,7 @@ func _update_debug_portrait_scene() -> void:
 		return
 	var debug_portrait := debug_character_portrait
 	if debug_portrait.is_empty(): debug_portrait = character.default_portrait
-	if mode == Modes.Speaker and !portrait_prefix.is_empty():
+	if mode == PositionModes.SPEAKER and !portrait_prefix.is_empty():
 		if portrait_prefix+debug_portrait in character.portraits:
 			debug_portrait = portrait_prefix+debug_portrait
 	var portrait_info :Dictionary = character.get_portrait_info(debug_portrait)

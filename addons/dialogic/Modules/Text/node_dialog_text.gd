@@ -6,10 +6,10 @@ extends RichTextLabel
 signal started_revealing_text()
 signal continued_revealing_text(new_character)
 signal finished_revealing_text()
-enum ALIGNMENT {LEFT, CENTER, RIGHT}
+enum Alignment {LEFT, CENTER, RIGHT}
 
 @export var enabled := true
-@export var alignment : ALIGNMENT = ALIGNMENT.LEFT
+@export var alignment := Alignment.LEFT
 @export var textbox_root : Node = self
 
 @export var hide_when_empty := false
@@ -47,9 +47,9 @@ func reveal_text(_text:String) -> void:
 	speed = Dialogic.Settings.get_setting('text_speed', 0.01)
 	text = _text
 	show()
-	if alignment == ALIGNMENT.CENTER:
+	if alignment == Alignment.CENTER:
 		text = '[center]'+text
-	elif alignment == ALIGNMENT.RIGHT:
+	elif alignment == Alignment.RIGHT:
 		text = '[right]'+text
 	visible_characters = 0
 	revealing = true
@@ -81,7 +81,7 @@ func finish_text() -> void:
 	visible_ratio = 1
 	Dialogic.Text.execute_effects(-1, self, true)
 	revealing = false
-	Dialogic.current_state = Dialogic.states.IDLE
+	Dialogic.current_state = Dialogic.States.IDLE
 	emit_signal("finished_revealing_text")
 
 

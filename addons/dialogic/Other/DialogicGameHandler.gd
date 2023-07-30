@@ -1,7 +1,7 @@
 extends Node
 
-enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
-enum ClearFlags {FullClear=0, KeepVariables=1, TimelineInfoOnly=2}
+enum States {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
+enum ClearFlags {FULL_CLEAR=0, KEEP_VARIABLES=1, TIMLEINE_INFO_ONLY=2}
 
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
@@ -9,7 +9,7 @@ var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
 var _event_script_cache: Array[DialogicEvent] = []
 
-var current_state: Variant = null:
+var current_state := States.IDLE:
 	get:
 		return current_state
 	set(new_state):
@@ -109,7 +109,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 func end_timeline() -> void:
 	current_timeline = null
 	current_timeline_events = []
-	clear(ClearFlags.TimelineInfoOnly)
+	clear(ClearFlags.TIMLEINE_INFO_ONLY)
 	timeline_ended.emit()
 
 
@@ -150,9 +150,9 @@ func handle_event(event_index:int) -> void:
 # resets dialogics state fully or partially
 # by using the clear flags you can specify what info should be kept
 # for example at timeline end usually it doesn't clear node or subsystem info
-func clear(clear_flags:=ClearFlags.FullClear) -> bool:
+func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
-	if !clear_flags & ClearFlags.TimelineInfoOnly:
+	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
 		for subsystem in get_children():
 			subsystem.clear_game_state(clear_flags)
 
@@ -160,7 +160,7 @@ func clear(clear_flags:=ClearFlags.FullClear) -> bool:
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
-	current_state = states.IDLE
+	current_state = States.IDLE
 	return true
 
 ################################################################################
@@ -461,7 +461,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 # -> returns the layout node 
 func start(timeline:Variant, label:Variant="") -> Node:
 	var scene := add_layout_node()
-	Dialogic.clear(ClearFlags.KeepVariables)
+	Dialogic.clear(ClearFlags.KEEP_VARIABLES)
 	Dialogic.start_timeline(timeline, label)
 	return scene
 

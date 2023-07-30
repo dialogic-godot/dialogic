@@ -12,7 +12,7 @@ signal variable_was_set(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	# loading default variables
 	if ! clear_flag & Dialogic.ClearFlags.KeepVariables:
 		reset()

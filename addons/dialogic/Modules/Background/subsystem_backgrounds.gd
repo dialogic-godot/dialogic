@@ -10,7 +10,7 @@ var default_background_scene :PackedScene = load(get_script().resource_path.get_
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	update_background()
 
 

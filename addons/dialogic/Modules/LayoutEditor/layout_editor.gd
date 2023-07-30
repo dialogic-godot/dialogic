@@ -1,7 +1,7 @@
 @tool
 extends DialogicEditor
 
-enum LayoutModes {Preset, Custom, None}
+enum LayoutModes {PRESET, CUSTOM, NONE}
 
 var layouts_info := {}
 var customization_editor_info := {}
@@ -54,15 +54,15 @@ func _on_layout_mode_item_selected(index:int) -> void:
 	%StyleList.hide()
 	%PresetCustomization.hide()
 	match index:
-		LayoutModes.Preset:
+		LayoutModes.PRESET:
 			%PresetCustomization.show()
 			%StyleList.show()
 			if layouts_info.has(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())):
 				load_layout_scene_customization(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
-		LayoutModes.Custom:
+		LayoutModes.CUSTOM:
 			%CustomScene.show()
 			%CustomScenePicker.set_value(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
-		LayoutModes.None:
+		LayoutModes.NONE:
 			ProjectSettings.set_setting('dialogic/layout/mode', 2)
 			%NoScene.show()
 

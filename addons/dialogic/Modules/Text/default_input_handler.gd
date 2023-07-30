@@ -18,12 +18,12 @@ func _input(event:InputEvent) -> void:
 		if is_input_blocked():
 			return
 		
-		if Dialogic.current_state == Dialogic.states.IDLE and Dialogic.Text.can_manual_advance():
+		if Dialogic.current_state == Dialogic.States.IDLE and Dialogic.Text.can_manual_advance():
 			Dialogic.handle_next_event()
 			autoadvance_timer.stop()
 			block_input(skip_delay)
 		
-		elif Dialogic.current_state == Dialogic.states.SHOWING_TEXT and Dialogic.Text.can_skip():
+		elif Dialogic.current_state == Dialogic.States.SHOWING_TEXT and Dialogic.Text.can_skip():
 			Dialogic.Text.skip_text_animation()
 			block_input(skip_delay)
 		

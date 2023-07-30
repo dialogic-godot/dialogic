@@ -4,7 +4,7 @@ extends Control
 ## Settings tab that allows enabeling and updating translation csv-files.
 
 
-enum TranslationModes {PerProject, PerTimeline}
+enum TranslationModes {PER_PROJECT, PER_TIMELINE}
 var loading := false
 @onready var settings_editor :Control = get_parent().get_parent()
 
@@ -71,7 +71,7 @@ func update_csv_files() -> void:
 	settings_editor.editors_manager.clear_editor(settings_editor.editors_manager.editors['Timeline Editor']['node'])
 	
 	# collect old lines in per project mode 
-	if translation_mode == TranslationModes.PerProject:
+	if translation_mode == TranslationModes.PER_PROJECT:
 		var file_path :String= ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
 		if FileAccess.file_exists(file_path):
 			file = FileAccess.open(file_path,FileAccess.READ_WRITE)
@@ -87,7 +87,7 @@ func update_csv_files() -> void:
 		
 		# collect old lines in per timeline mode
 		var file_path :String= timeline_path.trim_suffix('.dtl')+'_translation.csv'
-		if translation_mode == TranslationModes.PerTimeline:
+		if translation_mode == TranslationModes.PER_TIMELINE:
 			if FileAccess.file_exists(file_path):
 				file = FileAccess.open(file_path,FileAccess.READ_WRITE)
 				while !file.eof_reached():
@@ -113,7 +113,7 @@ func update_csv_files() -> void:
 		ResourceSaver.save(tml, timeline_path)
 		
 		# for per_timeline mode save the file now, then reset for next timeline
-		if translation_mode == TranslationModes.PerTimeline:
+		if translation_mode == TranslationModes.PER_TIMELINE:
 			if !FileAccess.file_exists(file_path):
 				pass#counts[1] += 1
 			elif len(csv_lines):
@@ -132,7 +132,7 @@ func update_csv_files() -> void:
 			csv_lines.clear()
 			old_csv_lines.clear()
 	
-	if translation_mode == TranslationModes.PerProject:
+	if translation_mode == TranslationModes.PER_PROJECT:
 		var file_path :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
 		if FileAccess.file_exists(file_path):
 			counts[3] += 1
@@ -160,7 +160,7 @@ func collect_translations() -> void:
 	var trans_files := []
 	var translation_mode :int = %TransMode.selected
 	
-	if translation_mode == TranslationModes.PerTimeline:
+	if translation_mode == TranslationModes.PER_TIMELINE:
 		for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				file = timeline_path.get_base_dir().path_join(file)
@@ -168,7 +168,7 @@ func collect_translations() -> void:
 					if not file in trans_files:
 						trans_files.append(file)
 	
-	if translation_mode == TranslationModes.PerProject:
+	if translation_mode == TranslationModes.PER_PROJECT:
 		var trans_folder :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 		for file in DialogicUtil.listdir(trans_folder):
 			file = trans_folder.path_join(file)
@@ -198,7 +198,7 @@ func erase_translations() -> void:
 	
 	var counts := [0,0] # csv files, translation files
 	
-	if translation_mode == TranslationModes.PerProject:
+	if translation_mode == TranslationModes.PER_PROJECT:
 		var trans_path :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv.import')
@@ -211,7 +211,7 @@ func erase_translations() -> void:
 
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		# in per project mode, remove all translation files/resources next to the timelines
-		if translation_mode == TranslationModes.PerTimeline:
+		if translation_mode == TranslationModes.PER_TIMELINE:
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv')
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv.import')
 			counts[0] += 1

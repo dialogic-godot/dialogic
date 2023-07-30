@@ -4,11 +4,11 @@ extends DialogicEvent
 
 ## Event that allows branching a timeline based on a condition.
 
-enum ConditionTypes {If, Elif, Else}
+enum ConditionTypes {IF, ELIF, ELSE}
 
 ### Settings
 ## condition type (see [ConditionTypes]). Defaults to if.
-var condition_type := ConditionTypes.If
+var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
 var condition: String = ""
 
@@ -18,7 +18,7 @@ var condition: String = ""
 ################################################################################
 
 func _execute() -> void:
-	if condition_type == ConditionTypes.Else:
+	if condition_type == ConditionTypes.ELSE:
 		finish()
 		return
 	
@@ -44,7 +44,7 @@ func _execute() -> void:
 ## only called if the previous event was an end-branch event
 ## return true if this event should be executed if the previous event was an end-branch event
 func should_execute_this_branch() -> bool:
-	return condition_type == ConditionTypes.If
+	return condition_type == ConditionTypes.IF
 
 
 ################################################################################
@@ -72,11 +72,11 @@ func to_text() -> String:
 	var result_string := ""
 	
 	match condition_type:
-		ConditionTypes.If:
+		ConditionTypes.IF:
 			result_string = 'if '+condition+':'
-		ConditionTypes.Elif:
+		ConditionTypes.ELIF:
 			result_string = 'elif '+condition+':'
-		ConditionTypes.Else:
+		ConditionTypes.ELSE:
 			result_string = 'else:'
 	
 	return result_string
@@ -85,13 +85,13 @@ func to_text() -> String:
 func from_text(string:String) -> void:
 	if string.strip_edges().begins_with('if'):
 		condition = string.strip_edges().trim_prefix('if ').trim_suffix(':').strip_edges()
-		condition_type = ConditionTypes.If
+		condition_type = ConditionTypes.IF
 	elif string.strip_edges().begins_with('elif'):
 		condition = string.strip_edges().trim_prefix('elif ').trim_suffix(':').strip_edges()
-		condition_type = ConditionTypes.Elif
+		condition_type = ConditionTypes.ELIF
 	elif string.strip_edges().begins_with('else'):
 		condition = ""
-		condition_type = ConditionTypes.Else
+		condition_type = ConditionTypes.ELSE
 
 
 func is_valid_event(string:String) -> bool:
@@ -105,19 +105,19 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('condition_type', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('condition_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [
 			{
 				'label': 'IF',
-				'value': ConditionTypes.If,
+				'value': ConditionTypes.IF,
 			},
 			{
 				'label': 'ELIF',
-				'value': ConditionTypes.Elif,
+				'value': ConditionTypes.ELIF,
 			},
 			{
 				'label': 'ELSE',
-				'value': ConditionTypes.Else,
+				'value': ConditionTypes.ELSE,
 			}
 		], 'disabled':true})
-	add_header_edit('condition', ValueType.Condition, '', '', {}, 'condition_type != %s'%ConditionTypes.Else)
+	add_header_edit('condition', ValueType.CONDITION, '', '', {}, 'condition_type != %s'%ConditionTypes.ELSE)

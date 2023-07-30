@@ -7,9 +7,9 @@ extends AudioStreamPlayer
 
 ## Usefull if you want to change the sounds of different node's sounds
 @export var enabled := true
-enum Modes {Interrupt, Overlap, Await}
+enum Modes {INTERRUPT, OVERLAP, AWAIT}
 ## If true, interrupts the current sound to play a new one
-@export var mode := Modes.Interrupt
+@export var mode := Modes.INTERRUPT
 ## Array of sounds. Will pick a random one each time.
 @export var sounds: Array[AudioStream] = []
 ## A sound to be played as the last sound.
@@ -56,7 +56,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 			return
 	
 	# if sound playing and can't interrupt
-	if playing and current_overwrite_data.get('mode', mode) == Modes.Await:
+	if playing and current_overwrite_data.get('mode', mode) == Modes.AWAIT:
 		return
 	
 	# if no sounds were given
@@ -74,11 +74,11 @@ func _on_continued_revealing_text(new_character:String) -> void:
 	characters_since_last_sound = 0
 	
 	var audio_player : AudioStreamPlayer = self
-	if current_overwrite_data.get('mode', mode) == Modes.Overlap:
+	if current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
 		audio_player = AudioStreamPlayer.new()
 		audio_player.bus = bus
 		add_child(audio_player)
-	elif current_overwrite_data.get('mode', mode) == Modes.Interrupt:
+	elif current_overwrite_data.get('mode', mode) == Modes.INTERRUPT:
 		stop()
 	
 	#choose the random sound
@@ -91,7 +91,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 	#play the sound
 	audio_player.play(0)
 	
-	if current_overwrite_data.get('mode', mode) == Modes.Overlap:
+	if current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
 		audio_player.finished.connect(audio_player.queue_free)
 
 

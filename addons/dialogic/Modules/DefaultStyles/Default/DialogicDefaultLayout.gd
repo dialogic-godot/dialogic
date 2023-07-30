@@ -1,11 +1,11 @@
 @tool
 extends CanvasLayer
 
-enum Alignments {Left, Center, Right}
+enum Alignments {LEFT, CENTER, RIGHT}
 
 @export_group("Main")
 @export_subgroup("Text")
-@export var text_alignment :Alignments= Alignments.Left
+@export var text_alignment :Alignments= Alignments.LEFT
 @export var text_size := 15
 @export var text_color : Color = Color.WHITE
 @export_file('*.ttf') var normal_font:String = ""
@@ -18,7 +18,7 @@ enum Alignments {Left, Center, Right}
 @export var box_size : Vector2 = Vector2(550, 110)
 
 @export_subgroup("Name Label")
-@export var name_label_alignment := Alignments.Left
+@export var name_label_alignment := Alignments.LEFT
 @export var name_label_font_size := 15
 @export var name_label_color := Color.WHITE
 @export var name_label_use_character_color := true
@@ -37,7 +37,7 @@ enum Alignments {Left, Center, Right}
 
 
 @export_subgroup('Portraits')
-@export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FitScaleHeight
+@export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FIT_SCALE_HEIGHT
 
 
 ## Called by dialogic whenever export overrides might change

@@ -33,7 +33,7 @@ func _ready():
 
 
 func _on_text_editor_text_changed():
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.Unsaved
+	get_parent().current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
 
 
@@ -82,7 +82,7 @@ func save_timeline():
 		ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
 
 		get_parent().current_resource.set_meta("timeline_not_saved", false)
-		get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
+		get_parent().current_resource_state = DialogicEditor.ResourceStates.SAVED
 		get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 
 
