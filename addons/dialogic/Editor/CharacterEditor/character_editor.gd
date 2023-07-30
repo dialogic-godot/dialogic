@@ -459,6 +459,8 @@ func report_name_change(item:TreeItem) -> void:
 			if s_item.get_metadata(0).has('group') or !s_item.has_meta('new'):
 				report_name_change(s_item)
 	else:
+		if item.get_meta('previous_name') == %PortraitTree.get_full_item_name(item):
+			return
 		editors_manager.reference_manager.add_portrait_ref_change(
 			item.get_meta('previous_name'),
 			%PortraitTree.get_full_item_name(item),

@@ -6,8 +6,6 @@ extends PanelContainer
 var reference_changes :Array[Dictionary] = []
 
 
-enum Where {Everywhere, ByCharacter, TextsOnly}
-
 func _ready():
 	%FindList.hide()
 	
