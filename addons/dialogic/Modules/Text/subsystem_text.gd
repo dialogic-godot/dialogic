@@ -20,16 +20,15 @@ var text_effects := {}
 var parsed_text_effect_info : Array[Dictionary]= []
 var text_effects_regex := RegEx.new()
 var text_modifiers := []
-
 var input_handler :Node = null
 
-var autopauses := {} 
+var autopauses := {}
 
 ####################################################################################################
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
@@ -37,6 +36,10 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.start_hidden:
+			text_node.textbox_root.hide()
+	
 	set_manualadvance(true)
 
 
@@ -90,7 +93,7 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 				if Dialogic.Animation.is_animating():
 					await Dialogic.Animation.finished
 	
-	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
+	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
@@ -259,6 +262,7 @@ func collect_text_effects() -> void:
 	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>"+text_effect_names.trim_suffix("|")+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 
 
+
 ## Returns the string with all text effects removed
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
@@ -413,10 +417,10 @@ func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> voi
 		set_autoadvance(true, argument, true)
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\[[^\\[\\]]+(\\/[^\\]]*)\\]")
+var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string :String= replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
+		var string :String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
 		string = string.replace('//', '<slash>')
 		var list :PackedStringArray= string.split('/')
 		var item :String= list[randi()%len(list)]

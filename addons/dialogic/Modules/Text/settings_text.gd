@@ -6,6 +6,7 @@ func refresh():
 	
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/settings/text_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
+	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
@@ -31,6 +32,11 @@ func _on_Autoadvance_toggled(button_pressed):
 
 func _on_Skippable_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)
+	ProjectSettings.save()
+
+
+func _on_skippable_delay_value_changed(value: float) -> void:
+	ProjectSettings.set_setting('dialogic/text/skippable_delay', value)
 	ProjectSettings.save()
 
 

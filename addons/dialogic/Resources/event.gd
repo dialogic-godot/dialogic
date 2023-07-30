@@ -81,24 +81,24 @@ var event_category:String = "Other"
 ### Editor UI creation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## To differentiate fields that should go to the header and to the body
-enum Location {Header, Body}
+enum Location {HEADER, BODY}
 
 ## To differentiate the different types of fields for event properties in the visual editor
 enum ValueType {
 	# Strings
-	Label, MultilineText, SinglelineText, Condition,
+	LABEL, MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION,
 	# Booleans
-	Bool,
+	BOOL,
 	# Resources
-	ComplexPicker, File,
+	COMPLEX_PICKER, FILE,
 	# Array
-	StringArray,
+	STRING_ARRAY,
 	# Integers
-	FixedOptionSelector, Integer, Vector2,
+	FIXED_OPTION_SELECTOR, INTEGER, VECTOR2,
 	# Floats
-	Float, Decibel,
+	FLOAT, DECIBEL,
 	# Other
-	Custom, Button,
+	CUSTOM, BUTTON,
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
@@ -374,20 +374,20 @@ func build_event_editor() -> void:
 func add_header_label(text:String, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: "something", 
-		"type" 			: TYPE_STRING,
-		"location" 		: Location.Header,
+		"type" 			:+ TYPE_STRING,
+		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
-		"dialogic_type" : ValueType.Label,
+		"dialogic_type" : ValueType.LABEL,
 		"display_info"  : {"text":text}, 
 		"condition" 	: condition
 		})
 
 
-func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_header_edit(variable:String, editor_type = ValueType.LABEL, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
-		"location" 		: Location.Header,
+		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
@@ -401,19 +401,19 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 	editor_list.append({
 		"name"			: "Button",
 		"type" 			: TYPE_STRING,
-		"location" 		: Location.Header,
+		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : ValueType.Button,
+		"dialogic_type" : ValueType.BUTTON,
 		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
 		"condition" 	: condition,
 	})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_body_edit(variable:String, editor_type = ValueType.LABEL, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable, 
 		"type" 			: typeof(get(variable)),
-		"location" 		: Location.Body,
+		"location" 		: Location.BODY,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
@@ -427,7 +427,7 @@ func add_body_line_break(condition:String = "") -> void:
 	editor_list.append({
 		"name" 		: "linebreak",
 		"type" 		: TYPE_BOOL,
-		"location" 	: Location.Body,
+		"location" 	: Location.BODY,
 		"usage" 	: PROPERTY_USAGE_DEFAULT,
 		"condition" : condition,
 		})

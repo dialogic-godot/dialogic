@@ -1,11 +1,11 @@
 @tool
 extends Node2D
 
-enum Faces {BasedOnPortraitName, Neutral, Happy, Sad, Joy, Shock, Angry}
+enum Faces {BASED_ON_PORTRAIT_NAME, NEUTRAL, HAPPY, SAD, JOY, SHOCK, ANGRY}
 
 var portrait
 
-@export var emotion : Faces = Faces.BasedOnPortraitName
+@export var emotion : Faces = Faces.BASED_ON_PORTRAIT_NAME
 @export var portrait_width: int
 @export var portrait_height: int
 @export var alien = true
@@ -30,7 +30,7 @@ func _should_do_portrait_update(character:DialogicCharacter, portrait:String) ->
 func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String) -> void:
 	for face in $Faces.get_children():
 		face.hide()
-	if emotion == Faces.BasedOnPortraitName:
+	if emotion == Faces.BASED_ON_PORTRAIT_NAME:
 		if 'happy' in passed_portrait.to_lower(): $Faces/Smile.show()
 		elif 'sad' in passed_portrait.to_lower(): $Faces/Frown.show()
 		elif 'joy' in passed_portrait.to_lower(): $Faces/Joy.show()
@@ -38,11 +38,11 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 		elif 'angry' in passed_portrait.to_lower(): $Faces/Anger.show()
 		else: $Faces/Neutral.show()
 	else:
-		if emotion == Faces.Happy: $Faces/Smile.show()
-		elif emotion == Faces.Sad: $Faces/Frown.show()
-		elif emotion == Faces.Joy: $Faces/Joy.show()
-		elif emotion == Faces.Shock: $Faces/Shock.show()
-		elif emotion == Faces.Angry: $Faces/Anger.show()
+		if emotion == Faces.HAPPY: $Faces/Smile.show()
+		elif emotion == Faces.SAD: $Faces/Frown.show()
+		elif emotion == Faces.JOY: $Faces/Joy.show()
+		elif emotion == Faces.SHOCK: $Faces/Shock.show()
+		elif emotion == Faces.ANGRY: $Faces/Anger.show()
 		else: $Faces/Neutral.show()
 	
 	$Alien.visible = alien

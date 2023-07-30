@@ -51,5 +51,5 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('argument', ValueType.SinglelineText,
+	add_header_edit('argument', ValueType.SINGLELINE_TEXT,
 	'Emit "signal_event" signal with argument', '', {'autofocus':true})

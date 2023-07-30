@@ -1,11 +1,11 @@
 extends CanvasLayer
 
-enum Alignments {Left, Center, Right}
-enum LimitedAlignments {Left=0, Right=1}
+enum Alignments {LEFT, CENTER, RIGHT}
+enum LimitedAlignments {LEFT=0, RIGHT=1}
 
 @export_group('Main')
 @export_subgroup("Text")
-@export var text_alignment :Alignments= Alignments.Left
+@export var text_alignment :Alignments= Alignments.LEFT
 @export var text_size := 15
 @export var text_color : Color = Color.WHITE
 @export_file('*.ttf') var normal_font:String = ""
@@ -14,7 +14,7 @@ enum LimitedAlignments {Left=0, Right=1}
 @export_file('*.ttf') var bold_italic_font:String = ""
 
 @export_subgroup("Name Label")
-@export var name_label_alignment := Alignments.Left
+@export var name_label_alignment := Alignments.LEFT
 @export var name_label_font_size := 15
 @export var name_label_color := Color.WHITE
 @export var name_label_use_character_color := true
@@ -32,7 +32,7 @@ enum LimitedAlignments {Left=0, Right=1}
 
 @export_subgroup('Portrait')
 @export var portrait_stretch_factor = 0.3
-@export var portrait_position :LimitedAlignments = LimitedAlignments.Left
+@export var portrait_position :LimitedAlignments = LimitedAlignments.LEFT
 @export var portrait_bg_modulate := Color(0, 0, 0, 0.5137255191803)
 
 

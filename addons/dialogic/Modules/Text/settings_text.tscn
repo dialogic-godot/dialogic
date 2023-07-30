@@ -67,6 +67,13 @@ text = "Skippable"
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="SkippableDelay" type="SpinBox" parent="VBoxContainer/Skippable"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Delay before you can skip again"
+step = 0.01
+suffix = "s"
+
 [node name="ColorNames" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
@@ -166,7 +173,7 @@ bbcode_enabled = true
 text = "There are a number of useful commands you can use in text events:
 - [b][speed=x][/b] changes the speed until the next speed command or the end of the text
 - [b][br][/b] adds a line break
-- [b][Word, Other Word][/b] selects a random entry from the comma separated list. You can write \\, if one of the entry should contain a comma.
+- [b]<Word/Other Word>[/b] selects a random entry from the comma separated list. You can write // if one of the entry should contain a slash.
 - [b][portrait=sad][/b] changes the portrait of the speaker to the given portrait.
 - [b][pause=x][/b] pauses for x seconds.
 - [b][mood=sad][/b] changes the typing sound mood.
@@ -178,6 +185,7 @@ Learn more about bbcode in the official godot docs."
 [connection signal="value_changed" from="VBoxContainer/DefaultSpeed/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/InputAction/InputAction" to="." method="_on_InputAction_value_changed"]
 [connection signal="toggled" from="VBoxContainer/Skippable/Skippable" to="." method="_on_Skippable_toggled"]
+[connection signal="value_changed" from="VBoxContainer/Skippable/SkippableDelay" to="." method="_on_skippable_delay_value_changed"]
 [connection signal="toggled" from="VBoxContainer/ColorNames/AutocolorNames" to="." method="_on_AutocolorNames_toggled"]
 [connection signal="toggled" from="VBoxContainer/TextboxHidden/TextboxHidden" to="." method="_on_textbox_hidden_toggled"]
 [connection signal="toggled" from="VBoxContainer/Autoadvance/Autoadvance" to="." method="_on_Autoadvance_toggled"]

@@ -10,7 +10,7 @@ signal saved(info:Dictionary)
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
 
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
-enum THUMBNAIL_MODE {NONE, TAKE_AND_STORE, STORE_ONLY}
+enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
 var latest_thumbnail : Image = null
 
 
@@ -19,7 +19,7 @@ var latest_thumbnail : Image = null
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	_make_sure_slot_dir_exists()
 
 
@@ -30,7 +30,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 ## Saves the current state to the given slot. 
 ## If no slot is given the default slot is used (name can be set in the dialogic settings)
 ## If you want to change to the current slot use save(Dialogic.Save.get_latest_slot())
-func save(slot_name:String = '', is_autosave:bool = false, thumbnail_mode:THUMBNAIL_MODE=THUMBNAIL_MODE.TAKE_AND_STORE, slot_info :Dictionary = {}):
+func save(slot_name:String = '', is_autosave:bool = false, thumbnail_mode:=ThumbnailMode.TAKE_AND_STORE, slot_info :Dictionary = {}):
 	# check if to save (if this is an autosave)
 	if is_autosave and !ProjectSettings.get_setting('dialogic/save/autosave', false):
 		return
@@ -42,10 +42,10 @@ func save(slot_name:String = '', is_autosave:bool = false, thumbnail_mode:THUMBN
 	
 	save_file(slot_name, 'state.txt', dialogic.get_full_state())
 	
-	if thumbnail_mode == THUMBNAIL_MODE.TAKE_AND_STORE:
+	if thumbnail_mode == ThumbnailMode.TAKE_AND_STORE:
 		take_thumbnail()
 		save_slot_thumbnail(slot_name)
-	elif thumbnail_mode == THUMBNAIL_MODE.STORE_ONLY:
+	elif thumbnail_mode == ThumbnailMode.STORE_ONLY:
 		save_slot_thumbnail(slot_name)
 	
 	if slot_info:

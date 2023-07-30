@@ -38,7 +38,7 @@ var selected_items : Array = []
 ################################################################################
 
 func something_changed():
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.Unsaved
+	get_parent().current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 
 
 func save_timeline() -> void:
@@ -46,7 +46,7 @@ func save_timeline() -> void:
 		return
 	
 	# return if resource is unchanged
-	if get_parent().current_resource_state != DialogicEditor.ResourceStates.Unsaved:
+	if get_parent().current_resource_state != DialogicEditor.ResourceStates.UNSAVED:
 		return
 	
 	# create a list of text versions of all the events with the right indent
@@ -67,7 +67,7 @@ func save_timeline() -> void:
 		print('[Dialogic] Saving error: ', error)
 	
 	get_parent().current_resource.set_meta("unsaved", false)
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
+	get_parent().current_resource_state = DialogicEditor.ResourceStates.SAVED
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 
 
@@ -251,7 +251,6 @@ func _exit_tree() -> void:
 ################# DRAG&DROP + DRAGGING EVENTS ###################################
 #################################################################################
 
-
 # SIGNAL handles input on the events mainly for selection and moving events
 func _on_event_block_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -266,11 +265,11 @@ func _on_event_block_gui_input(event, item: Node):
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			if !%TimelineArea.dragging:
-				%TimelineArea.start_dragging(%TimelineArea.DragTypes.ExistingEvents, get_events_indexed(selected_items, EndBranchMode.Only_Single))
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, get_events_indexed(selected_items, EndBranchMode.ONLY_SINGLE))
 
 
 func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void:
-	if type == %TimelineArea.DragTypes.NewEvent:
+	if type == %TimelineArea.DragTypes.NEW_EVENT:
 		var resource :DialogicEvent = data.duplicate()
 		resource._load_custom_defaults()
 		
@@ -283,7 +282,7 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 			TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(index, 1))
 		TimelineUndoRedo.commit_action()
 	
-	elif type == %TimelineArea.DragTypes.ExistingEvents:
+	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		# if the index is after some selected events, correct it
 		var c := 0
 		for i in data.keys():
@@ -437,23 +436,23 @@ func _input(event:InputEvent) -> void:
 #################### DELETING, COPY, PASTE #####################################
 ################################################################################
 
-enum EndBranchMode {Force_No_Single, Only_Single}
-# Force_No_Single = End branches are effected if their parent is selected, not alone
+enum EndBranchMode {FORCE_NO_SINGLE, ONLY_SINGLE}
+# FORCE_NO_SINGLE = End branches are effected if their parent is selected, not alone
 #    -> for delete, copy, cut, paste (to avoid lonly end branches)
-# Only_Single = Single End branches are allowed alone and are not effected if only the parent is selected
+# ONLY_SINGLE = Single End branches are allowed alone and are not effected if only the parent is selected
 #    -> for moving events
 
-func get_events_indexed(events:Array, end_branch_mode:=EndBranchMode.Force_No_Single) -> Dictionary:
+func get_events_indexed(events:Array, end_branch_mode:=EndBranchMode.FORCE_NO_SINGLE) -> Dictionary:
 	var indexed_dict := {}
 	for event in events:
 		# do not collect selected end branches (e.g. on delete, copy, etc.)
-		if event.resource is DialogicEndBranchEvent and end_branch_mode == EndBranchMode.Force_No_Single:
+		if event.resource is DialogicEndBranchEvent and end_branch_mode == EndBranchMode.FORCE_NO_SINGLE:
 			continue
 		
 		indexed_dict[event.get_index()] = event.resource.to_text()
 		
 		# store an end branch if it is selected or connected to a selected event
-		if end_branch_mode == EndBranchMode.Force_No_Single:
+		if end_branch_mode == EndBranchMode.FORCE_NO_SINGLE:
 			if 'end_node' in event and event.end_node:
 				event = event.end_node
 				indexed_dict[event.get_index()] = event.resource.to_text()
@@ -942,17 +941,28 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 	if index == 0:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
-	elif index == 2:
-		move_block_up(item)
-		something_changed()
-		indent_events()
-	elif index == 3:
-		move_block_down(item)
-		something_changed()
-		indent_events()
+	elif index == 2 or index == 3:
+		if index == 2:
+			TimelineUndoRedo.create_action("[D] Move event up.")
+			TimelineUndoRedo.add_do_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()), -1))
+			TimelineUndoRedo.add_undo_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()-1), 1))
+		else:
+			TimelineUndoRedo.create_action("[D] Move event down.")
+			TimelineUndoRedo.add_do_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()), 1))
+			TimelineUndoRedo.add_undo_method(move_blocks_by_index.bind([item].map(func(x):return x.get_index()+1), -1))
+		TimelineUndoRedo.add_do_method(indent_events)
+		TimelineUndoRedo.add_do_method(something_changed)
+		TimelineUndoRedo.add_undo_method(indent_events)
+		TimelineUndoRedo.add_undo_method(something_changed)
+		TimelineUndoRedo.commit_action()
 	elif index == 5:
-		delete_selected_events()
-	indent_events()
+		var events_indexed := get_events_indexed([item])
+		TimelineUndoRedo.create_action("[D] Deleting 1 event.")
+		TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))
+		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
+		TimelineUndoRedo.commit_action()
+		indent_events()
+		something_changed()
 
 
 func _on_right_sidebar_resized():

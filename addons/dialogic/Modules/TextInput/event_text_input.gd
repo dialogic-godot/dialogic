@@ -24,9 +24,9 @@ var allow_empty : bool = false
 ################################################################################
 
 func _execute() -> void:
-	dialogic.current_state = Dialogic.states.WAITING
+	dialogic.current_state = Dialogic.States.WAITING
 	dialogic.TextInput.show_text_input(text, default, placeholder, allow_empty)
-	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed)
+	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed, CONNECT_ONE_SHOT)
 
 
 func _on_DialogicTextInput_input_confirmed(input:String) -> void:
@@ -36,7 +36,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 		return
 	dialogic.VAR.set_variable(variable, input)
 	dialogic.TextInput.hide_text_input()
-	dialogic.current_state = Dialogic.states.IDLE
+	dialogic.current_state = Dialogic.States.IDLE
 	finish()
 
 
@@ -77,14 +77,14 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor() -> void:
 	add_header_label('Shows an input field. The value will be stored to')
-	add_header_edit('variable', ValueType.ComplexPicker, '', '', 
+	add_header_edit('variable', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
 			'editor_icon'		: ["ClassList", "EditorIcons"],
 			'placeholder':'Select Variable'})
-	add_body_edit('text', ValueType.SinglelineText, 'Text:')
-	add_body_edit('placeholder', ValueType.SinglelineText, 'Placeholder:')
-	add_body_edit('default', ValueType.SinglelineText, 'Default:')
-	add_body_edit('allow_empty', ValueType.Bool, 'Allow empty:')
+	add_body_edit('text', ValueType.SINGLELINE_TEXT, 'Text:')
+	add_body_edit('placeholder', ValueType.SINGLELINE_TEXT, 'Placeholder:')
+	add_body_edit('default', ValueType.SINGLELINE_TEXT, 'Default:')
+	add_body_edit('allow_empty', ValueType.BOOL, 'Allow empty:')
 
 
 func get_var_suggestions(filter:String) -> Dictionary:

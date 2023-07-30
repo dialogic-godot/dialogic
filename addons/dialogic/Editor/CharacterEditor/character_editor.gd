@@ -80,7 +80,7 @@ func _save() -> void:
 			current_resource = child._save_changes(current_resource)
 	
 	ResourceSaver.save(current_resource, current_resource.resource_path)
-	current_resource_state = ResourceStates.Saved
+	current_resource_state = ResourceStates.SAVED
 	editors_manager.resource_helper.rebuild_character_directory()
 
 
@@ -216,7 +216,7 @@ func _on_section_button_pressed(button:Button) -> void:
 
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 	if not loading:
-		current_resource_state = ResourceStates.Unsaved
+		current_resource_state = ResourceStates.UNSAVED
 		editors_manager.save_current_resource() #TODO, should this happen?
 
 
@@ -484,7 +484,7 @@ func update_preview() -> void:
 		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
 		
 		if current_previewed_scene != null \
-			and current_previewed_scene.get_meta('path', null) == current_portrait_data.get('scene') \
+			and current_previewed_scene.get_meta('path', '') == current_portrait_data.get('scene') \
 			and current_previewed_scene.has_method('_should_do_portrait_update') \
 			and is_instance_valid(current_previewed_scene.get_script()) \
 			and current_previewed_scene._should_do_portrait_update(current_resource, selected_item.get_text(0)):

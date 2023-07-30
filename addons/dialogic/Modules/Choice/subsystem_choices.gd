@@ -21,7 +21,7 @@ func _ready():
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	hide_all_choices()
 
 
@@ -65,11 +65,11 @@ func show_current_choices(instant:=true) -> void:
 		var choice_event :DialogicEvent= dialogic.current_timeline_events[choice_index]
 		# check if condition is false
 		if not choice_event.condition.is_empty() and not dialogic.Expression.execute_condition(choice_event.condition):
-			if choice_event.else_action == DialogicChoiceEvent.ElseActions.Default:
+			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT:
 				choice_event.else_action = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0)
 			
 			# check what to do in this case
-			if choice_event.else_action == DialogicChoiceEvent.ElseActions.Disable:
+			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DISABLE:
 				if !choice_event.disabled_text.is_empty():
 					show_choice(button_idx, choice_event.get_property_translated('disabled_text'), false, choice_index)
 					last_question_info['choices'].append(choice_event.get_property_translated('disabled_text')+'#disabled')
@@ -123,7 +123,7 @@ func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 		return
 	choice_selected.emit(choice_info)
 	hide_all_choices()
-	dialogic.current_state = dialogic.states.IDLE
+	dialogic.current_state = dialogic.States.IDLE
 	dialogic.handle_event(event_index)
 	
 

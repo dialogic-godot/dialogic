@@ -54,7 +54,7 @@ func _register() -> void:
 ## If this editor supports editing resources, load them here (overwrite in subclass)
 func _open_resource(resource:Resource) -> void:
 	current_resource = resource
-	current_resource_state = ResourceStates.Saved
+	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
 		0:
 			$VisualEditor.load_timeline(current_resource)
@@ -149,7 +149,7 @@ func _on_create_timeline_button_pressed():
 
 func _clear():
 	current_resource = null
-	current_resource_state = ResourceStates.Saved
+	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
 		0:
 			$VisualEditor.clear_timeline_nodes()
