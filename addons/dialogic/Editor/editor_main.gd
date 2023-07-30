@@ -3,10 +3,10 @@ extends ColorRect
 
 ## Editor root node. Most editor functionality is handled by EditorsManager node!
 
-var plugin_reference = null
-var editors_manager : Control = null
+var plugin_reference: EditorPlugin = null
+var editors_manager: Control = null
 
-var editor_file_dialog:EditorFileDialog
+var editor_file_dialog: EditorFileDialog
 
 ## Styling
 @export var editor_tab_bg := StyleBoxFlat.new()
@@ -43,7 +43,7 @@ func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialo
 		editor_file_dialog.dir_selected.disconnect(connection.callable)
 	editor_file_dialog.file_mode = mode
 	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.75)
+	editor_file_dialog.popup_centered_ratio(0.6)
 	editor_file_dialog.add_filter(filter)
 	editor_file_dialog.title = window_title
 	editor_file_dialog.current_file = current_file_name

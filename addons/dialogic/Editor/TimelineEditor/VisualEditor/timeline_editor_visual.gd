@@ -748,7 +748,6 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
 	if event_resource is DialogicEndBranchEvent:
-		print("wait what")
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
 	if event_resource['event_node_ready'] == false:

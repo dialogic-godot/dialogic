@@ -11,7 +11,7 @@ var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
 
 
-func _ready():
+func _ready() -> void:
 	## DIRECTORIES SETUP
 	#initialize DGH, and set the local variables to references of the DGH ones
 	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's
@@ -19,6 +19,15 @@ func _ready():
 	rebuild_character_directory()
 	rebuild_timeline_directory()
 	rebuild_event_script_cache()
+	
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
+
+
+func _on_file_moved(old_name:String, new_name:String) -> void:
+	if old_name.ends_with('.dch'):
+		rebuild_character_directory()
+	elif old_name.ends_with('.dtl'):
+		rebuild_timeline_directory()
 
 
 func rebuild_event_script_cache() -> Array:

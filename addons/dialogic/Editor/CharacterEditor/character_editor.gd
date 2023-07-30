@@ -93,6 +93,7 @@ func new_character(path: String) -> void:
 	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(resource, path)
+	editors_manager.resource_helper.rebuild_character_directory()
 	editors_manager.edit_resource(resource)
 
 

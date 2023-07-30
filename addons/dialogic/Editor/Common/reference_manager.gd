@@ -6,7 +6,7 @@ extends PanelContainer
 var reference_changes :Array[Dictionary] = []
 
 
-func _ready():
+func _ready() -> void:
 	%FindList.hide()
 	
 	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")
@@ -19,7 +19,7 @@ func _ready():
 	self_modulate = get_theme_color("base_color", "Editor")
 
 
-func open():
+func open() -> void:
 	show()
 	%ReplacementPanel.hide()
 	%FindList.hide()
@@ -49,7 +49,7 @@ func open():
 		item.set_metadata(0, i)
 
 
-func _on_change_tree_button_clicked(item:TreeItem, column, id, mouse_button_index):
+func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
 	if id == 0:
 		reference_changes.erase(item.get_metadata(0))
 		if item.get_parent().get_child_count() == 1:
@@ -63,13 +63,13 @@ func _on_change_tree_button_clicked(item:TreeItem, column, id, mouse_button_inde
 		%ReplacementPanel.open_existing(item, item.get_metadata(0))
 
 
-func _on_change_tree_item_edited():
+func _on_change_tree_item_edited() -> void:
 	if !%ChangeTree.get_selected():
 		return
 	%CheckButton.disabled = false
 
 
-func _on_check_button_pressed():
+func _on_check_button_pressed() -> void:
 	var to_be_checked :Array[Dictionary]= []
 	var item :TreeItem = %ChangeTree.get_root()
 	while item.get_next_visible():
@@ -87,7 +87,7 @@ func _on_check_button_pressed():
 	%CheckButton.disabled = true
 
 
-func open_finder(replacements:Array[Dictionary]):
+func open_finder(replacements:Array[Dictionary]) -> void:
 	%FindList.show()
 	%SearchProgress.show()
 	var regexes : Array[Array] = []
@@ -113,19 +113,20 @@ func open_finder(replacements:Array[Dictionary]):
 		timeline_file.close()
 
 		for regex_info in regexes:
-			
 			%State.text = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
 			for i in regex_info[0].search_all(timeline_text):
 				if regex_info[1].has('character_regex'):
 					if regex_info[1].character_regex.search(get_line(timeline_text, i.get_start()+1)) == null:
 						continue
 				
+				var line_number := timeline_text.count('\n', 0, i.get_start()+1)+1
+				var line := timeline_text.get_slice('\n', line_number-1)
 				finds.append({
 				'match':i,
 			 	'timeline':timeline_path,
 				'info': regex_info[1], 
-				'line_number': timeline_text.count('\n', 0, i.get_start())+1,
-				'line': timeline_text.substr(max(timeline_text.rfind('\n', i.get_start()), 0), timeline_text.find('\n', i.get_end())-timeline_text.rfind('\n', i.get_start())),
+				'line_number': line_number,
+				'line': line,
 				'line_start': timeline_text.rfind('\n', i.get_start())
 				})
 				regex_info[1]['count'] += 1
@@ -177,7 +178,7 @@ func get_line(string:String, at_index:int) -> String:
 	return string.substr(max(string.rfind('\n', at_index), 0), string.find('\n', at_index)-string.rfind('\n', at_index))
 
 
-func update_count_coloring():
+func update_count_coloring() -> void:
 	var item :TreeItem = %ChangeTree.get_root()
 	while item.get_next_visible():
 		item = item.get_next_visible()
@@ -191,7 +192,7 @@ func update_count_coloring():
 			if item.get_button_count(1):
 				item.erase_button(1, 0)
 			item.add_button(1, get_theme_icon("Eraser", "EditorIcons"), 0, true, "This item will auto-deleted because it wasn't found anywhere.")
-	
+
 
 func _on_replace_pressed() -> void:
 	var to_be_repalced :Array[Dictionary]= []
@@ -241,12 +242,15 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 				continue
 			
 			%State.text = "Replacing in '"+timeline_path + "' ("+str(idx)+"/"+str(len(replacement_info))+")"
-			if 'replace' in replacement.match.names:
-				timeline_text = timeline_text.substr(0, replacement.match.get_start('replace')+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
-				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string('replace'))
-			else:
-				timeline_text = timeline_text.substr(0, replacement.match.get_start()+offset_correction)+replacement.info.regex_replacement+timeline_text.substr(replacement.match.get_end()-1+offset_correction)
-				offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string())
+			var group := 'replace'
+			if not 'replace' in replacement.match.names:
+				group = ''
+			
+			
+			timeline_text = timeline_text.substr(0, replacement.match.get_start(group) + offset_correction) + \
+							replacement.info.regex_replacement + \
+							timeline_text.substr(replacement.match.get_end(group) + offset_correction)
+			offset_correction += len(replacement.info.regex_replacement)-len(replacement.match.get_string(group))
 			
 			replacement.info.count -= 1
 			replacement.info.item.set_text(2, str(replacement.info.count))
@@ -273,7 +277,7 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	%State.text = "Done Replacing"
 
 
-func close():
+func close() -> void:
 	var item :TreeItem = %ChangeTree.get_root()
 	while item.get_next_visible():
 		item = item.get_next_visible()
@@ -284,6 +288,6 @@ func close():
 			reference_changes.erase(item.get_metadata(0))
 
 
-func _on_back_pressed():
+func _on_back_pressed() -> void:
 	%FindList.hide()
 	%ChangeList.show()

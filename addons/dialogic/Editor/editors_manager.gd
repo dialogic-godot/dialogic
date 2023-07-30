@@ -48,6 +48,8 @@ func _ready() -> void:
 		if !FileAccess.file_exists(res):
 			used_resources_cache.erase(res)
 	sidebar.update_resource_list(used_resources_cache)
+	
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 
 
 ## Call to register an editor/tab that edits a resource with a custom ending.
@@ -206,6 +208,24 @@ func save_current_state() -> void:
 		if editor['node'].current_resource != null:
 			current_resources[editor['node'].name] = editor['node'].current_resource.resource_path
 	DialogicUtil.set_editor_setting('current_resources', current_resources)
+
+
+func _on_file_moved(old_name:String, new_name:String) -> void:
+	if !old_name.get_extension() in resources:
+		return
+	
+	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
+	if old_name in used_resources_cache:
+		used_resources_cache.insert(used_resources_cache.find(old_name), new_name)
+		used_resources_cache.erase(old_name)
+	
+	sidebar.update_resource_list(used_resources_cache)
+	
+	for editor in editors:
+		if editors[editor].node.current_resource != null and editors[editor].node.current_resource.resource_path == old_name:
+			editors[editor].node.current_resource.resource_path = new_name
+			edit_resource(load(new_name), true, true)
+	
 
 
 ################################################################################

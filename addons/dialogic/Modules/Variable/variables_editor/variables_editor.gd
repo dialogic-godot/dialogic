@@ -39,6 +39,8 @@ func group_renamed(old_name:String, new_name:String, group_data:Dictionary):
 			editors_manager.reference_manager.add_variable_ref_change(old_name+'.'+i, new_name+'.'+i)
 	%ReferenceInfo.show()
 
+
+
 func _close():
 	_save()
 

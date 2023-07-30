@@ -46,18 +46,15 @@ func _on_add_pressed() -> void:
 func open_existing(_item:TreeItem, info:Dictionary):
 	mode = Modes.Edit
 	item = _item
-	print(info)
 	show()
 	%AddButton.text = "Update"
 	%Type.selected = info.type
 	_on_type_item_selected(info.type)
 	if !info.character_names.is_empty():
 		%Where.selected = 1
-		# Engine.get_main_loop().get_meta('dialogic_character_directory')
 		%Character.set_value(info.character_names[0])
 	else:
 		%Where.selected = 0
-	print(%Where.selected)
 	_on_where_item_selected(%Where.selected)
 	
 	%Old.text = info.what
