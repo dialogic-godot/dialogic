@@ -2,9 +2,9 @@
 extends PanelContainer
 
 
-enum Modes {Edit, Add}
+enum Modes {EDIT, ADD}
 
-var mode := Modes.Edit
+var mode := Modes.EDIT
 var item :TreeItem = null
 
 
@@ -24,14 +24,14 @@ func _ready() -> void:
 
 func _on_add_pressed() -> void:
 	if visible:
-		if mode == Modes.Add:
+		if mode == Modes.ADD:
 			hide()
 			return
-		elif mode == Modes.Edit:
+		elif mode == Modes.EDIT:
 			save()
 	
 	%AddButton.text = "Add"
-	mode = Modes.Add
+	mode = Modes.ADD
 	show()
 	%Type.selected = 0
 	_on_type_item_selected(0)
@@ -44,7 +44,7 @@ func _on_add_pressed() -> void:
 
 
 func open_existing(_item:TreeItem, info:Dictionary):
-	mode = Modes.Edit
+	mode = Modes.EDIT
 	item = _item
 	show()
 	%AddButton.text = "Update"
@@ -88,7 +88,7 @@ func _on_type_item_selected(index:int) -> void:
 			%Where.set_item_disabled(1, false)
 			%Where.set_item_disabled(2, true)
 		3,4:
-			%Where.select(3)
+			%Where.select(0)
 			%Where.set_item_disabled(0, false)
 			%Where.set_item_disabled(1, true)
 			%Where.set_item_disabled(2, true)
@@ -106,7 +106,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 	var _character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 	
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in _character_directory.keys():
@@ -124,7 +124,7 @@ func save():
 		return
 	
 	var previous := {}
-	if mode == Modes.Edit:
+	if mode == Modes.EDIT:
 		previous = item.get_metadata(0)
 		item.get_parent()
 		item.free()

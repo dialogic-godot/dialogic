@@ -226,6 +226,7 @@ func _on_file_moved(old_name:String, new_name:String) -> void:
 			editors[editor].node.current_resource.resource_path = new_name
 			edit_resource(load(new_name), true, true)
 	
+	save_current_state()
 
 
 ################################################################################

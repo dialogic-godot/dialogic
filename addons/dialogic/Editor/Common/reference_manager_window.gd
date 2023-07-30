@@ -57,7 +57,8 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 			category_name = "Portraits by "+character_names[0]
 		
 		Types.CHARACTER_NAME:
-			regexes = ['((Join|Leave|Update) )?(?<replace>'+old_name+')(?(1)|(?!([^:]|\\\\:)*$))']
+			# for reference: ((Join|Leave|Update) )?(?<replace>NAME)(?!\B)(?(1)|(?!([^:\n]|\\:)*(\n|$)))
+			regexes = ['((Join|Leave|Update) )?(?<replace>'+old_name+')(?!\\B)(?(1)|(?!([^:\\n]|\\\\:)*(\\n|$)))']
 			category_name = "Renamed Character Files"
 		
 		Types.TIMELINE_NAME:
