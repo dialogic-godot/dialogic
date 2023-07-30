@@ -86,11 +86,9 @@ func _on_tip_action(action:String) -> void:
 	elif action.begins_with('editor://'):
 		var editor_name := action.trim_prefix('editor://').get_slice('->',0)
 		var extra_info := action.trim_prefix('editor://').get_slice('->',1)
-		print(editors_manager.editors)
 		if editor_name in editors_manager.editors:
 			editors_manager.open_editor(editors_manager.editors[editor_name].node, false, extra_info)
 			return
-
 	print("Tip button doesn't do anything (", action, ")")
 
 
@@ -101,4 +99,9 @@ func _open(extra_info:Variant="") -> void:
 	
 	randomize()
 	var tip := tips[randi()%len(tips)]
-	show_tip(tip.get_slice(';',0).strip_edges(), tip.get_slice(';',1).strip_edges())
+	var text := tip.get_slice(';',0).strip_edges()
+	var action := tip.get_slice(';',1).strip_edges()
+	if action == text:
+		action = ""
+	show_tip(text, action)
+	
