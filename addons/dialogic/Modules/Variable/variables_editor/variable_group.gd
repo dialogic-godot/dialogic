@@ -153,7 +153,7 @@ func _drop_data(position:Vector2, data:Variant) -> void:
 			new_path = get_group_path()+'.'+new_path
 		if data.node.previous_path != new_path:
 			variables_editor.group_renamed(data.node.previous_path, new_path, data.node.get_data())
-	elif data.node.actually_new:
+	elif !data.node.actually_new:
 		var prev_name := ""
 		var new_name := ""
 		if !data.node.parent_Group.get_group_path().is_empty():

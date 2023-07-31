@@ -128,12 +128,9 @@ func _ready() -> void:
 		'padding': [5, 5],
 	})
 	
-	var tab_panel :StyleBoxFlat = get_theme_stylebox('tab_selected', 'TabContainer').duplicate()
-	tab_panel.bg_color = get_theme_color("base_color", "Editor")
 	
 	%PortraitListSection.add_theme_stylebox_override('panel', panel_style)
-	%PortraitListSection.add_theme_stylebox_override('tab_selected', tab_panel)
-	%PortraitListSection.add_theme_constant_override('side_margin', 5)
+	
 	var preview_panel :StyleBoxFlat= panel_style.duplicate()
 	preview_panel.corner_radius_top_left = 0
 	preview_panel.corner_radius_bottom_left = 0
@@ -144,8 +141,6 @@ func _ready() -> void:
 	preview_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	%PortraitPreviewSection.add_theme_stylebox_override('panel', preview_panel)
 	%PortraitSettingsSection.add_theme_stylebox_override('panel', panel_style)
-	%PortraitSettingsSection.add_theme_stylebox_override('tab_selected', tab_panel)
-	%PortraitSettingsSection.add_theme_constant_override('side_margin', 5)
 	
 	%PortraitChangeWarning.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	

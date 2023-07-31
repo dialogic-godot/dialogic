@@ -26,7 +26,7 @@ func _ready() -> void:
 	
 	icon_button.add_child(dot)
 	
-	$Manager.reference_changes = DialogicUtil.get_editor_setting('reference_changes', {})
+	$Manager.reference_changes = DialogicUtil.get_editor_setting('reference_changes', [])
 	
 	update_indicator()
 	
@@ -146,6 +146,8 @@ func _on_close_requested() -> void:
 
 func update_indicator() -> void:
 	icon_button.get_child(0).visible = !$Manager.reference_changes.is_empty()
+	for i in $Manager.reference_changes:
+		i.item = null
 	DialogicUtil.set_editor_setting('reference_changes', $Manager.reference_changes)
 
 

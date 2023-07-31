@@ -223,7 +223,7 @@ func _on_file_moved(old_name:String, new_name:String) -> void:
 	
 	for editor in editors:
 		if editors[editor].node.current_resource != null and editors[editor].node.current_resource.resource_path == old_name:
-			editors[editor].node.current_resource.resource_path = new_name
+			editors[editor].node.current_resource.take_over_path(new_name)
 			edit_resource(load(new_name), true, true)
 	
 	save_current_state()

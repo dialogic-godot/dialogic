@@ -17,19 +17,19 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
-bg_color = Color(0.1155, 0.132, 0.1595, 1)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.21, 0.24, 0.29, 1)
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdvlq"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qny0"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -95,10 +95,11 @@ script = ExtResource("4_6cx8s")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Jowan.dch"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bdvlq")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qny0")
 
 [node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
 unique_name_in_owner = true
@@ -116,11 +117,11 @@ layout_mode = 2
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("5_e5v7u")]
+visible = false
 layout_mode = 2
 metadata/_tab_name = "Timeline"
 
 [node name="Character Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("6_y5x3e")]
-visible = false
 layout_mode = 2
 metadata/_tab_name = "Character"
 
@@ -136,7 +137,7 @@ size = Vector2i(207, 100)
 
 [node name="ReferenceManager" type="Window" parent="."]
 disable_3d = true
-title = "Changed Reference Manager"
+title = "Reference Manager"
 initial_position = 2
 size = Vector2i(858, 442)
 visible = false

@@ -7,7 +7,7 @@ var reference_changes :Array[Dictionary] = []
 
 
 func _ready() -> void:
-	%FindList.hide()
+	%ReplacementSection.hide()
 	
 	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")
 	%Replace.icon = get_theme_icon("ArrowRight", "EditorIcons")
@@ -16,18 +16,41 @@ func _ready() -> void:
 	
 	%State.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	
-	self_modulate = get_theme_color("base_color", "Editor")
+	self_modulate = get_theme_color("background", "Editor")
+	
+	
+	%Title.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
+	%Title.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
+	%Title.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
+	
+	
+	%SectionTitle.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
+	%SectionTitle.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
+	
+	%SectionTitle2.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
+	%SectionTitle2.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
+	
+	## General Styling
+	var panel_style := DCSS.inline({
+		'border-radius': 10,
+		'border': 0,
+		'border_color':get_theme_color("dark_color_3", "Editor"),
+		'background': get_theme_color("base_color", "Editor"),
+		'padding': [5, 5],
+	})
+	
+	%ChangesSection.add_theme_stylebox_override('panel', panel_style)
+	%ReplacementSection.add_theme_stylebox_override('panel', panel_style)
 
 
 func open() -> void:
 	show()
 	%ReplacementPanel.hide()
-	%FindList.hide()
+	%ReplacementSection.hide()
 	%ChangeTree.clear()
 	%ChangeTree.create_item()
 	%ChangeTree.set_column_expand(0, false)
 	%ChangeTree.set_column_expand(2, false)
-	%CheckButton.disabled = false
 	var categories := {null:%ChangeTree.get_root()}
 	for i in reference_changes:
 		var parent : TreeItem = null
@@ -47,6 +70,7 @@ func open() -> void:
 		item.set_checked(0, true)
 		item.set_editable(0, true)
 		item.set_metadata(0, i)
+	%CheckButton.disabled = reference_changes.is_empty()
 
 
 func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
@@ -57,7 +81,7 @@ func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_but
 		else:
 			item.free()
 		
-		%CheckButton.disabled = false
+		%CheckButton.disabled = reference_changes.is_empty()
 	
 	if id == 1:
 		%ReplacementPanel.open_existing(item, item.get_metadata(0))
@@ -88,8 +112,7 @@ func _on_check_button_pressed() -> void:
 
 
 func open_finder(replacements:Array[Dictionary]) -> void:
-	%FindList.show()
-	%SearchProgress.show()
+	%ReplacementSection.show()
 	var regexes : Array[Array] = []
 	
 	for i in replacements:
@@ -101,8 +124,6 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 			regexes.append([regex, i])
 	
 	var finds : Array[Dictionary] = []
-	var max_progress := len(DialogicUtil.list_resources_of_type('.dtl')) * len(regexes)
-	var progress := 0
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		%State.text = "Loading '"+timeline_path+"'"
@@ -131,21 +152,19 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 				})
 				regex_info[1]['count'] += 1
 				
-			progress += 1
-			%SearchProgress.value = 100.0/max_progress*progress
 	
 	for regex_info in regexes:
 		regex_info[1]['item'].set_text(2, str(regex_info[1]['count']))
 	update_count_coloring()
 	
-	%SearchProgress.hide()
-	%State.text = "Done Searching"
+	%State.text = str(len(finds))+ " occurrences found"
 	
 	%ReferenceTree.clear()
 	%ReferenceTree.set_column_expand(0, false)
 	%ReferenceTree.create_item()
 	
 	var timelines := {}
+	var height := 0
 	for i in finds:
 		var parent : TreeItem = null
 		if !i.timeline in timelines:
@@ -153,6 +172,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 			parent.set_text(1, i.timeline)
 			parent.set_custom_color(1, get_theme_color("disabled_font_color", "Editor"))
 			timelines[i.timeline] = parent
+			height += %ReferenceTree.get_item_area_rect(parent).size.y+10
 		else:
 			parent = timelines[i.timeline]
 		
@@ -163,8 +183,13 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 		item.set_checked(0, true)
 		item.set_editable(0, true)
 		item.set_metadata(0, i)
+		height += %ReferenceTree.get_item_area_rect(item).size.y+10
 		var change_item :TreeItem = i.info.item
 		change_item.set_meta('found_items', change_item.get_meta('found_items', [])+[item])
+		
+	
+	
+	%ReferenceTree.custom_minimum_size.y = min(height, 200)
 	
 	%ReferenceTree.visible = !finds.is_empty()
 	%Replace.disabled = finds.is_empty()
@@ -187,11 +212,14 @@ func update_count_coloring() -> void:
 			continue
 		if int(item.get_text(2)) > 0:
 			item.set_custom_bg_color(1, get_theme_color("warning_color", "Editor").darkened(0.8))
+			item.set_custom_color(1, get_theme_color("warning_color", "Editor"))
+			item.set_custom_color(2, get_theme_color("warning_color", "Editor"))
 		else:
-			item.set_custom_bg_color(1, get_theme_color("success_color", "Editor").darkened(0.8))
+			item.set_custom_color(2, get_theme_color("success_color", "Editor"))
+			item.set_custom_color(1, get_theme_color("readonly_font_color", "Editor"))
 			if item.get_button_count(1):
-				item.erase_button(1, 0)
-			item.add_button(1, get_theme_icon("Eraser", "EditorIcons"), 0, true, "This item will auto-deleted because it wasn't found anywhere.")
+				item.erase_button(1, 1)
+			item.add_button(1, get_theme_icon("Eraser", "EditorIcons"), -1, true, "This reference was not found anywhere and will be removed from this list.")
 
 
 func _on_replace_pressed() -> void:
@@ -219,11 +247,6 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	if timeline_editor.current_resource != null and timeline_editor.current_resource.resource_path in timelines:
 		reopen_timeline = timeline_editor.current_resource.resource_path
 		find_parent('EditorView').editors_manager.clear_editor(timeline_editor)
-	
-	%SearchProgress.value = 0
-	%SearchProgress.show()
-	var max_progress := len(replacement_info)
-	var progress := 0
 	
 	replacement_info.sort_custom(func(a,b): return a.match.get_start() < b.match.get_start())
 	
@@ -255,8 +278,6 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 			replacement.info.count -= 1
 			replacement.info.item.set_text(2, str(replacement.info.count))
 			replacement.f_item.set_custom_bg_color(1, get_theme_color("success_color", "Editor").darkened(0.8))
-			progress += 1
-			%SearchProgress.value = 100.0/max_progress*progress
 		
 		timeline_file = FileAccess.open(timeline_path, FileAccess.WRITE)
 		timeline_file.store_string(timeline_text.strip_edges(false, true))
@@ -273,7 +294,6 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	
 	%Replace.disabled = true
 	%CheckButton.disabled = false
-	%SearchProgress.hide()
 	%State.text = "Done Replacing"
 
 
@@ -287,7 +307,3 @@ func close() -> void:
 		if item.get_text(2) != "" and int(item.get_text(2)) == 0:
 			reference_changes.erase(item.get_metadata(0))
 
-
-func _on_back_pressed() -> void:
-	%FindList.hide()
-	%ChangeList.show()
