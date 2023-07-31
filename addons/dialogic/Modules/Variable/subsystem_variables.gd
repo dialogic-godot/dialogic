@@ -14,7 +14,7 @@ signal variable_was_set(info:Dictionary)
 
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	# loading default variables
-	if ! clear_flag & Dialogic.ClearFlags.KeepVariables:
+	if ! clear_flag & Dialogic.ClearFlags.KEEP_VARIABLES:
 		reset()
 
 

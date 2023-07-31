@@ -108,6 +108,7 @@ func _check_for_ref_change_cycle(old_name:String, new_name:String, category:Stri
 				$Manager.reference_changes.erase(ref)
 			else:
 				$Manager.reference_changes[$Manager.reference_changes.find(ref)]['forwhat'] = new_name
+				$Manager.reference_changes[$Manager.reference_changes.find(ref)]['regex_replacement'] = new_name
 			return true
 	return false
 
