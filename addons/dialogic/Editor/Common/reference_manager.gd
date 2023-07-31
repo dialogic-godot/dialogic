@@ -194,7 +194,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 	%ReferenceTree.visible = !finds.is_empty()
 	%Replace.disabled = finds.is_empty()
 	if finds.is_empty():
-		%State.text = "Done Searching: Nothing found!"
+		%State.text = "Nothing found"
 	else:
 		%Replace.grab_focus()
 

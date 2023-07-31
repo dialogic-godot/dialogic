@@ -132,7 +132,7 @@ func add_timeline_name_ref_change(old_name:String, new_name:String) -> void:
 
 
 func open() -> void:
-	popup_centered_ratio(0.4)
+	popup_centered_ratio(0.5)
 	move_to_foreground()
 	grab_focus()
 	$Manager.open()
