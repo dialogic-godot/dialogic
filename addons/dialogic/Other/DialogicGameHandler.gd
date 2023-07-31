@@ -50,7 +50,7 @@ func _ready() -> void:
 	rebuild_timeline_directory()
 
 	collect_subsystems()
-
+	
 	clear()
 	
 	timeline_ended.connect(_on_timeline_ended)
@@ -73,7 +73,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 		if timeline == null:
 			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 			return
-	timeline = process_timeline(timeline)
+	await timeline.process()
 	
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
@@ -101,7 +101,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return false
 		else:
-			timeline_resource = process_timeline(timeline_resource)
+			await timeline_resource.process()
 			return timeline_resource
 	return false
 
@@ -208,7 +208,8 @@ func collect_subsystems() -> void:
 	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 	_event_script_cache.push_front(DialogicEndBranchEvent.new())
 	_event_script_cache.push_back(DialogicTextEvent.new())
-
+	Engine.get_main_loop().set_meta("dialogic_event_cache", _event_script_cache)
+	
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
@@ -240,6 +241,18 @@ func _set(property, value):
 ################################################################################
 ##						PROCESSING FUNCTIONS
 ################################################################################
+
+# #TODO initial work on a unified method for character and timeline directories!
+#func build_directory(file_extension:String) -> Dictionary:
+#	var files :Array[String] = DialogicUtil.list_resources_of_type(file_extension)
+#
+#	# First sort by length of path, so shorter paths are first	
+#	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
+#
+#
+#
+#	return {}
+
 
 func rebuild_character_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
@@ -296,6 +309,8 @@ func rebuild_character_directory() -> void:
 		entry['full_path'] = characters[i]
 		entry['unique_short_path'] = reverse_array[i]
 		character_directory[reverse_array[i]] = entry
+	
+	Engine.get_main_loop().set_meta("dialogic_character_directory", character_directory)
 
 
 func rebuild_timeline_directory() -> void:
@@ -348,7 +363,7 @@ func rebuild_timeline_directory() -> void:
 	# Now finally build the database from those arrays
 	for i in characters.size():
 		timeline_directory[reverse_array[i]] = characters[i]
-
+	Engine.get_main_loop().set_meta("dialogic_timeline_directory", timeline_directory)
 
 func find_timeline(path: String) -> String:
 	if path in timeline_directory.keys():
@@ -359,98 +374,6 @@ func find_timeline(path: String) -> String:
 				return timeline_directory[i]
 
 	return ""
-
-
-func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-	if timeline != null:
-		if timeline.events_processed:
-			for event in timeline.events:
-				event.event_node_ready = true
-			return timeline
-		else:
-			var end_event := DialogicEndBranchEvent.new()
-
-			var prev_indent := ""
-			var events := []
-
-			# this is needed to add a end branch event even to empty conditions/choices
-			var prev_was_opener := false
-
-			var lines := timeline.events
-			var idx := -1
-			var empty_lines = 0
-			while idx < len(lines)-1:
-				idx += 1
-
-				## First manage indent and creation of end branch events
-				## For this, we still treat the event as a string
-				var line: String = ""
-				if typeof(lines[idx]) == TYPE_STRING:
-					line = lines[idx]
-				else:
-					line = lines[idx]['event_node_as_text']
-
-				var line_stripped :String = line.strip_edges(true, false)
-				if line_stripped.is_empty():
-					empty_lines += 1
-					continue
-
-				var indent :String= line.substr(0,len(line)-len(line_stripped))
-				if len(indent) < len(prev_indent):
-					for i in range(len(prev_indent)-len(indent)):
-						events.append(end_event.duplicate())
-
-				elif prev_was_opener and len(indent) == len(prev_indent):
-					events.append(end_event.duplicate())
-				prev_indent = indent
-
-				## Now we process the event into a resource 
-				## by checking on each event if it recognizes this string 
-				var event_content :String = line_stripped
-				var event :Variant
-				for i in _event_script_cache:
-					if i._test_event_string(event_content):
-						event = i.duplicate()
-						break
-
-				event.empty_lines_above = empty_lines
-				# add the following lines until the event says it's full there is an empty line or the indent changes
-				while !event.is_string_full_event(event_content):
-					idx += 1
-					if idx == len(lines):
-						break
-					var following_line :String = lines[idx]
-					var following_line_stripped :String = following_line.strip_edges(true, false)
-					var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
-					if following_line_stripped.is_empty():
-						break
-					if following_line_indent != indent:
-						idx -= 1
-						break
-					event_content += "\n"+following_line_stripped
-
-				if Engine.is_editor_hint():
-					# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
-					if event['event_name'] == 'Character' || event['event_name'] == 'Text':
-						event.set_meta('editor_character_directory', character_directory)
-
-				event._load_from_string(event_content)
-				event['event_node_as_text'] = event_content
-
-				events.append(event)
-				prev_was_opener = event.can_contain_events
-				empty_lines = 0
-
-			if !prev_indent.is_empty():
-				for i in range(len(prev_indent)):
-					events.append(end_event.duplicate())
-
-			timeline.events = events
-			timeline.events_processed = true
-			#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
-			return timeline
-	else:
-		return DialogicTimeline.new()
 
 
 ################################################################################

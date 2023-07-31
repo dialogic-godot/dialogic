@@ -221,7 +221,7 @@ func update_text_version() -> void:
 	event_node_as_text = _store_as_string()
 
 
-## Used by timeline processor (DGH).
+## Used by timeline processor.
 func _load_from_string(string:String) -> void:
 	_load_custom_defaults()
 	if '#id:' in string and can_be_translated():
@@ -239,7 +239,7 @@ func _load_custom_defaults():
 			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])
 
 
-## Used by the timeline processor (DGH).
+## Used by the timeline processor.
 func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
 		return is_valid_event(string.get_slice('#id:', 0)) 

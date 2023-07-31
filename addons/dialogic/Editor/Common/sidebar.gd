@@ -21,6 +21,7 @@ func _ready():
 	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
 	%CurrentVersion.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
 
+
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
 ################################################################################

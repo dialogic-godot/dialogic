@@ -97,7 +97,7 @@ func update_csv_files() -> void:
 		
 		# load and process timeline (make events to resources)
 		var tml : DialogicTimeline = load(timeline_path)
-		tml = settings_editor.editors_manager.resource_helper.process_timeline(tml)
+		await tml.process()
 		
 		# now collect all the current csv_lines from timeline
 		for event in tml.events:
@@ -223,7 +223,8 @@ func erase_translations() -> void:
 		
 		# clear the timeline events of their translation_id's
 		var tml:DialogicTimeline = load(timeline_path)
-		tml = await settings_editor.editors_manager.resource_helper.process_timeline(tml)
+		await tml.process()
+		
 		for event in tml.events:
 			if event._translation_id:
 				event.remove_translation_id()

@@ -37,39 +37,15 @@ func _on_text_editor_text_changed():
 	request_code_completion(true)
 
 
-
 func clear_timeline():
 	text = ''
 
 
-func load_timeline(object:DialogicTimeline) -> void:
+func load_timeline(timeline:DialogicTimeline) -> void:
 	clear_timeline()
-	if get_parent().current_resource.events.size() == 0:
-		pass
-	else: 
-		if typeof(get_parent().current_resource.events[0]) == TYPE_STRING:
-			get_parent().current_resource.events_processed = false
-			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
 	
-	var result:String = ""	
-	var indent := 0
-	for idx in range(0, len(object.events)):
-		var event = object.events[idx]
-		
-		if event['event_name'] == 'End Branch':
-			indent -= 1
-			continue
-		
-		if event != null:
-			for i in event.empty_lines_above:
-				result += "\t".repeat(indent)+"\n"
-			result += "\t".repeat(indent)+event['event_node_as_text'].replace('\n', "\n"+"\t".repeat(indent)) + "\n"
-		if event.can_contain_events:
-			indent += 1
-		if indent < 0: 
-			indent = 0
-		
-	text = result
+	text = timeline.as_text()
+	
 	get_parent().current_resource.set_meta("timeline_not_saved", false)
 
 

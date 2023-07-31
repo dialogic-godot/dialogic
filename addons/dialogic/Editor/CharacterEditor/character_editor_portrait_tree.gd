@@ -8,8 +8,9 @@ var current_group_nodes := {}
 
 
 func _ready() -> void:
-	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Duplicate', 'EditorIcons'))
-	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Remove', 'EditorIcons'))
+	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Rename', 'EditorIcons'))
+	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Duplicate', 'EditorIcons'))
+	$PortraitRightClickMenu.set_item_icon(2, get_theme_icon('Remove', 'EditorIcons'))
 
 
 func clear_tree() -> void:
@@ -17,20 +18,28 @@ func clear_tree() -> void:
 	current_group_nodes = {}
 
 
-func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_item:TreeItem) -> TreeItem:
+func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_item:TreeItem, previous_name:String = "") -> TreeItem:
 	var item :TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_text(0, portrait_name)
 	item.set_metadata(0, portrait_data)
+	if previous_name.is_empty():
+		item.set_meta('previous_name', get_full_item_name(item))
+	else:
+		item.set_meta('previous_name', previous_name)
 	if portrait_name == editor.current_resource.default_portrait:
 		item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
 	return item
 
 
-func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root()) -> TreeItem:
+func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root(), previous_name:String = "") -> TreeItem:
 	var item :TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 	item.set_text(0, goup_name)
 	item.set_metadata(0, {'group':true})
+	if previous_name.is_empty():
+		item.set_meta('previous_name', get_full_item_name(item))
+	else:
+		item.set_meta('previous_name', previous_name)
 	return item
 
 
@@ -62,7 +71,7 @@ func create_necessary_group_items(path:String) -> TreeItem:
 
 func _on_item_mouse_selected(pos:Vector2, mouse_button_index:int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
-		$PortraitRightClickMenu.set_item_disabled(0, get_selected().get_metadata(0).has('group'))
+		$PortraitRightClickMenu.set_item_disabled(1, get_selected().get_metadata(0).has('group'))
 		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 
 
@@ -111,15 +120,17 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 	if drop_section == -1:
 		new_item.move_before(to_item)
 	
+	editor.report_name_change(new_item)
+	
 	item.free()
 
 
 func copy_branch_or_item(item:TreeItem, new_parent:TreeItem) -> TreeItem:
 	var new_item :TreeItem = null
 	if item.get_metadata(0).has('group'):
-		new_item = add_portrait_group(item.get_text(0), new_parent)
+		new_item = add_portrait_group(item.get_text(0), new_parent, item.get_meta('previous_name'))
 	else:
-		new_item = add_portrait_item(item.get_text(0), item.get_metadata(0), new_parent)
+		new_item = add_portrait_item(item.get_text(0), item.get_metadata(0), new_parent, item.get_meta('previous_name'))
 	
 	for child in item.get_children():
 		copy_branch_or_item(child, new_item)

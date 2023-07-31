@@ -106,6 +106,6 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
-	for resource in Engine.get_meta('dialogic_timeline_directory').keys():
-		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+	for resource in Engine.get_main_loop().get_meta('dialogic_timeline_directory').keys():
+		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_main_loop().get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions

@@ -13,7 +13,9 @@ signal editor_changed(previous, current)
 var resource_helper: Node:
 	get:
 		return get_node("ResourceHelper")
-
+var reference_manager: Node:
+	get:
+		return get_node("../../ReferenceManager")
 ## Information on supported resources and registered editors
 var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null
@@ -46,6 +48,8 @@ func _ready() -> void:
 		if !FileAccess.file_exists(res):
 			used_resources_cache.erase(res)
 	sidebar.update_resource_list(used_resources_cache)
+	
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 
 
 ## Call to register an editor/tab that edits a resource with a custom ending.
@@ -62,10 +66,10 @@ func register_simple_editor(editor:DialogicEditor) -> void:
 
 
 ## Call to add an icon button. These buttons are always visible.
-func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor) -> Node:
+func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor=null) -> Node:
 	var button: Button = sidebar.add_icon_button(icon, tooltip)
-	editors[editor.name]['buttons'].append(button)
-	button.pressed.connect(_on_sidebar_button_pressed.bind(button, editor.name))
+	if editor != null:
+		editors[editor.name]['buttons'].append(button)
 	return button
 
 
@@ -73,7 +77,6 @@ func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor) -> Nod
 func add_custom_button(label:String, icon:Texture, editor:DialogicEditor) -> Node:
 	var button: Button = toolbar.add_custom_button(label, icon)
 	editors[editor.name]['buttons'].append(button)
-	button.pressed.connect(_on_sidebar_button_pressed.bind(button, editor.name))
 	button.hide()
 	return button
 
@@ -90,7 +93,7 @@ func _on_editors_tab_changed(tab:int) -> void:
 	open_editor(editors_holder.get_child(tab))
 
 
-func edit_resource(resource:Resource, save_previous:bool = true) -> void:
+func edit_resource(resource:Resource, save_previous:bool = true, silent:= false) -> void:
 	if resource:
 		if current_editor and save_previous:
 			current_editor._save()
@@ -104,10 +107,11 @@ func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 		for editor in editors.values():
 			if editor.get('extension', '') == extension:
 				editor['node']._open_resource(resource)
-				open_editor(editor['node'], false)
-		
-		resource_opened.emit(resource)
-	else: 
+				if !silent:
+					open_editor(editor['node'], false)
+		if !silent:
+			resource_opened.emit(resource)
+	else:
 		# The resource doesn't exists, show an error
 		print('[Dialogic] The resource you are trying to edit doesn\'t exists any more.')
 
@@ -206,12 +210,28 @@ func save_current_state() -> void:
 	DialogicUtil.set_editor_setting('current_resources', current_resources)
 
 
+func _on_file_moved(old_name:String, new_name:String) -> void:
+	if !old_name.get_extension() in resources:
+		return
+	
+	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
+	if old_name in used_resources_cache:
+		used_resources_cache.insert(used_resources_cache.find(old_name), new_name)
+		used_resources_cache.erase(old_name)
+	
+	sidebar.update_resource_list(used_resources_cache)
+	
+	for editor in editors:
+		if editors[editor].node.current_resource != null and editors[editor].node.current_resource.resource_path == old_name:
+			editors[editor].node.current_resource.take_over_path(new_name)
+			edit_resource(load(new_name), true, true)
+	
+	save_current_state()
+
+
 ################################################################################
 ## 						HELPERS
 ################################################################################
-
-func _on_sidebar_button_pressed(button:Button, editor_name:String) -> void:
-	pass
 
 
 func get_current_editor() -> DialogicEditor:

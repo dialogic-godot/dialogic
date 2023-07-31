@@ -88,11 +88,11 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	if get_parent().current_resource.events.size() == 0:
 		pass
 	else: 
-		if typeof(get_parent().current_resource.events[0]) == TYPE_STRING:
-			get_parent().current_resource.events_processed = false
-			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
+		await get_parent().current_resource.process()
+		
 		if get_parent().current_resource.events.size() == 0:
 			return
+		
 		var data := resource.events
 		var page := 1
 		var batch_size := 10
@@ -748,7 +748,6 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
 	if event_resource is DialogicEndBranchEvent:
-		print("wait what")
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
 	if event_resource['event_node_ready'] == false:
