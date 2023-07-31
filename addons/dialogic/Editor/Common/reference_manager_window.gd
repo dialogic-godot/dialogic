@@ -33,6 +33,7 @@ func _ready() -> void:
 	hide()
 	
 	get_parent().plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
+	get_parent().get_node('ResourceRenameWarning').confirmed.connect(open)
 
 
 func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.TEXTS_ONLY, character_names:=[], 
@@ -156,8 +157,8 @@ func _on_file_moved(old_file:String, new_file:String) -> void:
 	if old_file.ends_with('.dch') and new_file.ends_with('.dch'):
 		if old_file.get_file() != new_file.get_file():
 			add_character_name_ref_change(old_file.get_file().trim_suffix('.dch'), new_file.get_file().trim_suffix('.dch'))
-	
+			get_parent().get_node('ResourceRenameWarning').popup_centered()
 	elif old_file.ends_with('.dtl') and new_file.ends_with('.dtl'):
 		if old_file.get_file() != new_file.get_file():
 			add_timeline_name_ref_change(old_file.get_file().trim_suffix('.dtl'), new_file.get_file().trim_suffix('.dtl'))
-
+			get_parent().get_node('ResourceRenameWarning').popup_centered()

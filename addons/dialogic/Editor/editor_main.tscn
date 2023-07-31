@@ -95,7 +95,7 @@ script = ExtResource("4_6cx8s")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Jowan.dch"
+text = "chapter1.dtl"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
@@ -117,11 +117,11 @@ layout_mode = 2
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("5_e5v7u")]
-visible = false
 layout_mode = 2
 metadata/_tab_name = "Timeline"
 
 [node name="Character Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("6_y5x3e")]
+visible = false
 layout_mode = 2
 metadata/_tab_name = "Character"
 
@@ -134,6 +134,14 @@ script = ExtResource("7_1xvr0")
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
+
+[node name="ResourceRenameWarning" type="AcceptDialog" parent="."]
+title = "Dialogic resource renamed!"
+initial_position = 5
+size = Vector2i(494, 135)
+ok_button_text = "Check for broken references"
+dialog_text = "You renamed a dialogic resource. If this resource was referenced in timelines, you should check that no references where broken."
+dialog_autowrap = true
 
 [node name="ReferenceManager" type="Window" parent="."]
 disable_3d = true
