@@ -722,6 +722,7 @@ func event_handler(event: Dictionary):
 					# z_index
 					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
 					p.z_index = event.get('z_index', 0)
+					emit_signal("portrait_changed", p)
 					
 					if (p.get('custom_instance') != null or event.get('animation_wait', false)) and !(event.get('animation', '[No Animation]') in safeAnimations):
 						yield(p, 'animation_finished')
@@ -773,8 +774,9 @@ func event_handler(event: Dictionary):
 									event = insert_animation_data(event, 'join', 'fade_in_up.gd')
 								
 								portrait.animate(event.get('animation', '[No Animation]'), event.get('animation_length', 1), event.get('animation_repeat', 1))
+								emit_signal("portrait_changed", portrait)
 								
-								if portrait.get('custom_instance') != null or (event.get('animation_wait', false) and event.get('animation', '[No Animation]') != "[No Animation]"):
+								if (portrait.get('custom_instance') != null or event.get('animation_wait', false) == true) and event.get('animation', '[No Animation]') != "[No Animation]":
 									yield(portrait, 'animation_finished')
 				set_state(state.READY)
 				_load_next_event()
