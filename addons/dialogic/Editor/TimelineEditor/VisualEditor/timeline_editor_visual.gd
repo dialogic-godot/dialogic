@@ -8,6 +8,7 @@ extends Container
 ## 				EDITOR NODES
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
+@onready var timeline_editor := get_parent().get_parent()
 var event_node
 var sidebar_collapsed := false
 
@@ -38,7 +39,7 @@ var selected_items : Array = []
 ################################################################################
 
 func something_changed():
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.UNSAVED
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 
 
 func save_timeline() -> void:
@@ -46,7 +47,7 @@ func save_timeline() -> void:
 		return
 	
 	# return if resource is unchanged
-	if get_parent().current_resource_state != DialogicEditor.ResourceStates.UNSAVED:
+	if timeline_editor.current_resource_state != DialogicEditor.ResourceStates.UNSAVED:
 		return
 	
 	# create a list of text versions of all the events with the right indent
@@ -57,18 +58,18 @@ func save_timeline() -> void:
 			event.resource.update_text_version() 
 			new_events.append(event.resource)
 	
-	if !get_parent().current_resource:
+	if !timeline_editor.current_resource:
 		return
 
-	get_parent().current_resource.events = new_events
-	get_parent().current_resource.events_processed = true
-	var error :int = ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
+	timeline_editor.current_resource.events = new_events
+	timeline_editor.current_resource.events_processed = true
+	var error :int = ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
 	if error != OK:
 		print('[Dialogic] Saving error: ', error)
 	
-	get_parent().current_resource.set_meta("unsaved", false)
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.SAVED
-	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+	timeline_editor.current_resource.set_meta("unsaved", false)
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
+	timeline_editor.editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func _notification(what):
@@ -85,12 +86,12 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	
 	clear_timeline_nodes()
 	
-	if get_parent().current_resource.events.size() == 0:
+	if timeline_editor.current_resource.events.size() == 0:
 		pass
 	else: 
-		await get_parent().current_resource.process()
+		await timeline_editor.current_resource.process()
 		
-		if get_parent().current_resource.events.size() == 0:
+		if timeline_editor.current_resource.events.size() == 0:
 			return
 		
 		var data := resource.events
@@ -166,7 +167,7 @@ func load_event_buttons() -> void:
 			for button in child.get_children():
 				button.queue_free()
 	
-	var scripts: Array = get_parent().editors_manager.resource_helper.get_event_scripts()
+	var scripts: Array = timeline_editor.editors_manager.resource_helper.get_event_scripts()
 	
 	# Event buttons
 	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
@@ -209,6 +210,7 @@ func load_event_buttons() -> void:
 			section_header.add_child(Label.new())
 			section_header.get_child(0).text = event_resource.event_category
 			section_header.get_child(0).size_flags_horizontal = SIZE_SHRINK_BEGIN
+			section_header.get_child(0).theme_type_variation = "DialogicSection"
 			section_header.add_child(HSeparator.new())
 			section_header.get_child(1).size_flags_horizontal = SIZE_EXPAND_FILL
 			section.add_child(section_header)
@@ -480,15 +482,15 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		deselect_all_items()
 		
 		var event_resource :Variant
-		if get_parent().editors_manager.resource_helper:
-			for i in get_parent().editors_manager.resource_helper.get_event_scripts():
+		if timeline_editor.editors_manager.resource_helper:
+			for i in timeline_editor.editors_manager.resource_helper.get_event_scripts():
 				if i._test_event_string(indexed_events[event_idx]):
 					event_resource = i.duplicate()
 					break
 		else:
 			printerr("[Dialogic] Unable to access resource_helper!")
 			continue
-		event_resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
+		event_resource.set_meta('editor_character_directory', timeline_editor.editors_manager.resource_helper.character_directory)
 		event_resource.from_text(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
 			var idx :String= indexed_events[event_idx].trim_prefix('<<END BRANCH>>')
@@ -604,12 +606,12 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	for c in range(len(event_list)):
 		var item :String = event_list[c]
 		var resource: Variant
-		if get_parent().editors_manager.resource_helper:
-			for i in get_parent().editors_manager.resource_helper.get_event_scripts():
+		if timeline_editor.editors_manager.resource_helper:
+			for i in timeline_editor.editors_manager.resource_helper.get_event_scripts():
 				if i._test_event_string(item):
 					resource = i.duplicate()
 					break
-			resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
+			resource.set_meta('editor_character_directory', timeline_editor.editors_manager.resource_helper.character_directory)
 			resource.from_text(item)
 		else:
 			printerr("[Dialogic] Unable to access resource_helper!")

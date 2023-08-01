@@ -3,6 +3,8 @@ extends CodeEdit
 
 ## Sub-Editor that allows editing timelines in a text format.
 
+@onready var timeline_editor := get_parent().get_parent()
+
 # These RegEx's are used to deduce information from the current line for auto-completion
 # E.g. the character for portrait suggestions or the event type for parameter suggestions
 
@@ -33,7 +35,7 @@ func _ready():
 
 
 func _on_text_editor_text_changed():
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.UNSAVED
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
 
 
@@ -46,20 +48,22 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 	
 	text = timeline.as_text()
 	
-	get_parent().current_resource.set_meta("timeline_not_saved", false)
+	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
 
 
 func save_timeline():
-	if get_parent().current_resource:
-		var text_array:Array = text_timeline_to_array(text)
-		
-		get_parent().current_resource.events = text_array
-		get_parent().current_resource.events_processed = false
-		ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
+	if !timeline_editor.current_resource:
+		return
+	
+	var text_array:Array = text_timeline_to_array(text)
+	
+	timeline_editor.current_resource.events = text_array
+	timeline_editor.current_resource.events_processed = false
+	ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
 
-		get_parent().current_resource.set_meta("timeline_not_saved", false)
-		get_parent().current_resource_state = DialogicEditor.ResourceStates.SAVED
-		get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
+	timeline_editor.editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func text_timeline_to_array(text:String) -> Array:
@@ -214,7 +218,7 @@ func get_code_completion_prev_symbol() -> String:
 func _request_code_completion(force):
 	# make sure shortcode event references are loaded
 	if completion_shortcodes.is_empty():
-		for event in get_parent().editors_manager.resource_helper.event_script_cache:
+		for event in timeline_editor.editors_manager.resource_helper.event_script_cache:
 			if event.get_shortcode() != 'default_shortcode':
 				completion_shortcodes[event.get_shortcode()] = event
 	if completion_text_effects.is_empty():
@@ -331,13 +335,13 @@ func _request_code_completion(force):
 
 # Helper that adds all characters as options
 func suggest_characters(type := CodeEdit.KIND_MEMBER) -> void:
-	for character in get_parent().editors_manager.resource_helper.character_directory:
+	for character in timeline_editor.editors_manager.resource_helper.character_directory:
 		add_code_completion_option(type, character, character, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 
 
 # Helper that adds all portraits of a given character as options
 func suggest_portraits(character_name:String) -> void:
-	var character_resource :DialogicCharacter= get_parent().editors_manager.resource_helper.character_directory[character_name]['resource']
+	var character_resource :DialogicCharacter= timeline_editor.editors_manager.resource_helper.character_directory[character_name]['resource']
 	for portrait in character_resource.portraits:
 		add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), ')')
 	if character_resource.portraits.is_empty():

@@ -3,12 +3,19 @@ extends HBoxContainer
 
 # Dialogic Editor toolbar. Works together with editors_mangager.
 
-func _ready() -> void:
-	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("LaunchPadNormal", "EditorStyles"))
-
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
 ################################################################################
+
+func add_icon_button(icon: Texture, tooltip: String) -> Button:
+	var button := Button.new()
+	button.icon = icon
+	button.tooltip_text = tooltip
+	button.flat = true
+	add_child(button)
+	move_child(button, -2)
+	return button
+
 
 func add_custom_button(label:String, icon:Texture) -> Button:
 	var button := Button.new()
@@ -27,11 +34,4 @@ func hide_all_custom_buttons() -> void:
 
 func set_current_resource_text(text:String) -> void:
 	%CurrentResource.text = text
-
-
-func set_unsaved_indicator(saved:bool = true) -> void:
-	if saved and %CurrentResource.text.ends_with('(*)'):
-		%CurrentResource.text = %CurrentResource.text.trim_suffix('(*)')
-	if not saved and not %CurrentResource.text.ends_with('(*)'):
-		%CurrentResource.text = %CurrentResource.text+"(*)"
 

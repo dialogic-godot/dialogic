@@ -1,9 +1,18 @@
 @tool
-extends HBoxContainer
+extends DialogicSettingsPage
 
-func refresh():
-	%Info.add_theme_color_override('default_color', get_theme_color("accent_color", "Editor"))
-	
+
+func _get_priority() -> int:
+	return 98
+
+func _get_title() -> String:
+	return "Text"
+
+
+func _get_info_section():
+	return $InformationSection
+
+func _refresh():
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/settings/text_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
@@ -69,8 +78,7 @@ func _on_textbox_hidden_toggled(button_pressed:bool) -> void:
 
 func load_autopauses(dictionary:Dictionary) -> void:
 	for i in %AutoPauseSets.get_children():
-		if i.get_index() != 0:
-			i.queue_free()
+		i.queue_free()
 	
 	for i in dictionary.keys():
 		add_autopause_set(i, dictionary[i])
@@ -79,9 +87,8 @@ func load_autopauses(dictionary:Dictionary) -> void:
 func save_autopauses() -> void:
 	var dictionary := {}
 	for i in %AutoPauseSets.get_children():
-		if i.get_index() != 0:
-			if i.get_child(0).text:
-				dictionary[i.get_child(0).text] = i.get_child(1).value
+		if i.get_child(0).text:
+			dictionary[i.get_child(0).text] = i.get_child(1).value
 	ProjectSettings.set_setting('dialogic/text/autopauses', dictionary)
 	ProjectSettings.save()
 

@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends DialogicSettingsPage
 
 ## Settings tab that allows enabeling and updating translation csv-files.
 
@@ -7,6 +7,16 @@ extends Control
 enum TranslationModes {PER_PROJECT, PER_TIMELINE}
 var loading := false
 @onready var settings_editor :Control = get_parent().get_parent()
+
+
+func _get_icon():
+	return get_theme_icon("Translation", "EditorIcons")
+
+func _get_info_section() -> Control:
+	return $InfoSection
+
+func _is_feature_tab() -> bool:
+	return true
 
 
 func _ready() -> void:
@@ -24,7 +34,7 @@ func _ready() -> void:
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
 
-func refresh() -> void:
+func _refresh() -> void:
 	loading = true
 	%TransEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/enabled', false)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
@@ -239,5 +249,5 @@ func erase_translations() -> void:
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	
 	%StatusMessage.text = "Removed "+str(counts[0])+" csv files, "+str(counts[1])+" translations and all translation id's."
-	refresh()
+	_refresh()
 

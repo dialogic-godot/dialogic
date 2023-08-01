@@ -112,41 +112,11 @@ func _ready() -> void:
 	_on_fit_preview_toggle_toggled(DialogicUtil.get_editor_setting('character_preview_fit', true))
 	%PreviewLabel.add_theme_color_override("font_color", get_theme_color("readonly_color", "Editor"))
 	
-	%CharacterName.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	%CharacterName.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
-	%CharacterName.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-	
-	%NameTooltip.texture = get_theme_icon("NodeInfo", "EditorIcons")
-	%NameTooltip.modulate = get_theme_color("readonly_color", "Editor")
-	
-	## General Styling
-	var panel_style := DCSS.inline({
-		'border-radius': 10,
-		'border': 0,
-		'border_color':get_theme_color("dark_color_3", "Editor"),
-		'background': get_theme_color("base_color", "Editor"),
-		'padding': [5, 5],
-	})
-	
-	
-	%PortraitListSection.add_theme_stylebox_override('panel', panel_style)
-	
-	var preview_panel :StyleBoxFlat= panel_style.duplicate()
-	preview_panel.corner_radius_top_left = 0
-	preview_panel.corner_radius_bottom_left = 0
-	preview_panel.expand_margin_left = 8
-	preview_panel.bg_color = get_theme_color("dark_color_2", "Editor")
-	preview_panel.set_border_width_all(1)
-	preview_panel.border_width_left = 0
-	preview_panel.border_color = get_theme_color("contrast_color_2", "Editor")
-	%PortraitPreviewSection.add_theme_stylebox_override('panel', preview_panel)
-	%PortraitSettingsSection.add_theme_stylebox_override('panel', panel_style)
-	
 	%PortraitChangeWarning.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
-	# Add general tab
+	# Add general tabs
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.tscn").instantiate(), %MainSettingsSections)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
 	
@@ -173,9 +143,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	
 	var button := Button.new()
 	button.flat = true
-	button.add_theme_color_override('font_color', get_theme_color("readonly_color", "Editor"))
-	button.add_theme_color_override('font_hover_color', get_theme_color("readonly_color", "Editor"))
-	button.add_theme_color_override('font_pressed_color', get_theme_color("readonly_color", "Editor"))
+	button.theme_type_variation = "DialogicSection"
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	button.text = edit.name
@@ -183,7 +151,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	button.pressed.connect(_on_section_button_pressed.bind(button))
 	button.focus_mode = Control.FOCUS_NONE
 	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("readonly_color", "Editor"))
+	button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
 	parent.add_child(button)
 	parent.add_child(edit)
 	parent.add_child(HSeparator.new())
@@ -222,9 +190,6 @@ func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 
 func setup_portrait_list_tab() -> void:
 	%PortraitTree.editor = self
-	
-	%PortraitsTitle.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	%PortraitsTitle.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
 	
 	
 	## Portrait section styling/connections

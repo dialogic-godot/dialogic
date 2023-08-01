@@ -1,18 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://b873ho41sklv8"]
+[gd_scene load_steps=7 format=3 uid="uid://b873ho41sklv8"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_general.gd" id="2"]
-[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_u584y"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="2_uxx4f"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="3_i7rug"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rst74"]
-content_margin_left = 3.75
-content_margin_top = 3.75
-content_margin_right = 3.75
-content_margin_bottom = 3.75
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+[sub_resource type="Image" id="Image_bryma"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4ui3"]
+[sub_resource type="ImageTexture" id="ImageTexture_lce2m"]
+image = SubResource("Image_bryma")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u4v1j"]
 content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
@@ -26,26 +30,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="Image" id="Image_n4wcr"]
-data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id="ImageTexture_f5p1c"]
-image = SubResource("Image_n4wcr")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mwvq"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
-
-[node name="General" type="HBoxContainer"]
+[node name="General" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -53,115 +38,203 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2")
 
-[node name="Scroll" type="ScrollContainer" parent="."]
+[node name="PaletteTitle" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="SecondColumn" type="VBoxContainer" parent="Scroll"]
+[node name="SectionPaletteTitle" type="Label" parent="PaletteTitle"]
 layout_mode = 2
-size_flags_horizontal = 3
+theme_type_variation = &"DialogicSettingsSection"
+text = "Color Palette"
 
-[node name="Label" type="Label" parent="Scroll/SecondColumn"]
+[node name="HintTooltip" parent="PaletteTitle" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
-theme_override_styles/normal = ExtResource("2_u584y")
-text = "Color palette"
+tooltip_text = "These colors are used for the events."
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "These colors are used for the events."
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Scroll/SecondColumn"]
+[node name="ResetColorsButton" type="Button" parent="PaletteTitle"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Reset Colors to default"
+icon = SubResource("ImageTexture_lce2m")
+flat = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="Colors" type="HBoxContainer" parent="Scroll/SecondColumn/ScrollContainer"]
+[node name="Colors" type="HBoxContainer" parent="ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Color1" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color1" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0.231373, 0.545098, 0.94902, 1)
 
-[node name="Color2" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color2" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0, 0.694118, 0.372549, 1)
 
-[node name="Color3" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color3" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0.580392, 0.407843, 0.909804, 1)
 
-[node name="Color4" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color4" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0.870588, 0.360784, 0.360784, 1)
 
-[node name="Color5" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color5" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0.980392, 0.584314, 0.164706, 1)
 
-[node name="Color6" type="ColorPickerButton" parent="Scroll/SecondColumn/ScrollContainer/Colors"]
+[node name="Color6" type="ColorPickerButton" parent="ScrollContainer/Colors"]
 layout_mode = 2
 color = Color(0.486275, 0.486275, 0.486275, 1)
 
-[node name="ResetColorsButton" type="Button" parent="Scroll/SecondColumn"]
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SectionBehaviourTitle" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Layout Node Behaviour"
+
+[node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "The layout scene configured in the Layout editor is automatically 
+instanced when calling Dialogic.start(). Depending on your game, 
+you might want it to be deleted after the dialogue, be hidden 
+(as reinstancing often is wasting resources) or kept visible. "
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "The layout scene configured in the Layout editor is automatically 
+instanced when calling Dialogic.start(). Depending on your game, 
+you might want it to be deleted after the dialogue, be hidden 
+(as reinstancing often is wasting resources) or kept visible. "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+text = "On timeline end"
+
+[node name="LayoutNodeEndBehaviour" type="OptionButton" parent="HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 8
-text = "Reset colors to default"
+item_count = 3
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Delete Layout Node"
+popup/item_0/id = 0
+popup/item_1/text = "Hide Layout Node"
+popup/item_1/id = 1
+popup/item_2/text = "Keep Layout Node"
+popup/item_2/id = 2
 
-[node name="TitleLabel" type="Label" parent="Scroll/SecondColumn"]
+[node name="HSeparator4" type="HSeparator" parent="."]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_rst74")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer6/HBoxContainer4"]
+layout_mode = 2
+
+[node name="SectionExtensionsTitle" type="Label" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
 text = "Extensions"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Scroll/SecondColumn"]
+[node name="HintTooltip" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Configure where dialogic looks for custom modules.
+
+You will have to restart the project to see the change take action."
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "Configure where dialogic looks for custom modules.
+
+You will have to restart the project to see the change take action."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer6/HBoxContainer4"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/SecondColumn/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer6/HBoxContainer4/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Extensions folder"
 
-[node name="ExtensionsFolderPicker" parent="Scroll/SecondColumn/HBoxContainer" instance=ExtResource("3_i7rug")]
+[node name="ExtensionsFolderPicker" parent="HBoxContainer6/HBoxContainer4/HBoxContainer" instance=ExtResource("3_i7rug")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_v4ui3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u4v1j")
 placeholder = "res://addons/dialogic_additions/Events"
 file_mode = 2
-resource_icon = SubResource("ImageTexture_f5p1c")
+resource_icon = SubResource("ImageTexture_lce2m")
 
-[node name="Label2" type="Label" parent="Scroll/SecondColumn"]
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer6"]
 layout_mode = 2
-text = "You should restart godot after changing this path!"
-horizontal_alignment = 2
-autowrap_mode = 3
-script = ExtResource("2_uxx4f")
 
-[node name="CreateExtensionButton" type="Button" parent="Scroll/SecondColumn"]
+[node name="ExtensionsPanel" type="PanelContainer" parent="HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DialogicPanelA"
+
+[node name="VBox" type="VBoxContainer" parent="HBoxContainer6/ExtensionsPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer6/ExtensionsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6"]
+layout_mode = 2
+theme_type_variation = &"DialogicSubTitle"
+text = "Extension Creator "
+
+[node name="HintTooltip" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Use the Exension Creator to quickly setup custom modules!"
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "Use the Exension Creator to quickly setup custom modules!"
+
+[node name="CreateExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Create New Extension"
 
-[node name="ExtensionCreator" type="VBoxContainer" parent="Scroll/SecondColumn"]
+[node name="ExtensionCreator" type="VBoxContainer" parent="HBoxContainer6/ExtensionsPanel/VBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ExtensionCreatorOptions" type="GridContainer" parent="Scroll/SecondColumn/ExtensionCreator"]
+[node name="ExtensionCreatorOptions" type="GridContainer" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator"]
 layout_mode = 2
 columns = 2
 
-[node name="NameLabel" type="Label" parent="Scroll/SecondColumn/ExtensionCreator/ExtensionCreatorOptions"]
+[node name="NameLabel" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
 layout_mode = 2
 text = "Name:"
 
-[node name="NameEdit" type="LineEdit" parent="Scroll/SecondColumn/ExtensionCreator/ExtensionCreatorOptions"]
+[node name="NameEdit" type="LineEdit" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "e.g. \"Print\", \"Item\", \"Door\", \"Quest\""
 
-[node name="ModeLabel" type="Label" parent="Scroll/SecondColumn/ExtensionCreator/ExtensionCreatorOptions"]
+[node name="ModeLabel" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
 layout_mode = 2
 text = "Setup mode:"
 
-[node name="ExtensionMode" type="OptionButton" parent="Scroll/SecondColumn/ExtensionCreator/ExtensionCreatorOptions"]
+[node name="ExtensionMode" type="OptionButton" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 4
@@ -175,20 +248,61 @@ popup/item_2/id = 2
 popup/item_3/text = "Complex"
 popup/item_3/id = 3
 
-[node name="SubmitExtensionButton" type="Button" parent="Scroll/SecondColumn/ExtensionCreator"]
+[node name="SubmitExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Create"
 
-[node name="Label3" type="Label" parent="Scroll/SecondColumn"]
+[node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
-theme_override_styles/normal = ExtResource("2_u584y")
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TimerTitle" type="Label" parent="HBoxContainer7"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Timer processing"
+
+[node name="HintTooltip" parent="HBoxContainer7" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+layout_mode = 2
+text = "Process timers in physics_process"
+
+[node name="PhysicsTimerButton" type="CheckBox" parent="HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator5" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SectionSections" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
 text = "Section Order"
 
-[node name="SectionList" type="Tree" parent="Scroll/SecondColumn"]
+[node name="HintTooltip" parent="HBoxContainer" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "You can change the order of the event sections here. "
+texture = SubResource("ImageTexture_lce2m")
+hint_text = "You can change the order of the event sections here. "
+
+[node name="SectionList" type="Tree" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/button_margin = 0
 allow_reselect = true
 allow_rmb_select = true
@@ -196,63 +310,7 @@ hide_folding = true
 hide_root = true
 drop_mode_flags = 1
 
-[node name="VSeparator" type="VSeparator" parent="."]
-layout_mode = 2
-
-[node name="General" type="VBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TitleLabel3" type="Label" parent="General"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_3mwvq")
-text = "Timer"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="General"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="General/HBoxContainer3"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Process in physics"
-
-[node name="PhysicsTimerButton" type="CheckBox" parent="General/HBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="TitleLabel4" type="Label" parent="General"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_3mwvq")
-text = "Layout Node Behaviour"
-
-[node name="Label3" type="Label" parent="General"]
-layout_mode = 2
-text = "The layout scene configured in the Layout editor is automatically instanced when calling Dialogic.start(). Depending on your game, you might want it to be deleted after the dialogue, be hidden (as reinstancing often is wasting resources) or kept visible. "
-autowrap_mode = 3
-script = ExtResource("2_uxx4f")
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="General"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="General/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "On timeline end:"
-
-[node name="LayoutNodeEndBehaviour" type="OptionButton" parent="General/HBoxContainer4"]
-unique_name_in_owner = true
-layout_mode = 2
-item_count = 3
-selected = 0
-fit_to_longest_item = false
-popup/item_0/text = "Delete Layout Node"
-popup/item_0/id = 0
-popup/item_1/text = "Hide Layout Node"
-popup/item_1/id = 1
-popup/item_2/text = "Keep Layout Node"
-popup/item_2/id = 2
-
-[connection signal="pressed" from="Scroll/SecondColumn/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]
-[connection signal="pressed" from="Scroll/SecondColumn/ExtensionCreator/SubmitExtensionButton" to="." method="_on_submit_extension_button_pressed"]
-[connection signal="button_clicked" from="Scroll/SecondColumn/SectionList" to="." method="_on_section_list_button_clicked"]
-[connection signal="item_selected" from="General/HBoxContainer4/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
+[connection signal="item_selected" from="HBoxContainer3/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
+[connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]
+[connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/SubmitExtensionButton" to="." method="_on_submit_extension_button_pressed"]
+[connection signal="button_clicked" from="SectionList" to="." method="_on_section_list_button_clicked"]

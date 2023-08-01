@@ -1,15 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://6tdle4y5o03o"]
+[gd_scene load_steps=3 format=3 uid="uid://6tdle4y5o03o"]
 
 [ext_resource type="PackedScene" uid="uid://glhi311f3lw5" path="res://addons/dialogic/Modules/Variable/variables_editor/variable_group.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Variable/variables_editor/variables_editor.gd" id="2"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="3_bncvu"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vd2b4"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
 
 [node name="VariablesEditor" type="HSplitContainer"]
 anchors_preset = 15
@@ -56,7 +48,7 @@ size_flags_stretch_ratio = 0.5
 [node name="Title2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_vd2b4")
+theme_type_variation = &"DialogicSection"
 text = "About Variables"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
@@ -68,6 +60,7 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_type_variation = &"DialogicHintText2"
 text = "You can define a set of variables here (each a name and a default value). You can then change them with the Set Variable sevent or use them in text using {MyVariableName}.
 
 You can group variables in groups (and subgroups) and then reference them using {MyGroup.MySubGroup.MyVariable} in text.
@@ -75,6 +68,5 @@ You can group variables in groups (and subgroups) and then reference them using 
 You can access variables in scripts by doing 'Dialogic.VAR.MyVariable'  
 or 'Dialogic.VAR.MyGroup.MySubGroup.MyVariable'."
 autowrap_mode = 3
-script = ExtResource("3_bncvu")
 
 [connection signal="pressed" from="VBoxContainer2/ReferenceInfo/ReferenceManager" to="." method="_on_reference_manager_pressed"]

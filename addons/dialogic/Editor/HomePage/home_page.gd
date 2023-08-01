@@ -29,35 +29,7 @@ func _register():
 	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
 	get_parent().set_tab_title(get_index(), '')
 	
-	editors_manager.add_custom_button('Wiki', 
-			get_theme_icon("Help", "EditorIcons"), 
-			self).pressed.connect(_on_wiki_button_pressed)
-			
-	editors_manager.add_custom_button('Discord', 
-			get_theme_icon("CryptoKey", "EditorIcons"), 
-			self).pressed.connect(_on_discord_button_pressed)
-	
 	self.alternative_text = "Welcome to dialogic!"
-
-
-func _on_discord_button_pressed() -> void:
-	OS.shell_open("https://discord.gg/2hHQzkf2pX")
-
-
-func _on_wiki_button_pressed() -> void:
-	OS.shell_open("https://github.com/coppolaemilio/dialogic/wiki")
-
-
-func _on_wiki_getting_started_button_pressed():
-	OS.shell_open("https://github.com/coppolaemilio/dialogic/wiki/Tutorial:-Getting-Started")
-
-
-func _on_bug_request_button_pressed():
-	OS.shell_open("https://github.com/coppolaemilio/dialogic/issues/new/choose")
-
-
-func _on_donate_button_pressed():
-	OS.shell_open("https://www.patreon.com/coppolaemilio")
 
 
 func show_tip(text:String='', action:String='') -> void:

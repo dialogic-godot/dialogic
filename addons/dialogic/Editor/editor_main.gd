@@ -34,6 +34,91 @@ func _ready() -> void:
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
+	update_theme_additions()
+
+
+func update_theme_additions():
+	if theme == null:
+		theme = Theme.new()
+	theme.clear()
+	
+	theme.set_type_variation('DialogicTitle', 'Label')
+	theme.set_font('font', 'DialogicTitle', get_theme_font("title", "EditorFonts"))
+	theme.set_color('font_color', 'DialogicTitle', get_theme_color("accent_color", "Editor"))
+	theme.set_font_size('font_size', 'DialogicTitle', get_theme_font_size("doc_size", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicSubTitle', 'Label')
+	theme.set_font('font', 'DialogicSubTitle', get_theme_font("title", "EditorFonts"))
+	theme.set_font_size('font_size', 'DialogicSubTitle', get_theme_font_size("doc_size", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicPanelA', 'PanelContainer')
+	var panel_style := DCSS.inline({
+		'border-radius': 10,
+		'border': 0,
+		'border_color':get_theme_color("dark_color_3", "Editor"),
+		'background': get_theme_color("base_color", "Editor"),
+		'padding': [5, 5],
+	})
+	theme.set_stylebox('panel', 'DialogicPanelA', panel_style)
+	
+	var dark_panel := panel_style.duplicate()
+	dark_panel.bg_color = get_theme_color("dark_color_3", "Editor")
+	theme.set_stylebox('panel', 'DialogicPanelDarkA', dark_panel)
+	
+	# panel used for example for portrait previews in character editor
+	theme.set_type_variation('DialogicPanelB', 'PanelContainer')
+	var side_panel :StyleBoxFlat= panel_style.duplicate()
+	side_panel.corner_radius_top_left = 0
+	side_panel.corner_radius_bottom_left = 0
+	side_panel.expand_margin_left = 8
+	side_panel.bg_color = get_theme_color("dark_color_2", "Editor")
+	side_panel.set_border_width_all(1)
+	side_panel.border_width_left = 0
+	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
+	theme.set_stylebox('panel', 'DialogicPanelB', side_panel)
+	
+	theme.set_type_variation('DialogicHintText', 'Label')
+	theme.set_color('font_color', 'DialogicHintText', get_theme_color("readonly_color", "Editor"))
+	theme.set_font('font', 'DialogicHintText', get_theme_font("doc_italic", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicHintText2', 'Label')
+	theme.set_color('font_color', 'DialogicHintText2', get_theme_color("property_color_w", "Editor"))
+	theme.set_font('font', 'DialogicHintText2', get_theme_font("doc_italic", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicSection', 'Label')
+	theme.set_font('font', 'DialogicSection', get_theme_font("main_msdf", "EditorFonts"))
+	theme.set_color('font_color', 'DialogicSection', get_theme_color("accent_color", "Editor"))
+	theme.set_font_size('font_size', 'DialogicSection', get_theme_font_size("doc_size", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicSettingsSection', 'DialogicSection')
+	theme.set_font('font', 'DialogicSettingsSection', get_theme_font("main_msdf", "EditorFonts"))
+	theme.set_color('font_color', 'DialogicSettingsSection', get_theme_color("accent_color", "Editor"))
+	theme.set_font_size('font_size', 'DialogicSettingsSection', get_theme_font_size("doc_size", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicSectionBig', 'DialogicSection')
+	theme.set_color('font_color', 'DialogicSectionBig', get_theme_color("accent_color", "Editor"))
+	theme.set_font_size('font_size', 'DialogicSectionBig', get_theme_font_size("doc_title_size", "EditorFonts"))
+	
+	theme.set_type_variation('DialogicLink', 'LinkButton')
+	theme.set_color('font_hover_color', 'DialogicLink', get_theme_color("warning_color", "Editor"))
+	
+	theme.set_type_variation('DialogicMegaSeparator', 'HSeparator')
+	theme.set_stylebox('separator', 'DialogicMegaSeparator', DCSS.inline({
+		'border-radius': 10,
+		'border': 0,
+		'background': get_theme_color("accent_color", "Editor"),
+		'padding': [5, 5],
+	}))
+	theme.set_constant('separation', 'DialogicMegaSeparator', 50)
+	
+	
+	
+	theme.set_icon('Plugin', 'Dialogic', load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
+#	theme.set_icon('Character', 'Dialogic', load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+#	theme.set_icon('Portrait', 'Dialogic', load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"))
+#	theme.set_icon('Timeline', 'Dialogic', get_theme_icon("TripleBar", "EditorIcons"))
+	
+	
 
 
 func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialog.FILE_MODE_OPEN_FILE, window_title := "Save", current_file_name := 'New_File', saving_something := false, extra_message:String = "") -> EditorFileDialog:

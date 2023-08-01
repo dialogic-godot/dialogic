@@ -11,7 +11,7 @@ content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="Image" id="Image_cbqlr"]
+[sub_resource type="Image" id="Image_bryma"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -20,10 +20,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ydb0b"]
-image = SubResource("Image_cbqlr")
+[sub_resource type="ImageTexture" id="ImageTexture_lce2m"]
+image = SubResource("Image_bryma")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tjff"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_02ogm"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
@@ -61,6 +61,8 @@ layout_mode = 2
 [node name="Title" type="Label" parent="VBoxContainer/ChangeList/HBox2"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
 text = "Broken Reference Manager"
 
 [node name="TitleTooltip" type="TextureRect" parent="VBoxContainer/ChangeList/HBox2"]
@@ -75,13 +77,14 @@ This manager allows you to fix broken references by replacing them.
 Dialogic will automatically add items to this list, when you rename already 
 existing things. After such changes you should check if there are any 
 broken references."
-texture = SubResource("ImageTexture_ydb0b")
+texture = SubResource("ImageTexture_lce2m")
 stretch_mode = 3
 
 [node name="ChangesSection" type="PanelContainer" parent="VBoxContainer/ChangeList"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"DialogicPanelA"
 
 [node name="VBox" type="VBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection"]
 layout_mode = 2
@@ -92,13 +95,13 @@ layout_mode = 2
 [node name="SectionTitle" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "Recent renames"
 
 [node name="AddButton" type="Button" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 tooltip_text = "Add custom rename"
-icon = SubResource("ImageTexture_ydb0b")
 
 [node name="ReplacementPanel" type="PanelContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton"]
 unique_name_in_owner = true
@@ -109,7 +112,7 @@ layout_mode = 0
 offset_left = -400.0
 offset_top = 24.0
 offset_bottom = 244.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8tjff")
+theme_override_styles/panel = SubResource("StyleBoxFlat_02ogm")
 script = ExtResource("2_vtwcs")
 
 [node name="VBox" type="VBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel"]
@@ -230,11 +233,13 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Search timelines for occurences of these renames"
 text = "Check Selected"
-icon = SubResource("ImageTexture_ydb0b")
+icon = SubResource("ImageTexture_lce2m")
 
 [node name="ReplacementSection" type="PanelContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+theme_type_variation = &"DialogicPanelA"
 
 [node name="FindList" type="VBoxContainer" parent="VBoxContainer/ReplacementSection"]
 unique_name_in_owner = true
@@ -247,6 +252,7 @@ layout_mode = 2
 [node name="SectionTitle2" type="Label" parent="VBoxContainer/ReplacementSection/FindList/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "Found references"
 
 [node name="State" type="Label" parent="VBoxContainer/ReplacementSection/FindList/HBox"]
@@ -271,7 +277,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Replace all selected findings (Careful, no undo!)"
 text = "Replace Selected"
-icon = SubResource("ImageTexture_ydb0b")
+icon = SubResource("ImageTexture_lce2m")
 
 [connection signal="resized" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="_on_resized"]
 [connection signal="item_selected" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3/Type" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="_on_type_item_selected"]

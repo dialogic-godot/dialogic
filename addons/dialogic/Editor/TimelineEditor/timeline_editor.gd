@@ -4,9 +4,8 @@ extends DialogicEditor
 ## Editor that holds both the visual and the text timeline editors.
 
 # references
-var editor_mode_toggle_button : Button
 var current_editor_mode: int = 0 # 0 = visal, 1 = text
-
+var play_timeline_button : Button = null
 
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:
@@ -22,33 +21,29 @@ func _register() -> void:
 		self)
 	add_timeline_button.pressed.connect(_on_create_timeline_button_pressed)
 	# play timeline button
-	var play_timeline_button: Button = editors_manager.add_custom_button(
+	play_timeline_button = editors_manager.add_custom_button(
 		"Play Timeline",
 		get_theme_icon("PlayScene", "EditorIcons"),
 		self)
 	play_timeline_button.pressed.connect(play_timeline)
 	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
-	# switch editor mode button
-	editor_mode_toggle_button = editors_manager.add_custom_button(
-		"Text editor",
-		get_theme_icon("ArrowRight", "EditorIcons"),
-		self)
-	editor_mode_toggle_button.pressed.connect(toggle_editor_mode)
 	
-	$VisualEditor.load_event_buttons()
+	%VisualEditor.load_event_buttons()
 	
 	current_editor_mode = DialogicUtil.get_editor_setting('timeline_editor_mode', 0)
 	
 	match current_editor_mode:
 		0:
-			$VisualEditor.show()
-			$TextEditor.hide()
-			editor_mode_toggle_button.text = "Text Editor"
+			%VisualEditor.show()
+			%TextEditor.hide()
+			%SwitchEditorMode.text = "Text Editor"
 		1:
-			$VisualEditor.hide()
-			$TextEditor.show()
-			editor_mode_toggle_button.text = "Visual Editor"
+			%VisualEditor.hide()
+			%TextEditor.show()
+			%SwitchEditorMode.text = "Visual Editor"
+	
 	$NoTimelineScreen.show()
+	play_timeline_button.disabled = true
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)
@@ -57,19 +52,23 @@ func _open_resource(resource:Resource) -> void:
 	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
 		0:
-			$VisualEditor.load_timeline(current_resource)
+			%VisualEditor.load_timeline(current_resource)
 		1:
-			$TextEditor.load_timeline(current_resource)
+			%TextEditor.load_timeline(current_resource)
 	$NoTimelineScreen.hide()
+	for t in editors_manager.resource_helper.timeline_directory.keys():
+		if editors_manager.resource_helper.timeline_directory[t] == current_resource.resource_path:
+			%TimelineName.text = t
+	play_timeline_button.disabled = false
 
 
 ## If this editor supports editing resources, save them here (overwrite in subclass)
 func _save() -> void:
 	match current_editor_mode:
 		0:
-			$VisualEditor.save_timeline()
+			%VisualEditor.save_timeline()
 		1:
-			$TextEditor.save_timeline()
+			%TextEditor.save_timeline()
 
 
 func _input(event: InputEvent) -> void:
@@ -96,18 +95,18 @@ func toggle_editor_mode():
 	match current_editor_mode:
 		0:
 			current_editor_mode = 1
-			$VisualEditor.save_timeline()
-			$VisualEditor.hide()
-			$TextEditor.show()
-			$TextEditor.load_timeline(current_resource)
-			editor_mode_toggle_button.text = "Visual Editor"
+			%VisualEditor.save_timeline()
+			%VisualEditor.hide()
+			%TextEditor.show()
+			%TextEditor.load_timeline(current_resource)
+			%SwitchEditorMode.text = "Visual Editor"
 		1:
 			current_editor_mode = 0
-			$TextEditor.save_timeline()
-			$TextEditor.hide()
-			$VisualEditor.load_timeline(current_resource)
-			$VisualEditor.show()
-			editor_mode_toggle_button.text = "Text Editor"
+			%TextEditor.save_timeline()
+			%TextEditor.hide()
+			%VisualEditor.load_timeline(current_resource)
+			%VisualEditor.show()
+			%SwitchEditorMode.text = "Text Editor"
 	
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
@@ -136,6 +135,14 @@ func _ready():
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	get_parent().set_tab_title(get_index(), 'Timeline')
 	get_parent().set_tab_icon(get_index(), get_theme_icon("TripleBar", "EditorIcons"))
+	
+	# switch editor mode button
+	%SwitchEditorMode.text = "Text editor"
+	%SwitchEditorMode.icon = get_theme_icon("ArrowRight", "EditorIcons")
+	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
+	var _scale := DialogicUtil.get_editor_scale()
+	%SwitchEditorMode.custom_minimum_size.x = 200 * _scale
+
 
 
 func _on_create_timeline_button_pressed():
@@ -152,7 +159,8 @@ func _clear():
 	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
 		0:
-			$VisualEditor.clear_timeline_nodes()
+			%VisualEditor.clear_timeline_nodes()
 		1:
-			$TextEditor.clear_timeline()
+			%TextEditor.clear_timeline()
 	$NoTimelineScreen.show()
+	play_timeline_button.disabled = true

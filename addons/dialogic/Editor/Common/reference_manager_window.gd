@@ -21,7 +21,7 @@ func _ready() -> void:
 	dot.texture = get_theme_icon("GuiGraphNodePort", "EditorIcons")
 	dot.scale = Vector2(0.8, 0.8)
 	dot.z_index = 10
-	dot.position = Vector2(icon_button.size.x*0.9, icon_button.size.x*0.05)
+	dot.position = Vector2(icon_button.size.x*0.8, icon_button.size.x*0.2)
 	dot.modulate = get_theme_color("warning_color", "Editor").lightened(0.5)
 	
 	icon_button.add_child(dot)

@@ -9,29 +9,30 @@ signal file_activated(file_path)
 
 
 func _ready():
+	## CONNECTIONS
 	%ResourcesList.item_selected.connect(_on_resources_list_item_selected)
 	%ResourcesList.item_clicked.connect(_on_resources_list_item_clicked)
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
+	
+	## ICONS
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+	%ContentSearch.right_icon = get_theme_icon("Search", "EditorIcons")
+	%SortButton.icon = get_theme_icon("Sort", "EditorIcons")
+	
+	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
+	
+	## MARGINS
 	var editor_scale = DialogicUtil.get_editor_scale()
-	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_left", 4 * editor_scale)
-	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_bottom", 4 * editor_scale)
+	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
+	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
+	
+	## VERSION LABEL
 	var plugin_cfg := ConfigFile.new()
 	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
 	%CurrentVersion.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
-
-
-################################################################################
-## 					EDITOR BUTTONS/LABELS 
-################################################################################
-
-func add_icon_button(icon: Texture, tooltip: String) -> Button:
-	var button := Button.new()
-	button.icon = icon
-	button.tooltip_text = tooltip
-	%IconButtons.add_child(button)
-	return button
+	
+	
 
 
 ################################################################################
@@ -59,6 +60,9 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 		if !current_file in resources_list:
 			resources_list.append(current_file)
 	
+	%CurrentResource.text = "No Resource"
+	%CurrentResource.add_theme_color_override("font_color", get_theme_color("disabled_font_color", "Editor"))
+	
 	%ResourcesList.clear()
 	var idx := 0
 	for character in character_directory.values():
@@ -72,6 +76,7 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 				if character['full_path'] == current_file:
 					%ResourcesList.select(idx)
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
+					%CurrentResource.text = character['unique_short_path']+'.dch'
 				idx += 1
 	for timeline_name in timeline_directory:
 		if timeline_directory[timeline_name] in resources_list:
@@ -81,7 +86,10 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 				if timeline_directory[timeline_name] == current_file:
 					%ResourcesList.select(idx)
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
+					%CurrentResource.text = timeline_name+'.dtl'
 				idx += 1
+	if %CurrentResource.text != "No Resource":
+		%CurrentResource.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	%ResourcesList.sort_items_by_text()
 	DialogicUtil.set_editor_setting('last_resources', resources_list)
 
@@ -104,3 +112,11 @@ func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_but
 
 func _on_search_text_changed(new_text:String) -> void:
 	update_resource_list()
+
+
+func set_unsaved_indicator(saved:bool = true) -> void:
+	if saved and %CurrentResource.text.ends_with('(*)'):
+		%CurrentResource.text = %CurrentResource.text.trim_suffix('(*)')
+	if not saved and not %CurrentResource.text.ends_with('(*)'):
+		%CurrentResource.text = %CurrentResource.text+"(*)"
+

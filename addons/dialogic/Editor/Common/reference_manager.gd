@@ -29,18 +29,6 @@ func _ready() -> void:
 	
 	%SectionTitle2.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
 	%SectionTitle2.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-	
-	## General Styling
-	var panel_style := DCSS.inline({
-		'border-radius': 10,
-		'border': 0,
-		'border_color':get_theme_color("dark_color_3", "Editor"),
-		'background': get_theme_color("base_color", "Editor"),
-		'padding': [5, 5],
-	})
-	
-	%ChangesSection.add_theme_stylebox_override('panel', panel_style)
-	%ReplacementSection.add_theme_stylebox_override('panel', panel_style)
 
 
 func open() -> void:

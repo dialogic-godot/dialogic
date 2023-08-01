@@ -1,5 +1,5 @@
 @tool
-extends HBoxContainer
+extends DialogicSettingsPage
 
 ## Settings tab that holds genreal dialogic settings.
 
@@ -7,6 +7,13 @@ signal colors_changed
 
 var color_palette :Dictionary = {}
 
+
+func _get_title() -> String:
+	return "General"
+
+
+func _get_priority() -> int:
+	return 99
 
 func _ready() -> void:
 	var s := DCSS.inline({
@@ -20,6 +27,7 @@ func _ready() -> void:
 	%PhysicsTimerButton.pressed.connect(_on_physics_timer_button_toggled)
 
 	# Colors
+	%ResetColorsButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
 
 	for n in %Colors.get_children():
@@ -29,7 +37,7 @@ func _ready() -> void:
 	%ExtensionCreator.hide()
 
 
-func refresh() -> void:
+func _refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))
 	%ExtensionsFolderPicker.set_value(ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
@@ -43,7 +51,7 @@ func refresh() -> void:
 	
 	%SectionList.clear()
 	%SectionList.create_item()
-	var cached_events :Array[DialogicEvent] = get_parent().get_parent().editors_manager.resource_helper.event_script_cache
+	var cached_events :Array[DialogicEvent] = find_parent('Settings').editors_manager.resource_helper.event_script_cache
 	var sections := []
 	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
 	for ev in cached_events:
@@ -66,6 +74,7 @@ func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_ind
 		item.move_before(item.get_parent().get_child(item.get_index()-1))
 	else:
 		item.move_after(item.get_parent().get_child(item.get_index()+1))
+	
 	for child in %SectionList.get_root().get_children():
 		child.set_button_disabled(0, 0, false)
 		child.set_button_disabled(0, 1, false)
