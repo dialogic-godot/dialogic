@@ -14,32 +14,36 @@ script = ExtResource("1")
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="TabList"]
+[node name="Margin" type="MarginContainer" parent="TabList"]
+layout_mode = 2
+theme_override_constants/margin_top = 3
+
+[node name="VBox" type="VBoxContainer" parent="TabList/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Title" type="Label" parent="TabList/VBox"]
+[node name="Title" type="Label" parent="TabList/Margin/VBox"]
 layout_mode = 2
 theme_type_variation = &"DialogicSection"
 text = "Settings"
 
-[node name="SettingsTabs" type="VBoxContainer" parent="TabList/VBox"]
+[node name="SettingsTabs" type="VBoxContainer" parent="TabList/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="Control" type="Control" parent="TabList/VBox"]
+[node name="Control" type="Control" parent="TabList/Margin/VBox"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="Title2" type="Label" parent="TabList/VBox"]
+[node name="Title2" type="Label" parent="TabList/Margin/VBox"]
 layout_mode = 2
 theme_type_variation = &"DialogicSection"
 text = "Features"
 
-[node name="FeatureTabs" type="VBoxContainer" parent="TabList/VBox"]
+[node name="FeatureTabs" type="VBoxContainer" parent="TabList/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

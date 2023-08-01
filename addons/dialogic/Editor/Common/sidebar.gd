@@ -125,3 +125,8 @@ func set_unsaved_indicator(saved:bool = true) -> void:
 	if not saved and not %CurrentResource.text.ends_with('(*)'):
 		%CurrentResource.text = %CurrentResource.text+"(*)"
 
+
+
+func _on_logo_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		editors_manager.open_editor(editors_manager.editors['HomePage'].node)

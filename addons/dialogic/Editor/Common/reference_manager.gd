@@ -233,7 +233,7 @@ func _on_replace_pressed() -> void:
 
 func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> void:
 	var reopen_timeline := ""
-	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline Editor'].node
+	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline'].node
 	if timeline_editor.current_resource != null and timeline_editor.current_resource.resource_path in timelines:
 		reopen_timeline = timeline_editor.current_resource.resource_path
 		find_parent('EditorView').editors_manager.clear_editor(timeline_editor)

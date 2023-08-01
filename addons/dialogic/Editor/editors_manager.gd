@@ -168,9 +168,6 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 		var text:String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.UNSAVED:
 			text += "(*)"
-		toolbar.set_current_resource_text(text)
-	else:
-		toolbar.set_current_resource_text(current_editor.alternative_text)
 	
 	## This makes custom button editor-specific
 	## I think it's better without.

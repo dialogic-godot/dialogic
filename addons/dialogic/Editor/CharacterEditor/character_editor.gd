@@ -157,7 +157,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	button.pressed.connect(_on_section_button_pressed.bind(button))
 	button.focus_mode = Control.FOCUS_NONE
 	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
+	button.add_theme_color_override('icon_normal_color', get_theme_color("accent_color", "Editor"))
 	parent.add_child(button)
 	parent.add_child(edit)
 	parent.add_child(HSeparator.new())

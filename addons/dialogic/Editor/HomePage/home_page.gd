@@ -39,9 +39,11 @@ func _register():
 func show_tip(text:String='', action:String='') -> void:
 	if text.is_empty():
 		%TipBox.hide()
+		%RandomTipLabel.hide()
 		return
 	
 	%TipBox.show()
+	%RandomTipLabel.show()
 	%RandomTip.text = '[i]'+text
 	
 	if action.is_empty():

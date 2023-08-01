@@ -39,6 +39,4 @@ func hide_all_custom_buttons() -> void:
 		button.hide()
 
 
-func set_current_resource_text(text:String) -> void:
-	%CurrentResource.text = text
 

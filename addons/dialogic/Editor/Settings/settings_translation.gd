@@ -78,7 +78,7 @@ func update_csv_files() -> void:
 	var csv_lines := [] # collects all current lines
 	var old_csv_lines := {} # contains already existing csv_lines as [key] = [value, value, ...] dict
 	
-	settings_editor.editors_manager.clear_editor(settings_editor.editors_manager.editors['Timeline Editor']['node'])
+	settings_editor.editors_manager.clear_editor(settings_editor.editors_manager.editors['Timeline']['node'])
 	
 	# collect old lines in per project mode 
 	if translation_mode == TranslationModes.PER_PROJECT:
