@@ -12,6 +12,8 @@ var timeline_directory: Dictionary = {}
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	## DIRECTORIES SETUP
 	#initialize DGH, and set the local variables to references of the DGH ones
 	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's

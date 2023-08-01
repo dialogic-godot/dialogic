@@ -34,6 +34,14 @@ func _register() -> void:
 	$NoCharacterScreen.show()
 
 
+func _get_title() -> String:
+	return "Character"
+
+
+func _get_icon() -> Texture:
+	return load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+
 # Called when a character is opened somehow
 func _open_resource(resource:Resource) -> void:
 	# update resource
@@ -102,9 +110,7 @@ func new_character(path: String) -> void:
 ##############################################################################
 
 func _ready() -> void:
-	get_parent().set_tab_title(get_index(), 'Character')
-	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-	
+
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()

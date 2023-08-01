@@ -5,6 +5,12 @@ extends DialogicEditor
 
 var tips : PackedStringArray = []
 
+
+
+func _get_icon() -> Texture:
+	return load("res://addons/dialogic/Editor/Images/plugin-icon.svg")
+
+
 func _ready():
 	self_modulate = get_theme_color("font_color", "Editor")
 	self_modulate.a = 0.2
@@ -26,8 +32,6 @@ func _ready():
 
 func _register():
 	editors_manager.register_simple_editor(self)
-	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
-	get_parent().set_tab_title(get_index(), '')
 	
 	self.alternative_text = "Welcome to dialogic!"
 

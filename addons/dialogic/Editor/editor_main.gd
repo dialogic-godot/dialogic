@@ -13,6 +13,9 @@ var editor_file_dialog: EditorFileDialog
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+	
 	## REFERENCES
 	editors_manager = $Margin/EditorsManager
 	

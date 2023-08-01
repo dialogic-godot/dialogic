@@ -46,6 +46,14 @@ func _register() -> void:
 	play_timeline_button.disabled = true
 
 
+func _get_title() -> String:
+	return "Timeline"
+
+
+func _get_icon() -> Texture:
+	return get_theme_icon("TripleBar", "EditorIcons")
+
+
 ## If this editor supports editing resources, load them here (overwrite in subclass)
 func _open_resource(resource:Resource) -> void:
 	current_resource = resource
@@ -133,8 +141,6 @@ func new_timeline(path:String) -> void:
 
 func _ready():
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
-	get_parent().set_tab_title(get_index(), 'Timeline')
-	get_parent().set_tab_icon(get_index(), get_theme_icon("TripleBar", "EditorIcons"))
 	
 	# switch editor mode button
 	%SwitchEditorMode.text = "Text editor"

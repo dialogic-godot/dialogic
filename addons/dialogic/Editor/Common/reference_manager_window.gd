@@ -14,6 +14,8 @@ var icon_button :Button = null
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	icon_button = editors_manager.add_icon_button(get_theme_icon("Unlinked", "EditorIcons"), 'Manage Broken References')
 	icon_button.pressed.connect(open)
 	

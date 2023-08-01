@@ -6,6 +6,13 @@ extends HBoxContainer
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
 ################################################################################
+func _ready():
+	if owner.get_parent() is SubViewport:
+		return
+	for child in get_children():
+		if child is Button:
+			child.queue_free()
+
 
 func add_icon_button(icon: Texture, tooltip: String) -> Button:
 	var button := Button.new()

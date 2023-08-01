@@ -7,6 +7,8 @@ var reference_changes :Array[Dictionary] = []
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	%ReplacementSection.hide()
 	
 	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")

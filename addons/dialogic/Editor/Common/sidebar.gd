@@ -9,6 +9,9 @@ signal file_activated(file_path)
 
 
 func _ready():
+	if owner.get_parent() is SubViewport:
+		return
+	
 	## CONNECTIONS
 	%ResourcesList.item_selected.connect(_on_resources_list_item_selected)
 	%ResourcesList.item_clicked.connect(_on_resources_list_item_clicked)
@@ -16,6 +19,7 @@ func _ready():
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 	
 	## ICONS
+	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 	%ContentSearch.right_icon = get_theme_icon("Search", "EditorIcons")
 	%SortButton.icon = get_theme_icon("Sort", "EditorIcons")
@@ -44,6 +48,7 @@ func _on_editors_resource_opened(resource:Resource) -> void:
 
 
 func _on_editors_editor_changed(previous:DialogicEditor, current:DialogicEditor) -> void:
+	%ContentListSection.visible = current.current_resource is DialogicTimeline
 	update_resource_list()
 
 

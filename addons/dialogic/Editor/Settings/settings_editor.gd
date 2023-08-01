@@ -7,14 +7,21 @@ var button_group := ButtonGroup.new()
 var registered_sections :Array[DialogicSettingsPage] = []
 
 
+
+func _get_title() -> String:
+	return "Settings"
+
+
+func _get_icon() -> Texture:
+	return get_theme_icon("PluginScript", "EditorIcons")
+
+
 func _register():
 	editors_manager.register_simple_editor(self)
 	self.alternative_text = "Customize dialogic and it's behaviour" 
 
 
 func _ready():
-	get_parent().set_tab_icon(get_index(), get_theme_icon("PluginScript", "EditorIcons"))
-	
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_general.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_translation.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_modules.tscn")
