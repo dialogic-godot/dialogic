@@ -191,7 +191,7 @@ margin_left = 904.0
 margin_top = 5.0
 margin_right = 1024.0
 margin_bottom = 19.0
-text = "Dialogic v1.4 - DEV"
+text = "Dialogic v1.5"
 
 [node name="DocumentationNavigation" type="HBoxContainer" parent="ToolBar"]
 visible = false
