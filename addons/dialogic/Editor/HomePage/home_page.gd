@@ -17,7 +17,7 @@ func _ready():
 	
 	var edit_scale := DialogicUtil.get_editor_scale()
 	%HomePageBox.custom_minimum_size = Vector2(600, 350)*edit_scale
-
+	%TopPanel.custom_minimum_size.y = 100*edit_scale
 	%VersionLabel.set('theme_override_font_sizes/font_size', 10 * edit_scale)
 	var plugin_cfg := ConfigFile.new()
 	plugin_cfg.load("res://addons/dialogic/plugin.cfg")

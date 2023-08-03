@@ -1,11 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://chpb1mj03xjxv"]
+[gd_scene load_steps=8 format=3 uid="uid://chpb1mj03xjxv"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_translation.gd" id="1_dvmyi"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_k2lou"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_dq4j2"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_kvsma"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xy1cw"]
+[sub_resource type="Image" id="Image_2imc3"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
+image = SubResource("Image_2imc3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ije5k"]
 content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
@@ -38,7 +50,7 @@ size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="HBox/Basics"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Basics"
 
 [node name="VBox4" type="HBoxContainer" parent="HBox/Basics"]
@@ -61,7 +73,7 @@ size_flags_horizontal = 3
 
 [node name="Title2" type="Label" parent="HBox/Testing"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Testing"
 
 [node name="VBox3" type="HBoxContainer" parent="HBox/Testing"]
@@ -73,7 +85,9 @@ text = "Testing locale"
 
 [node name="HintTooltip8" parent="HBox/Testing/VBox3" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Be very careful with this button. It will try to delete any .csv and .translation files that are related to dialogic. It will also remove translation ids from all events. "
+tooltip_text = "Change this locale to test your game in a different language (only in-editor). 
+Equivalent of the testing local project setting. "
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Change this locale to test your game in a different language (only in-editor). 
 Equivalent of the testing local project setting. "
 
@@ -94,7 +108,7 @@ size_flags_horizontal = 3
 
 [node name="Title2" type="Label" parent="TranslationSettings/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Settings"
 
 [node name="Grid" type="GridContainer" parent="TranslationSettings/VBoxContainer"]
@@ -110,6 +124,8 @@ text = "Default locale"
 
 [node name="HintTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox" instance=ExtResource("2_k2lou")]
 layout_mode = 2
+tooltip_text = "This should be the local of the language your game is written in."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "This should be the local of the language your game is written in."
 
 [node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
@@ -125,7 +141,9 @@ text = "Translation file mode"
 
 [node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/VBox2" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "This should be the local of the language your game is written in."
+tooltip_text = "You can either create one csv with all the strings from the whole 
+project or one csv file per timeline (will be placed next to that timeline). "
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "You can either create one csv with all the strings from the whole 
 project or one csv file per timeline (will be placed next to that timeline). "
 
@@ -148,14 +166,15 @@ text = "Translations folder"
 
 [node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "You can either create one csv with all the strings from the whole project or one csv file per timeline (will be placed next to that timeline). "
+tooltip_text = "Choose a folder general translations will be saved to. "
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Choose a folder general translations will be saved to. "
 
 [node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_xy1cw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ije5k")
 file_mode = 2
 
 [node name="HSeparator6" type="VSeparator" parent="TranslationSettings"]
@@ -170,12 +189,13 @@ layout_mode = 2
 
 [node name="Title3" type="Label" parent="TranslationSettings/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Actions"
 
 [node name="HintTooltip4" parent="TranslationSettings/VBoxContainer2/HBoxContainer" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Choose a folder general translations will be saved to. "
+tooltip_text = "Check the Information to learn more about the individual actions."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Check the Information to learn more about the individual actions."
 
 [node name="Actions" type="GridContainer" parent="TranslationSettings/VBoxContainer2"]
@@ -189,7 +209,8 @@ text = "Update CSV files"
 
 [node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Check the Information to learn more about the individual actions."
+tooltip_text = "Will check all timelines for events that haven't been added to the csv file(s) and adds them. "
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Will check all timelines for events that haven't been added to the csv file(s) and adds them. "
 
 [node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
@@ -199,7 +220,11 @@ text = "Collect translations"
 
 [node name="HintTooltip6" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Check the Information to learn more about the individual actions."
+tooltip_text = "When you've added translations to a csv file, 
+godot will import them as .translation files. 
+These have to be added to a list (Project Settings > Localization) 
+and this is a quick way to do so."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "When you've added translations to a csv file, 
 godot will import them as .translation files. 
 These have to be added to a list (Project Settings > Localization) 
@@ -218,7 +243,10 @@ text = "Remove translations"
 
 [node name="HintTooltip7" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Check the Information to learn more about the individual actions."
+tooltip_text = "Be very careful with this button. It will try to delete any 
+.csv and .translation files that are related to dialogic. 
+It will also remove translation ids from all events. "
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Be very careful with this button. It will try to delete any 
 .csv and .translation files that are related to dialogic. 
 It will also remove translation ids from all events. "

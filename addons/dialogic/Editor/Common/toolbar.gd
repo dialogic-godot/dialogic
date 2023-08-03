@@ -7,6 +7,8 @@ extends HBoxContainer
 ## 					EDITOR BUTTONS/LABELS 
 ################################################################################
 func _ready():
+	var editor_scale := DialogicUtil.get_editor_scale()
+	custom_minimum_size.y = 100*editor_scale
 	if owner.get_parent() is SubViewport:
 		return
 	for child in get_children():

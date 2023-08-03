@@ -18,8 +18,10 @@ func _ready():
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 	
+	var editor_scale := DialogicUtil.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
+	%Logo.custom_minimum_size.y = 25*editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 	%ContentSearch.right_icon = get_theme_icon("Search", "EditorIcons")
 	%SortButton.icon = get_theme_icon("Sort", "EditorIcons")
@@ -27,7 +29,6 @@ func _ready():
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
 	
 	## MARGINS
-	var editor_scale = DialogicUtil.get_editor_scale()
 	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
 	

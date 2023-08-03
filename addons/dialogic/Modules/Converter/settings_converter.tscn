@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Converter/settings_converter.gd" id="1_3feab"]
 
 [node name="Dialogic 1 Converter" type="PanelContainer"]
-custom_minimum_size = Vector2(0, 500)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 theme_type_variation = &"DialogicPanelA"
 script = ExtResource("1_3feab")
 short_info = "This converter allows converting (some) dialogic 1 data into a usable format."
@@ -22,7 +22,7 @@ size_flags_horizontal = 3
 
 [node name="Label2" type="Label" parent="HBox/RightPanel"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Settings"
 
 [node name="CheckBox" type="CheckBox" parent="HBox/RightPanel"]
@@ -48,7 +48,7 @@ size_flags_stretch_ratio = 1.75
 
 [node name="Label" type="Label" parent="HBox/LeftPanel"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Output"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBox/LeftPanel"]

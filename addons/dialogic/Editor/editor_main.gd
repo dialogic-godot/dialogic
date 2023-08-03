@@ -95,7 +95,7 @@ func update_theme_additions():
 	
 	theme.set_type_variation('DialogicSettingsSection', 'DialogicSection')
 	theme.set_font('font', 'DialogicSettingsSection', get_theme_font("main_msdf", "EditorFonts"))
-	theme.set_color('font_color', 'DialogicSettingsSection', get_theme_color("accent_color", "Editor"))
+	theme.set_color('font_color', 'DialogicSettingsSection', get_theme_color("property_color_z", "Editor"))
 	theme.set_font_size('font_size', 'DialogicSettingsSection', get_theme_font_size("doc_size", "EditorFonts"))
 	
 	theme.set_type_variation('DialogicSectionBig', 'DialogicSection')

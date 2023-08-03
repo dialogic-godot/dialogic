@@ -28,7 +28,9 @@ func _ready() -> void:
 	
 	icon_button.add_child(dot)
 	
-	$Manager.reference_changes = DialogicUtil.get_editor_setting('reference_changes', [])
+	var old_changes :Array = DialogicUtil.get_editor_setting('reference_changes', [])
+	if !old_changes.is_empty():
+		$Manager.reference_changes = old_changes
 	
 	update_indicator()
 	

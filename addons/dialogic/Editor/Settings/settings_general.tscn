@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="3_i7rug"]
 
-[sub_resource type="Image" id="Image_bryma"]
+[sub_resource type="Image" id="Image_2imc3"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -13,10 +13,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_lce2m"]
-image = SubResource("Image_bryma")
+[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
+image = SubResource("Image_2imc3")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u4v1j"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_adqah"]
 content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
@@ -49,7 +49,7 @@ text = "Color Palette"
 [node name="HintTooltip" parent="PaletteTitle" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "These colors are used for the events."
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "These colors are used for the events."
 
 [node name="ResetColorsButton" type="Button" parent="PaletteTitle"]
@@ -57,7 +57,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Reset Colors to default"
-icon = SubResource("ImageTexture_lce2m")
+icon = SubResource("ImageTexture_udy8i")
 flat = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -101,7 +101,7 @@ layout_mode = 2
 
 [node name="SectionBehaviourTitle" type="Label" parent="HBoxContainer2"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Layout Node Behaviour"
 
 [node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_kqhx5")]
@@ -110,7 +110,7 @@ tooltip_text = "The layout scene configured in the Layout editor is automaticall
 instanced when calling Dialogic.start(). Depending on your game, 
 you might want it to be deleted after the dialogue, be hidden 
 (as reinstancing often is wasting resources) or kept visible. "
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "The layout scene configured in the Layout editor is automatically 
 instanced when calling Dialogic.start(). Depending on your game, 
 you might want it to be deleted after the dialogue, be hidden 
@@ -151,7 +151,7 @@ layout_mode = 2
 
 [node name="SectionExtensionsTitle" type="Label" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Extensions"
 
 [node name="HintTooltip" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5" instance=ExtResource("2_kqhx5")]
@@ -159,7 +159,7 @@ layout_mode = 2
 tooltip_text = "Configure where dialogic looks for custom modules.
 
 You will have to restart the project to see the change take action."
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Configure where dialogic looks for custom modules.
 
 You will have to restart the project to see the change take action."
@@ -175,10 +175,10 @@ text = "Extensions folder"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_u4v1j")
+theme_override_styles/panel = SubResource("StyleBoxFlat_adqah")
 placeholder = "res://addons/dialogic_additions/Events"
 file_mode = 2
-resource_icon = SubResource("ImageTexture_lce2m")
+resource_icon = SubResource("ImageTexture_udy8i")
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer6"]
 layout_mode = 2
@@ -203,7 +203,7 @@ text = "Extension Creator "
 [node name="HintTooltip" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "Use the Exension Creator to quickly setup custom modules!"
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Use the Exension Creator to quickly setup custom modules!"
 
 [node name="CreateExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox"]
@@ -261,13 +261,13 @@ layout_mode = 2
 
 [node name="TimerTitle" type="Label" parent="HBoxContainer7"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Timer processing"
 
 [node name="HintTooltip" parent="HBoxContainer7" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
@@ -289,13 +289,13 @@ layout_mode = 2
 
 [node name="SectionSections" type="Label" parent="HBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Section Order"
 
 [node name="HintTooltip" parent="HBoxContainer" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "You can change the order of the event sections here. "
-texture = SubResource("ImageTexture_lce2m")
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "You can change the order of the event sections here. "
 
 [node name="SectionList" type="Tree" parent="."]

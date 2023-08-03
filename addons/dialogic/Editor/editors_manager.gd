@@ -39,18 +39,15 @@ func _ready() -> void:
 	_add_editor("res://addons/dialogic/Editor/HomePage/home_page.tscn")
 	_add_editor("res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn")
 	_add_editor("res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn")
-	_add_editor("res://addons/dialogic/Editor/Settings/settings_editor.tscn")
 	
 	
 	# Load custom editors
 	for indexer in DialogicUtil.get_indexers():
 		for editor_path in indexer._get_editors():
 			_add_editor(editor_path)
+	_add_editor("res://addons/dialogic/Editor/Settings/settings_editor.tscn")
 	
 	tabbar.tab_clicked.connect(_on_editors_tab_changed)
-	
-	tabbar.move_tab(editors_holder.get_node('Settings').get_index(), tabbar.tab_count-1)
-	editors_holder.move_child(editors_holder.get_node('Settings'), -1)
 	
 	# Needs to be done here to make sure this node is ready when doing the register calls
 	for editor in editors_holder.get_children():

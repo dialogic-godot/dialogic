@@ -18,7 +18,7 @@ size_flags_horizontal = 3
 
 [node name="Title3" type="Label" parent="HistoryOptions"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Simple History"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HistoryOptions"]
@@ -41,7 +41,7 @@ autowrap_mode = 3
 
 [node name="Title" type="Label" parent="HistoryOptions"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Full History"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="HistoryOptions"]
@@ -64,7 +64,7 @@ autowrap_mode = 3
 
 [node name="Title2" type="Label" parent="HistoryOptions"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Already read History"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="HistoryOptions"]

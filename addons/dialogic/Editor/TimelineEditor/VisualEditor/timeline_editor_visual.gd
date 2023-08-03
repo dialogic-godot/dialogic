@@ -228,7 +228,8 @@ func load_event_buttons() -> void:
 		while event_resource.event_sorting_index < sections[event_resource.event_category].get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			sections[event_resource.event_category].move_child(button, button.get_index()-1)
 	
-	var sections_order := DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	
 	# Sort event sections
 	for section in sections_order:
 		if %RightSidebar.get_child(0).has_node(section):
@@ -332,7 +333,7 @@ func _input(event:InputEvent) -> void:
 		
 		"Up": #select previous
 			if (len(selected_items) == 1):
-				var prev := max(0, selected_items[0].get_index() - 1)
+				var prev := maxi(0, selected_items[0].get_index() - 1)
 				var prev_node := %Timeline.get_child(prev)
 				if (prev_node != selected_items[0]):
 					selected_items = []
@@ -341,7 +342,7 @@ func _input(event:InputEvent) -> void:
 		
 		"Down": #select next
 			if (len(selected_items) == 1):
-				var next := min(%Timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
+				var next := mini(%Timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
 				var next_node := %Timeline.get_child(next)
 				if (next_node != selected_items[0]):
 					selected_items = []
@@ -519,7 +520,7 @@ func delete_selected_events() -> void:
 		return
 	
 	# get next element
-	var next := min(%Timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
+	var next := mini(%Timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
 	var next_node := %Timeline.get_child(next)
 	if _is_item_selected(next_node):
 		next_node = null
@@ -832,7 +833,7 @@ func move_blocks(blocks:Array, offset:int) -> void:
 		blocks = blocks.duplicate()
 		blocks.reverse()
 	for block in blocks:
-		var to_idx := max(min(block.get_index()+offset, %Timeline.get_child_count()-1), 0)
+		var to_idx := maxi(min(block.get_index()+offset, %Timeline.get_child_count()-1), 0)
 		if !%Timeline.get_child(to_idx) in blocks:
 			move_block_to_index(block.get_index(), to_idx)
 

@@ -7,7 +7,6 @@ var button_group := ButtonGroup.new()
 var registered_sections :Array[DialogicSettingsPage] = []
 
 
-
 func _get_title() -> String:
 	return "Settings"
 
@@ -22,6 +21,9 @@ func _register():
 
 
 func _ready():
+	if get_parent() is SubViewport:
+		return
+	
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_general.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_translation.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_modules.tscn")
@@ -84,6 +86,8 @@ func add_registered_sections() -> void:
 		var panel := PanelContainer.new()
 		panel.theme_type_variation = "DialogicPanelA"
 		panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if section.size_flags_vertical == Control.SIZE_EXPAND_FILL:
+			panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		inner_vbox.add_child(panel)
 		
 		
@@ -113,7 +117,8 @@ func add_registered_sections() -> void:
 		button.expand_icon = true
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.flat = true
-		button.add_theme_color_override('font_pressed_color', get_theme_color('warning_color', 'Editor'))
+		button.add_theme_color_override('font_pressed_color', get_theme_color("property_color_z", "Editor"))
+		button.add_theme_color_override('font_hover_color', get_theme_color('warning_color', 'Editor'))
 		button.pressed.connect(open_tab.bind(vbox))
 		if section._is_feature_tab():
 			%FeatureTabs.add_child(button)

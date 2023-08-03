@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://uarvgnbrcltm"]
+[gd_scene load_steps=5 format=3 uid="uid://uarvgnbrcltm"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/settings_choices.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_nxutt"]
+
+[sub_resource type="Image" id="Image_2imc3"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
+image = SubResource("Image_2imc3")
 
 [node name="Choices" type="VBoxContainer"]
 anchors_preset = 15
@@ -17,7 +29,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="VBoxContainer2"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Behaviour"
 
 [node name="VBoxContainer" type="GridContainer" parent="."]
@@ -45,6 +57,8 @@ text = "Choices appear"
 
 [node name="HintTooltip" parent="VBoxContainer/AppearModeLabel" instance=ExtResource("2_nxutt")]
 layout_mode = 2
+tooltip_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
 
 [node name="RevealDelayLabel" type="HBoxContainer" parent="VBoxContainer"]
@@ -82,7 +96,8 @@ text = "Delay before choices can be pressed"
 
 [node name="HintTooltip2" parent="VBoxContainer/DelayLabel" instance=ExtResource("2_nxutt")]
 layout_mode = 2
-tooltip_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
+tooltip_text = "Adding a small delay before choices can be activated can prevent accidentally choosing an option."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Adding a small delay before choices can be activated can prevent accidentally choosing an option."
 
 [node name="Delay" type="SpinBox" parent="VBoxContainer"]
@@ -99,7 +114,10 @@ text = "Default behaviour for false choices"
 
 [node name="HintTooltip3" parent="VBoxContainer/DefaultFalseBehaviourLabel" instance=ExtResource("2_nxutt")]
 layout_mode = 2
-tooltip_text = "Adding a small delay before choices can be activated can prevent accidentally choosing an option."
+tooltip_text = "Define the default behaviour (hide or disable) for choices that have a condition that isn't met.
+
+Choices can overwrite this setting individually."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "Define the default behaviour (hide or disable) for choices that have a condition that isn't met.
 
 Choices can overwrite this setting individually."
@@ -122,14 +140,13 @@ layout_mode = 2
 
 [node name="Title2" type="Label" parent="HotkeySelection"]
 layout_mode = 2
-theme_type_variation = &"DialogicSection"
+theme_type_variation = &"DialogicSettingsSection"
 text = "Choice Hotkeys"
 
 [node name="HintTooltip4" parent="HotkeySelection" instance=ExtResource("2_nxutt")]
 layout_mode = 2
-tooltip_text = "Define the default behaviour (hide or disable) for choices that have a condition that isn't met.
-
-Choices can overwrite this setting individually."
+tooltip_text = "You can add more complex hotkeys (or individual ones) by editing the choice buttons of your layout scene."
+texture = SubResource("ImageTexture_udy8i")
 hint_text = "You can add more complex hotkeys (or individual ones) by editing the choice buttons of your layout scene."
 
 [node name="VBoxContainer3" type="HBoxContainer" parent="."]
