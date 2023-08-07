@@ -140,15 +140,15 @@ func _on_batch_loaded():
 			create_end_branch_event(%Timeline.get_child_count(), ev)
 	opener_events_stack = []
 	indent_events()
+	update_content_list()
 	_building_timeline = false
-	
-
 
 
 func clear_timeline_nodes():
 	deselect_all_items()
 	for event in %Timeline.get_children():
 		event.free()
+
 
 ##################### SETUP ####################################################
 ################################################################################
@@ -158,6 +158,29 @@ func _ready():
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 	
 	batch_loaded.connect(_on_batch_loaded)
+	
+	await find_parent('EditorView').ready
+	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
+
+
+func _on_content_item_clicked(label:String) -> void:
+	if label == "~ Top":
+		scroll_to_piece(0)
+		return
+	
+	for event in %Timeline.get_children():
+		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
+			if event.resource.name == label:
+				scroll_to_piece(event.get_index())
+				return
+
+
+func update_content_list():
+	var labels :PackedStringArray = []
+	for event in %Timeline.get_children():
+		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
+			labels.append(event.resource.name)
+	timeline_editor.editors_manager.sidebar.update_content_list(labels)
 
 
 func load_event_buttons() -> void:
@@ -761,6 +784,8 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	piece.resource = event_resource
 	event_resource._editor_node = piece
 	piece.content_changed.connect(something_changed)
+	if event_resource.event_name == "Label":
+		piece.content_changed.connect(update_content_list)
 	if at_index == -1:
 		if len(selected_items) != 0:
 			selected_items[0].add_sibling(piece)
@@ -860,9 +885,7 @@ func move_block_to_index(block_index:int, index:int) -> void:
 ################################################################################
 
 func scroll_to_piece(piece_index:int) -> void:
-	var height := 0
-	for i in range(0, piece_index):
-		height += %Timeline.get_child(i).size.y
+	var height :int = %Timeline.get_child(piece_index).position.y
 	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
 		%TimelineArea.scroll_vertical = height
 

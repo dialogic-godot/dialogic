@@ -5,6 +5,8 @@ extends Control
 
 signal file_activated(file_path)
 
+signal content_item_activated(item_name)
+
 @onready var editors_manager = get_parent().get_parent()
 
 
@@ -18,13 +20,13 @@ func _ready():
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 	
+	%ContentList.item_selected.connect(func (idx:int): content_item_activated.emit(%ContentList.get_item_text(idx)))
+	
 	var editor_scale := DialogicUtil.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Logo.custom_minimum_size.y = 25*editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
-	%ContentSearch.right_icon = get_theme_icon("Search", "EditorIcons")
-	%SortButton.icon = get_theme_icon("Sort", "EditorIcons")
 	
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
 	
@@ -104,7 +106,7 @@ func _on_resources_list_item_selected(index:int) -> void:
 	if %ResourcesList.get_item_metadata(index) == null:
 		return
 	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
-	
+
 
 func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	# If clicked with the middle mouse button, remove the item from the list
@@ -115,6 +117,7 @@ func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_but
 				new_list.append(entry)
 		DialogicUtil.set_editor_setting('last_resources', new_list)
 		%ResourcesList.remove_item(index)
+
 
 func _on_search_text_changed(new_text:String) -> void:
 	update_resource_list()
@@ -127,7 +130,14 @@ func set_unsaved_indicator(saved:bool = true) -> void:
 		%CurrentResource.text = %CurrentResource.text+"(*)"
 
 
-
-func _on_logo_gui_input(event):
+func _on_logo_gui_input(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		editors_manager.open_editor(editors_manager.editors['HomePage'].node)
+
+
+func update_content_list(list:PackedStringArray) -> void:
+	%ContentList.clear()
+	%ContentList.add_item('~ Top')
+	for i in list:
+		if i.is_empty(): continue
+		%ContentList.add_item(i)

@@ -23,6 +23,9 @@ var completion_text_character_getter_regex := RegEx.new()
 var completion_shortcodes := {}
 var completion_text_effects := {}
  
+
+var label_regex := RegEx.create_from_string('\\[label *name ?= ?"(?<name>.+)"')
+
 func _ready():
 	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
 	
@@ -32,15 +35,20 @@ func _ready():
 	completion_character_getter_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 	completion_text_character_getter_regex.compile("\\W*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(1)\"|)")
 	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?"+String.chr(0xFFFF))
+	
+	await find_parent('EditorView').ready
+	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
 
 func _on_text_editor_text_changed():
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
+	$UpdateTimer.start()
 
 
 func clear_timeline():
 	text = ''
+	update_content_list()
 
 
 func load_timeline(timeline:DialogicTimeline) -> void:
@@ -49,6 +57,8 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 	text = timeline.as_text()
 	
 	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
+	await get_tree().process_frame
+	update_content_list()
 
 
 func save_timeline():
@@ -188,6 +198,33 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		set_caret_column(get_line_column_at_pos(at_position).x)
 		set_caret_line(get_line_column_at_pos(at_position).y)
 		insert_text_at_caret('"'+data.files[0]+'"')
+
+
+
+func _on_update_timer_timeout():
+	update_content_list()
+
+
+func update_content_list():
+	var labels :PackedStringArray = []
+	for i in label_regex.search_all(text):
+		labels.append(i.get_string('name'))
+	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+
+
+func _on_content_item_clicked(label:String) -> void:
+	if label == "~ Top":
+		set_caret_line(0)
+		set_caret_column(0)
+		adjust_viewport_to_caret()
+		return
+	
+	for i in label_regex.search_all(text):
+		if i.get_string('name') == label:
+			set_caret_column(0)
+			set_caret_line(text.count('\n', 0, i.get_start()+1))
+			center_viewport_to_caret()
+			return
 
 
 ################################################################################

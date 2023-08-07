@@ -148,6 +148,8 @@ func _ready():
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
 	var _scale := DialogicUtil.get_editor_scale()
 	%SwitchEditorMode.custom_minimum_size.x = 200 * _scale
+	
+	
 
 
 
