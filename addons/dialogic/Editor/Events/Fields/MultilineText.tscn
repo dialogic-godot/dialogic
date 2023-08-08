@@ -13,7 +13,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_ivuc0"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_6ufpd"]
 script = ExtResource("1_wj4ha")
 
 [node name="MultilineText" type="CodeEdit"]
@@ -23,7 +23,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bofjx")
 wrap_mode = 1
-syntax_highlighter = SubResource("SyntaxHighlighter_ivuc0")
+syntax_highlighter = SubResource("SyntaxHighlighter_6ufpd")
 scroll_fit_content_height = true
 symbol_lookup_on_click = true
 delimiter_strings = Array[String]([])

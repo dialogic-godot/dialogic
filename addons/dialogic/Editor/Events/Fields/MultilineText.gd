@@ -10,7 +10,7 @@ func _ready() -> void:
 	text_changed.connect(_on_text_changed)
 	syntax_highlighter = load('res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd').new()
 	syntax_highlighter.mode = syntax_highlighter.Modes.TEXT_EVENT_ONLY
-	
+
 
 func _on_text_changed(value := "") -> void:
 	emit_signal("value_changed", property_name, text)

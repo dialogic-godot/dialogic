@@ -50,7 +50,7 @@ func resume_from_last_jump() -> void:
 		dialogic.current_state_info['jump_stack'][-1].timeline, 
 		dialogic.current_state_info['jump_stack'][-1].index+1)
 	dialogic.current_state_info['jump_stack'].pop_back()
-	returned_from_jump.emit({'sub_timeline':sub_timeline, 'label':dialogic.current_timeline.get_event(dialogic.current_event_idx-1).name})
+	returned_from_jump.emit({'sub_timeline':sub_timeline, 'label':dialogic.current_timeline.get_event(dialogic.current_event_idx-1).label_name})
 
 
 func is_jump_stack_empty():

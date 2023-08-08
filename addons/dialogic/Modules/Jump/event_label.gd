@@ -16,7 +16,7 @@ var name: String = ""
 ################################################################################
 
 func _execute() -> void:
-	# This event is mainly implemented in the DialogicGameHandlers jump_to_label() method.
+	# This event is mainly implemented in the Jump subsystem.
 	finish()
 
 
@@ -39,11 +39,24 @@ func _get_icon() -> Resource:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+func to_text() -> String:
+	return "label "+name
 
-func get_shortcode() -> String:
-	return "label"
+
+func from_text(string:String) -> void:
+	var regex = RegEx.create_from_string('label +(?<name>.+)')
+	var result := regex.search(string.strip_edges())
+	name = result.get_string('name')
 
 
+func is_valid_event(string:String) -> bool:
+	if string.strip_edges().begins_with("label "):
+		return true
+	return false
+
+
+# this is only here to provide a list of default values
+# this way the module manager can add custom default overrides to this event.
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
