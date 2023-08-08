@@ -3,9 +3,15 @@ extends CodeEdit
 
 ## Sub-Editor that allows editing timelines in a text format.
 
+@onready var timeline_editor := get_parent().get_parent()
+
+var label_regex := RegEx.create_from_string('\\[label *name ?= ?"(?<name>.+)"')
+
 func _ready():
 	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
-
+	
+	await find_parent('EditorView').ready
+	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
 func _on_text_editor_text_changed():
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
