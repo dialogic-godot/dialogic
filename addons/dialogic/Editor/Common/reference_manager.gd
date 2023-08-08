@@ -134,7 +134,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 				var line := timeline_text.get_slice('\n', line_number-1)
 				finds.append({
 				'match':i,
-			 	'timeline':timeline_path,
+				'timeline':timeline_path,
 				'info': regex_info[1], 
 				'line_number': line_number,
 				'line': line,
@@ -213,7 +213,7 @@ func update_count_coloring() -> void:
 
 
 func _on_replace_pressed() -> void:
-	var to_be_repalced :Array[Dictionary]= []
+	var to_be_replaced :Array[Dictionary]= []
 	var item :TreeItem = %ReferenceTree.get_root()
 	var affected_timelines :Array[String]= []
 	
@@ -224,11 +224,11 @@ func _on_replace_pressed() -> void:
 			continue
 		
 		if item.is_checked(0):
-			to_be_repalced.append(item.get_metadata(0))
-			to_be_repalced[-1]['f_item'] = item
+			to_be_replaced.append(item.get_metadata(0))
+			to_be_replaced[-1]['f_item'] = item
 			if !item.get_metadata(0).timeline in affected_timelines:
 				affected_timelines.append(item.get_metadata(0).timeline)
-	replace(affected_timelines, to_be_repalced)
+	replace(affected_timelines, to_be_replaced)
 
 
 func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> void:
