@@ -20,16 +20,15 @@ var text_effects := {}
 var parsed_text_effect_info : Array[Dictionary]= []
 var text_effects_regex := RegEx.new()
 var text_modifiers := []
-
 var input_handler :Node = null
 
-var autopauses := {} 
+var autopauses := {}
 
 ####################################################################################################
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
@@ -94,7 +93,7 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 				if Dialogic.Animation.is_animating():
 					await Dialogic.Animation.finished
 	
-	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
+	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
@@ -170,6 +169,7 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 
 # instant skips the signal and thus possible animations
 func hide_text_boxes(instant:=false) -> void:
+	dialogic.current_state_info['text'] = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
@@ -261,6 +261,7 @@ func collect_text_effects() -> void:
 				continue
 			text_effect_names += effect.command +"|"
 	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>"+text_effect_names.trim_suffix("|")+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+
 
 
 ## Returns the string with all text effects removed
@@ -417,10 +418,10 @@ func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> voi
 		set_autoadvance(true, argument, true)
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\[[^\\[\\]]+(\\/[^\\]]*)\\]")
+var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string :String= replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
+		var string :String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
 		string = string.replace('//', '<slash>')
 		var list :PackedStringArray= string.split('/')
 		var item :String= list[randi()%len(list)]

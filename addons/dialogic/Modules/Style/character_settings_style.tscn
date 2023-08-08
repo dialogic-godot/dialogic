@@ -24,5 +24,6 @@ size_flags_vertical = 0
 [node name="InfoLabel" type="Label" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
+theme_type_variation = &"DialogicHintText"
 text = "Whenever this character speaks, dialogic will switch to this style. It has to be defined in the layout scene and is a pretty advanced feature."
 autowrap_mode = 3

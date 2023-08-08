@@ -15,6 +15,7 @@ var character_event_regex := RegEx.new()
 var shortcode_regex := RegEx.new()
 var shortcode_param_regex := RegEx.new()
 var text_effects_regex := RegEx.new()
+var text_random_word_regex := RegEx.new()
 var settings_event_regex := RegEx.new()
 
 ## Colors
@@ -77,6 +78,7 @@ func _init():
 	text_effects += "b|i|u|s|code|p|center|left|right|fill|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
 	text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	character_event_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
+	text_random_word_regex.compile("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 
 
 func _get_line_syntax_highlighting(line:int) -> Dictionary:
@@ -159,16 +161,41 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			dict[result.get_start('portrait')] = {"color":character_portrait_color}
 			dict[result.get_end('portrait')] = {"color":normal_color}
 	if result.get_string('text'):
-		var effects_result = text_effects_regex.search_all(str_line)
+		var effects_result := text_effects_regex.search_all(str_line)
 		for eff in effects_result:
 			dict[eff.get_start()] = {"color":text_effect_color}
 			dict[eff.get_end()] = {"color":normal_color}
 		dict = color_region(dict, variable_color, str_line, '{', '}', result.get_start('text'))
+		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
+			var color := string_color
+			color = color.lerp(normal_color, 0.4)
+			dict[replace_mod_match.get_start()+result.get_start('text')] = {'color':string_color}
+			var offset := 1
+			for b in replace_mod_match.get_string().trim_suffix('>').trim_prefix('<').split('/'):
+				color.h = wrap(color.h+0.2, 0, 1)
+				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':color}
+				offset += len(b)
+				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':string_color}
+				offset += 1
+			dict[replace_mod_match.get_end()+result.get_start('text')] = {'color':normal_color}
 	
-	return dict
+	
+	return fix_dict(dict)
 
+
+func fix_dict(dict:Dictionary) -> Dictionary:
+	var d := {}
+	var k := dict.keys()
+	k.sort()
+	for i in k:
+		d[i] = dict[i]
+	return d
+	
 
 func color_condition(dict:Dictionary, line:String, from:int = 0, to:int = 0) -> Dictionary:
+	dict = color_region(dict, variable_color, line, '{', '}', from, to)
+	dict = color_region(dict, string_color, line, '"', '"', from, to)
+	
 	dict = color_word(dict, code_flow_color, line, 'or',  from, to)
 	dict = color_word(dict, code_flow_color, line, 'and', from, to)
 	dict = color_word(dict, code_flow_color, line, '==',  from, to)
@@ -178,8 +205,6 @@ func color_condition(dict:Dictionary, line:String, from:int = 0, to:int = 0) -> 
 	dict = color_word(dict, code_flow_color, line, '>=',  from, to)
 	dict = color_word(dict, code_flow_color, line, '<=',  from, to)
 	
-	dict = color_region(dict, variable_color, line, '{', '}', from, to)
-	dict = color_region(dict, string_color, line, '"', '"', from, to)
 	return dict
 
 

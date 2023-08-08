@@ -11,7 +11,7 @@ signal input_shown(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	hide_text_input()
 
 

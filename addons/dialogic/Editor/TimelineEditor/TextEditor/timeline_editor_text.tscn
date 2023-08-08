@@ -27,6 +27,9 @@ auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource("1_1kbx2")
 
+[node name="UpdateTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="CodeCompletionHelper" type="Node" parent="."]
 script = ExtResource("3_3bgmj")
 
@@ -34,3 +37,4 @@ script = ExtResource("3_3bgmj")
 [connection signal="symbol_lookup" from="." to="." method="_on_symbol_lookup"]
 [connection signal="symbol_validate" from="." to="." method="_on_symbol_validate"]
 [connection signal="text_changed" from="." to="." method="_on_text_editor_text_changed"]
+[connection signal="timeout" from="UpdateTimer" to="." method="_on_update_timer_timeout"]

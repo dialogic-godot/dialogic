@@ -3,13 +3,13 @@ class_name DialogicCharacterEvent
 extends DialogicEvent
 ## Event that allows to manipulate character portraits.
 
-enum ActionTypes {Join, Leave, Update}
+enum Actions {JOIN, LEAVE, UPDATE}
 
 
 ### Settings
 
-## The type of action of this event (JOIN/LEAVE/UPDATE). See [ActionTypes].
-var action_type : int =  ActionTypes.Join
+## The type of action of this event (JOIN/LEAVE/UPDATE). See [Actions].
+var action : int =  Actions.JOIN
 ## The character that will join/leave/update.
 var character : DialogicCharacter = null
 ## For Join/Update, this will be the portrait of the character that is shown.
@@ -68,15 +68,15 @@ var _character_directory: Dictionary = {}
 ################################################################################
 
 func _execute() -> void:
-	match action_type:
-		ActionTypes.Join:
+	match action:
+		Actions.JOIN:
 			if character:
 				if dialogic.has_subsystem('History') and !dialogic.Portraits.is_character_joined(character):
 					dialogic.History.store_simple_history_entry(character.display_name + " joined", event_name, {'character': character.display_name, 'mode':'Join'})
 			
 				await dialogic.Portraits.join_character(character, portrait, position, mirrored, z_index, extra_data, animation_name, animation_length, animation_wait)
 
-		ActionTypes.Leave:
+		Actions.LEAVE:
 			if _character_from_directory == '--All--':
 				if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
@@ -89,7 +89,7 @@ func _execute() -> void:
 				
 				await dialogic.Portraits.leave_character(character, animation_name, animation_length, animation_wait)
 		
-		ActionTypes.Update:
+		Actions.UPDATE:
 			if !character or !dialogic.Portraits.is_character_joined(character):
 				finish()
 				return
@@ -107,10 +107,10 @@ func _execute() -> void:
 				var anim :DialogicAnimation = dialogic.Portraits.animate_character(character, animation_name, animation_length, animation_repeats)
 				
 				if animation_wait:
-					dialogic.current_state = Dialogic.states.ANIMATING
+					dialogic.current_state = Dialogic.States.ANIMATING
 					await anim.finished
-					dialogic.current_state = Dialogic.states.IDLE
-			
+					dialogic.current_state = Dialogic.States.IDLE
+	
 	finish()
 
 
@@ -137,15 +137,15 @@ func _get_icon() -> Resource:
 func to_text() -> String:
 	var result_string := ""
 	
-	match action_type:
-		ActionTypes.Join: result_string += "Join "
-		ActionTypes.Leave: result_string += "Leave "
-		ActionTypes.Update: result_string += "Update "
+	match action:
+		Actions.JOIN: result_string += "Join "
+		Actions.LEAVE: result_string += "Leave "
+		Actions.UPDATE: result_string += "Update "
 	
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 	
 	if character or _character_from_directory == '--All--':
-		if action_type == ActionTypes.Leave and _character_from_directory == '--All--':
+		if action == Actions.LEAVE and _character_from_directory == '--All--':
 			result_string += "--All--"
 		else: 
 			var name := ""
@@ -156,10 +156,10 @@ func to_text() -> String:
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
 			result_string += name
-			if portrait.strip_edges() != default_values.get('portrait', '') and action_type != ActionTypes.Leave:
+			if portrait.strip_edges() != default_values.get('portrait', '') and action != Actions.LEAVE:
 				result_string+= " ("+portrait+")"
 	
-	if action_type != ActionTypes.Leave and position != default_values.get('position', 1):
+	if action != Actions.LEAVE:
 		result_string += " "+str(position)
 	
 	if animation_name != "" or z_index != default_values.get('z_index', 0) or mirrored != default_values.get('mirrored', false) or position_move_time != default_values.get('position_move_time', 0) or extra_data != default_values.get('extra_data', ""):
@@ -211,14 +211,14 @@ func from_text(string:String) -> void:
 	
 	match result.get_string('type'):
 		"Join":
-			action_type = ActionTypes.Join
+			action = Actions.JOIN
 		"Leave":
-			action_type = ActionTypes.Leave
+			action = Actions.LEAVE
 		"Update":
-			action_type = ActionTypes.Update
+			action = Actions.UPDATE
 	
 	if result.get_string('name').strip_edges():
-		if action_type == ActionTypes.Leave and result.get_string('name').strip_edges() == "--All--":
+		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
 			_character_from_directory = '--All--'
 		else: 
 			var name := result.get_string('name').strip_edges()
@@ -250,7 +250,7 @@ func from_text(string:String) -> void:
 
 	if result.get_string('position'):
 		position = result.get_string('position').to_int()
-	elif action_type == ActionTypes.Update:
+	elif action == Actions.UPDATE:
 		# Override the normal default if it's an Update
 		position = 0 
 	
@@ -273,11 +273,11 @@ func from_text(string:String) -> void:
 			animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
 		#repeat is supported on Update, the other two should not be checking this
-			if action_type == ActionTypes.Update:
+			if action == Actions.UPDATE:
 				animation_repeats = int(shortcode_params.get('repeat', 1))
 				position_move_time = shortcode_params.get('move_time', 0.0)
 		#move time is only supported on Update, but it isnt part of the animations so its separate
-		if action_type == ActionTypes.Update:
+		if action == Actions.UPDATE:
 			if typeof(shortcode_params.get('move_time', 0)) == TYPE_STRING:	
 				position_move_time = shortcode_params.get('move_time', 0.0).to_float()
 		
@@ -295,11 +295,11 @@ func from_text(string:String) -> void:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action_type" 	: {"property": "action_type", 					"default": 0, 
+		"action" 		: {"property": "action", 					"default": 0, 
 							"suggestions": func(): return {'Join':
-										{'value':ActionTypes.Join}, 
-										'Leave':{'value':ActionTypes.Leave}, 
-										'Update':{'value':ActionTypes.Update}}},
+										{'value':Actions.JOIN}, 
+										'Leave':{'value':Actions.LEAVE}, 
+										'Update':{'value':Actions.UPDATE}}},
 		"character" 	: {"property": "_character_from_directory", 	"default": ""},
 		"portrait" 		: {"property": "portrait", 						"default": ""},
 		"position" 		: {"property": "position", 						"default": 1},
@@ -327,26 +327,26 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit('action_type', ValueType.FixedOptionSelector, '', '', {
+	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
 		'selector_options': [
 			{
 				'label': 'Join',
-				'value': ActionTypes.Join,
+				'value': Actions.JOIN,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/join.svg")
 			},
 			{
 				'label': 'Leave',
-				'value': ActionTypes.Leave,
+				'value': Actions.LEAVE,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/leave.svg")
 			},
 			{
 				'label': 'Update',
-				'value': ActionTypes.Update,
+				'value': Actions.UPDATE,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
 			}
 		]
 	})
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', 
+	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, '', '', 
 			{'empty_text' 		: 'Character', 
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
@@ -354,40 +354,40 @@ func build_event_editor() -> void:
 			'autofocus'			: true})
 	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
 	
-	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
+	add_header_edit('portrait', ValueType.COMPLEX_PICKER, '', '', 
 			{'empty_text' 		: 'Default', 
 			'suggestions_func' 	: get_portrait_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'should_show_portrait_selector()')
-	add_header_edit('position', ValueType.Integer, ' at position', '', {}, 
-			'character != null and !has_no_portraits() and action_type != %s' %ActionTypes.Leave)
+	add_header_edit('position', ValueType.INTEGER, ' at position', '', {}, 
+			'character != null and !has_no_portraits() and action != %s' %Actions.LEAVE)
 	
 	# Body
-	add_body_edit('animation_name', ValueType.ComplexPicker, 'Animation:', '', 
+	add_body_edit('animation_name', ValueType.COMPLEX_PICKER, 'Animation:', '', 
 			{'suggestions_func' 	: get_animation_suggestions, 
 			'editor_icon' 			: ["Animation", "EditorIcons"], 
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true}, 
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.Float, 'Length:', '', {}, 
+	add_body_edit('animation_length', ValueType.FLOAT, 'Length:', '', {}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_wait', ValueType.Bool, 'Wait for animation to finish:', '', {}, 
+	add_body_edit('animation_wait', ValueType.BOOL, 'Wait for animation to finish:', '', {}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.Integer, 'Repeat:', '', {},
-			'should_show_animation_options() and !animation_name.is_empty() and action_type == %s)' %ActionTypes.Update)
-	add_body_edit('z_index', ValueType.Integer, 'Z-index:', "",{},
-			'action_type != %s' %ActionTypes.Leave)
-	add_body_edit('mirrored', ValueType.Bool, 'Mirrored:', "",{},
-			'action_type != %s' %ActionTypes.Leave)
-	add_body_edit('position_move_time', ValueType.Float, 'Movement duration:', '', {}, 
-			'action_type == %s' %ActionTypes.Update)
+	add_body_edit('animation_repeats', ValueType.INTEGER, 'Repeat:', '', {},
+			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
+	add_body_edit('z_index', ValueType.INTEGER, 'Z-index:', "",{},
+			'action != %s' %Actions.LEAVE)
+	add_body_edit('mirrored', ValueType.BOOL, 'Mirrored:', "",{},
+			'action != %s' %Actions.LEAVE)
+	add_body_edit('position_move_time', ValueType.FLOAT, 'Movement duration:', '', {}, 
+			'action == %s' %Actions.UPDATE)
 
 
 func should_show_animation_options() -> bool:
 	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--' 
 
 func should_show_portrait_selector() -> bool:
-	return character != null and len(character.portraits) > 1 and action_type != ActionTypes.Leave
+	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
@@ -397,12 +397,12 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = Engine.get_meta('dialogic_character_directory')
+	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	if action_type == ActionTypes.Leave:
+	if action == Actions.LEAVE:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
 	for resource in _character_directory.keys():
 		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
@@ -412,9 +412,9 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	if action_type == ActionTypes.Update:
+	if action == Actions.UPDATE:
 		suggestions["Don't Change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	if action_type == ActionTypes.Join:
+	if action == Actions.JOIN:
 		suggestions["Default portrait"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if character != null:
 		for portrait in character.portraits:
@@ -425,21 +425,21 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 func get_animation_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	
-	match action_type:
-		ActionTypes.Join, ActionTypes.Leave:
+	match action:
+		Actions.JOIN, Actions.LEAVE:
 			suggestions['Default'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-		ActionTypes.Update:
+		Actions.UPDATE:
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for anim in list_animations():
-		match action_type:
-			ActionTypes.Join:
+		match action:
+			Actions.JOIN:
 				if '_in' in anim.get_file():
 					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-			ActionTypes.Leave:
+			Actions.LEAVE:
 				if '_out' in anim.get_file():
 					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-			ActionTypes.Update:
+			Actions.UPDATE:
 				if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
 					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 					continue

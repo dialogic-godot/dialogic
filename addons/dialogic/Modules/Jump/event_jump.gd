@@ -89,15 +89,15 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_timeline_file', ValueType.ComplexPicker, 'to', '', {
+	add_header_edit('_timeline_file', ValueType.COMPLEX_PICKER, 'to', '', {
 		'file_extension': '.dtl',
 		'suggestions_func': get_timeline_suggestions,
 		'editor_icon': ["TripleBar", "EditorIcons"],
 		'empty_text': '(this timeline)',
 		'autofocus':true
 	})
-	add_header_edit("label_name", ValueType.SinglelineText, "at", '', {'placeholder':'the beginning'})
-	add_body_edit("return_after", ValueType.Bool, "Return to this spot after completed?")
+	add_header_edit("label_name", ValueType.SINGLELINE_TEXT, "at", '', {'placeholder':'the beginning'})
+	add_body_edit("return_after", ValueType.BOOL, "Return to this spot after completed?")
 
 
 func get_timeline_suggestions(filter:String= "") -> Dictionary:
@@ -106,6 +106,6 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
-	for resource in Engine.get_meta('dialogic_timeline_directory').keys():
-		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+	for resource in Engine.get_main_loop().get_meta('dialogic_timeline_directory').keys():
+		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_main_loop().get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions

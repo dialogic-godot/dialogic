@@ -1,7 +1,7 @@
 @tool
 extends DialogicEditor
 
-enum LayoutModes {Preset, Custom, None}
+enum LayoutModes {PRESET, CUSTOM, NONE}
 
 var layouts_info := {}
 var customization_editor_info := {}
@@ -10,6 +10,15 @@ var customization_editor_info := {}
 ################################################################################
 ##						EDITOR REGISTERING
 ################################################################################
+
+func _get_title() -> String:
+	return "Layouts"
+
+
+func _get_icon() -> Texture:
+	return load(DialogicUtil.get_module_path('LayoutEditor').path_join("styles_icon.svg"))
+
+
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:
 	editors_manager.register_simple_editor(self)
@@ -39,9 +48,6 @@ func _ready() -> void:
 	get_theme_icon("NodeInfo", "EditorIcons")
 	get_theme_icon("Unlinked", "EditorIcons")
 	
-	await get_tree().process_frame
-	get_parent().set_tab_title(get_index(), 'Styles')
-	get_parent().set_tab_icon(get_index(), load(DialogicUtil.get_module_path('LayoutEditor').path_join("styles_icon.svg")))
 	%StyleList.active_theme_changed.connect(_on_active_theme_changed)
 
 
@@ -54,15 +60,15 @@ func _on_layout_mode_item_selected(index:int) -> void:
 	%StyleList.hide()
 	%PresetCustomization.hide()
 	match index:
-		LayoutModes.Preset:
+		LayoutModes.PRESET:
 			%PresetCustomization.show()
 			%StyleList.show()
 			if layouts_info.has(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())):
 				load_layout_scene_customization(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
-		LayoutModes.Custom:
+		LayoutModes.CUSTOM:
 			%CustomScene.show()
 			%CustomScenePicker.set_value(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
-		LayoutModes.None:
+		LayoutModes.NONE:
 			ProjectSettings.set_setting('dialogic/layout/mode', 2)
 			%NoScene.show()
 

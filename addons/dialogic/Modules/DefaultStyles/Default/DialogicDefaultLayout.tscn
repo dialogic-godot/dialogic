@@ -276,6 +276,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_dbhei")
 position_index = 3
+mirrored = true
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits/Portraits"]
@@ -289,6 +290,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_dbhei")
 position_index = 4
+mirrored = true
 metadata/_edit_use_anchors_ = true
 
 [node name="DefaultStyle" type="Control" parent="."]

@@ -1,19 +1,19 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://due48ce7jiudt"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Glossary/glossary_editor.gd" id="1_tf3p1"]
 [ext_resource type="Texture2D" uid="uid://cenut3sc5cul0" path="res://addons/dialogic/Modules/Glossary/add-glossary.svg" id="2_0elx7"]
 
-[sub_resource type="Image" id="Image_lmipc"]
+[sub_resource type="Image" id="Image_kueg2"]
 data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
 "height": 16,
 "mipmaps": false,
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_usv66"]
-image = SubResource("Image_lmipc")
+[sub_resource type="ImageTexture" id="ImageTexture_ajdpw"]
+image = SubResource("Image_kueg2")
 
 [node name="GlossaryEditor" type="VBoxContainer"]
 anchors_preset = 15
@@ -32,9 +32,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="Glossaries" type="TabContainer" parent="Entries/Settings"]
+[node name="Label" type="Label" parent="Entries/Settings"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Glossaries"
+
+[node name="Glossaries" type="PanelContainer" parent="Entries/Settings"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"DialogicPanelA"
 
 [node name="Glossaries" type="VBoxContainer" parent="Entries/Settings/Glossaries"]
 layout_mode = 2
@@ -57,14 +63,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Import Glossary File"
-icon = SubResource("ImageTexture_usv66")
+icon = SubResource("ImageTexture_ajdpw")
 
 [node name="DeleteGlossaryFile" type="Button" parent="Entries/Settings/Glossaries/Glossaries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Delete Glossary"
-icon = SubResource("ImageTexture_usv66")
+icon = SubResource("ImageTexture_ajdpw")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Entries/Settings/Glossaries/Glossaries"]
 layout_mode = 2
@@ -77,35 +83,37 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TabContainer" type="TabContainer" parent="Entries/Settings"]
+[node name="Label2" type="Label" parent="Entries/Settings"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Defaults"
+
+[node name="Defaults" type="VBoxContainer" parent="Entries/Settings"]
 layout_mode = 2
 
-[node name="Defaults" type="VBoxContainer" parent="Entries/Settings/TabContainer"]
+[node name="DefaultsColor" type="HBoxContainer" parent="Entries/Settings/Defaults"]
 layout_mode = 2
 
-[node name="DefaultsColor" type="HBoxContainer" parent="Entries/Settings/TabContainer/Defaults"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Entries/Settings/TabContainer/Defaults/DefaultsColor"]
+[node name="Label" type="Label" parent="Entries/Settings/Defaults/DefaultsColor"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Color"
 
-[node name="DefaultColor" type="ColorPickerButton" parent="Entries/Settings/TabContainer/Defaults/DefaultsColor"]
+[node name="DefaultColor" type="ColorPickerButton" parent="Entries/Settings/Defaults/DefaultsColor"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="DefCaseSensitive" type="HBoxContainer" parent="Entries/Settings/TabContainer/Defaults"]
+[node name="DefCaseSensitive" type="HBoxContainer" parent="Entries/Settings/Defaults"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Entries/Settings/TabContainer/Defaults/DefCaseSensitive"]
+[node name="Label" type="Label" parent="Entries/Settings/Defaults/DefCaseSensitive"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Case sensitive"
 
-[node name="DefaultCaseSensitive" type="CheckBox" parent="Entries/Settings/TabContainer/Defaults/DefCaseSensitive"]
+[node name="DefaultCaseSensitive" type="CheckBox" parent="Entries/Settings/Defaults/DefCaseSensitive"]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -113,45 +121,56 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Tabs" type="TabContainer" parent="Entries/HSplit"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Entries/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Entries" type="VBoxContainer" parent="Entries/HSplit/Tabs"]
+[node name="Label2" type="Label" parent="Entries/HSplit/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Entries"
+
+[node name="Tabs" type="PanelContainer" parent="Entries/HSplit/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"DialogicPanelA"
+
+[node name="Entries" type="VBoxContainer" parent="Entries/HSplit/VBoxContainer/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.69
 
-[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/Tabs/Entries"]
+[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/VBoxContainer/Tabs/Entries"]
 layout_mode = 2
 
-[node name="AddGlossaryEntry" type="Button" parent="Entries/HSplit/Tabs/Entries/HBox"]
+[node name="AddGlossaryEntry" type="Button" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "New Glossary Entry"
-icon = SubResource("ImageTexture_usv66")
+icon = SubResource("ImageTexture_ajdpw")
 
-[node name="DeleteGlossaryEntry" type="Button" parent="Entries/HSplit/Tabs/Entries/HBox"]
+[node name="DeleteGlossaryEntry" type="Button" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Delete Glossary Entry"
-icon = SubResource("ImageTexture_usv66")
+icon = SubResource("ImageTexture_ajdpw")
 
-[node name="EntrySearch" type="LineEdit" parent="Entries/HSplit/Tabs/Entries/HBox"]
+[node name="EntrySearch" type="LineEdit" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search"
-right_icon = SubResource("ImageTexture_usv66")
+right_icon = SubResource("ImageTexture_ajdpw")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Entries/HSplit/Tabs/Entries"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Entries/HSplit/VBoxContainer/Tabs/Entries"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EntryList" type="ItemList" parent="Entries/HSplit/Tabs/Entries/ScrollContainer"]
+[node name="EntryList" type="ItemList" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -165,17 +184,22 @@ size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 metadata/_edit_layout_mode = 1
 
-[node name="Tabs" type="TabContainer" parent="Entries/HSplit/EntryEditor"]
+[node name="VBox" type="VBoxContainer" parent="Entries/HSplit/EntryEditor"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Entry Settings" type="VBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs"]
+[node name="Label" type="Label" parent="Entries/HSplit/EntryEditor/VBox"]
+layout_mode = 2
+theme_type_variation = &"DialogicSection"
+text = "Entry Settings"
+
+[node name="Entry Settings" type="VBoxContainer" parent="Entries/HSplit/EntryEditor/VBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EntrySettings" type="GridContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings"]
+[node name="EntrySettings" type="GridContainer" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -183,98 +207,98 @@ size_flags_vertical = 3
 theme_override_constants/h_separation = 13
 columns = 2
 
-[node name="Label2" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label2" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Name"
 
-[node name="HBox2" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="HBox2" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 
-[node name="EntryName" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2"]
+[node name="EntryName" type="LineEdit" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-focus_neighbor_left = NodePath("../../../../../../Tabs/Entries/ScrollContainer/EntryList")
+focus_neighbor_left = NodePath("../../../../../../VBoxContainer/Tabs/Entries/ScrollContainer/EntryList")
 placeholder_text = "MyEntry"
 caret_blink = true
 
-[node name="EntryCaseSensitive" type="Button" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2"]
+[node name="EntryCaseSensitive" type="Button" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Case sensitive"
 toggle_mode = true
-icon = SubResource("ImageTexture_usv66")
+icon = SubResource("ImageTexture_ajdpw")
 flat = true
 
-[node name="Label3" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label3" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Alternatives"
 
-[node name="EntryAlternatives" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="EntryAlternatives" type="LineEdit" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 
-[node name="Label4" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label4" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Title"
 
-[node name="EntryTitle" type="LineEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="EntryTitle" type="LineEdit" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 
-[node name="Label5" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label5" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
-text = "Text"
+text = "Description"
 
-[node name="EntryText" type="TextEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="EntryText" type="TextEdit" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 focus_next = NodePath("../EntryExtra")
 wrap_mode = 1
 
-[node name="Label6" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label6" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Extra"
 
-[node name="EntryExtra" type="TextEdit" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="EntryExtra" type="TextEdit" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 wrap_mode = 1
 
-[node name="Label8" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label8" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Enabled"
 
-[node name="EntryEnabled" type="CheckBox" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="EntryEnabled" type="CheckBox" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 
-[node name="Label7" type="Label" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="Label7" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Color"
 
-[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings"]
+[node name="HBox" type="HBoxContainer" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
 layout_mode = 2
 
-[node name="EntryCustomColor" type="CheckBox" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox"]
+[node name="EntryCustomColor" type="CheckBox" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EntryColor" type="ColorPickerButton" parent="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox"]
+[node name="EntryColor" type="ColorPickerButton" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -282,15 +306,15 @@ size_flags_horizontal = 3
 [connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/AddGlossaryFile" to="." method="_on_add_glossary_file_pressed"]
 [connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/LoadGlossaryFile" to="." method="_on_load_glossary_file_pressed"]
 [connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/DeleteGlossaryFile" to="." method="_on_delete_glossary_file_pressed"]
-[connection signal="pressed" from="Entries/HSplit/Tabs/Entries/HBox/AddGlossaryEntry" to="." method="_on_add_glossary_entry_pressed"]
-[connection signal="pressed" from="Entries/HSplit/Tabs/Entries/HBox/DeleteGlossaryEntry" to="." method="_on_delete_glossary_entry_pressed"]
-[connection signal="text_changed" from="Entries/HSplit/Tabs/Entries/HBox/EntrySearch" to="." method="_on_entry_search_text_changed"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2/EntryName" to="." method="_on_entry_name_text_changed"]
-[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox2/EntryCaseSensitive" to="." method="_on_entry_case_sensitive_toggled"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryAlternatives" to="." method="_on_entry_alternatives_text_changed"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryTitle" to="." method="_on_entry_title_text_changed"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryText" to="." method="_on_entry_text_text_changed"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryExtra" to="." method="_on_entry_extra_text_changed"]
-[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/EntryEnabled" to="." method="_on_entry_enabled_toggled"]
-[connection signal="toggled" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox/EntryCustomColor" to="." method="_on_entry_custom_color_toggled"]
-[connection signal="color_changed" from="Entries/HSplit/EntryEditor/Tabs/Entry Settings/EntrySettings/HBox/EntryColor" to="." method="_on_entry_color_color_changed"]
+[connection signal="pressed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/AddGlossaryEntry" to="." method="_on_add_glossary_entry_pressed"]
+[connection signal="pressed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/DeleteGlossaryEntry" to="." method="_on_delete_glossary_entry_pressed"]
+[connection signal="text_changed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/EntrySearch" to="." method="_on_entry_search_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryName" to="." method="_on_entry_name_text_changed"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryCaseSensitive" to="." method="_on_entry_case_sensitive_toggled"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryAlternatives" to="." method="_on_entry_alternatives_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryTitle" to="." method="_on_entry_title_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryText" to="." method="_on_entry_text_text_changed"]
+[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryExtra" to="." method="_on_entry_extra_text_changed"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryEnabled" to="." method="_on_entry_enabled_toggled"]
+[connection signal="toggled" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox/EntryCustomColor" to="." method="_on_entry_custom_color_toggled"]
+[connection signal="color_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox/EntryColor" to="." method="_on_entry_color_color_changed"]

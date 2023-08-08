@@ -1,8 +1,20 @@
 @tool
-extends HSplitContainer
+extends DialogicSettingsPage
+
+
+func _get_title() -> String:
+	return "Modules"
+
+func _get_priority() -> int:
+	return 0
+
+func _is_feature_tab() -> bool:
+	return true
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
 	%Refresh.icon = get_theme_icon("Loop", "EditorIcons")
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 	
@@ -14,18 +26,13 @@ func _ready() -> void:
 	%Filter_Settings.icon = get_theme_icon("PluginScript", "EditorIcons")
 	%Collapse.icon = get_theme_icon("CollapseTree", "EditorIcons")
 	
-	%Title.add_theme_font_size_override('font_size', get_theme_font_size("doc_size", "EditorFonts"))
-	%Title.add_theme_font_override('font', get_theme_font("bold", "EditorFonts"))
-	%GeneralInfo.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
-	%GeneralInfo.add_theme_font_override("font", get_theme_font("doc_italic", "EditorFonts"))
-	
-	$Scroll/Settings/EventDefaultsPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+	%EventDefaultsPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 	
 	%ExternalLink.icon = get_theme_icon("Help", "EditorIcons")
 
 
-func refresh() -> void:
-	$Scroll/Settings/EventDefaultsPanel.hide()
+func _refresh() -> void:
+	%EventDefaultsPanel.hide()
 	load_modules_tree()
 
 
@@ -93,7 +100,7 @@ func _on_search_text_changed(new_text:String) -> void:
 func load_modules_tree() -> void:
 	%Tree.clear()
 	var root :TreeItem = %Tree.create_item()
-	var cached_events :Array = get_parent().get_parent().editors_manager.resource_helper.event_script_cache
+	var cached_events :Array = find_parent('EditorsManager').resource_helper.event_script_cache
 	var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var indexers := DialogicUtil.get_indexers()
 	for i in indexers:
@@ -215,7 +222,7 @@ func _on_tree_item_selected() -> void:
 	var metadata :Variant = selected_item.get_metadata(0)
 	
 	%Title.text = selected_item.get_text(0)
-	$Scroll/Settings/EventDefaultsPanel.hide()
+	%EventDefaultsPanel.hide()
 	%Icon.texture = null
 	%ExternalLink.hide()
 	%VisibilityToggle.hide()
@@ -227,7 +234,7 @@ func _on_tree_item_selected() -> void:
 				
 				load_event_settings(metadata.event)
 				if %EventDefaults.get_child_count():
-					$Scroll/Settings/EventDefaultsPanel.show()
+					%EventDefaultsPanel.show()
 				
 				if metadata.event.help_page_path:
 					%ExternalLink.show()

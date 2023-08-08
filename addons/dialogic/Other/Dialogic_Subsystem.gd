@@ -5,7 +5,7 @@ var dialogic = null
 
 # To be overriden by sub-classes
 # Fill in everything that should be cleared (for example before loading a different state)
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	pass
 
 # To be overriden by sub-classes

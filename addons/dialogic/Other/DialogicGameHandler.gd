@@ -1,7 +1,7 @@
 extends Node
 
-enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
-enum ClearFlags {FullClear=0, KeepVariables=1, TimelineInfoOnly=2}
+enum States {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
+enum ClearFlags {FULL_CLEAR=0, KEEP_VARIABLES=1, TIMLEINE_INFO_ONLY=2}
 
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
@@ -9,7 +9,7 @@ var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
 var _event_script_cache: Array[DialogicEvent] = []
 
-var current_state: Variant = null:
+var current_state := States.IDLE:
 	get:
 		return current_state
 	set(new_state):
@@ -48,9 +48,9 @@ signal text_signal(argument)
 func _ready() -> void:
 	rebuild_character_directory()
 	rebuild_timeline_directory()
-	
-	collect_subsystems()
 
+	collect_subsystems()
+	
 	clear()
 	
 	timeline_ended.connect(_on_timeline_ended)
@@ -73,7 +73,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 		if timeline == null:
 			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 			return
-	timeline = process_timeline(timeline)
+	await timeline.process()
 	
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
@@ -101,7 +101,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return false
 		else:
-			timeline_resource = process_timeline(timeline_resource)
+			await timeline_resource.process()
 			return timeline_resource
 	return false
 
@@ -109,7 +109,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 func end_timeline() -> void:
 	current_timeline = null
 	current_timeline_events = []
-	clear(ClearFlags.TimelineInfoOnly)
+	clear(ClearFlags.TIMLEINE_INFO_ONLY)
 	timeline_ended.emit()
 
 
@@ -120,10 +120,10 @@ func handle_next_event(ignore_argument:Variant = "") -> void:
 func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
-	
+
 	if paused:
 		await dialogic_resumed
-	
+
 	if event_index >= len(current_timeline_events):
 		if has_subsystem('Jump') and !self.Jump.is_jump_stack_empty():
 			self.Jump.resume_from_last_jump()
@@ -131,20 +131,18 @@ func handle_event(event_index:int) -> void:
 		else:
 			end_timeline()
 			return
-	
+
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
 	if current_timeline_events[event_index]['event_node_ready'] == false:
 		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['event_node_as_text'])
-	
+
 	current_event_idx = event_index
-	
-	#print("\n[D] Handle Event ", event_index, ": ", event)
+
 	if current_timeline_events[event_index].continue_at_end:
-		#print("    -> WILL AUTO CONTINUE!")
 		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
 			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
-	
+
 	current_timeline_events[event_index].execute(self)
 	event_handled.emit(current_timeline_events[event_index])
 
@@ -152,17 +150,17 @@ func handle_event(event_index:int) -> void:
 # resets dialogics state fully or partially
 # by using the clear flags you can specify what info should be kept
 # for example at timeline end usually it doesn't clear node or subsystem info
-func clear(clear_flags:=ClearFlags.FullClear) -> bool:
-	
-	if !clear_flags & ClearFlags.TimelineInfoOnly:
+func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
+
+	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
 		for subsystem in get_children():
 			subsystem.clear_game_state(clear_flags)
-	
+
 	# Resetting variables
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
-	current_state = states.IDLE
+	current_state = States.IDLE
 	return true
 
 ################################################################################
@@ -210,7 +208,8 @@ func collect_subsystems() -> void:
 	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 	_event_script_cache.push_front(DialogicEndBranchEvent.new())
 	_event_script_cache.push_back(DialogicTextEvent.new())
-
+	Engine.get_main_loop().set_meta("dialogic_event_cache", _event_script_cache)
+	
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
@@ -243,41 +242,53 @@ func _set(property, value):
 ##						PROCESSING FUNCTIONS
 ################################################################################
 
+# #TODO initial work on a unified method for character and timeline directories!
+#func build_directory(file_extension:String) -> Dictionary:
+#	var files :Array[String] = DialogicUtil.list_resources_of_type(file_extension)
+#
+#	# First sort by length of path, so shorter paths are first	
+#	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
+#
+#
+#
+#	return {}
+
+
 func rebuild_character_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
-	
+
 	# First sort by length of path, so shorter paths are first
 	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-	
+
 	# next we prepare the additional arrays needed for building the depth tree
 	var shortened_paths:Array = []
 	var reverse_array:Array = []
 	var reverse_array_splits:Array = []
-	
+
 	for i in characters.size():
 		characters[i] = characters[i].replace("res:///", "res://")
 		var path = characters[i].replace("res://","").replace(".dch", "")
 		if path[0] == "/":
 			path = path.right(-1)
 		shortened_paths.append(path) 
-		
+
 		#split the shortened path up, and reverse it
 		var path_breakdown = path.split("/")
 		path_breakdown.reverse()
-		
+
 		#Add the name of the file at beginning now, and another array saving the reversed split within each element
 		reverse_array.append(path_breakdown[0])
 		reverse_array_splits.append(path_breakdown)
-		
-	
+
+
 	# Now the three arrays are prepped, begin the depth search
 	var clean_search_path:bool = false
 	var depth := 1
-	
+
 	while !clean_search_path:
 		var interim_array:Array = []
 		clean_search_path = true
-		
+
 		for i in shortened_paths.size():
 			if reverse_array.count(reverse_array[i]) > 1:
 				clean_search_path = false
@@ -289,7 +300,7 @@ func rebuild_character_directory() -> void:
 				interim_array.append(reverse_array[i])
 		depth += 1
 		reverse_array = interim_array		
-			
+
 	# Now finally build the database from those arrays
 	for i in characters.size():
 		var entry:Dictionary = {}
@@ -298,44 +309,45 @@ func rebuild_character_directory() -> void:
 		entry['full_path'] = characters[i]
 		entry['unique_short_path'] = reverse_array[i]
 		character_directory[reverse_array[i]] = entry
+	
+	Engine.get_main_loop().set_meta("dialogic_character_directory", character_directory)
 
 
 func rebuild_timeline_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
-	
+
 	# First sort by length of path, so shorter paths are first
 	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-	
+
 	# next we prepare the additional arrays needed for building the depth tree
 	var shortened_paths:Array = []
 	var reverse_array:Array = []
 	var reverse_array_splits:Array = []
-	
+
 	for i in characters.size():
 		characters[i] = characters[i].replace("res:///", "res://")
 		var path = characters[i].replace("res://","").replace(".dtl", "")
 		if path[0] == "/":
 			path = path.right(-1)
 		shortened_paths.append(path) 
-		
+
 		#split the shortened path up, and reverse it
 		var path_breakdown = path.split("/")
 		path_breakdown.reverse()
-		
+
 		#Add the name of the file at beginning now, and another array saving the reversed split within each element
 		reverse_array.append(path_breakdown[0])
 		reverse_array_splits.append(path_breakdown)
-		
-	
+
+
 	# Now the three arrays are prepped, begin the depth search
 	var clean_search_path:bool = false
 	var depth := 1
-	
 
 	while !clean_search_path:
 		var interim_array:Array = []
 		clean_search_path = true
-		
+
 		for i in shortened_paths.size():
 			if reverse_array.count(reverse_array[i]) > 1:
 				clean_search_path = false
@@ -347,14 +359,11 @@ func rebuild_timeline_directory() -> void:
 				interim_array.append(reverse_array[i])
 		depth += 1
 		reverse_array = interim_array		
-			
-			
 
-	
 	# Now finally build the database from those arrays
 	for i in characters.size():
 		timeline_directory[reverse_array[i]] = characters[i]
-
+	Engine.get_main_loop().set_meta("dialogic_timeline_directory", timeline_directory)
 
 func find_timeline(path: String) -> String:
 	if path in timeline_directory.keys():
@@ -363,102 +372,8 @@ func find_timeline(path: String) -> String:
 		for i in timeline_directory.keys():
 			if timeline_directory[i].contains(path):
 				return timeline_directory[i]
-	
+
 	return ""
-
-
-func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-	if timeline != null:
-		if timeline.events_processed:
-			for event in timeline.events:
-				event.event_node_ready = true
-			return timeline
-		else:
-			var end_event := DialogicEndBranchEvent.new()
-			
-			var prev_indent := ""
-			var events := []
-			
-			# this is needed to add a end branch event even to empty conditions/choices
-			var prev_was_opener := false
-			
-			var lines := timeline.events
-			var idx := -1
-			var empty_lines = 0
-			while idx < len(lines)-1:
-				idx += 1
-				
-				## First manage indent and creation of end branch events
-				## For this, we still treat the event as a string
-				var line: String = ""
-				if typeof(lines[idx]) == TYPE_STRING:
-					line = lines[idx]
-				else:
-					line = lines[idx]['event_node_as_text']
-				
-				var line_stripped :String = line.strip_edges(true, false)
-				if line_stripped.is_empty():
-					empty_lines += 1
-					continue
-				
-				var indent :String= line.substr(0,len(line)-len(line_stripped))
-				if len(indent) < len(prev_indent):
-					for i in range(len(prev_indent)-len(indent)):
-						events.append(end_event.duplicate())
-				
-				elif prev_was_opener and len(indent) == len(prev_indent):
-					events.append(end_event.duplicate())
-				prev_indent = indent
-				
-				## Now we process the event into a resource 
-				## by checking on each event if it recognizes this string 
-				var event_content :String = line_stripped
-				var event :Variant
-				for i in _event_script_cache:
-					if i._test_event_string(event_content):
-						event = i.duplicate()
-						break
-				
-				event.empty_lines_above = empty_lines
-				# add the following lines until the event says it's full there is an empty line or the indent changes
-				while !event.is_string_full_event(event_content):
-					idx += 1
-					if idx == len(lines):
-						break
-					var following_line :String = lines[idx]
-					var following_line_stripped :String = following_line.strip_edges(true, false)
-					var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
-					if following_line_stripped.is_empty():
-						break
-					if following_line_indent != indent:
-						idx -= 1
-						break
-					event_content += "\n"+following_line_stripped
-				
-				if Engine.is_editor_hint():
-					# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
-					if event['event_name'] == 'Character' || event['event_name'] == 'Text':
-						event.set_meta('editor_character_directory', character_directory)
-
-				
-				event._load_from_string(event_content)
-				event['event_node_as_text'] = event_content
-
-				events.append(event)
-				prev_was_opener = event.can_contain_events
-				empty_lines = 0
-			
-
-			if !prev_indent.is_empty():
-				for i in range(len(prev_indent)):
-					events.append(end_event.duplicate())
-			
-			timeline.events = events
-			timeline.events_processed = true
-			#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
-			return timeline
-	else:
-		return DialogicTimeline.new()
 
 
 ################################################################################
@@ -469,7 +384,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 # -> returns the layout node 
 func start(timeline:Variant, label:Variant="") -> Node:
 	var scene := add_layout_node()
-	Dialogic.clear(ClearFlags.KeepVariables)
+	Dialogic.clear(ClearFlags.KEEP_VARIABLES)
 	Dialogic.start_timeline(timeline, label)
 	return scene
 
@@ -478,35 +393,38 @@ func start(timeline:Variant, label:Variant="") -> Node:
 # The layout scene will always be added to the tree root. 
 # If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
 func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
-	
+
 	if ProjectSettings.get_setting('dialogic/layout/mode', 0) == 2:
 		return null
-	
-	var scene :Node = null
-	if get_tree().has_meta('dialogic_layout_node') and is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)):
-		scene = get_tree().get_meta('dialogic_layout_node', null)
-	
-	# create a new one if none exists or a different one was requested
-	if !is_instance_valid(scene) or (!scene_path.is_empty() and scene.get_meta('scene_path', scene_path) != scene_path):
+
+	var scene: Node = get_layout_node()
+
+	if (
+		is_instance_valid(scene)
+		and (
+			scene_path.is_empty()
+			or scene.get_meta('scene_path', scene_path) == scene_path
+		)
+	):
+		# We have an existing valid scene matching the requested path, so
+		# show it.
+		scene.show()
+	else:
 		if is_instance_valid(scene):
 			scene.queue_free()
-		
+		scene = null
+
 		if scene_path.is_empty():
 			scene_path = ProjectSettings.get_setting(
 						'dialogic/layout/layout_scene', 
 						DialogicUtil.get_default_layout())
-		
+
 		scene = load(scene_path).instantiate()
 		scene.set_meta('scene_path', scene_path)
-		
+
 		get_parent().call_deferred("add_child", scene)
 		get_tree().set_meta('dialogic_layout_node', scene)
-	
-	# otherwise use existing scene
-	else:
-		scene = get_tree().get_meta('dialogic_layout_node', null)
-		scene.show()
-	
+
 	# apply custom export overrides everytime
 	if export_overrides.is_empty():
 		DialogicUtil.apply_scene_export_overrides(
@@ -514,12 +432,22 @@ func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
 			ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
 	else:
 		DialogicUtil.apply_scene_export_overrides(scene, export_overrides)
-	
+
 	return scene
 
 
 func get_layout_node() -> Node:
-	return get_tree().get_meta('dialogic_layout_node', null)
+	# `null` doesn't really work as a default for `get_meta`, because it'll
+	# still throw an error if the meta entry doesn't exist. Revisit this if
+	# Godot ever gives us a way to explicitly have `null` as a default.
+	# (oddfacade 2023-07)
+	var tree := get_tree()
+	return (
+		tree.get_meta('dialogic_layout_node')
+		if tree.has_meta('dialogic_layout_node') and 
+			is_instance_valid(tree.get_meta('dialogic_layout_node'))
+		else null
+	)
 
 
 func _on_timeline_ended():
@@ -532,6 +460,8 @@ func _on_timeline_ended():
 
 
 func has_active_layout_node() -> bool:
-	if !get_tree().has_meta('dialogic_layout_node') or !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
-		return false
-	return true
+	return (
+		get_tree().has_meta('dialogic_layout_node')
+		and is_instance_valid(get_tree().get_meta('dialogic_layout_node'))
+		and get_tree().get_meta('dialogic_layout_node').visible
+	)

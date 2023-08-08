@@ -87,7 +87,7 @@ func _execute() -> void:
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Text.show_next_indicators(true)
 		dialogic.Choices.show_current_choices(false)
-		dialogic.current_state = dialogic.states.AWAITING_CHOICE
+		dialogic.current_state = dialogic.States.AWAITING_CHOICE
 	elif Dialogic.Text.should_autoadvance():
 		dialogic.Text.show_next_indicators(false, true)
 		# In this case continuing is handled by the input script.
@@ -227,17 +227,17 @@ func _get_property_original_translation(property:String) -> String:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', 
+	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, '', '', 
 			{'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'empty_text' 		: '(No one)',
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
-	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
+	add_header_edit('portrait', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func' : get_portrait_suggestions, 
 			'placeholder' 		: "(Don't change)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'character != null and !has_no_portraits()')
-	add_body_edit('text', ValueType.MultilineText)
+	add_body_edit('text', ValueType.MULTILINE_TEXT, "", "", {'autofocus':true})
 
 func do_any_characters_exist() -> bool:
 	return !DialogicUtil.list_resources_of_type(".dch").is_empty()
@@ -250,7 +250,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = Engine.get_meta('dialogic_character_directory')
+	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 	
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}

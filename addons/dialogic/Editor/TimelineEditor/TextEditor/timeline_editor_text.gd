@@ -8,56 +8,39 @@ func _ready():
 
 
 func _on_text_editor_text_changed():
-	get_parent().current_resource_state = DialogicEditor.ResourceStates.Unsaved
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
+	$UpdateTimer.start()
 
 
 func clear_timeline():
 	text = ''
+	update_content_list()
 
 
-func load_timeline(object:DialogicTimeline) -> void:
+func load_timeline(timeline:DialogicTimeline) -> void:
 	clear_timeline()
-	if get_parent().current_resource.events.size() == 0:
-		pass
-	else: 
-		if typeof(get_parent().current_resource.events[0]) == TYPE_STRING:
-			get_parent().current_resource.events_processed = false
-			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
 	
-	var result:String = ""	
-	var indent := 0
-	for idx in range(0, len(object.events)):
-		var event = object.events[idx]
-		
-		if event['event_name'] == 'End Branch':
-			indent -= 1
-			continue
-		
-		if event != null:
-			for i in event.empty_lines_above:
-				result += "\t".repeat(indent)+"\n"
-			result += "\t".repeat(indent)+event['event_node_as_text'].replace('\n', "\n"+"\t".repeat(indent)) + "\n"
-		if event.can_contain_events:
-			indent += 1
-		if indent < 0: 
-			indent = 0
-		
-	text = result
-	get_parent().current_resource.set_meta("timeline_not_saved", false)
+	text = timeline.as_text()
+	
+	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
+	await get_tree().process_frame
+	update_content_list()
 
 
 func save_timeline():
-	if get_parent().current_resource:
-		var text_array:Array = text_timeline_to_array(text)
-		
-		get_parent().current_resource.events = text_array
-		get_parent().current_resource.events_processed = false
-		ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
+	if !timeline_editor.current_resource:
+		return
+	
+	var text_array:Array = text_timeline_to_array(text)
+	
+	timeline_editor.current_resource.events = text_array
+	timeline_editor.current_resource.events_processed = false
+	ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
 
-		get_parent().current_resource.set_meta("timeline_not_saved", false)
-		get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
-		get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
+	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
+	timeline_editor.editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func text_timeline_to_array(text:String) -> Array:
@@ -182,6 +165,33 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		set_caret_column(get_line_column_at_pos(at_position).x)
 		set_caret_line(get_line_column_at_pos(at_position).y)
 		insert_text_at_caret('"'+data.files[0]+'"')
+
+
+
+func _on_update_timer_timeout():
+	update_content_list()
+
+
+func update_content_list():
+	var labels :PackedStringArray = []
+	for i in label_regex.search_all(text):
+		labels.append(i.get_string('name'))
+	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+
+
+func _on_content_item_clicked(label:String) -> void:
+	if label == "~ Top":
+		set_caret_line(0)
+		set_caret_column(0)
+		adjust_viewport_to_caret()
+		return
+	
+	for i in label_regex.search_all(text):
+		if i.get_string('name') == label:
+			set_caret_column(0)
+			set_caret_line(text.count('\n', 0, i.get_start()+1))
+			center_viewport_to_caret()
+			return
 
 
 ################################################################################

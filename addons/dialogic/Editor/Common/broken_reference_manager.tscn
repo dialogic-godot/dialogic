@@ -1,0 +1,289 @@
+[gd_scene load_steps=8 format=3 uid="uid://c7lmt5cp7bxcm"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/reference_manager.gd" id="1_3tomk"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/ReferenceManager_AddReplacementPanel.gd" id="2_vtwcs"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_x5bo4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkp0w"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Image" id="Image_bryma"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_lce2m"]
+image = SubResource("Image_bryma")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_02ogm"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
+[node name="ReferenceManager" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hkp0w")
+script = ExtResource("1_3tomk")
+
+[node name="VBoxContainer" type="VSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="ChangeList" type="VBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBox2" type="HBoxContainer" parent="VBoxContainer/ChangeList"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/ChangeList/HBox2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "Broken Reference Manager"
+
+[node name="TitleTooltip" type="TextureRect" parent="VBoxContainer/ChangeList/HBox2"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+tooltip_text = "Because dialogics timelines are pure text files, it can often happen that 
+references (like variables, portraits, character names, etc.) break. 
+
+This manager allows you to fix broken references by replacing them. 
+
+Dialogic will automatically add items to this list, when you rename already 
+existing things. After such changes you should check if there are any 
+broken references."
+texture = SubResource("ImageTexture_lce2m")
+stretch_mode = 3
+
+[node name="ChangesSection" type="PanelContainer" parent="VBoxContainer/ChangeList"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"DialogicPanelA"
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox"]
+layout_mode = 2
+
+[node name="SectionTitle" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Recent renames"
+
+[node name="AddButton" type="Button" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Add custom rename"
+
+[node name="ReplacementPanel" type="PanelContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton"]
+unique_name_in_owner = true
+visible = false
+top_level = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 0
+offset_left = -400.0
+offset_top = 24.0
+offset_bottom = 244.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_02ogm")
+script = ExtResource("2_vtwcs")
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Custom Replacement"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Old" type="LineEdit" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Old"
+
+[node name="Label2" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+layout_mode = 2
+text = "->"
+
+[node name="New" type="LineEdit" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type: "
+horizontal_alignment = 2
+
+[node name="Type" type="OptionButton" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This decides the regexes for searching. Pure text allows you to enter your own regex into into \"Old\". "
+item_count = 5
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Pure Text"
+popup/item_0/id = 0
+popup/item_1/text = "Variable"
+popup/item_1/id = 1
+popup/item_2/text = "Portrait"
+popup/item_2/id = 2
+popup/item_3/text = "Character (Ref)"
+popup/item_3/id = 3
+popup/item_4/text = "Timeline (Ref)"
+popup/item_4/id = 4
+
+[node name="PureTextFlags" type="HBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="MatchCase" type="CheckBox" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/PureTextFlags"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Match Case"
+
+[node name="WholeWords" type="CheckBox" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/PureTextFlags"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Whole Words"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Where: "
+horizontal_alignment = 2
+
+[node name="Where" type="OptionButton" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Everywhere"
+popup/item_0/id = 0
+popup/item_1/text = "Only for Character"
+popup/item_1/id = 1
+popup/item_2/text = "Texts only"
+popup/item_2/id = 2
+
+[node name="Character" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4" instance=ExtResource("3_x5bo4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add/Save"
+
+[node name="ChangeTree" type="Tree" parent="VBoxContainer/ChangeList/ChangesSection/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/draw_relationship_lines = 1
+columns = 3
+hide_root = true
+
+[node name="CheckButton" type="Button" parent="VBoxContainer/ChangeList/ChangesSection/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Search timelines for occurences of these renames"
+text = "Check Selected"
+icon = SubResource("ImageTexture_lce2m")
+
+[node name="ReplacementSection" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"DialogicPanelA"
+
+[node name="FindList" type="VBoxContainer" parent="VBoxContainer/ReplacementSection"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer/ReplacementSection/FindList"]
+layout_mode = 2
+
+[node name="SectionTitle2" type="Label" parent="VBoxContainer/ReplacementSection/FindList/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Found references"
+
+[node name="State" type="Label" parent="VBoxContainer/ReplacementSection/FindList/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "State"
+
+[node name="ReferenceTree" type="Tree" parent="VBoxContainer/ReplacementSection/FindList"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/draw_relationship_lines = 1
+columns = 2
+hide_root = true
+
+[node name="Replace" type="Button" parent="VBoxContainer/ReplacementSection/FindList"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Replace all selected findings (Careful, no undo!)"
+text = "Replace Selected"
+icon = SubResource("ImageTexture_lce2m")
+
+[connection signal="resized" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="_on_resized"]
+[connection signal="item_selected" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer3/Type" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="_on_type_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/HBoxContainer4/Where" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="_on_where_item_selected"]
+[connection signal="pressed" from="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel/VBox/AddButton" to="VBoxContainer/ChangeList/ChangesSection/VBox/HBoxContainer/AddButton/ReplacementPanel" method="save"]
+[connection signal="button_clicked" from="VBoxContainer/ChangeList/ChangesSection/VBox/ChangeTree" to="." method="_on_change_tree_button_clicked"]
+[connection signal="item_edited" from="VBoxContainer/ChangeList/ChangesSection/VBox/ChangeTree" to="." method="_on_change_tree_item_edited"]
+[connection signal="pressed" from="VBoxContainer/ChangeList/ChangesSection/VBox/CheckButton" to="." method="_on_check_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ReplacementSection/FindList/Replace" to="." method="_on_replace_pressed"]

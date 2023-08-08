@@ -1,5 +1,5 @@
 @tool
-extends HBoxContainer
+extends DialogicSettingsPage
 
 var current_animation_path := ""
 
@@ -11,7 +11,7 @@ func _ready():
 	%CustomAnimationsFolder.value_changed.connect(custom_anims_folder_selected)
 
 
-func refresh():
+func _refresh():
 	%CustomAnimationsFolder.resource_icon = get_theme_icon("Folder", "EditorIcons")
 	%CustomAnimationsFolder.set_value(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'))
 	

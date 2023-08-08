@@ -12,14 +12,14 @@ signal variable_was_set(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	# loading default variables
-	if ! clear_flag & Dialogic.ClearFlags.KeepVariables:
-		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate()
+	if ! clear_flag & Dialogic.ClearFlags.KEEP_VARIABLES:
+		reset()
 
 
 func load_game_state():
-	dialogic.current_state_info['variables'] = merge_folder(dialogic.current_state_info['variables'], ProjectSettings.get_setting('dialogic/variables', {}))
+	dialogic.current_state_info['variables'] = merge_folder(dialogic.current_state_info['variables'], ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true))
 
 
 func merge_folder(new, defs) -> Dictionary:
@@ -109,7 +109,20 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 		
 	printerr("Dialogic: Failed accessing '"+variable_path+"'.")
 	return default
-	
+
+
+# resets all variables or a specific variable to the value(s) defined in the variable editor
+func reset(variable:='') -> void:
+	if variable.is_empty():
+		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true)
+	else:
+		_set_value_in_dictionary(variable, dialogic.current_state_info['variables'], _get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
+
+
+# returns true if a variable with the given path exists
+func has(variable:='') -> bool:
+	return _get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
+
 
 # this will set a value in a dictionary (or a sub-dictionary based on the path)
 # e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}

@@ -9,8 +9,6 @@ signal character_moved(info:Dictionary)
 signal position_changed(info:Dictionary)
 
 
-enum PortraitModes {VisualNovel, RPG}
-
 ## The default portrait scene.
 var default_portrait_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_portrait.tscn'))
 
@@ -21,7 +19,7 @@ var _portrait_holder_reference: Node = null
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_character(load(character))
 	dialogic.current_state_info['portraits'] = {}
@@ -145,7 +143,7 @@ func _change_portrait_extradata(character_node:Node2D, extra_data:="") -> void:
 
 
 func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void:
-	var character := character_node.get_meta('character')
+	var character :DialogicCharacter= character_node.get_meta('character')
 
 	var portrait_node :Node = character_node.get_child(0)
 	var portrait_info :Dictionary = character.portraits.get(character_node.get_meta('portrait'), {})
@@ -177,9 +175,9 @@ func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void
 
 ## Animates the portrait in the given container with the given animation.
 func _animate_portrait(character_node:Node2D, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
-	if character_node.get_meta('animation_node', null) != null and is_instance_valid(character_node.get_meta('animation_node', null)):
+	if character_node.has_meta('animation_node') and is_instance_valid(character_node.get_meta('animation_node')):
 		character_node.get_meta('animation_node').queue_free()
-	
+
 	var anim_script :Script = load(animation_path)
 	var anim_node := Node.new()
 	anim_node.set_script(anim_script)
@@ -192,7 +190,7 @@ func _animate_portrait(character_node:Node2D, animation_path:String, length:floa
 	add_child(anim_node)
 	anim_node.animate()
 	character_node.set_meta('animation_node', anim_node)
-	
+
 	return anim_node
 
 
@@ -234,9 +232,9 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		if animation_name.is_empty():
 			animation_length = ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await get_tree().create_timer(animation_length).timeout
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 		move_character(character, position_idx, animation_length)
 		change_character_mirror(character, mirrored)
 		return
@@ -266,9 +264,9 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		var anim:DialogicAnimation = _animate_portrait(character_node, animation_name, animation_length)
 		
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 	
 	return character_node
 
@@ -390,9 +388,9 @@ func leave_character(character:DialogicCharacter, animation_name :String = "", a
 		anim.finished.connect(remove_character.bind(character))
 		
 		if animation_wait:
-			dialogic.current_state = Dialogic.states.ANIMATING
+			dialogic.current_state = Dialogic.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.states.IDLE
+			dialogic.current_state = Dialogic.States.IDLE
 	else:
 		remove_character(character)
 
@@ -407,9 +405,9 @@ func leave_all_characters(animation_name:String="", animation_length:float= 0, a
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 	
 	if animation_wait:
-		dialogic.current_state = Dialogic.states.ANIMATING
+		dialogic.current_state = Dialogic.States.ANIMATING
 		await get_tree().create_timer(animation_length).timeout
-		dialogic.current_state = Dialogic.states.IDLE
+		dialogic.current_state = Dialogic.States.IDLE
 
 
 ## Removes the given characters portrait. Only works with joined characters

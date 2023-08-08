@@ -165,15 +165,15 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			continue
 		
 		### STRINGS
-		elif p.dialogic_type == resource.ValueType.MultilineText:
+		elif p.dialogic_type == resource.ValueType.MULTILINE_TEXT:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
-		elif p.dialogic_type == resource.ValueType.SinglelineText:
+		elif p.dialogic_type == resource.ValueType.SINGLELINE_TEXT:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
 			editor_node.placeholder = p.display_info.get('placeholder', '')
-		elif p.dialogic_type == resource.ValueType.Bool:
+		elif p.dialogic_type == resource.ValueType.BOOL:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
 		
-		elif p.dialogic_type == resource.ValueType.File:
+		elif p.dialogic_type == resource.ValueType.FILE:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
 			editor_node.file_filter = p.display_info.get('file_filter', '')
 			editor_node.placeholder = p.display_info.get('placeholder', '')
@@ -181,11 +181,11 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
 				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
 		
-		elif p.dialogic_type == resource.ValueType.Condition:
+		elif p.dialogic_type == resource.ValueType.CONDITION:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ConditionPicker.tscn").instantiate()
 		
 		## Complex Picker
-		elif p.dialogic_type == resource.ValueType.ComplexPicker:
+		elif p.dialogic_type == resource.ValueType.COMPLEX_PICKER:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instantiate()
 			
 			editor_node.file_extension = p.display_info.get('file_extension', '')
@@ -198,37 +198,37 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
 			
 		## INTEGERS
-		elif p.dialogic_type == resource.ValueType.Integer:
+		elif p.dialogic_type == resource.ValueType.INTEGER:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_int_mode()
 			editor_node.max = p.display_info.get('max', 9999)
 			editor_node.min = p.display_info.get('min', -9999)
-		elif p.dialogic_type == resource.ValueType.Float:
+		elif p.dialogic_type == resource.ValueType.FLOAT:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_float_mode()
 			editor_node.max = p.display_info.get('max', 9999)
 			editor_node.min = p.display_info.get('min', 0)
-		elif p.dialogic_type == resource.ValueType.Decibel:
+		elif p.dialogic_type == resource.ValueType.DECIBEL:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_decibel_mode()
-		elif p.dialogic_type == resource.ValueType.FixedOptionSelector:
+		elif p.dialogic_type == resource.ValueType.FIXED_OPTION_SELECTOR:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instantiate()
 			editor_node.options = p.display_info.get('selector_options', [])
 			editor_node.disabled = p.display_info.get('disabled', false)
 			editor_node.symbol_only = p.display_info.get('symbol_only', false)
 		
-		elif p.dialogic_type == resource.ValueType.Vector2:
+		elif p.dialogic_type == resource.ValueType.VECTOR2:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
 		
-		elif p.dialogic_type == resource.ValueType.StringArray:
+		elif p.dialogic_type == resource.ValueType.STRING_ARRAY:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
 			
-		elif p.dialogic_type == resource.ValueType.Label:
+		elif p.dialogic_type == resource.ValueType.LABEL:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			editor_node.set('custom_colors/font_color', Color("#7b7b7b"))
-		elif p.dialogic_type == resource.ValueType.Button:
+		elif p.dialogic_type == resource.ValueType.BUTTON:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
 			if typeof(p.display_info.icon) == TYPE_ARRAY:
@@ -239,7 +239,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
 			editor_node.pressed.connect(p.display_info.callable)
 		## CUSTOM
-		elif p.dialogic_type == resource.ValueType.Custom:
+		elif p.dialogic_type == resource.ValueType.CUSTOM:
 			if p.display_info.has('path'):
 				editor_node = load(p.display_info.path).instantiate()
 		

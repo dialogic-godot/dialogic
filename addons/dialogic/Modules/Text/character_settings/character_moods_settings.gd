@@ -84,7 +84,7 @@ func update_mood_list(selected_name := "") -> void:
 
 
 func _input(event:InputEvent) -> void:
-	if !is_visible_in_tree() or !name+'/' in str(get_viewport().gui_get_focus_owner().get_path()):
+	if !is_visible_in_tree() or (get_viewport().gui_get_focus_owner() and !name+'/' in str(get_viewport().gui_get_focus_owner().get_path())):
 		return
 	if event is InputEventKey and event.keycode == KEY_F2 and event.pressed:
 		if %MoodList.is_anything_selected():
