@@ -8,9 +8,18 @@ var current_entry_name := ""
 ##					BASICS
 ################################################################################
 
+func _get_title() -> String:
+	return "Glossary"
+
+
+func _get_icon() -> Texture:
+	return load(self.get_script().get_path().get_base_dir() + "/icon.svg")
+
+
 func _register() -> void:
 	editors_manager.register_simple_editor(self)
 	alternative_text = "Create and edit glossaries."
+
 
 func _ready() -> void:
 	%AddGlossaryFile.icon = load(self.get_script().get_path().get_base_dir() + "/add-glossary.svg")
@@ -28,9 +37,7 @@ func _ready() -> void:
 	%DefaultCaseSensitive.toggled.connect(set_setting.bind('dialogic/glossary/default_case_sensitive'))
 	
 	%EntryCaseSensitive.icon = get_theme_icon("MatchCase", "EditorIcons")
-	await get_tree().process_frame
-	get_parent().set_tab_title(get_index(), 'Glossary')
-	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir() + "/icon.svg"))
+
 
 func set_setting(value, setting:String)  -> void:
 	ProjectSettings.set_setting(setting, value)

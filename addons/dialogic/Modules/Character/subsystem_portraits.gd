@@ -143,7 +143,7 @@ func _change_portrait_extradata(character_node:Node2D, extra_data:="") -> void:
 
 
 func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void:
-	var character := character_node.get_meta('character')
+	var character :DialogicCharacter= character_node.get_meta('character')
 
 	var portrait_node :Node = character_node.get_child(0)
 	var portrait_info :Dictionary = character.portraits.get(character_node.get_meta('portrait'), {})

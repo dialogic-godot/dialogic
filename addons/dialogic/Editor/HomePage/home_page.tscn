@@ -8,16 +8,12 @@
 draw_center = false
 corner_radius_top_left = 15
 corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
 shadow_color = Color(0.796078, 0.572549, 0.933333, 0.0627451)
 shadow_size = 24
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2afh"]
 corner_radius_top_left = 15
 corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
 
 [sub_resource type="Gradient" id="Gradient_lt7uf"]
 colors = PackedColorArray(0.296484, 0.648457, 1, 1, 0.732014, 0.389374, 1, 1)
@@ -61,7 +57,7 @@ corner_radius_bottom_left = 15
 content_margin_left = 7.0
 content_margin_top = 7.0
 content_margin_right = 7.0
-content_margin_bottom = 7.0
+content_margin_bottom = 14.0
 bg_color = Color(0.803922, 0.352941, 1, 0.141176)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
@@ -106,17 +102,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id="Image_7i135"]
+[sub_resource type="Image" id="Image_2imc3"]
 data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
 "height": 16,
 "mipmaps": false,
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ibxar"]
-image = SubResource("Image_7i135")
+[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
+image = SubResource("Image_2imc3")
 
 [node name="HomePage" type="TextureRect"]
 self_modulate = Color(0, 0, 0, 0.2)
@@ -124,6 +120,7 @@ clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_ed1g1")
@@ -141,19 +138,19 @@ grow_vertical = 2
 
 [node name="HomePageBox" type="VBoxContainer" parent="CenterContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(600, 350)
+custom_minimum_size = Vector2(450, 262.5)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Panel" type="Panel" parent="CenterContainer/HomePageBox"]
-custom_minimum_size = Vector2(0, 100)
+[node name="TopPanel" type="Panel" parent="CenterContainer/HomePageBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_imi2d")
 
-[node name="Header2" type="Panel" parent="CenterContainer/HomePageBox/Panel"]
+[node name="Header2" type="Panel" parent="CenterContainer/HomePageBox/TopPanel"]
 clip_children = 1
 clip_contents = true
-custom_minimum_size = Vector2(0, 100)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -164,7 +161,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
 theme_override_styles/panel = SubResource("StyleBoxFlat_n2afh")
 
-[node name="BG" type="TextureRect" parent="CenterContainer/HomePageBox/Panel/Header2"]
+[node name="BG" type="TextureRect" parent="CenterContainer/HomePageBox/TopPanel/Header2"]
 modulate = Color(0.65098, 0.65098, 0.65098, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -177,7 +174,7 @@ size_flags_stretch_ratio = 0.3
 texture = SubResource("GradientTexture2D_2klx3")
 expand_mode = 1
 
-[node name="Vignette" type="TextureRect" parent="CenterContainer/HomePageBox/Panel/Header2"]
+[node name="Vignette" type="TextureRect" parent="CenterContainer/HomePageBox/TopPanel/Header2"]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -190,7 +187,7 @@ grow_vertical = 2
 texture = SubResource("GradientTexture2D_u0aw3")
 expand_mode = 1
 
-[node name="Logo" type="TextureRect" parent="CenterContainer/HomePageBox/Panel"]
+[node name="Logo" type="TextureRect" parent="CenterContainer/HomePageBox/TopPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -207,7 +204,7 @@ texture = ExtResource("3_3leok")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="CenterContainer/HomePageBox/Panel/Logo"]
+[node name="Label" type="Label" parent="CenterContainer/HomePageBox/TopPanel/Logo"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -224,120 +221,116 @@ rotation = -0.201447
 text = "2"
 label_settings = SubResource("LabelSettings_w8q1h")
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HomePageBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_right = 25
-
-[node name="BottomPanel" type="PanelContainer" parent="CenterContainer/HomePageBox/MarginContainer"]
+[node name="BottomPanel" type="PanelContainer" parent="CenterContainer/HomePageBox"]
 unique_name_in_owner = true
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_p7ka2")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel"]
+[node name="VersionLabel" type="Label" parent="CenterContainer/HomePageBox/BottomPanel"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 7
+text = "2.0-Alpha-8 (for Godot 4.0.2 stable)"
+horizontal_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/HomePageBox/BottomPanel"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 50
 
-[node name="CenterContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer"]
+[node name="CenterContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.4
-theme_override_constants/separation = -2
 
-[node name="Label" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
-modulate = Color(1, 1, 1, 0.627451)
+[node name="Label" type="Label" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
+theme_type_variation = &"DialogicSection"
+theme_override_constants/line_spacing = 0
 text = "Documentation"
 
-[node name="WikiButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+[node name="WikiButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
-text = "Wiki"
-flat = true
-alignment = 0
+theme_type_variation = &"DialogicLink"
+text = "  Wiki"
+underline = 2
+uri = "https://github.com/coppolaemilio/dialogic/wiki"
 
-[node name="WikiGettingStartedButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+[node name="WikiGettingStartedButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
-text = "Getting Started"
-flat = true
-alignment = 0
+theme_type_variation = &"DialogicLink"
+text = "  Getting Started"
+underline = 2
+uri = "https://github.com/coppolaemilio/dialogic/wiki/Tutorial:-Getting-Started"
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(0, 20)
+[node name="Separator" type="Control" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
-modulate = Color(1, 1, 1, 0.627451)
+[node name="Label2" type="Label" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
+theme_type_variation = &"DialogicSection"
 text = "Get in touch"
 
-[node name="BugRequestButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+[node name="BugRequestButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
-text = "Bug / Request"
-flat = true
-alignment = 0
+theme_type_variation = &"DialogicLink"
+text = "  Bug / Request"
+underline = 2
+uri = "https://github.com/coppolaemilio/dialogic/issues/new/choose"
 
-[node name="DiscordButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+[node name="DiscordButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
-text = "Discord"
-flat = true
-alignment = 0
+theme_type_variation = &"DialogicLink"
+text = "  Discord"
+underline = 2
+uri = "https://discord.gg/2hHQzkf2pX"
 
-[node name="DonateButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
+[node name="DonateButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
-text = "Donate"
-flat = true
-alignment = 0
+theme_type_variation = &"DialogicLink"
+text = "  Donate"
+underline = 2
+uri = "https://www.patreon.com/coppolaemilio"
 
-[node name="CenterContainer2" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer"]
+[node name="CenterContainer2" type="VBoxContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 15
 
-[node name="WelcomeText" type="RichTextLabel" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
+[node name="WelcomeText" type="RichTextLabel" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
+visible = false
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_es88k")
 bbcode_enabled = true
 text = "[center]Welcome to dialogic, a plugin that let's you easily create stories and dialogs for your game!"
 fit_content = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/separation = -4
 alignment = 1
 
-[node name="TipBox" type="MarginContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer"]
+[node name="RandomTipLabel" type="Label" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_left = 20
-
-[node name="Panel" type="PanelContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ce6uo")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = -7
-alignment = 1
-
-[node name="RandomTipLabel" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.843137)
-layout_mode = 2
+theme_type_variation = &"DialogicSection"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Random Tip"
 
-[node name="RandomTip" type="RichTextLabel" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer"]
+[node name="TipBox" type="PanelContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ce6uo")
+
+[node name="RandomTip" type="RichTextLabel" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox"]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
@@ -349,7 +342,7 @@ bbcode_enabled = true
 text = "[i]You can[/i] [b]create custom[/b] events, [i][b]subsystems, text effects and even editors for[/b][i] [code]dialogic!"
 fit_content = true
 
-[node name="RandomTipMoreButton" type="Button" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/Panel/VBoxContainer/RandomTip"]
+[node name="RandomTipMoreButton" type="Button" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2/VBoxContainer/TipBox/RandomTip"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
@@ -357,28 +350,14 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -33.0
-offset_top = -7.0
-offset_right = -3.0
+offset_left = -30.0
+offset_top = 1.0
+offset_right = -8.0
 offset_bottom = 23.0
 grow_horizontal = 0
 grow_vertical = 0
-tooltip_text = "Sounds cool!"
+tooltip_text = "Check it out!"
 theme_override_styles/normal = SubResource("StyleBoxFlat_ckyhx")
 theme_override_styles/hover = SubResource("StyleBoxFlat_l1doy")
-icon = SubResource("ImageTexture_ibxar")
+icon = SubResource("ImageTexture_udy8i")
 expand_icon = true
-
-[node name="VersionLabel" type="Label" parent="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.501961)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "2.0-Alpha-7 (for Godot 4.0.2 stable)"
-horizontal_alignment = 2
-
-[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/WikiButton" to="." method="_on_wiki_button_pressed"]
-[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/WikiGettingStartedButton" to="." method="_on_wiki_getting_started_button_pressed"]
-[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/BugRequestButton" to="." method="_on_bug_request_button_pressed"]
-[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/DiscordButton" to="." method="_on_discord_button_pressed"]
-[connection signal="pressed" from="CenterContainer/HomePageBox/MarginContainer/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer/DonateButton" to="." method="_on_donate_button_pressed"]

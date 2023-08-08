@@ -7,6 +7,8 @@ var reference_changes :Array[Dictionary] = []
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	%ReplacementSection.hide()
 	
 	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")
@@ -29,18 +31,6 @@ func _ready() -> void:
 	
 	%SectionTitle2.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
 	%SectionTitle2.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-	
-	## General Styling
-	var panel_style := DCSS.inline({
-		'border-radius': 10,
-		'border': 0,
-		'border_color':get_theme_color("dark_color_3", "Editor"),
-		'background': get_theme_color("base_color", "Editor"),
-		'padding': [5, 5],
-	})
-	
-	%ChangesSection.add_theme_stylebox_override('panel', panel_style)
-	%ReplacementSection.add_theme_stylebox_override('panel', panel_style)
 
 
 func open() -> void:
@@ -243,7 +233,7 @@ func _on_replace_pressed() -> void:
 
 func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> void:
 	var reopen_timeline := ""
-	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline Editor'].node
+	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline'].node
 	if timeline_editor.current_resource != null and timeline_editor.current_resource.resource_path in timelines:
 		reopen_timeline = timeline_editor.current_resource.resource_path
 		find_parent('EditorView').editors_manager.clear_editor(timeline_editor)

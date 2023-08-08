@@ -1,48 +1,74 @@
-[gd_scene load_steps=4 format=3 uid="uid://uarvgnbrcltm"]
+[gd_scene load_steps=5 format=3 uid="uid://uarvgnbrcltm"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/settings_choices.gd" id="2"]
-[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_cg22x"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="3_mpugv"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_nxutt"]
 
-[node name="Choices" type="HBoxContainer"]
+[sub_resource type="Image" id="Image_2imc3"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
+image = SubResource("Image_2imc3")
+
+[node name="Choices" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -227.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Behaviour"
+
+[node name="VBoxContainer" type="GridContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+columns = 2
 
-[node name="Title" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_styles/normal = ExtResource("2_cg22x")
-text = "Choice Settings"
-
-[node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AutofocusLabel" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Autofocus"]
+[node name="Label" type="Label" parent="VBoxContainer/AutofocusLabel"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Autofocus first choice"
 
-[node name="Autofocus" type="CheckBox" parent="VBoxContainer/Autofocus"]
+[node name="Autofocus" type="CheckBox" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AppearMode" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AppearModeLabel" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/AppearMode"]
+[node name="Label2" type="Label" parent="VBoxContainer/AppearModeLabel"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Choices appear"
 
-[node name="AppearMode" type="OptionButton" parent="VBoxContainer/AppearMode"]
+[node name="HintTooltip" parent="VBoxContainer/AppearModeLabel" instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
+texture = SubResource("ImageTexture_udy8i")
+hint_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
+
+[node name="RevealDelayLabel" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="AppearMode" type="OptionButton" parent="VBoxContainer/RevealDelayLabel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 item_count = 4
 selected = 0
 fit_to_longest_item = false
@@ -55,42 +81,48 @@ popup/item_2/id = 2
 popup/item_3/text = "After delay or click"
 popup/item_3/id = 3
 
-[node name="RevealDelayBox" type="HBoxContainer" parent="VBoxContainer"]
+[node name="RevealDelay" type="SpinBox" parent="VBoxContainer/RevealDelayLabel"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="Label2" type="Label" parent="VBoxContainer/RevealDelayBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Delay before choices appear"
-
-[node name="RevealDelay" type="SpinBox" parent="VBoxContainer/RevealDelayBox"]
-unique_name_in_owner = true
-layout_mode = 2
+tooltip_text = "Delay after which choices will appear (in seconds)."
 step = 0.01
 
-[node name="Delay2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="DelayLabel" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/Delay2"]
+[node name="Label2" type="Label" parent="VBoxContainer/DelayLabel"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Delay before choices can be pressed"
 
-[node name="Delay" type="SpinBox" parent="VBoxContainer/Delay2"]
+[node name="HintTooltip2" parent="VBoxContainer/DelayLabel" instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "Adding a small delay before choices can be activated can prevent accidentally choosing an option."
+texture = SubResource("ImageTexture_udy8i")
+hint_text = "Adding a small delay before choices can be activated can prevent accidentally choosing an option."
+
+[node name="Delay" type="SpinBox" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 step = 0.01
 
-[node name="DefaultFalseBehaviour" type="HBoxContainer" parent="VBoxContainer"]
+[node name="DefaultFalseBehaviourLabel" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="VBoxContainer/DefaultFalseBehaviour"]
+[node name="Label3" type="Label" parent="VBoxContainer/DefaultFalseBehaviourLabel"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Default behaviour for false choices"
 
-[node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer/DefaultFalseBehaviour"]
+[node name="HintTooltip3" parent="VBoxContainer/DefaultFalseBehaviourLabel" instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "Define the default behaviour (hide or disable) for choices that have a condition that isn't met.
+
+Choices can overwrite this setting individually."
+texture = SubResource("ImageTexture_udy8i")
+hint_text = "Define the default behaviour (hide or disable) for choices that have a condition that isn't met.
+
+Choices can overwrite this setting individually."
+
+[node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 2
@@ -100,30 +132,35 @@ popup/item_0/id = 0
 popup/item_1/text = "Disable"
 popup/item_1/id = 1
 
-[node name="VSeparator" type="VSeparator" parent="."]
+[node name="HSeparator" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+[node name="HotkeySelection" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="Title2" type="Label" parent="VBoxContainer2"]
+[node name="Title2" type="Label" parent="HotkeySelection"]
 layout_mode = 2
-theme_override_styles/normal = ExtResource("2_cg22x")
+theme_type_variation = &"DialogicSettingsSection"
 text = "Choice Hotkeys"
 
-[node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
+[node name="HintTooltip4" parent="HotkeySelection" instance=ExtResource("2_nxutt")]
 layout_mode = 2
+tooltip_text = "You can add more complex hotkeys (or individual ones) by editing the choice buttons of your layout scene."
+texture = SubResource("ImageTexture_udy8i")
+hint_text = "You can add more complex hotkeys (or individual ones) by editing the choice buttons of your layout scene."
 
-[node name="Label4" type="Label" parent="VBoxContainer2/HotkeySelection"]
+[node name="VBoxContainer3" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Label4" type="Label" parent="VBoxContainer3"]
+layout_mode = 2
 text = "Hotkey type"
 
-[node name="HotkeyType" type="OptionButton" parent="VBoxContainer2/HotkeySelection"]
+[node name="HotkeyType" type="OptionButton" parent="VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
 item_count = 2
 selected = 0
 popup/item_0/text = "No Hotkeys"
@@ -131,16 +168,9 @@ popup/item_0/id = 0
 popup/item_1/text = "Default (1-9)"
 popup/item_1/id = 1
 
-[node name="Info" type="Label" parent="VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "You can add more complex hotkeys by editing the \"shortcut\" property of a ChoiceButton. "
-autowrap_mode = 3
-script = ExtResource("3_mpugv")
-
-[connection signal="toggled" from="VBoxContainer/Autofocus/Autofocus" to="." method="_on_Autofocus_toggled"]
-[connection signal="item_selected" from="VBoxContainer/AppearMode/AppearMode" to="." method="_on_appear_mode_item_selected"]
-[connection signal="value_changed" from="VBoxContainer/RevealDelayBox/RevealDelay" to="." method="_on_reveal_delay_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/Delay2/Delay" to="." method="_on_Delay_value_changed"]
-[connection signal="item_selected" from="VBoxContainer/DefaultFalseBehaviour/FalseBehaviour" to="." method="_on_FalseBehaviour_item_selected"]
-[connection signal="item_selected" from="VBoxContainer2/HotkeySelection/HotkeyType" to="." method="_on_HotkeyType_item_selected"]
+[connection signal="toggled" from="VBoxContainer/Autofocus" to="." method="_on_Autofocus_toggled"]
+[connection signal="item_selected" from="VBoxContainer/RevealDelayLabel/AppearMode" to="." method="_on_appear_mode_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/RevealDelayLabel/RevealDelay" to="." method="_on_reveal_delay_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Delay" to="." method="_on_Delay_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/FalseBehaviour" to="." method="_on_FalseBehaviour_item_selected"]
+[connection signal="item_selected" from="VBoxContainer3/HotkeyType" to="." method="_on_HotkeyType_item_selected"]

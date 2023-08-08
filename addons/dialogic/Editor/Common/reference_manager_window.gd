@@ -14,6 +14,8 @@ var icon_button :Button = null
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	icon_button = editors_manager.add_icon_button(get_theme_icon("Unlinked", "EditorIcons"), 'Manage Broken References')
 	icon_button.pressed.connect(open)
 	
@@ -21,12 +23,14 @@ func _ready() -> void:
 	dot.texture = get_theme_icon("GuiGraphNodePort", "EditorIcons")
 	dot.scale = Vector2(0.8, 0.8)
 	dot.z_index = 10
-	dot.position = Vector2(icon_button.size.x*0.9, icon_button.size.x*0.05)
+	dot.position = Vector2(icon_button.size.x*0.8, icon_button.size.x*0.2)
 	dot.modulate = get_theme_color("warning_color", "Editor").lightened(0.5)
 	
 	icon_button.add_child(dot)
 	
-	$Manager.reference_changes = DialogicUtil.get_editor_setting('reference_changes', [])
+	var old_changes :Array = DialogicUtil.get_editor_setting('reference_changes', [])
+	if !old_changes.is_empty():
+		$Manager.reference_changes = old_changes
 	
 	update_indicator()
 	

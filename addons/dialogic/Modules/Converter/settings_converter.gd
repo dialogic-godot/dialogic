@@ -1,5 +1,5 @@
 @tool
-extends HSplitContainer
+extends DialogicSettingsPage
 
 var folderStructure
 
@@ -20,8 +20,15 @@ var varSubsystemInstalled = false
 var anchorNames = {}
 var prefixCharacters = false
 
-func refresh():
+
+func _get_title():
+	return 'Converter'
+
+func _refresh():
 	pass
+
+func _is_feature_tab() -> bool:
+	return true
 
 func _on_verify_pressed():
 	
@@ -924,7 +931,7 @@ func convertVariables():
 		ProjectSettings.save()
 		
 		#rebuild the data in the other tabs, so it doesnt override it
-		refresh()
+		_refresh()
 		%OutputLog.text += str(convertedVariables) + " variables converted, and saved to project!\r\n"
 	else:
 		%OutputLog.text += "[color=yellow]Variable subsystem is not present! Variables were not converted![/color]\r\n"

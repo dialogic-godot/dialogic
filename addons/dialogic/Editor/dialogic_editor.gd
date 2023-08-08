@@ -29,6 +29,15 @@ func _register() -> void:
 	pass
 
 
+## Used on the tab
+func _get_icon() -> Texture:
+	return null
+
+## Used on the tab
+func _get_title() -> String:
+	return ""
+
+
 ## If this editor supports editing resources, load them here (overwrite in subclass)
 func _open_resource(resource:Resource) -> void:
 	pass
