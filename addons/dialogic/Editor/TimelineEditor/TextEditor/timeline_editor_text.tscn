@@ -1,9 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://defdeav8rli6o"]
+[gd_scene load_steps=5 format=3 uid="uid://defdeav8rli6o"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="1_5qfro"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/CodeCompletionHelper.gd" id="3_3bgmj"]
 
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_xmuy7"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_yb1h4"]
 script = ExtResource("1_5qfro")
 
 [node name="TimelineTextEditor" type="CodeEdit"]
@@ -13,14 +14,14 @@ offset_bottom = 600.0
 theme_override_constants/line_spacing = 10
 highlight_current_line = true
 draw_tabs = true
-syntax_highlighter = SubResource("SyntaxHighlighter_xmuy7")
+syntax_highlighter = SubResource("SyntaxHighlighter_yb1h4")
 minimap_draw = true
 caret_blink = true
 line_folding = true
 gutters_draw_line_numbers = true
 gutters_draw_fold_gutter = true
 code_completion_enabled = true
-code_completion_prefixes = Array[String](["[", "{", "f"])
+code_completion_prefixes = Array[String](["[", "{"])
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
@@ -28,6 +29,9 @@ script = ExtResource("1_1kbx2")
 
 [node name="UpdateTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="CodeCompletionHelper" type="Node" parent="."]
+script = ExtResource("3_3bgmj")
 
 [connection signal="code_completion_requested" from="." to="." method="_on_code_completion_requested"]
 [connection signal="symbol_lookup" from="." to="." method="_on_symbol_lookup"]
