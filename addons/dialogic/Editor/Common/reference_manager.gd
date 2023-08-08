@@ -134,7 +134,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 				var line := timeline_text.get_slice('\n', line_number-1)
 				finds.append({
 				'match':i,
-			 	'timeline':timeline_path,
+				'timeline':timeline_path,
 				'info': regex_info[1], 
 				'line_number': line_number,
 				'line': line,
