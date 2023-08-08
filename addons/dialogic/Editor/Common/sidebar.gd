@@ -25,7 +25,7 @@ func _ready():
 	var editor_scale := DialogicUtil.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
-	%Logo.custom_minimum_size.y = 25*editor_scale
+	%Logo.custom_minimum_size.y = 30*editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 	
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))

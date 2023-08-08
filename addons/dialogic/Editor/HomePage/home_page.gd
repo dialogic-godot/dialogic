@@ -3,7 +3,7 @@ extends DialogicEditor
 
 ## A Main page in the dialogic editor.
 
-var tips : PackedStringArray = []
+var tips : Array = []
 
 
 
@@ -34,6 +34,22 @@ func _register():
 	editors_manager.register_simple_editor(self)
 	
 	self.alternative_text = "Welcome to dialogic!"
+
+
+
+func _open(extra_info:Variant="") -> void:
+	if tips.is_empty():
+		var file := FileAccess.open('res://addons/dialogic/Editor/HomePage/tips.txt', FileAccess.READ)
+		tips = file.get_as_text().split('\n')
+		tips = tips.filter(func(item): return !item.is_empty())
+	
+	randomize()
+	var tip :String = tips[randi()%len(tips)]
+	var text := tip.get_slice(';',0).strip_edges()
+	var action := tip.get_slice(';',1).strip_edges()
+	if action == text:
+		action = ""
+	show_tip(text, action)
 
 
 func show_tip(text:String='', action:String='') -> void:
@@ -68,18 +84,3 @@ func _on_tip_action(action:String) -> void:
 			editors_manager.open_editor(editors_manager.editors[editor_name].node, false, extra_info)
 			return
 	print("Tip button doesn't do anything (", action, ")")
-
-
-func _open(extra_info:Variant="") -> void:
-	if tips.is_empty():
-		var file := FileAccess.open('res://addons/dialogic/Editor/HomePage/tips.txt', FileAccess.READ)
-		tips = file.get_as_text().split('\n')
-	
-	randomize()
-	var tip := tips[randi()%len(tips)]
-	var text := tip.get_slice(';',0).strip_edges()
-	var action := tip.get_slice(';',1).strip_edges()
-	if action == text:
-		action = ""
-	show_tip(text, action)
-	

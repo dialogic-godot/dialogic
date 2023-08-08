@@ -119,6 +119,8 @@ func add_registered_sections() -> void:
 		button.flat = true
 		button.add_theme_color_override('font_pressed_color', get_theme_color("property_color_z", "Editor"))
 		button.add_theme_color_override('font_hover_color', get_theme_color('warning_color', 'Editor'))
+		button.add_theme_color_override('font_focus_color', get_theme_color('warning_color', 'Editor'))
+		button.add_theme_stylebox_override('focus', StyleBoxEmpty.new())
 		button.pressed.connect(open_tab.bind(vbox))
 		if section._is_feature_tab():
 			%FeatureTabs.add_child(button)
