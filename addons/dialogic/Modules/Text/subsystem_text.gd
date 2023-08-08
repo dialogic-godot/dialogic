@@ -169,6 +169,7 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 
 # instant skips the signal and thus possible animations
 func hide_text_boxes(instant:=false) -> void:
+	dialogic.current_state_info['text'] = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
