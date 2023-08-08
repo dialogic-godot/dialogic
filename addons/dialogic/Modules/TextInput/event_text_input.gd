@@ -68,7 +68,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"var"			: {"property": "variable", 		"default": ""},
 		"placeholder"	: {"property": "placeholder", 	"default": ""},
 		"default"		: {"property": "default", 		"default": ""},
-		"allow_empty"	: {"property": "allow_empty",	"default": false},
+		"allow_empty"	: {"property": "allow_empty",	"default": false, 
+							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
 	}
 
 ################################################################################

@@ -43,13 +43,15 @@ var shortcode_color : Color
 var shortcode_param_color : Color
 var shortcode_value_color : Color
 
+var shortcode_events := {}
+
 func _init():
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():
 		var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
 		normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 		comment_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
-		text_effect_color = normal_color.darkened(0.5)
+		text_effect_color = normal_color.darkened(0.2)
 		choice_color = editor_settings.get('text_editor/theme/highlighting/function_color')
 		translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 		
@@ -87,6 +89,11 @@ func _init():
 func _get_line_syntax_highlighting(line:int) -> Dictionary:
 	var str_line := get_text_edit().get_line(line)
 	
+	if shortcode_events.is_empty():
+		for event in Engine.get_main_loop().get_meta('dialogic_event_cache', []):
+			if event.get_shortcode() != 'default_shortcode':
+				shortcode_events[event.get_shortcode()] = event
+	
 	var dict := {}
 	dict[0] = {'color':normal_color}
 
@@ -101,10 +108,12 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			if !text_effects_regex.search(str_line.get_slice(' ', 0)):
 				var result:= shortcode_regex.search(str_line)
 				if result:
-					dict[result.get_start('id')] = {"color":shortcode_color}
-					dict[result.get_end('id')] = {"color":normal_color}
+					if result.get_string('id') in shortcode_events:
+						dict[result.get_start('id')] = {"color":shortcode_events[result.get_string('id')].event_color}
+						dict[result.get_end('id')] = {"color":normal_color}
+					
 					if result.get_string('args'):
-						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
+						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'), shortcode_events[result.get_string('id')].event_color)
 				return fix_dict(dict)
 		
 		if str_line.strip_edges().begins_with('-'):
@@ -184,6 +193,7 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			dict[eff.get_start()] = {"color":text_effect_color}
 			dict[eff.get_end()] = {"color":normal_color}
 		dict = color_region(dict, variable_color, str_line, '{', '}', result.get_start('text'))
+		
 		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
 			var color := string_color
 			color = color.lerp(normal_color, 0.4)
@@ -254,12 +264,12 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 	return dict
 
 
-func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int = 0) -> Dictionary:
+func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int = 0, base_color:=normal_color) -> Dictionary:
 	if to <= from: 
 		to = len(line)-1
 	var args_result:= shortcode_param_regex.search_all(line.substr(from, to-from+2))
 	for x in args_result:
-		dict[x.get_start()+from] = {"color":shortcode_param_color}
-		dict[x.get_start('value')+from-1] = {"color":shortcode_value_color}
+		dict[x.get_start()+from] = {"color":base_color.lerp(normal_color, 0.5)}
+		dict[x.get_start('value')+from-1] = {"color":base_color.lerp(normal_color, 0.2)}
 		dict[x.get_end()+from] = {"color":normal_color}
 	return dict

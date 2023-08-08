@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://cf3qks3v18xmr"]
+[gd_scene load_steps=12 format=3 uid="uid://cf3qks3v18xmr"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/settings_text.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="3_s7xhj"]
+[ext_resource type="PackedScene" uid="uid://dyp7m2nvab1aj" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn" id="4_0hlwb"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="5_cc70e"]
 
-[sub_resource type="Image" id="Image_2imc3"]
+[sub_resource type="Image" id="Image_esxpy"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -13,12 +15,18 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_udy8i"]
-image = SubResource("Image_2imc3")
+[sub_resource type="ImageTexture" id="ImageTexture_ndlhl"]
+image = SubResource("Image_esxpy")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mamwx"]
+
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_28tl1"]
+script = ExtResource("5_cc70e")
+
+[sub_resource type="FontVariation" id="FontVariation_52y0p"]
+variation_transform = Transform2D(1, 0.29, 0, 1, 0, 0)
 
 [node name="DialogText" type="VBoxContainer"]
 anchors_preset = 15
@@ -52,7 +60,7 @@ text = "Default speed"
 [node name="HintTooltip2" parent="VBoxContainer/VBox/DefaultSpeedLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
 
 [node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/VBox"]
@@ -71,7 +79,7 @@ text = "Input action"
 layout_mode = 2
 tooltip_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
 
@@ -92,7 +100,7 @@ layout_mode = 2
 tooltip_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
@@ -122,7 +130,7 @@ text = "Autocolor names"
 [node name="HintTooltip5" parent="VBoxContainer/VBox/ColorNames" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If enabled character names will be colored in the characters color in text events."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "If enabled character names will be colored in the characters color in text events."
 
 [node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/VBox"]
@@ -139,7 +147,7 @@ text = "Hide textbox when empty"
 [node name="HintTooltip6" parent="VBoxContainer/VBox/TextboxHiddenLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If disabled the textbox will not be hidden at the beginning of dialogs, even if empty."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "If disabled the textbox will not be hidden at the beginning of dialogs, even if empty."
 
 [node name="TextboxHidden" type="CheckBox" parent="VBoxContainer/VBox"]
@@ -156,7 +164,7 @@ text = "Autocontinue"
 [node name="HintTooltip7" parent="VBoxContainer/VBox/HBoxContainer2" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If enabled dialogic will automatically continue to the next event when text has finished revealing (after a delay set in seconds)."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "If enabled dialogic will automatically continue to the next event when text has finished revealing (after a delay set in seconds)."
 
 [node name="Autoadvance" type="HBoxContainer" parent="VBoxContainer/VBox"]
@@ -190,7 +198,7 @@ tooltip_text = "Adds pauses after certain letters.
 
 Each set can contain multiple letters that will (individually) 
 have a pause of the given length added after them."
-texture = SubResource("ImageTexture_udy8i")
+texture = SubResource("ImageTexture_ndlhl")
 hint_text = "Adds pauses after certain letters. 
 
 Each set can contain multiple letters that will (individually) 
@@ -229,16 +237,33 @@ theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
 bbcode_enabled = true
-text = "There are a number of useful commands you can use in text events:
-- [b][speed=x][/b] changes the speed until the next speed command or the end of the text
-- [b][br][/b] adds a line break
-- [b]<Word/Other Word>[/b] selects a random entry from the comma separated list. You can write // if one of the entry should contain a slash.
-- [b][portrait=sad][/b] changes the portrait of the speaker to the given portrait.
-- [b][pause=x][/b] pauses for x seconds.
-- [b][mood=sad][/b] changes the typing sound mood.
-- [b][signal=arg][/b] emits the Dialogic.text_signal signal with the given argument.
+text = "There are a number of useful commands you can use in text events:"
+fit_content = true
 
-Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://addons/dialogic/Editor/Images/plugin-icon.svg[/img] [/img].
+[node name="MultilineText" parent="InformationSection" instance=ExtResource("4_0hlwb")]
+layout_mode = 2
+theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
+text = "Use [speed=x] to change the speed 
+Use [br] to add a line break
+Use <Word/Other Word> to insert a random entry
+Use [portrait=sad] to change the portrait of the speaker
+Use [pause=x] to pauses for x seconds
+Use [mood=sad] to change the typing sound mood
+Use [signal=arg] to emit the Dialogic.text_signal"
+editable = false
+syntax_highlighter = SubResource("SyntaxHighlighter_28tl1")
+
+[node name="Info2" type="RichTextLabel" parent="InformationSection"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
+theme_override_fonts/italics_font = SubResource("FontVariation_52y0p")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
+bbcode_enabled = true
+text = "Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://addons/dialogic/Editor/Images/plugin-icon.svg[/img] [/img].
 Learn more about bbcode in the official godot docs."
 fit_content = true
 
