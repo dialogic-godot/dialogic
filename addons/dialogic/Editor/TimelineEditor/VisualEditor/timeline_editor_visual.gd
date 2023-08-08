@@ -165,7 +165,7 @@ func _ready():
 
 func _on_content_item_clicked(label:String) -> void:
 	if label == "~ Top":
-		scroll_to_piece(0)
+		%TimelineArea.scroll_vertical = 0
 		return
 	
 	for event in %Timeline.get_children():

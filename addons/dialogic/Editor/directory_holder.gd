@@ -9,11 +9,17 @@ var dialogic_handler: Node
 var event_script_cache: Array[DialogicEvent] = []
 var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
+var label_directory :Dictionary = {}:
+	set(value):
+		label_directory = value
+		Engine.get_main_loop().set_meta("dialogic_label_directory", value)
+
 
 
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
+	
 	## DIRECTORIES SETUP
 	#initialize DGH, and set the local variables to references of the DGH ones
 	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's
@@ -21,6 +27,10 @@ func _ready() -> void:
 	rebuild_character_directory()
 	rebuild_timeline_directory()
 	rebuild_event_script_cache()
+	label_directory = DialogicUtil.get_editor_setting('label_ref', {})
+	for i in label_directory:
+		if !i in timeline_directory:
+			label_directory.erase(i)
 	
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 

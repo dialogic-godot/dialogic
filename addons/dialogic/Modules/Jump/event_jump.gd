@@ -19,16 +19,12 @@ var timeline :DialogicTimeline = null:
 		return timeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
 var label_name : String = ""
-## If true when the timeline this event jumps to finishes, dialogic will continue this one from here.
-var return_after: bool = false
 
 
 ### Helpers
 
 ## Path to the timeline. Mainly used by the editor.
 var _timeline_file: String = ""
-## Helper that indicates if [timeline] has been loaded from [_timeline_file].
-var _timeline_loaded: bool = false
 
 
 ################################################################################
@@ -36,8 +32,7 @@ var _timeline_loaded: bool = false
 ################################################################################
 
 func _execute() -> void:
-	if return_after:
-		dialogic.Jump.push_to_jump_stack()
+	dialogic.Jump.push_to_jump_stack()
 	if timeline and timeline != dialogic.current_timeline:
 		dialogic.Jump.switched_timeline.emit({'previous_timeline':dialogic.current_timeline, 'timeline':timeline, 'label':label_name})
 		dialogic.start_timeline(timeline, label_name)
@@ -68,9 +63,27 @@ func _get_icon() -> Resource:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+func to_text() -> String:
+	var result := "jump "
+	if _timeline_file:
+		result += _timeline_file+'/'
+		if label_name:
+			result += label_name
+	elif label_name:
+		result += label_name
+	return result
 
-func get_shortcode() -> String:
-	return "jump"
+
+func from_text(string:String) -> void:
+	var result := RegEx.create_from_string('jump (?<timeline>\\w*\\/)?(?<label>\\w*)?').search(string.strip_edges())
+	_timeline_file = result.get_string('timeline').trim_suffix('/')
+	label_name = result.get_string('label')
+
+
+func is_valid_event(string:String) -> bool:
+	if string.strip_edges().begins_with("jump "):
+		return true
+	return false
 
 
 func get_shortcode_parameters() -> Dictionary:
@@ -79,8 +92,6 @@ func get_shortcode_parameters() -> Dictionary:
 		"timeline"		: {"property": "_timeline_file", 	"default": null, 
 							"suggestions": get_timeline_suggestions},
 		"label"			: {"property": "label_name", 		"default": ""},
-		"return_after"	: {"property": "return_after", 		"default": false, 
-							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}}
 	}
 
 
@@ -96,8 +107,9 @@ func build_event_editor():
 		'empty_text': '(this timeline)',
 		'autofocus':true
 	})
-	add_header_edit("label_name", ValueType.SINGLELINE_TEXT, "at", '', {'placeholder':'the beginning'})
-	add_body_edit("return_after", ValueType.BOOL, "Return to this spot after completed?")
+	add_header_edit("label_name", ValueType.COMPLEX_PICKER, "at", '', {
+		'empty_text':'the beginning',
+		'suggestions_func':get_label_suggestions})
 
 
 func get_timeline_suggestions(filter:String= "") -> Dictionary:
@@ -108,4 +120,14 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	
 	for resource in Engine.get_main_loop().get_meta('dialogic_timeline_directory').keys():
 		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_main_loop().get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+	return suggestions
+
+
+func get_label_suggestions(filter:String="") -> Dictionary:
+	var suggestions := {}
+	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
+	
+	if _timeline_file in Engine.get_main_loop().get_meta('dialogic_label_directory').keys():
+		for label in Engine.get_main_loop().get_meta('dialogic_label_directory')[_timeline_file]:
+			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions

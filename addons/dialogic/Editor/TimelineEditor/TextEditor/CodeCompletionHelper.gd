@@ -127,10 +127,21 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 	# Choice Event suggestions
 	elif line.begins_with('-') and '[' in line and mode == Modes.FULL_HIGHLIGHTING:
 		if symbol == '[':
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', text.syntax_highlighter.code_flow_color)
+			if line.count('[') == 1:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', text.syntax_highlighter.code_flow_color)
+			elif line.count('[') > 1:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', text.syntax_highlighter.code_flow_color)
+		print(word)
+		if symbol == ' ' and '[else' in line:
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', text.syntax_highlighter.code_flow_color)
 		elif symbol == '{':
 			suggest_variables(text)
-
+		if (symbol == '=' or symbol == '"') and line.count('[') > 1 and !'" ' in line:
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'default', "default", text.syntax_highlighter.shortcode_value_color, null, '"')
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'hide', "hide", text.syntax_highlighter.shortcode_value_color, null, '"')
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'disable', "disable", text.syntax_highlighter.shortcode_value_color, null, '"')
+			
+	
 	# Character Event suggestions
 	elif line.begins_with('Join') or line.begins_with('Leave') or line.begins_with('Update') and mode == Modes.FULL_HIGHLIGHTING:
 		if symbol == ' ' and line.count(' ') <= max(line.count('"'), 1):
@@ -141,7 +152,12 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 		if symbol == '(':
 			var character:= completion_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(text, character)
-
+	elif line.begins_with('jump ') and mode == Modes.FULL_HIGHLIGHTING:
+		if symbol == ' ':
+			suggest_timelines(text)
+			suggest_labels(text, '', '\n')
+		if symbol == '/':
+			suggest_labels(text, line.strip_edges().trim_prefix('jump ').trim_suffix('/'+String.chr(0xFFFF)).strip_edges())
 	# Start of line suggestions
 	# These are all as KIND_PLAIN_TEXT, because that means they won't 
 	# be suggested unless at least the first letter is typed in.
@@ -152,10 +168,13 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 		
 		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', text.syntax_highlighter.code_flow_color)
 		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', text.syntax_highlighter.code_flow_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:', text.syntax_highlighter.code_flow_color)
+		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', text.syntax_highlighter.code_flow_color)
 		
 		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', text.syntax_highlighter.keyword_VAR_color)
 		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', text.syntax_highlighter.keyword_SETTING_color)
+		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'label', 'label ', text.syntax_highlighter.keyword_SETTING_color)
+		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'jump', 'jump ', text.syntax_highlighter.keyword_SETTING_color)
+		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', text.syntax_highlighter.keyword_SETTING_color)
 		
 		suggest_characters(text, CodeEdit.KIND_CLASS)
 	
@@ -179,6 +198,18 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER) -> void:
 	for character in text.timeline_editor.editors_manager.resource_helper.character_directory:
 		text.add_code_completion_option(type, character, character, text.syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+
+
+# Helper that adds all timelines as options
+func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER) -> void:
+	for timeline in text.timeline_editor.editors_manager.resource_helper.timeline_directory:
+		text.add_code_completion_option(type, timeline, timeline+'/', text.syntax_highlighter.character_name_color, text.get_theme_icon("TripleBar", "EditorIcons"))
+
+
+func suggest_labels(text:CodeEdit, timeline:String='', end:='') -> void:
+	if timeline in Engine.get_main_loop().get_meta('dialogic_label_directory', {}):
+		for i in Engine.get_main_loop().get_meta('dialogic_label_directory')[timeline]:
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+end, text.syntax_highlighter.character_name_color, load("res://addons/dialogic/Modules/Jump/icon_label.png"))
 
 
 # Helper that adds all portraits of a given character as options

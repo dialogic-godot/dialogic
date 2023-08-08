@@ -33,12 +33,14 @@ func _set(property, value):
 
 	return false
 
+
 func _get(property):
 	if str(property).begins_with("event/"):
 		var event_idx:int = str(property).split("/", true, 2)[1].to_int()
 		if event_idx < len(events):
 			return events[event_idx]
 			return true
+
 
 func _init() -> void:
 	events = []

@@ -32,6 +32,8 @@ var string_color : Color
 
 var keyword_VAR_color : Color
 var keyword_SETTING_color : Color
+var keyword_label_color : Color
+var keyword_return_color : Color
 
 var character_event_color : Color
 var character_name_color : Color
@@ -56,13 +58,14 @@ func _init():
 		variable_color = editor_settings.get('text_editor/theme/highlighting/engine_type_color')
 		string_color = editor_settings.get('text_editor/theme/highlighting/string_color')
 
-
 		shortcode_color =  editor_settings.get('text_editor/theme/highlighting/gdscript/annotation_color')
 		shortcode_param_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_path_color')
 		shortcode_value_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_reference_color')
 
 		keyword_VAR_color = editor_settings.get('text_editor/theme/highlighting/keyword_color')
 		keyword_SETTING_color = editor_settings.get('text_editor/theme/highlighting/member_variable_color')
+		keyword_label_color = editor_settings.get("text_editor/theme/highlighting/engine_type_color")
+		keyword_return_color = editor_settings.get("text_editor/theme/highlighting/brace_mismatch_color")
 		
 		character_event_color = editor_settings.get('text_editor/theme/highlighting/symbol_color')
 		character_name_color = editor_settings.get('text_editor/theme/highlighting/executing_line_color')
@@ -110,6 +113,7 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 				dict[str_line.find('[')] = {"color":normal_color}
 				dict = color_word(dict, code_flow_color, str_line, 'if', str_line.find('['), str_line.find(']'))
 				dict = color_condition(dict, str_line, str_line.find('['), str_line.find(']'))
+				dict = color_shortcode_content(dict, str_line, str_line.find(']'))
 			return fix_dict(dict)
 		
 		for word in ['if', 'elif', 'else']:
@@ -140,6 +144,20 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			dict = color_region(dict, string_color, str_line, '"', '"', str_line.find('VAR'))
 			dict = color_region(dict, variable_color, str_line, '{', '}', str_line.find('VAR'))
 			return fix_dict(dict)
+		
+		if str_line.strip_edges().begins_with('label'):
+			dict[str_line.find('label')] = {"color":keyword_label_color}
+			dict[str_line.find('label')+5] = {"color":string_color}
+		
+		if str_line.strip_edges().begins_with('return'):
+			dict[str_line.find('return')] = {"color":keyword_return_color}
+			dict[str_line.find('return')+6] = {"color":string_color}
+		
+		
+		if str_line.strip_edges().begins_with('jump'):
+			dict[str_line.find('jump')] = {"color":keyword_label_color}
+			dict[str_line.find('jump')+4] = {"color":string_color}
+		
 		
 		if str_line.strip_edges().begins_with('Setting'):
 			dict[str_line.find('Setting')] = {"color":keyword_SETTING_color}
@@ -193,17 +211,17 @@ func fix_dict(dict:Dictionary) -> Dictionary:
 
 
 func color_condition(dict:Dictionary, line:String, from:int = 0, to:int = 0) -> Dictionary:
-	dict = color_region(dict, variable_color, line, '{', '}', from, to)
-	dict = color_region(dict, string_color, line, '"', '"', from, to)
-	
 	dict = color_word(dict, code_flow_color, line, 'or',  from, to)
 	dict = color_word(dict, code_flow_color, line, 'and', from, to)
 	dict = color_word(dict, code_flow_color, line, '==',  from, to)
 	dict = color_word(dict, code_flow_color, line, '!=',  from, to)
-	dict = color_word(dict, code_flow_color, line, '>',   from, to)
-	dict = color_word(dict, code_flow_color, line, '<',   from, to)
 	dict = color_word(dict, code_flow_color, line, '>=',  from, to)
 	dict = color_word(dict, code_flow_color, line, '<=',  from, to)
+	dict = color_word(dict, code_flow_color, line, '> ',   from, to)
+	dict = color_word(dict, code_flow_color, line, '< ',   from, to)
+	dict = color_region(dict, variable_color, line, '{', '}', from, to)
+	dict = color_region(dict, string_color, line, '"', '"', from, to)
+	
 	
 	return dict
 
