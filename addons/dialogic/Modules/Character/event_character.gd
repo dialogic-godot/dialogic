@@ -431,32 +431,27 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 		Actions.UPDATE:
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
-	for anim in list_animations():
-		match action:
-			Actions.JOIN:
-				if '_in' in anim.get_file():
-					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-			Actions.LEAVE:
-				if '_out' in anim.get_file():
-					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-			Actions.UPDATE:
-				if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
-					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-					continue
+	
+	match action:
+		Actions.JOIN:
+			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN):
+				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+		Actions.LEAVE:
+			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT):
+				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+		Actions.UPDATE:
+			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION):
+				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+
 	return suggestions
 
 
-func list_animations() -> Array:
-	var list := DialogicUtil.listdir(get_script().resource_path.get_base_dir().path_join('DefaultAnimations'), true, false, true)
-	list.append_array(DialogicUtil.listdir(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
-	return list
-
-
 func guess_animation_file(animation_name: String) -> String:
-	for file in list_animations():
+	for file in DialogicUtil.get_portrait_animation_scripts():
 		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
 			return file
 	return animation_name
+
 
 func _on_character_edit_pressed() -> void:
 	var editor_manager := _editor_node.find_parent('EditorsManager')

@@ -1,20 +1,15 @@
 @tool
 extends DialogicSettingsPage
 
-var current_animation_path := ""
 
 func _ready():
 	%JoinDefault.get_suggestions_func = get_join_animation_suggestions
 	%JoinDefault.enable_pretty_name = true
 	%LeaveDefault.get_suggestions_func = get_leave_animation_suggestions
 	%LeaveDefault.enable_pretty_name = true
-	%CustomAnimationsFolder.value_changed.connect(custom_anims_folder_selected)
 
 
 func _refresh():
-	%CustomAnimationsFolder.resource_icon = get_theme_icon("Folder", "EditorIcons")
-	%CustomAnimationsFolder.set_value(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'))
-	
 	%JoinDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 	%LeaveDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 	%JoinDefault.set_value(DialogicUtil.pretty_name(ProjectSettings.get_setting('dialogic/animations/join_default', 
@@ -73,7 +68,3 @@ func list_animations() -> Array:
 	var list = DialogicUtil.listdir(get_script().resource_path.get_base_dir().path_join('DefaultAnimations'), true, false, true)
 	list.append_array(DialogicUtil.listdir(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 	return list
-
-func custom_anims_folder_selected(setting:String, path:String):
-	ProjectSettings.set_setting('dialogic/animations/custom_folder', path)
-	ProjectSettings.save()
