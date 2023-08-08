@@ -57,6 +57,15 @@ func _get_text_modifiers() -> Array[Dictionary]:
 	return []
 
 
+## Should return array of animation scripts.
+func _get_portrait_animations() -> Array:
+	return []
+
+
+func list_dir(subdir:='') -> Array:
+	return Array(DirAccess.get_files_at(this_folder.path_join(subdir))).map(func(file):return this_folder.path_join(subdir).path_join(file))
+
+
 ## Helper that allows scanning sub directories that might be styles
 func scan_for_layouts() -> Array[Dictionary]:
 	var dir := DirAccess.open(this_folder)

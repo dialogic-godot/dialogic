@@ -15,3 +15,7 @@ func _get_settings_pages() -> Array:
 
 func _get_text_effects() -> Array[Dictionary]:
 	return [{'command':'portrait', 'subsystem':'Portraits', 'method':'text_effect_portrait'}]
+
+
+func _get_portrait_animations() -> Array:
+	return list_dir('DefaultAnimations')

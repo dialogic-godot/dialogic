@@ -5,6 +5,8 @@ class_name DialogicUtil
 ## Used whenever the same thing is needed in different parts of the plugin.
  
 
+enum AnimationType {ALL, IN, OUT, ACTION}
+
 ################################################################################
 ##					EDITOR
 ################################################################################
@@ -104,6 +106,23 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	
 	Engine.get_main_loop().set_meta('dialogic_indexers', indexers)
 	return indexers
+
+
+static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
+	var animations := []
+	if Engine.get_main_loop().has_meta('dialogic_animation_names'):
+		animations = Engine.get_main_loop().get_meta('dialogic_animation_names')
+	else:
+		for i in get_indexers():
+			animations.append_array(i._get_portrait_animations())
+		Engine.get_main_loop().set_meta('dialogic_animation_names', animations)
+
+	return animations.filter(
+		func(script):
+			if type == AnimationType.ALL: return true;
+			if type == AnimationType.IN: return '_in' in script;
+			if type == AnimationType.OUT: return '_out' in script;
+			if type == AnimationType.ACTION: return not ('_in' in script or '_out' in script))
 
 
 static func pretty_name(script:String) -> String:
