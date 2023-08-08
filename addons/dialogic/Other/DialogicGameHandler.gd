@@ -444,7 +444,8 @@ func get_layout_node() -> Node:
 	var tree := get_tree()
 	return (
 		tree.get_meta('dialogic_layout_node')
-		if tree.has_meta('dialogic_layout_node')
+		if tree.has_meta('dialogic_layout_node') and 
+			is_instance_valid(tree.get_meta('dialogic_layout_node'))
 		else null
 	)
 
