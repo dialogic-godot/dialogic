@@ -11,7 +11,10 @@ extends DialogicEvent
 ################################################################################
 
 func _execute() -> void:
-	Dialogic.Jump.resume_from_last_jump()
+	if !dialogic.Jump.is_jump_stack_empty():
+		dialogic.Jump.resume_from_last_jump()
+	else:
+		dialogic.end_timeline()
 
 
 ################################################################################
