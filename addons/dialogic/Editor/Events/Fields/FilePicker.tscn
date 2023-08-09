@@ -77,6 +77,7 @@ icon = SubResource("ImageTexture_fyskv")
 flat = true
 
 [node name="FocusStyle" type="Panel" parent="."]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ias3t")
