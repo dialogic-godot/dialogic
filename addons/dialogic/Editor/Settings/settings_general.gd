@@ -92,10 +92,10 @@ func update_color_palette() -> void:
 		button.custom_minimum_size = Vector2(50 ,50)*scale
 		%Colors.add_child(button)
 		button.color = DialogicUtil.get_color(color)
-		button.pressed.connect(_on_color_change)
+		button.color_changed.connect(_on_color_change)
 
 
-func _on_color_change() -> void:
+func _on_color_change(color:Color) -> void:
 	var new_palette := {}
 	for i in %Colors.get_children():
 		new_palette['Color'+str(i.get_index()+1)] = i.color

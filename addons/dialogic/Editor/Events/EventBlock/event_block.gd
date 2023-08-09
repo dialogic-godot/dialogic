@@ -64,15 +64,15 @@ func visual_select() -> void:
 	selected = true
 	%IconPanel.self_modulate = resource.event_color
 	%IconTexture.modulate = get_theme_color("icon_saturation", "Editor")
-	%IconTexture.self_modulate.a = 1
+#	%IconTexture.self_modulate.a = 1
 
 
 func visual_deselect() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
-	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.3)
+	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
 	%IconTexture.modulate = get_theme_color('font_color', 'Label')
-	%IconTexture.self_modulate.a = 0.7
+#	%IconTexture.self_modulate.a = 0.7
 
 
 func is_selected() -> bool:

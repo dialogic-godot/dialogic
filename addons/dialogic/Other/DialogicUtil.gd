@@ -150,16 +150,19 @@ static func logical_convert(value:Variant) -> Variant:
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
-	return get_editor_setting('color_palette', {
+	var defaults := {
 		'Color1': Color('#3b8bf2'), # Blue
 		'Color2': Color('#00b15f'), # Green
 		'Color3': Color('#9468e8'), # Purple
 		'Color4': Color('#de5c5c'), # Red
 		'Color5': Color('#fa952a'), # Orange
 		'Color6': Color('#7C7C7C'), # Gray
-		'Color7': Color('#E6C22A'), # Yellow
-		'Color8': Color('#3B61D6'), # DarkBlue
-	})
+		'Color7': Color('#c7a757'), # Yellow
+		'Color8': Color('#396cb9'), # DarkBlue
+	}
+	if default: 
+		return defaults
+	return get_editor_setting('color_palette', defaults)
 
 
 static func get_color(value:String) -> Color:
