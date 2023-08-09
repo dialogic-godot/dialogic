@@ -150,32 +150,16 @@ static func logical_convert(value:Variant) -> Variant:
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
-	# Colors are using the ProjectSettings instead of the EditorSettings
-	# because there is a bug in Godot which prevents us from using it.
-	# When you try to do it, the text in the timelines goes to weird artifacts
-	# and on the Output panel you see the error:
-	#  ./core/rid.h:151 - Condition "!id_map.has(p_rid.get_data())" is true. Returned: nullptr
-	# over and over again.
-	# Might revisit this in Godot 4, but don't have any high hopes for it improving.
-	var colors := [
-		Color('#3b8bf2'), # Blue
-		Color('#00b15f'), # Green
-		Color('#9468e8'), # Purple
-		Color('#de5c5c'), # Red
-		Color('#fa952a'), # Orange
-		Color('#7C7C7C')  # Gray
-	]
-	var color_dict := {}
-	var index := 1
-	for n in colors:
-		var color_name := 'Color' + str(index)
-		color_dict[color_name] = n
-		if !default:
-			if ProjectSettings.has_setting('dialogic/editor/' + color_name):
-				color_dict[color_name] = ProjectSettings.get_setting('dialogic/editor/' + color_name)
-		index += 1
-	
-	return color_dict
+	return get_editor_setting('color_palette', {
+		'Color1': Color('#3b8bf2'), # Blue
+		'Color2': Color('#00b15f'), # Green
+		'Color3': Color('#9468e8'), # Purple
+		'Color4': Color('#de5c5c'), # Red
+		'Color5': Color('#fa952a'), # Orange
+		'Color6': Color('#7C7C7C'), # Gray
+		'Color7': Color('#E6C22A'), # Yellow
+		'Color8': Color('#3B61D6'), # DarkBlue
+	})
 
 
 static func get_color(value:String) -> Color:

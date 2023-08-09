@@ -3,10 +3,6 @@ extends DialogicSettingsPage
 
 ## Settings tab that holds genreal dialogic settings.
 
-signal colors_changed
-
-var color_palette :Dictionary = {}
-
 
 func _get_title() -> String:
 	return "General"
@@ -29,10 +25,7 @@ func _ready() -> void:
 	# Colors
 	%ResetColorsButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
-
-	for n in %Colors.get_children():
-		n.color_changed.connect(_on_color_change.bind(n))
-
+	
 	# Extension creator
 	%ExtensionCreator.hide()
 
@@ -42,12 +35,7 @@ func _refresh() -> void:
 	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))
 	%ExtensionsFolderPicker.set_value(ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
 	
-	# Color Palette
-	color_palette = DialogicUtil.get_color_palette()
-	var _scale := DialogicUtil.get_editor_scale()
-	for n in %Colors.get_children():
-		n.custom_minimum_size = Vector2(50 ,50)*scale
-		n.color = color_palette[n.name]
+	update_color_palette()
 	
 	%SectionList.clear()
 	%SectionList.create_item()
@@ -94,23 +82,30 @@ func force_event_button_list_reload() -> void:
 	find_parent('EditorsManager').editors['Timeline'].node.get_node('VisualEditor').load_event_buttons()
 
 
-func _on_color_change(color: Color, who) -> void:
-	ProjectSettings.set_setting('dialogic/editor/' + str(who.name), color)
-	ProjectSettings.save()
-	emit_signal('colors_changed')
+func update_color_palette() -> void:
+	# Color Palette
+	for child in %Colors.get_children():
+		child.queue_free()
+	var _scale := DialogicUtil.get_editor_scale()
+	for color in DialogicUtil.get_color_palette():
+		var button := ColorPickerButton.new()
+		button.custom_minimum_size = Vector2(50 ,50)*scale
+		%Colors.add_child(button)
+		button.color = DialogicUtil.get_color(color)
+		button.pressed.connect(_on_color_change)
+
+
+func _on_color_change() -> void:
+	var new_palette := {}
+	for i in %Colors.get_children():
+		new_palette['Color'+str(i.get_index()+1)] = i.color
+	DialogicUtil.set_editor_setting('color_palette', new_palette)
+	
 
 
 func _on_reset_colors_button() -> void:
-	color_palette = DialogicUtil.get_color_palette(true)
-	for n in %Colors.get_children():
-		n.color = color_palette[n.name]
-		# There is a bug when trying to remove existing values, so we have to
-		# set/create new entries for all the colors used.
-		# If you manage to make it work using the ProjectSettings.clear()
-		# feel free to open a PR!
-		ProjectSettings.set_setting('dialogic/editor/' + str(n.name), color_palette[n.name])
-	ProjectSettings.save()
-	emit_signal('colors_changed')
+	DialogicUtil.set_editor_setting('color_palette', null)
+	update_color_palette()
 
 
 func _on_physics_timer_button_toggled(button_pressed:bool) -> void:

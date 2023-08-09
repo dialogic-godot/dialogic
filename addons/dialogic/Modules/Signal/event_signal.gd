@@ -27,8 +27,8 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Signal"
-	set_default_color('Color1')
-	event_category = "Godot"
+	set_default_color('Color8')
+	event_category = "Logic"
 	event_sorting_index = 0
 
 

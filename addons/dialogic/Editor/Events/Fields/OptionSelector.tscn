@@ -1,51 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3bhehatwoio"]
+[gd_scene load_steps=2 format=3 uid="uid://d3bhehatwoio"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.gd" id="1"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4473"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kgsn"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.75)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
 
 [node name="OptionSelector" type="MenuButton"]
 offset_right = 137.0
 offset_bottom = 43.0
 focus_mode = 2
+theme_type_variation = &"DialogicEventEdit"
 theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_x4473")
-theme_override_styles/hover = SubResource("StyleBoxFlat_x4473")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_x4473")
-theme_override_styles/focus = SubResource("StyleBoxFlat_0kgsn")
 text = "Placeholder Text"
 flat = false
 script = ExtResource("1")

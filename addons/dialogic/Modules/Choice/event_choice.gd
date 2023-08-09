@@ -44,7 +44,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Choice"
 	set_default_color('Color3')
-	event_category = "Logic"
+	event_category = "Flow"
 	event_sorting_index = 0
 	can_contain_events = true
 	needs_parent_event = true

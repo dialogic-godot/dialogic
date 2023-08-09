@@ -25,7 +25,7 @@ func _ready() -> void:
 				'value': 1
 			},{
 				'label': 'Variable',
-				'icon': ["ClassList", "EditorIcons"],
+				'icon': load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 				'value': 2
 			},{
 				'label': 'Expression',

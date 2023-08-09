@@ -63,10 +63,13 @@ func update_theme_additions():
 		'padding': [5, 5],
 	})
 	theme.set_stylebox('panel', 'DialogicPanelA', panel_style)
+	theme.set_stylebox('normal', 'DialogicPanelA', panel_style)
 	
 	var dark_panel := panel_style.duplicate()
 	dark_panel.bg_color = get_theme_color("dark_color_3", "Editor")
 	theme.set_stylebox('panel', 'DialogicPanelDarkA', dark_panel)
+	
+	
 	
 	# panel used for example for portrait previews in character editor
 	theme.set_type_variation('DialogicPanelB', 'PanelContainer')
@@ -79,6 +82,33 @@ func update_theme_additions():
 	side_panel.border_width_left = 0
 	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	theme.set_stylebox('panel', 'DialogicPanelB', side_panel)
+	
+	
+	theme.set_type_variation('DialogicEventEdit', 'Control')
+	var edit_panel := StyleBoxFlat.new()
+	edit_panel.draw_center = true
+	edit_panel.bg_color = get_theme_color("dark_color_2", "Editor")
+#	edit_panel.bg_color.a =
+	edit_panel.border_width_bottom = 2
+	edit_panel.border_color = get_theme_color("accent_color", "Editor").lerp(get_theme_color("dark_color_2", "Editor"), 0.4)
+	edit_panel.content_margin_left = 5
+	edit_panel.content_margin_right = 5
+	edit_panel.set_corner_radius_all(1)
+	theme.set_stylebox('panel', 'DialogicEventEdit', edit_panel)
+	theme.set_stylebox('normal', 'DialogicEventEdit', edit_panel)
+	
+	var focus_edit := edit_panel.duplicate()
+	focus_edit.border_color = get_theme_color("property_color_z", "Editor")
+	focus_edit.draw_center = false
+	theme.set_stylebox('focus', 'DialogicEventEdit', focus_edit)
+	
+	var hover_edit := edit_panel.duplicate()
+	hover_edit.border_color = get_theme_color("warning_color", "Editor")
+	theme.set_stylebox('hover', 'DialogicEventEdit', hover_edit)
+	
+	var disabled_edit := edit_panel.duplicate()
+	disabled_edit.border_color = get_theme_color("property_color", "Editor")
+	theme.set_stylebox('disabled', 'DialogicEventEdit', disabled_edit)
 	
 	theme.set_type_variation('DialogicHintText', 'Label')
 	theme.set_color('font_color', 'DialogicHintText', get_theme_color("readonly_color", "Editor"))

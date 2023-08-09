@@ -101,7 +101,7 @@ func as_text() -> String:
 		
 		result.trim_suffix('\n')
 	
-	return result
+	return result.strip_edges()
 
 
 func process() -> void:

@@ -34,7 +34,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Background"
 	set_default_color('Color4')
-	event_category = "Other"
+	event_category = "Visuals"
 	event_sorting_index = 0
 	expand_by_default = false
 
@@ -61,7 +61,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('argument', ValueType.FILE, '', '', 
+	add_header_edit('argument', ValueType.FILE, 'Show', '', 
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files', 
 			'placeholder': "No background", 
 			'editor_icon':["Image", "EditorIcons"]}, 
