@@ -3,7 +3,6 @@ extends Control
 
 ## Event block field for resources/options.
 
-
 # this signal is on all event parts and informs the event that a change happened.
 signal value_changed(property_name, value)
 var property_name : String
@@ -11,6 +10,7 @@ var event_resource : DialogicEvent = null
 
 ### SETTINGS FOR THE RESOURCE PICKER
 @export var placeholder_text : String = "Select Resource"
+var collapse_when_empty := false
 var file_extension : String = ""
 var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
@@ -35,8 +35,11 @@ var current_selected = 0
 ################################################################################
 
 func set_value(value:Variant, text : String = '') -> void:
-	if value == null:
+	%Search.show()
+	if value == null or value.is_empty():
 		%Search.text = empty_text
+		if collapse_when_empty:
+			%Search.hide()
 	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		%Search.text = value.resource_path
 		%Search.tooltip_text = value.resource_path
@@ -64,11 +67,9 @@ func changed_to_empty() -> void:
 ## 						BASIC
 ################################################################################
 func _ready():
-	%BG.add_theme_stylebox_override('panel', get_theme_stylebox('normal', 'LineEdit'))
-	%Focus.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'LineEdit'))
+	%Focus.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'DialogicEventEdit'))
 	%Search.text_changed.connect(_on_Search_text_changed)
 	%Search.text_submitted.connect(_on_Search_text_entered)
-	var scale: float = DialogicUtil.get_editor_scale()
 	%SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%Search.placeholder_text = placeholder_text
 	%Search.expand_to_text_length = fit_text_length
@@ -108,6 +109,8 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	
 	if new_text == "" and !just_update:
 		changed_to_empty()
+	else:
+		%Search.show()
 
 	var suggestions :Dictionary = get_suggestions_func.call(new_text)
 	
@@ -183,22 +186,26 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 func _input(event:InputEvent):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if %Suggestions.visible:
-			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
+			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()) and \
+				!%SelectButton.get_global_rect().has_point(get_global_mouse_position()):
 				hide_suggestions()
 		
 
 func hide_suggestions() -> void:
-	%SelectButton.button_pressed = false
+	%SelectButton.set_pressed_no_signal(false)
 	%Suggestions.hide()
+	if !current_value and collapse_when_empty:
+		%Search.hide()
 
 
 func _on_SelectButton_toggled(button_pressed:bool) -> void:
 	if button_pressed:
 		_on_Search_text_changed('', true)
+	else:
+		hide_suggestions()
 
 func _on_focus_entered():
 	%Search.grab_focus()
-
 
 
 func _on_search_gui_input(event):
@@ -212,6 +219,7 @@ func _on_search_gui_input(event):
 			current_selected = wrapi(current_selected-1, 0, %Suggestions.item_count)
 		%Suggestions.select(current_selected)
 		%Suggestions.ensure_current_is_visible()
+
 
 func _on_search_focus_entered():
 	if %Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):

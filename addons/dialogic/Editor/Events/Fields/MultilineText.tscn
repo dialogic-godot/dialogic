@@ -1,19 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://dyp7m2nvab1aj"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.gd" id="1"]
+[ext_resource type="StyleBox" path="res://addons/dialogic/Editor/Events/styles/TextBackground.tres" id="1_dkxlh"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="1_wj4ha"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/CodeCompletionHelper.gd" id="3_mmga0"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bofjx"]
-content_margin_left = 10.0
-content_margin_top = 14.0
-bg_color = Color(0.901961, 0.901961, 0.901961, 0.0313726)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_6ufpd"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_42qr1"]
 script = ExtResource("1_wj4ha")
 
 [node name="MultilineText" type="CodeEdit"]
@@ -21,9 +13,9 @@ offset_right = 1152.0
 offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_bofjx")
+theme_override_styles/normal = ExtResource("1_dkxlh")
 wrap_mode = 1
-syntax_highlighter = SubResource("SyntaxHighlighter_6ufpd")
+syntax_highlighter = SubResource("SyntaxHighlighter_42qr1")
 scroll_fit_content_height = true
 symbol_lookup_on_click = true
 delimiter_strings = Array[String]([])

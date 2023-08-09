@@ -251,7 +251,8 @@ func load_event_buttons() -> void:
 		while event_resource.event_sorting_index < sections[event_resource.event_category].get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			sections[event_resource.event_category].move_child(button, button.get_index()-1)
 	
-	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order', 
+			['Main', 'Flow', 'Logic', 'Audio', 'Godot','Other', 'Helper'])
 	
 	# Sort event sections
 	for section in sections_order:
@@ -885,7 +886,8 @@ func move_block_to_index(block_index:int, index:int) -> void:
 ################################################################################
 
 func scroll_to_piece(piece_index:int) -> void:
-	var height :int = %Timeline.get_child(piece_index).position.y
+	await get_tree().process_frame
+	var height :float = %Timeline.get_child(piece_index).position.y
 	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
 		%TimelineArea.scroll_vertical = height
 

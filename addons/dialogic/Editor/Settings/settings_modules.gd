@@ -303,7 +303,7 @@ func _on_visibility_toggle_toggled(button_pressed:bool) -> void:
 
 
 func force_event_button_list_update() -> void:
-	find_parent('EditorsManager').editors['Timeline Editor'].node.get_node('VisualEditor').load_event_buttons()
+	find_parent('EditorsManager').editors['Timeline'].node.get_node('%VisualEditor').load_event_buttons()
 
 ################################################################################
 ##						EVENT DEFAULT SETTINGS

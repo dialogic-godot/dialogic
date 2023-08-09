@@ -72,8 +72,8 @@ func _disconnect_signal():
 
 func _init() -> void:
 	event_name = "Call Node"
-	set_default_color('Color1')
-	event_category = "Godot"
+	set_default_color('Color8')
+	event_category = "Logic"
 	event_sorting_index = 3
 	expand_by_default = false
 

@@ -235,7 +235,8 @@ func build_event_editor():
 	add_header_edit('portrait', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func' : get_portrait_suggestions, 
 			'placeholder' 		: "(Don't change)", 
-			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
+			'collapse_when_empty':true,}, 
 			'character != null and !has_no_portraits()')
 	add_body_edit('text', ValueType.MULTILINE_TEXT, "", "", {'autofocus':true})
 

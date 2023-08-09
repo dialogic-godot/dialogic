@@ -26,9 +26,9 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Label"
-	set_default_color('Color3')
-	event_category = "Timeline"
-	event_sorting_index = 1
+	set_default_color('Color7')
+	event_category = "Flow"
+	event_sorting_index = 3
 	continue_at_end = true
 
 

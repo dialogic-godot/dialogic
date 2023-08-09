@@ -76,7 +76,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Set Variable"
-	set_default_color('Color3')
+	set_default_color('Color8')
 	event_category = "Logic"
 	event_sorting_index = 0
 	expand_by_default = false
@@ -166,7 +166,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('name', ValueType.COMPLEX_PICKER, 'Set', '', 
 			{'suggestions_func' 	: get_var_suggestions, 
 			'editor_icon' 			: ["ClassList", "EditorIcons"],
 			'placeholder'			:'Select Variable'}

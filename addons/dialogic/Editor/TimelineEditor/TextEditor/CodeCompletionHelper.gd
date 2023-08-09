@@ -131,7 +131,6 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', text.syntax_highlighter.code_flow_color)
 			elif line.count('[') > 1:
 				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', text.syntax_highlighter.code_flow_color)
-		print(word)
 		if symbol == ' ' and '[else' in line:
 			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', text.syntax_highlighter.code_flow_color)
 		elif symbol == '{':

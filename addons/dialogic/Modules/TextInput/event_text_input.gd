@@ -46,8 +46,8 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 
 func _init() -> void:
 	event_name = "Text Input"
-	set_default_color('Color3')
-	event_category = "Other"
+	set_default_color('Color8')
+	event_category = "Logic"
 	event_sorting_index = 6
 	continue_at_end = true
 	expand_by_default = false
@@ -77,7 +77,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_label('Shows an input field. The value will be stored to')
+	add_header_label('Show an input and store it in')
 	add_header_edit('variable', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
 			'editor_icon'		: ["ClassList", "EditorIcons"],
