@@ -74,7 +74,7 @@ func _init() -> void:
 	event_name = "Call Node"
 	set_default_color('Color8')
 	event_category = "Logic"
-	event_sorting_index = 3
+	event_sorting_index = 10
 	expand_by_default = false
 
 

@@ -11,8 +11,6 @@ var _current_value1 :Variant = ""
 var _current_value2 :Variant = ""
 
 func _ready() -> void:
-	%ComplexEditor.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
-	%ComplexEditor.add_theme_stylebox_override('focus', get_theme_stylebox('focus', 'LineEdit'))
 	
 	for i in [%Value1Type, %Value2Type]:
 		i.options = [{

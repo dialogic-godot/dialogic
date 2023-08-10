@@ -80,7 +80,7 @@ func build_event_editor() -> void:
 	add_header_label('Show an input and store it in')
 	add_header_edit('variable', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
-			'editor_icon'		: ["ClassList", "EditorIcons"],
+			'icon'		 : load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder':'Select Variable'})
 	add_body_edit('text', ValueType.SINGLELINE_TEXT, 'Text:')
 	add_body_edit('placeholder', ValueType.SINGLELINE_TEXT, 'Placeholder:')
@@ -96,5 +96,5 @@ func get_var_suggestions(filter:String) -> Dictionary:
 			'editor_icon'	: ["GuiScrollArrowRight", "EditorIcons"]}
 	var vars :Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions

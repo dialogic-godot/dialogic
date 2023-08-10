@@ -35,7 +35,7 @@ func _init() -> void:
 	event_name = "Save"
 	set_default_color('Color1')
 	event_category = "Other"
-	event_sorting_index = 9
+	event_sorting_index = 0
 
 
 func _get_icon() -> Resource:
@@ -62,4 +62,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('slot_name', ValueType.SINGLELINE_TEXT, 'to slot')
+	add_header_edit('slot_name', ValueType.SINGLELINE_TEXT, 'Save to slot')

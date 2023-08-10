@@ -32,3 +32,10 @@ func _init() -> void:
 
 func get_shortcode() -> String:
 	return "end_timeline"
+
+################################################################################
+## 						EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor():
+	add_header_label('End Timeline')

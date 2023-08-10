@@ -48,3 +48,11 @@ func is_valid_event(string:String) -> bool:
 	if string.strip_edges() == "return":
 		return true
 	return false
+
+
+################################################################################
+## 						EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor():
+	add_header_label('Return')
