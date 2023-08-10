@@ -346,21 +346,23 @@ func _input(event:InputEvent) -> void:
 			_add_event_button_pressed(DialogicTextEvent.new(), true)
 			get_viewport().set_input_as_handled()
 		
-		"Ctrl+Shift+T", "Ctrl+Alt+T": # Add text event with current or previous character 
+		"Ctrl+Shift+T", "Ctrl+Alt+T", "Ctrl+Option+T": # Add text event with current or previous character 
 			get_viewport().set_input_as_handled()
 			var ev := DialogicTextEvent.new()
-			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T")
+			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T" or "Ctrl+Option+T")
 			_add_event_button_pressed(ev, true)
 		
 		"Ctrl+E": # Add character join event
 			_add_event_button_pressed(DialogicCharacterEvent.new(), true)
 			get_viewport().set_input_as_handled()
+
 		"Ctrl+Shift+E": # Add character update event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.UPDATE
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
-		"Ctrl+Alt+E": # Add character leave event
+
+		"Ctrl+Alt+E", "Ctrl+Option+E": # Add character leave event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.LEAVE
 			_add_event_button_pressed(ev, true)
@@ -461,7 +463,7 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
-		"Alt+Up":
+		"Alt+Up", "Option+Up":
 			if len(selected_items) > 0:
 				TimelineUndoRedo.create_action("[D] Move event(s) up.")
 				TimelineUndoRedo.add_do_method(move_blocks_by_index.bind(selected_items.map(func(x):return x.get_index()), -1))
@@ -474,7 +476,7 @@ func _input(event:InputEvent) -> void:
 				
 				get_viewport().set_input_as_handled()
 		
-		"Alt+Down":
+		"Alt+Down", "Option+Down":
 			if len(selected_items) > 0:
 				TimelineUndoRedo.create_action("[D] Move event(s) down.")
 				TimelineUndoRedo.add_do_method(move_blocks_by_index.bind(selected_items.map(func(x):return x.get_index()), 1))
