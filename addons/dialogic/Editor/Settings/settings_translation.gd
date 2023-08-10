@@ -6,7 +6,7 @@ extends DialogicSettingsPage
 
 enum TranslationModes {PER_PROJECT, PER_TIMELINE}
 var loading := false
-@onready var settings_editor :Control = get_parent().get_parent()
+@onready var settings_editor :Control = find_parent('Settings')
 
 
 func _get_icon():

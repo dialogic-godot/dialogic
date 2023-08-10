@@ -331,19 +331,47 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 ################################################################################
 
 func _input(event:InputEvent) -> void:
-	# some shortcuts need to get handled in the common input event
-	# especially CTRL-based
-	# because certain godot controls swallow events (like textedit)
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
-	
-	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
-		return
 	if !((event is InputEventKey or !event is InputEventWithModifiers) and is_visible_in_tree()):
 		return
+	
 	if "pressed" in event:
 		if !event.pressed:
 			return
+	
+	## Some shortcuts should always work
+	match event.as_text():
+		"Ctrl+T": # Add text event
+			_add_event_button_pressed(DialogicTextEvent.new(), true)
+			get_viewport().set_input_as_handled()
+		
+		"Ctrl+Shift+T", "Ctrl+Alt+T": # Add text event with current or previous character 
+			get_viewport().set_input_as_handled()
+			var ev := DialogicTextEvent.new()
+			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T")
+			_add_event_button_pressed(ev, true)
+		
+		"Ctrl+E": # Add character join event
+			_add_event_button_pressed(DialogicCharacterEvent.new(), true)
+			get_viewport().set_input_as_handled()
+		"Ctrl+Shift+E": # Add character update event
+			var ev := DialogicCharacterEvent.new()
+			ev.action = DialogicCharacterEvent.Actions.UPDATE
+			_add_event_button_pressed(ev, true)
+			get_viewport().set_input_as_handled()
+		"Ctrl+Alt+E": # Add character leave event
+			var ev := DialogicCharacterEvent.new()
+			ev.action = DialogicCharacterEvent.Actions.LEAVE
+			_add_event_button_pressed(ev, true)
+			get_viewport().set_input_as_handled()
+		
+		
+		
+	## Some shortcuts should be disabled when writing text.
+	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
+		return
+	
 	match event.as_text():
 		"Ctrl+Z": # UNDO
 			TimelineUndoRedo.undo()
@@ -381,11 +409,7 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
-		
-		"Ctrl+T": # Add text event
-			_add_event_button_pressed(DialogicTextEvent.new())
-			get_viewport().set_input_as_handled()
-		
+
 		"Ctrl+A": # select all
 			if (len(selected_items) != 0):
 				select_all_items()
@@ -457,7 +481,37 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.commit_action()
 				
 				get_viewport().set_input_as_handled()
-			
+
+
+func get_previous_character(double_previous := false) -> DialogicCharacter:
+	var character :DialogicCharacter = null
+	var idx :int = %Timeline.get_child_count()
+	if idx == 0:
+		return null
+	if len(selected_items):
+		idx = selected_items[0].get_index()
+	var one_skipped := false
+	idx += 1
+	for i in range(selected_items[0].get_index()+1):
+		idx -= 1
+		if !('resource' in %Timeline.get_child(idx) and 'character' in %Timeline.get_child(idx).resource):
+			continue
+		if %Timeline.get_child(idx).resource.character == null:
+			continue
+		if double_previous:
+			if %Timeline.get_child(idx).resource.character == character:
+				continue
+			if character != null:
+				if one_skipped:
+					one_skipped = false
+				else:
+					character = %Timeline.get_child(idx).resource.character
+					break
+			character = %Timeline.get_child(idx).resource.character
+		else:
+			character = %Timeline.get_child(idx).resource.character
+			break
+	return character
 
 
 #################### DELETING, COPY, PASTE #####################################
@@ -738,8 +792,9 @@ func deselect_all_items() -> void:
 ################################################################################
 
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_resource:DialogicEvent):
-	if %TimelineArea.get_global_rect().has_point(get_global_mouse_position()):
+# If force_resource is true, the event will be added with the actual resource
+func _add_event_button_pressed(event_resource:DialogicEvent, force_resource := false):
+	if %TimelineArea.get_global_rect().has_point(get_global_mouse_position()) and !force_resource:
 		return
 	
 	var at_index := -1
@@ -748,8 +803,13 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 	else:
 		at_index = %Timeline.get_child_count()
 	
-	var resource := event_resource.duplicate()
-	resource._load_custom_defaults()
+	
+	var resource :DialogicEvent = null
+	if force_resource:
+		resource = event_resource
+	else:
+		resource = event_resource.duplicate()
+		resource._load_custom_defaults()
 	
 	resource.created_by_button = true
 	

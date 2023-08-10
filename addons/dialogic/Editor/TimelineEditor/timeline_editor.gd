@@ -20,6 +20,10 @@ func _register() -> void:
 		"Add Timeline",
 		self)
 	add_timeline_button.pressed.connect(_on_create_timeline_button_pressed)
+	add_timeline_button.shortcut = Shortcut.new()
+	add_timeline_button.shortcut.events.append(InputEventKey.new())
+	add_timeline_button.shortcut.events[0].keycode = KEY_1
+	add_timeline_button.shortcut.events[0].ctrl_pressed = true
 	# play timeline button
 	play_timeline_button = editors_manager.add_custom_button(
 		"Play Timeline",
