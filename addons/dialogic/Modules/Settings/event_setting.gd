@@ -47,7 +47,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Setting"
-	set_default_color('Color6')
+	set_default_color('Color9')
 	event_category = "Helpers"
 	event_sorting_index = 2
 

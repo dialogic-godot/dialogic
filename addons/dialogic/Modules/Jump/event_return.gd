@@ -23,7 +23,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Return"
-	set_default_color('Color7')
+	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 5
 	expand_by_default = false

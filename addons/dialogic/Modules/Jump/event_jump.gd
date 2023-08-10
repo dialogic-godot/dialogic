@@ -50,7 +50,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Jump"
-	set_default_color('Color7')
+	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 4
 	expand_by_default = false

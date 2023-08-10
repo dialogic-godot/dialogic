@@ -72,7 +72,7 @@ func _disconnect_signal():
 
 func _init() -> void:
 	event_name = "Call Node"
-	set_default_color('Color8')
+	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 10
 	expand_by_default = false

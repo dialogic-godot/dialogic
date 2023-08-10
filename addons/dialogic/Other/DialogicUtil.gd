@@ -153,12 +153,13 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 	var defaults := {
 		'Color1': Color('#3b8bf2'), # Blue
 		'Color2': Color('#00b15f'), # Green
-		'Color3': Color('#9468e8'), # Purple
-		'Color4': Color('#de5c5c'), # Red
-		'Color5': Color('#fa952a'), # Orange
-		'Color6': Color('#7C7C7C'), # Gray
-		'Color7': Color('#c7a757'), # Yellow
-		'Color8': Color('#396cb9'), # DarkBlue
+		'Color3': Color('#e868e2'), # Pink
+		'Color4': Color('#9468e8'), # Purple
+		'Color5': Color('#574fb0'), # DarkPurple
+		'Color6': Color('#1fa3a3'), # Aquamarine
+		'Color7': Color('#fa952a'), # Orange
+		'Color8': Color('#de5c5c'), # Red
+		'Color9': Color('#7c7c7c'), # Gray
 	}
 	if default: 
 		return defaults

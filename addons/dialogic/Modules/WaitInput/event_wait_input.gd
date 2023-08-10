@@ -22,7 +22,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Wait for Input"
-	set_default_color('Color6')
+	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 12
 	expand_by_default = false
