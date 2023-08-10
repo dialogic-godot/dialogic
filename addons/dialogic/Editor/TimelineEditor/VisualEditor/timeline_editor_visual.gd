@@ -463,7 +463,7 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
-		"Alt+Up":
+		"Alt+Up", "Option+Up":
 			if len(selected_items) > 0:
 				TimelineUndoRedo.create_action("[D] Move event(s) up.")
 				TimelineUndoRedo.add_do_method(move_blocks_by_index.bind(selected_items.map(func(x):return x.get_index()), -1))
@@ -476,7 +476,7 @@ func _input(event:InputEvent) -> void:
 				
 				get_viewport().set_input_as_handled()
 		
-		"Alt+Down":
+		"Alt+Down", "Option+Down":
 			if len(selected_items) > 0:
 				TimelineUndoRedo.create_action("[D] Move event(s) down.")
 				TimelineUndoRedo.add_do_method(move_blocks_by_index.bind(selected_items.map(func(x):return x.get_index()), 1))
