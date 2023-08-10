@@ -366,7 +366,12 @@ func _input(event:InputEvent) -> void:
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
 		
-		
+		"Ctrl+J": # Add jump event
+			_add_event_button_pressed(DialogicJumpEvent.new(), true)
+			get_viewport().set_input_as_handled()
+		"Ctrl+L": # Add label event
+			_add_event_button_pressed(DialogicLabelEvent.new(), true)
+			get_viewport().set_input_as_handled()
 		
 	## Some shortcuts should be disabled when writing text.
 	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
