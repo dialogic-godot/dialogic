@@ -34,7 +34,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Wait"
-	set_default_color('Color6')
+	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 11
 	expand_by_default = false

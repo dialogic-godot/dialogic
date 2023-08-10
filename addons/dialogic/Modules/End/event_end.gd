@@ -21,7 +21,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "End"
-	set_default_color('Color7')
+	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 10
 

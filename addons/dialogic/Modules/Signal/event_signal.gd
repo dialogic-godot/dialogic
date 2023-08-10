@@ -27,7 +27,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Signal"
-	set_default_color('Color8')
+	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 8
 

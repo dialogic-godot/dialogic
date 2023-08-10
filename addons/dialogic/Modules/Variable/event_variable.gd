@@ -76,7 +76,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Set Variable"
-	set_default_color('Color8')
+	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 0
 	expand_by_default = false
