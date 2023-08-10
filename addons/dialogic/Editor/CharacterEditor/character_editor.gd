@@ -31,6 +31,10 @@ func _register() -> void:
 			'Add Character',
 			self)
 	add_character_button.pressed.connect(_on_create_character_button_pressed)
+	add_character_button.shortcut = Shortcut.new()
+	add_character_button.shortcut.events.append(InputEventKey.new())
+	add_character_button.shortcut.events[0].keycode = KEY_2
+	add_character_button.shortcut.events[0].ctrl_pressed = true
 	$NoCharacterScreen.show()
 
 

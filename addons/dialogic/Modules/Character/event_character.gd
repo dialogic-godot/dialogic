@@ -396,7 +396,6 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
-	
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 

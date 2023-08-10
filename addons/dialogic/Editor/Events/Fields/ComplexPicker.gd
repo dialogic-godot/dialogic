@@ -95,7 +95,7 @@ func take_autofocus():
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
 func _on_Search_text_entered(new_text:String) -> void:
-	if %Suggestions.get_item_count() and not %Search.text.is_empty():
+	if %Suggestions.get_item_count():
 		if %Suggestions.is_anything_selected():
 			suggestion_selected(%Suggestions.get_selected_items()[0])
 		else:

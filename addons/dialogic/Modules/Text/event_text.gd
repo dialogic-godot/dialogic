@@ -113,6 +113,7 @@ func _init() -> void:
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	continue_at_end = false
+	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 
 ################################################################################

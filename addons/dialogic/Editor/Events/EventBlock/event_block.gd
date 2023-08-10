@@ -301,7 +301,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		### --------------------------------------------------------------------
 		### 4. GETTING THE PATH OF THE FIELD WE WANT TO FOCUS (in case we want)
 		if resource.created_by_button and p.display_info.get('autofocus', false) and editor_node.has_method('take_autofocus'):
-			editor_node.take_autofocus()
+			editor_node.call_deferred('take_autofocus')
 	
 	if build_body:
 #		has_body_content = true
