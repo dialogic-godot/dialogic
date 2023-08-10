@@ -43,14 +43,16 @@ var shortcode_color : Color
 var shortcode_param_color : Color
 var shortcode_value_color : Color
 
+var shortcode_events := {}
+
 func _init():
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():
 		var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
 		normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 		comment_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
-		text_effect_color = normal_color.darkened(0.5)
-		choice_color = editor_settings.get('text_editor/theme/highlighting/function_color')
+		text_effect_color = normal_color.darkened(0.2)
+		choice_color = DialogicUtil.get_color('Color3').lerp(normal_color, 0.5)
 		translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 		
 		code_flow_color = editor_settings.get("text_editor/theme/highlighting/control_flow_keyword_color")
@@ -64,12 +66,12 @@ func _init():
 
 		keyword_VAR_color = editor_settings.get('text_editor/theme/highlighting/keyword_color')
 		keyword_SETTING_color = editor_settings.get('text_editor/theme/highlighting/member_variable_color')
-		keyword_label_color = editor_settings.get("text_editor/theme/highlighting/engine_type_color")
-		keyword_return_color = editor_settings.get("text_editor/theme/highlighting/brace_mismatch_color")
+		keyword_label_color = DialogicUtil.get_color('Color7').lerp(normal_color, 0.2)
+		keyword_return_color = DialogicUtil.get_color('Color7').lerp(normal_color, 0.2)
 		
-		character_event_color = editor_settings.get('text_editor/theme/highlighting/symbol_color')
-		character_name_color = editor_settings.get('text_editor/theme/highlighting/executing_line_color')
-		character_portrait_color = character_name_color.lightened(0.6)
+		character_event_color = DialogicUtil.get_color('Color2').lerp(normal_color, 0.5)
+		character_name_color = DialogicUtil.get_color('Color2').lerp(normal_color, 0.7)
+		character_portrait_color = DialogicUtil.get_color('Color2').lerp(normal_color, 0.8)
 	
 	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?")
 	shortcode_param_regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
@@ -87,6 +89,11 @@ func _init():
 func _get_line_syntax_highlighting(line:int) -> Dictionary:
 	var str_line := get_text_edit().get_line(line)
 	
+	if shortcode_events.is_empty():
+		for event in Engine.get_main_loop().get_meta('dialogic_event_cache', []):
+			if event.get_shortcode() != 'default_shortcode':
+				shortcode_events[event.get_shortcode()] = event
+	
 	var dict := {}
 	dict[0] = {'color':normal_color}
 
@@ -101,10 +108,12 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			if !text_effects_regex.search(str_line.get_slice(' ', 0)):
 				var result:= shortcode_regex.search(str_line)
 				if result:
-					dict[result.get_start('id')] = {"color":shortcode_color}
-					dict[result.get_end('id')] = {"color":normal_color}
+					if result.get_string('id') in shortcode_events:
+						dict[result.get_start('id')] = {"color":shortcode_events[result.get_string('id')].event_color.lerp(normal_color, 0.2)}
+						dict[result.get_end('id')] = {"color":normal_color}
+					
 					if result.get_string('args'):
-						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'))
+						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'), shortcode_events[result.get_string('id')].event_color)
 				return fix_dict(dict)
 		
 		if str_line.strip_edges().begins_with('-'):
@@ -147,16 +156,16 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 		
 		if str_line.strip_edges().begins_with('label'):
 			dict[str_line.find('label')] = {"color":keyword_label_color}
-			dict[str_line.find('label')+5] = {"color":string_color}
+			dict[str_line.find('label')+5] = {"color":keyword_label_color.lerp(normal_color, 0.3)}
 		
 		if str_line.strip_edges().begins_with('return'):
 			dict[str_line.find('return')] = {"color":keyword_return_color}
-			dict[str_line.find('return')+6] = {"color":string_color}
+			dict[str_line.find('return')+6] = {"color":keyword_return_color.lerp(normal_color, 0.3)}
 		
 		
 		if str_line.strip_edges().begins_with('jump'):
 			dict[str_line.find('jump')] = {"color":keyword_label_color}
-			dict[str_line.find('jump')+4] = {"color":string_color}
+			dict[str_line.find('jump')+4] = {"color":keyword_label_color.lerp(normal_color, 0.3)}
 		
 		
 		if str_line.strip_edges().begins_with('Setting'):
@@ -184,6 +193,7 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 			dict[eff.get_start()] = {"color":text_effect_color}
 			dict[eff.get_end()] = {"color":normal_color}
 		dict = color_region(dict, variable_color, str_line, '{', '}', result.get_start('text'))
+		
 		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
 			var color := string_color
 			color = color.lerp(normal_color, 0.4)
@@ -254,12 +264,12 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 	return dict
 
 
-func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int = 0) -> Dictionary:
+func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int = 0, base_color:=normal_color) -> Dictionary:
 	if to <= from: 
 		to = len(line)-1
 	var args_result:= shortcode_param_regex.search_all(line.substr(from, to-from+2))
 	for x in args_result:
-		dict[x.get_start()+from] = {"color":shortcode_param_color}
-		dict[x.get_start('value')+from-1] = {"color":shortcode_value_color}
+		dict[x.get_start()+from] = {"color":base_color.lerp(normal_color, 0.5)}
+		dict[x.get_start('value')+from-1] = {"color":base_color.lerp(normal_color, 0.7)}
 		dict[x.get_end()+from] = {"color":normal_color}
 	return dict

@@ -58,7 +58,7 @@ func rebuild_event_script_cache() -> Array:
 		event_script_cache.push_front(DialogicEndBranchEvent.new())
 		event_script_cache.push_back(DialogicTextEvent.new())
 		
-		Engine.set_meta("dialogic_event_cache", event_script_cache)
+		Engine.get_main_loop().set_meta("dialogic_event_cache", event_script_cache)
 	
 	return event_script_cache
 

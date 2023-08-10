@@ -102,5 +102,5 @@ func build_event_editor():
 	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
 	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
 	add_header_edit("vector", ValueType.VECTOR2, "", '', {}, 
-			'action != ActionTypes.Reset and action != Actions.RESET_ALL')
+			'action != Actions.RESET and action != Actions.RESET_ALL')
 	add_body_edit("movement_time", ValueType.FLOAT, "AnimationTime:", "(0 for instant)")

@@ -23,9 +23,9 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Return"
-	set_default_color('Color3')
-	event_category = "Timeline"
-	event_sorting_index = 0
+	set_default_color('Color7')
+	event_category = "Flow"
+	event_sorting_index = 5
 	expand_by_default = false
 
 
@@ -48,3 +48,11 @@ func is_valid_event(string:String) -> bool:
 	if string.strip_edges() == "return":
 		return true
 	return false
+
+
+################################################################################
+## 						EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor():
+	add_header_label('Return')

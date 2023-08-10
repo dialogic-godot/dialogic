@@ -27,9 +27,9 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Signal"
-	set_default_color('Color1')
-	event_category = "Godot"
-	event_sorting_index = 0
+	set_default_color('Color8')
+	event_category = "Logic"
+	event_sorting_index = 8
 
 
 ################################################################################
@@ -52,4 +52,4 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT,
-	'Emit "signal_event" signal with argument', '', {'autofocus':true})
+	'Emit with argument', '', {'autofocus':true})

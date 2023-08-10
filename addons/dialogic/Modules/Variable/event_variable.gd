@@ -76,7 +76,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Set Variable"
-	set_default_color('Color3')
+	set_default_color('Color8')
 	event_category = "Logic"
 	event_sorting_index = 0
 	expand_by_default = false
@@ -166,9 +166,9 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('name', ValueType.COMPLEX_PICKER, 'Set', '', 
 			{'suggestions_func' 	: get_var_suggestions, 
-			'editor_icon' 			: ["ClassList", "EditorIcons"],
+			'icon' 					: load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder'			:'Select Variable'}
 			)
 	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, '', '', {
@@ -208,7 +208,7 @@ func build_event_editor():
 				'value': 1
 			},{
 				'label': 'Variable',
-				'icon': ["ClassList", "EditorIcons"],
+				'icon': load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 				'value': 2
 			},{
 				'label': 'Expression',
@@ -238,7 +238,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions
 
 
@@ -247,7 +247,7 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	
 	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions
 
 

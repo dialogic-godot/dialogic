@@ -67,7 +67,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('file_path', ValueType.FILE, '', '', 
+	add_header_edit('file_path', ValueType.FILE, 'Play', '', 
 			{'file_filter' 	: '*.mp3, *.ogg, *.wav; Supported Audio Files', 
 			'placeholder' 	: "Select file", 
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})

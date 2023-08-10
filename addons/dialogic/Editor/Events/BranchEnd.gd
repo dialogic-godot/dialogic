@@ -26,12 +26,12 @@ func visual_select() -> void:
 
 ## Called by the visual timeline editor
 func visual_deselect() -> void:
-	modulate = parent_node.resource.event_color
+	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.3)
 
 
 ## Called by the visual timeline editor
 func highlight() -> void:
-	modulate = parent_node.resource.event_color.lightened(0.5)
+	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.6)
 
 
 ## Called by the visual timeline editor
@@ -41,7 +41,11 @@ func unhighlight() -> void:
 
 func update_hidden_events_indicator(hidden_events_count:int = 0) -> void:
 	$HiddenEventsLabel.visible = hidden_events_count > 0
-	$HiddenEventsLabel.text = "["+str(hidden_events_count)+ " events hidden]"
+	if hidden_events_count == 1:
+		$HiddenEventsLabel.text = "[1 event hidden]"
+	else:
+		$HiddenEventsLabel.text = "["+str(hidden_events_count)+ " events hidden]"
+
 
 ## Called by the visual timeline editor
 func set_indent(indent: int) -> void:

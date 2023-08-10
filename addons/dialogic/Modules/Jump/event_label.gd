@@ -26,9 +26,9 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Label"
-	set_default_color('Color3')
-	event_category = "Timeline"
-	event_sorting_index = 1
+	set_default_color('Color7')
+	event_category = "Flow"
+	event_sorting_index = 3
 	continue_at_end = true
 
 
@@ -46,11 +46,12 @@ func to_text() -> String:
 func from_text(string:String) -> void:
 	var regex = RegEx.create_from_string('label +(?<name>.+)')
 	var result := regex.search(string.strip_edges())
-	name = result.get_string('name')
+	if result:
+		name = result.get_string('name')
 
 
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges().begins_with("label "):
+	if string.strip_edges().begins_with("label"):
 		return true
 	return false
 

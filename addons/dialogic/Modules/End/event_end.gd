@@ -20,9 +20,9 @@ func _execute() -> void:
 ################################################################################
 
 func _init() -> void:
-	event_name = "End Timeline"
-	set_default_color('Color6')
-	event_category = "Timeline"
+	event_name = "End"
+	set_default_color('Color7')
+	event_category = "Flow"
 	event_sorting_index = 10
 
 
@@ -32,3 +32,10 @@ func _init() -> void:
 
 func get_shortcode() -> String:
 	return "end_timeline"
+
+################################################################################
+## 						EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor():
+	add_header_label('End Timeline')

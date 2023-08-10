@@ -46,8 +46,8 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 
 func _init() -> void:
 	event_name = "Text Input"
-	set_default_color('Color3')
-	event_category = "Other"
+	set_default_color('Color8')
+	event_category = "Logic"
 	event_sorting_index = 6
 	continue_at_end = true
 	expand_by_default = false
@@ -68,7 +68,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"var"			: {"property": "variable", 		"default": ""},
 		"placeholder"	: {"property": "placeholder", 	"default": ""},
 		"default"		: {"property": "default", 		"default": ""},
-		"allow_empty"	: {"property": "allow_empty",	"default": false},
+		"allow_empty"	: {"property": "allow_empty",	"default": false, 
+							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
 	}
 
 ################################################################################
@@ -76,10 +77,10 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_label('Shows an input field. The value will be stored to')
+	add_header_label('Show an input and store it in')
 	add_header_edit('variable', ValueType.COMPLEX_PICKER, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
-			'editor_icon'		: ["ClassList", "EditorIcons"],
+			'icon'		 : load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder':'Select Variable'})
 	add_body_edit('text', ValueType.SINGLELINE_TEXT, 'Text:')
 	add_body_edit('placeholder', ValueType.SINGLELINE_TEXT, 'Placeholder:')
@@ -95,5 +96,5 @@ func get_var_suggestions(filter:String) -> Dictionary:
 			'editor_icon'	: ["GuiScrollArrowRight", "EditorIcons"]}
 	var vars :Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions

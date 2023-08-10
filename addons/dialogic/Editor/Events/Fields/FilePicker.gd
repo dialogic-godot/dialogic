@@ -19,18 +19,13 @@ var property_name : String
 			%Field.theme_type_variation = ""
 		else:
 			%Field.theme_type_variation = "LineEditWithIcon"
+
+var max_text_length := 16
 var current_value : String
 var hide_reset:bool = false
 
 func _ready() -> void:
-	var focus_style :StyleBoxFlat = get_theme_stylebox("focus", "LineEdit").duplicate()
-	var normal_style :StyleBoxFlat = get_theme_stylebox("normal", "LineEdit").duplicate()
-	normal_style.content_margin_bottom = 0
-	normal_style.content_margin_top = 0
-	focus_style.expand_margin_left = normal_style.content_margin_left
-	focus_style.expand_margin_right = normal_style.content_margin_right
-	$FocusStyle.add_theme_stylebox_override('panel', focus_style)
-	add_theme_stylebox_override('panel', normal_style)
+	$FocusStyle.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'DialogicEventEdit'))
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)
@@ -44,6 +39,13 @@ func set_value(value:String) -> void:
 	current_value = value
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
 		%Field.text = value.get_file()
+		if len(value.get_file()) > max_text_length:
+			%Field.custom_minimum_size.x = get_theme_font('font', 'Label').get_string_size(value.get_file()).x
+			%Field.expand_to_text_length = false
+			%Field.size.x = 0
+		else:
+			%Field.custom_minimum_size.x = 0
+			%Field.expand_to_text_length = true
 		%Field.tooltip_text = value
 		%ClearButton.visible = !value.is_empty() and !hide_reset
 	else:

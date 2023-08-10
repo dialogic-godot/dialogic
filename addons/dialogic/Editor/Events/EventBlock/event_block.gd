@@ -13,7 +13,6 @@ var selected : bool = false
 
 ### internal node eferences
 @onready var warning := %Warning
-@onready var title_label := %TitleLabel
 @onready var icon_texture  := %IconTexture
 @onready var header_content_container := %HeaderContent
 @onready var body_container := %Body
@@ -45,7 +44,7 @@ var collapsed := false
 var editor_reference
 
 ### Icon size
-var icon_size := 32
+var icon_size := 28
 
 ### the indent size
 var indent_size := 22
@@ -64,12 +63,16 @@ func visual_select() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
 	selected = true
 	%IconPanel.self_modulate = resource.event_color
+	%IconTexture.modulate = get_theme_color("icon_saturation", "Editor")
+#	%IconTexture.self_modulate.a = 1
 
 
 func visual_deselect() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
-	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.3)
+	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
+	%IconTexture.modulate = get_theme_color('font_color', 'Label')
+#	%IconTexture.self_modulate.a = 0.7
 
 
 func is_selected() -> bool:
@@ -189,6 +192,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instantiate()
 			
 			editor_node.file_extension = p.display_info.get('file_extension', '')
+			editor_node.collapse_when_empty = p.display_info.get('collapse_when_empty', false)
 			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)
 			editor_node.empty_text = p.display_info.get('empty_text', '')
 			editor_node.placeholder_text = p.display_info.get('placeholder', 'Select Resource')
@@ -228,6 +232,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			editor_node.set('custom_colors/font_color', Color("#7b7b7b"))
+			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 		elif p.dialogic_type == resource.ValueType.BUTTON:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
@@ -247,6 +252,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
+			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 		
 		### --------------------------------------------------------------------
 		### 2. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
@@ -273,11 +279,15 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		if !p.get('left_text', '').is_empty():
 			left_label = Label.new()
 			left_label.text = p.get('left_text')
+			left_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			left_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(left_label)
 			location.move_child(left_label, editor_node.get_index())
 		if !p.get('right_text', '').is_empty():
 			right_label = Label.new()
 			right_label.text = p.get('right_text')
+			right_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			right_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(right_label)
 			location.move_child(right_label, editor_node.get_index()+1)
 		
@@ -357,19 +367,18 @@ func _ready():
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
 	warning.position = Vector2(-5 * _scale, -10 * _scale)
-	title_label.add_theme_color_override("font_color", Color(1,1,1,1))
-	if not get_theme_constant("dark_theme", "Editor"):
-		title_label.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	
 	%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
 	
-	
 	if resource:
 		if resource.event_name:
-			title_label.text = resource.event_name
+			%TitleLabel.add_theme_color_override("font_color", resource.event_color.lightened(0.4))
+			%TitleLabel.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
+			%TitleLabel.text = resource.event_name
+			%IconPanel.tooltip_text = resource.event_name
 		if resource._get_icon() != null:
 			_set_event_icon(resource._get_icon())
 		resource.ui_update_needed.connect(_on_resource_ui_update_needed)
@@ -394,6 +403,7 @@ func _ready():
 	%CollapseButton.toggled.connect(toggle_collapse)
 	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%CollapseButton.hide()
+	visual_deselect()
 
 
 func _on_ExpandButton_toggled(button_pressed:bool) -> void:

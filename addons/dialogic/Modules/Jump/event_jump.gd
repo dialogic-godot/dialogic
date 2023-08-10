@@ -50,9 +50,9 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Jump"
-	set_default_color('Color3')
-	event_category = "Timeline"
-	event_sorting_index = 0
+	set_default_color('Color7')
+	event_category = "Flow"
+	event_sorting_index = 4
 	expand_by_default = false
 
 
@@ -76,12 +76,13 @@ func to_text() -> String:
 
 func from_text(string:String) -> void:
 	var result := RegEx.create_from_string('jump (?<timeline>\\w*\\/)?(?<label>\\w*)?').search(string.strip_edges())
-	_timeline_file = result.get_string('timeline').trim_suffix('/')
-	label_name = result.get_string('label')
+	if result:
+		_timeline_file = result.get_string('timeline').trim_suffix('/')
+		label_name = result.get_string('label')
 
 
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges().begins_with("jump "):
+	if string.strip_edges().begins_with("jump"):
 		return true
 	return false
 
@@ -100,7 +101,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_timeline_file', ValueType.COMPLEX_PICKER, 'to', '', {
+	add_header_edit('_timeline_file', ValueType.COMPLEX_PICKER, 'Jump to', '', {
 		'file_extension': '.dtl',
 		'suggestions_func': get_timeline_suggestions,
 		'editor_icon': ["TripleBar", "EditorIcons"],
@@ -109,7 +110,8 @@ func build_event_editor():
 	})
 	add_header_edit("label_name", ValueType.COMPLEX_PICKER, "at", '', {
 		'empty_text':'the beginning',
-		'suggestions_func':get_label_suggestions})
+		'suggestions_func':get_label_suggestions,
+		'editor_icon':["ArrowRight", "EditorIcons"]})
 
 
 func get_timeline_suggestions(filter:String= "") -> Dictionary:
@@ -129,5 +131,5 @@ func get_label_suggestions(filter:String="") -> Dictionary:
 	
 	if _timeline_file in Engine.get_main_loop().get_meta('dialogic_label_directory').keys():
 		for label in Engine.get_main_loop().get_meta('dialogic_label_directory')[_timeline_file]:
-			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["TripleBar", "EditorIcons"]}
+			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["ArrowRight", "EditorIcons"]}
 	return suggestions

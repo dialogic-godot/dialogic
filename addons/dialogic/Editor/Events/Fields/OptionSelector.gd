@@ -18,11 +18,11 @@ var symbol_only := false:
 var current_value :Variant = -1
 
 func _ready() -> void:
-	add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
-	add_theme_stylebox_override("hover", get_theme_stylebox("normal", "LineEdit"))
+#	add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
+#	add_theme_stylebox_override("hover", get_theme_stylebox("normal", "LineEdit"))
 	
-	add_theme_stylebox_override("focus", get_theme_stylebox("focus", "LineEdit"))
-	add_theme_stylebox_override("disabled", get_theme_stylebox("normal", "LineEdit"))
+#	add_theme_stylebox_override("focus", get_theme_stylebox("focus", "LineEdit"))
+#	add_theme_stylebox_override("disabled", get_theme_stylebox("normal", "LineEdit"))
 	add_theme_color_override("font_disabled_color", get_theme_color("font_color", "MenuButton"))
 	about_to_popup.connect(insert_options)
 	get_popup().index_pressed.connect(index_pressed)
@@ -35,7 +35,7 @@ func set_value(value) -> void:
 				option.icon = callv('get_theme_icon', option.get('icon'))
 			if !symbol_only:
 				text = option['label']
-			icon = option.get('icon', load("res://addons/dialogic/Editor/Images/Dropdown/default.svg"))
+			icon = option.get('icon', null)
 			current_value = value
 
 
@@ -50,7 +50,7 @@ func insert_options() -> void:
 	for option in options:
 		if typeof(option.get('icon')) == TYPE_ARRAY:
 			option.icon = callv('get_theme_icon', option.get('icon'))
-		get_popup().add_icon_item(option.get('icon',load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")), option['label'])
+		get_popup().add_icon_item(option.get('icon', null), option['label'])
 		get_popup().set_item_metadata(idx, option['value'])
 		idx += 1
 

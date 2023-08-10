@@ -60,10 +60,13 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 	if mode != Modes.FULL_HIGHLIGHTING:
 		return
 	if mode == Modes.FULL_HIGHLIGHTING:
+		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons')
 		if completion_shortcodes.is_empty():
 			for event in text.timeline_editor.editors_manager.resource_helper.event_script_cache:
 				if event.get_shortcode() != 'default_shortcode':
 					completion_shortcodes[event.get_shortcode()] = event
+					if event.event_name in hidden_events:
+						event.set_meta('hidden', true)
 	if completion_text_effects.is_empty():
 		for idx in DialogicUtil.get_indexers():
 			for effect in idx._get_text_effects():
@@ -96,6 +99,8 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 		if symbol == '[':
 			# suggest shortcodes if a shortcode event has just begun
 			for shortcode in completion_shortcodes.keys():
+				if completion_shortcodes[shortcode].get_meta('hidden', false):
+					continue
 				if completion_shortcodes[shortcode].get_shortcode_parameters().is_empty():
 					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
 				else:
@@ -131,7 +136,6 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', text.syntax_highlighter.code_flow_color)
 			elif line.count('[') > 1:
 				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', text.syntax_highlighter.code_flow_color)
-		print(word)
 		if symbol == ' ' and '[else' in line:
 			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', text.syntax_highlighter.code_flow_color)
 		elif symbol == '{':

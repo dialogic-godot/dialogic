@@ -18,8 +18,6 @@ func _ready():
 	if $Value.text.is_empty():
 		set_value(value)
 	$Spin.icon = get_theme_icon("updown", "SpinBox")
-	$Value.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
-	$Value.add_theme_stylebox_override('focus', get_theme_stylebox('focus', 'LineEdit'))
 
 func set_value(new_value) -> void:
 	_on_value_text_submitted(str(new_value))
