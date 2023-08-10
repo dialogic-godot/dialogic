@@ -87,8 +87,8 @@ func update_theme_additions():
 	theme.set_type_variation('DialogicEventEdit', 'Control')
 	var edit_panel := StyleBoxFlat.new()
 	edit_panel.draw_center = true
-	edit_panel.bg_color = get_theme_color("dark_color_2", "Editor")
-#	edit_panel.bg_color.a =
+	edit_panel.bg_color = get_theme_color("accent_color", "Editor")
+	edit_panel.bg_color.a = 0.05
 	edit_panel.border_width_bottom = 2
 	edit_panel.border_color = get_theme_color("accent_color", "Editor").lerp(get_theme_color("dark_color_2", "Editor"), 0.4)
 	edit_panel.content_margin_left = 5
