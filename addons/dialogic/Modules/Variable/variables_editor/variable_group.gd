@@ -289,6 +289,8 @@ func _on_NameEdit_focus_exited() -> void:
 
 func disable_name_edit() -> void:
 	%NameEdit.text = %NameEdit.text.replace(' ', '_')
+	%NameEdit.text = %NameEdit.text.replace('-', '_')
+
 	if get_group_path() != previous_path and !actually_new:
 		variables_editor.group_renamed(previous_path, get_group_path(), get_data())
 		previous_path = get_group_path()
