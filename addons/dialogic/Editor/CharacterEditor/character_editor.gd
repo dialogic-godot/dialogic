@@ -126,6 +126,11 @@ func _ready() -> void:
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
+	%MainSettingsTitle.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
+	%SecondarySettingsTitle.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
+	%PortraitsTitle.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
+
+	
 	# Add general tabs
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.tscn").instantiate(), %MainSettingsSections)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
@@ -161,10 +166,10 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	button.pressed.connect(_on_section_button_pressed.bind(button))
 	button.focus_mode = Control.FOCUS_NONE
 	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("accent_color", "Editor"))
+	button.add_theme_color_override('font_color', get_theme_color("property_color_z", "Editor"))
+	button.add_theme_color_override('icon_normal_color', get_theme_color("property_color_z", "Editor"))
 	parent.add_child(button)
 	parent.add_child(edit)
-	parent.add_child(HSeparator.new())
 	if !edit.name == "General":
 		_on_section_button_pressed(button)
 
@@ -448,6 +453,8 @@ func update_preview() -> void:
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
+		%SecondarySettingsTitle.text = %PortraitTree.get_full_item_name(selected_item) + ' Settings'
+
 		
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
 		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror

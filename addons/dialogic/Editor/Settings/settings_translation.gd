@@ -33,6 +33,10 @@ func _ready() -> void:
 	%CollectTranslations.pressed.connect(collect_translations)
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
+	%SetupTitle.add_theme_color_override("font_color", get_theme_color("property_color_z", "Editor"))
+	%WorkflowTitle.add_theme_color_override("font_color", get_theme_color("property_color_z", "Editor"))
+
+
 
 func _refresh() -> void:
 	loading = true
