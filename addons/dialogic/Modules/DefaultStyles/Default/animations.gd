@@ -13,16 +13,19 @@ func _on_textbox_show():
 	%DialogicNode_DialogText.text = ""
 	get_node("../DialogTextAnimationParent").modulate = Color.TRANSPARENT
 	play("text_box_reveal")
-	animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
+		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
 
 
 func _on_textbox_hide():
 	Dialogic.Animation.start_animating()
 	play_backwards("text_box_reveal")
-	animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
+		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
 
 
 func _on_textbox_new_text():
 	Dialogic.Animation.start_animating()
 	play("new_text")
-	animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
+		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
