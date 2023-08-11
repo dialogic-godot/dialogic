@@ -91,6 +91,8 @@ func _on_NameEdit_focus_exited() -> void:
 
 func _on_name_edit_text_submitted(new_text:String) -> void:
 	%NameEdit.text = new_text.replace(' ', '_')
+	%NameEdit.text = %NameEdit.text.replace('-', '_')
+
 	if %NameEdit.text != previous_name and !actually_new:
 		if parent_Group.get_group_path().is_empty():
 			variables_editor.variable_renamed(previous_name, %NameEdit.text)
