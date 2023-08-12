@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://bnkck3hocbkk5"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.gd" id="1_3e1i1"]
 
@@ -62,8 +62,8 @@ text = "Description:"
 
 [node name="DescriptionTextEdit" type="TextEdit" parent="."]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 65)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "No effect, just for you."
 wrap_mode = 1
-scroll_fit_content_height = true

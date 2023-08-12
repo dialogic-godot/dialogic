@@ -191,7 +191,7 @@ func _on_section_button_pressed(button:Button) -> void:
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 	if not loading:
 		current_resource_state = ResourceStates.UNSAVED
-		editors_manager.save_current_resource() #TODO, should this happen?
+
 
 
 ##############################################################################
@@ -200,7 +200,6 @@ func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 
 func setup_portrait_list_tab() -> void:
 	%PortraitTree.editor = self
-	
 	
 	## Portrait section styling/connections
 	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
