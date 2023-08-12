@@ -144,7 +144,7 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 					dict[result.get_start('portrait')] = {"color":character_portrait_color}
 					dict[result.get_end('portrait')] = {"color":normal_color}
 				if result.get_string('shortcode'):
-					dict = color_shortcode_content(dict, str_line, result.get_start('shortcode'), result.get_end('shortcode'))
+					dict = color_shortcode_content(dict, str_line, result.get_start('shortcode'), result.get_end('shortcode'), character_event_color)
 				return fix_dict(dict)
 		
 		if str_line.strip_edges().begins_with('VAR'):

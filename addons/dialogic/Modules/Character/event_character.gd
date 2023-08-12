@@ -176,7 +176,7 @@ func to_text() -> String:
 			if animation_repeats != 1:
 				result_string += ' repeat="'+str(animation_repeats)+'"'
 		if z_index != 0:
-			result_string += ' z-index="' + str(z_index) + '"'
+			result_string += ' z_index="' + str(z_index) + '"'
 			
 		if mirrored:
 			result_string += ' mirrored="' + str(mirrored) + '"'
@@ -281,8 +281,8 @@ func from_text(string:String) -> void:
 			if typeof(shortcode_params.get('move_time', 0)) == TYPE_STRING:	
 				position_move_time = shortcode_params.get('move_time', 0.0).to_float()
 		
-		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
-			z_index = 	shortcode_params.get('z-index', 0).to_int()
+		if typeof(shortcode_params.get('z_index', 0)) == TYPE_STRING:	
+			z_index = 	shortcode_params.get('z_index', 0).to_int()
 			_update_zindex = true 
 		mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
 		extra_data = shortcode_params.get('extra_data', "")

@@ -51,6 +51,10 @@ func get_code_completion_prev_symbol(text:CodeEdit) -> String:
 	return result.get_string('s') if result else ""
 
 
+func get_line_untill_caret(line:String) -> String:
+	return line.substr(0, line.find(String.chr(0xFFFF)))
+
+
 # Called if something was typed
 # Adds all kinds of options depending on the 
 #   content of the current line, the last word and the symbol that came before
@@ -113,7 +117,8 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				if code in completion_shortcodes.keys():
 					if symbol == ' ':
 						for param in completion_shortcodes[code].get_shortcode_parameters().keys():
-							text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , text.syntax_highlighter.shortcode_param_color)
+							if !param+'=' in line:
+								text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , text.syntax_highlighter.shortcode_param_color)
 					elif symbol == '=' or symbol == '"':
 						var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
 						if current_parameter_gex: 
@@ -156,6 +161,38 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 		if symbol == '(':
 			var character:= completion_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(text, character)
+		
+		if '[' in line and (symbol == "[" or symbol == " "):
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'extra_data', 'extra_data="', text.syntax_highlighter.normal_color)
+			if !line.begins_with('Leave'):
+				if !'z_index=' in line:
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'z_index', 'z_index="', text.syntax_highlighter.normal_color)
+				if !'mirrored=' in line:
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'mirrored', 'mirrored="', text.syntax_highlighter.normal_color)
+			if line.begins_with('Update'):
+				if !'move_time=' in line:
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'move_time', 'move_time="', text.syntax_highlighter.normal_color)
+				if !'repeat=' in line:
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'repeat', 'repeat="', text.syntax_highlighter.normal_color)
+			if !'wait=' in line:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'wait', 'wait="', text.syntax_highlighter.normal_color)
+			if !'length=' in line:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'length', 'length="', text.syntax_highlighter.normal_color)
+			if !'animation=' in line:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'animation', 'animation="', text.syntax_highlighter.normal_color)
+		
+		if '[' in line and get_line_untill_caret(line).ends_with('animation="'):
+			var animations := []
+			if line.begins_with('Join'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+			if line.begins_with('Update'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+			if line.begins_with('Leave'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ALL)
+			animations.reverse()
+			for script in animations:
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', text.syntax_highlighter.normal_color)
+	
 	elif line.begins_with('jump ') and mode == Modes.FULL_HIGHLIGHTING:
 		if symbol == ' ':
 			suggest_timelines(text)
