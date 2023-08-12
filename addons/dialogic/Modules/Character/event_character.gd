@@ -372,7 +372,7 @@ func build_event_editor() -> void:
 			'should_show_animation_options()')
 	add_body_edit('animation_length', ValueType.FLOAT, 'Length:', '', {}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_wait', ValueType.BOOL, 'Wait for animation to finish:', '', {}, 
+	add_body_edit('animation_wait', ValueType.BOOL, 'Await end:', '', {}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_repeats', ValueType.INTEGER, 'Repeat:', '', {},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
