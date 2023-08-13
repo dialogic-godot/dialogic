@@ -5,7 +5,6 @@ enum Modes {TEXT_EVENT_ONLY, FULL_HIGHLIGHTING}
 @export var mode := Modes.FULL_HIGHLIGHTING
 
 # These RegEx's are used to deduce information from the current line for auto-completion
-# E.g. the character for portrait suggestions or the event type for parameter suggestions
 
 # To find the currently typed word and the symbol before
 var completion_word_regex := RegEx.new()
@@ -13,22 +12,17 @@ var completion_word_regex := RegEx.new()
 var completion_shortcode_getter_regex := RegEx.new()
 # To find the parameter name of the current if typing a value
 var completion_shortcode_param_getter_regex := RegEx.new()
-# To find the character from a character event (for portrait suggestions)
-var completion_character_getter_regex := RegEx.new()
-# To find the character from a text event (for portrait suggestions)
-var completion_text_character_getter_regex := RegEx.new()
 
 # Stores references to all shortcode events for parameter and value suggestions
-var completion_shortcodes := {}
-var completion_text_effects := {}
+var shortcode_events := {}
+var custom_syntax_events := []
+var text_event :DialogicTextEvent = null
  
 func _ready():
 	# Compile RegEx's
 	completion_word_regex.compile("(?<s>(\\W)|^)(?<word>\\w*)\\x{FFFF}")
 	completion_shortcode_getter_regex.compile("\\[(?<code>\\w*)")
-	completion_character_getter_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
-	completion_text_character_getter_regex.compile("\\W*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(1)\"|)")
-	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?"+String.chr(0xFFFF))
+	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?(\\w|\\s)*"+String.chr(0xFFFF))
 
 ################################################################################
 ## 					AUTO COMPLETION
@@ -60,21 +54,26 @@ func get_line_untill_caret(line:String) -> String:
 #   content of the current line, the last word and the symbol that came before
 # Triggers opening of the popup
 func request_code_completion(force:bool, text:CodeEdit) -> void:
-	# make sure shortcode event references are loaded
+	## TODO remove this once https://github.com/godotengine/godot/issues/38560 is fixed
 	if mode != Modes.FULL_HIGHLIGHTING:
 		return
+	
+	# make sure shortcode event references are loaded
 	if mode == Modes.FULL_HIGHLIGHTING:
 		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons')
-		if completion_shortcodes.is_empty():
+		if shortcode_events.is_empty():
 			for event in text.timeline_editor.editors_manager.resource_helper.event_script_cache:
 				if event.get_shortcode() != 'default_shortcode':
-					completion_shortcodes[event.get_shortcode()] = event
-					if event.event_name in hidden_events:
-						event.set_meta('hidden', true)
-	if completion_text_effects.is_empty():
-		for idx in DialogicUtil.get_indexers():
-			for effect in idx._get_text_effects():
-				completion_text_effects[effect['command']] = effect
+					shortcode_events[event.get_shortcode()] = event
+					
+				else:
+					custom_syntax_events.append(event)
+				if event.event_name in hidden_events:
+					event.set_meta('hidden', true)
+				if event is DialogicTextEvent:
+					text_event = event
+					# this is done to force-load the text effects regex which is used below
+					event.load_text_effects()
 	
 	# fill helpers
 	var line := get_code_completion_line(text)
@@ -99,140 +98,78 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 	# The completion will check if the letter is already present and add it otherwise.
 
 	# Shortcode event suggestions
-	if line.begins_with('[') and mode == Modes.FULL_HIGHLIGHTING:
+	if line.begins_with('[') and !text_event.text_effects_regex.search(line.get_slice(' ', 0)) and mode == Modes.FULL_HIGHLIGHTING:
 		if symbol == '[':
 			# suggest shortcodes if a shortcode event has just begun
-			for shortcode in completion_shortcodes.keys():
-				if completion_shortcodes[shortcode].get_meta('hidden', false):
+			var shortcodes := shortcode_events.keys()
+			shortcodes.sort()
+			for shortcode in shortcodes:
+				if shortcode_events[shortcode].get_meta('hidden', false):
 					continue
-				if completion_shortcodes[shortcode].get_shortcode_parameters().is_empty():
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
+				if shortcode_events[shortcode].get_shortcode_parameters().is_empty():
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, shortcode_events[shortcode].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 				else:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", completion_shortcodes[shortcode].event_color, completion_shortcodes[shortcode]._get_icon())
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", shortcode_events[shortcode].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 		else:
-			# suggest either parameters or values
 			var current_shortcode := completion_shortcode_getter_regex.search(line)
-			if current_shortcode:
-				var code := current_shortcode.get_string('code')
-				if code in completion_shortcodes.keys():
-					if symbol == ' ':
-						for param in completion_shortcodes[code].get_shortcode_parameters().keys():
-							if !param+'=' in line:
-								text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , text.syntax_highlighter.shortcode_param_color)
-					elif symbol == '=' or symbol == '"':
-						var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
-						if current_parameter_gex: 
-							var current_parameter := current_parameter_gex.get_string('param')
-							if completion_shortcodes[code].get_shortcode_parameters().has(current_parameter):
-								if completion_shortcodes[code].get_shortcode_parameters()[current_parameter].has('suggestions'):
-									var suggestions : Dictionary= completion_shortcodes[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
-									for key in suggestions.keys():
-										text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].value, text.syntax_highlighter.shortcode_value_color, suggestions[key].get('icon', null), '"')
-
-	# Condition event suggestions
-	elif line.begins_with('if') or line.begins_with('elif') and mode == Modes.FULL_HIGHLIGHTING:
-		if symbol == '{':
-			suggest_variables(text)
-
-	# Choice Event suggestions
-	elif line.begins_with('-') and '[' in line and mode == Modes.FULL_HIGHLIGHTING:
-		if symbol == '[':
-			if line.count('[') == 1:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', text.syntax_highlighter.code_flow_color)
-			elif line.count('[') > 1:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', text.syntax_highlighter.code_flow_color)
-		if symbol == ' ' and '[else' in line:
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', text.syntax_highlighter.code_flow_color)
-		elif symbol == '{':
-			suggest_variables(text)
-		if (symbol == '=' or symbol == '"') and line.count('[') > 1 and !'" ' in line:
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'default', "default", text.syntax_highlighter.shortcode_value_color, null, '"')
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'hide', "hide", text.syntax_highlighter.shortcode_value_color, null, '"')
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'disable', "disable", text.syntax_highlighter.shortcode_value_color, null, '"')
+			if !current_shortcode:
+				text.update_code_completion_options(false)
+				return
 			
+			var code := current_shortcode.get_string('code')
+			if !code in shortcode_events.keys():
+				text.update_code_completion_options(false)
+				return
+			
+			# suggest parameters
+			if symbol == ' ':
+				var parameters :Array = shortcode_events[code].get_shortcode_parameters().keys()
+				for param in parameters:
+					if !param+'=' in line:
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
+			
+			# suggest values
+			elif symbol == '=' or symbol == '"' or get_code_completion_prev_symbol(text) == '"':
+				var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
+				if !current_parameter_gex:
+					text.update_code_completion_options(false)
+					return
+				
+				var current_parameter := current_parameter_gex.get_string('param')
+				if !shortcode_events[code].get_shortcode_parameters().has(current_parameter):
+					text.update_code_completion_options(false)
+					return
+				if !shortcode_events[code].get_shortcode_parameters()[current_parameter].has('suggestions'):
+					if typeof(shortcode_events[code].get_shortcode_parameters()[current_parameter].default) == TYPE_BOOL:
+						suggest_bool(text, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3))
+					elif len(word) > 0:
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, word, word, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
+					text.update_code_completion_options(true)
+					return
+				
+				var suggestions : Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
+				for key in suggestions.keys():
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].value, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+				
+		# Force update and showing of the popup
+		text.update_code_completion_options(true)
+		return
 	
-	# Character Event suggestions
-	elif line.begins_with('Join') or line.begins_with('Leave') or line.begins_with('Update') and mode == Modes.FULL_HIGHLIGHTING:
-		if symbol == ' ' and line.count(' ') <= max(line.count('"'), 1):
-			suggest_characters(text)
-			if line.begins_with('Leave'):
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', text.syntax_highlighter.character_name_color, text.get_theme_icon("GuiEllipsis", "EditorIcons"))
-		
-		if symbol == '(':
-			var character:= completion_character_getter_regex.search(line).get_string('name')
-			suggest_portraits(text, character)
-		
-		if '[' in line and (symbol == "[" or symbol == " "):
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'extra_data', 'extra_data="', text.syntax_highlighter.normal_color)
-			if !line.begins_with('Leave'):
-				if !'z_index=' in line:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'z_index', 'z_index="', text.syntax_highlighter.normal_color)
-				if !'mirrored=' in line:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'mirrored', 'mirrored="', text.syntax_highlighter.normal_color)
-			if line.begins_with('Update'):
-				if !'move_time=' in line:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'move_time', 'move_time="', text.syntax_highlighter.normal_color)
-				if !'repeat=' in line:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'repeat', 'repeat="', text.syntax_highlighter.normal_color)
-			if !'wait=' in line:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'wait', 'wait="', text.syntax_highlighter.normal_color)
-			if !'length=' in line:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'length', 'length="', text.syntax_highlighter.normal_color)
-			if !'animation=' in line:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'animation', 'animation="', text.syntax_highlighter.normal_color)
-		
-		if '[' in line and get_line_untill_caret(line).ends_with('animation="'):
-			var animations := []
-			if line.begins_with('Join'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
-			if line.begins_with('Update'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
-			if line.begins_with('Leave'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ALL)
-			animations.reverse()
-			for script in animations:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', text.syntax_highlighter.normal_color)
 	
-	elif line.begins_with('jump ') and mode == Modes.FULL_HIGHLIGHTING:
-		if symbol == ' ':
-			suggest_timelines(text)
-			suggest_labels(text, '', '\n')
-		if symbol == '/':
-			suggest_labels(text, line.strip_edges().trim_prefix('jump ').trim_suffix('/'+String.chr(0xFFFF)).strip_edges())
-	# Start of line suggestions
-	# These are all as KIND_PLAIN_TEXT, because that means they won't 
-	# be suggested unless at least the first letter is typed in.
-	elif not ' ' in line and mode == Modes.FULL_HIGHLIGHTING:
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Join', 'Join ', text.syntax_highlighter.character_event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Leave', 'Leave ', text.syntax_highlighter.character_event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Update', 'Update ', text.syntax_highlighter.character_event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
+	for event in custom_syntax_events:
+		if mode == Modes.TEXT_EVENT_ONLY and !event is DialogicTextEvent:
+			continue
 		
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', text.syntax_highlighter.code_flow_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', text.syntax_highlighter.code_flow_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', text.syntax_highlighter.code_flow_color)
+		if ! ' ' in line:
+			event._get_start_code_completion(self, text)
 		
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', text.syntax_highlighter.keyword_VAR_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', text.syntax_highlighter.keyword_SETTING_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'label', 'label ', text.syntax_highlighter.keyword_SETTING_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'jump', 'jump ', text.syntax_highlighter.keyword_SETTING_color)
-		text.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', text.syntax_highlighter.keyword_SETTING_color)
-		
-		suggest_characters(text, CodeEdit.KIND_CLASS)
-	
-	else:
-		# Text Event Suggestions
-		if not ':' in line.substr(0, text.get_caret_column()) and symbol == '(':
-			var character := completion_text_character_getter_regex.search(line).get_string('name')
-			suggest_portraits(text, character)
-		if symbol == '[':
-			suggest_bbcode(text)
-			for effect in completion_text_effects:
-				text.add_code_completion_option(CodeEdit.KIND_MEMBER, effect, effect, text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-		if symbol == '{':
-			suggest_variables(text)
+		if event.is_valid_event(line):
+			event._get_code_completion(self, text, line, word, symbol)
+			break
 	
 	# Force update and showing of the popup
 	text.update_code_completion_options(true)
+
 
 
 # Helper that adds all characters as options
@@ -242,22 +179,24 @@ func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER) -> void:
 
 
 # Helper that adds all timelines as options
-func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER) -> void:
+func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:
 	for timeline in text.timeline_editor.editors_manager.resource_helper.timeline_directory:
-		text.add_code_completion_option(type, timeline, timeline+'/', text.syntax_highlighter.character_name_color, text.get_theme_icon("TripleBar", "EditorIcons"))
+		text.add_code_completion_option(type, timeline, timeline+'/', color, text.get_theme_icon("TripleBar", "EditorIcons"))
 
 
-func suggest_labels(text:CodeEdit, timeline:String='', end:='') -> void:
+func suggest_labels(text:CodeEdit, timeline:String='', end:='', color:=Color()) -> void:
 	if timeline in Engine.get_main_loop().get_meta('dialogic_label_directory', {}):
 		for i in Engine.get_main_loop().get_meta('dialogic_label_directory')[timeline]:
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+end, text.syntax_highlighter.character_name_color, load("res://addons/dialogic/Modules/Jump/icon_label.png"))
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+end, color, load("res://addons/dialogic/Modules/Jump/icon_label.png"))
 
 
 # Helper that adds all portraits of a given character as options
-func suggest_portraits(text:CodeEdit, character_name:String) -> void:
+func suggest_portraits(text:CodeEdit, character_name:String, end_check:=')') -> void:
+	if !character_name in text.timeline_editor.editors_manager.resource_helper.character_directory:
+		return
 	var character_resource :DialogicCharacter= text.timeline_editor.editors_manager.resource_helper.character_directory[character_name]['resource']
 	for portrait in character_resource.portraits:
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, text.syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), ')')
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, text.syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), end_check)
 	if character_resource.portraits.is_empty():
 		text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'Has no portraits!', '', text.syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Pieces/warning.svg"))
 
@@ -268,10 +207,11 @@ func suggest_variables(text:CodeEdit):
 		text.add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, text.syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
 
 
-func suggest_bbcode(text:CodeEdit):
-	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"),)
-		text.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+# Helper that adds true and false as options
+func suggest_bool(text:CodeEdit, color:Color):
+	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'true', 'true', color, text.get_theme_icon("GuiChecked", "EditorIcons"), '" ')
+	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'false', 'false', color, text.get_theme_icon("GuiUnchecked", "EditorIcons"), '" ')
+
 
 # Filters the list of all possible options, depending on what was typed
 # Purpose of the different Kinds is explained in [_request_code_completion]
@@ -291,7 +231,6 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 		elif candidate.kind == text.KIND_CLASS:
 			if !current_word.is_empty() and current_word.to_lower() in candidate.insert_text.to_lower():
 				valid_candidates.append(candidate)
-	valid_candidates.reverse()
 	return valid_candidates
 
 
@@ -318,13 +257,13 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 
 # Performs an action (like opening a link) when a valid symbol was clicked
 func symbol_lookup(symbol:String, line:int, column:int) -> void:
-	if symbol in completion_shortcodes.keys():
-		if !completion_shortcodes[symbol].help_page_path.is_empty():
-			OS.shell_open(completion_shortcodes[symbol].help_page_path)
+	if symbol in shortcode_events.keys():
+		if !shortcode_events[symbol].help_page_path.is_empty():
+			OS.shell_open(shortcode_events[symbol].help_page_path)
 
 
 # Called to test if a symbol can be clicked
 func symbol_validate(symbol:String, text:CodeEdit) -> void:
-	if symbol in completion_shortcodes.keys():
-		if !completion_shortcodes[symbol].help_page_path.is_empty():
+	if symbol in shortcode_events.keys():
+		if !shortcode_events[symbol].help_page_path.is_empty():
 			text.set_symbol_lookup_word_as_valid(true)

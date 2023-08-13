@@ -61,7 +61,8 @@ var _character_from_directory: String:
 			character = null
 ## Used by [_character_from_directory]
 var _character_directory: Dictionary = {}
-
+# Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
+var regex := RegEx.create_from_string("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
 ################################################################################
 ## 						EXECUTION
@@ -202,10 +203,7 @@ func from_text(string:String) -> void:
 		if _character_from_directory in _character_directory.keys():
 			character = _character_directory[_character_from_directory]['resource']
 	
-	var regex := RegEx.new()
 	
-	# Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
-	regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 	
 	var result := regex.search(string)
 	
@@ -457,3 +455,79 @@ func _on_character_edit_pressed() -> void:
 	var editor_manager := _editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.edit_resource(character)
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+#var completion_character_getter_regex := RegEx.new()
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if symbol == ' ' and line.count(' ') == 1:
+		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
+		if line.begins_with('Leave'):
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
+	
+#	if completion_character_getter_regex.get_pattern().is_empty():
+#		completion_character_getter_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
+	if symbol == '(':
+		var character:= regex.search(line).get_string('name')
+		CodeCompletionHelper.suggest_portraits(TextNode, character)
+	
+	if '[' in line and (symbol == "[" or symbol == " "):
+		if !'animation=' in line:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'animation', 'animation="', TextNode.syntax_highlighter.normal_color)
+		if !'length=' in line:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'length', 'length="', TextNode.syntax_highlighter.normal_color)
+		if !'wait=' in line:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'wait', 'wait="', TextNode.syntax_highlighter.normal_color)
+		if line.begins_with('Update'):
+			if !'repeat=' in line:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'repeat', 'repeat="', TextNode.syntax_highlighter.normal_color)
+			if !'move_time=' in line:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'move_time', 'move_time="', TextNode.syntax_highlighter.normal_color)
+		if !line.begins_with('Leave'):
+			if !'mirrored=' in line:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'mirrored', 'mirrored="', TextNode.syntax_highlighter.normal_color)
+			if !'z_index=' in line:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'z_index', 'z_index="', TextNode.syntax_highlighter.normal_color)
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'extra_data', 'extra_data="', TextNode.syntax_highlighter.normal_color)
+
+	if '[' in line:
+		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('animation="'):
+			var animations := []
+			if line.begins_with('Join'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+			if line.begins_with('Update'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+			if line.begins_with('Leave'):
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ALL)
+			for script in animations:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
+		elif CodeCompletionHelper.get_line_untill_caret(line).ends_with('wait="') or CodeCompletionHelper.get_line_untill_caret(line).ends_with('mirrored="'):
+			CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Join', 'Join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Leave', 'Leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Update', 'Update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	var word := line.get_slice(' ', 0)
+	
+	dict[line.find(word)] = {"color":event_color}
+	dict[line.find(word)+len(word)] = {"color":Highlighter.normal_color}
+	var result := regex.search(line)
+	if result.get_string('name'):
+		dict[result.get_start('name')] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+		dict[result.get_end('name')] = {"color":Highlighter.normal_color}
+	if result.get_string('portrait'):
+		dict[result.get_start('portrait')] = {"color":event_color.lerp(Highlighter.normal_color, 0.6)}
+		dict[result.get_end('portrait')] = {"color":Highlighter.normal_color}
+	if result.get_string('shortcode'):
+		dict = Highlighter.color_shortcode_content(dict, line, result.get_start('shortcode'), result.get_end('shortcode'), event_color)
+	return dict

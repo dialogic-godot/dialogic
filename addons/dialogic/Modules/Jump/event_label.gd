@@ -71,3 +71,19 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('name', ValueType.SINGLELINE_TEXT, '', '', {'autofocus':true})
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'label', 'label ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[line.find('label')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
+	dict[line.find('label')+5] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+	return dict

@@ -262,3 +262,29 @@ func update_editor_warning() -> void:
 		ui_update_warning.emit('You cannot do this operation with a string!')
 	else:
 		ui_update_warning.emit('')
+
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if CodeCompletionHelper.get_line_untill_caret(line) == 'VAR ':
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
+	if symbol == '{':
+		CodeCompletionHelper.suggest_variables(TextNode)
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
+	
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[line.find('VAR')] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+	dict[line.find('VAR')+3] = {"color":Highlighter.normal_color}
+	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"', line.find('VAR'))
+	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', line.find('VAR'))
+	return dict

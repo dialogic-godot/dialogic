@@ -57,3 +57,11 @@ func is_valid_event(string:String) -> bool:
 
 func build_event_editor():
 	add_header_edit('text', ValueType.SINGLELINE_TEXT, '#','',{'autofocus':true})
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[0] = {'color':event_color.lerp(Highlighter.normal_color, 0.3)}
+	return dict

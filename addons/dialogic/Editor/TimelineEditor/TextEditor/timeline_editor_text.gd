@@ -5,7 +5,7 @@ extends CodeEdit
 
 @onready var timeline_editor := get_parent().get_parent()
 
-var label_regex := RegEx.create_from_string('label +(?<name>\\w+)')
+var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
 func _ready():
 	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()

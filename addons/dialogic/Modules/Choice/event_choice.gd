@@ -158,3 +158,38 @@ func allow_alt_text() -> bool:
 		else_action == ElseActions.DISABLE or 
 		(else_action == ElseActions.DEFAULT and 
 		ProjectSettings.get_setting("dialogic/choices/def_false_behaviour", 0) == 1))
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if !'[' in line:
+		return
+	
+	if symbol == '[':
+		if line.count('[') == 1:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
+		elif line.count('[') > 1:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', TextNode.syntax_highlighter.code_flow_color)
+	if symbol == ' ' and '[else' in line:
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
+	elif symbol == '{':
+		CodeCompletionHelper.suggest_variables(TextNode)
+	if (symbol == '=' or symbol == '"') and line.count('[') > 1 and !'" ' in line:
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'default', "default", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'hide', "hide", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'disable', "disable", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[0] = {'color':event_color}
+	if '[' in line:
+		dict[line.find('[')] = {"color":Highlighter.normal_color}
+		dict = Highlighter.color_word(dict, Highlighter.code_flow_color, line, 'if', line.find('['), line.find(']'))
+		dict = Highlighter.color_condition(dict, line, line.find('['), line.find(']'))
+		dict = Highlighter.color_shortcode_content(dict, line, line.find(']'), 0,event_color)
+	return dict
