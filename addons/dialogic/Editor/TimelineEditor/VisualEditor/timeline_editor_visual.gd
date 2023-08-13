@@ -854,6 +854,7 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	piece.content_changed.connect(something_changed)
 	if event_resource.event_name == "Label":
 		piece.content_changed.connect(update_content_list)
+		piece.tree_exited.connect(update_content_list)
 	if at_index == -1:
 		if len(selected_items) != 0:
 			selected_items[0].add_sibling(piece)

@@ -30,6 +30,9 @@ func _ready():
 	
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
 	
+	%ContentList.add_theme_color_override("font_hovered_color", get_theme_color("warning_color", "Editor"))
+	%ContentList.add_theme_color_override("font_selected_color", get_theme_color("property_color_z", "Editor"))
+	
 	## MARGINS
 	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
