@@ -95,7 +95,7 @@ func from_text(string:String) -> void:
 
 
 func is_valid_event(string:String) -> bool:
-	if (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')) and string.strip_edges().ends_with(':'):
+	if string.strip_edges() in ['if', 'elif', 'else'] or (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')):
 		return true
 	return false
 
@@ -121,3 +121,29 @@ func build_event_editor():
 			}
 		], 'disabled':true})
 	add_header_edit('condition', ValueType.CONDITION, '', '', {}, 'condition_type != %s'%ConditionTypes.ELSE)
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if (line.begins_with('if') or line.begins_with('elif')) and symbol == '{':
+		CodeCompletionHelper.suggest_variables(TextNode)
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', TextNode.syntax_highlighter.code_flow_color)
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', TextNode.syntax_highlighter.code_flow_color)
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	var word := line.get_slice(' ', 0)
+	dict[line.find(word)] = {"color":Highlighter.code_flow_color}
+	dict[line.find(word)+len(word)] = {"color":Highlighter.normal_color}
+	dict = Highlighter.color_condition(dict, line)
+	return dict

@@ -14,7 +14,7 @@ func _get_settings_pages() -> Array:
 	return [this_folder.path_join('settings_portraits.tscn')]
 
 func _get_text_effects() -> Array[Dictionary]:
-	return [{'command':'portrait', 'subsystem':'Portraits', 'method':'text_effect_portrait'}]
+	return [{'command':'portrait', 'subsystem':'Portraits', 'method':'text_effect_portrait', 'arg':true}]
 
 
 func _get_portrait_animations() -> Array:

@@ -56,3 +56,19 @@ func is_valid_event(string:String) -> bool:
 
 func build_event_editor():
 	add_header_label('Return')
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[line.find('return')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
+	dict[line.find('return')+6] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+	return dict

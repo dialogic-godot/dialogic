@@ -39,7 +39,8 @@ var _character_from_directory: String:
 		
 ## Used by [_character_from_directory] to fetch the unique name_identifier or resource.
 var _character_directory: Dictionary = {}
-
+# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
+var regex := RegEx.create_from_string("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
 
 ################################################################################
 ## 						EXECUTION
@@ -151,11 +152,7 @@ func from_text(string:String) -> void:
 		if _character_from_directory in _character_directory.keys():
 			character = _character_directory[_character_from_directory]['resource']
 	
-	var reg := RegEx.new()
-	
-	# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
-	reg.compile("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
-	var result := reg.search(string)
+	var result := regex.search(string)
 	if result and !result.get_string('name').is_empty():
 		var name := result.get_string('name').strip_edges()
 		if name == '_':
@@ -273,3 +270,100 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 		for portrait in character.portraits:
 			suggestions[portrait] = {'value':portrait, 'icon':icon}
 	return suggestions
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+var completion_text_character_getter_regex := RegEx.new()
+var completion_text_effects := {}
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if completion_text_character_getter_regex.get_pattern().is_empty():
+		completion_text_character_getter_regex.compile("\\W*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(1)\"|)")
+	
+	if completion_text_effects.is_empty():
+		for idx in DialogicUtil.get_indexers():
+			for effect in idx._get_text_effects():
+				completion_text_effects[effect['command']] = effect
+	
+	if not ':' in line.substr(0, TextNode.get_caret_column()) and symbol == '(':
+		var character := completion_text_character_getter_regex.search(line).get_string('name')
+		CodeCompletionHelper.suggest_portraits(TextNode, character)
+	if symbol == '[':
+		suggest_bbcode(TextNode)
+		for effect in completion_text_effects.values():
+			if effect.get('arg', false):
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command+'=', TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"))
+			else:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command, TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+	if symbol == '{':
+		CodeCompletionHelper.suggest_variables(TextNode)
+	
+	if symbol == '=':
+		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('[portrait='):
+			var character := completion_text_character_getter_regex.search(line).get_string('name')
+			CodeCompletionHelper.suggest_portraits(TextNode, character, ']')
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_CLASS)
+
+
+func suggest_bbcode(text:CodeEdit):
+	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"),)
+		text.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+var text_effects := ""
+var text_effects_regex := RegEx.new()
+func load_text_effects():
+	if text_effects.is_empty():
+		for idx in DialogicUtil.get_indexers():
+			for effect in idx._get_text_effects():
+				text_effects+= effect['command']+'|'
+		text_effects += "b|i|u|s|code|p|center|left|right|fill|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
+	if text_effects_regex.get_pattern().is_empty():
+		text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+
+
+var text_random_word_regex := RegEx.new()
+var text_effect_color := Color('#898276')
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	load_text_effects()
+	if text_random_word_regex.get_pattern().is_empty():
+		text_random_word_regex.compile("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+	
+	var result := regex.search(line)
+	if !result:
+		return dict
+	if Highlighter.mode == Highlighter.Modes.FULL_HIGHLIGHTING:
+		if result.get_string('name'):
+			dict[result.get_start('name')] = {"color":Highlighter.character_name_color}
+			dict[result.get_end('name')] = {"color":Highlighter.normal_color}
+		if result.get_string('portrait'):
+			dict[result.get_start('portrait')] = {"color":Highlighter.character_portrait_color}
+			dict[result.get_end('portrait')] = {"color":Highlighter.normal_color}
+	if result.get_string('text'):
+		var effects_result := text_effects_regex.search_all(line)
+		for eff in effects_result:
+			dict[eff.get_start()] = {"color":text_effect_color}
+			dict[eff.get_end()] = {"color":Highlighter.normal_color}
+		dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', result.get_start('text'))
+
+		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
+			var color :Color = Highlighter.string_color
+			color = color.lerp(Highlighter.normal_color, 0.4)
+			dict[replace_mod_match.get_start()+result.get_start('text')] = {'color':Highlighter.string_color}
+			var offset := 1
+			for b in replace_mod_match.get_string().trim_suffix('>').trim_prefix('<').split('/'):
+				color.h = wrap(color.h+0.2, 0, 1)
+				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':color}
+				offset += len(b)
+				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':Highlighter.string_color}
+				offset += 1
+			dict[replace_mod_match.get_end()+result.get_start('text')] = {'color':Highlighter.normal_color}
+	return dict

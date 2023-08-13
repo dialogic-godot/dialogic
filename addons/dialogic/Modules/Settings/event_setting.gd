@@ -183,3 +183,37 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
+
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if symbol == " " and !"reset" in line and !'=' in line and !'"' in line:
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset", "reset ", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("RotateLeft", "EditorIcons"))
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset all", "reset\n", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("ToolRotate", "EditorIcons"))
+	
+	if (symbol == " " or symbol == '"') and !"=" in line:
+		for i in get_settings_suggestions(''):
+			if i.is_empty():
+				continue
+			if symbol == '"':
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i, event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("GDScript", "EditorIcons"), '"')
+			else:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, '"'+i, event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("GDScript", "EditorIcons"), '"')
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', event_color)
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[line.find('Setting')] = {"color":event_color}
+	dict[line.find('Setting')+7] = {"color":Highlighter.normal_color}
+	dict = Highlighter.color_word(dict, event_color, line, 'reset')
+	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"')
+	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}')
+	return dict

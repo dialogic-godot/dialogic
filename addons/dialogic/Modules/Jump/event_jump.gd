@@ -133,3 +133,27 @@ func get_label_suggestions(filter:String="") -> Dictionary:
 		for label in Engine.get_main_loop().get_meta('dialogic_label_directory')[_timeline_file]:
 			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["ArrowRight", "EditorIcons"]}
 	return suggestions
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	if symbol == ' ' and line.count(' ') == 1:
+		CodeCompletionHelper.suggest_timelines(TextNode, CodeEdit.KIND_MEMBER, event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+		CodeCompletionHelper.suggest_labels(TextNode, '', '\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+	if symbol == '/':
+		CodeCompletionHelper.suggest_labels(TextNode, line.strip_edges().trim_prefix('jump ').trim_suffix('/'+String.chr(0xFFFF)).strip_edges(), '\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+
+
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'jump', 'jump ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	dict[line.find('jump')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
+	dict[line.find('jump')+4] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+	return dict

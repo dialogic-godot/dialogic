@@ -345,6 +345,28 @@ func set_default_color(value) -> void:
 	event_color = DialogicUtil.get_color(value)
 
 
+####################### CODE COMPLETION ########################################
+################################################################################
+
+## This method can be overwritten to implement code completion for custom syntaxes
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	pass
+
+## This method can be overwritten to add starting suggestions for this event
+func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	pass
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	return dict
+
+
+#################### EVENT FIELDS ##############################################
+################################################################################
+
 func get_event_editor_info() -> Array:
 	if Engine.is_editor_hint():
 		if editor_list != null:

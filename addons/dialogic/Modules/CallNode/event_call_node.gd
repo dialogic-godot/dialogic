@@ -92,13 +92,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"path" 		: {"property": "path", 		"default": ""},
 		"method" 	: {"property": "method", 	"default": ""},
 		"args" 		: {"property": "arguments", "default": []},
-		"wait" 		: {"property": "wait", 		"default": false, 
-						"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
-		"inline" 	: {"property": "inline", 	"default": false, 
-						"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
+		"wait" 		: {"property": "wait", 		"default": false},
+		"inline" 	: {"property": "inline", 	"default": false},
 		"signal" 	: {"property": "inline_signal_argument", 	"default": ""},
-		"single_use": {"property": "inline_single_use", 		"default": false, 
-							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}}
+		"single_use": {"property": "inline_single_use", 		"default": false}
 	}
 
 

@@ -57,8 +57,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"volume"	: {"property": "volume", 		"default": 0},
 		"bus"		: {"property": "audio_bus", 	"default": "Master", 
 							"suggestions": get_bus_suggestions},
-		"loop"		: {"property": "loop", 			"default": false, 
-							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
+		"loop"		: {"property": "loop", 			"default": false},
 	}
 
 

@@ -39,8 +39,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_info
-		"hide_text" :  {"property": "hide_textbox", 	"default": true, 
-						"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
+		"hide_text" :  {"property": "hide_textbox", 	"default": true},
 	}
 
 
