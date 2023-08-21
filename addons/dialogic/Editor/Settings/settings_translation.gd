@@ -34,6 +34,7 @@ func _ready() -> void:
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
 
+
 func _refresh() -> void:
 	loading = true
 	%TransEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/enabled', false)

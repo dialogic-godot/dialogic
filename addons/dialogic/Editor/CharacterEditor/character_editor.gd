@@ -126,6 +126,10 @@ func _ready() -> void:
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
+	%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+	
+	await find_parent('EditorView').ready
+	
 	# Add general tabs
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.tscn").instantiate(), %MainSettingsSections)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
@@ -161,7 +165,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	button.pressed.connect(_on_section_button_pressed.bind(button))
 	button.focus_mode = Control.FOCUS_NONE
 	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("accent_color", "Editor"))
+	button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
 	parent.add_child(button)
 	parent.add_child(edit)
 	parent.add_child(HSeparator.new())
@@ -542,3 +546,15 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 
 func _on_reference_manger_button_pressed():
 	editors_manager.reference_manager.open()
+
+
+func _on_main_settings_collapse_toggled(button_pressed):
+	%MainSettingsTitle.visible = !button_pressed
+	%MainSettingsScroll.visible = !button_pressed
+#	%MainHSplit.collapsed = button_pressed
+	if button_pressed:
+		%MainSettings.hide()
+		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
+	else:
+		%MainSettings.show()
+		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")

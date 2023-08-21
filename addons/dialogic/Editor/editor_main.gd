@@ -53,6 +53,7 @@ func update_theme_additions():
 	theme.set_type_variation('DialogicSubTitle', 'Label')
 	theme.set_font('font', 'DialogicSubTitle', get_theme_font("title", "EditorFonts"))
 	theme.set_font_size('font_size', 'DialogicSubTitle', get_theme_font_size("doc_size", "EditorFonts"))
+	theme.set_color('font_color', 'DialogicSubTitle', get_theme_color('accent_color', 'Editor'))
 	
 	theme.set_type_variation('DialogicPanelA', 'PanelContainer')
 	var panel_style := DCSS.inline({
@@ -120,7 +121,7 @@ func update_theme_additions():
 	
 	theme.set_type_variation('DialogicSection', 'Label')
 	theme.set_font('font', 'DialogicSection', get_theme_font("main_msdf", "EditorFonts"))
-	theme.set_color('font_color', 'DialogicSection', get_theme_color("accent_color", "Editor"))
+	theme.set_color('font_color', 'DialogicSection', get_theme_color("property_color_z", "Editor"))
 	theme.set_font_size('font_size', 'DialogicSection', get_theme_font_size("doc_size", "EditorFonts"))
 	
 	theme.set_type_variation('DialogicSettingsSection', 'DialogicSection')

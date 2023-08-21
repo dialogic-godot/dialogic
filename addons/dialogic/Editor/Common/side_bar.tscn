@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwe3r2tbh2og1"]
+[gd_scene load_steps=5 format=3 uid="uid://cwe3r2tbh2og1"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
 
 [sub_resource type="Theme" id="Theme_pn0f4"]
 VBoxContainer/constants/separation = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gxwm6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n8rql"]
 
 [node name="SideBar" type="VSplitContainer"]
 custom_minimum_size = Vector2(100, 130)
@@ -47,6 +51,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "No resource"
+horizontal_alignment = 1
+vertical_alignment = 1
 text_overrun_behavior = 1
 
 [node name="Search" type="LineEdit" parent="VBox/Margin/VSplitContainer/VBox"]
@@ -71,6 +77,9 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/selected = SubResource("StyleBoxEmpty_gxwm6")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_n8rql")
+allow_reselect = true
 same_column_width = true
 
 [node name="CurrentVersion" type="Label" parent="VBox"]
