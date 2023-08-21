@@ -126,8 +126,7 @@ func _ready() -> void:
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 	
-	%MainSettingsCollapse.icon = get_theme_icon("PagePrevious", "EditorIcons")
-	%MainSettingsCollapse.add_theme_color_override("icon_hover_color", get_theme_color('warning_color', 'Editor'))
+	%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	
 	await find_parent('EditorView').ready
 	
@@ -556,7 +555,7 @@ func _on_main_settings_collapse_toggled(button_pressed):
 #	%MainHSplit.collapsed = button_pressed
 	if button_pressed:
 		%MainSettings.hide()
-		%MainSettingsCollapse.icon = get_theme_icon("PageNext", "EditorIcons")
+		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 	else:
 		%MainSettings.show()
-		%MainSettingsCollapse.icon = get_theme_icon("PagePrevious", "EditorIcons")
+		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
