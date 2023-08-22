@@ -1,6 +1,6 @@
 extends DialogicSubsystem
 
-## Subsystem that manages showing and hiding style nodes.
+## Subsystem that manages loading layouts with specific styles applied.
 
 signal style_changed(info:Dictionary)
 
@@ -9,7 +9,7 @@ signal style_changed(info:Dictionary)
 ####################################################################################################
 
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
-	add_layout_style()
+	pass
 
 
 func load_game_state():
@@ -22,16 +22,17 @@ func load_game_state():
 
 func add_layout_style(style_name:="") -> Node:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {})
-	var info := {}
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style')
 	
-	info = styles_info.get(style_name, {})
 	
-	var layout := Dialogic._add_layout_node(info.get('layout', DialogicUtil.get_default_layout_scene()))
+	
+	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
+	var layout := Dialogic._add_layout_node(layout_path)
+	
 	
 	# apply export overrides, in case this isn't the exact same style
-	if !layout.get_meta('style', null) == style_name:
+	if !layout.has_meta('style') or !layout.get_meta('style', null) == style_name:
 		DialogicUtil.apply_scene_export_overrides(layout, DialogicUtil.get_inherited_style_overrides(style_name))
 		layout.set_meta('style', style_name)
 	return layout

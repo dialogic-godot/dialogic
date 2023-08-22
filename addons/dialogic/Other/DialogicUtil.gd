@@ -207,13 +207,30 @@ static func get_inherited_style_overrides(style_name:String) -> Dictionary:
 	var inheritance := [styles_info[style_name].get('inherits', '')]
 	var info :Dictionary = styles_info[style_name].get('export_overrides', {}).duplicate(true)
 	
-	while !inheritance[-1].is_empty() and inheritance[-1] in styles_info:
+	
+	while (!inheritance[-1].is_empty()) and inheritance[-1] in styles_info:
 		info.merge(styles_info[inheritance[-1]].get('export_overrides', {}))
-		if styles_info[inheritance[-1]].get('inherits', '') in styles_info:
+		if !styles_info[inheritance[-1]].get('inherits', '') in styles_info:
 			break
 		inheritance.append(styles_info[inheritance[-1]].get('inherits', ''))
-	
 	return info
+
+
+static func get_inherited_style_layout(style_name:String="") -> String:
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	if style_name.is_empty(): return get_default_layout_scene()
+	return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
+
+
+static func get_inheritance_style_list(style_name:String) -> Array:
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	if !style_name in style_list:
+		return []
+	var list := [style_name]
+	while !style_list[style_name].get('inherits', '').is_empty():
+		style_name = style_list[style_name].get('inherits', '')
+		list.append(style_name)
+	return list
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:

@@ -384,10 +384,11 @@ func find_timeline(path: String) -> String:
 # -> returns the layout node 
 func start(timeline:Variant, label:Variant="") -> Node:
 	var scene :Node= null
-	if has_subsystem('Style'):
-		scene = get_subsystem("Style").add_layout_style()
-	else:
-		scene = _add_layout_node()
+	if !has_active_layout_node():
+		if has_subsystem('Styles'):
+			scene = get_subsystem("Styles").add_layout_style()
+		else:
+			scene = _add_layout_node()
 	Dialogic.clear(ClearFlags.KEEP_VARIABLES)
 	Dialogic.start_timeline(timeline, label)
 	return scene

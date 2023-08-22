@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ptlnkdsl67tf" path="res://addons/dialogic/Modules/DefaultLayouts/Default/preview.png" id="4_f5hts"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="5_5a633"]
 
-[sub_resource type="Image" id="Image_6uver"]
+[sub_resource type="Image" id="Image_c0kcs"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,8 +15,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ts500"]
-image = SubResource("Image_6uver")
+[sub_resource type="ImageTexture" id="ImageTexture_yeund"]
+image = SubResource("Image_c0kcs")
 
 [sub_resource type="Theme" id="Theme_l6tyr"]
 
@@ -82,7 +82,7 @@ text = "Styles"
 layout_mode = 2
 tooltip_text = "Each layout-style consist of a preset or custom scene with it's configurations. 
 You can use a specific layout by calling Dialogic.Styles.add_layout_style(@style_name) before Dialogic.start()."
-texture = SubResource("ImageTexture_ts500")
+texture = SubResource("ImageTexture_yeund")
 hint_text = "Each layout-style consist of a preset or custom scene with it's configurations. 
 You can use a specific layout by calling Dialogic.Styles.add_layout_style(@style_name) before Dialogic.start()."
 
@@ -93,35 +93,37 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add layout-style"
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 
 [node name="DuplicateButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Duplicate layout-style"
-icon = SubResource("ImageTexture_ts500")
+tooltip_text = "Duplicate style"
+icon = SubResource("ImageTexture_yeund")
 
 [node name="InheritButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Duplicate layout-style"
-icon = SubResource("ImageTexture_ts500")
+tooltip_text = "Inherit this style"
+icon = SubResource("ImageTexture_yeund")
 
 [node name="RemoveButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Remove layout-style"
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 
 [node name="StyleList" type="ItemList" parent="Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-item_count = 2
+item_count = 3
 item_0/text = "Default"
-item_0/icon = SubResource("ImageTexture_ts500")
-item_1/text = "SecondStyle"
-item_1/icon = SubResource("ImageTexture_ts500")
+item_0/icon = SubResource("ImageTexture_yeund")
+item_1/text = "Default SubStyle"
+item_1/icon = SubResource("ImageTexture_yeund")
+item_2/text = "SecondStyle"
+item_2/icon = SubResource("ImageTexture_yeund")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -130,7 +132,6 @@ size_flags_horizontal = 3
 [node name="HBox" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 theme = SubResource("Theme_l6tyr")
-theme_override_constants/separation = 0
 
 [node name="LayoutStyleName" type="LineEdit" parent="VBox/HBox"]
 unique_name_in_owner = true
@@ -139,16 +140,22 @@ theme_type_variation = &"DialogicTitle"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tixgs")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tixgs")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_tixgs")
-text = "Default"
+text = "Default SubStyle"
 expand_to_text_length = true
+
+[node name="TestStyleButton" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Play current timeline with this style"
+icon = SubResource("ImageTexture_yeund")
 
 [node name="MakeDefaultButton" type="Button" parent="VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-disabled = true
 toggle_mode = true
-text = "Is Default"
+text = "Make Default"
+icon = SubResource("ImageTexture_yeund")
 
 [node name="PanelContainer" type="PanelContainer" parent="VBox"]
 layout_mode = 2
@@ -170,7 +177,7 @@ layout_mode = 2
 [node name="Back" type="Button" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 flat = true
 
 [node name="Label" type="Label" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/HBox"]
@@ -203,7 +210,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search for a preset"
-right_icon = SubResource("ImageTexture_ts500")
+right_icon = SubResource("ImageTexture_yeund")
 
 [node name="Scroll" type="ScrollContainer" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
@@ -247,7 +254,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 flat = true
 
 [node name="VBoxLeft" type="VBoxContainer" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer"]
@@ -298,13 +305,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
 text = "Use"
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 
 [node name="Next" type="Button" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 flat = true
 
 [node name="ClosePreview" type="Button" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel"]
@@ -313,7 +320,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 flat = true
 
 [node name="StyleSettings" type="VBoxContainer" parent="VBox/PanelContainer"]
@@ -336,7 +343,12 @@ placeholder_text = "Nothing (Base Style)"
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicHintText"
-text = "InheritanceChain"
+text = "Default SubStyle<Default<SecondStyle"
+
+[node name="RealizeInheritance" type="Button" parent="VBox/PanelContainer/StyleSettings/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This will remove the inheritance while keeping the state the same, thus realizing previously inherited settings. "
 
 [node name="SectionTitle1" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings"]
 layout_mode = 2
@@ -349,7 +361,7 @@ text = "Layout (preset/scene)"
 [node name="HintTooltip" parent="VBox/PanelContainer/StyleSettings/SectionTitle1" instance=ExtResource("2_ut05b")]
 layout_mode = 2
 tooltip_text = "This can either be a preset or a custom scene. "
-texture = SubResource("ImageTexture_ts500")
+texture = SubResource("ImageTexture_yeund")
 hint_text = "This can either be a preset or a custom scene. "
 
 [node name="Layout" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings"]
@@ -365,6 +377,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_0nh8y")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+texture = ExtResource("4_f5hts")
 expand_mode = 3
 stretch_mode = 6
 
@@ -387,8 +400,10 @@ text = "Jowan Spooner"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
+tooltip_text = "This layout is determined by inheritance."
+disabled = true
 text = "Change"
-icon = SubResource("ImageTexture_ts500")
+icon = SubResource("ImageTexture_yeund")
 
 [node name="SectionTitle2" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings"]
 layout_mode = 2
@@ -401,7 +416,7 @@ text = "Configuration"
 [node name="HintTooltip" parent="VBox/PanelContainer/StyleSettings/SectionTitle2" instance=ExtResource("2_ut05b")]
 layout_mode = 2
 tooltip_text = "Here you can modify any exposed settings of the preset or scene."
-texture = SubResource("ImageTexture_ts500")
+texture = SubResource("ImageTexture_yeund")
 hint_text = "Here you can modify any exposed settings of the preset or scene."
 
 [node name="ExportsTabs" type="TabContainer" parent="VBox/PanelContainer/StyleSettings"]
@@ -423,33 +438,15 @@ horizontal_alignment = 2
 [connection signal="pressed" from="Panel/VBox/HBox/RemoveButton" to="." method="_on_remove_button_pressed"]
 [connection signal="focus_exited" from="VBox/HBox/LayoutStyleName" to="." method="_on_layout_style_name_focus_exited"]
 [connection signal="text_submitted" from="VBox/HBox/LayoutStyleName" to="." method="_on_layout_style_name_text_submitted"]
+[connection signal="pressed" from="VBox/HBox/TestStyleButton" to="." method="_on_test_style_button_pressed"]
 [connection signal="pressed" from="VBox/HBox/MakeDefaultButton" to="." method="_on_make_default_button_pressed"]
 [connection signal="pressed" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/HBox/Back" to="VBox/PanelContainer/LayoutSelection" method="_on_back_pressed"]
-[connection signal="focus_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" method="_on_focus_entered" flags=18]
-[connection signal="focus_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" method="_on_focus_exited" flags=18]
-[connection signal="gui_input" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" method="_on_gui_input" flags=18]
-[connection signal="mouse_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" method="_on_mouse_entered" flags=18]
-[connection signal="mouse_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll2/LayoutSuggestions/Margin" method="_on_mouse_exited" flags=18]
 [connection signal="text_changed" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/HBoxContainer/LayoutSearch" to="VBox/PanelContainer/LayoutSelection" method="_on_layout_search_text_changed"]
-[connection signal="focus_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" method="_on_focus_entered" flags=18]
-[connection signal="focus_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" method="_on_focus_exited" flags=18]
-[connection signal="gui_input" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" method="_on_gui_input" flags=18]
-[connection signal="mouse_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" method="_on_mouse_entered" flags=18]
-[connection signal="mouse_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/Margin" method="_on_mouse_exited" flags=18]
-[connection signal="focus_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" method="_on_focus_entered" flags=18]
-[connection signal="focus_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" method="_on_focus_exited" flags=18]
-[connection signal="gui_input" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" method="_on_gui_input" flags=18]
-[connection signal="mouse_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" method="_on_mouse_entered" flags=18]
-[connection signal="mouse_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64337" method="_on_mouse_exited" flags=18]
-[connection signal="focus_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" method="_on_focus_entered" flags=18]
-[connection signal="focus_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" method="_on_focus_exited" flags=18]
-[connection signal="gui_input" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" method="_on_gui_input" flags=18]
-[connection signal="mouse_entered" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" method="_on_mouse_entered" flags=18]
-[connection signal="mouse_exited" from="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" to="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer/Scroll/AllLayouts/@MarginContainer@64338" method="_on_mouse_exited" flags=18]
 [connection signal="gui_input" from="VBox/PanelContainer/LayoutSelection/LayoutPreview" to="VBox/PanelContainer/LayoutSelection" method="_on_layout_preview_gui_input"]
 [connection signal="pressed" from="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer/Previous" to="VBox/PanelContainer/LayoutSelection" method="_on_preview_previous_pressed"]
 [connection signal="pressed" from="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer/VBoxRight/ActivateLayoutButton" to="VBox/PanelContainer/LayoutSelection" method="_on_activate_layout_button_pressed"]
 [connection signal="pressed" from="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer/Next" to="VBox/PanelContainer/LayoutSelection" method="_on_preview_next_pressed"]
 [connection signal="pressed" from="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/ClosePreview" to="VBox/PanelContainer/LayoutSelection" method="_on_close_preview_pressed"]
 [connection signal="value_changed" from="VBox/PanelContainer/StyleSettings/HBoxContainer/InheritancePicker" to="." method="_on_inheritance_picker_value_changed"]
+[connection signal="pressed" from="VBox/PanelContainer/StyleSettings/HBoxContainer/RealizeInheritance" to="." method="_on_realize_inheritance_pressed"]
 [connection signal="pressed" from="VBox/PanelContainer/StyleSettings/Layout/Info/ChangeLayoutButton" to="." method="_on_change_layout_button_pressed"]

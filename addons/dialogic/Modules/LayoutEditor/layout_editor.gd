@@ -52,11 +52,15 @@ func _ready() -> void:
 	
 	%StyleList.item_selected.connect(_on_style_clicked)
 	
+	%TestStyleButton.icon = get_theme_icon("PlayCustom", "EditorIcons")
+	%MakeDefaultButton.icon = get_theme_icon("Favorites", "EditorIcons")
+	
 	%InheritancePicker.resource_icon = get_theme_icon("PopupMenu", "EditorIcons")
 	%InheritancePicker.get_suggestions_func = get_inheritance_suggestions
 	%InheritancePicker.force_string = true
 	%ChangeLayoutButton.icon = get_theme_icon("Loop", "EditorIcons")
 	
+	%RealizeInheritance.icon = get_theme_icon("Unlinked", "EditorIcons")
 	
 	load_style_list()
 
@@ -180,6 +184,15 @@ func _on_make_default_button_pressed():
 	load_style_list()
 
 
+func _on_test_style_button_pressed():
+	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
+	
+	# Save the current opened timeline
+	DialogicUtil.set_editor_setting('current_test_style', current_style)
+	
+	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
+	await get_tree().create_timer(3).timeout
+	DialogicUtil.set_editor_setting('current_test_style', '')
 
 ##				STYLE SETTINGS FUNCTIONALITY
 ################################################################################
@@ -210,7 +223,7 @@ func get_inheritance_suggestions(filter:String="") -> Dictionary:
 	var suggestions := {}
 	suggestions['Nothing (Base Style)'] = {'value':'', 'icon':get_theme_icon("GuiRadioUnchecked", "EditorIcons")}
 	for i in style_list:
-		if current_style in get_inheritance_list(i) or current_style == i:
+		if current_style in DialogicUtil.get_inheritance_style_list(i) or current_style == i:
 			continue
 		suggestions[i] = {'value':i, 'icon': get_theme_icon("PopupMenu", "EditorIcons")}
 	return suggestions
@@ -226,32 +239,27 @@ func set_inheritance(value:String) -> void:
 	var layout :String = style_list[current_style].get('layout', DialogicUtil.get_default_layout_scene())
 	%ChangeLayoutButton.disabled = !value.is_empty()
 	if !value.is_empty():
-		layout = get_inherited_layout()
+		%RealizeInheritance.show()
+		layout = DialogicUtil.get_inherited_style_layout(current_style)
 		%InheritanceChain.text = ""
-		for i in get_inheritance_list(current_style):
+		for i in DialogicUtil.get_inheritance_style_list(current_style):
 			%InheritanceChain.text += '<'+i
 		%InheritanceChain.text = %InheritanceChain.text.trim_prefix('<')
 		%ChangeLayoutButton.tooltip_text = "This layout is determined by inheritance."
 	else:
+		%RealizeInheritance.hide()
 		%InheritanceChain.text = ""
 		%ChangeLayoutButton.tooltip_text = "Choose a preset or custom scene"
 	set_layout(layout, true)
 	load_layout_scene_customization(layout, style_list[current_style].get('export_overrides', {}), DialogicUtil.get_inherited_style_overrides(style_list[current_style].get('inherits', '')))
 
 
-func get_inherited_layout(style_name:String="") -> String:
-	if style_name.is_empty(): style_name = current_style
-	return style_list[get_inheritance_list(style_name)[-1]].get('layout', '')
-
-
-func get_inheritance_list(style_name:String) -> Array:
-	if !style_name in style_list:
-		return []
-	var list := [style_name]
-	while !style_list[style_name].get('inherits', '').is_empty():
-		style_name = style_list[style_name].get('inherits', '')
-		list.append(style_name)
-	return list
+func _on_realize_inheritance_pressed():
+	style_list[current_style]['export_overrides'] = DialogicUtil.get_inherited_style_overrides(current_style)
+	style_list[current_style]['layout'] = DialogicUtil.get_inherited_style_layout(current_style)
+	style_list[current_style]['inherits'] = ""
+	save()
+	load_style(current_style)
 
 
 func set_layout(path:String, just_load:=false) -> void:
