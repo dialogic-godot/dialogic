@@ -26,6 +26,7 @@ func _on_textbox_hide():
 
 func _on_textbox_new_text():
 	Dialogic.Animation.start_animating()
+	%DialogicNode_DialogText.text = ""
 	play("new_text")
 	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
 		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)

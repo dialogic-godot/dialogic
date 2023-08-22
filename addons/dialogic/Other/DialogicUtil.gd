@@ -14,7 +14,7 @@ static func get_editor_scale() -> float:
 	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
 
 
-static func get_dialogic_plugin() -> Node:
+static func get_dialogic_plugin() -> EditorPlugin:
 	var tree: SceneTree = Engine.get_main_loop()
 	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
 		return tree.get_root().get_child(0).get_node('DialogicPlugin')
@@ -195,8 +195,25 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 	return array
 
 
-static func get_default_layout() -> String:
-	return DialogicUtil.get_module_path('DefaultStyles').path_join("Default/DialogicDefaultLayout.tscn")
+static func get_default_layout_scene() -> String:
+	return DialogicUtil.get_module_path('DefaultLayouts').path_join("Default/DialogicDefaultLayout.tscn")
+
+
+static func get_inherited_style_overrides(style_name:String) -> Dictionary:
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	if !style_name in styles_info:
+		return {}
+	
+	var inheritance := [styles_info[style_name].get('inherits', '')]
+	var info :Dictionary = styles_info[style_name].get('export_overrides', {}).duplicate(true)
+	
+	while !inheritance[-1].is_empty() and inheritance[-1] in styles_info:
+		info.merge(styles_info[inheritance[-1]].get('export_overrides', {}))
+		if styles_info[inheritance[-1]].get('inherits', '') in styles_info:
+			break
+		inheritance.append(styles_info[inheritance[-1]].get('inherits', ''))
+	
+	return info
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:

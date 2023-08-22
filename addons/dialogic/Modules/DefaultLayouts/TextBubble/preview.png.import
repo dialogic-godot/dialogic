@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ptlnkdsl67tf"
-path="res://.godot/imported/preview.png-1f03b89100d0ad1c91555207cc3d6207.ctex"
+uid="uid://bf4h16wsj1gc5"
+path="res://.godot/imported/preview.png-eeaa490d26e48ad801728ec99f8ec3c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Modules/DefaultStyles/Default/preview.png"
-dest_files=["res://.godot/imported/preview.png-1f03b89100d0ad1c91555207cc3d6207.ctex"]
+source_file="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/preview.png"
+dest_files=["res://.godot/imported/preview.png-eeaa490d26e48ad801728ec99f8ec3c5.ctex"]
 
 [params]
 

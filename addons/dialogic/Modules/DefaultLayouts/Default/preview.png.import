@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnc5unptt5uod"
-path="res://.godot/imported/preview.png-26e1db82aeba4ab35313659ee348c2e8.ctex"
+uid="uid://ptlnkdsl67tf"
+path="res://.godot/imported/preview.png-ea41e1d41c6a4826b683fe130a066387.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Modules/DefaultStyles/RPG_BoxPortrait/preview.png"
-dest_files=["res://.godot/imported/preview.png-26e1db82aeba4ab35313659ee348c2e8.ctex"]
+source_file="res://addons/dialogic/Modules/DefaultLayouts/Default/preview.png"
+dest_files=["res://.godot/imported/preview.png-ea41e1d41c6a4826b683fe130a066387.ctex"]
 
 [params]
 

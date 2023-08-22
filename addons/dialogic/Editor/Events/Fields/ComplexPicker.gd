@@ -16,6 +16,7 @@ var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
 @export var enable_pretty_name : bool = false
 @export var fit_text_length : bool = true
+var force_string := false
 
 var resource_icon : Texture = null:
 	get:
@@ -57,7 +58,7 @@ func set_value(value:Variant, text : String = '') -> void:
 
 
 func changed_to_empty() -> void:
-	if file_extension != "" && file_extension != ".dch":
+	if file_extension != "" and file_extension != ".dch" and !force_string:
 		emit_signal("value_changed", property_name, null)
 	else:
 		emit_signal("value_changed", property_name, "")

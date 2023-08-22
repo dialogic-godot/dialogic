@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://syki6k0e6aac"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultStyles/TextBubble/DialogicTextBubbleLayout.gd" id="1_502mo"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/DialogicTextBubbleLayout.gd" id="1_502mo"]
 
 [node name="TextBubbleHolder" type="CanvasLayer"]
 script = ExtResource("1_502mo")

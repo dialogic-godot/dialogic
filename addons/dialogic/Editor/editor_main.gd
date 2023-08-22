@@ -48,6 +48,8 @@ func update_theme_additions():
 	theme.set_type_variation('DialogicTitle', 'Label')
 	theme.set_font('font', 'DialogicTitle', get_theme_font("title", "EditorFonts"))
 	theme.set_color('font_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
+	theme.set_color('font_uneditable_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
+	theme.set_color('font_selected_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
 	theme.set_font_size('font_size', 'DialogicTitle', get_theme_font_size("doc_size", "EditorFonts"))
 	
 	theme.set_type_variation('DialogicSubTitle', 'Label')

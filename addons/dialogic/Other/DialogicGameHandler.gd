@@ -380,10 +380,14 @@ func find_timeline(path: String) -> String:
 ##						FOR END USER
 ################################################################################
 # Method to start a timeline AND ensure that a layout scene is present.
-# For argument info, checkout start_timeline() and add_layout_node()
+# For argument info, checkout start_timeline()
 # -> returns the layout node 
 func start(timeline:Variant, label:Variant="") -> Node:
-	var scene := add_layout_node()
+	var scene :Node= null
+	if has_subsystem('Style'):
+		scene = get_subsystem("Style").add_layout_style()
+	else:
+		scene = _add_layout_node()
 	Dialogic.clear(ClearFlags.KEEP_VARIABLES)
 	Dialogic.start_timeline(timeline, label)
 	return scene
@@ -391,11 +395,7 @@ func start(timeline:Variant, label:Variant="") -> Node:
 
 # Makes sure the layout scene is instanced and will show it if it was hidden.
 # The layout scene will always be added to the tree root. 
-# If you need a layout inside your game, instance it manually and use start_timeline() instead of start().
-func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
-	if ProjectSettings.get_setting('dialogic/layout/mode', 0) == 2:
-		return null
-
+func _add_layout_node(scene_path := "") -> Node:
 	var scene: Node = get_layout_node()
 
 	if (
@@ -416,22 +416,14 @@ func add_layout_node(scene_path := "", export_overrides := {}) -> Node:
 		if scene_path.is_empty():
 			scene_path = ProjectSettings.get_setting(
 						'dialogic/layout/layout_scene', 
-						DialogicUtil.get_default_layout())
+						DialogicUtil.get_default_layout_scene())
 
 		scene = load(scene_path).instantiate()
 		scene.set_meta('scene_path', scene_path)
 
 		get_parent().call_deferred("add_child", scene)
 		get_tree().set_meta('dialogic_layout_node', scene)
-
-	# apply custom export overrides everytime
-	if export_overrides.is_empty():
-		DialogicUtil.apply_scene_export_overrides(
-			scene, 
-			ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
-	else:
-		DialogicUtil.apply_scene_export_overrides(scene, export_overrides)
-
+	
 	return scene
 
 
