@@ -508,15 +508,16 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 			if character_node.get_meta('character') != speaker:
 				_remove_portrait(character_node)
 		
-		if speaker == null:
+		if speaker == null or speaker.portraits.is_empty():
 			continue
 		
 		if con.get_children().is_empty():
 			_create_character_node(speaker, con)
 		elif portrait.is_empty():
-			return
+			continue
 		
 		if portrait.is_empty(): portrait = speaker.default_portrait
+		
 		if con.portrait_prefix+portrait in speaker.portraits:
 			_change_portrait(con.get_child(0), con.portrait_prefix+portrait)
 		else:
@@ -524,7 +525,7 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 		
 		# if the character has no portraits _change_portrait won't actually add a child node
 		if con.get_child(0).get_child_count() == 0:
-			return
+			continue
 		
 		_change_portrait_mirror(con.get_child(0))
 
