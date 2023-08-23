@@ -52,10 +52,12 @@ func _ready() -> void:
 	
 	%StyleList.item_selected.connect(_on_style_clicked)
 	
+	
+	%EditNameButton.icon = get_theme_icon("Edit", "EditorIcons")
 	%TestStyleButton.icon = get_theme_icon("PlayCustom", "EditorIcons")
 	%MakeDefaultButton.icon = get_theme_icon("Favorites", "EditorIcons")
 	
-	%InheritancePicker.resource_icon = get_theme_icon("PopupMenu", "EditorIcons")
+	%InheritancePicker.resource_icon = get_theme_icon("Filesystem", "EditorIcons")
 	%InheritancePicker.get_suggestions_func = get_inheritance_suggestions
 	%InheritancePicker.force_string = true
 	%ChangeLayoutButton.icon = get_theme_icon("Loop", "EditorIcons")
@@ -79,7 +81,7 @@ func load_style_list() -> void:
 	for style_name in sorted_keys:
 		%StyleList.add_item(style_name, get_theme_icon("PopupMenu", "EditorIcons"))
 		if style_name == default_style:
-			%StyleList.set_item_icon_modulate(%StyleList.item_count-1, get_theme_color("property_color_z", "Editor"))
+			%StyleList.set_item_icon_modulate(%StyleList.item_count-1, get_theme_color("warning_color", "Editor"))
 		if style_name == latest:
 			%StyleList.select(%StyleList.item_count-1)
 			_on_style_clicked(%StyleList.item_count-1)
@@ -156,6 +158,11 @@ func _on_remove_button_pressed():
 	undo_redo.commit_action()
 
 
+func _on_edit_name_button_pressed():
+	%LayoutStyleName.grab_focus()
+	%LayoutStyleName.select_all()
+
+
 func _on_layout_style_name_text_submitted(new_text:String) -> void:
 	_on_layout_style_name_focus_exited()
 
@@ -169,7 +176,7 @@ func _on_layout_style_name_focus_exited():
 	if current_style == default_style:
 		default_style = new_name
 	for style in style_list:
-		if style_list.get('inherits', '') == current_style:
+		if style_list[style].get('inherits', '') == current_style:
 			style_list[style]['inherits'] = new_name
 	style_list[new_name] = style_list[current_style].duplicate(true)
 	style_list.erase(current_style)
@@ -202,10 +209,10 @@ func load_style(style_name:String) -> void:
 	%LayoutStyleName.text = style_name
 	
 	if current_style == default_style:
-		%MakeDefaultButton.text = "Is Default"
+		%MakeDefaultButton.tooltip_text = "Is Default"
 		%MakeDefaultButton.disabled = true
 	else:
-		%MakeDefaultButton.text = "Make Default"
+		%MakeDefaultButton.tooltip_text = "Make Default"
 		%MakeDefaultButton.disabled = false
 	
 	var info :Dictionary= style_list.get(style_name, {})
@@ -245,10 +252,11 @@ func set_inheritance(value:String) -> void:
 		for i in DialogicUtil.get_inheritance_style_list(current_style):
 			%InheritanceChain.text += '<'+i
 		%InheritanceChain.text = %InheritanceChain.text.trim_prefix('<')
+		%InheritanceChain.show()
 		%ChangeLayoutButton.tooltip_text = "This layout is determined by inheritance."
 	else:
 		%RealizeInheritance.hide()
-		%InheritanceChain.text = ""
+		%InheritanceChain.hide()
 		%ChangeLayoutButton.tooltip_text = "Choose a preset or custom scene"
 	set_layout(layout, true)
 	load_layout_scene_customization(layout, style_list[current_style].get('export_overrides', {}), DialogicUtil.get_inherited_style_overrides(style_list[current_style].get('inherits', '')))
@@ -262,7 +270,18 @@ func _on_realize_inheritance_pressed():
 	load_style(current_style)
 
 
-func set_layout(path:String, just_load:=false) -> void:
+func set_layout(path:String, just_load:=false,) -> void:
+	var inherited :bool = !style_list[current_style].get('inherits', '').is_empty() 
+	if inherited:
+		%SceneImage.custom_minimum_size = Vector2(0, 50)*DialogicUtil.get_editor_scale()
+		%SceneImage.modulate = Color(0.77083951234818, 0.77083945274353, 0.77083945274353)
+	else:
+		%SceneImage.modulate = Color.WHITE
+		%SceneImage.custom_minimum_size = Vector2(0, 100)*DialogicUtil.get_editor_scale()
+	%ChangeLayoutButton.visible = !inherited
+	%SceneAuthor.visible = !inherited
+	%InheritedIndicator.visible = inherited
+	
 	if path in preset_info:
 		%SceneName.text = preset_info[path].name
 		%SceneAuthor.text = preset_info[path].author
@@ -357,7 +376,7 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 			v_scroll.add_child(v_box, true)
 			var title_label := Label.new()
 			title_label.text = i['name']
-			title_label.add_theme_stylebox_override('normal', label_bg_style)
+			title_label.theme_type_variation = "DialogicSection"
 			title_label.size_flags_horizontal = SIZE_EXPAND_FILL
 			v_box.add_child(title_label, true)
 			current_grid = GridContainer.new()
@@ -479,4 +498,6 @@ func _on_export_string_enum_submitted(value:int, property_name:String, list:Pack
 
 func _on_export_vector_submitted(property_name:String, value:Vector2) -> void:
 	set_export_override(property_name, var_to_str(value))
+
+
 

@@ -72,6 +72,9 @@ func update_theme_additions():
 	dark_panel.bg_color = get_theme_color("dark_color_3", "Editor")
 	theme.set_stylebox('panel', 'DialogicPanelDarkA', dark_panel)
 	
+	var cornerless_panel := panel_style.duplicate()
+	cornerless_panel.corner_radius_top_left = 0
+	theme.set_stylebox('panel', 'DialogicPanelA_cornerless', cornerless_panel)
 	
 	
 	# panel used for example for portrait previews in character editor

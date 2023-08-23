@@ -15,7 +15,7 @@ func _ready():
 	%Back.icon = get_theme_icon("Back", "EditorIcons")
 	
 	
-	%LayoutPreviewPanel.self_modulate = get_theme_color("property_color_z", "Editor").lerp(get_theme_color("dark_color_2", "Editor"),0.8)
+	%LayoutPreviewPanel.self_modulate = get_theme_color("background", "Editor").lerp(get_theme_color("dark_color_2", "Editor"),0.8)
 	%LayoutAuthor.add_theme_font_size_override("font_size", get_theme_font_size("output_source_size", "EditorFonts"))
 	%LayoutDescription.add_theme_font_size_override("font_size", get_theme_font_size("output_source_size", "EditorFonts"))
 	%Previous.icon = get_theme_icon("Back", "EditorIcons")
