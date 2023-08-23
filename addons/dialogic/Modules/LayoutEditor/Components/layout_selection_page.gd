@@ -61,7 +61,7 @@ func load_layout_selection() -> void:
 
 func suggestion_removed(path):
 	for i in %LayoutSuggestions.get_children():
-		if i.get_meta('style', null) == path:
+		if i.has_meta('style') and i.get_meta('style', null) == path:
 			i.queue_free()
 	recently_used.erase(path)
 	DialogicUtil.set_editor_setting('recent_layouts', recently_used)

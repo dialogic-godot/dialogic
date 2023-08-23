@@ -63,6 +63,8 @@ func _ready() -> void:
 	%ChangeLayoutButton.icon = get_theme_icon("Loop", "EditorIcons")
 	
 	%RealizeInheritance.icon = get_theme_icon("Unlinked", "EditorIcons")
+	%ClearSettingsButton.icon = get_theme_icon("RotateLeft", "EditorIcons")
+	
 	
 	load_style_list()
 
@@ -92,6 +94,7 @@ func load_style_list() -> void:
 
 func _on_style_clicked(idx:int) -> void:
 	load_style(%StyleList.get_item_text(idx))
+	%RemoveButton.disabled = %StyleList.get_item_text(idx) == default_style
 
 
 func _get_new_name(base_name:String) -> String:
@@ -118,6 +121,10 @@ func add_style(style_name:String, style_info:={}) -> void:
 
 
 func remove_style(style_name:String) -> void:
+	for style in style_list:
+		if style_list[style].get('inherits', '') == style_name:
+			realize_style_inheritance(style)
+			push_warning('[Dialogic] Style "',style,'" had to be realized because it inherited "', style_name,'" which was deleted!')
 	style_list.erase(style_name)
 	save()
 	load_style_list()
@@ -262,12 +269,16 @@ func set_inheritance(value:String) -> void:
 	load_layout_scene_customization(layout, style_list[current_style].get('export_overrides', {}), DialogicUtil.get_inherited_style_overrides(style_list[current_style].get('inherits', '')))
 
 
-func _on_realize_inheritance_pressed():
-	style_list[current_style]['export_overrides'] = DialogicUtil.get_inherited_style_overrides(current_style)
-	style_list[current_style]['layout'] = DialogicUtil.get_inherited_style_layout(current_style)
-	style_list[current_style]['inherits'] = ""
+func _on_realize_inheritance_pressed() -> void:
+	realize_style_inheritance(current_layout)
 	save()
 	load_style(current_style)
+
+
+func realize_style_inheritance(style_name:String) -> void:
+	style_list[style_name]['export_overrides'] = DialogicUtil.get_inherited_style_overrides(style_name)
+	style_list[style_name]['layout'] = DialogicUtil.get_inherited_style_layout(style_name)
+	style_list[style_name]['inherits'] = ""
 
 
 func set_layout(path:String, just_load:=false,) -> void:
@@ -439,6 +450,12 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 	%ExportsTabs.set_tab_title(0, "General")
 
 
+func _on_clear_settings_button_pressed():
+	style_list[current_style]['export_overrides'] = {}
+	save()
+	load_style(current_style)
+
+
 func set_export_override(property_name:String, value:String = "") -> void:
 	var export_overrides:Dictionary = style_list[current_style].get('export_overrides', {})
 	if str_to_var(value) != customization_editor_info[property_name]['orig']:
@@ -498,6 +515,7 @@ func _on_export_string_enum_submitted(value:int, property_name:String, list:Pack
 
 func _on_export_vector_submitted(property_name:String, value:Vector2) -> void:
 	set_export_override(property_name, var_to_str(value))
+
 
 
 

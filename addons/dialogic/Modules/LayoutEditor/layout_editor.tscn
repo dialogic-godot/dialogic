@@ -486,12 +486,24 @@ tooltip_text = "Here you can modify any exposed settings of the preset or scene.
 texture = SubResource("ImageTexture_ir34r")
 hint_text = "Here you can modify any exposed settings of the preset or scene."
 
-[node name="ExportsTabs" type="TabContainer" parent="VBox/PanelContainer/StyleSettings"]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="VBox/PanelContainer/StyleSettings"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="ExportsTabs" type="TabContainer" parent="VBox/PanelContainer/StyleSettings/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_type_variation = &"DialogicPanelA_cornerless"
 theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_d7xby")
+
+[node name="ClearSettingsButton" type="Button" parent="VBox/PanelContainer/StyleSettings/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+tooltip_text = "Clears all settings from this style"
+text = "Clear All"
+flat = true
 
 [node name="Margin" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 10)
@@ -516,3 +528,4 @@ layout_mode = 2
 [connection signal="pressed" from="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer/Layout/Info/ChangeLayoutButton" to="." method="_on_change_layout_button_pressed"]
 [connection signal="value_changed" from="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer2/HBoxContainer/InheritancePicker" to="." method="_on_inheritance_picker_value_changed"]
 [connection signal="pressed" from="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer2/HBoxContainer/RealizeInheritance" to="." method="_on_realize_inheritance_pressed"]
+[connection signal="pressed" from="VBox/PanelContainer/StyleSettings/MarginContainer/ClearSettingsButton" to="." method="_on_clear_settings_button_pressed"]
