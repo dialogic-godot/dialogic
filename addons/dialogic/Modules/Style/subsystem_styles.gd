@@ -25,11 +25,8 @@ func add_layout_style(style_name:="") -> Node:
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style')
 	
-	
-	
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
 	var layout := Dialogic._add_layout_node(layout_path)
-	
 	
 	# apply export overrides, in case this isn't the exact same style
 	if !layout.has_meta('style') or !layout.get_meta('style', null) == style_name:

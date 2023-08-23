@@ -16,7 +16,7 @@ var style_name: String = ""
 ################################################################################
 
 func _execute() -> void:
-	dialogic.add_layout_style(style_name)
+	dialogic.Styles.add_layout_style(style_name)
 	# base style isn't overridden by character styles
 	# this means after a charcter style, we can change back to the base style
 	dialogic.current_state_info['base_style'] = style_name

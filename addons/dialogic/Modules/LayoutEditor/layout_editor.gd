@@ -301,9 +301,11 @@ func set_layout(path:String, just_load:=false,) -> void:
 		%SceneName.text = path.get_file().trim_suffix('.'+path.get_extension())
 		%SceneAuthor.text = "Custom Scene"
 		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_previewer().queue_resource_preview(path, self, 'set_scene_preview', null)
+	
 	if !just_load and path != current_layout:
 		load_layout_scene_customization(path)
 		style_list[current_style]['layout'] = path
+		save()
 	current_layout = path
 
 
