@@ -169,33 +169,35 @@ func to_text() -> String:
 	if action != Actions.LEAVE and (action != Actions.UPDATE or set_position):
 		result_string += " "+str(position)
 	
-	if animation_name != "" or z_index != default_values.get('z_index', 0) or mirrored != default_values.get('mirrored', false) or position_move_time != default_values.get('position_move_time', 0) or extra_data != default_values.get('extra_data', ""):
-		result_string += " ["
-		if animation_name:
-			result_string += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
+	var shortcode := "["
+	if animation_name:
+		shortcode += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
+	
+		if animation_length != default_values.get('animation_length', 0.5):
+			shortcode += ' length="'+str(animation_length)+'"'
 		
-			if animation_length != 0.5:
-				result_string += ' length="'+str(animation_length)+'"'
+		if animation_wait != default_values.get('animation_wait', false):
+			shortcode += ' wait="'+str(animation_wait)+'"'
 			
-			if animation_wait:
-				result_string += ' wait="'+str(animation_wait)+'"'
-				
-			if animation_repeats != 1:
-				result_string += ' repeat="'+str(animation_repeats)+'"'
+		if animation_repeats != default_values.get('animation_repeats', 1) and action == Actions.UPDATE:
+			shortcode += ' repeat="'+str(animation_repeats)+'"'
+	
+	if z_index != default_values.get('z_index', 0) or (action == Actions.UPDATE and set_z_index):
+		shortcode += ' z_index="' + str(z_index) + '"'
 		
-		if z_index != 0 and (action != Actions.UPDATE or set_z_index):
-			result_string += ' z_index="' + str(z_index) + '"'
-			
-		if mirrored and (action != Actions.UPDATE or set_mirrored):
-			result_string += ' mirrored="' + str(mirrored) + '"'
-		
-		if position_move_time != 0:
-			result_string += ' move_time="' + str(position_move_time) + '"'
-		
-		if extra_data != "":
-			result_string += ' extra_data="' + extra_data + '"'
-			
-		result_string += "]"
+	if mirrored != default_values.get('mirrored', false) or (action == Actions.UPDATE and set_mirrored):
+		shortcode += ' mirrored="' + str(mirrored) + '"'
+	
+	if position_move_time != default_values.get('position_move_time', 0) and action == Actions.UPDATE and set_position:
+		shortcode += ' move_time="' + str(position_move_time) + '"'
+	
+	if extra_data != "":
+		shortcode += ' extra_data="' + extra_data + '"'
+	
+	shortcode += "]"
+	
+	if shortcode != "[]":
+		result_string += " "+shortcode
 	return result_string
 
 
@@ -307,8 +309,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"position" 		: {"property": "position", 						"default": 1},
 		
 #		"animation_name"	: {"property": "animation_name", 			"default": ""},
-#		"animation_length"	: {"property": "animation_length", 			"default": 0.5},
-#		"animation_wait" 	: {"property": "animation_wait", 			"default": false},
+		"animation_length"	: {"property": "animation_length", 			"default": 0.5},
+		"animation_wait" 	: {"property": "animation_wait", 			"default": false},
 		"animation_repeats"	: {"property": "animation_repeats", 		"default": 1},
 		
 		"z_index" 		: {"property": "z_index", 						"default": 0},
