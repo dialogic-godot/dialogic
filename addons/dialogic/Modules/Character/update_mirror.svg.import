@@ -2,17 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfi7fhfc4dbc3"
-path="res://.godot/imported/portrait.svg-7d29c7cfe3e086d65dce33c3d66c48cd.ctex"
+uid="uid://c735ss4h37y8i"
+path="res://.godot/imported/update_mirror.svg-d6fa4832a7758cad02a7f32282433230.ctex"
 metadata={
-"has_editor_variant": true,
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Editor/Images/Resources/portrait.svg"
-dest_files=["res://.godot/imported/portrait.svg-7d29c7cfe3e086d65dce33c3d66c48cd.ctex"]
+source_file="res://addons/dialogic/Modules/Character/update_mirror.svg"
+dest_files=["res://.godot/imported/update_mirror.svg-d6fa4832a7758cad02a7f32282433230.ctex"]
 
 [params]
 
@@ -34,5 +33,5 @@ process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
 svg/scale=1.0
-editor/scale_with_editor_scale=true
-editor/convert_colors_with_editor_theme=true
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
