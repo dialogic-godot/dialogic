@@ -23,8 +23,8 @@ func _on_textbox_show():
 		return
 	play('RESET')
 	Dialogic.Animation.start_animating()
+	%DialogTextPanel.get_parent().modulate = Color.TRANSPARENT
 	%DialogicNode_DialogText.text = ""
-	get_node("../DialogTextAnimationParent").modulate = Color.TRANSPARENT
 	match animation_in:
 		AnimationsIn.POP_IN:
 			play("textbox_pop")

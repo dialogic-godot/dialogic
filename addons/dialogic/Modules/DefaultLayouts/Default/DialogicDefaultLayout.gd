@@ -48,6 +48,9 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export_subgroup('Portraits')
 @export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FIT_SCALE_HEIGHT
 
+@export_subgroup("Indicators")
+@export var autoadvance_progressbar := true
+
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides():
@@ -114,3 +117,6 @@ func _apply_export_overrides():
 	## PORTRAIT SETTINGS
 	for child in %Portraits.get_children():
 		child.size_mode = portrait_size_mode
+	
+	## OTHER
+	%AutoAdvanceProgressbar.enabled = autoadvance_progressbar

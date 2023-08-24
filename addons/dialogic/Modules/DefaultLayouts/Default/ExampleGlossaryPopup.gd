@@ -2,6 +2,7 @@ extends Control
 
 func _ready() -> void:
 	hide()
+	Dialogic.Text.animation_textbox_hide.connect(hide)
 
 func _process(delta) -> void:
 	if visible:
