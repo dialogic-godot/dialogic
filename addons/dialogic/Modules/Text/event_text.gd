@@ -50,11 +50,11 @@ func _execute() -> void:
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style 
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
-			dialogic.Styles.change_style(dialogic.current_state_info.get('base_style', 'Default'))
+			dialogic.Styles.add_layout_style(dialogic.current_state_info.get('base_style', 'Default'))
 	
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
-			dialogic.Styles.change_style(character.custom_info.style)
+			dialogic.Styles.add_layout_style(character.custom_info.style)
 		
 		
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
@@ -72,7 +72,6 @@ func _execute() -> void:
 	else:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
-	
 	
 	var final_text: String = dialogic.Text.parse_text(get_property_translated('text'))
 	dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})

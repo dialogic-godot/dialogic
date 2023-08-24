@@ -50,7 +50,7 @@ func _ready():
 	
 	$Example/ExamplePoint.position = $Example.get_viewport_rect().size/2
 	
-	fallback_bubble = preload("res://addons/dialogic/Modules/DefaultStyles/TextBubble/TextBubble.tscn").instantiate()
+	fallback_bubble = preload("res://addons/dialogic/Modules/DefaultLayouts/TextBubble/TextBubble.tscn").instantiate()
 	fallback_bubble.speaker_node = $Example/ExamplePoint
 	fallback_bubble.name = "Fallback Bubble"
 	bubble_apply_overrides(fallback_bubble)
@@ -58,7 +58,7 @@ func _ready():
 
 
 func register_character(character:DialogicCharacter, node:Node2D):
-	var new_bubble := preload("res://addons/dialogic/Modules/DefaultStyles/TextBubble/TextBubble.tscn").instantiate()
+	var new_bubble := preload("res://addons/dialogic/Modules/DefaultLayouts/TextBubble/TextBubble.tscn").instantiate()
 	new_bubble.speaker_node = node
 	new_bubble.character = character
 	new_bubble.name = character.resource_path.get_file().trim_suffix("."+character.resource_path.get_extension()) + "Bubble"

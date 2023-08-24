@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://fgplvp0f3giu"]
+[gd_scene load_steps=3 format=3 uid="uid://fgplvp0f3giu"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Style/character_settings_style.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="2_a46q0"]
 
 [node name="Style" type="VBoxContainer"]
 offset_right = 280.0
@@ -15,11 +16,9 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Style:"
 
-[node name="StyleName" type="LineEdit" parent="Style"]
+[node name="StyleName" parent="Style" instance=ExtResource("2_a46q0")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
 
 [node name="InfoLabel" type="Label" parent="."]
 layout_mode = 2
