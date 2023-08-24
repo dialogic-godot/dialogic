@@ -181,7 +181,7 @@ func hide_text_boxes(instant:=false) -> void:
 		if text_node.textbox_root.visible and !emitted:
 			textbox_visibility_changed.emit(false)
 			emitted = true
-		text_node.textbox_root.visible = false
+		text_node.textbox_root.hide()
 
 
 func is_textbox_visible() -> bool:
@@ -194,13 +194,13 @@ func show_text_boxes(instant:=false) -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if !text_node.textbox_root.visible and !emitted:
 			animation_textbox_show.emit()
-			text_node.textbox_root.set_deferred('visible', true)
+			text_node.textbox_root.show()
 			if Dialogic.Animation.is_animating():
 				await Dialogic.Animation.finished
 			textbox_visibility_changed.emit(true)
 			emitted = true
 		else:
-			text_node.textbox_root.visible = true
+			text_node.textbox_root.show()
 
 
 func show_next_indicators(question=false, autoadvance=false) -> void:

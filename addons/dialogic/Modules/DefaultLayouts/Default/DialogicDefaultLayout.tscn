@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
@@ -27,19 +27,19 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DialogTextAnimationParent:position")
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(576, 648)]
+"values": [Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DialogTextAnimationParent:rotation")
+tracks/1/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -51,7 +51,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("DialogTextAnimationParent:scale")
+tracks/2/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -63,7 +63,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("DialogTextAnimationParent:modulate")
+tracks/3/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -75,7 +75,7 @@ tracks/3/keys = {
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("%DialogTextPanel:rotation")
+tracks/4/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -90,7 +90,7 @@ length = 0.4
 tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%DialogicNode_DialogText")
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -104,7 +104,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("%DialogTextPanel:rotation")
+tracks/1/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -113,25 +113,77 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4)
 }
 
-[sub_resource type="Animation" id="Animation_htbgc"]
-resource_name = "text_box_reveal"
-length = 0.3
+[sub_resource type="Animation" id="Animation_g6k55"]
+resource_name = "textbox_fade_up"
+length = 0.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DialogTextAnimationParent:position")
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3),
+"times": PackedFloat32Array(0, 0.3, 0.7),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(577, 700), Vector2(582, 647), Vector2(576, 648)]
+"values": [Vector2(0, 50), Vector2(0, 19.6793), Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DialogTextAnimationParent:rotation")
+tracks/1/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_htbgc"]
+resource_name = "textbox_pop"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -143,7 +195,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("DialogTextAnimationParent:scale")
+tracks/2/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:scale")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -155,7 +207,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("DialogTextAnimationParent:modulate")
+tracks/3/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -169,7 +221,8 @@ tracks/3/keys = {
 _data = {
 "RESET": SubResource("Animation_au0a2"),
 "new_text": SubResource("Animation_6kbwc"),
-"text_box_reveal": SubResource("Animation_htbgc")
+"textbox_fade_up": SubResource("Animation_g6k55"),
+"textbox_pop": SubResource("Animation_htbgc")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3vpc"]
@@ -213,7 +266,11 @@ expand_margin_bottom = 5.0
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
+box_animation_in = 1
+box_animation_out = 1
+box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+autoadvance_progressbar = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -275,7 +332,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_dbhei")
 position_index = 3
-mirrored = true
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits/Portraits"]
@@ -289,7 +345,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_dbhei")
 position_index = 4
-mirrored = true
 metadata/_edit_use_anchors_ = true
 
 [node name="DefaultStyle" type="Control" parent="."]
@@ -302,6 +357,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Animations" type="AnimationPlayer" parent="DefaultStyle"]
+unique_name_in_owner = true
 autoplay = "RESET"
 libraries = {
 "": SubResource("AnimationLibrary_c14kh")
@@ -360,7 +416,7 @@ sound_pressed = ExtResource("14")
 sound_hover = ExtResource("11")
 sound_focus = ExtResource("13")
 
-[node name="DialogTextAnimationParent" type="Control" parent="DefaultStyle"]
+[node name="DialogicTextAnchor" type="Control" parent="DefaultStyle"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -370,7 +426,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle/DialogTextAnimationParent"]
+[node name="DialogTextAnimationParent" type="Control" parent="DefaultStyle/DialogicTextAnchor"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 custom_minimum_size = Vector2(500, 110)
@@ -390,7 +456,7 @@ pivot_offset = Vector2(275, 60)
 theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
@@ -404,11 +470,11 @@ visible_characters_behavior = 1
 script = ExtResource("2")
 textbox_root = NodePath("..")
 
-[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText"]
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText"]
 script = ExtResource("10")
 play_every_character = 0
 
-[node name="NextIndicator" type="Control" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
+[node name="NextIndicator" type="Control" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -417,7 +483,8 @@ script = ExtResource("20_ljcq2")
 show_on_questions = true
 metadata/_edit_layout_mode = 1
 
-[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel"]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.188235)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
@@ -428,11 +495,11 @@ value = 0.5
 show_percentage = false
 script = ExtResource("15_ptoy3")
 
-[node name="NameLabelHolder" type="Control" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel"]
+[node name="NameLabelHolder" type="Control" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder"]
+[node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 layout_mode = 1
@@ -446,7 +513,7 @@ metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 metadata/_edit_group_ = true
 
-[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder/NameLabelPanel"]
+[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder/NameLabelPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -476,7 +543,7 @@ metadata/_edit_layout_mode = 1
 
 [node name="TextInputPanel" type="PanelContainer" parent="DefaultStyle/DialogicNode_TextInput"]
 unique_name_in_owner = true
-self_modulate = Color(0.360784, 0.0941176, 0.168627, 1)
+self_modulate = Color(0, 0, 0, 0.780392)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -571,5 +638,5 @@ history_font_bold = ExtResource("24_aa4pl")
 history_font_italics = ExtResource("25_wt3bc")
 metadata/_edit_lock_ = true
 
-[connection signal="meta_hover_ended" from="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
-[connection signal="meta_hover_started" from="DefaultStyle/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]
+[connection signal="meta_hover_ended" from="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
+[connection signal="meta_hover_started" from="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]

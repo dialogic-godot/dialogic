@@ -44,7 +44,9 @@ func _execute() -> void:
 			if inline:
 				dialogic.text_signal.connect(_call_on_signal, CONNECT_PERSIST)
 			elif wait:
+				dialogic.current_state = dialogic.States.WAITING
 				await n.callv(method, arguments)
+				dialogic.current_state = dialogic.States.IDLE
 			else:
 				n.callv(method, arguments)
 	else:

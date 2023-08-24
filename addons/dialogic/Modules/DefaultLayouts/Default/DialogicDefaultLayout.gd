@@ -3,6 +3,12 @@ extends CanvasLayer
 
 enum Alignments {LEFT, CENTER, RIGHT}
 
+# Careful: Sync these with the ones in the %Animation script!
+enum AnimationsIn {NONE, POP_IN, FADE_UP}
+enum AnimationsOut {NONE, POP_OUT, FADE_DOWN}
+enum AnimationsNewText {NONE, WIGGLE}
+
+
 @export_group("Main")
 @export_subgroup("Text")
 @export var text_alignment :Alignments= Alignments.LEFT
@@ -16,6 +22,9 @@ enum Alignments {LEFT, CENTER, RIGHT}
 @export_subgroup("Box")
 @export var box_modulate : Color = Color(0.00784313771874, 0.00784313771874, 0.00784313771874, 0.84313726425171)
 @export var box_size : Vector2 = Vector2(550, 110)
+@export var box_animation_in := AnimationsIn.FADE_UP
+@export var box_animation_out := AnimationsOut.FADE_DOWN
+@export var box_animation_new_text := AnimationsNewText.NONE
 
 @export_subgroup("Name Label")
 @export var name_label_alignment := Alignments.LEFT
@@ -38,6 +47,9 @@ enum Alignments {LEFT, CENTER, RIGHT}
 
 @export_subgroup('Portraits')
 @export var portrait_size_mode := DialogicNode_PortraitContainer.SizeModes.FIT_SCALE_HEIGHT
+
+@export_subgroup("Indicators")
+@export var autoadvance_progressbar := true
 
 
 ## Called by dialogic whenever export overrides might change
@@ -69,6 +81,12 @@ func _apply_export_overrides():
 	%DialogTextPanel.custom_minimum_size = box_size
 	%TextInputPanel.self_modulate = box_modulate
 	
+	## BOX ANIMATIONS
+	%Animations.animation_in = box_animation_in
+	%Animations.animation_out = box_animation_out
+	%Animations.animation_new_text = box_animation_new_text
+	
+	
 	## NAME LABEL SETTINGS
 	%DialogicNode_NameLabel.add_theme_font_size_override("font_size", name_label_font_size)
 	
@@ -99,3 +117,6 @@ func _apply_export_overrides():
 	## PORTRAIT SETTINGS
 	for child in %Portraits.get_children():
 		child.size_mode = portrait_size_mode
+	
+	## OTHER
+	%AutoAdvanceProgressbar.enabled = autoadvance_progressbar
