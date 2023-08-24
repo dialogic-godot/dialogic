@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://iypxcctv080u"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/BoolButton.gd" id="1_5iob7"]
+
+[node name="Bool" type="Button"]
+toggle_mode = true
+flat = true
+script = ExtResource("1_5iob7")

@@ -174,8 +174,15 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
 			editor_node.placeholder = p.display_info.get('placeholder', '')
 		elif p.dialogic_type == resource.ValueType.BOOL:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
-		
+			if p.display_info.has('icon') or p.display_info.has('editor_icon'):
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/BoolButton.tscn").instantiate()
+				if p.display_info.has('editor_icon'):
+					editor_node.icon = callv('get_theme_icon', p.display_info.editor_icon)
+				else:
+					editor_node.icon = p.display_info.get('icon', null)
+			else:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
+			editor_node.tooltip_text = p.display_info.get('tooltip', "")
 		elif p.dialogic_type == resource.ValueType.FILE:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
 			editor_node.file_filter = p.display_info.get('file_filter', '')

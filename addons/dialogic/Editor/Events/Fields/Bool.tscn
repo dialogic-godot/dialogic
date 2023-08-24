@@ -3,4 +3,6 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Bool.gd" id="1"]
 
 [node name="Bool" type="CheckButton"]
+offset_right = 44.0
+offset_bottom = 24.0
 script = ExtResource("1")
