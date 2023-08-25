@@ -21,9 +21,9 @@ func load_game_state():
 ####################################################################################################
 
 func add_layout_style(style_name:="") -> Node:
-	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty() or !style_name in styles_info:
-		style_name = ProjectSettings.get_setting('dialogic/layout/default_style')
+		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
 	
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
 	var layout := Dialogic._add_layout_node(layout_path)
