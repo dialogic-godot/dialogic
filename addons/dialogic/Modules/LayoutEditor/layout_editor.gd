@@ -339,114 +339,114 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 		var pck_scn := load(custom_scene_path)
 		if pck_scn:
 			scene = pck_scn.instantiate()
-	if !scene:
-		return
 	
-	if own_overrides.is_empty():
-		own_overrides = style_list[current_style].get('export_overrides', {})
+	if scene and scene.script:
+		if own_overrides.is_empty():
+			own_overrides = style_list[current_style].get('export_overrides', {})
 
-	var current_grid :GridContainer
-	var current_hbox :HBoxContainer
+		var current_grid :GridContainer
+		var current_hbox :HBoxContainer
 
-	var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
-	label_bg_style.content_margin_left = 5
-	label_bg_style.content_margin_right = 5
-	label_bg_style.content_margin_top = 5
-	
-	
-	var current_group_name := ""
-	customization_editor_info = {}
-	for i in scene.script.get_script_property_list():
-		if i['usage'] & PROPERTY_USAGE_CATEGORY:
-			continue
+		var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
+		label_bg_style.content_margin_left = 5
+		label_bg_style.content_margin_right = 5
+		label_bg_style.content_margin_top = 5
 		
-		if i['usage'] & PROPERTY_USAGE_GROUP or current_hbox == null:
-			var main_scroll = ScrollContainer.new()
-			main_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-			current_hbox = HBoxContainer.new()
-			current_hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			current_hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			main_scroll.add_child(current_hbox, true)
-			main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			main_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			%ExportsTabs.add_child(main_scroll, true)
-			current_grid = null
-			if i['usage'] & PROPERTY_USAGE_GROUP:
-				%ExportsTabs.set_tab_title(main_scroll.get_index(), i['name'])
+		
+		var current_group_name := ""
+		customization_editor_info = {}
+		for i in scene.script.get_script_property_list():
+			if i['usage'] & PROPERTY_USAGE_CATEGORY:
 				continue
-			else:
-				%ExportsTabs.set_tab_title(main_scroll.get_index(), 'General')
-
-		if i['usage'] & PROPERTY_USAGE_SUBGROUP:
-			var v_scroll := ScrollContainer.new()
-			v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-			v_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			if current_hbox.get_child_count():
-				current_hbox.add_child(VSeparator.new())
-			current_hbox.add_child(v_scroll, true)
-			var v_box := VBoxContainer.new()
-			v_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			v_scroll.add_child(v_box, true)
-			var title_label := Label.new()
-			title_label.text = i['name']
-			title_label.theme_type_variation = "DialogicSection"
-			title_label.size_flags_horizontal = SIZE_EXPAND_FILL
-			v_box.add_child(title_label, true)
-			current_grid = GridContainer.new()
-			current_grid.columns = 3
-			v_box.add_child(current_grid, true)
-			current_group_name = i['name'].to_snake_case()
-
-		if current_grid == null:
-			var v_scroll := ScrollContainer.new()
-			v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-			current_hbox.add_child(v_scroll, true)
-			current_grid = GridContainer.new()
-			current_grid.columns = 3
-			v_scroll.add_child(current_grid, true)
-
-		if i['usage'] & PROPERTY_USAGE_EDITOR:
-			var label := Label.new()
-			label.text = str(i['name'].trim_prefix(current_group_name)).capitalize()
-			current_grid.add_child(label, true)
-
-			var scene_value = scene.get(i['name'])
-			customization_editor_info[i['name']] = {}
 			
-			if i['name'] in inherited_overrides:
-				customization_editor_info[i['name']]['orig'] = str_to_var(inherited_overrides.get(i['name']))
-			else:
-				customization_editor_info[i['name']]['orig'] = scene_value
-			
-			var current_value :Variant
-			if i['name'] in own_overrides:
-				current_value = str_to_var(own_overrides.get(i['name']))
-			else:
-				current_value = customization_editor_info[i['name']]['orig']
-			
-			var input :Node = DialogicUtil.setup_script_property_edit_node(
-				i, current_value,
-				{'bool':_on_export_bool_submitted, 'color':_on_export_color_submitted, 'enum':_on_export_int_enum_submitted,
-				'int':_on_export_number_submitted, 'float':_on_export_number_submitted, 'file':_on_export_file_submitted,
-				'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted, 'vector2':_on_export_vector_submitted})
+			if i['usage'] & PROPERTY_USAGE_GROUP or current_hbox == null:
+				var main_scroll = ScrollContainer.new()
+				main_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+				current_hbox = HBoxContainer.new()
+				current_hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				current_hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				main_scroll.add_child(current_hbox, true)
+				main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				main_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				%ExportsTabs.add_child(main_scroll, true)
+				current_grid = null
+				if i['usage'] & PROPERTY_USAGE_GROUP:
+					%ExportsTabs.set_tab_title(main_scroll.get_index(), i['name'])
+					continue
+				else:
+					%ExportsTabs.set_tab_title(main_scroll.get_index(), 'General')
 
-			input.size_flags_horizontal = SIZE_EXPAND_FILL
-			customization_editor_info[i['name']]['node'] = input
+			if i['usage'] & PROPERTY_USAGE_SUBGROUP:
+				var v_scroll := ScrollContainer.new()
+				v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+				v_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				if current_hbox.get_child_count():
+					current_hbox.add_child(VSeparator.new())
+				current_hbox.add_child(v_scroll, true)
+				var v_box := VBoxContainer.new()
+				v_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				v_scroll.add_child(v_box, true)
+				var title_label := Label.new()
+				title_label.text = i['name']
+				title_label.theme_type_variation = "DialogicSection"
+				title_label.size_flags_horizontal = SIZE_EXPAND_FILL
+				v_box.add_child(title_label, true)
+				current_grid = GridContainer.new()
+				current_grid.columns = 3
+				v_box.add_child(current_grid, true)
+				current_group_name = i['name'].to_snake_case()
 
-			var reset := Button.new()
-			reset.flat = true
-			reset.icon = get_theme_icon("Reload", "EditorIcons")
-			reset.tooltip_text = "Remove customization"
-			customization_editor_info[i['name']]['reset'] = reset
-			reset.disabled = current_value == customization_editor_info[i['name']]['orig']
-			current_grid.add_child(reset)
-			reset.pressed.connect(_on_export_override_reset.bind(i['name']))
-			current_grid.add_child(input)
+			if current_grid == null:
+				var v_scroll := ScrollContainer.new()
+				v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+				current_hbox.add_child(v_scroll, true)
+				current_grid = GridContainer.new()
+				current_grid.columns = 3
+				v_scroll.add_child(current_grid, true)
+
+			if i['usage'] & PROPERTY_USAGE_EDITOR:
+				var label := Label.new()
+				label.text = str(i['name'].trim_prefix(current_group_name)).capitalize()
+				current_grid.add_child(label, true)
+
+				var scene_value = scene.get(i['name'])
+				customization_editor_info[i['name']] = {}
+				
+				if i['name'] in inherited_overrides:
+					customization_editor_info[i['name']]['orig'] = str_to_var(inherited_overrides.get(i['name']))
+				else:
+					customization_editor_info[i['name']]['orig'] = scene_value
+				
+				var current_value :Variant
+				if i['name'] in own_overrides:
+					current_value = str_to_var(own_overrides.get(i['name']))
+				else:
+					current_value = customization_editor_info[i['name']]['orig']
+				
+				var input :Node = DialogicUtil.setup_script_property_edit_node(
+					i, current_value,
+					{'bool':_on_export_bool_submitted, 'color':_on_export_color_submitted, 'enum':_on_export_int_enum_submitted,
+					'int':_on_export_number_submitted, 'float':_on_export_number_submitted, 'file':_on_export_file_submitted,
+					'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted, 'vector2':_on_export_vector_submitted})
+
+				input.size_flags_horizontal = SIZE_EXPAND_FILL
+				customization_editor_info[i['name']]['node'] = input
+
+				var reset := Button.new()
+				reset.flat = true
+				reset.icon = get_theme_icon("Reload", "EditorIcons")
+				reset.tooltip_text = "Remove customization"
+				customization_editor_info[i['name']]['reset'] = reset
+				reset.disabled = current_value == customization_editor_info[i['name']]['orig']
+				current_grid.add_child(reset)
+				reset.pressed.connect(_on_export_override_reset.bind(i['name']))
+				current_grid.add_child(input)
+	
 	await get_tree().process_frame
 	if %ExportsTabs.get_child_count() == 0:
 		var note := Label.new()
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		note.text = "This layout has no exposed settings.\n\nIf this is a custom scene make sure to have the root script in @tool mode if you want @exported variables to show up here."
+		note.text = "This layout has no exposed settings.\n\nIf this is a custom scene and you want to add settings, make sure to have a root script in @tool mode if you want @exported variables to show up here."
 		note.theme_type_variation = 'DialogicHintText2'
 		%ExportsTabs.add_child(note)
 	%ExportsTabs.set_tab_title(0, "General")
