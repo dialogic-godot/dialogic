@@ -389,6 +389,8 @@ func start(timeline:Variant, label:Variant="") -> Node:
 			scene = get_subsystem("Styles").add_layout_style()
 		else:
 			scene = _add_layout_node()
+	else:
+		scene = get_layout_node()
 	Dialogic.clear(ClearFlags.KEEP_VARIABLES)
 	Dialogic.start_timeline(timeline, label)
 	return scene
