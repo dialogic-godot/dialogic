@@ -19,7 +19,7 @@ func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 
 
 func get_style_suggestions(filter:String="") -> Dictionary:
-	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	var suggestions := {}
 	for i in styles:
 		suggestions[i] = {'value': i, 'editor_icon': ["PopupMenu", "EditorIcons"]}

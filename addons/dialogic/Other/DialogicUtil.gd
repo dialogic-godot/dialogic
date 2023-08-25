@@ -200,7 +200,7 @@ static func get_default_layout_scene() -> String:
 
 
 static func get_inherited_style_overrides(style_name:String) -> Dictionary:
-	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if !style_name in styles_info:
 		return {}
 	
@@ -217,13 +217,13 @@ static func get_inherited_style_overrides(style_name:String) -> Dictionary:
 
 
 static func get_inherited_style_layout(style_name:String="") -> String:
-	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty(): return get_default_layout_scene()
 	return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
 
 
 static func get_inheritance_style_list(style_name:String) -> Array:
-	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if !style_name in style_list:
 		return []
 	var list := [style_name]

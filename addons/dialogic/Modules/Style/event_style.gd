@@ -61,7 +61,7 @@ func build_event_editor():
 
 
 func get_style_suggestions(filter:String="") -> Dictionary:
-	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {})
+	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	var suggestions := {}
 	suggestions['<Default Style>'] = {'value':'', 'editor_icon':["MenuBar", "EditorIcons"]}
 	for i in styles:
