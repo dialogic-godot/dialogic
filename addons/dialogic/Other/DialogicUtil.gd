@@ -235,6 +235,8 @@ static func get_inheritance_style_list(style_name:String) -> Array:
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
 	var default_info := get_scene_export_defaults(node)
+	if !node.script:
+		return
 	var property_info :Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
@@ -247,13 +249,15 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:
+	if !node.script:
+		return {}
+	
 	if Engine.get_main_loop().has_meta('dialogic_scene_export_defaults') and \
 			node.script.resource_path in Engine.get_main_loop().get_meta('dialogic_scene_export_defaults'):
 		return Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path]
 	
 	if !Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
-	
 	var defaults := {}
 	var property_info :Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
