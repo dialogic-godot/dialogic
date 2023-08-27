@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ptlnkdsl67tf" path="res://addons/dialogic/Modules/DefaultLayouts/Default/preview.png" id="4_f5hts"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="5_5a633"]
 
-[sub_resource type="Image" id="Image_4wggl"]
+[sub_resource type="Image" id="Image_473wq"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,8 +15,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ir34r"]
-image = SubResource("Image_4wggl")
+[sub_resource type="ImageTexture" id="ImageTexture_kesuf"]
+image = SubResource("Image_473wq")
 
 [sub_resource type="Theme" id="Theme_l6tyr"]
 
@@ -57,7 +57,8 @@ draw_center = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1.0
+offset_right = -3.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mdhmx")
@@ -83,7 +84,7 @@ text = "Styles"
 layout_mode = 2
 tooltip_text = "Each layout-style consist of a preset or custom scene with it's configurations. 
 You can use a specific layout by calling Dialogic.Styles.add_layout_style(@style_name) before Dialogic.start()."
-texture = SubResource("ImageTexture_ir34r")
+texture = SubResource("ImageTexture_kesuf")
 hint_text = "Each layout-style consist of a preset or custom scene with it's configurations. 
 You can use a specific layout by calling Dialogic.Styles.add_layout_style(@style_name) before Dialogic.start()."
 
@@ -94,45 +95,43 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add layout-style"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="DuplicateButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Duplicate style"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="InheritButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Create new style that inherits this one"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="RemoveButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Remove layout-style"
-icon = SubResource("ImageTexture_ir34r")
+disabled = true
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="MakeDefaultButton" type="Button" parent="Panel/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-tooltip_text = "Make Default"
+tooltip_text = "Is Default"
+disabled = true
 toggle_mode = true
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="StyleList" type="ItemList" parent="Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-item_count = 3
+item_count = 1
 item_0/text = "Default"
-item_0/icon = SubResource("ImageTexture_ir34r")
-item_1/text = "Default SubStyle"
-item_1/icon = SubResource("ImageTexture_ir34r")
-item_2/text = "Something Cool"
-item_2/icon = SubResource("ImageTexture_ir34r")
+item_0/icon = SubResource("ImageTexture_kesuf")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -150,14 +149,14 @@ theme_type_variation = &"DialogicTitle"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tixgs")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tixgs")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_tixgs")
-text = "Something Cool"
+text = "Default"
 expand_to_text_length = true
 
 [node name="EditNameButton" type="Button" parent="VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Edit Name"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="TestStyleButton" type="Button" parent="VBox/HBox"]
@@ -166,7 +165,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 tooltip_text = "Play current timeline with this style"
 text = "Test Style"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="PanelContainer" type="PanelContainer" parent="VBox"]
 layout_mode = 2
@@ -175,7 +174,6 @@ theme_type_variation = &"DialogicPanelB"
 
 [node name="LayoutSelection" type="MarginContainer" parent="VBox/PanelContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 script = ExtResource("3_k3gf6")
 
@@ -188,7 +186,7 @@ layout_mode = 2
 [node name="Back" type="Button" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="Label" type="Label" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/HBox"]
@@ -233,7 +231,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search for a preset"
-right_icon = SubResource("ImageTexture_ir34r")
+right_icon = SubResource("ImageTexture_kesuf")
 
 [node name="Scroll" type="ScrollContainer" parent="VBox/PanelContainer/LayoutSelection/VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
@@ -248,7 +246,6 @@ size_flags_vertical = 3
 
 [node name="LayoutPreview" type="Control" parent="VBox/PanelContainer/LayoutSelection"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="LayoutPreviewPanel" type="PanelContainer" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview"]
@@ -275,7 +272,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="VBoxLeft" type="VBoxContainer" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer"]
@@ -298,7 +295,7 @@ unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("4_f5hts")
 expand_mode = 3
-stretch_mode = 5
+stretch_mode = 6
 
 [node name="VBoxRight" type="VBoxContainer" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer"]
 layout_mode = 2
@@ -332,13 +329,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
 text = "Use"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="Next" type="Button" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="ClosePreview" type="Button" parent="VBox/PanelContainer/LayoutSelection/LayoutPreview/LayoutPreviewPanel"]
@@ -347,11 +344,12 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="StyleSettings" type="VBoxContainer" parent="VBox/PanelContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings"]
@@ -372,7 +370,7 @@ text = "Layout"
 [node name="HintTooltip" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer/SectionTitle1" instance=ExtResource("2_ut05b")]
 layout_mode = 2
 tooltip_text = "This can either be a preset or a custom scene. "
-texture = SubResource("ImageTexture_ir34r")
+texture = SubResource("ImageTexture_kesuf")
 hint_text = "This can either be a preset or a custom scene. "
 
 [node name="Layout" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer"]
@@ -420,7 +418,7 @@ layout_mode = 2
 size_flags_vertical = 10
 tooltip_text = "Choose a preset or custom scene"
 text = "Change"
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="VSeparator" type="VSeparator" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2"]
 layout_mode = 2
@@ -440,7 +438,7 @@ text = "Inheritance"
 [node name="HintTooltip" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer2/SectionTitle3" instance=ExtResource("2_ut05b")]
 layout_mode = 2
 tooltip_text = "If this style inherits another style that will determine the layout and the base settings."
-texture = SubResource("ImageTexture_ir34r")
+texture = SubResource("ImageTexture_kesuf")
 hint_text = "If this style inherits another style that will determine the layout and the base settings."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer2"]
@@ -461,7 +459,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 tooltip_text = "This will remove the inheritance while keeping the state the same, thus realizing previously inherited settings. "
-icon = SubResource("ImageTexture_ir34r")
+icon = SubResource("ImageTexture_kesuf")
 
 [node name="InheritanceChain" type="Label" parent="VBox/PanelContainer/StyleSettings/HBoxContainer2/VBoxContainer2"]
 unique_name_in_owner = true
@@ -483,7 +481,7 @@ text = "Settings"
 [node name="HintTooltip" parent="VBox/PanelContainer/StyleSettings/SectionTitle2" instance=ExtResource("2_ut05b")]
 layout_mode = 2
 tooltip_text = "Here you can modify any exposed settings of the preset or scene."
-texture = SubResource("ImageTexture_ir34r")
+texture = SubResource("ImageTexture_kesuf")
 hint_text = "Here you can modify any exposed settings of the preset or scene."
 
 [node name="MarginContainer" type="MarginContainer" parent="VBox/PanelContainer/StyleSettings"]
@@ -503,6 +501,7 @@ size_flags_horizontal = 10
 size_flags_vertical = 0
 tooltip_text = "Clears all settings from this style"
 text = "Clear All"
+icon = SubResource("ImageTexture_kesuf")
 flat = true
 
 [node name="Margin" type="Control" parent="VBox"]

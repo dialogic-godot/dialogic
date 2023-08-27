@@ -61,6 +61,7 @@ func add_registered_sections() -> void:
 		var vbox := VBoxContainer.new()
 		vbox.set_meta('section', section)
 		vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		vbox.name = section.name
 		var hbox := HBoxContainer.new()
 		
 		var title := Label.new()
@@ -151,9 +152,9 @@ func section_sort(item1:DialogicSettingsPage, item2:DialogicSettingsPage) -> boo
 
 func _open(extra_information:Variant = null) -> void:
 	refresh()
-	# TODO recreate scroll to behaviour!
-#	if typeof(extra_information) == TYPE_STRING and has_node('Tabs/'+extra_information):
-#		$Tabs.current_tab = get_node('Tabs/'+extra_information).get_index()
+	if typeof(extra_information) == TYPE_STRING:
+		if %SettingsContent.has_node(extra_information):
+			open_tab(%SettingsContent.get_node(extra_information))
 
 
 func _close():
