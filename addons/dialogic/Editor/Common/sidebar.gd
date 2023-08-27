@@ -139,11 +139,16 @@ func _on_logo_gui_input(event:InputEvent) -> void:
 
 
 func update_content_list(list:PackedStringArray) -> void:
+	var prev_selected := ""
+	if %ContentList.is_anything_selected():
+		prev_selected = %ContentList.get_item_text(%ContentList.get_selected_items()[0])
 	%ContentList.clear()
 	%ContentList.add_item('~ Top')
 	for i in list:
 		if i.is_empty(): continue
 		%ContentList.add_item(i)
+		if i == prev_selected:
+			%ContentList.select(%ContentList.item_count-1)
 	if list.is_empty():
 		return
 	
