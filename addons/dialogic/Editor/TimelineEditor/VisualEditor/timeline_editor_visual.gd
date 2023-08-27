@@ -954,7 +954,7 @@ func move_block_to_index(block_index:int, index:int) -> void:
 
 func scroll_to_piece(piece_index:int) -> void:
 	await get_tree().process_frame
-	var height :float = %Timeline.get_child(piece_index).position.y
+	var height :float = %Timeline.get_child(min(piece_index, %Timeline.get_child_count()-1)).position.y
 	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
 		%TimelineArea.scroll_vertical = height
 
