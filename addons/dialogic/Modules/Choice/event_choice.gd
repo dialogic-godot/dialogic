@@ -27,7 +27,10 @@ func _execute() -> void:
 	# This event is mostly a placeholder that's used to indicate a position. 
 	# Only the selected choice is reached. 
 	# However mainly the Choices Subsystem queries the events 
-	#   to find the choices that belong to the question.  
+	#   to find the choices that belong to the question.
+	if !dialogic.Choices.last_question_info.has('choices'):
+		finish()
+		return
 	if dialogic.has_subsystem('History'):
 		var all_choices : Array = dialogic.Choices.last_question_info['choices']
 		if dialogic.has_subsystem('VAR'):
