@@ -26,11 +26,13 @@ func visual_select() -> void:
 
 ## Called by the visual timeline editor
 func visual_deselect() -> void:
+	if !parent_node:return
 	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.3)
 
 
 ## Called by the visual timeline editor
 func highlight() -> void:
+	if !parent_node:return
 	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.6)
 
 
