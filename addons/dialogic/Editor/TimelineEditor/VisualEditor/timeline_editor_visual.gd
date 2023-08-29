@@ -909,7 +909,7 @@ func _on_right_sidebar_resized():
 				elif con.get_child(0) is Button:
 					for button in con.get_children():
 						button.toggle_name(false)
-		
+
 	elif %RightSidebar.size.x > 160*_scale and sidebar_collapsed:
 		sidebar_collapsed = false
 		for section in %RightSidebar.get_node('EventContainer').get_children():
