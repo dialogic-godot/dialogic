@@ -56,7 +56,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('text', ValueType.SINGLELINE_TEXT, '#','',{'autofocus':true})
+	add_header_edit('text', ValueType.SINGLELINE_TEXT, {'left_text':'#', 'autofocus':true})
 
 
 #################### SYNTAX HIGHLIGHTING #######################################

@@ -405,7 +405,7 @@ func add_header_label(text:String, condition:String = "") -> void:
 		})
 
 
-func add_header_edit(variable:String, editor_type = ValueType.LABEL, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_header_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
@@ -413,8 +413,8 @@ func add_header_edit(variable:String, editor_type = ValueType.LABEL, left_text:S
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
-		"left_text" 	: left_text,
-		"right_text" 	: right_text,
+		"left_text" 	: extra_info.get('left_text', ''),
+		"right_text" 	: extra_info.get('right_text', ''),
 		"condition" 	: condition,
 		})
 
@@ -431,7 +431,7 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 	})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.LABEL, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_body_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable, 
 		"type" 			: typeof(get(variable)),
@@ -439,8 +439,8 @@ func add_body_edit(variable:String, editor_type = ValueType.LABEL, left_text:Str
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
-		"left_text" 	: left_text,
-		"right_text" 	: right_text,
+		"left_text" 	: extra_info.get('left_text', ''),
+		"right_text" 	: extra_info.get('right_text', ''),
 		"condition" 	: condition,
 		})
 
