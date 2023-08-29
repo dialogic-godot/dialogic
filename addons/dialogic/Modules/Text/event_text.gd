@@ -224,18 +224,18 @@ func _get_property_original_translation(property:String) -> String:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, 
 			{'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'empty_text' 		: '(No one)',
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('portrait', ValueType.COMPLEX_PICKER,  
 			{'suggestions_func' : get_portrait_suggestions, 
 			'placeholder' 		: "(Don't change)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
 			'collapse_when_empty':true,}, 
 			'character != null and !has_no_portraits()')
-	add_body_edit('text', ValueType.MULTILINE_TEXT, "", "", {'autofocus':true})
+	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
 func do_any_characters_exist() -> bool:
 	return !DialogicUtil.list_resources_of_type(".dch").is_empty()

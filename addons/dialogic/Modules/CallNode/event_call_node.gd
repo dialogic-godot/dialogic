@@ -106,11 +106,11 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('method', ValueType.SINGLELINE_TEXT, 'Call method')
-	add_header_edit('path', ValueType.SINGLELINE_TEXT, 'in object')
-	add_body_edit('inline', ValueType.BOOL, 'Inline Command:', '', {'tooltip':"If enabled, the method won't be called instantly. Only when a signal is emmited inside the following text event will it be called."})
-	add_body_edit('inline_signal_argument', ValueType.SINGLELINE_TEXT, 'Inline Signal Argument', '', {'tooltip':"For example if set to 'Hello' the method can be called with [signal=Hello] in the next text event."}, 'inline == true')
-	add_body_edit('inline_single_use', ValueType.BOOL, 'Single Use:', '', {'tooltip':"By default calling via in-text signal only works once. Uncheck this to make the event keep listening. \nThis only stays valid during this dialog."}, 'inline == true')
-	add_body_edit('wait', ValueType.BOOL, 'Wait:', '', {'tooltip':'Will wait for the method to finish. Only relevant for methods with `await` in them.'}, 'inline == false')
+	add_header_edit('method', ValueType.SINGLELINE_TEXT, {'left_text':'Call method'})
+	add_header_edit('path', ValueType.SINGLELINE_TEXT, {'left_text':'in object'})
+	add_body_edit('inline', ValueType.BOOL, {'left_text':'Inline Command:', 'tooltip':"If enabled, the method won't be called instantly. Only when a signal is emmited inside the following text event will it be called."})
+	add_body_edit('inline_signal_argument', ValueType.SINGLELINE_TEXT, {'left_text':'Inline Signal Argument', 'tooltip':"For example if set to 'Hello' the method can be called with [signal=Hello] in the next text event."}, 'inline == true')
+	add_body_edit('inline_single_use', ValueType.BOOL, {'left_text':'Single Use:','tooltip':"By default calling via in-text signal only works once. Uncheck this to make the event keep listening. \nThis only stays valid during this dialog."}, 'inline == true')
+	add_body_edit('wait', ValueType.BOOL, {'left_text':'Wait:', 'tooltip':'Will wait for the method to finish. Only relevant for methods with `await` in them.'}, 'inline == false')
 	add_body_line_break()
-	add_body_edit('arguments', ValueType.STRING_ARRAY, 'Arguments:')
+	add_body_edit('arguments', ValueType.STRING_ARRAY, {'left_text':'Arguments:'})

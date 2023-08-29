@@ -166,12 +166,13 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.COMPLEX_PICKER, 'Set', '', 
-			{'suggestions_func' 	: get_var_suggestions, 
+	add_header_edit('name', ValueType.COMPLEX_PICKER, {
+			'left_text'		: 'Set',  
+			'suggestions_func' 	: get_var_suggestions, 
 			'icon' 					: load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder'			:'Select Variable'}
 			)
-	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'to be',
@@ -196,7 +197,7 @@ func build_event_editor():
 			}
 		]
 	}, '!name.is_empty()')
-	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'String',
@@ -221,14 +222,14 @@ func build_event_editor():
 			}],
 		'symbol_only':true}, 
 		'!name.is_empty()')
-	add_header_edit('value', ValueType.SINGLELINE_TEXT, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
-	add_header_edit('value', ValueType.FLOAT, '', '', {}, '!name.is_empty()  and _value_type == 1')
-	add_header_edit('value', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
+	add_header_edit('value', ValueType.FLOAT, {}, '!name.is_empty()  and _value_type == 1')
+	add_header_edit('value', ValueType.COMPLEX_PICKER, 
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
 			'!name.is_empty() and _value_type == 2')
 	add_header_label('a number between', '_value_type == 4')
-	add_header_edit('random_min', ValueType.INTEGER, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
-	add_header_edit('random_max', ValueType.INTEGER, '', '', {}, '!name.is_empty() and _value_type == 4')
+	add_header_edit('random_min', ValueType.INTEGER, {'right_text':'and'}, '!name.is_empty() and  _value_type == 4')
+	add_header_edit('random_max', ValueType.INTEGER, {}, '!name.is_empty() and _value_type == 4')
 	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["ExternalLink", "EditorIcons"])
 
 func get_var_suggestions(filter:String) -> Dictionary:

@@ -105,7 +105,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('condition_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('condition_type', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'IF',
@@ -120,7 +120,7 @@ func build_event_editor():
 				'value': ConditionTypes.ELSE,
 			}
 		], 'disabled':true})
-	add_header_edit('condition', ValueType.CONDITION, '', '', {}, 'condition_type != %s'%ConditionTypes.ELSE)
+	add_header_edit('condition', ValueType.CONDITION, {}, 'condition_type != %s'%ConditionTypes.ELSE)
 
 
 ####################### CODE COMPLETION ########################################

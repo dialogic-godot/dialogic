@@ -59,7 +59,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'Pause History',

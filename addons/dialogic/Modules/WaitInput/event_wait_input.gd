@@ -45,4 +45,4 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_label('Wait for input')
-	add_body_edit('hide_textbox', ValueType.BOOL, 'Hide text box:')
+	add_body_edit('hide_textbox', ValueType.BOOL, {'left_text':'Hide text box:'})
