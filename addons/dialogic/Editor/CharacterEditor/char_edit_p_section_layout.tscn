@@ -7,7 +7,6 @@
 offset_right = 428.0
 offset_bottom = 128.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
 script = ExtResource("1_76vf2")
 
 [node name="Label3" type="Label" parent="."]
