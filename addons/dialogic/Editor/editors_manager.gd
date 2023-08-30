@@ -186,7 +186,7 @@ func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 ## Shows a file selector. Calls [accept_callable] once accepted
 func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", title = "New resource", default_name = "new_character", mode = EditorFileDialog.FILE_MODE_SAVE_FILE) -> void:
 	find_parent('EditorView').godot_file_dialog(
-		accept_callable,
+		_on_add_resource_dialog_accepted.bind(accept_callable),
 		filter,
 		mode,
 		title,
@@ -194,6 +194,13 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 		true,
 		"Do not use \"'()!;:/\\*# in character or timeline names!"
 	)
+
+
+func _on_add_resource_dialog_accepted(path:String, callable:Callable) -> void:
+	var file_name :String= path.get_file().trim_suffix('.'+path.get_extension())
+	for i in ['#','&','+',';','(',')','!','*','*','"',"'",'%', '$', ':','.',',']:
+		file_name = file_name.replace(i, '')
+	callable.call(path.trim_suffix(path.get_file()).path_join(file_name)+'.'+path.get_extension())
 
 
 ## Called by the plugin.gd script on CTRL+S or Debug Game start
