@@ -424,6 +424,9 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	body_container.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
+	
+	if find_parent('VisualEditor') != null:
+		find_parent('VisualEditor').indent_events()
 
 
 func _on_EventNode_gui_input(event:InputEvent) -> void:
