@@ -65,7 +65,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE, 
-								"suggestions": func(): return {"Set Relative":{'value':'0'}, "Set Absolute":{'value':'1'}, "Reset":{'value':'2'}, "Reset All":{'value':'3'}}},
+								"suggestions": func(): return {"Set Relative":{'value':0, 'text_alt':['set_relative', 'relative']}, "Set Absolute":{'value':1, 'text_alt':['set_absolute', 'absolute']}, "Reset":{'value':2,'text_alt':['reset'] }, "Reset All":{'value':3,'text_alt':['reset_all']}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
 		"time"			:  {"property": "movement_time", 	"default": 0},

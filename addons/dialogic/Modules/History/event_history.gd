@@ -51,7 +51,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 		: property_info
 		"action" 			: {"property": "action", "default": Actions.PAUSE, 
-								"suggestions": func(): return {"Clear":{'value':'0'}, "Pause":{'value':'1'}, "Resume":{'value':'2'}}},
+								"suggestions": func(): return {"Clear":{'value':0}, "Pause":{'value':1}, "Resume":{'value':2}}},
 	}
 
 ################################################################################
