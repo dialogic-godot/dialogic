@@ -35,7 +35,7 @@ func set_scene_preview(path:String, preview:Texture2D, thumbnail:Texture2D, user
 		%Image.texture = preview
 	else:
 		%Image.texture = get_theme_icon("PackedScene", "EditorIcons")
-	
+
 
 
 func set_current(current:bool):
@@ -51,7 +51,7 @@ func _on_mouse_exited():
 
 
 func _on_gui_input(event):
-	if Input.is_action_just_pressed('ui_accept') or Input.is_action_just_pressed("ui_select") or (
+	if event.is_action_pressed('ui_accept') or event.is_action_pressed("ui_select") or (
 				event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		clicked.emit()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
