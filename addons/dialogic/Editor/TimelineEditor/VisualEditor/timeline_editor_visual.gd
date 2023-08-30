@@ -313,6 +313,7 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		move_blocks_to_index(data, index)
 	
+	await get_tree().process_frame
 	something_changed()
 	scroll_to_piece(index)
 	indent_events()
