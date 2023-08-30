@@ -62,7 +62,7 @@ func _get_icon() -> Resource:
 
 func to_text() -> String:
 	var string := "Setting "
-	if mode == Modes.RESET:
+	if mode != Modes.SET:
 		string += "reset "
 	
 	if !name.is_empty() and mode != Modes.RESET_ALL:

@@ -313,6 +313,7 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		move_blocks_to_index(data, index)
 	
+	await get_tree().process_frame
 	something_changed()
 	scroll_to_piece(index)
 	indent_events()
@@ -477,6 +478,8 @@ func delete_events_indexed(indexed_events:Dictionary) -> void:
 		if 'end_node' in %Timeline.get_child(idx-idx_shift) and %Timeline.get_child(idx-idx_shift).end_node != null and is_instance_valid(%Timeline.get_child(idx-idx_shift).end_node):
 			%Timeline.get_child(idx-idx_shift).end_node.parent_node = null
 		if %Timeline.get_child(idx-idx_shift) != null and is_instance_valid(%Timeline.get_child(idx-idx_shift)):
+			if %Timeline.get_child(idx-idx_shift) in selected_items:
+				selected_items.erase(%Timeline.get_child(idx-idx_shift))
 			%Timeline.get_child(idx-idx_shift).queue_free()
 			%Timeline.get_child(idx-idx_shift).get_parent().remove_child(%Timeline.get_child(idx-idx_shift))
 			idx_shift += 1

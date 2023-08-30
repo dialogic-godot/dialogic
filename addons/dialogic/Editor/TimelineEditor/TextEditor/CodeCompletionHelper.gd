@@ -149,7 +149,10 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				
 				var suggestions : Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
 				for key in suggestions.keys():
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].value, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+					if suggestions[key].has('text_alt'):
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+					else:
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
 				
 		# Force update and showing of the popup
 		text.update_code_completion_options(true)

@@ -125,6 +125,8 @@ func to_text() -> String:
 	text_to_use = text_to_use.replace(':', '\\:')
 	if text_to_use.is_empty():
 		text_to_use = "<Empty Text Event>"
+	
+	
 	if character:
 		var name := ""
 		for path in _character_directory.keys():
@@ -136,6 +138,13 @@ func to_text() -> String:
 		if not portrait.is_empty():
 			return name+" ("+portrait+"): "+text_to_use
 		return name+": "+text_to_use
+	elif text.begins_with('['):
+		text_to_use = '\\'+text_to_use
+	else:
+		for event in Engine.get_main_loop().get_meta("dialogic_event_cache", []):
+			if not event is DialogicTextEvent and event.is_valid_event(text):
+				text_to_use = '\\'+text
+				continue
 	return text_to_use
 
 
@@ -182,7 +191,7 @@ func from_text(string:String) -> void:
 			portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
 		
 	if result:
-		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges()
+		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges().trim_prefix('\\')
 		if text == '<Empty Text Event>':
 			text = ""
 
