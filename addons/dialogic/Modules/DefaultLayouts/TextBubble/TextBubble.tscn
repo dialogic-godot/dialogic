@@ -1,10 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://dlx7jcvm52tyw"]
+[gd_scene load_steps=17 format=3 uid="uid://dlx7jcvm52tyw"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/TextBubble.gd" id="1_jdhpk"]
 [ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/speech_bubble.gdshader" id="2_1mhvf"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_syv35"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="4_7bm4b"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/HideWithChild.gd" id="5_371j3"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6_5gd03"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="7_0tnh1"]
 
@@ -116,13 +115,13 @@ offset_top = -26.0
 offset_right = 27.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
-script = ExtResource("5_371j3")
 
-[node name="NameLabel" type="Label" parent="DialogText/NameLabel"]
+[node name="NameLabel" type="Label" parent="DialogText/NameLabel" node_paths=PackedStringArray("name_label_root")]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 script = ExtResource("6_5gd03")
+name_label_root = NodePath("..")
 
 [node name="ChoiceContainer" type="HBoxContainer" parent="DialogText"]
 layout_mode = 1
