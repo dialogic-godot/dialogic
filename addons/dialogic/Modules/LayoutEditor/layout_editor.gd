@@ -344,8 +344,8 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 		if own_overrides.is_empty():
 			own_overrides = style_list[current_style].get('export_overrides', {})
 
-		var current_grid :GridContainer
-		var current_hbox :HBoxContainer
+		var current_grid :GridContainer = null
+		var current_hbox :HBoxContainer = null
 
 		var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
 		label_bg_style.content_margin_left = 5
@@ -359,7 +359,7 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 			if i['usage'] & PROPERTY_USAGE_CATEGORY:
 				continue
 			
-			if i['usage'] & PROPERTY_USAGE_GROUP or current_hbox == null:
+			if (i['usage'] & PROPERTY_USAGE_GROUP) or current_hbox == null:
 				var main_scroll = ScrollContainer.new()
 				main_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 				current_hbox = HBoxContainer.new()
@@ -395,7 +395,7 @@ func load_layout_scene_customization(custom_scene_path:String, own_overrides:Dic
 				current_grid.columns = 3
 				v_box.add_child(current_grid, true)
 				current_group_name = i['name'].to_snake_case()
-
+			
 			if current_grid == null:
 				var v_scroll := ScrollContainer.new()
 				v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
