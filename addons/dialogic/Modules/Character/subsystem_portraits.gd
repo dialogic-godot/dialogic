@@ -414,7 +414,8 @@ func leave_all_characters(animation_name:String="", animation_length:float= 0, a
 func remove_character(character:DialogicCharacter) -> void:
 	if !is_character_joined(character):
 		return
-	if dialogic.current_state_info['portraits'][character.resource_path].node is Node:
+	if is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node) and \
+			dialogic.current_state_info['portraits'][character.resource_path].node is Node:
 		_remove_portrait(dialogic.current_state_info['portraits'][character.resource_path].node)
 		character_left.emit({'character':character})
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
@@ -422,7 +423,12 @@ func remove_character(character:DialogicCharacter) -> void:
 
 ## Returns true if the given character is currently joined.
 func is_character_joined(character:DialogicCharacter) -> bool:
-	return character.resource_path in dialogic.current_state_info['portraits']
+	if !character.resource_path in dialogic.current_state_info['portraits']:
+		return false
+	if dialogic.current_state_info['portraits'][character.resource_path].get('node', null) != null and \
+			is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node):
+		return true
+	return false
 
 
 ## Returns a list of the joined charcters (as resources)
