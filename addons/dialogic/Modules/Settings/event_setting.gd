@@ -62,7 +62,7 @@ func _get_icon() -> Resource:
 
 func to_text() -> String:
 	var string := "Setting "
-	if mode == Modes.RESET:
+	if mode != Modes.SET:
 		string += "reset "
 	
 	if !name.is_empty() and mode != Modes.RESET_ALL:
@@ -122,7 +122,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('mode', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('mode', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [{
 				'label': 'Set',
 				'value': Modes.SET,
@@ -138,8 +138,8 @@ func build_event_editor():
 			},
 			]})
 	
-	add_header_edit('name', ValueType.COMPLEX_PICKER, '', '', {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
-	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, 'to', '', {
+	add_header_edit('name', ValueType.COMPLEX_PICKER, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
+	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, {'left_text':'to',
 		'selector_options': [
 			{
 				'label': 'String',
@@ -160,9 +160,9 @@ func build_event_editor():
 			}],
 		'symbol_only':true}, 
 		'!name.is_empty() and mode == 0')
-	add_header_edit('value', ValueType.SINGLELINE_TEXT, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
-	add_header_edit('value', ValueType.FLOAT, '', '', {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
-	add_header_edit('value', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
+	add_header_edit('value', ValueType.FLOAT, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
+	add_header_edit('value', ValueType.COMPLEX_PICKER, 
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
 			'!name.is_empty() and _value_type == 2 and mode == 0')
 

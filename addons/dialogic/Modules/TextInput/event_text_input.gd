@@ -77,14 +77,14 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor() -> void:
 	add_header_label('Show an input and store it in')
-	add_header_edit('variable', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('variable', ValueType.COMPLEX_PICKER, 
 			{'suggestions_func'	: get_var_suggestions, 
 			'icon'		 : load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder':'Select Variable'})
-	add_body_edit('text', ValueType.SINGLELINE_TEXT, 'Text:')
-	add_body_edit('placeholder', ValueType.SINGLELINE_TEXT, 'Placeholder:')
-	add_body_edit('default', ValueType.SINGLELINE_TEXT, 'Default:')
-	add_body_edit('allow_empty', ValueType.BOOL, 'Allow empty:')
+	add_body_edit('text', ValueType.SINGLELINE_TEXT, {'left_text':'Text:'})
+	add_body_edit('placeholder', ValueType.SINGLELINE_TEXT, {'left_text':'Placeholder:'})
+	add_body_edit('default', ValueType.SINGLELINE_TEXT, {'left_text':'Default:'})
+	add_body_edit('allow_empty', ValueType.BOOL, {'left_text':'Allow empty:'})
 
 
 func get_var_suggestions(filter:String) -> Dictionary:

@@ -53,8 +53,9 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('style_name', ValueType.COMPLEX_PICKER, 'Use style', '', 
-			{'placeholder'		: 'Default',
+	add_header_edit('style_name', ValueType.COMPLEX_PICKER, {
+			'left_text'			:'Use style',
+			'placeholder'		: 'Default',
 			'suggestions_func' 	: get_style_suggestions, 
 			'editor_icon' 		: ["PopupMenu", "EditorIcons"],
 			'autofocus'			: true})

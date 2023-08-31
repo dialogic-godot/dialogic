@@ -65,7 +65,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE, 
-								"suggestions": func(): return {"Set Relative":{'value':'0'}, "Set Absolute":{'value':'1'}, "Reset":{'value':'2'}, "Reset All":{'value':'3'}}},
+								"suggestions": func(): return {"Set Relative":{'value':0, 'text_alt':['set_relative', 'relative']}, "Set Absolute":{'value':1, 'text_alt':['set_absolute', 'absolute']}, "Reset":{'value':2,'text_alt':['reset'] }, "Reset All":{'value':3,'text_alt':['reset_all']}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
 		"time"			:  {"property": "movement_time", 	"default": 0},
@@ -77,7 +77,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'Change',
@@ -97,10 +97,10 @@ func build_event_editor():
 			}
 		]
 		})
-	add_header_edit("position", ValueType.INTEGER, "position", '', {}, 
+	add_header_edit("position", ValueType.INTEGER, {'left_text':"position"}, 
 			'action != Actions.RESET_ALL')
 	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
 	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
-	add_header_edit("vector", ValueType.VECTOR2, "", '', {}, 
+	add_header_edit("vector", ValueType.VECTOR2, {}, 
 			'action != Actions.RESET and action != Actions.RESET_ALL')
-	add_body_edit("movement_time", ValueType.FLOAT, "AnimationTime:", "(0 for instant)")
+	add_body_edit("movement_time", ValueType.FLOAT, {'left_text':"AnimationTime:", "right_text":"(0 for instant)"})

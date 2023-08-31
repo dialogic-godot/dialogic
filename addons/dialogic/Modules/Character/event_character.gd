@@ -331,7 +331,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
 		'selector_options': [
 			{
 				'label': 'Join',
@@ -350,7 +350,7 @@ func build_event_editor() -> void:
 			}
 		]
 	})
-	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER,  
 			{'placeholder'		: 'Character',
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
@@ -358,43 +358,44 @@ func build_event_editor() -> void:
 			'autofocus'			: true})
 #	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
 	
-	add_header_edit('set_portrait', ValueType.BOOL, '', '', 
+	add_header_edit('set_portrait', ValueType.BOOL,
 			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
 			 'tooltip':'Change Portrait'}, "action == Actions.UPDATE")
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER, '', '', 
+	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
 			{'placeholder'		: 'Default',
 			'collapse_when_empty':true,
 			'suggestions_func' 	: get_portrait_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'should_show_portrait_selector()')
-	add_header_edit('set_position', ValueType.BOOL, '', '', 
+	add_header_edit('set_position', ValueType.BOOL,  
 			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
 	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
-	add_header_edit('position', ValueType.INTEGER, '', '', {}, 
+	add_header_edit('position', ValueType.INTEGER, {}, 
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
 	
 	# Body
-	add_body_edit('animation_name', ValueType.COMPLEX_PICKER, 'Animation:', '', 
-			{'suggestions_func' 	: get_animation_suggestions, 
+	add_body_edit('animation_name', ValueType.COMPLEX_PICKER,
+			{'left_text'		: 'Animation:',
+			'suggestions_func' 	: get_animation_suggestions, 
 			'editor_icon' 			: ["Animation", "EditorIcons"], 
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true}, 
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.FLOAT, 'Length:', '', {}, 
+	add_body_edit('animation_length', ValueType.FLOAT, {'left_text':'Length:'}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_wait', ValueType.BOOL, 'Await end:', '', {}, 
+	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'}, 
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.INTEGER, 'Repeat:', '', {},
+	add_body_edit('animation_repeats', ValueType.INTEGER, {'left_text':'Repeat:'},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
-	add_body_edit('position_move_time', ValueType.FLOAT, 'Movement duration:', '', {}, 
+	add_body_edit('position_move_time', ValueType.FLOAT, {'left_text':'Movement duration:'}, 
 			'action == %s and set_position' %Actions.UPDATE)
-	add_body_edit('set_z_index', ValueType.BOOL, '', '', {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
-	add_body_edit('z_index', ValueType.INTEGER, 'Z-index:', "",{},
+	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
+	add_body_edit('z_index', ValueType.INTEGER, {'left_text':'Z-index:'},
 			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
-	add_body_edit('set_mirrored', ValueType.BOOL, '', '', {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "action == Actions.UPDATE")
-	add_body_edit('mirrored', ValueType.BOOL, 'Mirrored:', "",{},
+	add_body_edit('set_mirrored', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "action == Actions.UPDATE")
+	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
 
 

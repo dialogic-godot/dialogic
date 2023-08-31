@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
@@ -17,7 +17,6 @@
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Modules/DefaultLayouts/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/TextInput/node_text_input.gd" id="22_ltkcf"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/HideWithChild.gd" id="23"]
 [ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
 [ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
 [ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
@@ -507,12 +506,11 @@ offset_top = -49.0
 offset_right = -1.0
 offset_bottom = -24.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wpkyg")
-script = ExtResource("23")
 metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 metadata/_edit_group_ = true
 
-[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder/NameLabelPanel"]
+[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/NameLabelHolder/NameLabelPanel" node_paths=PackedStringArray("name_label_root")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -520,6 +518,7 @@ theme_override_fonts/font = SubResource("FontVariation_7goc6")
 theme_override_font_sizes/font_size = 15
 text = "S"
 script = ExtResource("3")
+name_label_root = NodePath("..")
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1

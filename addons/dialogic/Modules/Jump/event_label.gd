@@ -70,7 +70,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.SINGLELINE_TEXT, '', '', {'autofocus':true})
+	add_header_edit('name', ValueType.SINGLELINE_TEXT, {'left_text':'Label', 'autofocus':true})
 
 
 ####################### CODE COMPLETION ########################################

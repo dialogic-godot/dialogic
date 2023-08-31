@@ -11,22 +11,22 @@ var skip_delay :float = ProjectSettings.get_setting('dialogic/text/skippable_del
 ## 						INPUT
 ################################################################################
 func _input(event:InputEvent) -> void:
-	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if event.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if Dialogic.paused:
 			return
-		
+
 		if is_input_blocked():
 			return
-		
+
 		if Dialogic.current_state == Dialogic.States.IDLE and Dialogic.Text.can_manual_advance():
 			Dialogic.handle_next_event()
 			autoadvance_timer.stop()
 			block_input(skip_delay)
-		
+
 		elif Dialogic.current_state == Dialogic.States.SHOWING_TEXT and Dialogic.Text.can_skip():
 			Dialogic.Text.skip_text_animation()
 			block_input(skip_delay)
-		
+
 		dialogic_action.emit()
 
 
@@ -49,7 +49,7 @@ func _ready() -> void:
 	add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
-	
+
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
