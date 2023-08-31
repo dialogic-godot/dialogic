@@ -2,7 +2,8 @@
 extends Node
 
 enum Modes {TEXT_EVENT_ONLY, FULL_HIGHLIGHTING}
-@export var mode := Modes.FULL_HIGHLIGHTING
+
+var syntax_highlighter :SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
 
 # These RegEx's are used to deduce information from the current line for auto-completion
 
@@ -53,14 +54,14 @@ func get_line_untill_caret(line:String) -> String:
 # Adds all kinds of options depending on the 
 #   content of the current line, the last word and the symbol that came before
 # Triggers opening of the popup
-func request_code_completion(force:bool, text:CodeEdit) -> void:
+func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIGHTING) -> void:
 	## TODO remove this once https://github.com/godotengine/godot/issues/38560 is fixed
 	if mode != Modes.FULL_HIGHLIGHTING:
 		return
 	
 	# make sure shortcode event references are loaded
 	if mode == Modes.FULL_HIGHLIGHTING:
-		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons')
+		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 		if shortcode_events.is_empty():
 			for event in text.timeline_editor.editors_manager.resource_helper.event_script_cache:
 				if event.get_shortcode() != 'default_shortcode':
@@ -107,9 +108,9 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				if shortcode_events[shortcode].get_meta('hidden', false):
 					continue
 				if shortcode_events[shortcode].get_shortcode_parameters().is_empty():
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, shortcode_events[shortcode].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, shortcode_events[shortcode].event_color.lerp(syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 				else:
-					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", shortcode_events[shortcode].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
+					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", shortcode_events[shortcode].event_color.lerp(syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 		else:
 			var current_shortcode := completion_shortcode_getter_regex.search(line)
 			if !current_shortcode:
@@ -126,7 +127,7 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 				var parameters :Array = shortcode_events[code].get_shortcode_parameters().keys()
 				for param in parameters:
 					if !param+'=' in line:
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
 			
 			# suggest values
 			elif symbol == '=' or symbol == '"' or get_code_completion_prev_symbol(text) == '"':
@@ -141,18 +142,19 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 					return
 				if !shortcode_events[code].get_shortcode_parameters()[current_parameter].has('suggestions'):
 					if typeof(shortcode_events[code].get_shortcode_parameters()[current_parameter].default) == TYPE_BOOL:
-						suggest_bool(text, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3))
+						suggest_bool(text, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3))
 					elif len(word) > 0:
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, word, word, shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, word, word, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
 					text.update_code_completion_options(true)
 					return
 				
 				var suggestions : Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
 				for key in suggestions.keys():
 					if suggestions[key].has('text_alt'):
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
 					else:
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), shortcode_events[code].event_color.lerp(text.syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
+
 				
 		# Force update and showing of the popup
 		text.update_code_completion_options(true)
@@ -179,9 +181,9 @@ func request_code_completion(force:bool, text:CodeEdit) -> void:
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, text_event_start:=false) -> void:
 	for character in text.timeline_editor.editors_manager.resource_helper.character_directory:
 		if text_event_start and text.timeline_editor.editors_manager.resource_helper.character_directory[character].resource.portraits.is_empty():
-			text.add_code_completion_option(type, character, character+': ', text.syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+			text.add_code_completion_option(type, character, character+': ', syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 		else:
-			text.add_code_completion_option(type, character, character, text.syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+			text.add_code_completion_option(type, character, character, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 
 # Helper that adds all timelines as options
 func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:
@@ -201,15 +203,15 @@ func suggest_portraits(text:CodeEdit, character_name:String, end_check:=')') -> 
 		return
 	var character_resource :DialogicCharacter= text.timeline_editor.editors_manager.resource_helper.character_directory[character_name]['resource']
 	for portrait in character_resource.portraits:
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, text.syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), end_check)
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), end_check)
 	if character_resource.portraits.is_empty():
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'Has no portraits!', '', text.syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Pieces/warning.svg"))
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'Has no portraits!', '', syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Pieces/warning.svg"))
 
 
 # Helper that adds all variable paths as options
 func suggest_variables(text:CodeEdit):
 	for variable in DialogicUtil.list_variables(ProjectSettings.get_setting('dialogic/variables')):
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, text.syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
 
 
 # Helper that adds true and false as options

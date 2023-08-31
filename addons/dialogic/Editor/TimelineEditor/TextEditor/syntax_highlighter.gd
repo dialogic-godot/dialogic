@@ -29,6 +29,7 @@ var shortcode_events := {}
 var custom_syntax_events := []
 var text_event :DialogicTextEvent = null
 
+
 func _init():
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():

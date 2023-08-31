@@ -14,7 +14,9 @@ func _ready() -> void:
 			scene.position = get_viewport_rect().size/2.0
 
 	randomize()
-	var current_timeline: String = DialogicUtil.get_editor_setting('current_timeline_path')
+	var current_timeline: String = DialogicUtil.get_editor_setting('current_timeline_path', null)
+	if !current_timeline:
+		get_tree().quit()
 	Dialogic.start(current_timeline)
 	Dialogic.timeline_ended.connect(get_tree().quit)
 	Dialogic.signal_event.connect(recieve_event_signal)

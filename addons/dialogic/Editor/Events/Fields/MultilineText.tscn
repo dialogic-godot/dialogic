@@ -1,11 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyp7m2nvab1aj"]
+[gd_scene load_steps=5 format=3 uid="uid://dyp7m2nvab1aj"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.gd" id="1"]
-[ext_resource type="StyleBox" path="res://addons/dialogic/Editor/Events/styles/TextBackground.tres" id="1_dkxlh"]
+[ext_resource type="StyleBox" uid="uid://cu8otiwksn8ma" path="res://addons/dialogic/Editor/Events/styles/TextBackground.tres" id="1_dkxlh"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="1_wj4ha"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/CodeCompletionHelper.gd" id="3_mmga0"]
 
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_42qr1"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_2q5dk"]
 script = ExtResource("1_wj4ha")
 
 [node name="MultilineText" type="CodeEdit"]
@@ -15,7 +14,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = ExtResource("1_dkxlh")
 wrap_mode = 1
-syntax_highlighter = SubResource("SyntaxHighlighter_42qr1")
+syntax_highlighter = SubResource("SyntaxHighlighter_2q5dk")
 scroll_fit_content_height = true
 symbol_lookup_on_click = true
 delimiter_strings = Array[String]([])
@@ -28,7 +27,3 @@ auto_brace_completion_pairs = {
 "{": "}"
 }
 script = ExtResource("1")
-
-[node name="CodeCompletionHelper" type="Node" parent="."]
-script = ExtResource("3_mmga0")
-mode = 0
