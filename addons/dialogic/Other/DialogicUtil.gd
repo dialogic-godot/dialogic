@@ -343,6 +343,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.text = value
 				input.text_submitted.connect(methods.get('string').bind(property_info['name']))
+		TYPE_OBJECT:
+			input = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+			input.hint_text = "Objects/Resources as settings are currently not supported. \nUse @export_file('*.extension') instead and load the resource once needed."
 		_:
 			input = LineEdit.new()
 			if value != null:
