@@ -97,7 +97,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"wait" 		: {"property": "wait", 		"default": false},
 		"inline" 	: {"property": "inline", 	"default": false},
 		"signal" 	: {"property": "inline_signal_argument", 	"default": ""},
-		"single_use": {"property": "inline_single_use", 		"default": false}
+		"single_use": {"property": "inline_single_use", 		"default": true}
 	}
 
 
