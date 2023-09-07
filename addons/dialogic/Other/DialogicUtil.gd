@@ -14,7 +14,9 @@ static func get_editor_scale() -> float:
 	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
 
 
-static func get_dialogic_plugin() -> EditorPlugin:
+## Although this does in fact always return a EditorPlugin node,
+##  that class is apparently not present in export and referencing it here creates a crash.
+static func get_dialogic_plugin() -> Node:
 	var tree: SceneTree = Engine.get_main_loop()
 	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
 		return tree.get_root().get_child(0).get_node('DialogicPlugin')
