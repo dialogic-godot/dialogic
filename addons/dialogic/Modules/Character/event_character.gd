@@ -279,7 +279,7 @@ func from_text(string:String) -> void:
 			#repeat is supported on Update, the other two should not be checking this
 			if action == Actions.UPDATE:
 				animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
-				position_move_time = shortcode_params.get('move_time', position_move_time)
+				position_move_time = float(shortcode_params.get('move_time', position_move_time))
 		#move time is only supported on Update, but it isnt part of the animations so its separate
 		if action == Actions.UPDATE:
 			position_move_time = float(shortcode_params.get('move_time', position_move_time))
