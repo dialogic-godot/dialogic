@@ -298,22 +298,21 @@ func from_text(string:String) -> void:
 		if not parameter in data:
 			continue
 		
-		#if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
-		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dch")):
-			set(params[parameter].property, load(data[parameter]))
-		else:
-			var value :Variant 
-			if params[parameter].has('suggestions'):
-				for option in params[parameter].suggestions.call().values():
-					if option.has('text_alt') and data[parameter] in option.text_alt:
-						value = option.value
-						break
-			if value == null:
-				if str_to_var(data[parameter].replace('\\=', '=')) != null:
-					value = str_to_var(data[parameter].replace('\\=', '='))
-				else:
-					value = data[parameter].replace('\\=', '=')
-			set(params[parameter].property, value)
+		var value :Variant 
+		match typeof(get(params[parameter].property)):
+			TYPE_STRING:
+				value = data[parameter].replace('\\=', '=')
+			TYPE_INT:
+				if params[parameter].has('suggestions'):
+					for option in params[parameter].suggestions.call().values():
+						if option.has('text_alt') and data[parameter] in option.text_alt:
+							value = option.value
+							break
+				if !value:
+					value = float(data[parameter].replace('\\=', '='))
+			_:
+				value = str_to_var(data[parameter].replace('\\=', '='))
+		set(params[parameter].property, value)
 
 
 ## has to return true, if the given string can be interpreted as this event
