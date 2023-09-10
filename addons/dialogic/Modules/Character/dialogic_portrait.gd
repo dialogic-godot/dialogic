@@ -24,11 +24,7 @@ func _should_do_portrait_update(character:DialogicCharacter, portrait:String) ->
 ##
 ## * this depends on the portrait containers, but it will most likely be the bottom center (99% of cases)
 func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String) -> void:
-	if passed_portrait == "" or not passed_portrait in passed_character.portraits.keys():
-		passed_portrait = passed_character.default_portrait
-	
-	portrait = passed_portrait
-	character = passed_character
+	pass
 
 
 ## This should be implemented. It is used for sizing in the 
@@ -51,3 +47,12 @@ func _set_mirror(mirror:bool) -> void:
 func _set_extra_data(data: String) -> void:
 	pass
 
+
+## Called when this becomes the active speaker
+func _highlight() -> void:
+	pass
+
+
+## Called when this stops being the active speaker
+func _unhighlight() -> void:
+	pass
