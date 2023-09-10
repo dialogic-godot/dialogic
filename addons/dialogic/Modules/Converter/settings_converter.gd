@@ -175,7 +175,7 @@ func _on_verify_pressed():
 		sub_directory.make_dir("themes")
 	
 	conversionReady = true
-	$RightPanel/Begin.disabled = false
+	$HBox/RightPanel/Begin.disabled = false
 		
 
 
