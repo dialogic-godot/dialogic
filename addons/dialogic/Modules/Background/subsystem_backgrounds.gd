@@ -57,6 +57,10 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 				var new_node:Node
 				if scene.ends_with('.tscn'):
 					new_node = load(scene).instantiate()
+					if !new_node is DialogicBackground:
+						printerr("[Dialogic] Tried using custom backgrounds that doesn't extend DialogicBackground class!")
+						new_node.queue_free()
+						new_node  = null
 				elif argument:
 					new_node = default_background_scene.instantiate() 
 				else:
