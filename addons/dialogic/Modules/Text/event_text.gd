@@ -42,6 +42,10 @@ var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
 var regex := RegEx.create_from_string("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
 
+enum States {REVEALING, IDLE, DONE}
+var state = States.IDLE
+signal advance
+
 ################################################################################
 ## 						EXECUTION
 ################################################################################
@@ -73,34 +77,64 @@ func _execute() -> void:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
 	
-	var final_text: String = dialogic.Text.parse_text(get_property_translated('text'))
-	dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
-	final_text = await dialogic.Text.update_dialog_text(final_text)
-	
-	# Plays the audio region for the current line.
-	if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
-		dialogic.Voice.play_voice()
-	
-	await dialogic.Text.text_finished
-	
-	#end of dialog
-	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
-		dialogic.Text.show_next_indicators(true)
-		dialogic.Choices.show_current_choices(false)
-		dialogic.current_state = dialogic.States.AWAITING_CHOICE
-	elif Dialogic.Text.should_autoadvance():
-		dialogic.Text.show_next_indicators(false, true)
-		# In this case continuing is handled by the input script.
-	else:
-		dialogic.Text.show_next_indicators()
-		finish()
-	
-	if dialogic.has_subsystem('History'):
-		if character:
-			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+	dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
+	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+	var split_text := get_property_translated('text').split('[n]')
+	for section_idx in range(len(split_text)):
+		state = States.REVEALING
+		var final_text: String = dialogic.Text.parse_text(split_text[section_idx])
+		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
+		final_text = await dialogic.Text.update_dialog_text(final_text)
+		
+		# Plays the audio region for the current line.
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
+			dialogic.Voice.play_voice()
+		
+		await dialogic.Text.text_finished
+		state = States.IDLE
+		#end of dialog
+		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+			dialogic.Text.show_next_indicators(true)
+			dialogic.Choices.show_current_choices(false)
+			dialogic.current_state = dialogic.States.AWAITING_CHOICE
+			return
+		elif Dialogic.Text.should_autoadvance():
+			dialogic.Text.show_next_indicators(false, true)
+			dialogic.Text.input_handler.start_autoadvance()
+			# In this case continuing is handled by the input script.
 		else:
-			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.event_was_read(self)
+			dialogic.Text.show_next_indicators()
+		
+		if section_idx == len(split_text)-1:
+			state = States.DONE
+		
+		if dialogic.has_subsystem('History'):
+			if character:
+				dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+			else:
+				dialogic.History.store_simple_history_entry(final_text, event_name)
+			dialogic.History.event_was_read(self)
+		
+		await advance
+	
+	finish()
+
+
+func _on_dialogic_input_action():
+	match state:
+		States.REVEALING:
+			if Dialogic.Text.can_skip():
+				Dialogic.Text.skip_text_animation()
+				Dialogic.Text.input_handler.block_input()
+		_:
+			if Dialogic.Text.can_manual_advance():
+				advance.emit()
+				Dialogic.Text.input_handler.block_input()
+
+
+func _on_dialogic_input_autoadvance():
+	if state == States.IDLE:
+		advance.emit()
 
 ################################################################################
 ## 						INITIALIZE
@@ -112,7 +146,7 @@ func _init() -> void:
 	event_category = "Main"
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
-	continue_at_end = false
+	continue_at_end = true
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 
@@ -125,7 +159,6 @@ func to_text() -> String:
 	text_to_use = text_to_use.replace(':', '\\:')
 	if text_to_use.is_empty():
 		text_to_use = "<Empty Text Event>"
-	
 	
 	if character:
 		var name := ""
