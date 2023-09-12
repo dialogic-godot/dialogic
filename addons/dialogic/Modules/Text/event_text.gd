@@ -90,7 +90,7 @@ func _execute() -> void:
 	for section_idx in range(len(split_text)):
 		state = States.REVEALING
 		var final_text: String = dialogic.Text.parse_text(split_text[section_idx][0])
-		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
+		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append':split_text[section_idx][1]})
 		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
 		
 		# Plays the audio region for the current line.
@@ -153,7 +153,6 @@ func _init() -> void:
 	event_category = "Main"
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
-	continue_at_end = true
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 

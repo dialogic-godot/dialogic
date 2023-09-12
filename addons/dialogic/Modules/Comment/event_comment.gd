@@ -29,7 +29,6 @@ func _init() -> void:
 	set_default_color('Color9')
 	event_category = "Helpers"
 	event_sorting_index = 0
-	continue_at_end = true
 
 
 ################################################################################

@@ -37,8 +37,6 @@ var can_contain_events : bool = false
 var end_branch_event : DialogicEndBranchEvent = null
 ## If this is true this event expects a specific parent event.
 var needs_parent_event : bool = false
-## If true the next event will be played without awaiting input from the player
-var continue_at_end:bool = true
 
 
 ### Saving/Loading Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

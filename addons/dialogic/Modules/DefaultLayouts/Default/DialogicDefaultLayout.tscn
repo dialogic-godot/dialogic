@@ -86,27 +86,13 @@ tracks/4/keys = {
 [sub_resource type="Animation" id="Animation_6kbwc"]
 resource_name = "new_text"
 length = 0.4
-tracks/0/type = "method"
+tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText")
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [&"text", ""],
-"method": &"set"
-}]
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "handle_modes": PackedInt32Array(3, 3, 3, 3, 3),
 "points": PackedFloat32Array(0, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, -0.005, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, 0, -0.025, 0, 0.025, 0),
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4)
