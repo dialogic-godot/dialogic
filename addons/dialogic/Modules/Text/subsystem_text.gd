@@ -22,6 +22,8 @@ var text_effects_regex := RegEx.new()
 var text_modifiers := []
 var input_handler :Node = null
 
+var speed_multiplier := 1.0
+var user_speed_multiplier := 1.0
 var autopauses := {}
 
 ####################################################################################################
@@ -82,7 +84,8 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
-func update_dialog_text(text:String, instant:bool= false) -> String:
+## If additional is true, the previous text will be kept.
+func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
 		if text.is_empty():
 			await hide_text_boxes(instant)
@@ -100,11 +103,12 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 			if instant:
 				text_node.text = text
 			else:
-				text_node.reveal_text(text)
+				text_node.reveal_text(text, additional)
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
 	
 	# also resets temporary autoadvance and noskip settings:
+	speed_multiplier = 1
 	set_autoadvance(false, 1, true)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
@@ -380,18 +384,35 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
-		await get_tree().create_timer(float(argument)).timeout
-	else:
-		await get_tree().create_timer(0.5).timeout
+		if argument.ends_with('!'):
+			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
+		elif speed_multiplier != 0 and user_speed_multiplier != 0:
+			await get_tree().create_timer(float(argument)*speed_multiplier*user_speed_multiplier).timeout
+	elif speed_multiplier != 0 and user_speed_multiplier != 0:
+		await get_tree().create_timer(0.5*speed_multiplier*user_speed_multiplier).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
-		text_node.speed = float(argument)
+		speed_multiplier = float(argument)
+		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*speed_multiplier*user_speed_multiplier
 	else:
-		text_node.speed = dialogic.Settings.get_setting('text_speed', 0.01)
+		speed_multiplier = 1
+		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*user_speed_multiplier
+
+
+func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
+	if skipped:
+		return
+	if argument:
+		if argument.ends_with('!'):
+			text_node.lspeed = float(argument.trim_suffix('!'))
+		else:
+			text_node.lspeed = float(argument)*speed_multiplier*user_speed_multiplier
+	else:
+		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*speed_multiplier*user_speed_multiplier
 
 
 func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
@@ -409,6 +430,14 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	set_skippable(false, true)
 	set_manualadvance(false, true)
 	effect_autoadvance(text_node, skipped, argument)
+
+
+func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
+	if skipped:
+		return
+	
+	await input_handler.dialogic_action_priority
+	input_handler.action_was_consumed = true
 
 
 func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
@@ -435,9 +464,14 @@ func modifier_break(text:String) -> String:
 
 
 func modifier_autopauses(text:String) -> String:
+	var absolute := ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
 	for i in autopauses.keys():
 		var offset := 0
 		for result in i.search_all(text):
-			text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
-			offset += len('[pause='+str(autopauses[i])+']')
+			if absolute:
+				text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+'!]')
+				offset += len('[pause='+str(autopauses[i])+'!]')
+			else:
+				text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
+				offset += len('[pause='+str(autopauses[i])+']')
 	return text

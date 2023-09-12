@@ -1,12 +1,15 @@
 @tool
 extends Node
 
+signal dialogic_action_priority
 signal dialogic_action
 signal autoadvance
 
 var autoadvance_timer := Timer.new()
 var input_block_timer := Timer.new()
 var skip_delay :float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
+
+var action_was_consumed := false
 
 ################################################################################
 ## 						INPUT
@@ -17,6 +20,11 @@ func _input(event:InputEvent) -> void:
 		if Dialogic.paused or is_input_blocked():
 			return
 		
+		dialogic_action_priority.emit()
+		if action_was_consumed:
+			action_was_consumed = false
+			return
+		
 		dialogic_action.emit()
 
 
@@ -24,7 +32,7 @@ func is_input_blocked() -> bool:
 	return input_block_timer.time_left > 0.0
 
 
-func block_input(time:=0.1) -> void:
+func block_input(time:=skip_delay) -> void:
 	if time > 0:
 		input_block_timer.stop()
 		input_block_timer.wait_time = time

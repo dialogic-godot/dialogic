@@ -41,6 +41,8 @@ var _character_from_directory: String:
 var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
 var regex := RegEx.create_from_string("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
+# Reference regex without godot escapes: ((\[n\]|\[n\+\])?((?!(\[n\]|\[n\+\])).)*)
+var split_regex := RegEx.create_from_string("((\\[n\\]|\\[n\\+\\])?((?!(\\[n\\]|\\[n\\+\\])).)*)")
 
 enum States {REVEALING, IDLE, DONE}
 var state = States.IDLE
@@ -79,12 +81,17 @@ func _execute() -> void:
 	
 	dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
-	var split_text := get_property_translated('text').split('[n]')
+	
+	var split_text := []
+	for i in split_regex.search_all(get_property_translated('text')):
+		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
+		split_text[-1].append(i.get_string().begins_with('[n+]'))
+	
 	for section_idx in range(len(split_text)):
 		state = States.REVEALING
-		var final_text: String = dialogic.Text.parse_text(split_text[section_idx])
+		var final_text: String = dialogic.Text.parse_text(split_text[section_idx][0])
 		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
-		final_text = await dialogic.Text.update_dialog_text(final_text)
+		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
 		
 		# Plays the audio region for the current line.
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
@@ -354,7 +361,8 @@ func suggest_bbcode(text:CodeEdit):
 	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
 		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"),)
 		text.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-
+	for i in [['new event', 'n'],['new event (same box)', 'n+']]:
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("ArrowRight", "EditorIcons"),)
 
 #################### SYNTAX HIGHLIGHTING #######################################
 ################################################################################
@@ -366,7 +374,7 @@ func load_text_effects():
 		for idx in DialogicUtil.get_indexers():
 			for effect in idx._get_text_effects():
 				text_effects+= effect['command']+'|'
-		text_effects += "b|i|u|s|code|p|center|left|right|fill|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
+		text_effects += "b|i|u|s|code|p|center|left|right|fill|n\\+|n|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
 	if text_effects_regex.get_pattern().is_empty():
 		text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 
