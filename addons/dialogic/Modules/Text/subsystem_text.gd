@@ -435,8 +435,9 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
-	
+	show_next_indicators()
 	await input_handler.dialogic_action_priority
+	hide_next_indicators()
 	input_handler.action_was_consumed = true
 
 
@@ -475,3 +476,5 @@ func modifier_autopauses(text:String) -> String:
 				text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
 				offset += len('[pause='+str(autopauses[i])+']')
 	return text
+
+

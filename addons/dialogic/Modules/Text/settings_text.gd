@@ -25,6 +25,10 @@ func _refresh():
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
+	
+	%AutoPausesAbsolute.button_pressed = ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
+	%NewEvents.button_pressed = ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false)
+	%NewEventOption.select(ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0))
 	load_autopauses(ProjectSettings.get_setting('dialogic/text/autopauses', {}))
 
 
@@ -124,12 +128,22 @@ func add_autopause_set(text:String, time:float) -> void:
 	autopause_sets[len(autopause_sets)] = info
 	
 
-func _on_remove_autopauses_set_pressed(index:int):
+func _on_remove_autopauses_set_pressed(index:int) -> void:
 	for key in autopause_sets[index]:
 		autopause_sets[index][key].queue_free()
 	autopause_sets.erase(index)
 
 
-func _on_auto_pauses_absolute_toggled(button_pressed):
+func _on_auto_pauses_absolute_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/text/absolute_autopauses', button_pressed)
+	ProjectSettings.save()
+
+
+func _on_new_events_toggled(button_pressed:bool) -> void:
+	ProjectSettings.set_setting('dialogic/text/split_at_new_lines', button_pressed)
+	ProjectSettings.save()
+
+
+func _on_new_event_option_item_selected(index:int) -> void:
+	ProjectSettings.set_setting('dialogic/text/split_at_new_lines_as', index)
 	ProjectSettings.save()

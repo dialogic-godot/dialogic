@@ -41,8 +41,8 @@ var _character_from_directory: String:
 var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
 var regex := RegEx.create_from_string("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
-# Reference regex without godot escapes: ((\[n\]|\[n\+\])?((?!(\[n\]|\[n\+\])).)*)
-var split_regex := RegEx.create_from_string("((\\[n\\]|\\[n\\+\\])?((?!(\\[n\\]|\\[n\\+\\])).)*)")
+# Reference regex without godot escapes: ((\[n\]|\[n\+\])?((?!(\[n\]|\[n\+\]))(.|\n))*)
+var split_regex := RegEx.create_from_string("((\\[n\\]|\\[n\\+\\])?((?!(\\[n\\]|\\[n\\+\\]))(.|\\n))*)")
 
 enum States {REVEALING, IDLE, DONE}
 var state = States.IDLE
@@ -82,14 +82,23 @@ func _execute() -> void:
 	dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
 	
+	var final_text :String= get_property_translated('text')
+	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
+		match ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0):
+			0:
+				final_text = final_text.replace('\n', '[n]')
+			1:
+				final_text = final_text.replace('\n', '[n+][br]')
+	
 	var split_text := []
-	for i in split_regex.search_all(get_property_translated('text')):
+	for i in split_regex.search_all(final_text):
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 	
 	for section_idx in range(len(split_text)):
+		dialogic.Text.hide_next_indicators()
 		state = States.REVEALING
-		var final_text: String = dialogic.Text.parse_text(split_text[section_idx][0])
+		final_text = dialogic.Text.parse_text(split_text[section_idx][0])
 		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append':split_text[section_idx][1]})
 		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
 		
@@ -326,7 +335,7 @@ var completion_text_character_getter_regex := RegEx.new()
 var completion_text_effects := {}
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	if completion_text_character_getter_regex.get_pattern().is_empty():
-		completion_text_character_getter_regex.compile("\\W*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(1)\"|)")
+		completion_text_character_getter_regex.compile("(\"[^\"]*\"|[^\\s:]*)")
 	
 	if completion_text_effects.is_empty():
 		for idx in DialogicUtil.get_indexers():
@@ -334,7 +343,8 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				completion_text_effects[effect['command']] = effect
 	
 	if not ':' in line.substr(0, TextNode.get_caret_column()) and symbol == '(':
-		var character := completion_text_character_getter_regex.search(line).get_string('name')
+		var character := completion_text_character_getter_regex.search(line).get_string().trim_prefix('"').trim_suffix('"')
+		
 		CodeCompletionHelper.suggest_portraits(TextNode, character)
 	if symbol == '[':
 		suggest_bbcode(TextNode)
