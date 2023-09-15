@@ -13,7 +13,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 
 
 func load_game_state():
-	add_layout_style(dialogic.current_state_info.get('style'))
+	add_layout_style(dialogic.current_state_info.get('style', ''))
 
 
 ####################################################################################################
