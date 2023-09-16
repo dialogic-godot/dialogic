@@ -237,7 +237,7 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 		speed_multiplier = _speed_multiplier
 	
 	if _user_speed == -1:
-		_user_speed = Dialogic.Settings.text_speed
+		_user_speed = Dialogic.Settings.get_setting('text_speed', 1)
 	
 	
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
