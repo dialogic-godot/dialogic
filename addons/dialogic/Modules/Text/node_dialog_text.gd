@@ -47,8 +47,6 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 		return
 	show()
 	
-	lspeed = Dialogic.Settings.get_setting('text_speed', 0.01)
-	
 	if !keep_previous:
 		text = _text
 		base_visible_characters = 0

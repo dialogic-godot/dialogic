@@ -15,7 +15,7 @@ func _get_info_section():
 	return $InformationSection
 
 func _refresh():
-	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/settings/text_speed', 0.01)
+	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
@@ -56,7 +56,7 @@ func _on_skippable_delay_value_changed(value: float) -> void:
 
 
 func _on_DefaultSpeed_value_changed(value):
-	ProjectSettings.set_setting('dialogic/settings/text_speed', value)
+	ProjectSettings.set_setting('dialogic/text/letter_speed', value)
 	ProjectSettings.save()
 
 

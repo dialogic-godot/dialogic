@@ -22,9 +22,13 @@ var text_effects_regex := RegEx.new()
 var text_modifiers := []
 var input_handler :Node = null
 
+# set by the [speed] effect, multies the letter speed and [pause] effects
 var speed_multiplier := 1.0
-var user_speed_multiplier := 1.0
-var autopauses := {}
+# stores the pure letter speed (unmultiplied)
+var _pure_letter_speed := 0.1
+var _letter_speed_absolute := false
+
+var _autopauses := {}
 
 ####################################################################################################
 ##					STATE
@@ -86,6 +90,8 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 ## Instant can be used to skip all revieling.
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
+	update_text_speed()
+	
 	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
 		if text.is_empty():
 			await hide_text_boxes(instant)
@@ -218,6 +224,30 @@ func hide_next_indicators(fake_arg=null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		next_indicator.hide()
 
+
+func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_multiplier:float= -1, _user_speed:float=-1) -> void:
+	if letter_speed == -1:
+		letter_speed = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
+	_pure_letter_speed = letter_speed
+	_letter_speed_absolute = absolute
+	
+	if _speed_multiplier == -1:
+		_speed_multiplier = speed_multiplier
+	else:
+		speed_multiplier = _speed_multiplier
+	
+	if _user_speed == -1:
+		_user_speed = Dialogic.Settings.text_speed
+	
+	
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if absolute:
+			text_node.lspeed = letter_speed
+		else:
+			text_node.lspeed = letter_speed*_speed_multiplier*_user_speed
+
+
+
 ####################################################################################################
 ##					HELPERS
 ####################################################################################################
@@ -267,7 +297,6 @@ func collect_text_effects() -> void:
 	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>"+text_effect_names.trim_suffix("|")+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 
 
-
 ## Returns the string with all text effects removed
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
@@ -277,8 +306,8 @@ func parse_text_effects(text:String) -> String:
 	var position_correction := 0
 	var bbcode_correction := 0
 	for effect_match in text_effects_regex.search_all(text):
-		rtl.text = text.substr(0, effect_match.get_start())
-		bbcode_correction = effect_match.get_start()-len(rtl.get_parsed_text())
+		rtl.text = text.substr(0, effect_match.get_start()-position_correction)
+		bbcode_correction = effect_match.get_start()-position_correction-len(rtl.get_parsed_text())
 		# append [index] = [command, value] to effects dict
 		parsed_text_effect_info.append({'index':effect_match.get_start()-position_correction-bbcode_correction, 'execution_info':text_effects[effect_match.get_string('command')], 'value': effect_match.get_string('value').strip_edges()})
 		
@@ -335,13 +364,19 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 	
-	autopauses = {}
-	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
+	_autopauses = {}
+	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/_autopauses', {})
 	for i in autopause_data.keys():
-		autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*[\\]\\}]|$))')] = autopause_data[i]
+		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
 	input_handler = Node.new()
 	input_handler.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler)
+	
+	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
+
+
+func _update_user_speed(user_speed:float) -> void:
+	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
 func color_names(text:String) -> String:
@@ -386,21 +421,19 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and user_speed_multiplier != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*user_speed_multiplier).timeout
-	elif speed_multiplier != 0 and user_speed_multiplier != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*user_speed_multiplier).timeout
+		elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
+			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.text_speed).timeout
+	elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
+		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.text_speed).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
-		speed_multiplier = float(argument)
-		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*speed_multiplier*user_speed_multiplier
+		update_text_speed(-1, false, float(argument), -1)
 	else:
-		speed_multiplier = 1
-		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*user_speed_multiplier
+		update_text_speed(-1, false, 1, -1)
 
 
 func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
@@ -408,11 +441,11 @@ func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
 		return
 	if argument:
 		if argument.ends_with('!'):
-			text_node.lspeed = float(argument.trim_suffix('!'))
+			update_text_speed(float(argument.trim_suffix('!')), true)
 		else:
-			text_node.lspeed = float(argument)*speed_multiplier*user_speed_multiplier
+			update_text_speed(float(argument), false)
 	else:
-		text_node.lspeed = dialogic.Settings.get_setting('text_speed', 0.01)*speed_multiplier*user_speed_multiplier
+		update_text_speed()
 
 
 func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
@@ -466,15 +499,13 @@ func modifier_break(text:String) -> String:
 
 func modifier_autopauses(text:String) -> String:
 	var absolute := ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
-	for i in autopauses.keys():
+	for i in _autopauses.keys():
 		var offset := 0
 		for result in i.search_all(text):
 			if absolute:
-				text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+'!]')
-				offset += len('[pause='+str(autopauses[i])+'!]')
+				text = text.insert(result.get_end()+offset, '[pause='+str(_autopauses[i])+'!]')
+				offset += len('[pause='+str(_autopauses[i])+'!]')
 			else:
-				text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
-				offset += len('[pause='+str(autopauses[i])+']')
+				text = text.insert(result.get_end()+offset, '[pause='+str(_autopauses[i])+']')
+				offset += len('[pause='+str(_autopauses[i])+']')
 	return text
-
-

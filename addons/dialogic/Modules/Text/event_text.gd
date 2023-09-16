@@ -117,7 +117,6 @@ func _execute() -> void:
 		elif Dialogic.Text.should_autoadvance():
 			dialogic.Text.show_next_indicators(false, true)
 			dialogic.Text.input_handler.start_autoadvance()
-			# In this case continuing is handled by the input script.
 		else:
 			dialogic.Text.show_next_indicators()
 		
@@ -149,7 +148,7 @@ func _on_dialogic_input_action():
 
 
 func _on_dialogic_input_autoadvance():
-	if state == States.IDLE:
+	if state == States.IDLE or state == States.DONE:
 		advance.emit()
 
 ################################################################################
