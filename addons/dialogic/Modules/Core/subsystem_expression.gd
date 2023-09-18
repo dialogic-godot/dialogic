@@ -16,7 +16,7 @@ func execute_string(string:String, default = null) -> Variant:
 	string = string.replace('len(', 'd_len(')
 	
 	
-	var regex: RegEx = RegEx.create_from_string('{(\\w.*)}')
+	var regex: RegEx = RegEx.create_from_string('{([^{}]*)}')
 	
 	for res in regex.search_all(string):
 		var value: String = str(dialogic.VAR.get_variable(res.get_string()))
