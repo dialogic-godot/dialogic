@@ -3,6 +3,10 @@ extends DialogicCharacterEditorMainSection
 
 ## Character editor tab that allows setting a custom style fot the character. 
 
+func _get_title() -> String:
+	return "Style"
+
+
 func _ready() -> void:
 	%StyleName.resource_icon = get_theme_icon("PopupMenu", "EditorIcons")
 	%StyleName.get_suggestions_func = get_style_suggestions

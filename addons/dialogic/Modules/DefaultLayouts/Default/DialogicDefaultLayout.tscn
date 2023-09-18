@@ -375,6 +375,7 @@ offset_right = 86.5
 offset_bottom = 103.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 alignment = 1
 metadata/_edit_layout_mode = 1
 
@@ -533,6 +534,7 @@ offset_right = 210.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("22_ltkcf")
 input_line_edit = NodePath("TextInputPanel/VBoxContainer/InputField")
 text_label = NodePath("TextInputPanel/VBoxContainer/TextLabel")

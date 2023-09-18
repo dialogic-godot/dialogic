@@ -80,6 +80,9 @@ func _ready():
 	if Engine.is_editor_hint():
 		resized.connect(_update_debug_origin)
 		
+		if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
+			default_portrait_scene = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
+		
 		debug_origin = Sprite2D.new()
 		add_child(debug_origin)
 		debug_origin.texture = get_theme_icon("EditorPosition", "EditorIcons")

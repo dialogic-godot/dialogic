@@ -3,6 +3,9 @@ extends DialogicCharacterEditorPortraitSection
 
 ## Tab that allows setting an image file on a portrait. 
 
+func _get_title() -> String:
+	return "Scene"
+
 
 func _ready() -> void:
 	%ImagePicker.file_filter = "*.png, *.svg"
@@ -16,7 +19,7 @@ func _ready() -> void:
 func _load_portrait_data(data:Dictionary) -> void:
 	%ScenePicker.set_value(data.get('scene', ''))
 	%ImagePicker.set_value(data.get('image', ''))
-	update_image_picker_visibility(data['scene'].is_empty())
+	update_image_picker_visibility(data['scene'].is_empty() and ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty())
 
 
 func _on_image_picker_value_changed(prop_name:String, value:String):

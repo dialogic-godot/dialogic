@@ -3,6 +3,9 @@ extends DialogicCharacterEditorMainSection
 
 ## Character editor tab that allows editing typing sound moods.
 
+func _get_title() -> String:
+	return "Typing Sounds"
+
 var current_mood := ''
 var current_moods_info := {}
 var default_mood := ''

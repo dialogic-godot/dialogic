@@ -45,6 +45,12 @@ func resume() -> void:
 			portrait.animation_node.resume()
 
 
+func _ready() -> void:
+	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
+		default_portrait_scene = load(ProjectSettings.get_setting('dialogic/portraits/default_portrait', ''))
+	
+
+
 ################### Main Methods  ##################################################################
 ####################################################################################################
 ## The following methods allow manipulating portraits. 

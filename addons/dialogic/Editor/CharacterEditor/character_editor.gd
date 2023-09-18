@@ -76,6 +76,10 @@ func _open_resource(resource:Resource) -> void:
 
 
 func _open(extra_info:Variant="") -> void:
+	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
+		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
+	else:
+		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 	%PortraitChangeInfo.hide()
 
 
@@ -135,9 +139,10 @@ func _ready() -> void:
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
 	
 	
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main_exports.tscn").instantiate(), %PortraitSettingsSection)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn").instantiate(), %PortraitSettingsSection)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main.tscn").instantiate(), %PortraitSettingsSection)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.tscn").instantiate(), %PortraitSettingsSection)
-	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn").instantiate(), %PortraitSettingsSection)
 	
 	# Load custom sections from modules
 	for indexer in DialogicUtil.get_indexers():
@@ -155,21 +160,23 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	if edit.has_signal('update_preview'):
 		edit.update_preview.connect(update_preview)
 	
-	var button := Button.new()
-	button.flat = true
-	button.theme_type_variation = "DialogicSection"
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	button.text = edit.name
-	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	button.pressed.connect(_on_section_button_pressed.bind(button))
-	button.focus_mode = Control.FOCUS_NONE
-	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
-	parent.add_child(button)
+	var button :Button 
+	if edit._show_title():
+		button = Button.new()
+		button.flat = true
+		button.theme_type_variation = "DialogicSection"
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		button.text = edit._get_title()
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		button.pressed.connect(_on_section_button_pressed.bind(button))
+		button.focus_mode = Control.FOCUS_NONE
+		button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+		button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
+		parent.add_child(button)
 	parent.add_child(edit)
 	parent.add_child(HSeparator.new())
-	if !edit.name == "General":
+	if button and !edit._start_opened():
 		_on_section_button_pressed(button)
 
 

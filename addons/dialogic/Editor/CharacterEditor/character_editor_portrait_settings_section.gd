@@ -12,6 +12,15 @@ var character_editor:Control
 
 var selected_item :TreeItem = null
 
+func _get_title() -> String:
+	return "CustomSection"
+
+func _show_title() -> bool:
+	return true
+
+func _start_opened() -> bool:
+	return false
+
 func _load_portrait_data(data:Dictionary) -> void:
 	pass
 
