@@ -320,7 +320,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
 			input.set_value(value)
 			input.property_name = property_info['name']
-			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_info.name, property_changed))
+			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
@@ -339,7 +339,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.hide_reset = true
 				if value != null:
 					input.set_value(value)
-				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_info.name, property_changed))
+				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
 			else:
 				input = LineEdit.new()
 				if value != null:

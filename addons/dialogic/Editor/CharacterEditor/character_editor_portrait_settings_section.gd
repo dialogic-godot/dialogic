@@ -9,7 +9,7 @@ signal changed
 signal update_preview
 
 var character_editor:Control 
-
+var hint_text := ""
 var selected_item :TreeItem = null
 
 func _get_title() -> String:

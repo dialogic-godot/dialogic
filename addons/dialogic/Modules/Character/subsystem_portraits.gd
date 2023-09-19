@@ -118,8 +118,7 @@ func _change_portrait(character_node:Node2D, portrait:String, update_transform:=
 	if portrait_node:
 		character_node.set_meta('portrait', portrait)
 		
-		for property in character.portraits[portrait].get('export_overrides', {}).keys():
-			portrait_node.set(property, str_to_var(character.portraits[portrait]['export_overrides'][property]))
+		DialogicUtil.apply_scene_export_overrides(portrait_node, character.portraits[portrait].get('export_overrides', {}))
 		
 		if portrait_node.has_method('_update_portrait'):
 			portrait_node._update_portrait(character, portrait)

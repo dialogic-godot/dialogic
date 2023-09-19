@@ -8,7 +8,7 @@ extends Control
 signal changed
 
 var character_editor:Control 
-
+var hint_text := ""
 
 func _get_title() -> String:
 	return "MainSection"
