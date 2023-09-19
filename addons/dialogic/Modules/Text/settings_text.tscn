@@ -6,17 +6,17 @@
 [ext_resource type="PackedScene" uid="uid://dyp7m2nvab1aj" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn" id="4_0hlwb"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="5_cc70e"]
 
-[sub_resource type="Image" id="Image_cb623"]
+[sub_resource type="Image" id="Image_ufvii"]
 data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
 "height": 16,
 "mipmaps": false,
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_0ag3w"]
-image = SubResource("Image_cb623")
+[sub_resource type="ImageTexture" id="ImageTexture_dmv7q"]
+image = SubResource("Image_ufvii")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
 
@@ -55,12 +55,12 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBox/DefaultSpeedLabel"]
 layout_mode = 2
-text = "Default speed"
+text = "Default letter speed"
 
 [node name="HintTooltip2" parent="VBoxContainer/VBox/DefaultSpeedLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
 
 [node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/VBox"]
@@ -79,7 +79,7 @@ text = "Input action"
 layout_mode = 2
 tooltip_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
 
@@ -100,7 +100,7 @@ layout_mode = 2
 tooltip_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
@@ -130,7 +130,7 @@ text = "Autocolor names"
 [node name="HintTooltip5" parent="VBoxContainer/VBox/ColorNames" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If enabled character names will be colored in the characters color in text events."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "If enabled character names will be colored in the characters color in text events."
 
 [node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/VBox"]
@@ -147,7 +147,7 @@ text = "Hide textbox when empty"
 [node name="HintTooltip6" parent="VBoxContainer/VBox/TextboxHiddenLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If disabled the textbox will not be hidden at the beginning of dialogs, even if empty."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "If disabled the textbox will not be hidden at the beginning of dialogs, even if empty."
 
 [node name="TextboxHidden" type="CheckBox" parent="VBoxContainer/VBox"]
@@ -164,7 +164,7 @@ text = "Autocontinue"
 [node name="HintTooltip7" parent="VBoxContainer/VBox/HBoxContainer2" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If enabled dialogic will automatically continue to the next event when text has finished revealing (after a delay set in seconds)."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "If enabled dialogic will automatically continue to the next event when text has finished revealing (after a delay set in seconds)."
 
 [node name="Autoadvance" type="HBoxContainer" parent="VBoxContainer/VBox"]
@@ -180,6 +180,39 @@ layout_mode = 2
 size_flags_horizontal = 3
 step = 0.01
 suffix = "s"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBox"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer/VBox/HBoxContainer3"]
+layout_mode = 2
+text = "New lines as new events"
+
+[node name="HintTooltip7" parent="VBoxContainer/VBox/HBoxContainer3" instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "If enabled dialogic, new lines will be treated as [n] effects, 
+seemingly waiting for input before starting a new text."
+texture = SubResource("ImageTexture_dmv7q")
+hint_text = "If enabled dialogic, new lines will be treated as [n] effects, 
+seemingly waiting for input before starting a new text."
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBox"]
+layout_mode = 2
+
+[node name="NewEvents" type="CheckBox" parent="VBoxContainer/VBox/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewEventOption" type="OptionButton" parent="VBoxContainer/VBox/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 2
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "As new event"
+popup/item_0/id = 0
+popup/item_1/text = "Appended"
+popup/item_1/id = 1
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
@@ -198,7 +231,7 @@ tooltip_text = "Adds pauses after certain letters.
 
 Each set can contain multiple letters that will (individually) 
 have a pause of the given length added after them."
-texture = SubResource("ImageTexture_0ag3w")
+texture = SubResource("ImageTexture_dmv7q")
 hint_text = "Adds pauses after certain letters. 
 
 Each set can contain multiple letters that will (individually) 
@@ -210,14 +243,28 @@ size_flags_horizontal = 8
 size_flags_vertical = 4
 text = "Add set"
 
-[node name="AutoPauseSets" type="VBoxContainer" parent="VBoxContainer"]
+[node name="AutoPauseSets" type="GridContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+columns = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/AutoPauseSets"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-alignment = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Absolute auto-pause times"
+
+[node name="HintTooltip7" parent="VBoxContainer/HBoxContainer3" instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "If not enabled autopauses will be multiplied by the speed and user speed. When enabled those will be ignored."
+texture = SubResource("ImageTexture_dmv7q")
+hint_text = "If not enabled autopauses will be multiplied by the speed and user speed. When enabled those will be ignored."
+
+[node name="AutoPausesAbsolute" type="CheckBox" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="InformationSection" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -243,11 +290,12 @@ fit_content = true
 [node name="MultilineText" parent="InformationSection" instance=ExtResource("4_0hlwb")]
 layout_mode = 2
 theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
-text = "Use [speed=x] to change the speed 
+text = "Use [speed=x] to change the speed multiplier (affects letter speed and pauses). 1 = no effect, 2 = half speed, 0.5 = double speed, 0 = instant
+Use [lspeed=x] to change the letter speed (affected by the speed) or [lspeed=x!] to change the letter speed absolutely
 Use [br] to add a line break
 Use <Word/Other Word> to insert a random entry
 Use [portrait=sad] to change the portrait of the speaker
-Use [pause=x] to pauses for x seconds
+Use [pause=x] to pauses for x seconds (affected by the speed) or [pause=x!] to pause for x seconds (absolute, not affected by speed
 Use [mood=sad] to change the typing sound mood
 Use [signal=arg] to emit the Dialogic.text_signal"
 editable = false
@@ -275,4 +323,7 @@ fit_content = true
 [connection signal="toggled" from="VBoxContainer/VBox/TextboxHidden" to="." method="_on_textbox_hidden_toggled"]
 [connection signal="toggled" from="VBoxContainer/VBox/Autoadvance/Autoadvance" to="." method="_on_Autoadvance_toggled"]
 [connection signal="value_changed" from="VBoxContainer/VBox/Autoadvance/AutoadvanceDelay" to="." method="_on_AutoadvanceDelay_value_changed"]
+[connection signal="toggled" from="VBoxContainer/VBox/HBoxContainer4/NewEvents" to="." method="_on_new_events_toggled"]
+[connection signal="item_selected" from="VBoxContainer/VBox/HBoxContainer4/NewEventOption" to="." method="_on_new_event_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Add" to="." method="_on_add_autopauses_set_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer3/AutoPausesAbsolute" to="." method="_on_auto_pauses_absolute_toggled"]

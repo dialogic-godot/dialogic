@@ -14,6 +14,7 @@ func _execute() -> void:
 	if hide_textbox: 
 		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = Dialogic.States.IDLE
+	await dialogic.Text.input_handler.dialogic_action
 	finish()
 
 ################################################################################
@@ -26,7 +27,6 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 12
 	expand_by_default = false
-	continue_at_end = false
 
 
 ################################################################################

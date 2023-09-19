@@ -57,7 +57,6 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 1
 	can_contain_events = true
-	continue_at_end = true
 
 
 # return a control node that should show on the END BRANCH node

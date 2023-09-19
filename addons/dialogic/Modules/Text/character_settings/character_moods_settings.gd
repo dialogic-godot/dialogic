@@ -214,7 +214,7 @@ func preview() -> void:
 	var preview_timer := Timer.new()
 	DialogicUtil.update_timer_process_callback(preview_timer)
 	add_child(preview_timer)
-	preview_timer.start(ProjectSettings.get_setting('dialogic/settings/text_speed', 0.01))
+	preview_timer.start(ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01))
 	
 	for i in range(20):
 		$Preview._on_continued_revealing_text("a")

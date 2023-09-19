@@ -46,7 +46,6 @@ func _init() -> void:
 	set_default_color('Color2')
 	event_category = "Other"
 	event_sorting_index = 2
-	continue_at_end = true
 	expand_by_default = false
 
 

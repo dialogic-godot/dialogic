@@ -9,7 +9,12 @@ extends DialogicPortrait
 
 ## If the custom portrait accepts a change, then accept it here
 func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String) -> void:
-	super._update_portrait(passed_character, passed_portrait)
+	if passed_portrait == "" or not passed_portrait in passed_character.portraits.keys():
+		passed_portrait = passed_character.default_portrait
+	
+	portrait = passed_portrait
+	character = passed_character
+	
 	if character.portraits.has(portrait):
 		$Portrait.texture = null
 		if !image.is_empty():

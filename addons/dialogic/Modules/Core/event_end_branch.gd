@@ -44,7 +44,6 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 0
 	disable_editor_button = true
-	continue_at_end = true
 
 
 ################################################################################

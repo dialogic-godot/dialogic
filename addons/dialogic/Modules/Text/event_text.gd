@@ -41,6 +41,12 @@ var _character_from_directory: String:
 var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
 var regex := RegEx.create_from_string("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
+# Reference regex without godot escapes: ((\[n\]|\[n\+\])?((?!(\[n\]|\[n\+\]))(.|\n))*)
+var split_regex := RegEx.create_from_string("((\\[n\\]|\\[n\\+\\])?((?!(\\[n\\]|\\[n\\+\\]))(.|\\n))*)")
+
+enum States {REVEALING, IDLE, DONE}
+var state = States.IDLE
+signal advance
 
 ################################################################################
 ## 						EXECUTION
@@ -73,34 +79,77 @@ func _execute() -> void:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
 	
-	var final_text: String = dialogic.Text.parse_text(get_property_translated('text'))
-	dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait})
-	final_text = await dialogic.Text.update_dialog_text(final_text)
+	dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
+	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
 	
-	# Plays the audio region for the current line.
-	if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
-		dialogic.Voice.play_voice()
+	var final_text :String= get_property_translated('text')
+	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
+		match ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0):
+			0:
+				final_text = final_text.replace('\n', '[n]')
+			1:
+				final_text = final_text.replace('\n', '[n+][br]')
 	
-	await dialogic.Text.text_finished
+	var split_text := []
+	for i in split_regex.search_all(final_text):
+		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
+		split_text[-1].append(i.get_string().begins_with('[n+]'))
 	
-	#end of dialog
-	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
-		dialogic.Text.show_next_indicators(true)
-		dialogic.Choices.show_current_choices(false)
-		dialogic.current_state = dialogic.States.AWAITING_CHOICE
-	elif Dialogic.Text.should_autoadvance():
-		dialogic.Text.show_next_indicators(false, true)
-		# In this case continuing is handled by the input script.
-	else:
-		dialogic.Text.show_next_indicators()
-		finish()
-	
-	if dialogic.has_subsystem('History'):
-		if character:
-			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+	for section_idx in range(len(split_text)):
+		dialogic.Text.hide_next_indicators()
+		state = States.REVEALING
+		final_text = dialogic.Text.parse_text(split_text[section_idx][0])
+		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append':split_text[section_idx][1]})
+		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
+		
+		# Plays the audio region for the current line.
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
+			dialogic.Voice.play_voice()
+		
+		await dialogic.Text.text_finished
+		state = States.IDLE
+		#end of dialog
+		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+			dialogic.Text.show_next_indicators(true)
+			dialogic.Choices.show_current_choices(false)
+			dialogic.current_state = dialogic.States.AWAITING_CHOICE
+			return
+		elif Dialogic.Text.should_autoadvance():
+			dialogic.Text.show_next_indicators(false, true)
+			dialogic.Text.input_handler.start_autoadvance()
 		else:
-			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.event_was_read(self)
+			dialogic.Text.show_next_indicators()
+		
+		if section_idx == len(split_text)-1:
+			state = States.DONE
+		
+		if dialogic.has_subsystem('History'):
+			if character:
+				dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+			else:
+				dialogic.History.store_simple_history_entry(final_text, event_name)
+			dialogic.History.event_was_read(self)
+		
+		await advance
+	
+	finish()
+
+
+func _on_dialogic_input_action():
+	match state:
+		States.REVEALING:
+			if Dialogic.Text.can_skip():
+				Dialogic.Text.skip_text_animation()
+				Dialogic.Text.input_handler.block_input()
+		_:
+			if Dialogic.Text.can_manual_advance():
+				advance.emit()
+				Dialogic.Text.input_handler.block_input()
+
+
+func _on_dialogic_input_autoadvance():
+	if state == States.IDLE or state == States.DONE:
+		advance.emit()
 
 ################################################################################
 ## 						INITIALIZE
@@ -112,7 +161,6 @@ func _init() -> void:
 	event_category = "Main"
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
-	continue_at_end = false
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 
@@ -125,7 +173,6 @@ func to_text() -> String:
 	text_to_use = text_to_use.replace(':', '\\:')
 	if text_to_use.is_empty():
 		text_to_use = "<Empty Text Event>"
-	
 	
 	if character:
 		var name := ""
@@ -287,7 +334,7 @@ var completion_text_character_getter_regex := RegEx.new()
 var completion_text_effects := {}
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	if completion_text_character_getter_regex.get_pattern().is_empty():
-		completion_text_character_getter_regex.compile("\\W*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(1)\"|)")
+		completion_text_character_getter_regex.compile("(\"[^\"]*\"|[^\\s:]*)")
 	
 	if completion_text_effects.is_empty():
 		for idx in DialogicUtil.get_indexers():
@@ -295,7 +342,8 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				completion_text_effects[effect['command']] = effect
 	
 	if not ':' in line.substr(0, TextNode.get_caret_column()) and symbol == '(':
-		var character := completion_text_character_getter_regex.search(line).get_string('name')
+		var character := completion_text_character_getter_regex.search(line).get_string().trim_prefix('"').trim_suffix('"')
+		
 		CodeCompletionHelper.suggest_portraits(TextNode, character)
 	if symbol == '[':
 		suggest_bbcode(TextNode)
@@ -321,7 +369,8 @@ func suggest_bbcode(text:CodeEdit):
 	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
 		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"),)
 		text.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-
+	for i in [['new event', 'n'],['new event (same box)', 'n+']]:
+		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("ArrowRight", "EditorIcons"),)
 
 #################### SYNTAX HIGHLIGHTING #######################################
 ################################################################################
@@ -333,7 +382,7 @@ func load_text_effects():
 		for idx in DialogicUtil.get_indexers():
 			for effect in idx._get_text_effects():
 				text_effects+= effect['command']+'|'
-		text_effects += "b|i|u|s|code|p|center|left|right|fill|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
+		text_effects += "b|i|u|s|code|p|center|left|right|fill|n\\+|n|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb|br"
 	if text_effects_regex.get_pattern().is_empty():
 		text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 

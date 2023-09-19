@@ -131,18 +131,17 @@ func handle_event(event_index:int) -> void:
 		else:
 			end_timeline()
 			return
-
+	
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
 	if current_timeline_events[event_index]['event_node_ready'] == false:
 		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['event_node_as_text'])
-
+	
 	current_event_idx = event_index
-
-	if current_timeline_events[event_index].continue_at_end:
-		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
-			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
-
+	
+	if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
+		current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
+	
 	current_timeline_events[event_index].execute(self)
 	event_handled.emit(current_timeline_events[event_index])
 

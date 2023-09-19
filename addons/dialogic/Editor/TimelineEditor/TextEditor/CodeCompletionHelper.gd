@@ -180,10 +180,13 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 # Helper that adds all characters as options
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, text_event_start:=false) -> void:
 	for character in text.timeline_editor.editors_manager.resource_helper.character_directory:
+		var result :String = character
+		if " " in character:
+			result = '"'+character+'"'
 		if text_event_start and text.timeline_editor.editors_manager.resource_helper.character_directory[character].resource.portraits.is_empty():
-			text.add_code_completion_option(type, character, character+': ', syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-		else:
-			text.add_code_completion_option(type, character, character, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+			result += ':'
+		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+
 
 # Helper that adds all timelines as options
 func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:

@@ -23,11 +23,13 @@ func _get_character_editor_sections() -> Array:
 func _get_text_effects() -> Array[Dictionary]:
 	return [
 		{'command':'speed', 'subsystem':'Text', 'method':'effect_speed', 'arg':true},
+		{'command':'lspeed', 'subsystem':'Text', 'method':'effect_lspeed', 'arg':true},
 		{'command':'pause', 'subsystem':'Text', 'method':'effect_pause', 'arg':true},
 		{'command':'signal', 'subsystem':'Text', 'method':'effect_signal', 'arg':true},
 		{'command':'mood', 'subsystem':'Text', 'method':'effect_mood', 'arg':true},
 		{'command':'aa', 'subsystem':'Text', 'method':'effect_autoadvance'},
 		{'command':'ns', 'subsystem':'Text', 'method':'effect_noskip'},
+		{'command':'input', 'subsystem':'Text', 'method':'effect_input'},
 	]
 
 
