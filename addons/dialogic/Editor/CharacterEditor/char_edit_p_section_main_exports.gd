@@ -9,6 +9,7 @@ func _show_title() -> bool:
 var current_portrait_data := {}
 
 func _load_portrait_data(data:Dictionary) -> void:
+	get_parent().get_child(get_index()+1).hide()
 	current_portrait_data = data
 	load_portrait_scene_export_variables()
 
@@ -49,7 +50,6 @@ func load_portrait_scene_export_variables():
 			else:
 				skip = true
 				continue
-
 
 func set_export_override(property_name:String, value:String = "") -> void:
 	var data:Dictionary = selected_item.get_metadata(0)
