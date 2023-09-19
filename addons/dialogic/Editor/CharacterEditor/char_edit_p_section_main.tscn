@@ -23,10 +23,12 @@ script = ExtResource("1_ht8lu")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="ScenePicker" parent="HBox" instance=ExtResource("2_k8xs0")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 file_filter = "*.tscn, *.scn; Scenes"
 placeholder = "Default scene"
 resource_icon = SubResource("ImageTexture_mbv6v")
