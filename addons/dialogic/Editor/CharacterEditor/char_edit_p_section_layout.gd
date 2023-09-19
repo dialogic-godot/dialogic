@@ -3,6 +3,9 @@ extends DialogicCharacterEditorPortraitSection
 
 ## Tab that allows setting size, offset and mirror of a portrait. 
 
+func _get_title() -> String:
+	return "Scale, Offset & Mirror"
+
 
 func _load_portrait_data(data:Dictionary) -> void:
 	%IgnoreScale.button_pressed = data.get('ignore_char_scale', false)

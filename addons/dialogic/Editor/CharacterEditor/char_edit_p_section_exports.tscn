@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://cfcs7lb6gqnmd"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.gd" id="1_isys8"]
 
-[node name="Exports" type="VBoxContainer"]
+[node name="Settings" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 35)
 offset_right = 367.0
 offset_bottom = 82.0
@@ -10,6 +10,8 @@ script = ExtResource("1_isys8")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
+theme_type_variation = &"DialogicHintText"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "There are no exported variables to override. Add @export properties to the root script of your scene and make sure it's in @tool mode."
 autowrap_mode = 3
 

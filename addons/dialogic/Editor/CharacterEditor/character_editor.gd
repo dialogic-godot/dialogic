@@ -13,7 +13,6 @@ var current_previewed_scene = null
 
 # References
 var selected_item: TreeItem
-
 var def_portrait_path :String= DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 
 ##############################################################################
@@ -76,6 +75,10 @@ func _open_resource(resource:Resource) -> void:
 
 
 func _open(extra_info:Variant="") -> void:
+	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
+		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
+	else:
+		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 	%PortraitChangeInfo.hide()
 
 
@@ -114,7 +117,8 @@ func new_character(path: String) -> void:
 ##############################################################################
 
 func _ready() -> void:
-
+	if get_parent() is SubViewport:
+		return
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
@@ -128,6 +132,8 @@ func _ready() -> void:
 	
 	%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	
+	set_portrait_settings_position(DialogicUtil.get_editor_setting('portrait_settings_position', true))
+	
 	await find_parent('EditorView').ready
 	
 	# Add general tabs
@@ -135,9 +141,10 @@ func _ready() -> void:
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_section_portraits.tscn").instantiate(), %MainSettingsSections)
 	
 	
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main_exports.tscn").instantiate(), %PortraitSettingsSection)
+	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn").instantiate(), %PortraitSettingsSection)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main.tscn").instantiate(), %PortraitSettingsSection)
 	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.tscn").instantiate(), %PortraitSettingsSection)
-	add_settings_section(load("res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.tscn").instantiate(), %PortraitSettingsSection)
 	
 	# Load custom sections from modules
 	for indexer in DialogicUtil.get_indexers():
@@ -155,21 +162,33 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	if edit.has_signal('update_preview'):
 		edit.update_preview.connect(update_preview)
 	
-	var button := Button.new()
-	button.flat = true
-	button.theme_type_variation = "DialogicSection"
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	button.text = edit.name
-	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	button.pressed.connect(_on_section_button_pressed.bind(button))
-	button.focus_mode = Control.FOCUS_NONE
-	button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
-	parent.add_child(button)
+	var button :Button 
+	if edit._show_title():
+		var hbox := HBoxContainer.new()
+		button = Button.new()
+		button.flat = true
+		button.theme_type_variation = "DialogicSection"
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		button.text = edit._get_title()
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		button.pressed.connect(_on_section_button_pressed.bind(button))
+		button.focus_mode = Control.FOCUS_NONE
+		button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+		button.add_theme_color_override('icon_normal_color', get_theme_color("font_color", "DialogicSection"))
+		
+		hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(button)
+		
+		if !edit.hint_text.is_empty():
+			var hint :Node = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+			hint.hint_text = edit.hint_text
+			hbox.add_child(hint)
+		
+		parent.add_child(hbox)
 	parent.add_child(edit)
 	parent.add_child(HSeparator.new())
-	if !edit.name == "General":
+	if button and !edit._start_opened():
 		_on_section_button_pressed(button)
 
 
@@ -181,15 +200,17 @@ func get_settings_section_by_name(name:String, main:=true) -> Node:
 		
 
 func _on_section_button_pressed(button:Button) -> void:
-	if button.get_parent().get_child(button.get_index()+1).visible:
+	var section_header := button.get_parent()
+	var section := section_header.get_parent().get_child(section_header.get_index()+1)
+	if section.visible:
 		button.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
-		button.get_parent().get_child(button.get_index()+1).visible = false
+		section.visible = false
 	else:
 		button.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-		button.get_parent().get_child(button.get_index()+1).visible = true
+		section.visible = true
 	
-	if button.get_parent().get_child_count() > button.get_index()+2 and button.get_parent().get_child(button.get_index()+2) is Separator:
-		button.get_parent().get_child(button.get_index()+2).visible = button.get_parent().get_child(button.get_index()+1).visible
+	if section_header.get_parent().get_child_count() > section_header.get_index()+2 and section_header.get_parent().get_child(section_header.get_index()+2) is Separator:
+		section_header.get_parent().get_child(section_header.get_index()+2).visible = section_header.get_parent().get_child(section_header.get_index()+1).visible
 
 
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
@@ -484,8 +505,7 @@ func update_preview() -> void:
 			var scene = current_previewed_scene
 			scene.show_behind_parent = true
 			
-			for prop in current_portrait_data.get('export_overrides', {}).keys():
-				scene.set(prop, str_to_var(current_portrait_data['export_overrides'][prop]))
+			DialogicUtil.apply_scene_export_overrides(scene, current_portrait_data.get('export_overrides', {}))
 			
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
@@ -558,3 +578,16 @@ func _on_main_settings_collapse_toggled(button_pressed):
 	else:
 		%MainSettings.show()
 		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+
+
+func _on_switch_portrait_settings_position_pressed():
+	set_portrait_settings_position(!%RightSection.vertical)
+
+
+func set_portrait_settings_position(is_below) -> void:
+	%RightSection.vertical = is_below
+	DialogicUtil.set_editor_setting('portrait_settings_position', is_below)
+	if is_below:
+		%SwitchPortraitSettingsPosition.icon = get_theme_icon("ControlAlignRightWide", "EditorIcons")
+	else:
+		%SwitchPortraitSettingsPosition.icon = get_theme_icon("ControlAlignBottomWide", "EditorIcons")

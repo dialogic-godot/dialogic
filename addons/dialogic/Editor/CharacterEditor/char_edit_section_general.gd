@@ -2,7 +2,11 @@
 extends DialogicCharacterEditorMainSection
 
 ## The general character settings tab
+func _get_title() -> String:
+	return "General"
 
+func _start_opened() -> bool:
+	return true
 
 func _ready() -> void:
 	# Connecting all necessary signals
