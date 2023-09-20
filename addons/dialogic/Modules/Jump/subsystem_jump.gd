@@ -41,16 +41,15 @@ func jump_to_label(label:String) -> void:
 
 
 func push_to_jump_stack() -> void:
-	dialogic.current_state_info['jump_stack'].push_back({'timeline':dialogic.current_timeline, 'index':dialogic.current_event_idx})
+	dialogic.current_state_info['jump_stack'].push_back({'timeline':dialogic.current_timeline, 'index':dialogic.current_event_idx, 'label':dialogic.current_timeline_events[dialogic.current_event_idx].label_name})
 
 
 func resume_from_last_jump() -> void:
 	var sub_timeline : DialogicTimeline = dialogic.current_timeline
-	dialogic.start_timeline(
-		dialogic.current_state_info['jump_stack'][-1].timeline, 
-		dialogic.current_state_info['jump_stack'][-1].index+1)
-	dialogic.current_state_info['jump_stack'].pop_back()
-	returned_from_jump.emit({'sub_timeline':sub_timeline, 'label':dialogic.current_timeline.get_event(dialogic.current_event_idx-1).label_name})
+	var stack_info :Dictionary = dialogic.current_state_info['jump_stack'].pop_back()
+	dialogic.start_timeline(stack_info.timeline, stack_info.index+1)
+	returned_from_jump.emit({'sub_timeline':sub_timeline, 'label':stack_info.label})
+	
 
 
 func is_jump_stack_empty():

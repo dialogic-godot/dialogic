@@ -35,7 +35,6 @@ func _init() -> void:
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 3
-	expand_by_default = false
 	help_page_path = "https://dialogic.coppolaemilio.com"
 
 

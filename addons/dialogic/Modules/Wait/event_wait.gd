@@ -37,7 +37,6 @@ func _init() -> void:
 	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 11
-	expand_by_default = false
 
 
 ################################################################################

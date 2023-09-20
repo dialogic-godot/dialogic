@@ -60,7 +60,7 @@ func _execute() -> void:
 	
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
-			dialogic.Styles.add_layout_style(character.custom_info.style)
+			dialogic.Styles.add_layout_style(character.custom_info.style, false)
 		
 		
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
@@ -160,8 +160,9 @@ func _init() -> void:
 	set_default_color('Color1')
 	event_category = "Main"
 	event_sorting_index = 0
-	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
+	expand_by_default = true
+	
 
 
 ################################################################################

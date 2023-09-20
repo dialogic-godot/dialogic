@@ -30,7 +30,7 @@ func _execute() -> void:
 		Actions.SET_ABSOLUTE:
 			dialogic.Portraits.move_portrait_position(position, vector, false, movement_time)
 		Actions.RESET_ALL:
-			dialogic.Portraits.reset_portrait_positions(movement_time)
+			dialogic.Portraits.reset_all_portrait_positions(movement_time)
 		Actions.RESET:
 			dialogic.Portraits.reset_portrait_position(position, movement_time)
 	
@@ -46,7 +46,6 @@ func _init() -> void:
 	set_default_color('Color2')
 	event_category = "Other"
 	event_sorting_index = 2
-	expand_by_default = false
 
 
 func _get_icon() -> Resource:

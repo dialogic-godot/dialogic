@@ -125,12 +125,8 @@ func handle_event(event_index:int) -> void:
 		await dialogic_resumed
 
 	if event_index >= len(current_timeline_events):
-		if has_subsystem('Jump') and !self.Jump.is_jump_stack_empty():
-			self.Jump.resume_from_last_jump()
-			return
-		else:
-			end_timeline()
-			return
+		end_timeline()
+		return
 	
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready

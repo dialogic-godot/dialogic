@@ -37,7 +37,6 @@ func _init() -> void:
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 2
-	expand_by_default = false
 
 
 func _get_icon() -> Resource:
