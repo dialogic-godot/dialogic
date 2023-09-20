@@ -77,6 +77,10 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 		fader.tween_callback(prev_node.queue_free)
 
 
+func has_music() -> bool:
+	return !dialogic.current_state_info.get('music', {}).get('path', '').is_empty()
+
+
 ## Plays a given sound file.
 func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", loop :bool= false) -> void:
 	if base_sound_player != null and !path.is_empty():

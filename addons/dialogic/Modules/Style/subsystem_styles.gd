@@ -20,10 +20,14 @@ func load_game_state():
 ##					MAIN METHODS
 ####################################################################################################
 
-func add_layout_style(style_name:="") -> Node:
+func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
+	
+	# is_base_style should only be wrong on temporary changes like character styles
+	if is_base_style:
+		dialogic.current_state_info['base_style'] = style_name
 	
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
 	var layout := Dialogic._add_layout_node(layout_path)

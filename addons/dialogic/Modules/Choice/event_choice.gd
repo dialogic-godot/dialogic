@@ -51,7 +51,6 @@ func _init() -> void:
 	event_sorting_index = 0
 	can_contain_events = true
 	needs_parent_event = true
-	expand_by_default = false
 
 
 # if needs_parent_event is true, this needs to return true if the event is that event

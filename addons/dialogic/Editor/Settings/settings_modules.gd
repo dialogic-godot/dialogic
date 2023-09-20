@@ -85,7 +85,7 @@ func _on_search_text_changed(new_text:String) -> void:
 		for sub_child in child.get_children():
 			if sub_child.visible:
 				child.add_button(0, sub_child.get_icon(0), counter, false, sub_child.get_text(0))
-				if sub_child.get_metadata(0)['type'] == 'Event' and sub_child.get_metadata(0)['hidden']: 
+				if sub_child.get_metadata(0) and sub_child.get_metadata(0)['type'] == 'Event' and sub_child.get_metadata(0)['hidden']: 
 					var color : Color = sub_child.get_icon_modulate(0)
 					color.a = 0.5
 					child.set_button_color(0, counter, color)

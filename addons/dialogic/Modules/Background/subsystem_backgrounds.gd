@@ -80,3 +80,8 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	dialogic.current_state_info['background_scene'] = scene
 	dialogic.current_state_info['background_argument'] = argument
 	background_changed.emit(info)
+
+
+func has_background() -> bool:
+	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()
+

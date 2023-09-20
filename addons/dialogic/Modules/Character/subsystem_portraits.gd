@@ -494,7 +494,7 @@ func move_portrait_position(position_index: int, vector:Vector2, relative:bool =
 		add_portrait_position(position_index, vector)
 
 
-func reset_portrait_positions(time:float = 0.0) -> void:
+func reset_all_portrait_positions(time:float = 0.0) -> void:
 	for portrait_position in get_tree().get_nodes_in_group('dialogic_portrait_con_position'):
 		if portrait_position.is_visible_in_tree():
 			if portrait_position.has_meta('default_position'):
