@@ -37,7 +37,7 @@ var _autopauses := {}
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
-	dialogic.current_state_info['character'] = null
+	dialogic.current_state_info['speaker'] = null
 	dialogic.current_state_info['text'] = ''
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
@@ -49,11 +49,11 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	set_manualadvance(true)
 
 
-func load_game_state() -> void:
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character:DialogicCharacter = null
-	if dialogic.current_state_info.get('character', null):
-		character = load(dialogic.current_state_info.get('character', null))
+	if dialogic.current_state_info.get('speaker', null):
+		character = load(dialogic.current_state_info.get('speaker', null))
 	
 	if character:
 		update_name_label(character)
@@ -122,13 +122,13 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 
 
 func _on_dialog_text_finished():
-	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['character']})
+	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
 func update_name_label(character:DialogicCharacter) -> void:
 	var character_path = character.resource_path if character else null
 	if character_path != dialogic.current_state_info.get('character'):
-		dialogic.current_state_info['character'] = character_path
+		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		if character:
@@ -355,7 +355,7 @@ func skip_text_animation() -> void:
 
 
 func get_current_speaker() -> DialogicCharacter:
-	return (load(dialogic.current_state_info['character']) as DialogicCharacter)
+	return (load(dialogic.current_state_info['speaker']) as DialogicCharacter)
 
 
 func _ready():
@@ -421,10 +421,10 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.text_speed).timeout
-	elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.text_speed).timeout
+		elif speed_multiplier != 0 and Dialogic.Settings.get_setting('text_speed', 1) != 0:
+			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.get_setting('text_speed', 1)).timeout
+	elif speed_multiplier != 0 and Dialogic.Settings.get_setting('text_speed', 1) != 0:
+		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.get_setting('text_speed', 1)).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:

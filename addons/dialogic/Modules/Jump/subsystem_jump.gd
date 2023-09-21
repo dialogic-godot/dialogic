@@ -14,7 +14,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	dialogic.current_state_info['jump_stack'] = []
 
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 	if not 'jump_stack' in dialogic.current_state_info:
 		dialogic.current_state_info['jump_stack'] = []
 

@@ -26,11 +26,13 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	dialogic.current_state_info['speaker_portraits'] = {}
 
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 	for character_path in dialogic.current_state_info.portraits:
 		var character_info :Dictionary = dialogic.current_state_info.portraits[character_path]
 		dialogic.current_state_info.portraits.erase(character_path)
 		add_character(load(character_path), character_info.portrait, character_info.position_index)
+	if dialogic.current_state_info.get('speaker', ''):
+		change_speaker(load(dialogic.current_state_info['speaker']))
 
 
 func pause() -> void:
@@ -540,9 +542,9 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 		
 		_change_portrait_mirror(con.get_child(0))
 	
-	if speaker != dialogic.current_state_info['character']:
-		if dialogic.current_state_info['character'] and is_character_joined(load(dialogic.current_state_info['character'])):
-			dialogic.current_state_info['portraits'][dialogic.current_state_info['character']].node.get_child(0)._unhighlight()
+	if speaker and speaker.resource_path != dialogic.current_state_info['speaker']:
+		if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
+			dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
 		if speaker and is_character_joined(speaker):
 			dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(0)._highlight()
 
