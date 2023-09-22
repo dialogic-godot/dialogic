@@ -39,6 +39,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
+	dialogic.current_state_info['text_time_taken'] = 0
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
