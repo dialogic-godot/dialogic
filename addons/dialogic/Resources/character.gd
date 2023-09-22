@@ -30,7 +30,12 @@ func _hide_script_from_inspector() -> bool:
 
 ## Returns the name of the file (without the extension).
 func get_character_name() -> String:
-	return resource_path.get_file().trim_suffix('.dch')
+	if !resource_path.is_empty():
+		return resource_path.get_file().trim_suffix('.dch')
+	elif !display_name.is_empty():
+		return display_name.validate_node_name()
+	else:
+		return "UnnamedCharacter"
 
 ## Returns the info of the given portrait.
 ## Uses the default portrait if the given portrait doesn't exist.

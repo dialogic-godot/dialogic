@@ -79,7 +79,7 @@ func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_ind
 
 
 func force_event_button_list_reload() -> void:
-	find_parent('EditorsManager').editors['Timeline'].node.get_node('VisualEditor').load_event_buttons()
+	find_parent('EditorsManager').editors['Timeline'].node.get_node('%VisualEditor').load_event_buttons()
 
 
 func update_color_palette() -> void:
