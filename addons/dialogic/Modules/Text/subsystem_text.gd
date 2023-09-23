@@ -288,15 +288,7 @@ func can_manual_advance() -> bool:
 
 
 func get_autoadvance_time() -> float:
-	if dialogic.current_state_info['autoadvance'].get('temp_enabled', false):
-		var wait_time:Variant = dialogic.current_state_info['autoadvance']['temp_wait_time']
-		if typeof(wait_time) == TYPE_STRING and wait_time.begins_with('v'):
-			if '+' in wait_time:
-				return Dialogic.Voice.get_remaining_time() + float(wait_time.split('+')[1])
-			return Dialogic.Voice.get_remaining_time()
-		return float(dialogic.current_state_info['autoadvance']['temp_wait_time'])
-	else:
-		return float(dialogic.current_state_info['autoadvance']['wait_time'])
+	return input_handler.get_autoadvance_time()
 
 func get_autoadvance_fixed_delay() -> float:
 	var value = dialogic.current_state_info['autoadvance_fixed_delay']
