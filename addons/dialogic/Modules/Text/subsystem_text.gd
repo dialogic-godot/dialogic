@@ -322,10 +322,18 @@ func get_autoadvance_ignored_characters() -> Dictionary:
 
 	return value
 
+## Returns the progress of the auto-advance timer on a scale between 0 and 1.
+## The higher the value, the closer the timer is to finishing.
+## If auto-advancing is disabled, returns -1.
 func get_autoadvance_progress() -> float:
 	if !input_handler.is_autoadvancing():
 		return -1
-	return (get_autoadvance_time()-input_handler.get_autoadvance_time_left())/get_autoadvance_time()
+
+	var total_time = get_autoadvance_time()
+	var time_left = input_handler.get_autoadvance_time_left()
+	var progress = (total_time - time_left) / total_time
+
+	return progress
 
 
 func can_skip() -> bool:
