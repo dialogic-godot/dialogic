@@ -1,7 +1,6 @@
 @tool
 extends DialogicSettingsPage
 
-
 var autopause_sets := {}
 
 func _get_priority() -> int:
@@ -14,18 +13,31 @@ func _get_title() -> String:
 func _get_info_section():
 	return $InformationSection
 
+func _ready():
+	%ResetDelaysButton.icon = get_theme_icon("Reload", "EditorIcons")
+
 func _refresh():
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
-	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
-	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
+
+	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
+	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
+	%DelayModifier.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.1)
+	%PerCharacterDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.01)
+	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1)
+
+	%IgnoredCharactersEnabled.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
+
+	var ignored_characters = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
+	%IgnoredCharacters.text = str(ignored_characters.keys())
+
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
 	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
-	
+
 	%AutoPausesAbsolute.button_pressed = ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
 	%NewEvents.button_pressed = ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false)
 	%NewEventOption.select(ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0))
@@ -134,7 +146,7 @@ func _on_textbox_hidden_toggled(button_pressed:bool) -> void:
 func load_autopauses(dictionary:Dictionary) -> void:
 	for i in %AutoPauseSets.get_children():
 		i.queue_free()
-	
+
 
 	for i in dictionary.keys():
 		add_autopause_set(i, dictionary[i])
@@ -168,14 +180,14 @@ func add_autopause_set(text:String, time:float) -> void:
 	spin_box.value = time
 	info['time'] = spin_box
 	%AutoPauseSets.add_child(spin_box)
-	
+
 	var remove_btn := Button.new()
 	remove_btn.icon = get_theme_icon('Remove', 'EditorIcons')
 	remove_btn.pressed.connect(_on_remove_autopauses_set_pressed.bind(len(autopause_sets)))
 	info['delete'] = remove_btn
 	%AutoPauseSets.add_child(remove_btn)
 	autopause_sets[len(autopause_sets)] = info
-	
+
 
 func _on_remove_autopauses_set_pressed(index:int) -> void:
 	for key in autopause_sets[index]:
