@@ -153,11 +153,11 @@ func update_name_label(character:DialogicCharacter) -> void:
 			name_label.self_modulate = Color(1,1,1,1)
 
 
-func set_autoadvance(enabled:=true, temp:= false) -> void:
+func set_autoadvance(enabled:= true, wait_time:= 0, is_temporary:= false) -> void:
 	if !dialogic.current_state_info.has('autoadvance'):
 		dialogic.current_state_info['autoadvance'] = {'enabled':false, 'temp_enabled':false, 'wait_time':0, 'temp_wait_time':0}
 
-	if temp:
+	if is_temporary:
 		dialogic.current_state_info['autoadvance']['temp_enabled'] = enabled
 	else:
 		dialogic.current_state_info['autoadvance']['enabled'] = enabled
@@ -541,16 +541,13 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	input_handler.action_was_consumed = true
 
 
-func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
-	if argument.is_empty() or !(argument.is_valid_float() or argument.begins_with('v')):
-		var fixed_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-		set_autoadvance(true, true)
-		set_autoadvance_fixed_delay(fixed_delay)
-	else:
-		set_autoadvance(true, true)
-		var fixed_delay = float(argument)
-		set_autoadvance_fixed_delay(fixed_delay)
+func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> void:
+	var delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 
+	if argument.is_valid_float():
+		delay = float(argument)
+
+	set_autoadvance(true, delay, true)
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 func modifier_random_selection(text:String) -> String:
