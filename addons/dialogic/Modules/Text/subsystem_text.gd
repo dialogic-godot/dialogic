@@ -48,7 +48,6 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	set_autoadvance_fixed_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1))
 	set_autoadvance_per_character_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1))
 	set_autoadvance_per_word_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.2))
-	set_autoadvance_delay_modifier(ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1))
 	set_autoadvance_ignored_characters_enabled(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true))
 	set_autoadvance_ignored_characters(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {}))
 
@@ -170,9 +169,6 @@ func set_autoadvance_per_character_delay(value: float) -> void:
 
 func set_autoadvance_per_word_delay(value: float) -> void:
 	dialogic.current_state_info['autoadvance_per_word_delay'] = value
-
-func set_autoadvance_delay_modifier(value: float) -> void:
-	dialogic.current_state_info['autoadvance_delay_modifier'] = value
 
 func set_autoadvance_ignored_characters_enabled(is_enabled: bool) -> void:
 	dialogic.current_state_info['autoadvance_ignored_characters_enabled'] = is_enabled
@@ -305,11 +301,6 @@ func get_autoadvance_per_character_delay() -> float:
 
 	return value
 
-func get_autoadvance_delay_modifier() -> float:
-	var value = dialogic.current_state_info['autoadvance_delay_modifier']
-
-	return value
-
 func get_autoadvance_ignored_characters_enabled() -> bool:
 	var value = dialogic.current_state_info['autoadvance_ignored_characters_enabled']
 
@@ -432,11 +423,13 @@ func _ready():
 	add_child(input_handler)
 
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
-
+	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
 
 func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
+func _update_autoadvance_delay_modifier(user_modifier: float) -> void:
+	pass
 
 func color_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):

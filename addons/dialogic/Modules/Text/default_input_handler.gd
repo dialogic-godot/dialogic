@@ -104,7 +104,7 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 	current_text = DialogicUtil.strip_bbcode(current_text)
 
 	var fixed_delay = Dialogic.Text.get_autoadvance_fixed_delay()
-	var delay_modifier = Dialogic.Text.get_autoadvance_delay_modifier()
+	var delay_modifier = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 
 	var word_delay = _calculate_per_word_delay(current_text)
 	var character_delay = _calculate_per_character_delay(current_text)

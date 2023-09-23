@@ -23,7 +23,6 @@ func _refresh():
 
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-	%DelayModifier.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1)
 	%PerCharacterDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.01)
 	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.02)
 
@@ -59,10 +58,6 @@ func _on_PerCharacterDelay_value_changed(value):
 	ProjectSettings.set_setting('dialogic/text/autoadvance_per_character_delay', value)
 	ProjectSettings.save()
 
-func _on_DelayModifier_value_changed(value):
-	ProjectSettings.set_setting('dialogic/text/autoadvance_delay_modifier', value)
-	ProjectSettings.save()
-
 func _on_Autoadvance_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/autoadvance', button_pressed)
 	ProjectSettings.save()
@@ -80,10 +75,6 @@ func _on_ResetDelays_button_up() -> void:
 	var default_is_auto_advanced_on = true
 	DialogicUtil.set_editor_setting('autoadvance', default_is_auto_advanced_on)
 	%AutoAdvance.button_pressed = default_is_auto_advanced_on
-
-	var default_modifier = 1
-	DialogicUtil.set_editor_setting('autoadvance_delay_modifier', default_modifier)
-	%DelayModifier.value = default_modifier
 
 	var fixed_delay = 1
 	DialogicUtil.set_editor_setting('autoadvance_fixed_delay', fixed_delay)
