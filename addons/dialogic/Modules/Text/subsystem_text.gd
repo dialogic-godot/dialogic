@@ -42,7 +42,9 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	dialogic.current_state_info['text_time_taken'] = 0
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
-	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
+
+	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), false)
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
@@ -116,7 +118,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
-	set_autoadvance(false, 1, true)
+	set_autoadvance(false, true)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
 	return text
@@ -144,15 +146,14 @@ func update_name_label(character:DialogicCharacter) -> void:
 			name_label.self_modulate = Color(1,1,1,1)
 
 
-func set_autoadvance(enabled:=true, wait_time:Variant=1.0, temp:= false) -> void:
+func set_autoadvance(enabled:=true, temp:= false) -> void:
 	if !dialogic.current_state_info.has('autoadvance'):
 		dialogic.current_state_info['autoadvance'] = {'enabled':false, 'temp_enabled':false, 'wait_time':0, 'temp_wait_time':0}
+
 	if temp:
 		dialogic.current_state_info['autoadvance']['temp_enabled'] = enabled
-		dialogic.current_state_info['autoadvance']['temp_wait_time'] = wait_time
 	else:
 		dialogic.current_state_info['autoadvance']['enabled'] = enabled
-		dialogic.current_state_info['autoadvance']['wait_time'] = wait_time
 
 
 func set_manualadvance(enabled:=true, temp:= false) -> void:
@@ -485,9 +486,13 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty() or !(argument.is_valid_float() or argument.begins_with('v')):
-		set_autoadvance(true, ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1), true)
+		var fixed_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
+		set_autoadvance(true, true)
+		set_autoadvance_fixed_delay(fixed_delay)
 	else:
-		set_autoadvance(true, argument, true)
+		set_autoadvance(true, true)
+		var fixed_delay = float(argument)
+		set_autoadvance_fixed_delay(fixed_delay)
 
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
