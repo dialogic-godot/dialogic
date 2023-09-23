@@ -23,9 +23,9 @@ func _refresh():
 
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-	%DelayModifier.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.1)
+	%DelayModifier.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1)
 	%PerCharacterDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.01)
-	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1)
+	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.02)
 
 	%IgnoredCharactersEnabled.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 
