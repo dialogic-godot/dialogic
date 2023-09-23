@@ -37,18 +37,25 @@ var _autopauses := {}
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
+
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
 	dialogic.current_state_info['text_time_taken'] = 0
-	
+
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 
 	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), false)
+	set_autoadvance_fixed_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1))
+	set_autoadvance_per_character_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1))
+	set_autoadvance_per_word_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.2))
+	set_autoadvance_delay_modifier(ProjectSettings.get_setting('dialogic/text/autoadvance_delay_modifier', 1))
+	set_autoadvance_ignored_characters_enabled(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true))
+	set_autoadvance_ignored_characters(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {}))
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
-	
+
 	set_manualadvance(true)
 
 
@@ -57,7 +64,7 @@ func load_game_state() -> void:
 	var character:DialogicCharacter = null
 	if dialogic.current_state_info.get('character', null):
 		character = load(dialogic.current_state_info.get('character', null))
-	
+
 	if character:
 		update_name_label(character)
 
@@ -94,7 +101,7 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
-	
+
 	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
 		if text.is_empty():
 			await hide_text_boxes(instant)
@@ -104,7 +111,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 				animation_textbox_new_text.emit()
 				if Dialogic.Animation.is_animating():
 					await Dialogic.Animation.finished
-	
+
 	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -115,7 +122,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 				text_node.reveal_text(text, additional)
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
-	
+
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
 	set_autoadvance(false, true)
@@ -251,16 +258,16 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 		letter_speed = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	_pure_letter_speed = letter_speed
 	_letter_speed_absolute = absolute
-	
+
 	if _speed_multiplier == -1:
 		_speed_multiplier = speed_multiplier
 	else:
 		speed_multiplier = _speed_multiplier
-	
+
 	if _user_speed == -1:
 		_user_speed = Dialogic.Settings.get_setting('text_speed', 1)
-	
-	
+
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if absolute:
 			text_node.lspeed = letter_speed
@@ -362,9 +369,9 @@ func parse_text_effects(text:String) -> String:
 		bbcode_correction = effect_match.get_start()-position_correction-len(rtl.get_parsed_text())
 		# append [index] = [command, value] to effects dict
 		parsed_text_effect_info.append({'index':effect_match.get_start()-position_correction-bbcode_correction, 'execution_info':text_effects[effect_match.get_string('command')], 'value': effect_match.get_string('value').strip_edges()})
-		
+
 		text = text.substr(0,effect_match.get_start()-position_correction)+text.substr(effect_match.get_start()-position_correction+len(effect_match.get_string()))
-		
+
 		position_correction += len(effect_match.get_string())
 	text = text.replace('\\[', '[')
 	rtl.queue_free()
@@ -394,7 +401,7 @@ func collect_text_modifiers() -> void:
 
 func parse_text_modifiers(text:String) -> String:
 	for mod_method in text_modifiers:
-		text = mod_method.call(text) 
+		text = mod_method.call(text)
 	return text
 
 
@@ -415,7 +422,7 @@ func _ready():
 	collect_text_effects()
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
-	
+
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/_autopauses', {})
 	for i in autopause_data.keys():
@@ -423,7 +430,7 @@ func _ready():
 	input_handler = Node.new()
 	input_handler.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler)
-	
+
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
 
@@ -434,32 +441,32 @@ func _update_user_speed(user_speed:float) -> void:
 func color_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
-	
+
 	var counter := 0
 	for result in color_regex.search_all(text):
 		text = text.insert(result.get_start("name")+((9+8+8)*counter), '[color=#' + character_colors[result.get_string('name')].to_html() + ']')
 		text = text.insert(result.get_end("name")+9+8+((9+8+8)*counter), '[/color]')
 		counter += 1
-	
+
 	return text
 
 
 func collect_character_names() -> void:
 	#don't do this at all if we're not using autocolor names to begin with
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
-		return 
-	
+		return
+
 	character_colors = {}
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
 		var dch := (load(dch_path) as DialogicCharacter)
 
 		if dch.display_name:
 			character_colors[dch.display_name] = dch.color
-		
+
 		for nickname in dch.nicknames:
 			if nickname.strip_edges():
 				character_colors[nickname.strip_edges()] = dch.color
-	
+
 	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
 
