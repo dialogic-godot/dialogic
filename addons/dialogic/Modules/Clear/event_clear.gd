@@ -22,7 +22,8 @@ func _execute() -> void:
 	if clear_portraits and dialogic.has_subsystem('Portraits') and len(dialogic.Portraits.get_joined_characters()) != 0:
 		if time == 0:
 			dialogic.Portraits.leave_all_characters(DialogicUtil.guess_animation_file('Instant In Or Out'), time, step_by_step)
-		dialogic.Portraits.leave_all_characters("", time, step_by_step)
+		else:
+			dialogic.Portraits.leave_all_characters("", time, step_by_step)
 		if step_by_step: await dialogic.get_tree().create_timer(time).timeout
 		
 	if clear_background and dialogic.has_subsystem('Backgrounds') and dialogic.Backgrounds.has_background():
@@ -83,7 +84,7 @@ func build_event_editor():
 	
 	add_body_edit('time', ValueType.FLOAT, {'left_text':'Time:'})
 	
-	add_body_edit('step_by_step', ValueType.BOOL, {'left_text':'Step by Step:'})
+	add_body_edit('step_by_step', ValueType.BOOL, {'left_text':'Step by Step:'}, 'time > 0')
 	add_body_line_break()
 	
 #	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
