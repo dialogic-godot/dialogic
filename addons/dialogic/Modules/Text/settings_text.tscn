@@ -429,13 +429,6 @@ hint_text = "If not enabled autopauses will be multiplied by the speed and user 
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBoxContainer@Gridcontainer Autoadvance@HBoxContainer PerCharacterDelay@Box PerCharacterDelay@PerCharacterDelay" type="SpinBox" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-step = 0.01
-suffix = "s"
-
 [node name="InformationSection" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
