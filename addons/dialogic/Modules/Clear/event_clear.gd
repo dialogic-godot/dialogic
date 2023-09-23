@@ -82,8 +82,11 @@ func build_event_editor():
 	add_body_edit('time', ValueType.FLOAT, {'left_text':'Time:'})
 	
 	add_body_edit('step_by_step', ValueType.BOOL, {'left_text':'Step by Step:'})
-	add_body_edit('clear_portraits', ValueType.BOOL, {'left_text':'Portraits:'})
-	add_body_edit('clear_background', ValueType.BOOL, {'left_text':'Background:'})
-	add_body_edit('clear_music', ValueType.BOOL, {'left_text':'Music:'})
-	add_body_edit('clear_style', ValueType.BOOL, {'left_text':'Style:'})
-	add_body_edit('clear_portrait_positions', ValueType.BOOL, {'left_text':'Portrait Positions:'})
+	add_body_line_break()
+	
+#	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
+	add_body_edit('clear_portraits', ValueType.BOOL, {'left_text':'Clear:', 'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
+	add_body_edit('clear_background', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})
+	add_body_edit('clear_music', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Music'})
+	add_body_edit('clear_style', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
+	add_body_edit('clear_portrait_positions', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portrait Positions'})
