@@ -155,6 +155,25 @@ func set_autoadvance(enabled:=true, temp:= false) -> void:
 	else:
 		dialogic.current_state_info['autoadvance']['enabled'] = enabled
 
+func set_autoadvance_fixed_delay(value: float) -> void:
+	dialogic.current_state_info['autoadvance_fixed_delay'] = value
+
+func set_autoadvance_per_character_delay(value: float) -> void:
+	dialogic.current_state_info['autoadvance_per_character_delay'] = value
+
+func set_autoadvance_per_word_delay(value: float) -> void:
+	dialogic.current_state_info['autoadvance_per_word_delay'] = value
+
+func set_autoadvance_delay_modifier(value: float) -> void:
+	dialogic.current_state_info['autoadvance_delay_modifier'] = value
+
+func set_autoadvance_ignored_characters_enabled(is_enabled: bool) -> void:
+	dialogic.current_state_info['autoadvance_ignored_characters_enabled'] = is_enabled
+
+## The `value` is a hash set disguised as dictionary.
+## The keys are Strings and the values are `null`.
+func set_autoadvance_ignored_characters(value: Dictionary) -> void:
+	dialogic.current_state_info['autoadvance_ignored_characters'] = value
 
 func set_manualadvance(enabled:=true, temp:= false) -> void:
 	if !dialogic.current_state_info.has('manual_advance'):
@@ -272,6 +291,37 @@ func get_autoadvance_time() -> float:
 	else:
 		return float(dialogic.current_state_info['autoadvance']['wait_time'])
 
+func get_autoadvance_fixed_delay() -> float:
+	var value = dialogic.current_state_info['autoadvance_fixed_delay']
+
+	return value
+
+func get_autoadvance_per_word_delay() -> float:
+	var value = dialogic.current_state_info['autoadvance_per_word_delay']
+
+	return value
+
+func get_autoadvance_per_character_delay() -> float:
+	var value = dialogic.current_state_info['autoadvance_per_character_delay']
+
+	return value
+
+func get_autoadvance_delay_modifier() -> float:
+	var value = dialogic.current_state_info['autoadvance_delay_modifier']
+
+	return value
+
+func get_autoadvance_ignored_characters_enabled() -> bool:
+	var value = dialogic.current_state_info['autoadvance_ignored_characters_enabled']
+
+	return value
+
+## The returned dictionary is a hash set in disguise.
+## The keys are Strings and the values are `null`.
+func get_autoadvance_ignored_characters() -> Dictionary:
+	var value = dialogic.current_state_info['autoadvance_ignored_characters']
+
+	return value
 
 func get_autoadvance_progress() -> float:
 	if !input_handler.is_autoadvancing():
