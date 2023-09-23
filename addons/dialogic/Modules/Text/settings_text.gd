@@ -84,7 +84,7 @@ func _on_ResetDelays_button_up() -> void:
 	DialogicUtil.set_editor_setting('autoadvance_delay_per_character', default_delay_per_character)
 	%PerCharacterDelay.value = default_delay_per_character
 
-	var default_delay_per_word = 0.2
+	var default_delay_per_word = 0
 	DialogicUtil.set_editor_setting('autoadvance_delay_per_word', default_delay_per_word)
 	%PerWordDelay.value = default_delay_per_word
 
