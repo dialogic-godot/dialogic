@@ -35,15 +35,64 @@ func _refresh():
 func _about_to_close():
 	save_autopauses()
 
-func _on_AutoadvanceDelay_value_changed(value):
-	ProjectSettings.set_setting('dialogic/text/autoadvance_delay', value)
+func _on_FixedDelay_value_changed(value):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_fixed_delay', value)
 	ProjectSettings.save()
 
+func _on_PerWordDelay_value_changed(value):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_per_word_delay', value)
+	ProjectSettings.save()
+
+func _on_PerCharacterDelay_value_changed(value):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_per_character_delay', value)
+	ProjectSettings.save()
+
+func _on_DelayModifier_value_changed(value):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_delay_modifier', value)
+	ProjectSettings.save()
 
 func _on_Autoadvance_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/autoadvance', button_pressed)
 	ProjectSettings.save()
 
+func _on_IgnoredCharactersEnabled_toggled(button_pressed):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters_enabled', button_pressed)
+	ProjectSettings.save()
+
+func _on_IgnoredCharactersEnabled_text_changed(text_input):
+	var ignore_table = DialogicUtil.str_to_hash_set(text_input)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters', ignore_table)
+	ProjectSettings.save()
+
+func _on_ResetDelays_button_up() -> void:
+	var default_is_auto_advanced_on = true
+	DialogicUtil.set_editor_setting('autoadvance', default_is_auto_advanced_on)
+	%AutoAdvance.button_pressed = default_is_auto_advanced_on
+
+	var default_modifier = 1
+	DialogicUtil.set_editor_setting('autoadvance_delay_modifier', default_modifier)
+	%DelayModifier.value = default_modifier
+
+	var fixed_delay = 1
+	DialogicUtil.set_editor_setting('autoadvance_fixed_delay', fixed_delay)
+	%FixedDelay.value = fixed_delay
+
+	var default_delay_per_character = 0.1
+	DialogicUtil.set_editor_setting('autoadvance_delay_per_character', default_delay_per_character)
+	%PerCharacterDelay.value = default_delay_per_character
+
+	var default_delay_per_word = 0.2
+	DialogicUtil.set_editor_setting('autoadvance_delay_per_word', default_delay_per_word)
+	%PerWordDelay.value = default_delay_per_word
+
+	var default_ignored_characters = '/\\,.( ); ?!-+"\''
+	var default_ignored_characters_dictionary = DialogicUtil.str_to_hash_set(default_ignored_characters)
+	DialogicUtil.set_editor_setting('autoadvance_ignored_characters', default_ignored_characters_dictionary)
+	%IgnoredCharacters.text = default_ignored_characters
+
+	var is_ignore_characters_enabled = true
+	DialogicUtil.set_editor_setting('autoadvance_ignored_characters_enabled', is_ignore_characters_enabled)
+	%IgnoredCharactersEnabled.button_pressed = is_ignore_characters_enabled
 
 func _on_Skippable_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)

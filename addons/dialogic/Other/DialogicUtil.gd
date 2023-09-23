@@ -3,8 +3,6 @@ class_name DialogicUtil
 
 ## Script that container helper methods for both editor and game execution.
 ## Used whenever the same thing is needed in different parts of the plugin.
- 
-
 enum AnimationType {ALL, IN, OUT, ACTION}
 
 ################################################################################
@@ -91,9 +89,9 @@ static func get_module_path(name:String, builtin:=true) -> String:
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
 	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
-	
+
 	var indexers : Array[DialogicIndexer] = []
-	
+
 	for file in listdir(DialogicUtil.get_module_path(''), false):
 		var possible_script:String = DialogicUtil.get_module_path(file).path_join("index.gd")
 		if FileAccess.file_exists(possible_script):
@@ -105,7 +103,7 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 			var possible_script: String = extensions_folder.path_join(file + "/index.gd")
 			if FileAccess.file_exists(possible_script):
 				indexers.append(load(possible_script).new())
-	
+
 	Engine.get_main_loop().set_meta('dialogic_indexers', indexers)
 	return indexers
 
@@ -163,7 +161,7 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 		'Color8': Color('#de5c5c'), # Red
 		'Color9': Color('#7c7c7c'), # Gray
 	}
-	if default: 
+	if default:
 		return defaults
 	return get_editor_setting('color_palette', defaults)
 
@@ -175,7 +173,7 @@ static func get_color(value:String) -> Color:
 
 static func is_physics_timer() -> bool:
 	return ProjectSettings.get_setting('dialogic/timer/process_in_physics', false)
-	
+
 
 static func update_timer_process_callback(timer:Timer) -> void:
 	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE
@@ -205,11 +203,11 @@ static func get_inherited_style_overrides(style_name:String) -> Dictionary:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if !style_name in styles_info:
 		return {}
-	
+
 	var inheritance := [styles_info[style_name].get('inherits', '')]
 	var info :Dictionary = styles_info[style_name].get('export_overrides', {}).duplicate(true)
-	
-	
+
+
 	while (!inheritance[-1].is_empty()) and inheritance[-1] in styles_info:
 		info.merge(styles_info[inheritance[-1]].get('export_overrides', {}))
 		if !styles_info[inheritance[-1]].get('inherits', '') in styles_info:
@@ -253,11 +251,11 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 static func get_scene_export_defaults(node:Node) -> Dictionary:
 	if !node.script:
 		return {}
-	
+
 	if Engine.get_main_loop().has_meta('dialogic_scene_export_defaults') and \
 			node.script.resource_path in Engine.get_main_loop().get_meta('dialogic_scene_export_defaults'):
 		return Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path]
-	
+
 	if !Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
 	var defaults := {}
@@ -324,7 +322,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
-				var options :PackedStringArray = []  
+				var options :PackedStringArray = []
 				for x in property_info['hint_string'].split(','):
 					options.append(x.split(':')[0].strip_edges())
 					input.add_item(options[-1])
@@ -394,9 +392,9 @@ static func set_editor_setting(setting:String, value:Variant) -> void:
 	var cfg := ConfigFile.new()
 	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
 		cfg.load('user://dialogic/editor_settings.cfg')
-	
+
 	cfg.set_value('DES', setting, value)
-	
+
 	if !DirAccess.dir_exists_absolute('user://dialogic'):
 		DirAccess.make_dir_absolute('user://dialogic')
 	cfg.save('user://dialogic/editor_settings.cfg')
@@ -406,8 +404,19 @@ static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
 	var cfg := ConfigFile.new()
 	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
 		return default
-	
+
 	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
 		return default
-	
+
 	return cfg.get_value('DES', setting, default)
+
+
+## Takes [param source] and builds a dictionary of keys only.
+## The values are `null`.
+static func str_to_hash_set(source: String) -> Dictionary:
+	var dictionary := Dictionary()
+
+	for character in source:
+		dictionary[character] = null
+
+	return dictionary
