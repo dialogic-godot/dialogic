@@ -419,13 +419,21 @@ func collect_character_names() -> void:
 func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
+
+	var text_speed = Dialogic.Settings.get_setting('text_speed', 1)
+
 	if argument:
+
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.text_speed).timeout
-	elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.text_speed).timeout
+
+		elif speed_multiplier != 0 and text_speed != 0:
+			var timer_seconds = float(argument) * speed_multiplier * text_speed
+			await get_tree().create_timer(timer_seconds).timeout
+
+	elif speed_multiplier != 0 and text_speed != 0:
+		var timer_seconds = 0.5 * speed_multiplier * text_speed
+		await get_tree().create_timer(timer_seconds).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
