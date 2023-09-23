@@ -261,7 +261,7 @@ func from_text(string:String) -> void:
 		animation_name = shortcode_params.get('animation', '')
 		if animation_name != "":
 			if !animation_name.ends_with('.gd'):
-				animation_name = guess_animation_file(animation_name)
+				animation_name = DialogicUtil.guess_animation_file(animation_name)
 			if !animation_name.ends_with('.gd'):
 				printerr("[Dialogic] Couldn't identify animation '"+animation_name+"'.")
 				animation_name = ""
@@ -457,13 +457,6 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 
 	return suggestions
-
-
-func guess_animation_file(animation_name: String) -> String:
-	for file in DialogicUtil.get_portrait_animation_scripts():
-		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
-			return file
-	return animation_name
 
 
 func _on_character_edit_pressed() -> void:
