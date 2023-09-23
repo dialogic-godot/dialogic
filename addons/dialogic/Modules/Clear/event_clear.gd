@@ -20,6 +20,8 @@ var clear_background := true
 
 func _execute() -> void:
 	if clear_portraits and dialogic.has_subsystem('Portraits') and len(dialogic.Portraits.get_joined_characters()) != 0:
+		if time == 0:
+			dialogic.Portraits.leave_all_characters(DialogicUtil.guess_animation_file('Instant In Or Out'), time, step_by_step)
 		dialogic.Portraits.leave_all_characters("", time, step_by_step)
 		if step_by_step: await dialogic.get_tree().create_timer(time).timeout
 		
@@ -89,4 +91,4 @@ func build_event_editor():
 	add_body_edit('clear_background', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})
 	add_body_edit('clear_music', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Music'})
 	add_body_edit('clear_style', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
-	add_body_edit('clear_portrait_positions', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portrait Positions'})
+	add_body_edit('clear_portrait_positions', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_positions.svg"), 'tooltip':'Clear Portrait Positions'})
