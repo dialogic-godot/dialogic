@@ -54,10 +54,10 @@ func _ready() -> void:
 ## The current whitespaces supported is the normal ` `.
 ## In the future, this could be extended.
 func _calculate_per_word_delay(text: String) -> float:
-	var delay_per_word = Dialogic.Text.get_autoadvance_per_word_delay()
+	var per_word_delay = Dialogic.Text.get_autoadvance_info()['per_word_delay']
 
 	var word_count = text.split(' ').size()
-	var calculated_delay = word_count * delay_per_word
+	var calculated_delay = word_count * per_word_delay
 
 	return calculated_delay
 
@@ -73,10 +73,10 @@ func _voice_play_time_left() -> float:
 
 ## Checks how many characters can be found by iterating each letter.
 func _calculate_per_character_delay(text: String) -> float:
-	var delay_per_character = Dialogic.Text.get_autoadvance_per_character_delay()
+	var per_character_delay = Dialogic.Text.get_autoadvance_info()['per_character_delay']
 	var calculated_delay = 0
 
-	if delay_per_character > 0:
+	if per_character_delay > 0:
 		var is_ignored_characters_enabled = Dialogic.Text.get_autoadvance_ignored_characters_enabled()
 
 		# If we have characters to ignore, we will iterate each letter.
@@ -88,12 +88,12 @@ func _calculate_per_character_delay(text: String) -> float:
 				if character in ignoredCharacters:
 					continue
 
-				calculated_delay += delay_per_character
+				calculated_delay += per_character_delay
 
 		# Otherwise, we can just multiply the length of the text by the
 		# delay.
 		else:
-			calculated_delay = text.length() * delay_per_character
+			calculated_delay = text.length() * per_character_delay
 
 	return calculated_delay
 
@@ -104,7 +104,7 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 	var current_text = Dialogic.current_state_info.get('text', '')
 	current_text = DialogicUtil.strip_bbcode(current_text)
 
-	var fixed_delay = Dialogic.Text.get_autoadvance_fixed_delay()
+	var fixed_delay = Dialogic.Text.get_autoadvance_info()['fixed_delay']
 	var delay_modifier = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 
 	var word_delay = _calculate_per_word_delay(current_text)
@@ -124,9 +124,9 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 ## auto-advance action accordingly.
 ##
 ## This method checks if a temporary auto-advance has been enabled.
-## If `true`, it will use the temporary auto-advance delay and skip calculating.
+## If `true`, the temporary delay will be used.
 ##
-## If `false`, the following procudure will be steps will be taken:
+## Otherwise, the following procudure will be steps will be taken:
 ## - If set, every word will add a delay.
 ## - If set, every character will add a delay, unless the character has been
 ## selected to be ignored by the user.
@@ -139,7 +139,7 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 func start_autoadvance() -> void:
 	if Dialogic.Text.should_autoadvance():
 		var total_delay = 0.0
-		var auto_advance = Dialogic.current_state_info['autoadvance']
+		var auto_advance = Dialogic.Text.get_autoadvance_info()
 
 		if auto_advance['temp_enabled']:
 			total_delay = auto_advance['temp_wait_time']
