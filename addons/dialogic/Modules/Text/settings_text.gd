@@ -21,7 +21,7 @@ func _refresh():
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 
-	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
+	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	%PerCharacterDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.01)
 	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.02)
@@ -59,14 +59,14 @@ func _on_PerCharacterDelay_value_changed(value):
 	ProjectSettings.save()
 
 func _on_Autoadvance_toggled(button_pressed):
-	ProjectSettings.set_setting('dialogic/text/autoadvance', button_pressed)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_enabled', button_pressed)
 	ProjectSettings.save()
 
 func _on_IgnoredCharactersEnabled_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters_enabled', button_pressed)
 	ProjectSettings.save()
 
-func _on_IgnoredCharactersEnabled_text_changed(text_input):
+func _on_IgnoredCharacters_text_changed(text_input):
 	var ignore_table = DialogicUtil.str_to_hash_set(text_input)
 	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters', ignore_table)
 	ProjectSettings.save()
