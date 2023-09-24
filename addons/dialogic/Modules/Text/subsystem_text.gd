@@ -44,12 +44,13 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 
-	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), false)
-	set_autoadvance_fixed_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1))
-	set_autoadvance_per_character_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1))
-	set_autoadvance_per_word_delay(ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.2))
-	set_autoadvance_ignored_characters_enabled(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true))
-	set_autoadvance_ignored_characters(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {}))
+	var autoadvance_info = get_autoadvance_info()
+	autoadvance_info['enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
+	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
+	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
+	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
+	autoadvance_info['ignored_characters_enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
+	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
@@ -94,6 +95,14 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 		text = color_names(text)
 	return text
 
+func set_autoadvance(enabled:= true, temp_wait_time:= 0, is_temporary:= false) -> void:
+	var info = get_autoadvance_info()
+	info['temp_wait_time'] = temp_wait_time
+
+	if is_temporary:
+		info['temp_enabled'] = enabled
+	else:
+		info['enabled'] = enabled
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -124,7 +133,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
-	set_autoadvance(false, true)
+	set_autoadvance(false, 1, true)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
 	return text
@@ -151,27 +160,29 @@ func update_name_label(character:DialogicCharacter) -> void:
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
 
-
-func set_autoadvance(enabled:= true, wait_time:= 0, is_temporary:= false) -> void:
+## Fetches all Auto-Advance settings.
+## If they don't exist, returns the default settings.
+func get_autoadvance_info() -> Dictionary:
 	if !dialogic.current_state_info.has('autoadvance'):
-		dialogic.current_state_info['autoadvance'] = {'enabled':false, 'temp_enabled':false, 'wait_time':0, 'temp_wait_time':0}
+		dialogic.current_state_info['autoadvance'] = default_autoadvanced_info()
 
-	if is_temporary:
-		dialogic.current_state_info['autoadvance']['temp_enabled'] = enabled
-	else:
-		dialogic.current_state_info['autoadvance']['enabled'] = enabled
+	return dialogic.current_state_info['autoadvance']
 
-func set_autoadvance_fixed_delay(value: float) -> void:
-	dialogic.current_state_info['autoadvance_fixed_delay'] = value
+## Returns the default structure of the `autoadvance` settings.
+## The values will be default values.
+func default_autoadvanced_info() -> Dictionary:
+	var info = {}
+	info['temp_enabled'] = false
+	info['temp_wait_time'] = 0
 
-func set_autoadvance_per_character_delay(value: float) -> void:
-	dialogic.current_state_info['autoadvance_per_character_delay'] = value
+	info['enabled'] = false
+	info['fixed_delay'] = 1
+	info['per_word_delay'] = 0
+	info['per_character_delay'] = 0.1
+	info['ignored_characters_enabled'] = false
+	info['ignored_characters'] = {}
 
-func set_autoadvance_per_word_delay(value: float) -> void:
-	dialogic.current_state_info['autoadvance_per_word_delay'] = value
-
-func set_autoadvance_ignored_characters_enabled(is_enabled: bool) -> void:
-	dialogic.current_state_info['autoadvance_ignored_characters_enabled'] = is_enabled
+	return info
 
 ## The `value` is a hash set disguised as dictionary.
 ## The keys are Strings and the values are `null`.
@@ -276,7 +287,8 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ##					HELPERS
 ####################################################################################################
 func should_autoadvance() -> bool:
-	return dialogic.current_state_info['autoadvance']['enabled'] or dialogic.current_state_info['autoadvance'].get('temp_enabled', false)
+	var info = get_autoadvance_info()
+	return info['enabled'] or info['temp_enabled']
 
 
 func can_manual_advance() -> bool:
@@ -285,33 +297,6 @@ func can_manual_advance() -> bool:
 
 func get_autoadvance_time() -> float:
 	return input_handler.get_autoadvance_time()
-
-func get_autoadvance_fixed_delay() -> float:
-	var value = dialogic.current_state_info['autoadvance_fixed_delay']
-
-	return value
-
-func get_autoadvance_per_word_delay() -> float:
-	var value = dialogic.current_state_info['autoadvance_per_word_delay']
-
-	return value
-
-func get_autoadvance_per_character_delay() -> float:
-	var value = dialogic.current_state_info['autoadvance_per_character_delay']
-
-	return value
-
-func get_autoadvance_ignored_characters_enabled() -> bool:
-	var value = dialogic.current_state_info['autoadvance_ignored_characters_enabled']
-
-	return value
-
-## The returned dictionary is a hash set in disguise.
-## The keys are Strings and the values are `null`.
-func get_autoadvance_ignored_characters() -> Dictionary:
-	var value = dialogic.current_state_info['autoadvance_ignored_characters']
-
-	return value
 
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
