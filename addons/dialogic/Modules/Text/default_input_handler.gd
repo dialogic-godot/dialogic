@@ -65,7 +65,8 @@ func _calculate_per_word_delay(text: String) -> float:
 ## in seconds.
 func _voice_play_time_left() -> float:
 	if Dialogic.Voice.voice_player.is_playing():
-		return Dialogic.Voice.voice_player.time_left
+		var remaining_playtime = Dialogic.Voice.voice_player.stream.get_length() - Dialogic.Voice.voice_player.get_playback_position()
+		return remaining_playtime
 
 	else:
 		return 0.0
