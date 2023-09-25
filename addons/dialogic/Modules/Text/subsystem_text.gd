@@ -44,7 +44,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 
-	var autoadvance_info = get_autoadvance_info()
+	var autoadvance_info := get_autoadvance_info()
 	autoadvance_info['enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
@@ -96,7 +96,7 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 	return text
 
 func set_autoadvance(enabled:= true, temp_wait_time:= 0, is_temporary:= false) -> void:
-	var info = get_autoadvance_info()
+	var info := get_autoadvance_info()
 	info['temp_wait_time'] = temp_wait_time
 
 	if is_temporary:
@@ -164,30 +164,26 @@ func update_name_label(character:DialogicCharacter) -> void:
 ## If they don't exist, returns the default settings.
 func get_autoadvance_info() -> Dictionary:
 	if !dialogic.current_state_info.has('autoadvance'):
-		dialogic.current_state_info['autoadvance'] = default_autoadvanced_info()
+		dialogic.current_state_info['autoadvance'] = get_default_autoadvance_info()
 
 	return dialogic.current_state_info['autoadvance']
 
 ## Returns the default structure of the `autoadvance` settings.
 ## The values will be default values.
-func default_autoadvanced_info() -> Dictionary:
-	var info = {}
+func get_default_autoadvance_info() -> Dictionary:
+	var info := {}
 	info['temp_enabled'] = false
 	info['temp_wait_time'] = 0
-
+	
 	info['enabled'] = false
 	info['fixed_delay'] = 1
 	info['per_word_delay'] = 0
 	info['per_character_delay'] = 0.1
 	info['ignored_characters_enabled'] = false
 	info['ignored_characters'] = {}
-
+	
 	return info
 
-## The `value` is a hash set disguised as dictionary.
-## The keys are Strings and the values are `null`.
-func set_autoadvance_ignored_characters(value: Dictionary) -> void:
-	dialogic.current_state_info['autoadvance_ignored_characters'] = value
 
 func set_manualadvance(enabled:=true, temp:= false) -> void:
 	if !dialogic.current_state_info.has('manual_advance'):
@@ -287,7 +283,7 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ##					HELPERS
 ####################################################################################################
 func should_autoadvance() -> bool:
-	var info = get_autoadvance_info()
+	var info : Dictionary = get_autoadvance_info()
 	return info['enabled'] or info['temp_enabled']
 
 
@@ -298,6 +294,7 @@ func can_manual_advance() -> bool:
 func get_autoadvance_time() -> float:
 	return input_handler.get_autoadvance_time()
 
+
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
 ## If auto-advancing is disabled, returns -1.
@@ -305,9 +302,9 @@ func get_autoadvance_progress() -> float:
 	if !input_handler.is_autoadvancing():
 		return -1
 
-	var total_time = get_autoadvance_time()
-	var time_left = input_handler.get_autoadvance_time_left()
-	var progress = (total_time - time_left) / total_time
+	var total_time : float = get_autoadvance_time()
+	var time_left : float = input_handler.get_autoadvance_time_left()
+	var progress : float = (total_time - time_left) / total_time
 
 	return progress
 

@@ -50,46 +50,49 @@ func _ready() -> void:
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
+
 ## Checks how many words can be found by separating the text by whitespace.
 ## The current whitespaces supported is the normal ` `.
 ## In the future, this could be extended.
 func _calculate_per_word_delay(text: String) -> float:
-	var per_word_delay = Dialogic.Text.get_autoadvance_info()['per_word_delay']
+	var per_word_delay :float = Dialogic.Text.get_autoadvance_info()['per_word_delay']
 
-	var word_count = text.split(' ').size()
-	var calculated_delay = word_count * per_word_delay
-
+	var word_count :int = text.split(' ', false).size()
+	var calculated_delay :float = word_count * per_word_delay
+	
 	return calculated_delay
+
 
 ## If a voice clip is still playing, returns the voice clip's play time left
 ## in seconds.
 func _voice_play_time_left() -> float:
-	if Dialogic.Voice.voice_player.is_playing():
-		var remaining_playtime = Dialogic.Voice.voice_player.stream.get_length() - Dialogic.Voice.voice_player.get_playback_position()
+	if Dialogic.has_subsystem('Voice') and Dialogic.Voice.voice_player.is_playing():
+		var remaining_playtime :float = Dialogic.Voice.voice_player.stream.get_length() - Dialogic.Voice.voice_player.get_playback_position()
 		return remaining_playtime
-
 	else:
 		return 0.0
 
+
 ## Checks how many characters can be found by iterating each letter.
 func _calculate_per_character_delay(text: String) -> float:
-	var per_character_delay = Dialogic.Text.get_autoadvance_info()['per_character_delay']
-	var calculated_delay = 0
-
+	var info :Dictionary = Dialogic.Text.get_autoadvance_info()
+	var per_character_delay :float = info['per_character_delay']
+	var calculated_delay :float = 0
+	
 	if per_character_delay > 0:
-		var is_ignored_characters_enabled = Dialogic.Text.get_autoadvance_ignored_characters_enabled()
-
+		var is_ignored_characters_enabled :bool = info['ignored_characters_enabled']
+		
 		# If we have characters to ignore, we will iterate each letter.
 		if is_ignored_characters_enabled:
-			var ignoredCharacters = Dialogic.Text.get_autoadvance_ignored_characters()
-
+			var ignoredCharacters :Dictionary = info['ignored_characters']
+			
 			for character in text:
-
+				
 				if character in ignoredCharacters:
 					continue
-
+				
 				calculated_delay += per_character_delay
-
+			
 		# Otherwise, we can just multiply the length of the text by the
 		# delay.
 		else:
@@ -97,18 +100,19 @@ func _calculate_per_character_delay(text: String) -> float:
 
 	return calculated_delay
 
+
 func _calculate_autoadvance_delay_from_str(text: String) -> float:
 	# Preparing the text for auto-advance calculations.
 	# We want to strip the BBCodes from the text as they contribute
 	# negatively to the per-character and per-word calculation.
-	var current_text = Dialogic.current_state_info.get('text', '')
-	current_text = DialogicUtil.strip_bbcode(current_text)
+	print(text)
+	text = DialogicUtil.strip_bbcode(text)
 
-	var fixed_delay = Dialogic.Text.get_autoadvance_info()['fixed_delay']
-	var delay_modifier = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
+	var fixed_delay :float = Dialogic.Text.get_autoadvance_info()['fixed_delay']
+	var delay_modifier :float = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 
-	var word_delay = _calculate_per_word_delay(current_text)
-	var character_delay = _calculate_per_character_delay(current_text)
+	var word_delay := _calculate_per_word_delay(text)
+	var character_delay := _calculate_per_character_delay(text)
 
 	# The delay calculation steps.
 	var total_delay = word_delay + character_delay
@@ -119,6 +123,7 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 	total_delay = max(0, total_delay)
 
 	return total_delay
+
 
 ## Considers the settings for auto-advance and delays the
 ## auto-advance action accordingly.
@@ -138,17 +143,16 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 ## the delay, the voice's time left will be used a delay.
 func start_autoadvance() -> void:
 	if Dialogic.Text.should_autoadvance():
-		var total_delay = 0.0
-		var auto_advance = Dialogic.Text.get_autoadvance_info()
+		var total_delay := 0.0
+		var info :Dictionary = Dialogic.Text.get_autoadvance_info()
 
-		if auto_advance['temp_enabled']:
-			total_delay = auto_advance['temp_wait_time']
+		if info['temp_enabled']:
+			total_delay = info['temp_wait_time']
 
 		else:
-			var text = Dialogic.current_state_info['text']
-			total_delay = _calculate_autoadvance_delay_from_str(text)
+			total_delay = _calculate_autoadvance_delay_from_str(Dialogic.current_state_info['text'])
 
-		var voice_time_left = _voice_play_time_left()
+		var voice_time_left :float = _voice_play_time_left()
 
 		# If the voice clip duration is longer than the current delay,
 		# we want to wait for the voice clip to finish instead.
@@ -156,6 +160,7 @@ func start_autoadvance() -> void:
 			total_delay = voice_time_left
 
 		autoadvance_timer.start(total_delay)
+
 
 func _on_autoadvance_timer_timeout() -> void:
 	autoadvance.emit()
@@ -168,12 +173,15 @@ func is_autoadvancing() -> bool:
 func get_autoadvance_time_left() -> float:
 	return autoadvance_timer.time_left
 
+
 func get_autoadvance_time() -> float:
 	return autoadvance_timer.wait_time
+
 
 func pause() -> void:
 	autoadvance_timer.paused = true
 	input_block_timer.paused = true
+
 
 func resume() -> void:
 	autoadvance_timer.paused = false

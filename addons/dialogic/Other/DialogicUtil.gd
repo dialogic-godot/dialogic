@@ -424,5 +424,6 @@ static func str_to_hash_set(source: String) -> Dictionary:
 
 	return dictionary
 
+
 static func strip_bbcode(source: String) -> String:
 	return bbcode_stripper_regex.sub(source, "", true)
