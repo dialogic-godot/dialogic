@@ -87,30 +87,31 @@ func _on_IgnoredCharacters_text_changed(text_input):
 
 func _on_ResetDelays_button_up() -> void:
 	var default_is_auto_advanced_on := true
-	DialogicUtil.set_editor_setting('autoadvance', default_is_auto_advanced_on)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_enabled', default_is_auto_advanced_on)
 	%AutoAdvance.button_pressed = default_is_auto_advanced_on
 
-	var fixed_delay := 1
-	DialogicUtil.set_editor_setting('autoadvance_fixed_delay', fixed_delay)
-	%FixedDelay.value = fixed_delay
+	var default_fixed_delay := 1
+	ProjectSettings.set_setting('dialogic/text/autoadvance_fixed_delay', default_fixed_delay)
+	%FixedDelay.value = default_fixed_delay
 
 	var default_delay_per_character := 0.1
-	DialogicUtil.set_editor_setting('autoadvance_delay_per_character', default_delay_per_character)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_per_character_delay', default_delay_per_character)
 	%PerCharacterDelay.value = default_delay_per_character
 
 	var default_delay_per_word := 0
-	DialogicUtil.set_editor_setting('autoadvance_delay_per_word', default_delay_per_word)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_per_word_delay', default_delay_per_word)
 	%PerWordDelay.value = default_delay_per_word
 
-	var default_ignored_characters := '/\\,.( ); ?!-+"\''
+	var default_ignored_characters := '/\\,.( );?!-+"\''
 	var default_ignored_characters_dictionary := DialogicUtil.str_to_hash_set(default_ignored_characters)
-	DialogicUtil.set_editor_setting('autoadvance_ignored_characters', default_ignored_characters_dictionary)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters', default_ignored_characters_dictionary)
 	%IgnoredCharacters.text = default_ignored_characters
 
 	var is_ignore_characters_enabled := true
-	DialogicUtil.set_editor_setting('autoadvance_ignored_characters_enabled', is_ignore_characters_enabled)
+	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters_enabled', is_ignore_characters_enabled)
 	%IgnoredCharactersEnabled.button_pressed = is_ignore_characters_enabled
 
+	ProjectSettings.save()
 
 func _on_Skippable_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)
