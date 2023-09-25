@@ -30,7 +30,14 @@ func _refresh():
 	%PerWordDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0.02)
 
 	%IgnoredCharactersEnabled.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
-	%IgnoredCharacters.text = str(ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {}).keys())
+
+	var ignored_characters: String = ''
+	var ignored_characters_dict = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', false)
+
+	for ignored_character in ignored_characters_dict.keys():
+		ignored_characters += ignored_character
+
+	%IgnoredCharacters.text = ignored_characters
 
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
 	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
