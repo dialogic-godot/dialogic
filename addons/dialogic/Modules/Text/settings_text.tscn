@@ -456,7 +456,7 @@ fit_content = true
 [connection signal="toggled" from="VBoxContainer/HBoxContainer AutoAdvance/AutoAdvance" to="." method="_on_Autoadvance_toggled"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer AutoAdvance/ResetDelaysButton" to="." method="_on_ResetDelays_button_up"]
 [connection signal="value_changed" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer FixedDelay/Box FixedDelay/FixedDelay" to="." method="_on_FixedDelay_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer PerCharacterDelay/Box PerWordCharacter/PerCharacterDelay" to="." method="_on_PerWordDelay_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer PerCharacterDelay/Box PerWordCharacter/PerCharacterDelay" to="." method="_on_PerCharacterDelay_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer PerWordDelay/Box PerWordDelay/PerWordDelay" to="." method="_on_PerWordDelay_value_changed"]
 [connection signal="toggled" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer IgnoredCharacters/IgnoredCharactersEnabled" to="." method="_on_IgnoredCharactersEnabled_toggled"]
 [connection signal="text_changed" from="VBoxContainer/Gridcontainer Autoadvance/HBoxContainer IgnoredCharacters/Box IgnoredCharacters/IgnoredCharacters" to="." method="_on_IgnoredCharacters_text_changed"]
