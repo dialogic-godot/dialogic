@@ -110,6 +110,12 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	return indexers
 
 
+static func guess_animation_file(animation_name: String) -> String:
+	for file in DialogicUtil.get_portrait_animation_scripts():
+		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
+			return file
+	return animation_name
+
 static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
 	var animations := []
 	if Engine.get_main_loop().has_meta('dialogic_animation_names'):

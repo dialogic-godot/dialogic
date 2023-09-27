@@ -462,6 +462,13 @@ func get_character_info(character:DialogicCharacter) -> Dictionary:
 ################### Positions  #####################################################################
 ####################################################################################################
 
+func get_portrait_container(postion_index:int) -> DialogicNode_PortraitContainer:
+	for portrait_position in get_tree().get_nodes_in_group('dialogic_portrait_con_position'):
+		if portrait_position.is_visible_in_tree() and portrait_position.position_index == postion_index:
+			return portrait_position
+	return null
+
+
 ## Creates a new portrait container node. 
 ## It will copy it's size and most settings from the first p_container in the tree. 
 ## It will be added as a sibling of the first p_container in the tree.

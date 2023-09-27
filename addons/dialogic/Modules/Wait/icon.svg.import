@@ -2,16 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0wtusjidl31g"
-path="res://.godot/imported/icon.png-81095c81d8263a286c8f687bb26be509.ctex"
+uid="uid://cds5nljrjw5tm"
+path="res://.godot/imported/icon.svg-7e9f52b17ae6e5e1f284e12048cb8f05.ctex"
 metadata={
+"has_editor_variant": true,
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Modules/Wait/icon.png"
-dest_files=["res://.godot/imported/icon.png-81095c81d8263a286c8f687bb26be509.ctex"]
+source_file="res://addons/dialogic/Modules/Wait/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-7e9f52b17ae6e5e1f284e12048cb8f05.ctex"]
 
 [params]
 
@@ -32,3 +33,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=true
+editor/convert_colors_with_editor_theme=true
