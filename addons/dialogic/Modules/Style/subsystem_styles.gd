@@ -23,6 +23,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ####################################################################################################
 
 func add_layout_style(style_name:="", is_base_style:=true) -> Node:
+	var info := {'style':style_name}
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
@@ -42,8 +43,11 @@ func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 		layout.set_meta('style', style_name)
 	
 	if layout != previous and previous != null:
+		if previous.has_meta('style'): info['previous'] = previous.get_meta('style')
 		previous.get_parent().remove_child(previous)
 		layout.ready.connect(reload_current_info_into_new_style)
+	
+	style_changed.emit(info)
 	return layout
 
 
