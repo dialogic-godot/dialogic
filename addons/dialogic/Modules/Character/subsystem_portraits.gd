@@ -159,7 +159,7 @@ func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void
 	var apply_character_scale :bool= !portrait_info.get('ignore_char_scale', false)
 	var transform :Rect2 = character_node.get_parent().get_local_portrait_transform(
 		portrait_node._get_covered_rect(),
-		(character.scale * portrait_info.get('scale', 1))*int(apply_character_scale)+portrait_info.get('scale')*int(!apply_character_scale))
+		(character.scale * portrait_info.get('scale', 1))*int(apply_character_scale)+portrait_info.get('scale', 1)*int(!apply_character_scale))
 	
 	var tween : Tween
 	if character_node.has_meta('move_tween'):

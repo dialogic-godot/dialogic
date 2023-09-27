@@ -15,11 +15,13 @@ default_portrait = "character"
 portraits = {
 "character": {
 "image": "res://addons/dialogic/Editor/Images/preview_character.png",
-"offset": Vector2(0, 0)
+"offset": Vector2(0, 0),
+"scene": "res://addons/dialogic/Modules/Character/default_portrait.tscn"
 },
 "speaker": {
 "image": "res://addons/dialogic/Editor/Images/preview_character_speaker.png",
-"offset": Vector2(0, 0)
+"offset": Vector2(0, 0),
+"scene": "res://addons/dialogic/Modules/Character/default_portrait.tscn"
 }
 }
 custom_info = {

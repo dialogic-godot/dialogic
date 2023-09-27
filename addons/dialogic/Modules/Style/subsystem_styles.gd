@@ -42,13 +42,15 @@ func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 		layout.set_meta('style', style_name)
 	
 	if layout != previous and previous != null:
+		previous.get_parent().remove_child(previous)
 		layout.ready.connect(reload_current_info_into_new_style)
 	return layout
+
 
 func reload_current_info_into_new_style():
 	for subsystem in Dialogic.get_children():
 		subsystem.load_game_state(LoadFlags.ONLY_DNODES)
-	
+
 
 ## Returns the style currently in use
 func get_current_style() -> String:
