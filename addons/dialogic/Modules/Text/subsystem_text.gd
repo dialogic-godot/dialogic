@@ -93,16 +93,15 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
 	
-	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
-		if text.is_empty():
-			await hide_text_boxes(instant)
-		else:
-			await show_text_boxes(instant)
-			if !dialogic.current_state_info['text'].is_empty():
-				animation_textbox_new_text.emit()
-				if Dialogic.Animation.is_animating():
-					await Dialogic.Animation.finished
-	
+	if text.is_empty():
+		await hide_text_boxes(instant)
+	else:
+		await show_text_boxes(instant)
+		if !dialogic.current_state_info['text'].is_empty():
+			animation_textbox_new_text.emit()
+			if Dialogic.Animation.is_animating():
+				await Dialogic.Animation.finished
+		
 	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -369,7 +368,7 @@ func _ready():
 	Dialogic.event_handled.connect(hide_next_indicators)
 	
 	_autopauses = {}
-	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/_autopauses', {})
+	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
 		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
 	input_handler = Node.new()
