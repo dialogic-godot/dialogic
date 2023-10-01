@@ -295,7 +295,7 @@ func build_event_editor():
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
 func do_any_characters_exist() -> bool:
-	return !DialogicUtil.list_resources_of_type(".dch").is_empty()
+	return !Engine.get_main_loop().get_meta('dialogic_character_directory', {}).is_empty()
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
