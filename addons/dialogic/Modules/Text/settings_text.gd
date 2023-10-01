@@ -32,7 +32,7 @@ func _refresh():
 	%IgnoredCharactersEnabled.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 
 	var ignored_characters: String = ''
-	var ignored_characters_dict = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', false)
+	var ignored_characters_dict: Dictionary = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 
 	for ignored_character in ignored_characters_dict.keys():
 		ignored_characters += ignored_character
