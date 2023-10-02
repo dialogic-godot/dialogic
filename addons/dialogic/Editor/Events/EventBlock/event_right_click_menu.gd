@@ -6,6 +6,7 @@ var current_event : Node = null
 func _ready():
 	clear()
 	add_icon_item(get_theme_icon("Help", "EditorIcons"), "Documentation")
+	add_icon_item(get_theme_icon("CodeHighlighter", "EditorIcons"), "Open Code")
 	add_separator()
 	add_icon_item(get_theme_icon("ArrowUp", "EditorIcons"), "Move up")
 	add_icon_item(get_theme_icon("ArrowDown", "EditorIcons"), "Move down")
