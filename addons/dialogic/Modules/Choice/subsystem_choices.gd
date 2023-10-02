@@ -94,8 +94,8 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
-			if dialogic.has_subsystem('VAR'):
-				node.text = dialogic.VAR.parse_variables(text)
+			if dialogic.has_subsystem('Text'):
+				node.text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
 			else:
 				node.text = text
 			

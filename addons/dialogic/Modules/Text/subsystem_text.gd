@@ -2,7 +2,6 @@ extends DialogicSubsystem
 
 ## Subsystem that handles showing of dialog text (+text effects & modifiers), name label, and next indicator
 
-
 signal about_to_show_text(info:Dictionary)
 signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
@@ -19,6 +18,8 @@ var text_already_read := false
 var text_effects := {}
 var parsed_text_effect_info : Array[Dictionary]= []
 var text_effects_regex := RegEx.new()
+enum TextModifierModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
+enum TextTypes {DIALOG_TEXT, CHOICE_TEXT}
 var text_modifiers := []
 var input_handler :Node = null
 
@@ -72,13 +73,13 @@ func resume() -> void:
 ####################################################################################################
 
 ## Applies modifiers, effects and coloring to the text
-func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true, effects:= true, color_names:= true) -> String:
+func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, glossary:= true, modifiers:= true, effects:= true, color_names:= true) -> String:
 	if variables and dialogic.has_subsystem('VAR'):
 		text = dialogic.VAR.parse_variables(text)
 	if glossary and dialogic.has_subsystem('Glossary'):
 		text = dialogic.Glossary.parse_glossary(text)
 	if modifiers:
-		text = parse_text_modifiers(text)
+		text = parse_text_modifiers(text, type)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
@@ -92,16 +93,15 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
 	
-	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
-		if text.is_empty():
-			await hide_text_boxes(instant)
-		else:
-			await show_text_boxes(instant)
-			if !dialogic.current_state_info['text'].is_empty():
-				animation_textbox_new_text.emit()
-				if Dialogic.Animation.is_animating():
-					await Dialogic.Animation.finished
-	
+	if text.is_empty():
+		await hide_text_boxes(instant)
+	else:
+		await show_text_boxes(instant)
+		if !dialogic.current_state_info['text'].is_empty():
+			animation_textbox_new_text.emit()
+			if Dialogic.Animation.is_animating():
+				await Dialogic.Animation.finished
+		
 	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -335,14 +335,17 @@ func collect_text_modifiers() -> void:
 	for indexer in DialogicUtil.get_indexers(true):
 		for modifier in indexer._get_text_modifiers():
 			if modifier.has('subsystem') and modifier.has('method'):
-				text_modifiers.append(Callable(Dialogic.get_subsystem(modifier.subsystem), modifier.method))
+				text_modifiers.append({'method':Callable(Dialogic.get_subsystem(modifier.subsystem), modifier.method)})
 			elif modifier.has('node_path') and modifier.has('method'):
-				text_modifiers.append(Callable(get_node(modifier.node_path), modifier.method))
+				text_modifiers.append({'method':Callable(get_node(modifier.node_path), modifier.method)})
+			text_modifiers[-1]['mode'] = modifier.get('mode', TextModifierModes.TEXT_ONLY)
 
 
-func parse_text_modifiers(text:String) -> String:
-	for mod_method in text_modifiers:
-		text = mod_method.call(text) 
+func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
+	for mod in text_modifiers:
+		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode: 
+			continue
+		text = mod.method.call(text)
 	return text
 
 
@@ -365,7 +368,7 @@ func _ready():
 	Dialogic.event_handled.connect(hide_next_indicators)
 	
 	_autopauses = {}
-	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/_autopauses', {})
+	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
 		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
 	input_handler = Node.new()
@@ -421,10 +424,10 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.text_speed).timeout
-	elif speed_multiplier != 0 and Dialogic.Settings.text_speed != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.text_speed).timeout
+		elif speed_multiplier != 0 and Dialogic.Settings.get_setting('text_speed', 1) != 0:
+			await get_tree().create_timer(float(argument)*speed_multiplier*Dialogic.Settings.get_setting('text_speed', 1)).timeout
+	elif speed_multiplier != 0 and Dialogic.Settings.get_setting('text_speed', 1) != 0:
+		await get_tree().create_timer(0.5*speed_multiplier*Dialogic.Settings.get_setting('text_speed', 1)).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:

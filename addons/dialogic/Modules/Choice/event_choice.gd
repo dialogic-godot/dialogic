@@ -90,7 +90,7 @@ func to_text() -> String:
 
 func from_text(string:String) -> void:
 	var regex = RegEx.new()
-	regex.compile('- (?<text>[^\\[]*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\s*\\[(?<shortcode>.*)\\])?')
+	regex.compile('- (?<text>(?(?=\\[if)|.)*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\s*\\[(?<shortcode>.*)\\])?')
 	var result = regex.search(string.strip_edges())
 	if result == null:
 		return
@@ -167,13 +167,18 @@ func allow_alt_text() -> bool:
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	if !'[' in line:
+	line = CodeCompletionHelper.get_line_untill_caret(line)
+	
+	
+	if !'[if' in line:
+		if symbol == '{':
+			CodeCompletionHelper.suggest_variables(TextNode)
 		return
 	
 	if symbol == '[':
-		if line.count('[') == 1:
+		if !'[if' in line and line.count('[') - line.count(']') == 1:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
-		elif line.count('[') > 1:
+		elif '[if' in line:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', TextNode.syntax_highlighter.code_flow_color)
 	if symbol == ' ' and '[else' in line:
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
@@ -190,9 +195,11 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	dict[0] = {'color':event_color}
-	if '[' in line:
-		dict[line.find('[')] = {"color":Highlighter.normal_color}
-		dict = Highlighter.color_word(dict, Highlighter.code_flow_color, line, 'if', line.find('['), line.find(']'))
-		dict = Highlighter.color_condition(dict, line, line.find('['), line.find(']'))
-		dict = Highlighter.color_shortcode_content(dict, line, line.find(']'), 0,event_color)
+	dict = Highlighter.color_region(dict, event_color.lerp(Highlighter.variable_color, 0.5), line, '{','}', 0, line.find('[if'), event_color)
+	if '[if' in line:
+		var from := line.find('[if')
+		dict[from] = {"color":Highlighter.normal_color}
+		dict = Highlighter.color_word(dict, Highlighter.code_flow_color, line, 'if', from, line.find(']', from))
+		dict = Highlighter.color_condition(dict, line, from, line.find(']', from))
+		dict = Highlighter.color_shortcode_content(dict, line, line.find(']', from), 0,event_color)
 	return dict

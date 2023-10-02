@@ -82,3 +82,4 @@ func _on_field_focus_entered():
 
 func _on_field_focus_exited():
 	$FocusStyle.hide()
+	_on_file_dialog_selected(%Field.text)

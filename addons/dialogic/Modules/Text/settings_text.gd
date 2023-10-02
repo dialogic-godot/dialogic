@@ -21,7 +21,6 @@ func _refresh():
 	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
-	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
@@ -64,6 +63,7 @@ func _on_InputAction_value_changed(property_name, value):
 	ProjectSettings.set_setting('dialogic/text/input_action', value)
 	ProjectSettings.save()
 
+
 func suggest_actions(search:String) -> Dictionary:
 	var suggs := {}
 	for prop in ProjectSettings.get_property_list():
@@ -74,11 +74,6 @@ func suggest_actions(search:String) -> Dictionary:
 
 func _on_AutocolorNames_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/text/autocolor_names', button_pressed)
-	ProjectSettings.save()
-
-
-func _on_textbox_hidden_toggled(button_pressed:bool) -> void:
-	ProjectSettings.set_setting('dialogic/text/hide_empty_textbox', button_pressed)
 	ProjectSettings.save()
 
 
