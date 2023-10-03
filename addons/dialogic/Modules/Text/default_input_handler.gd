@@ -59,7 +59,7 @@ func _calculate_per_word_delay(text: String) -> float:
 
 	var word_count :int = text.split(' ', false).size()
 	var calculated_delay :float = word_count * per_word_delay
-	
+
 	return calculated_delay
 
 
@@ -78,21 +78,21 @@ func _calculate_per_character_delay(text: String) -> float:
 	var info :Dictionary = Dialogic.Text.get_autoadvance_info()
 	var per_character_delay :float = info['per_character_delay']
 	var calculated_delay :float = 0
-	
+
 	if per_character_delay > 0:
 		var is_ignored_characters_enabled :bool = info['ignored_characters_enabled']
-		
+
 		# If we have characters to ignore, we will iterate each letter.
 		if is_ignored_characters_enabled:
 			var ignoredCharacters :Dictionary = info['ignored_characters']
-			
+
 			for character in text:
-				
+
 				if character in ignoredCharacters:
 					continue
-				
+
 				calculated_delay += per_character_delay
-			
+
 		# Otherwise, we can just multiply the length of the text by the
 		# delay.
 		else:
@@ -131,7 +131,7 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 ## This method checks if a temporary auto-advance has been enabled.
 ## If `true`, the temporary delay will be used.
 ##
-## Otherwise, the following procudure will be steps will be taken:
+## Otherwise, the following steps will be taken:
 ## - If set, every word will add a delay.
 ## - If set, every character will add a delay, unless the character has been
 ## selected to be ignored by the user.
