@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
@@ -248,6 +248,8 @@ expand_margin_left = 5.0
 expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ji6f2"]
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
@@ -618,6 +620,23 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
 
+[node name="Settings" type="Control" parent="DefaultStyle"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AutoAdvanceButton" type="Button" parent="DefaultStyle/Settings"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 175.0
+offset_top = 615.0
+offset_right = 261.0
+offset_bottom = 646.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ji6f2")
+toggle_mode = true
+action_mode = 0
+text = "Auto"
+
 [node name="ExampleHistoryScene" parent="." instance=ExtResource("22_854kg")]
 history_font_normal = ExtResource("23_gyqve")
 history_font_bold = ExtResource("24_aa4pl")
@@ -626,3 +645,4 @@ metadata/_edit_lock_ = true
 
 [connection signal="meta_hover_ended" from="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
 [connection signal="meta_hover_started" from="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]
+[connection signal="toggled" from="DefaultStyle/Settings/AutoAdvanceButton" to="." method="_on_AutoAdvanceButton_toggled"]
