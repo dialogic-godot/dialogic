@@ -20,7 +20,7 @@ func _input(event:InputEvent) -> void:
 		if Dialogic.paused or is_input_blocked():
 			return
 
-		if Dialogic.Text.get_autoadvance_info()['cancel_on_user_input'] and Dialogic.Text.is_autoadvancing():
+		if Dialogic.Text.get_autoadvance_info()['cancel_on_user_input'] and Dialogic.Text.should_autoadvance():
 			Dialogic.Settings.autoadvance_enabled = false
 			Dialogic.Text.get_autoadvance_info()['temp_enabled'] = false
 
