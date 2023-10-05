@@ -68,7 +68,7 @@ func d_len(arg:Variant) -> int:
 
 
 # Checks if there is a match in a string based on a regex pattern string. 
-func d_regex(input: String, pattern: String, offset: int = 0, end: int = len(input)) -> bool:
+func d_regex(input: String, pattern: String, offset: int = 0, end: int = -1) -> bool:
 	var regex : RegEx = RegEx.create_from_string(pattern)
 	regex.compile(pattern)
 	var match := regex.search(input, offset, end)
