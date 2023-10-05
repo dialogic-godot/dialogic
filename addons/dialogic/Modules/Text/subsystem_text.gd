@@ -101,8 +101,8 @@ func set_autoadvance(enabled:= true, temp_wait_time:= 0, is_temporary:= false) -
 
 	if is_temporary:
 		info['temp_enabled'] = enabled
-	else:
-		info['enabled'] = enabled
+
+	Dialogic.Settings.autoadvance_enabled = enabled
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -174,14 +174,12 @@ func get_default_autoadvance_info() -> Dictionary:
 	var info := {}
 	info['temp_enabled'] = false
 	info['temp_wait_time'] = 0
-	
-	info['enabled'] = false
 	info['fixed_delay'] = 1
 	info['per_word_delay'] = 0
 	info['per_character_delay'] = 0.1
 	info['ignored_characters_enabled'] = false
 	info['ignored_characters'] = {}
-	
+
 	return info
 
 
@@ -283,8 +281,8 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ##					HELPERS
 ####################################################################################################
 func should_autoadvance() -> bool:
-	var info : Dictionary = get_autoadvance_info()
-	return info['enabled'] or info['temp_enabled']
+	var is_enabled: bool = Dialogic.Settings.get_setting('autoadvance_enabled', false)
+	return is_enabled
 
 
 func can_manual_advance() -> bool:
@@ -406,12 +404,18 @@ func _ready():
 
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
+	Dialogic.Settings.connect_to_change('autoadvance_enabled', _update_autoadvance_enabled)
 
 func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
-func _update_autoadvance_delay_modifier(user_modifier: float) -> void:
-	pass
+func _update_autoadvance_enabled(is_enabled: bool) -> void:
+	var info: Dictionary = get_autoadvance_info()
+	info['enabled'] = is_enabled
+
+func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
+	var info: Dictionary = get_autoadvance_info()
+	info['delay_modifier'] = delay_modifier
 
 func color_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
