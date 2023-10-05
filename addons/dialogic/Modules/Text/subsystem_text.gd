@@ -162,6 +162,15 @@ func update_name_label(character:DialogicCharacter) -> void:
 
 ## Fetches all Auto-Advance settings.
 ## If they don't exist, returns the default settings.
+## The key's values will be changed upon setting them.
+##
+## The dictionary can be seen as detailed information about
+## auto-advancing, they do not contain the whether the
+## auto-advance is enabled or not.
+##
+## In order to check whether auto-advance is enabled, use
+## `Dialogic.Settings.autoadvance_enabled`, preferably
+## in combination with `Dialogic.Settings.has_setting()`.
 func get_autoadvance_info() -> Dictionary:
 	if !dialogic.current_state_info.has('autoadvance'):
 		dialogic.current_state_info['autoadvance'] = get_default_autoadvance_info()
@@ -178,6 +187,7 @@ func get_default_autoadvance_info() -> Dictionary:
 	info['per_word_delay'] = 0
 	info['per_character_delay'] = 0.1
 	info['ignored_characters_enabled'] = false
+	info['cancel_on_user_input'] = true
 	info['ignored_characters'] = {}
 
 	return info
