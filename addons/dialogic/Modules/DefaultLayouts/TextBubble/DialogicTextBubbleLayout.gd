@@ -16,7 +16,7 @@ extends CanvasLayer
 @export var box_modulate := Color.WHITE
 @export var box_modulate_by_character_color := false
 @export var box_padding := Vector2(10,10)
-@export_range(0.1, 2) var box_corner_radius := 0.3
+@export_range(1, 999) var box_corner_radius := 25
 @export_range(0.1, 5) var box_wobble_speed := 1
 @export_range(0, 1) var box_wobbliness := 0.2
 
@@ -99,14 +99,12 @@ func bubble_apply_overrides(bubble:Control) -> void:
 	
 	
 	## BOX & TAIL COLOR
-	bubble.get_node('Tail').default_color = box_modulate
-	bubble.get_node('Background').color = box_modulate
-	bubble.get_node('Background').material.set_shader_parameter('radius', box_corner_radius)
-	bubble.get_node('Background').material.set_shader_parameter('crease', box_wobbliness*0.1)
-	bubble.get_node('Background').material.set_shader_parameter('speed', box_wobble_speed)
+	bubble.get_node('Group').self_modulate = box_modulate
+	bubble.get_node('%Background').material.set_shader_parameter('radius', box_corner_radius)
+	bubble.get_node('%Background').material.set_shader_parameter('wobble_amount', box_wobbliness*0.1)
+	bubble.get_node('%Background').material.set_shader_parameter('wobble_speed', box_wobble_speed)
 	if box_modulate_by_character_color and bubble.character != null:
-		bubble.get_node('Tail').modulate = bubble.character.color
-		bubble.get_node('Background').modulate = bubble.character.color
+		bubble.get_node('Group').self_modulate = bubble.character.color
 	bubble.padding = box_padding
 	
 	## NAME LABEL SETTINGS
@@ -126,7 +124,7 @@ func bubble_apply_overrides(bubble:Control) -> void:
 	nlp.get_theme_stylebox('panel').content_margin_right = name_label_padding.x
 	nlp.get_theme_stylebox('panel').content_margin_top = name_label_padding.y
 	nlp.get_theme_stylebox('panel').content_margin_bottom = name_label_padding.y
-	nlp.position += name_label_offset
+	bubble.name_label_offset = name_label_offset
 	
 	if !name_label_enabled:
 		nlp.queue_free()

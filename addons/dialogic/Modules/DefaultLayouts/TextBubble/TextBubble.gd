@@ -1,7 +1,7 @@
 extends Control
 
-@onready var tail : Line2D = $Tail
-@onready var bubble : Control = $Background
+@onready var tail : Line2D = $Group/Tail
+@onready var bubble : Control = $Group/Background
 var speaker_node : Node = null
 var character : DialogicCharacter = null
 var max_width := 300
@@ -13,11 +13,30 @@ var base_direction := Vector2(1.0, -1.0).normalized()
 var safe_zone := 50.0
 var padding := Vector2()
 
+var name_label_offset := Vector2()
+
+# Sets the padding shader paramter. 
+# It's the amount of spacing around the background to allow some wobbeling.
+var bg_padding := 30
+
 func _ready() -> void:
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 	if speaker_node: 
 		position = speaker_node.get_global_transform_with_canvas().origin
+	
+	Dialogic.Choices.choices_shown.connect(_on_choices_shown)
+	
+	for child in $DialogText/ChoiceContainer.get_children():
+		var prev := child.get_parent().get_child(wrap(child.get_index()-1, 0, $DialogText/ChoiceContainer.get_child_count()-1)).get_path()
+		var next := child.get_parent().get_child(wrap(child.get_index()+1, 0, $DialogText/ChoiceContainer.get_child_count()-1)).get_path()
+		child.focus_next = next
+		child.focus_previous = prev
+		child.focus_neighbor_left = prev
+		child.focus_neighbor_top = prev
+		child.focus_neighbor_right = next
+		child.focus_neighbor_bottom = next
+
 
 
 func _process(delta):
@@ -41,7 +60,7 @@ func _process(delta):
 	var p : Vector2 = base_position + direction * (safe_zone + lerp(bubble_rect.size.y, bubble_rect.size.x, abs(direction.x)) * 0.4)
 	p = p.clamp(bubble_rect.size / 2.0, get_viewport_rect().size - bubble_rect.size / 2.0)
 	
-	position = lerp(position, p, 10.0 * delta)
+	position = lerp(position, p, 5 * delta)
 	
 	var point_a : Vector2 = Vector2.ZERO
 	var point_b : Vector2 = (base_position - position) * 0.5
@@ -79,33 +98,38 @@ func close() -> void:
 
 func _on_dialog_text_started_revealing_text():
 	var font :Font = %DialogText.get_theme_font("normal_font")
-	%DialogText.size = font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
-	if Dialogic.Choices.is_question(Dialogic.current_event_idx):
-		font = $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font('font')
-		%DialogText.size.y += font.get_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
-	%DialogText.position = -%DialogText.size/2
+	var text_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
 	
-	_resize_bubble()
+#	var nl_font :Font = %NameLabel.get_theme_font("font")
+	$DialogText/NameLabel.position = Vector2(0, -$DialogText/NameLabel.size.y)+name_label_offset
+	
+	_resize_bubble(text_size)
 
 
-func _resize_bubble() -> void:
-	var bubble_size :Vector2 = %DialogText.size+(padding*2)
+func _resize_bubble(text_size:Vector2) -> void:
+	var bubble_size :Vector2 = text_size+(padding*2)+Vector2.ONE*bg_padding*2
 	var half_size :Vector2= (bubble_size / 2.0)
-	%DialogText.pivot_offset = half_size
+	%DialogText.size = text_size
+	%DialogText.position = -(text_size/2)
 	bubble.pivot_offset = half_size
 	bubble_rect = Rect2(position, bubble_size * Vector2(1.1, 1.1))
-	bubble.size = bubble_size
 	bubble.position = -half_size
 	
 	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	bubble.size = bubble_size
 	t.tween_property(bubble, "scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
 	
-	# set bubble's ratio
-	var bubble_ratio := Vector2.ONE
-	if bubble_rect.size.x < bubble_rect.size.y:
-		bubble_ratio.y = bubble_rect.size.y / bubble_rect.size.x
-	else:
-		bubble_ratio.x = bubble_rect.size.x / bubble_rect.size.y
+	bubble.material.set("shader_parameter/box_size", bubble_size)
+
+
+func _on_choices_shown(info:Dictionary) -> void:
+	await get_tree().process_frame
+	var font :Font = %DialogText.get_theme_font("normal_font")
+	var text_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
+	text_size.y += $DialogText/ChoiceContainer.size.y
+	text_size.x = max(text_size.x, $DialogText/ChoiceContainer.size.x)
 	
-	bubble.material.set("shader_parameter/ratio", bubble_ratio)
+	_resize_bubble(text_size)
+	
+
 
