@@ -20,6 +20,12 @@ func _input(event:InputEvent) -> void:
 		if Dialogic.paused or is_input_blocked():
 			return
 
+		# If the code is able to auto-advance,
+		# we want to prevent this.
+		if Dialogic.Text.should_autoadvance():
+			Dialogic.Settings.autoadvance_enabled = false
+			Dialogic.Text.get_autoadvance_info()['temp_enabled'] = false
+
 		dialogic_action_priority.emit()
 		if action_was_consumed:
 			action_was_consumed = false
@@ -46,6 +52,7 @@ func _ready() -> void:
 	add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
+	Dialogic.Settings.connect_to_change('autoadvance_enabled', _on_autoadvance_enabled_change)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -165,6 +172,18 @@ func start_autoadvance() -> void:
 func _on_autoadvance_timer_timeout() -> void:
 	autoadvance.emit()
 
+## Switches the auto-advance mode on or off based on [param is_enabled].
+func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
+	# If auto-advance is enabled and we are not auto-advancing yet,
+	# we will initiate the auto-advance mode.
+	if is_enabled and !is_autoadvancing():
+		Dialogic.Text.show_next_indicators(false, true)
+		Dialogic.Text.input_handler.start_autoadvance()
+
+	# If auto-advance is disabled and we are auto-advancing,
+	# we want to cancel the auto-advance mode.
+	elif !is_enabled and is_autoadvancing():
+		stop()
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -182,6 +201,10 @@ func pause() -> void:
 	autoadvance_timer.paused = true
 	input_block_timer.paused = true
 
+
+func stop() -> void:
+	autoadvance_timer.stop()
+	input_block_timer.stop()
 
 func resume() -> void:
 	autoadvance_timer.paused = false
