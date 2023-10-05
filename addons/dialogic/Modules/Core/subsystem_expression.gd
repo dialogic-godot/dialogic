@@ -14,6 +14,7 @@ func execute_string(string:String, default = null) -> Variant:
 	# Thus they are recreated below and secretly added.
 	string = string.replace('range(', 'd_range(')
 	string = string.replace('len(', 'd_len(')
+	string = string.replace('regex(', 'd_regex(')
 	
 	
 	var regex: RegEx = RegEx.create_from_string('{([^{}]*)}')
@@ -64,3 +65,14 @@ func d_range(a1, a2=null,a3=null,a4=null) -> Array:
 
 func d_len(arg:Variant) -> int:
 	return len(arg)
+
+
+# Checks if there is a match in a string based on a regex pattern string. 
+func d_regex(input: String, pattern: String, offset: int = 0, end: int = -1) -> bool:
+	var regex : RegEx = RegEx.create_from_string(pattern)
+	regex.compile(pattern)
+	var match := regex.search(input, offset, end)
+	if match:
+		return true
+	else:
+		return false
