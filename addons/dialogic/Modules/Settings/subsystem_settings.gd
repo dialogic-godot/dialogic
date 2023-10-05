@@ -2,9 +2,13 @@ extends DialogicSubsystem
 
 ## Subsystem that allows setting and getting settings that are automatically saved slot independent.
 ## All settings that are stored in the project settings dialogic/settings section are supported.
-## For example the text_speed setting is stored there. 
+## For example the text_speed setting is stored there.
 ## Thus it can be acessed like this:
 ##    Dialogic.Settings.text_speed = 0.05
+##
+## Auto-advance can be enabled by:
+##	Dialogic.Settings.autoadvance_enabled = true
+##
 ## Settings stored there can also be changed with the Settings event.
 
 var settings := {}
@@ -25,7 +29,7 @@ func _reload_settings() -> void:
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('dialogic/settings'):
 			settings[prop.name.trim_prefix('dialogic/settings/')] = ProjectSettings.get_setting(prop.name)
-	
+
 	if dialogic.has_subsystem('Save'):
 		for i in settings:
 			settings[i] = dialogic.Save.get_global_info(i, settings[i])
@@ -48,7 +52,7 @@ func _get(property:StringName) -> Variant:
 func _setting_changed(property:StringName, value:Variant) -> void:
 	if !property in _connections:
 		return
-	
+
 	for i in _connections[property]:
 		i.call(value)
 
