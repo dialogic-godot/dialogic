@@ -328,7 +328,19 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.property_name = property_info['name']
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
 		TYPE_STRING:
-			if property_info['hint'] & PROPERTY_HINT_ENUM:
+			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
+				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
+				input.file_filter = property_info['hint_string']
+				input.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
+				if property_info['hint'] == PROPERTY_HINT_DIR:
+					input.file_mode = EditorFileDialog.FILE_MODE_OPEN_DIR
+				input.property_name = property_info['name']
+				input.placeholder = "Default"
+				input.hide_reset = true
+				if value != null:
+					input.set_value(value)
+				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
+			elif property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
 				var options :PackedStringArray = []  
 				for x in property_info['hint_string'].split(','):
@@ -337,15 +349,6 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.select(options.find(value))
 				input.item_selected.connect(DialogicUtil._on_export_string_enum_submitted.bind(property_info.name, options, property_changed))
-			elif property_info['hint'] & PROPERTY_HINT_FILE:
-				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
-				input.file_filter = property_info['hint_string']
-				input.property_name = property_info['name']
-				input.placeholder = "Default"
-				input.hide_reset = true
-				if value != null:
-					input.set_value(value)
-				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
 			else:
 				input = LineEdit.new()
 				if value != null:

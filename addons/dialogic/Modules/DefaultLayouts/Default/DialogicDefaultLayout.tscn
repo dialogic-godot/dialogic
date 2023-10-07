@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="5_uvb2c"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="10"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
-[ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/autoadvance_indicator.gd" id="15_ptoy3"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/animations.gd" id="16_07l6b"]
@@ -234,6 +233,8 @@ expand_margin_bottom = 5.0
 
 [sub_resource type="FontVariation" id="FontVariation_7goc6"]
 
+[sub_resource type="AudioStream" id="AudioStream_hu7ba"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
 border_width_left = 2
@@ -255,6 +256,13 @@ box_animation_in = 1
 box_animation_out = 1
 box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+typing_sounds_sounds_folder = ""
+typing_sounds_pitch = null
+typing_sounds_volume = null
+choice_button_sounds_volume = null
+choice_button_sounds_pressed = null
+choice_button_sounds_hover = null
+choice_button_sounds_focus = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -348,59 +356,6 @@ libraries = {
 }
 script = ExtResource("16_07l6b")
 
-[node name="Choices" type="VBoxContainer" parent="DefaultStyle"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -86.5
-offset_top = -103.0
-offset_right = 86.5
-offset_bottom = 103.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-alignment = 1
-metadata/_edit_layout_mode = 1
-
-[node name="DialogicNode_ChoiceButton1" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton2" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton3" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton4" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton5" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ChoiceButton6" type="Button" parent="DefaultStyle/Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("4")
-
-[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="DefaultStyle/Choices"]
-script = ExtResource("18")
-sound_pressed = ExtResource("14")
-sound_hover = ExtResource("11")
-sound_focus = ExtResource("13")
-
 [node name="DialogicTextAnchor" type="Control" parent="DefaultStyle"]
 layout_mode = 1
 anchors_preset = 7
@@ -456,6 +411,7 @@ script = ExtResource("2")
 textbox_root = NodePath("..")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel/DialogicNode_DialogText"]
+unique_name_in_owner = true
 script = ExtResource("10")
 play_every_character = 0
 
@@ -506,6 +462,60 @@ theme_override_font_sizes/font_size = 15
 text = "S"
 script = ExtResource("3")
 name_label_root = NodePath("..")
+
+[node name="Choices" type="VBoxContainer" parent="DefaultStyle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.5
+offset_top = -103.0
+offset_right = 86.5
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="DialogicNode_ChoiceButton1" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="DefaultStyle/Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("4")
+
+[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="DefaultStyle/Choices"]
+unique_name_in_owner = true
+script = ExtResource("18")
+sound_pressed = ExtResource("14")
+sound_hover = ExtResource("11")
+sound_focus = SubResource("AudioStream_hu7ba")
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1
