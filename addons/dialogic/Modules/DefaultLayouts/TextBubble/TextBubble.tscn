@@ -66,7 +66,7 @@ offset_right = 157.0
 offset_bottom = 70.0
 mouse_filter = 2
 
-[node name="DialogText" type="RichTextLabel" parent="."]
+[node name="DialogText" type="RichTextLabel" parent="." node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -85,6 +85,7 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 scroll_active = false
 visible_characters_behavior = 1
 script = ExtResource("3_syv35")
+textbox_root = NodePath("..")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogText"]
 script = ExtResource("4_7bm4b")
@@ -166,4 +167,3 @@ flat = true
 script = ExtResource("7_0tnh1")
 
 [connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]
-[connection signal="resized" from="DialogText/ChoiceContainer" to="." method="_on_choice_container_resized"]

@@ -100,8 +100,8 @@ func _on_dialog_text_started_revealing_text():
 	var font :Font = %DialogText.get_theme_font("normal_font")
 	var text_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
 	
-#	var nl_font :Font = %NameLabel.get_theme_font("font")
-	$DialogText/NameLabel.position = Vector2(0, -$DialogText/NameLabel.size.y)+name_label_offset
+	if $DialogText.has_child('NameLabel'):
+		$DialogText/NameLabel.position = Vector2(0, -$DialogText/NameLabel.size.y)+name_label_offset
 	
 	_resize_bubble(text_size)
 
