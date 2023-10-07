@@ -311,7 +311,8 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 		TimelineUndoRedo.commit_action()
 	
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
-		move_blocks_to_index(data, index)
+		if not (len(data) == 1 and data[0].get_index()+1 == index):
+			move_blocks_to_index(data, index)
 	
 	await get_tree().process_frame
 	something_changed()
@@ -425,6 +426,19 @@ func select_events_indexed(indexed_events:Dictionary) -> void:
 	selected_items = []
 	for event_index in indexed_events.keys():
 		selected_items.append(%Timeline.get_child(event_index))
+
+
+func get_next_unselected_idx() -> int:
+	if %Timeline.get_child_count() == 0:
+		return -1
+	
+	if selected_items.is_empty():
+		return 0
+	
+	if selected_items[-1].get_index() != %Timeline.get_child_count()-1:
+		return selected_items[-1].get_index()+1
+	
+	return -1
 
 
 ## Adds events based on an indexed dictionary
