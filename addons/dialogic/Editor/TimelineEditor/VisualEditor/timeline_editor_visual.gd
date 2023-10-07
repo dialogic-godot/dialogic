@@ -883,13 +883,16 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 	if index == 0:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
-	elif index == 2 or index == 3:
-		if index == 2:
+	elif index == 1:
+		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
+		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
+	elif index == 3 or index == 4:
+		if index == 3:
 			offset_blocks_by_index(selected_items, -1)
 		else:
 			offset_blocks_by_index(selected_items, +1)
 
-	elif index == 5:
+	elif index == 6:
 		var events_indexed := get_events_indexed([item])
 		TimelineUndoRedo.create_action("[D] Deleting 1 event.")
 		TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))

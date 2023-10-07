@@ -13,7 +13,15 @@ func _ready() -> void:
 
 
 func _update_background(argument:String, time:float) -> void:
-	$Image.texture = load(argument)
+	if argument.begins_with('res://'):
+		$Image.texture = load(argument)
+		self.color = Color.TRANSPARENT
+	elif argument.is_valid_html_color():
+		$Image.texture = null
+		self.color = Color(argument, 1)
+	else:
+		$Image.texture = null
+		self.color = Color.from_string(argument, Color.TRANSPARENT)
 
 
 func _should_do_background_update(argument:String) -> bool:

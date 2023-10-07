@@ -36,6 +36,6 @@ func _get_text_effects() -> Array[Dictionary]:
 func _get_text_modifiers() -> Array[Dictionary]:
 	return [
 		{'subsystem':'Text', 'method':'modifier_autopauses'},
-		{'subsystem':'Text', 'method':'modifier_random_selection'},
-		{'subsystem':'Text', 'method':"modifier_break", 'command':'br'},
+		{'subsystem':'Text', 'method':'modifier_random_selection', 'mode':-1},
+		{'subsystem':'Text', 'method':"modifier_break", 'command':'br', 'mode':-1},
 	]
