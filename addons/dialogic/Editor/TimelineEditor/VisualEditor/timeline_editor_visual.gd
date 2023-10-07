@@ -311,7 +311,8 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 		TimelineUndoRedo.commit_action()
 	
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
-		move_blocks_to_index(data, index)
+		if not (len(data) == 1 and data[0].get_index()+1 == index):
+			move_blocks_to_index(data, index)
 	
 	await get_tree().process_frame
 	something_changed()
