@@ -358,15 +358,15 @@ func build_event_editor() -> void:
 	
 	add_header_edit('set_portrait', ValueType.BOOL,
 			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
-			 'tooltip':'Change Portrait'}, "action == Actions.UPDATE")
+			 'tooltip':'Change Portrait'}, "should_show_portrait_selector() and action == Actions.UPDATE")
 	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
 			{'placeholder'		: 'Default',
 			'collapse_when_empty':true,
 			'suggestions_func' 	: get_portrait_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
-			'should_show_portrait_selector()')
+			'should_show_portrait_selector() and (action != Actions.UPDATE or set_portrait)')
 	add_header_edit('set_position', ValueType.BOOL,  
-			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "action == Actions.UPDATE")
+			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
 	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
 	add_header_edit('position', ValueType.INTEGER, {}, 
@@ -389,10 +389,10 @@ func build_event_editor() -> void:
 	add_body_line_break()
 	add_body_edit('position_move_time', ValueType.FLOAT, {'left_text':'Movement duration:'}, 
 			'action == %s and set_position' %Actions.UPDATE)
-	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
+	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('z_index', ValueType.INTEGER, {'left_text':'Z-index:'},
 			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
-	add_body_edit('set_mirrored', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "action == Actions.UPDATE")
+	add_body_edit('set_mirrored', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
 
@@ -401,7 +401,7 @@ func should_show_animation_options() -> bool:
 	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--' 
 
 func should_show_portrait_selector() -> bool:
-	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait)
+	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
