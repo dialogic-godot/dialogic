@@ -107,7 +107,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 	
 	for i in replacements:
 		if i.has('character_names') and !i.character_names.is_empty():
-			i['character_regex'] = RegEx.create_from_string("(?m)^(Join|Update|Leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
+			i['character_regex'] = RegEx.create_from_string("(?m)^(join|update|leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
 		
 		for regex_string in i.regex:
 			var regex := RegEx.create_from_string(regex_string)
