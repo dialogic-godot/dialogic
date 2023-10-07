@@ -107,10 +107,10 @@ func load_overwrite(dictionary:Dictionary) -> void:
 		current_overwrite_data['sounds'] = load_sounds_from_path(dictionary.sound_path)
 
 
-func load_sounds_from_path(path:String) -> Array:
+static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 	if path.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(path) is AudioStream:
 		return [load(path)]
-	var _sounds := []
+	var _sounds :Array[AudioStream]= []
 	for file in DialogicUtil.listdir(path, true, false, true):
 		if file.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(file) is AudioStream:
 			_sounds.append(load(file))

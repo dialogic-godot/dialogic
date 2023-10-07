@@ -51,6 +51,24 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export_subgroup("Indicators")
 @export var autoadvance_progressbar := true
 
+@export_group('Sounds')
+@export_subgroup('Typing Sounds')
+@export var typing_sounds_enabled := true
+@export var typing_sounds_mode := DialogicNode_TypeSounds.Modes.INTERRUPT
+@export_dir var typing_sounds_sounds_folder := "res://addons/dialogic/Example Assets/sound-effects/"
+@export_file("*.wav", "*.ogg", "*.mp3") var typing_sounds_end_sound := ""
+@export_range(1, 999, 1) var typing_sounds_every_nths_character := 1
+@export_range(0.01, 4, 0.01) var typing_sounds_pitch := 1.0
+@export_range(0.0, 3.0) var typing_sounds_pitch_variance := 0.0
+@export_range(-80, 24, 0.01) var typing_sounds_volume := -10
+@export_range(0.0, 10) var typing_sounds_volume_variance := 0.0
+@export var typing_sounds_ignore_characters := " .,!?"
+
+@export_subgroup('Choice Button Sounds')
+@export_range(-80, 24, 0.01) var choice_button_sounds_volume := -10
+@export_file("*.wav", "*.ogg", "*.mp3") var choice_button_sounds_pressed := "res://addons/dialogic/Example Assets/sound-effects/typing1.wav"
+@export_file("*.wav", "*.ogg", "*.mp3") var choice_button_sounds_hover := "res://addons/dialogic/Example Assets/sound-effects/typing2.wav"
+@export_file("*.wav", "*.ogg", "*.mp3") var choice_button_sounds_focus := "res://addons/dialogic/Example Assets/sound-effects/typing4.wav"
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides():
@@ -120,3 +138,30 @@ func _apply_export_overrides():
 	
 	## OTHER
 	%AutoAdvanceProgressbar.enabled = autoadvance_progressbar
+	
+	#### SOUNDS
+	
+	## TYPING SOUNDS
+	%DialogicNode_TypeSounds.enabled = typing_sounds_enabled
+	%DialogicNode_TypeSounds.mode = typing_sounds_mode
+	if not typing_sounds_sounds_folder.is_empty():
+		%DialogicNode_TypeSounds.sounds = %DialogicNode_TypeSounds.load_sounds_from_path(typing_sounds_sounds_folder)
+	else:
+		%DialogicNode_TypeSounds.sounds.clear()
+	if not typing_sounds_end_sound.is_empty():
+		%DialogicNode_TypeSounds.end_sound = load(typing_sounds_end_sound)
+	else:
+		%DialogicNode_TypeSounds.end_sound = null
+	%DialogicNode_TypeSounds.play_every_character = typing_sounds_every_nths_character
+	%DialogicNode_TypeSounds.base_pitch = typing_sounds_pitch
+	%DialogicNode_TypeSounds.base_volume = typing_sounds_volume
+	%DialogicNode_TypeSounds.pitch_variance = typing_sounds_pitch_variance
+	%DialogicNode_TypeSounds.volume_variance = typing_sounds_volume_variance
+	%DialogicNode_TypeSounds.ignore_characters = typing_sounds_ignore_characters
+	
+	## CHOICE SOUNDS
+	%DialogicNode_ButtonSound.volume_db = choice_button_sounds_volume
+	%DialogicNode_ButtonSound.sound_pressed = load(choice_button_sounds_pressed)
+	%DialogicNode_ButtonSound.sound_hover = load(choice_button_sounds_hover)
+	%DialogicNode_ButtonSound.sound_focus = load(choice_button_sounds_focus)
+	
