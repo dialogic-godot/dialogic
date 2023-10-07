@@ -428,19 +428,6 @@ func select_events_indexed(indexed_events:Dictionary) -> void:
 		selected_items.append(%Timeline.get_child(event_index))
 
 
-func get_next_unselected_idx() -> int:
-	if %Timeline.get_child_count() == 0:
-		return -1
-	
-	if selected_items.is_empty():
-		return 0
-	
-	if selected_items[-1].get_index() != %Timeline.get_child_count()-1:
-		return selected_items[-1].get_index()+1
-	
-	return -1
-
-
 ## Adds events based on an indexed dictionary
 func add_events_indexed(indexed_events:Dictionary) -> void:
 	# sort the dictionaries indexes just in case
