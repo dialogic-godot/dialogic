@@ -79,8 +79,10 @@ func _execute() -> void:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
 	
-	dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
-	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
+		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
+	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
+		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
 	
 	var final_text :String= get_property_translated('text')
 	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
