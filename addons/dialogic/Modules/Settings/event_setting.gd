@@ -61,7 +61,7 @@ func _get_icon() -> Resource:
 ################################################################################
 
 func to_text() -> String:
-	var string := "Setting "
+	var string := "setting "
 	if mode != Modes.SET:
 		string += "reset "
 	
@@ -84,7 +84,7 @@ func to_text() -> String:
 
 func from_text(string:String) -> void:
 	var reg := RegEx.new()
-	reg.compile('Setting (?<reset>reset)? *("(?<name>[^=+\\-*\\/]*)")?( *= *(?<value>.*))?')
+	reg.compile('setting (?<reset>reset)? *("(?<name>[^=+\\-*\\/]*)")?( *= *(?<value>.*))?')
 	var result := reg.search(string)
 	if !result:
 		return
@@ -114,7 +114,7 @@ func from_text(string:String) -> void:
 
 
 func is_valid_event(string:String) -> bool:
-	return string.begins_with('Setting')
+	return string.begins_with('setting')
 
 
 ################################################################################
@@ -192,9 +192,9 @@ func get_value_suggestions(filter:String) -> Dictionary:
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	if symbol == " " and !"reset" in line and !'=' in line and !'"' in line:
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset", "reset ", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("RotateLeft", "EditorIcons"))
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset all", "reset\n", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("ToolRotate", "EditorIcons"))
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset all", "reset \n", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("ToolRotate", "EditorIcons"))
 	
-	if (symbol == " " or symbol == '"') and !"=" in line:
+	if (symbol == " " or symbol == '"') and !"=" in line and CodeCompletionHelper.get_line_untill_caret(line).count('"') != 2:
 		for i in get_settings_suggestions(''):
 			if i.is_empty():
 				continue
@@ -205,14 +205,14 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Setting', 'Setting ', event_color)
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'setting', 'setting ', event_color)
 
 #################### SYNTAX HIGHLIGHTING #######################################
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
-	dict[line.find('Setting')] = {"color":event_color}
-	dict[line.find('Setting')+7] = {"color":Highlighter.normal_color}
+	dict[line.find('setting')] = {"color":event_color}
+	dict[line.find('setting')+7] = {"color":Highlighter.normal_color}
 	dict = Highlighter.color_word(dict, event_color, line, 'reset')
 	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"')
 	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}')

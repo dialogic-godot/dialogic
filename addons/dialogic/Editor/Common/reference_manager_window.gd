@@ -47,11 +47,14 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 	match type:
 		Types.TEXT:
 			category_name = "Texts"
-			regexes = ['(?<replace>'+old_name.replace('/', '\\/')+')']
-			if !case_sensitive:
-				regexes[0] = '(?i)'+regexes[0]
-			if whole_words:
-				regexes = ['\\b'+regexes[0]+'\\b']
+			if '<replace>' in old_name:
+				regexes = [old_name]
+			else:
+				regexes = ['(?<replace>'+old_name.replace('/', '\\/')+')']
+				if !case_sensitive:
+					regexes[0] = '(?i)'+regexes[0]
+				if whole_words:
+					regexes = ['\\b'+regexes[0]+'\\b']
 
 		Types.VARIABLE:
 			regexes = ['{(?<replace>\\s*'+old_name.replace('/', '\\/')+'\\s*)}', 'var\\s*=\\s*"(?<replace>\\s*'+old_name.replace('/', '\\/')+'\\s*)"']
@@ -62,8 +65,8 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 			category_name = "Portraits by "+character_names[0]
 		
 		Types.CHARACTER_NAME:
-			# for reference: ((Join|Leave|Update) )?(?<replace>NAME)(?!\B)(?(1)|(?!([^:\n]|\\:)*(\n|$)))
-			regexes = ['((Join|Leave|Update) )?(?<replace>'+old_name+')(?!\\B)(?(1)|(?!([^:\\n]|\\\\:)*(\\n|$)))']
+			# for reference: ((join|leave|update) )?(?<replace>NAME)(?!\B)(?(1)|(?!([^:\n]|\\:)*(\n|$)))
+			regexes = ['((join|leave|update) )?(?<replace>'+old_name+')(?!\\B)(?(1)|(?!([^:\\n]|\\\\:)*(\\n|$)))']
 			category_name = "Renamed Character Files"
 		
 		Types.TIMELINE_NAME:

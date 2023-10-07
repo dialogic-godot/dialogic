@@ -65,7 +65,7 @@ var _character_from_directory: String:
 ## Used by [_character_from_directory]
 var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
-var regex := RegEx.create_from_string("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
+var regex := RegEx.create_from_string("(?<type>join|update|leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
 ################################################################################
 ## 						EXECUTION
@@ -143,9 +143,9 @@ func to_text() -> String:
 	var result_string := ""
 	
 	match action:
-		Actions.JOIN: result_string += "Join "
-		Actions.LEAVE: result_string += "Leave "
-		Actions.UPDATE: result_string += "Update "
+		Actions.JOIN: result_string += "join "
+		Actions.LEAVE: result_string += "leave "
+		Actions.UPDATE: result_string += "update "
 	
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 	
@@ -213,11 +213,11 @@ func from_text(string:String) -> void:
 	var result := regex.search(string)
 	
 	match result.get_string('type'):
-		"Join":
+		"join":
 			action = Actions.JOIN
-		"Leave":
+		"leave":
 			action = Actions.LEAVE
-		"Update":
+		"update":
 			action = Actions.UPDATE
 	
 	if result.get_string('name').strip_edges():
@@ -319,7 +319,7 @@ func get_shortcode_parameters() -> Dictionary:
 
 
 func is_valid_event(string:String) -> bool:
-	if string.begins_with("Join") or string.begins_with("Leave") or string.begins_with("Update"):
+	if string.begins_with("join") or string.begins_with("leave") or string.begins_with("update"):
 		return true
 	return false
 
@@ -444,7 +444,6 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 		Actions.UPDATE:
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
-	
 	match action:
 		Actions.JOIN:
 			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN):
@@ -468,15 +467,12 @@ func _on_character_edit_pressed() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-#var completion_character_getter_regex := RegEx.new()
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	if symbol == ' ' and line.count(' ') == 1:
 		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
-		if line.begins_with('Leave'):
+		if line.begins_with('leave'):
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
 	
-#	if completion_character_getter_regex.get_pattern().is_empty():
-#		completion_character_getter_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 	if symbol == '(':
 		var character:= regex.search(line).get_string('name')
 		CodeCompletionHelper.suggest_portraits(TextNode, character)
@@ -488,12 +484,12 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'length', 'length="', TextNode.syntax_highlighter.normal_color)
 		if !'wait=' in line:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'wait', 'wait="', TextNode.syntax_highlighter.normal_color)
-		if line.begins_with('Update'):
+		if line.begins_with('update'):
 			if !'repeat=' in line:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'repeat', 'repeat="', TextNode.syntax_highlighter.normal_color)
 			if !'move_time=' in line:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'move_time', 'move_time="', TextNode.syntax_highlighter.normal_color)
-		if !line.begins_with('Leave'):
+		if !line.begins_with('leave'):
 			if !'mirrored=' in line:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'mirrored', 'mirrored="', TextNode.syntax_highlighter.normal_color)
 			if !'z_index=' in line:
@@ -503,11 +499,11 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 	if '[' in line:
 		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('animation="'):
 			var animations := []
-			if line.begins_with('Join'):
+			if line.begins_with('join'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
-			if line.begins_with('Update'):
+			if line.begins_with('update'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
-			if line.begins_with('Leave'):
+			if line.begins_with('leave'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ALL)
 			for script in animations:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
@@ -516,9 +512,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Join', 'Join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Leave', 'Leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'Update', 'Update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'join', 'join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'leave', 'leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'update', 'update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
 
 
 #################### SYNTAX HIGHLIGHTING #######################################
