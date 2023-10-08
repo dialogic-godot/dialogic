@@ -303,6 +303,16 @@ func can_manual_advance() -> bool:
 func get_autoadvance_time() -> float:
 	return input_handler.get_autoadvance_time()
 
+## Check if the user can cancel auto-advance by inputting recognized input.
+func can_user_cancel_autoadvance() -> bool:
+	var info := get_autoadvance_info()
+	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
+
+	# The auto-advance is driven by a temporary effect.
+	if is_autoadvancing_enabled and info['cancel_on_next_event']:
+		return false
+
+	return true
 
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
