@@ -181,13 +181,13 @@ func get_autoadvance_info() -> Dictionary:
 ## The values will be default values.
 func get_default_autoadvance_info() -> Dictionary:
 	var info := {}
-	info['temp_enabled'] = false
+	info['cancel_on_next_event'] = false
+	info['cancel_on_user_input'] = true
 	info['temp_wait_time'] = 0
 	info['fixed_delay'] = 1
 	info['per_word_delay'] = 0
 	info['per_character_delay'] = 0.1
 	info['ignored_characters_enabled'] = false
-	info['cancel_on_user_input'] = true
 	info['ignored_characters'] = {}
 	info['await_playing_voice'] = false
 
