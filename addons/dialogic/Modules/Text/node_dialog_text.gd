@@ -69,6 +69,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 
 	revealing = true
 	speed_counter = 0
+	Dialogic.current_state_info['text_time_taken'] = 0.0
 	started_revealing_text.emit()
 
 
