@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dlx7jcvm52tyw"]
+[gd_scene load_steps=11 format=3 uid="uid://dlx7jcvm52tyw"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/TextBubble.gd" id="1_jdhpk"]
 [ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultLayouts/TextBubble/speech_bubble.gdshader" id="2_1mhvf"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_syv35"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="4_7bm4b"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6_5gd03"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="7_0tnh1"]
 
 [sub_resource type="Curve" id="Curve_0j8nu"]
 _data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
@@ -23,7 +22,7 @@ noise = SubResource("FastNoiseLite_lsfnp")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
 shader = ExtResource("2_1mhvf")
 shader_parameter/radius = 25.0
-shader_parameter/box_size = Vector2(150, 70)
+shader_parameter/box_size = Vector2(735, 530)
 shader_parameter/box_padding = 30.0
 shader_parameter/wobble_amount = 0.2
 shader_parameter/wobble_speed = 1.0
@@ -41,11 +40,6 @@ corner_radius_bottom_left = 10
 shadow_color = Color(0, 0, 0, 0.278431)
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4yjl"]
-draw_center = false
-border_width_bottom = 3
-border_color = Color(0, 0, 0, 0.498039)
-
 [node name="TextBubble" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -62,8 +56,10 @@ width_curve = SubResource("Curve_0j8nu")
 [node name="Background" type="ColorRect" parent="Group"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_60xbe")
-offset_right = 157.0
-offset_bottom = 70.0
+offset_left = -289.0
+offset_top = -230.0
+offset_right = 446.0
+offset_bottom = 300.0
 mouse_filter = 2
 
 [node name="DialogText" type="RichTextLabel" parent="." node_paths=PackedStringArray("textbox_root")]
@@ -107,63 +103,5 @@ text = "Word"
 horizontal_alignment = 1
 script = ExtResource("6_5gd03")
 name_label_root = NodePath("..")
-
-[node name="ChoiceContainer" type="HFlowContainer" parent="DialogText"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -25.0
-offset_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/v_separation = -6
-alignment = 2
-
-[node name="DialogicNode_ChoiceButton" type="Button" parent="DialogText/ChoiceContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "A"
-flat = true
-script = ExtResource("7_0tnh1")
-
-[node name="DialogicNode_ChoiceButton2" type="Button" parent="DialogText/ChoiceContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "A"
-flat = true
-script = ExtResource("7_0tnh1")
-
-[node name="DialogicNode_ChoiceButton3" type="Button" parent="DialogText/ChoiceContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "A"
-flat = true
-script = ExtResource("7_0tnh1")
-
-[node name="DialogicNode_ChoiceButton4" type="Button" parent="DialogText/ChoiceContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "A"
-flat = true
-script = ExtResource("7_0tnh1")
-
-[node name="DialogicNode_ChoiceButton5" type="Button" parent="DialogText/ChoiceContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
-text = "A"
-flat = true
-script = ExtResource("7_0tnh1")
 
 [connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]

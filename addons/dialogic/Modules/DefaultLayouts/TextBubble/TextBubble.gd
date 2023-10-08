@@ -14,6 +14,7 @@ var safe_zone := 50.0
 var padding := Vector2()
 
 var name_label_offset := Vector2()
+var force_choices_on_separate_lines := false
 
 # Sets the padding shader paramter. 
 # It's the amount of spacing around the background to allow some wobbeling.
@@ -98,38 +99,66 @@ func close() -> void:
 
 func _on_dialog_text_started_revealing_text():
 	var font :Font = %DialogText.get_theme_font("normal_font")
-	var text_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
+	var content_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
 	
 	if $DialogText.has_node('NameLabel'):
 		$DialogText/NameLabel.position = Vector2(0, -$DialogText/NameLabel.size.y)+name_label_offset
 	
-	_resize_bubble(text_size)
+	if Dialogic.Choices.is_question(Dialogic.current_event_idx):
+		pass
+	
+	_resize_bubble(content_size, true)
 
 
-func _resize_bubble(text_size:Vector2) -> void:
-	var bubble_size :Vector2 = text_size+(padding*2)+Vector2.ONE*bg_padding*2
+func _resize_bubble(content_size:Vector2, popup:=false) -> void:
+	var bubble_size :Vector2 = content_size+(padding*2)+Vector2.ONE*bg_padding
 	var half_size :Vector2= (bubble_size / 2.0)
-	%DialogText.size = text_size
-	%DialogText.position = -(text_size/2)
 	bubble.pivot_offset = half_size
 	bubble_rect = Rect2(position, bubble_size * Vector2(1.1, 1.1))
 	bubble.position = -half_size
-	
-	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	bubble.size = bubble_size
-	t.tween_property(bubble, "scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
+	
+	%DialogText.size = content_size
+	%DialogText.position = -(content_size/2.0)
+	
+	if popup:
+		var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		t.tween_property(bubble, "scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
+	else:
+		bubble.scale = Vector2.ONE
 	
 	bubble.material.set("shader_parameter/box_size", bubble_size)
+	pass
+
+
 
 
 func _on_choices_shown(info:Dictionary) -> void:
+	if !visible: 
+		return
+	
 	await get_tree().process_frame
 	var font :Font = %DialogText.get_theme_font("normal_font")
-	var text_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
-	text_size.y += $DialogText/ChoiceContainer.size.y
-	text_size.x = max(text_size.x, $DialogText/ChoiceContainer.size.x)
-	
-	_resize_bubble(text_size)
-	
+	var content_size := font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
+	content_size.y += $DialogText/ChoiceContainer.size.y
+	content_size.x = max(content_size.x, $DialogText/ChoiceContainer.size.x)
+	_resize_bubble(content_size)
 
 
+func add_choice_container(node:Control, alignment:=HBoxContainer.ALIGNMENT_BEGIN) -> void:
+	%DialogText.add_child(node)
+	node.name = "ChoiceContainer"
+	node.set_anchors_preset(LayoutPreset.PRESET_BOTTOM_WIDE)
+	node.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	if node is HFlowContainer:
+		node.alignment = alignment
+	for i in range(5):
+		$DialogText/ChoiceContainer.add_child(DialogicNode_ChoiceButton.new())
+		if !node is HFlowContainer:
+			match alignment:
+				HBoxContainer.ALIGNMENT_BEGIN:
+					$DialogText/ChoiceContainer.get_child(-1).size_flags_horizontal = SIZE_SHRINK_BEGIN
+				HBoxContainer.ALIGNMENT_CENTER:
+					$DialogText/ChoiceContainer.get_child(-1).size_flags_horizontal = SIZE_SHRINK_CENTER
+				HBoxContainer.ALIGNMENT_END:
+					$DialogText/ChoiceContainer.get_child(-1).size_flags_horizontal = SIZE_SHRINK_END

@@ -5,11 +5,11 @@ extends CanvasLayer
 @export_group("Main")
 @export_subgroup("Text")
 @export var text_size := 15
-@export var text_color : Color = Color.BLACK
-@export_file('*.ttf') var normal_font:String = ""
-@export_file('*.ttf') var bold_font:String = ""
-@export_file('*.ttf') var italic_font:String = ""
-@export_file('*.ttf') var bold_italic_font:String = ""
+@export var text_color := Color.BLACK
+@export_file('*.ttf') var normal_font := ""
+@export_file('*.ttf') var bold_font := ""
+@export_file('*.ttf') var italic_font := ""
+@export_file('*.ttf') var bold_italic_font := ""
 @export var text_max_width := 300
 
 @export_subgroup('Box')
@@ -24,23 +24,31 @@ extends CanvasLayer
 @export var behaviour_distance := 50
 @export var behaviour_direction := Vector2(1, -1)
 
-@export_group('Name Label & Choices')
+@export_group('NameLabel')
 @export_subgroup("Name Label")
 @export var name_label_enabled := true
 @export var name_label_font_size := 15
-@export_file('*.ttf') var name_label_font : String = ""
+@export_file('*.ttf') var name_label_font := ""
 @export var name_label_use_character_color := true
 @export var name_label_color := Color.BLACK
-@export var name_label_box_modulate : Color = Color.WHITE
+@export_subgroup("Name Label Box")
+@export var name_label_box_modulate := Color.WHITE
 @export var name_label_padding := Vector2(5,0)
 @export var name_label_offset := Vector2(0,0)
 
+@export_group('Choices')
 @export_subgroup('Choices Text')
 @export var choices_text_size := 15
+@export_file('*.ttf') var choices_text_font := ""
 @export var choices_text_color := Color.LIGHT_SLATE_GRAY
 @export var choices_text_color_hover := Color.DARK_GRAY
 @export var choices_text_color_focus := Color.BLACK
+@export var choices_text_color_disabled := Color.LIGHT_GRAY
 
+@export_subgroup('Choices Layout')
+@export var choices_layout_alignment := FlowContainer.ALIGNMENT_END
+@export var choices_layout_force_lines := false
+@export_file('*.tres', "*.res") var choices_base_theme : String = ""
 
 var bubbles :Array = []
 var fallback_bubble :Control = null
@@ -107,6 +115,11 @@ func bubble_apply_overrides(bubble:Control) -> void:
 		bubble.get_node('Group').self_modulate = bubble.character.color
 	bubble.padding = box_padding
 	
+	## BEHAVIOUR
+	bubble.safe_zone = behaviour_distance
+	bubble.base_direction = behaviour_direction
+	
+	
 	## NAME LABEL SETTINGS
 	var nl : Label = bubble.get_node('%NameLabel') 
 	nl.add_theme_font_size_override("font_size", name_label_font_size)
@@ -131,19 +144,28 @@ func bubble_apply_overrides(bubble:Control) -> void:
 	
 	
 	## CHOICE SETTINGS
-	var choice_theme := Theme.new()
+	if choices_layout_force_lines:
+		bubble.add_choice_container(VBoxContainer.new(), choices_layout_alignment)
+	else:
+		bubble.add_choice_container(HFlowContainer.new(), choices_layout_alignment)
+	
+	var choice_theme :Theme = null
+	if choices_base_theme.is_empty():
+		choice_theme = Theme.new()
+	else:
+		choice_theme = load(choices_base_theme)
+	
+	if !choices_text_font.is_empty():
+		choice_theme.default_font = load(choices_text_font)
 	choice_theme.set_font_size('font_size', 'Button', choices_text_size)
 	choice_theme.set_color('font_color', 'Button', choices_text_color)
 	choice_theme.set_color('font_pressed_color', 'Button', choices_text_color)
 	choice_theme.set_color('font_hover_color', 'Button', choices_text_color_hover)
 	choice_theme.set_color('font_focus_color', 'Button', choices_text_color_focus)
+	choice_theme.set_color('font_disabled_color', 'Button', choices_text_color_disabled)
 	
 	bubble.get_node('DialogText/ChoiceContainer').theme = choice_theme
 	
-	## BEHAVIOUR
-	bubble.safe_zone = behaviour_distance
-	bubble.base_direction = behaviour_direction
-
 
 func _on_dialogic_text_event(info:Dictionary):
 	var no_bubble_open := true
@@ -155,8 +177,7 @@ func _on_dialogic_text_event(info:Dictionary):
 			b.close()
 	if no_bubble_open:
 		if box_modulate_by_character_color and info.character != null:
-			fallback_bubble.get_node('Tail').modulate = info.character.color
-			fallback_bubble.get_node('Background').modulate = info.character.color
+			fallback_bubble.get_node('Group').self_modulate = info.character.color
 		$Example.show()
 		fallback_bubble.open()
 	else:
