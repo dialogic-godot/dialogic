@@ -415,14 +415,9 @@ func _ready():
 
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
-	Dialogic.Settings.connect_to_change('autoadvance_enabled', _update_autoadvance_enabled)
 
 func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
-
-func _update_autoadvance_enabled(is_enabled: bool) -> void:
-	var info: Dictionary = get_autoadvance_info()
-	info['enabled'] = is_enabled
 
 func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
 	var info: Dictionary = get_autoadvance_info()
