@@ -40,10 +40,10 @@ extends CanvasLayer
 @export_subgroup('Choices Text')
 @export var choices_text_size := 15
 @export_file('*.ttf') var choices_text_font := ""
-@export var choices_text_color := Color.LIGHT_SLATE_GRAY
-@export var choices_text_color_hover := Color.DARK_GRAY
-@export var choices_text_color_focus := Color.BLACK
-@export var choices_text_color_disabled := Color.LIGHT_GRAY
+@export var choices_text_color := Color.DARK_SLATE_GRAY
+@export var choices_text_color_hover := Color.DARK_MAGENTA
+@export var choices_text_color_focus := Color.DARK_MAGENTA
+@export var choices_text_color_disabled := Color.DARK_GRAY
 
 @export_subgroup('Choices Layout')
 @export var choices_layout_alignment := FlowContainer.ALIGNMENT_END
@@ -152,6 +152,21 @@ func bubble_apply_overrides(bubble:Control) -> void:
 	var choice_theme :Theme = null
 	if choices_base_theme.is_empty():
 		choice_theme = Theme.new()
+		var base_style := StyleBoxFlat.new()
+		base_style.draw_center = false
+		base_style.border_width_bottom = 2
+		base_style.border_color = choices_text_color
+		choice_theme.set_stylebox('normal', 'Button', base_style)
+		var focus_style := base_style.duplicate()
+		focus_style.border_color = choices_text_color_focus
+		choice_theme.set_stylebox('focus', 'Button', focus_style)
+		var hover_style := base_style.duplicate()
+		hover_style.border_color = choices_text_color_hover
+		choice_theme.set_stylebox('hover', 'Button', hover_style)
+		var disabled_style := base_style.duplicate()
+		disabled_style.border_color = choices_text_color_disabled
+		choice_theme.set_stylebox('disabled', 'Button', disabled_style)
+		choice_theme.set_stylebox('pressed', 'Button', base_style)
 	else:
 		choice_theme = load(choices_base_theme)
 	
