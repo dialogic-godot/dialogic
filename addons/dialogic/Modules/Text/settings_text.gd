@@ -86,7 +86,7 @@ func _on_IgnoredCharacters_text_changed(text_input):
 
 
 func _on_ResetDelays_button_up() -> void:
-	var default_is_auto_advanced_on := true
+	var default_is_auto_advanced_on := false
 	ProjectSettings.set_setting('dialogic/text/autoadvance_enabled', default_is_auto_advanced_on)
 	%AutoAdvance.button_pressed = default_is_auto_advanced_on
 
