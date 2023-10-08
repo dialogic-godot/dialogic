@@ -189,6 +189,7 @@ func get_default_autoadvance_info() -> Dictionary:
 	info['ignored_characters_enabled'] = false
 	info['cancel_on_user_input'] = true
 	info['ignored_characters'] = {}
+	info['await_playing_voice'] = false
 
 	return info
 

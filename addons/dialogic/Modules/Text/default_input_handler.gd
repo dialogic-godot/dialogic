@@ -71,8 +71,12 @@ func _calculate_per_word_delay(text: String) -> float:
 ## If a voice clip is still playing, returns the voice clip's play time left
 ## in seconds.
 func _voice_play_time_left() -> float:
-	if Dialogic.has_subsystem('Voice') and Dialogic.Voice.voice_player.is_playing():
-		var remaining_playtime :float = Dialogic.Voice.voice_player.stream.get_length() - Dialogic.Voice.voice_player.get_playback_position()
+	var info: Dictionary = Dialogic.Text.get_autoadvance_info()
+
+	if info['await_playing_voice'] and Dialogic.has_subsystem('Voice') and Dialogic.Voice.voice_player.is_playing():
+		var stream_length: float = Dialogic.Voice.voice_player.stream.get_length()
+		var playback_position: float = Dialogic.Voice.voice_player.get_playback_position()
+		var remaining_playtime := stream_length - playback_position
 		return remaining_playtime
 	else:
 		return 0.0
