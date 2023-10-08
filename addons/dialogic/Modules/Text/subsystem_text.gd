@@ -40,12 +40,12 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
-	dialogic.current_state_info['text_time_taken'] = 0
+	dialogic.current_state_info['text_time_taken'] = 0.0
 
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 
 	var autoadvance_info := get_autoadvance_info()
-	autoadvance_info['enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
+	set_autoadvance_until_user_input(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
@@ -95,14 +95,37 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 		text = color_names(text)
 	return text
 
-func set_autoadvance(enabled:= true, temp_wait_time:= 0, is_temporary:= false) -> void:
+## This method will automatically enable auto-advancing if [param enabled] is
+## `true` or the auto-advance until the next event is enabled.
+func set_autoadvance_until_user_input(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['cancel_on_user_input'] = enabled
+
+	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
+
+	# We don't want to disable auto-advance if we are supposed to wait for the
+	# next event.
+	if !enabled and is_autoadvancing_enabled and info['cancel_on_next_event']:
+		return
+
+	if enabled != is_autoadvancing_enabled:
+		Dialogic.Settings.autoadvance_enabled = enabled
+
+## This method will automatically enable auto-advancing if [param enabled] is
+## `true` or the auto-advance is enabled already.
+func set_autoadvance_until_next_event(enabled: bool, temp_wait_time := 0.0) -> void:
 	var info := get_autoadvance_info()
 	info['temp_wait_time'] = temp_wait_time
+	info['cancel_on_next_event'] = enabled
 
-	if is_temporary:
-		info['temp_enabled'] = enabled
+	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
 
-	Dialogic.Settings.autoadvance_enabled = enabled
+	# We don't want to disable auto-advance if the user is able to end it.
+	if !enabled and is_autoadvancing_enabled and info['cancel_on_user_input']:
+		return
+
+	if enabled != is_autoadvancing_enabled:
+		Dialogic.Settings.autoadvance_enabled = enabled
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -133,9 +156,12 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
-	set_autoadvance(false, 1, true)
+	var is_autoadvanced_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
+
+	set_autoadvance_until_next_event(false, 0)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
+
 	return text
 
 
@@ -291,8 +317,10 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ####################################################################################################
 ##					HELPERS
 ####################################################################################################
+
 func should_autoadvance() -> bool:
 	var is_enabled: bool = Dialogic.Settings.get_setting('autoadvance_enabled', false)
+
 	return is_enabled
 
 
@@ -321,9 +349,9 @@ func get_autoadvance_progress() -> float:
 	if !input_handler.is_autoadvancing():
 		return -1
 
-	var total_time : float = get_autoadvance_time()
-	var time_left : float = input_handler.get_autoadvance_time_left()
-	var progress : float = (total_time - time_left) / total_time
+	var total_time: float = get_autoadvance_time()
+	var time_left: float = input_handler.get_autoadvance_time_left()
+	var progress: float = (total_time - time_left) / total_time
 
 	return progress
 
@@ -542,7 +570,7 @@ func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> vo
 	if argument.is_valid_float():
 		delay = float(argument)
 
-	set_autoadvance(true, delay, true)
+	set_autoadvance_until_next_event(true, delay)
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 func modifier_random_selection(text:String) -> String:

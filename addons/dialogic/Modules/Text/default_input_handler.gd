@@ -14,17 +14,21 @@ var action_was_consumed := false
 ################################################################################
 ## 						INPUT
 ################################################################################
-func _input(event:InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 
 		if Dialogic.paused or is_input_blocked():
 			return
 
-		if Dialogic.Text.get_autoadvance_info()['cancel_on_user_input'] and Dialogic.Text.should_autoadvance():
-			Dialogic.Settings.autoadvance_enabled = false
-			Dialogic.Text.get_autoadvance_info()['temp_enabled'] = false
+		# We want to stop auto-advancing that cancels on user inputs.
+		if (!action_was_consumed
+		and Dialogic.Text.get_autoadvance_info()['cancel_on_user_input']
+		and Dialogic.Text.should_autoadvance()):
+			Dialogic.Text.set_autoadvance_until_user_input(false)
+			return
 
 		dialogic_action_priority.emit()
+
 		if action_was_consumed:
 			action_was_consumed = false
 			return
@@ -84,7 +88,7 @@ func _voice_play_time_left() -> float:
 
 ## Checks how many characters can be found by iterating each letter.
 func _calculate_per_character_delay(text: String) -> float:
-	var info :Dictionary = Dialogic.Text.get_autoadvance_info()
+	var info: Dictionary = Dialogic.Text.get_autoadvance_info()
 	var per_character_delay :float = info['per_character_delay']
 	var calculated_delay :float = 0
 
@@ -153,15 +157,15 @@ func _calculate_autoadvance_delay_from_str(text: String) -> float:
 func start_autoadvance() -> void:
 	if Dialogic.Text.should_autoadvance():
 		var total_delay := 0.0
-		var info :Dictionary = Dialogic.Text.get_autoadvance_info()
+		var info: Dictionary = Dialogic.Text.get_autoadvance_info()
 
-		if info['temp_enabled']:
+		if info['cancel_on_next_event'] == true and info['temp_wait_time'] > 0:
 			total_delay = info['temp_wait_time']
 
 		else:
 			total_delay = _calculate_autoadvance_delay_from_str(Dialogic.current_state_info['text'])
 
-		var voice_time_left :float = _voice_play_time_left()
+		var voice_time_left: float = _voice_play_time_left()
 
 		# If the voice clip duration is longer than the current delay,
 		# we want to wait for the voice clip to finish instead.
@@ -178,8 +182,8 @@ func _on_autoadvance_timer_timeout() -> void:
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
 	# we will initiate the auto-advance mode.
-	if is_enabled and !is_autoadvancing():
-		Dialogic.Text.show_next_indicators(false, true)
+	if (is_enabled and !is_autoadvancing()
+	and Dialogic.current_state_info['text_time_taken'] > 0.0):
 		Dialogic.Text.input_handler.start_autoadvance()
 
 	# If auto-advance is disabled and we are auto-advancing,
