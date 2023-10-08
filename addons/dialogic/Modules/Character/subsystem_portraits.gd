@@ -546,6 +546,7 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 			continue
 		
 		_change_portrait_mirror(con.get_child(0))
+		
 	
 	if speaker and speaker.resource_path != dialogic.current_state_info['character']:
 		if dialogic.current_state_info['character'] and is_character_joined(load(dialogic.current_state_info['character'])):
@@ -562,7 +563,7 @@ func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> v
 	if argument:
 		if Dialogic.current_state_info.get('character', null):
 			change_character_portrait(load(Dialogic.current_state_info.character), argument)
-
+			change_speaker(load(Dialogic.current_state_info.character), argument)
 
 ################### HELPERS ########################################################################
 ####################################################################################################
