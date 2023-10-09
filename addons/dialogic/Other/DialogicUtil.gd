@@ -331,9 +331,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
 				input.file_filter = property_info['hint_string']
-				input.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
+				input.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 				if property_info['hint'] == PROPERTY_HINT_DIR:
-					input.file_mode = EditorFileDialog.FILE_MODE_OPEN_DIR
+					input.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 				input.property_name = property_info['name']
 				input.placeholder = "Default"
 				input.hide_reset = true
