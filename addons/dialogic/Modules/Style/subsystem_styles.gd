@@ -12,7 +12,9 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	pass
 
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+	if load_flag == LoadFlags.ONLY_DNODES:
+		return
 	add_layout_style(dialogic.current_state_info.get('style', ''))
 
 
@@ -21,6 +23,7 @@ func load_game_state():
 ####################################################################################################
 
 func add_layout_style(style_name:="", is_base_style:=true) -> Node:
+	var info := {'style':style_name}
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
@@ -29,6 +32,8 @@ func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
 	
+	var previous := Dialogic.get_layout_node()
+	
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
 	var layout := Dialogic._add_layout_node(layout_path)
 	
@@ -36,7 +41,19 @@ func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 	if !layout.has_meta('style') or !layout.get_meta('style', null) == style_name:
 		DialogicUtil.apply_scene_export_overrides(layout, DialogicUtil.get_inherited_style_overrides(style_name))
 		layout.set_meta('style', style_name)
+	
+	if layout != previous and previous != null:
+		if previous.has_meta('style'): info['previous'] = previous.get_meta('style')
+		previous.get_parent().remove_child(previous)
+		layout.ready.connect(reload_current_info_into_new_style)
+	
+	style_changed.emit(info)
 	return layout
+
+
+func reload_current_info_into_new_style():
+	for subsystem in Dialogic.get_children():
+		subsystem.load_game_state(LoadFlags.ONLY_DNODES)
 
 
 ## Returns the style currently in use
