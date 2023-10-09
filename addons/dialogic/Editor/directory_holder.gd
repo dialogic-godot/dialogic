@@ -51,6 +51,8 @@ func rebuild_event_script_cache() -> Array:
 		for indexer in DialogicUtil.get_indexers():
 			# build event cache
 			for event in indexer._get_events():
+				if not FileAccess.file_exists(event):
+					continue
 				if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
 					event_script_cache.append(load(event).new())
 			
