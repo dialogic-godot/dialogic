@@ -6,9 +6,6 @@ extends DialogicSubsystem
 ## Thus it can be acessed like this:
 ##    Dialogic.Settings.text_speed = 0.05
 ##
-## Auto-advance can be enabled by:
-##	Dialogic.Settings.autoadvance_enabled = true
-##
 ## Settings stored there can also be changed with the Settings event.
 
 var settings := {}
