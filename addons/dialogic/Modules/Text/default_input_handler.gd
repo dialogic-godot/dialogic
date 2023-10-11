@@ -22,7 +22,7 @@ func _input(event: InputEvent) -> void:
 
 		# We want to stop auto-advancing that cancels on user inputs.
 		if (!action_was_consumed
-		and Dialogic.Text.get_autoadvance_info()['cancel_on_user_input']
+		and Dialogic.Text.get_autoadvance_info()['waiting_for_user_input']
 		and Dialogic.Text.should_autoadvance()):
 			Dialogic.Text.set_autoadvance_until_user_input(false)
 			return
@@ -54,7 +54,7 @@ func _ready() -> void:
 	add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
-	Dialogic.Settings.connect_to_change('autoadvance_enabled', _on_autoadvance_enabled_change)
+	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -175,8 +175,10 @@ func start_autoadvance() -> void:
 		autoadvance_timer.start(total_delay)
 
 
+
 func _on_autoadvance_timer_timeout() -> void:
 	autoadvance.emit()
+	autoadvance_timer.stop()
 
 ## Switches the auto-advance mode on or off based on [param is_enabled].
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
