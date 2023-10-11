@@ -334,8 +334,9 @@ static func get_saves_folders() -> Array:
 		else:
 			printerr("JavaScript not enabled")
 	if directory.open(WORKING_DIR) != OK:
-		print("[D] Error: Failed to access working directory.")
-		return []
+		if not directory.make_dir(WORKING_DIR):
+			print("[D] Error: Failed to access working directory.")
+			return []
 	
 	directory.list_dir_begin()
 	var file_name = directory.get_next()
@@ -350,8 +351,9 @@ static func get_saves_folders() -> Array:
 static func add_save_folder(save_name: String) -> void:
 	var directory := Directory.new()
 	if directory.open(WORKING_DIR) != OK:
-		print("[D] Error: Failed to access working directory.")
-		return 
+		if not directory.make_dir(WORKING_DIR):
+			print("[D] Error: Failed to access working directory.")
+			return 
 	directory.make_dir(save_name)
 	
 	var file := File.new()
