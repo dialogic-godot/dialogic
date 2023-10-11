@@ -159,7 +159,7 @@ func start_autoadvance() -> void:
 		var total_delay := 0.0
 		var info: Dictionary = Dialogic.Text.get_autoadvance_info()
 
-		if info['cancel_on_next_event'] == true and info['temp_wait_time'] > 0:
+		if info['waiting_for_next_event'] == true and info['temp_wait_time'] > 0:
 			total_delay = info['temp_wait_time']
 
 		else:
