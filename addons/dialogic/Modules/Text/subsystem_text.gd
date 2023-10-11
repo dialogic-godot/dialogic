@@ -7,6 +7,7 @@ signal about_to_show_text(info:Dictionary)
 signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
+signal autoadvance_changed(enabled: bool)
 signal animation_textbox_new_text
 signal animation_textbox_show
 signal animation_textbox_hide
@@ -21,6 +22,8 @@ var parsed_text_effect_info : Array[Dictionary]= []
 var text_effects_regex := RegEx.new()
 var text_modifiers := []
 var input_handler :Node = null
+
+var autoadvance_enabled = false
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
 var speed_multiplier := 1.0
@@ -45,7 +48,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 
 	var autoadvance_info := get_autoadvance_info()
-	set_autoadvance_until_user_input(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
+	set_autoadvance_system(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
@@ -95,37 +98,53 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 		text = color_names(text)
 	return text
 
+## Checks if the autoadvance setting should be enabled.
+func _is_autoadvance_waiting_for_anything() -> bool:
+	var waiting_for_anything = (get_autoadvance_info()['waiting_for_next_event']
+		or get_autoadvance_info()['waiting_for_user_input']
+		or get_autoadvance_info()['waiting_for_system'])
+
+	return waiting_for_anything
+
+## Updates the [member autoadvance_enabled] variable to properly check if the value
+## has changed.
+## If it changed, emits the [member autoadvance_changed] signal.
+func _emit_autoadvance_enabled() -> void:
+	var old_autoadvance_state = autoadvance_enabled
+	autoadvance_enabled = _is_autoadvance_waiting_for_anything()
+
+	if old_autoadvance_state != autoadvance_enabled:
+		autoadvance_changed.emit(autoadvance_enabled)
+
 ## This method will automatically enable auto-advancing if [param enabled] is
 ## `true` or the auto-advance until the next event is enabled.
 func set_autoadvance_until_user_input(enabled: bool) -> void:
 	var info := get_autoadvance_info()
-	info['cancel_on_user_input'] = enabled
+	info['waiting_for_user_input'] = enabled
 
 	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
 
-	# We don't want to disable auto-advance if we are supposed to wait for the
-	# next event.
-	if !enabled and is_autoadvancing_enabled and info['cancel_on_next_event']:
-		return
+	_emit_autoadvance_enabled()
 
-	if enabled != is_autoadvancing_enabled:
-		Dialogic.Settings.autoadvance_enabled = enabled
+func set_autoadvance_system(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_system'] = enabled
+
+	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
+
+	_emit_autoadvance_enabled()
+
 
 ## This method will automatically enable auto-advancing if [param enabled] is
 ## `true` or the auto-advance is enabled already.
 func set_autoadvance_until_next_event(enabled: bool, temp_wait_time := 0.0) -> void:
 	var info := get_autoadvance_info()
 	info['temp_wait_time'] = temp_wait_time
-	info['cancel_on_next_event'] = enabled
+	info['waiting_for_next_event'] = enabled
 
 	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
 
-	# We don't want to disable auto-advance if the user is able to end it.
-	if !enabled and is_autoadvancing_enabled and info['cancel_on_user_input']:
-		return
-
-	if enabled != is_autoadvancing_enabled:
-		Dialogic.Settings.autoadvance_enabled = enabled
+	_emit_autoadvance_enabled()
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -207,15 +226,16 @@ func get_autoadvance_info() -> Dictionary:
 ## The values will be default values.
 func get_default_autoadvance_info() -> Dictionary:
 	var info := {}
-	info['cancel_on_next_event'] = false
-	info['cancel_on_user_input'] = true
+	info['waiting_for_next_event'] = false
+	info['waiting_for_user_input'] = false
+	info['waiting_for_system'] = false
 	info['temp_wait_time'] = 0
 	info['fixed_delay'] = 1
 	info['per_word_delay'] = 0
 	info['per_character_delay'] = 0.1
 	info['ignored_characters_enabled'] = false
 	info['ignored_characters'] = {}
-	info['await_playing_voice'] = false
+	info['await_playing_voice'] = true
 
 	return info
 
@@ -319,9 +339,7 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ####################################################################################################
 
 func should_autoadvance() -> bool:
-	var is_enabled: bool = Dialogic.Settings.get_setting('autoadvance_enabled', false)
-
-	return is_enabled
+	return autoadvance_enabled
 
 
 func can_manual_advance() -> bool:
@@ -334,13 +352,14 @@ func get_autoadvance_time() -> float:
 ## Check if the user can cancel auto-advance by inputting recognized input.
 func can_user_cancel_autoadvance() -> bool:
 	var info := get_autoadvance_info()
-	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
 
 	# The auto-advance is driven by a temporary effect.
-	if is_autoadvancing_enabled and info['cancel_on_next_event']:
+	if autoadvance_enabled and info['waiting_for_next_event']:
 		return false
+	elif autoadvance_enabled and info['waiting_for_user_input']:
+		return true
 
-	return true
+	return false
 
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
