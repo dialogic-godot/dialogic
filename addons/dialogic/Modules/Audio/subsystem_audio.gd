@@ -16,7 +16,9 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	update_music()
 	stop_all_sounds()
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+	if load_flag == LoadFlags.ONLY_DNODES:
+		return
 	var info = dialogic.current_state_info.get('music')
 	if info == null or info.path.is_empty():
 		update_music()

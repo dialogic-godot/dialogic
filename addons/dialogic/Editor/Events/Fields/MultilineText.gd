@@ -10,7 +10,7 @@ signal value_changed
 
 func _ready() -> void:
 	text_changed.connect(_on_text_changed)
-	syntax_highlighter = code_completion_helper.syntax_highlighter
+	syntax_highlighter = code_completion_helper.text_syntax_highlighter
 
 
 func _on_text_changed(value := "") -> void:

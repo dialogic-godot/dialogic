@@ -4,6 +4,8 @@ extends Node
 enum Modes {TEXT_EVENT_ONLY, FULL_HIGHLIGHTING}
 
 var syntax_highlighter :SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
+var text_syntax_highlighter :SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
+
 
 # These RegEx's are used to deduce information from the current line for auto-completion
 
@@ -24,6 +26,8 @@ func _ready():
 	completion_word_regex.compile("(?<s>(\\W)|^)(?<word>\\w*)\\x{FFFF}")
 	completion_shortcode_getter_regex.compile("\\[(?<code>\\w*)")
 	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?(\\w|\\s)*"+String.chr(0xFFFF))
+	
+	text_syntax_highlighter.mode = text_syntax_highlighter.Modes.TEXT_EVENT_ONLY
 
 ################################################################################
 ## 					AUTO COMPLETION

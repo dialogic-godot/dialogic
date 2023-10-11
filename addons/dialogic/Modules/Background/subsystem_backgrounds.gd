@@ -14,7 +14,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	update_background()
 
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''))
 
 

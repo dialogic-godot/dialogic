@@ -53,6 +53,10 @@ signal advance
 ################################################################################
 
 func _execute() -> void:
+	if text.is_empty():
+		finish()
+		return
+	
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style 
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
