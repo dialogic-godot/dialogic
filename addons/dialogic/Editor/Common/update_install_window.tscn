@@ -1,0 +1,295 @@
+[gd_scene load_steps=8 format=3 uid="uid://vv3m5m68fwg7"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
+[ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_20ke0"]
+
+[sub_resource type="Gradient" id="Gradient_lt7uf"]
+colors = PackedColorArray(0.296484, 0.648457, 1, 1, 0.732014, 0.389374, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nl8ke"]
+gradient = SubResource("Gradient_lt7uf")
+fill_from = Vector2(0.151515, 0.272727)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1g1am"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.0627451, 0.0627451, 0.0627451, 0.407843)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4v2s"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0.631373)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utju1"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0.0470588, 0.0470588, 0.0470588, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="UpdateInstallWindow" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.207843, 0.129412, 0.372549, 1)
+script = ExtResource("1_p1pbx")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.447059, 0.447059, 0.447059, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_nl8ke")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 13.0
+offset_right = -14.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.74
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/VBox"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1g1am")
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="State" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DialogicSubTitle"
+text = "Update Available!"
+
+[node name="UpdateName" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DialogicTitle"
+theme_override_font_sizes/font_size = 25
+text = "Dialogic 2.0 - alpha 9"
+uppercase = true
+
+[node name="ShortInfo" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DialogicHintText"
+theme_override_font_sizes/font_size = 10
+text = "12/31/23"
+
+[node name="Refresh" type="Button" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Refresh
+"
+flat = true
+
+[node name="Content" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[font_size=25]🎉 New alpha, new stuff![/font_size]
+If you are using dialogic 2 alphas then we've got an exciting update. It's not the beta yet, but we are getting closer! As always if you have questions or feedback it's best to reach out on [url=https://discord.gg/2hHQzkf2pX]emilios discord[/url].
+
+This alpha brings a couple of very useful new features to dialogic as well as some syntax changes and a design overhaul (and many, many bug fixes).
+"
+fit_content = true
+
+[node name="Reactions" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Likes" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "👍12"
+
+[node name="Hooray" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "🎉12"
+
+[node name="Laugh" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "👀12"
+
+[node name="Heart" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "❤️12"
+
+[node name="Rocket" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "😕12"
+
+[node name="Eyes" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "🚀12"
+
+[node name="Confused" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h4v2s")
+text = "😂12"
+
+[node name="ReadFull" type="LinkButton" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Reactions"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Read Full Announcement"
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="InfoLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_h4v2s")
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Loading" type="CenterContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Loading"]
+layout_mode = 2
+
+[node name="LoadingIcon" type="Sprite2D" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Loading/Control"]
+unique_name_in_owner = true
+texture = ExtResource("2_20ke0")
+
+[node name="Restart" type="Button" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+text = "Restart Now"
+flat = true
+
+[node name="Install" type="Button" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Install"
+flat = true
+
+[node name="InstallWarning" type="PanelContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -493.0
+offset_top = -92.0
+offset_right = 5.0
+offset_bottom = -8.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_utju1")
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install/InstallWarning"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Be careful. This will delete the addons/dialogic folder and install the new version. Any custom changes in that folder will be lost.
+To be on the save side, use version control!"
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/Refresh" to="." method="_on_refresh_pressed"]
+[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Content" to="." method="_on_content_meta_clicked"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Restart" to="." method="_on_restart_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_exited"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_pressed"]

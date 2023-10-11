@@ -36,10 +36,6 @@ func _ready():
 	## MARGINS
 	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
-	
-	## VERSION LABEL
-	%CurrentVersion.text = $UpdateManager.get_current_version()
-	
 
 
 ################################################################################
@@ -155,16 +151,3 @@ func update_content_list(list:PackedStringArray) -> void:
 	editors_manager.resource_helper.label_directory[''] = list
 	DialogicUtil.set_editor_setting('label_ref', editors_manager.resource_helper.label_directory)
 
-
-
-################################################################################
-## 						VERSION/UPDATE BUTTON
-################################################################################
-
-func _on_current_version_pressed() -> void:
-	print($UpdateManager.get_version_cleaned($UpdateManager.get_current_version()))
-	$UpdateManager.request_update_check()
-
-
-func _on_update_manager_update_check_completed(UpdateCheckResult) -> void:
-	print($UpdateManager.update_info)

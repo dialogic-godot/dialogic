@@ -110,8 +110,8 @@ func update_theme_additions():
 	
 	var hover_edit := edit_panel.duplicate()
 	hover_edit.border_color = get_theme_color("warning_color", "Editor")
-	theme.set_stylebox('hover', 'DialogicEventEdit', hover_edit)
 	
+	theme.set_stylebox('hover', 'DialogicEventEdit', hover_edit)
 	var disabled_edit := edit_panel.duplicate()
 	disabled_edit.border_color = get_theme_color("property_color", "Editor")
 	theme.set_stylebox('disabled', 'DialogicEventEdit', disabled_edit)
@@ -153,11 +153,6 @@ func update_theme_additions():
 	
 	
 	theme.set_icon('Plugin', 'Dialogic', load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
-#	theme.set_icon('Character', 'Dialogic', load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-#	theme.set_icon('Portrait', 'Dialogic', load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"))
-#	theme.set_icon('Timeline', 'Dialogic', get_theme_icon("TripleBar", "EditorIcons"))
-	
-	
 
 
 func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialog.FILE_MODE_OPEN_FILE, window_title := "Save", current_file_name := 'New_File', saving_something := false, extra_message:String = "") -> EditorFileDialog:
@@ -186,3 +181,4 @@ func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialo
 		editor_file_dialog.dir_selected.connect(callable)
 		editor_file_dialog.file_selected.connect(callable)
 	return editor_file_dialog
+
