@@ -8,9 +8,10 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 [Credits](#credits)
 
 
-# Version 1.4.5 - Afterlife ![Godot v3.4](https://img.shields.io/badge/Godot-v3.4-%23478cbf) ![Godot v3.5](https://img.shields.io/badge/Godot-v3.5-%23478cbf)
+# Version 1.5.0 - Maintaining Course ![Godot v3.4](https://img.shields.io/badge/Godot-v3.4-%23478cbf) ![Godot v3.5](https://img.shields.io/badge/Godot-v3.5-%23478cbf)
 
-### ⚠️
+### Huge performance gains and many bug fixes mark the hopefully final major release of the Dialogic 1.x branch. But more bug and code fixes are still in the work!
+
 
 # We are working on the new 2.0 version.
 - If you are interested in contributing [feel free to visit the main branch](https://github.com/coppolaemilio/dialogic).
