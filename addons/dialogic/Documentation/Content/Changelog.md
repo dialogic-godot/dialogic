@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.1
+* Fixed a bug that prevented directories from being created on Android exports [[WolfgangSenff](https://github.com/WolfgangSenff)]
+
 ## v1.5.0
 * The entire file structure has been changed to use dictionaries keyed to the 'folder path', removing vast amounts of looping and drastically increasing editor speed for large projects with many nested folders [[Exelia](https://github.com/exelia-antonov)]
 * timeline_end and timeline_start properly return name of timelines when a Change Timeline Event occurs [[zaknafean](https://github.com/zaknafean)]
