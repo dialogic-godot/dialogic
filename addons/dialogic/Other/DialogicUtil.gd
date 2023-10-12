@@ -4,8 +4,6 @@ class_name DialogicUtil
 ## Script that container helper methods for both editor and game execution.
 ## Used whenever the same thing is needed in different parts of the plugin.
 
-static var bbcode_stripper_regex := RegEx.create_from_string("\\[.+?\\]")
-
 enum AnimationType {ALL, IN, OUT, ACTION}
 
 ################################################################################
@@ -423,7 +421,3 @@ static func str_to_hash_set(source: String) -> Dictionary:
 		dictionary[character] = null
 
 	return dictionary
-
-
-static func strip_bbcode(source: String) -> String:
-	return bbcode_stripper_regex.sub(source, "", true)

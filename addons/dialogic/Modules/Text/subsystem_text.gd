@@ -23,7 +23,7 @@ var text_effects_regex := RegEx.new()
 var text_modifiers := []
 var input_handler :Node = null
 
-var autoadvance_enabled = false
+var _autoadvance_enabled = false
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
 var speed_multiplier := 1.0
@@ -43,12 +43,11 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
-	dialogic.current_state_info['text_time_taken'] = 0.0
 
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
-
-	var autoadvance_info := get_autoadvance_info()
+	
 	set_autoadvance_system(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
+	var autoadvance_info := get_autoadvance_info()
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
@@ -98,53 +97,6 @@ func parse_text(text:String, variables:= true, glossary:= true, modifiers:= true
 		text = color_names(text)
 	return text
 
-## Checks if the autoadvance setting should be enabled.
-func _is_autoadvance_waiting_for_anything() -> bool:
-	var waiting_for_anything = (get_autoadvance_info()['waiting_for_next_event']
-		or get_autoadvance_info()['waiting_for_user_input']
-		or get_autoadvance_info()['waiting_for_system'])
-
-	return waiting_for_anything
-
-## Updates the [member autoadvance_enabled] variable to properly check if the value
-## has changed.
-## If it changed, emits the [member autoadvance_changed] signal.
-func _emit_autoadvance_enabled() -> void:
-	var old_autoadvance_state = autoadvance_enabled
-	autoadvance_enabled = _is_autoadvance_waiting_for_anything()
-
-	if old_autoadvance_state != autoadvance_enabled:
-		autoadvance_changed.emit(autoadvance_enabled)
-
-## This method will automatically enable auto-advancing if [param enabled] is
-## `true` or the auto-advance until the next event is enabled.
-func set_autoadvance_until_user_input(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_user_input'] = enabled
-
-	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
-
-	_emit_autoadvance_enabled()
-
-func set_autoadvance_system(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_system'] = enabled
-
-	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
-
-	_emit_autoadvance_enabled()
-
-
-## This method will automatically enable auto-advancing if [param enabled] is
-## `true` or the auto-advance is enabled already.
-func set_autoadvance_until_next_event(enabled: bool, temp_wait_time := 0.0) -> void:
-	var info := get_autoadvance_info()
-	info['temp_wait_time'] = temp_wait_time
-	info['waiting_for_next_event'] = enabled
-
-	var is_autoadvancing_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
-
-	_emit_autoadvance_enabled()
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -172,12 +124,13 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 				text_node.reveal_text(text, additional)
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
+			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
-	var is_autoadvanced_enabled = Dialogic.Settings.get_setting("autoadvance_enabled", false)
 
-	set_autoadvance_until_next_event(false, 0)
+	set_autoadvance_until_next_event(false)
+	set_autoadvance_override_delay_for_current_event(0)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
 
@@ -205,39 +158,77 @@ func update_name_label(character:DialogicCharacter) -> void:
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
 
+
+## Returns whether autoadvance is currently considered enabled.
+## Autoadvance is considered on if any of these flags is true:
+## - waiting_for_user_input (becomes false on any dialogic input action)
+## - waiting_for_next_event (becomes false on each text event)
+## - waiting_for_system (becomes false only when disabled via code)
+## 
+## All three can be set with dedicated methods.
+func is_autoadvance_enabled() -> bool:
+	return (get_autoadvance_info()['waiting_for_next_event']
+		or get_autoadvance_info()['waiting_for_user_input']
+		or get_autoadvance_info()['waiting_for_system'])
+
+
 ## Fetches all Auto-Advance settings.
 ## If they don't exist, returns the default settings.
 ## The key's values will be changed upon setting them.
-##
-## The dictionary can be seen as detailed information about
-## auto-advancing, they do not contain the whether the
-## auto-advance is enabled or not.
-##
-## In order to check whether auto-advance is enabled, use
-## `Dialogic.Settings.autoadvance_enabled`, preferably
-## in combination with `Dialogic.Settings.has_setting()`.
 func get_autoadvance_info() -> Dictionary:
-	if !dialogic.current_state_info.has('autoadvance'):
-		dialogic.current_state_info['autoadvance'] = get_default_autoadvance_info()
-
+	if not dialogic.current_state_info.has('autoadvance'):
+		dialogic.current_state_info['autoadvance'] = {
+		'waiting_for_next_event' : false,
+		'waiting_for_user_input' : false,
+		'waiting_for_system' : false,
+		'fixed_delay' : 1,
+		'per_word_delay' : 0,
+		'per_character_delay' : 0.1,
+		'ignored_characters_enabled' : false,
+		'ignored_characters' : {},
+		'override_delay_for_current_event' : 0,
+		'await_playing_voice' : true,
+		}
 	return dialogic.current_state_info['autoadvance']
 
-## Returns the default structure of the `autoadvance` settings.
-## The values will be default values.
-func get_default_autoadvance_info() -> Dictionary:
-	var info := {}
-	info['waiting_for_next_event'] = false
-	info['waiting_for_user_input'] = false
-	info['waiting_for_system'] = false
-	info['temp_wait_time'] = 0
-	info['fixed_delay'] = 1
-	info['per_word_delay'] = 0
-	info['per_character_delay'] = 0.1
-	info['ignored_characters_enabled'] = false
-	info['ignored_characters'] = {}
-	info['await_playing_voice'] = true
 
-	return info
+## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
+## If it changed, emits the [member autoadvance_changed] signal.
+func _emit_autoadvance_enabled() -> void:
+	var old_autoadvance_state = _autoadvance_enabled
+	_autoadvance_enabled = is_autoadvance_enabled()
+
+	if old_autoadvance_state != _autoadvance_enabled:
+		autoadvance_changed.emit(_autoadvance_enabled)
+
+
+## Sets the autoadvance waiting_for_user_input flag to [param enabled].
+func set_autoadvance_until_user_input(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_user_input'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+## Sets the autoadvance waiting_for_system flag to [param enabled].
+func set_autoadvance_system(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_system'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+## Sets the autoadvance waiting_for_next_event flag to [param enabled].
+func set_autoadvance_until_next_event(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_next_event'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+func set_autoadvance_override_delay_for_current_event(delay_time := 1.0) -> void:
+	var info := get_autoadvance_info()
+	info['override_delay_for_current_event'] = delay_time
 
 
 func set_manualadvance(enabled:=true, temp:= false) -> void:
@@ -339,7 +330,7 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ####################################################################################################
 
 func should_autoadvance() -> bool:
-	return autoadvance_enabled
+	return _autoadvance_enabled
 
 
 func can_manual_advance() -> bool:
@@ -349,17 +340,6 @@ func can_manual_advance() -> bool:
 func get_autoadvance_time() -> float:
 	return input_handler.get_autoadvance_time()
 
-## Check if the user can cancel auto-advance by inputting recognized input.
-func can_user_cancel_autoadvance() -> bool:
-	var info := get_autoadvance_info()
-
-	# The auto-advance is driven by a temporary effect.
-	if autoadvance_enabled and info['waiting_for_next_event']:
-		return false
-	elif autoadvance_enabled and info['waiting_for_user_input']:
-		return true
-
-	return false
 
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
@@ -378,6 +358,10 @@ func get_autoadvance_progress() -> float:
 func can_skip() -> bool:
 	return dialogic.current_state_info['skippable']['enabled'] and dialogic.current_state_info['skippable'].get('temp_enabled', true)
 
+
+####################################################################################################
+##					Text Effects & Modifiers
+####################################################################################################
 
 func collect_text_effects() -> void:
 	var text_effect_names := ""
@@ -568,12 +552,6 @@ func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 			load(Dialogic.current_state_info.character).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
-	set_skippable(false, true)
-	set_manualadvance(false, true)
-	effect_autoadvance(text_node, skipped, argument)
-
-
 func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
@@ -583,13 +561,22 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	input_handler.action_was_consumed = true
 
 
+func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
+	set_skippable(false, true)
+	set_manualadvance(false, true)
+	effect_autoadvance(text_node, skipped, argument)
+
+
 func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> void:
-	var delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-
+	if argument.ends_with('?'):
+		argument = argument.trim_suffix('?')
+	else:
+		set_autoadvance_until_next_event(true)
+	
 	if argument.is_valid_float():
-		delay = float(argument)
+		set_autoadvance_override_delay_for_current_event(float(argument))
 
-	set_autoadvance_until_next_event(true, delay)
+
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
 func modifier_random_selection(text:String) -> String:

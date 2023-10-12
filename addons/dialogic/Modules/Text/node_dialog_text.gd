@@ -21,12 +21,6 @@ var base_visible_characters := 0
 var lspeed:float = 0.01
 var speed_counter:float = 0
 
-## Time taken to display every character.
-## If you writr your own type writer, ensure to
-## calculate this accordingly if you want to use
-## auto-advance.
-var total_time_taken: float = 0
-
 
 func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
@@ -55,7 +49,6 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 	if !keep_previous:
 		text = _text
 		base_visible_characters = 0
-		total_time_taken = 0
 
 		if alignment == Alignment.CENTER:
 			text = '[center]'+text
@@ -69,7 +62,6 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 
 	revealing = true
 	speed_counter = 0
-	Dialogic.current_state_info['text_time_taken'] = 0.0
 	started_revealing_text.emit()
 
 
@@ -100,7 +92,6 @@ func finish_text() -> void:
 	Dialogic.Text.execute_effects(-1, self, true)
 	revealing = false
 	Dialogic.current_state = Dialogic.States.IDLE
-	Dialogic.current_state_info['text_time_taken'] = total_time_taken
 
 	emit_signal("finished_revealing_text")
 
@@ -113,6 +104,5 @@ func _process(delta:float) -> void:
 	speed_counter += delta
 
 	while speed_counter > lspeed and revealing and !Dialogic.paused:
-		total_time_taken += lspeed
 		speed_counter -= lspeed
 		continue_reveal()
