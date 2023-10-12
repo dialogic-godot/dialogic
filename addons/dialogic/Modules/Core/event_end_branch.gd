@@ -40,9 +40,6 @@ func find_next_index():
 
 func _init() -> void:
 	event_name = "End Branch"
-	event_color = Color(1,1,1,1)
-	event_category = "Flow"
-	event_sorting_index = 0
 	disable_editor_button = true
 
 

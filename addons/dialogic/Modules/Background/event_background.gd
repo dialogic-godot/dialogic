@@ -36,7 +36,6 @@ func _init() -> void:
 	set_default_color('Color8')
 	event_category = "Visuals"
 	event_sorting_index = 0
-	expand_by_default = false
 
 
 ################################################################################

@@ -26,23 +26,31 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	dialogic.current_state_info['speaker_portraits'] = {}
 
 
-func load_game_state():
-	for character_path in dialogic.current_state_info.portraits:
-		var character_info :Dictionary = dialogic.current_state_info.portraits[character_path]
-		dialogic.current_state_info.portraits.erase(character_path)
-		add_character(load(character_path), character_info.portrait, character_info.position_index)
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+	var portraits_info :Dictionary = dialogic.current_state_info.portraits.duplicate()
+	dialogic.current_state_info.portraits = {}
+	for character_path in portraits_info:
+		var character_info :Dictionary = portraits_info[character_path]
+		await join_character(load(character_path), character_info.portrait, 
+						character_info.position_index,  
+						character_info.get('custom_mirror', false), 
+						character_info.get('z_index', 0),
+						character_info.get('extra_data', ""),
+						"InstantInOrOut", 0, false)
+	if dialogic.current_state_info.get('speaker', ''):
+		change_speaker(load(dialogic.current_state_info['speaker']))
 
 
 func pause() -> void:
 	for portrait in dialogic.current_state_info['portraits'].values():
-		if portrait.has('animation_node'):
-			portrait.animation_node.pause()
+		if portrait.node.has_meta('animation_node'):
+			portrait.node.get_meta('animation_node').pause()
 
 
 func resume() -> void:
 	for portrait in dialogic.current_state_info['portraits'].values():
-		if portrait.has('animation_node'):
-			portrait.animation_node.resume()
+		if portrait.node.has_meta('animation_node'):
+			portrait.node.get_meta('animation_node').resume()
 
 
 func _ready() -> void:
@@ -157,7 +165,7 @@ func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void
 	var apply_character_scale :bool= !portrait_info.get('ignore_char_scale', false)
 	var transform :Rect2 = character_node.get_parent().get_local_portrait_transform(
 		portrait_node._get_covered_rect(),
-		(character.scale * portrait_info.get('scale', 1))*int(apply_character_scale)+portrait_info.get('scale')*int(!apply_character_scale))
+		(character.scale * portrait_info.get('scale', 1))*int(apply_character_scale)+portrait_info.get('scale', 1)*int(!apply_character_scale))
 	
 	var tween : Tween
 	if character_node.has_meta('move_tween'):
@@ -265,7 +273,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/join_default_wait', true)
 	
 	
-	if animation_name:
+	if animation_name and animation_length > 0:
 		var anim:DialogicAnimation = _animate_portrait(character_node, animation_name, animation_length)
 		
 		if animation_wait:
@@ -342,6 +350,8 @@ func change_character_z_index(character:DialogicCharacter, z_index:int, update_z
 	if !is_character_joined(character):
 		return
 	_change_portrait_z_index(dialogic.current_state_info.portraits[character.resource_path].node, z_index, update_zindex)
+	if update_zindex:
+		dialogic.current_state_info.portraits[character.resource_path]['z_index'] = z_index
 
 
 ## Changes the extra data on the given character. Only works with joined characters
@@ -349,7 +359,8 @@ func change_character_extradata(character:DialogicCharacter, extra_data:="") -> 
 	if !is_character_joined(character):
 		return
 	_change_portrait_extradata(dialogic.current_state_info.portraits[character.resource_path].node, extra_data)
-
+	dialogic.current_state_info.portraits[character.resource_path]['extra_data'] = extra_data
+	
 
 ## Starts the given animation on the given character. Only works with joined characters
 func animate_character(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
@@ -460,6 +471,13 @@ func get_character_info(character:DialogicCharacter) -> Dictionary:
 ################### Positions  #####################################################################
 ####################################################################################################
 
+func get_portrait_container(postion_index:int) -> DialogicNode_PortraitContainer:
+	for portrait_position in get_tree().get_nodes_in_group('dialogic_portrait_con_position'):
+		if portrait_position.is_visible_in_tree() and portrait_position.position_index == postion_index:
+			return portrait_position
+	return null
+
+
 ## Creates a new portrait container node. 
 ## It will copy it's size and most settings from the first p_container in the tree. 
 ## It will be added as a sibling of the first p_container in the tree.
@@ -494,7 +512,7 @@ func move_portrait_position(position_index: int, vector:Vector2, relative:bool =
 		add_portrait_position(position_index, vector)
 
 
-func reset_portrait_positions(time:float = 0.0) -> void:
+func reset_all_portrait_positions(time:float = 0.0) -> void:
 	for portrait_position in get_tree().get_nodes_in_group('dialogic_portrait_con_position'):
 		if portrait_position.is_visible_in_tree():
 			if portrait_position.has_meta('default_position'):
@@ -539,10 +557,11 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 			continue
 		
 		_change_portrait_mirror(con.get_child(0))
+		
 	
-	if speaker != dialogic.current_state_info['character']:
-		if dialogic.current_state_info['character'] and is_character_joined(load(dialogic.current_state_info['character'])):
-			dialogic.current_state_info['portraits'][dialogic.current_state_info['character']].node.get_child(0)._unhighlight()
+	if speaker and speaker.resource_path != dialogic.current_state_info['speaker']:
+		if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
+			dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
 		if speaker and is_character_joined(speaker):
 			dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(0)._highlight()
 
@@ -555,7 +574,7 @@ func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> v
 	if argument:
 		if Dialogic.current_state_info.get('character', null):
 			change_character_portrait(load(Dialogic.current_state_info.character), argument)
-
+			change_speaker(load(Dialogic.current_state_info.character), argument)
 
 ################### HELPERS ########################################################################
 ####################################################################################################

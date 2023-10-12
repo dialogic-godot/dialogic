@@ -16,9 +16,9 @@ static func get_editor_scale() -> float:
 ## Although this does in fact always return a EditorPlugin node,
 ##  that class is apparently not present in export and referencing it here creates a crash.
 static func get_dialogic_plugin() -> Node:
-	var tree: SceneTree = Engine.get_main_loop()
-	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
-		return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	for child in Engine.get_main_loop().get_root().get_children():
+		if child.get_class() == "EditorNode":
+			return child.get_node('DialogicPlugin')
 	return null
 
 
@@ -108,6 +108,12 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	Engine.get_main_loop().set_meta('dialogic_indexers', indexers)
 	return indexers
 
+
+static func guess_animation_file(animation_name: String) -> String:
+	for file in DialogicUtil.get_portrait_animation_scripts():
+		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
+			return file
+	return animation_name
 
 static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
 	var animations := []
@@ -321,7 +327,19 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.property_name = property_info['name']
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
 		TYPE_STRING:
-			if property_info['hint'] & PROPERTY_HINT_ENUM:
+			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
+				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
+				input.file_filter = property_info['hint_string']
+				input.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+				if property_info['hint'] == PROPERTY_HINT_DIR:
+					input.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+				input.property_name = property_info['name']
+				input.placeholder = "Default"
+				input.hide_reset = true
+				if value != null:
+					input.set_value(value)
+				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
+			elif property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
 				var options :PackedStringArray = []
 				for x in property_info['hint_string'].split(','):
@@ -330,15 +348,6 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.select(options.find(value))
 				input.item_selected.connect(DialogicUtil._on_export_string_enum_submitted.bind(property_info.name, options, property_changed))
-			elif property_info['hint'] & PROPERTY_HINT_FILE:
-				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
-				input.file_filter = property_info['hint_string']
-				input.property_name = property_info['name']
-				input.placeholder = "Default"
-				input.hide_reset = true
-				if value != null:
-					input.set_value(value)
-				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
 			else:
 				input = LineEdit.new()
 				if value != null:

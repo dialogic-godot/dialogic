@@ -49,9 +49,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -89.0
+offset_left = -98.0
 offset_top = -66.0
-offset_right = 112.0
+offset_right = 121.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -75,9 +75,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -123.0
-offset_right = 123.0
-offset_bottom = 1.0
+offset_left = -3.0
+offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.231373)
@@ -87,15 +86,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_top = 4.0
-offset_right = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_ih78e")
 mode = 1
-portrait_prefix = "Faces/"
-size_mode = 2
 debug_character_portrait = "speaker"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Anchor/Panel/HBox"]
@@ -109,7 +103,7 @@ theme_override_font_sizes/font_size = 8
 text = "Name"
 script = ExtResource("6")
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Anchor/Panel/HBox/VBoxContainer"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Anchor/Panel/HBox/VBoxContainer" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -118,6 +112,7 @@ bbcode_enabled = true
 text = "Some text"
 scroll_following = true
 script = ExtResource("3")
+textbox_root = NodePath("../../..")
 
 [node name="VBoxContainer" type="HBoxContainer" parent="Anchor/Panel/HBox/VBoxContainer"]
 layout_mode = 2

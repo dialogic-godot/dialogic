@@ -48,7 +48,6 @@ func _refresh():
 	%IgnoredCharacters.text = ignored_characters
 
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
-	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
@@ -180,11 +179,6 @@ func suggest_actions(search:String) -> Dictionary:
 
 func _on_AutocolorNames_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/text/autocolor_names', button_pressed)
-	ProjectSettings.save()
-
-
-func _on_textbox_hidden_toggled(button_pressed:bool) -> void:
-	ProjectSettings.set_setting('dialogic/text/hide_empty_textbox', button_pressed)
 	ProjectSettings.save()
 
 

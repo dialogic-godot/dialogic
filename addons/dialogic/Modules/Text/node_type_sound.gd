@@ -82,7 +82,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 		stop()
 	
 	#choose the random sound
-	audio_player.stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, sounds.size() - 1)]
+	audio_player.stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, current_overwrite_data.get('sounds', sounds).size() - 1)]
 	
 	#choose a random pitch and volume
 	audio_player.pitch_scale = max(0, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
@@ -107,10 +107,10 @@ func load_overwrite(dictionary:Dictionary) -> void:
 		current_overwrite_data['sounds'] = load_sounds_from_path(dictionary.sound_path)
 
 
-func load_sounds_from_path(path:String) -> Array:
+static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 	if path.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(path) is AudioStream:
 		return [load(path)]
-	var _sounds := []
+	var _sounds :Array[AudioStream]= []
 	for file in DialogicUtil.listdir(path, true, false, true):
 		if file.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(file) is AudioStream:
 			_sounds.append(load(file))

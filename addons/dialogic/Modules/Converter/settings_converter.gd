@@ -327,7 +327,7 @@ func convertTimelines():
 							match eventType:
 								"0":
 									if event['character'] != "":
-										eventLine += "Join "
+										eventLine += "join "
 										eventLine += characterFolderBreakdown[event['character']]['searchable_name']
 										if (event['portrait'] != ""):
 											eventLine += " (" + event['portrait'] + ") "
@@ -363,7 +363,7 @@ func convertTimelines():
 									if event['character'] != "":
 										if event['character'] != "[All]":
 												
-											eventLine += "Update "
+											eventLine += "update "
 											eventLine += characterFolderBreakdown[event['character']]['searchable_name']
 											if 'portrait' in event:
 												if (event['portrait'] != "") && (event['portrait'] != "(Don't change)"):
@@ -407,7 +407,7 @@ func convertTimelines():
 								"1":
 									if event['character'] != "":
 										
-										eventLine += "Leave "
+										eventLine += "leave "
 										if event['character'] == "[All]":
 											eventLine += "--All--"
 										else:

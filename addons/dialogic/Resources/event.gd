@@ -62,7 +62,7 @@ var display_name: bool = true
 ## If true the event will not have a button in the visual editor sidebar
 var disable_editor_button: bool = false
 ## If false the event will hide it's body by default. Recommended for most events
-var expand_by_default : bool = true
+var expand_by_default : bool = false
 ## The URL to open when right_click>Documentation is selected 
 var help_page_path : String = ""
 ## Is the event block created by a button?

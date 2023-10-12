@@ -33,8 +33,9 @@ func _reload_settings() -> void:
 
 
 func _set(property:StringName, value:Variant) -> bool:
+	if not settings.has(property) or settings[property] != value:
+		_setting_changed(property, value)
 	settings[property] = value
-	_setting_changed(property, value)
 	if dialogic.has_subsystem('Save'):
 		dialogic.Save.set_global_info(property, value)
 	return true

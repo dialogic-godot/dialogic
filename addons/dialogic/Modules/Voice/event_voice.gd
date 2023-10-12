@@ -36,7 +36,6 @@ func _init() -> void:
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 5
-	expand_by_default = false
 
 
 ################################################################################

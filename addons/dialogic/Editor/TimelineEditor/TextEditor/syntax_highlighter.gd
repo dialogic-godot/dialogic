@@ -130,7 +130,7 @@ func color_word(dict:Dictionary, color:Color, line:String, word:String, from:int
 	return dict
 
 
-func color_region(dict:Dictionary, color:Color, line:String, start:String, end:String, from:int = 0, to:int = 0) -> Dictionary:
+func color_region(dict:Dictionary, color:Color, line:String, start:String, end:String, from:int = 0, to:int = 0, base_color:Color=normal_color) -> Dictionary:
 	if end.is_empty():
 		region_regex.compile("(?<!\\\\)"+start+".*")
 	else:
@@ -139,7 +139,7 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 		to = len(line)-1
 	for region in region_regex.search_all(line.substr(from, to-from+2)):
 		dict[region.get_start()+from] = {'color':color}
-		dict[region.get_end()+from] = {'color':normal_color}
+		dict[region.get_end()+from] = {'color':base_color}
 	return dict
 
 

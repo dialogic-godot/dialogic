@@ -117,7 +117,7 @@ func _draw() -> void:
 				if end_node.resource is DialogicEndBranchEvent and event.resource.can_contain_events:
 					rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y/2-rect_position.y)
 			else:
-				rect_size = Vector2(line_width, $Timeline.get_child(-1).global_position.y+$Timeline.get_child(-4).size.y-rect_position.y)
+				rect_size = Vector2(line_width, $Timeline.get_child(-1).global_position.y+$Timeline.get_child(-1).size.y-rect_position.y)
 					
 			draw_rect(Rect2(rect_position-global_position, rect_size), color)
 			draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)

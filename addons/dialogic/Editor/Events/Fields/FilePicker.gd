@@ -37,19 +37,22 @@ func _ready() -> void:
 
 func set_value(value:String) -> void:
 	current_value = value
+	var text := value
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
-		%Field.text = value.get_file()
-		if len(value.get_file()) > max_text_length:
-			%Field.custom_minimum_size.x = get_theme_font('font', 'Label').get_string_size(value.get_file()).x
-			%Field.expand_to_text_length = false
-			%Field.size.x = 0
-		else:
-			%Field.custom_minimum_size.x = 0
-			%Field.expand_to_text_length = true
+		text = value.get_file()
 		%Field.tooltip_text = value
-		%ClearButton.visible = !value.is_empty() and !hide_reset
+	if len(text) > max_text_length:
+		%Field.custom_minimum_size.x = get_theme_font('font', 'Label').get_string_size(value.get_file()).x
+		%Field.expand_to_text_length = false
+		%Field.size.x = 0
 	else:
-		%Field.text = value
+		%Field.custom_minimum_size.x = 0
+		%Field.expand_to_text_length = true
+	
+	%Field.text = text
+	
+	%ClearButton.visible = !value.is_empty() and !hide_reset
+	
 
 
 func _on_OpenButton_pressed() -> void:
@@ -82,3 +85,4 @@ func _on_field_focus_entered():
 
 func _on_field_focus_exited():
 	$FocusStyle.hide()
+	_on_file_dialog_selected(%Field.text)

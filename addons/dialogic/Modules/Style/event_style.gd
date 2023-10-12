@@ -17,9 +17,8 @@ var style_name: String = ""
 
 func _execute() -> void:
 	dialogic.Styles.add_layout_style(style_name)
-	# base style isn't overridden by character styles
-	# this means after a charcter style, we can change back to the base style
-	dialogic.current_state_info['base_style'] = style_name
+	# we need to wait till the new layout is ready before continuing
+	await dialogic.get_tree().process_frame
 	finish()
 
 

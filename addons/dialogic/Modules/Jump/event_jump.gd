@@ -53,7 +53,6 @@ func _init() -> void:
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 4
-	expand_by_default = false
 
 
 func _get_icon() -> Resource:
@@ -75,7 +74,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var result := RegEx.create_from_string('jump (?<timeline>\\w*\\/)?(?<label>\\w*)?').search(string.strip_edges())
+	var result := RegEx.create_from_string('jump (?<timeline>.*\\/)?(?<label>.*)?').search(string.strip_edges())
 	if result:
 		_timeline_file = result.get_string('timeline').trim_suffix('/')
 		label_name = result.get_string('label')
