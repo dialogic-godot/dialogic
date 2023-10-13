@@ -82,10 +82,13 @@ theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_n8rql")
 allow_reselect = true
 same_column_width = true
 
-[node name="CurrentVersion" type="Label" parent="VBox"]
+[node name="CurrentVersion" type="Button" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Some Version"
+flat = true
 clip_text = true
 
 [connection signal="gui_input" from="VBox/Margin/VSplitContainer/VBox/Logo" to="." method="_on_logo_gui_input"]
 [connection signal="text_changed" from="VBox/Margin/VSplitContainer/VBox/Search" to="." method="_on_search_text_changed"]
+[connection signal="pressed" from="VBox/CurrentVersion" to="." method="_on_current_version_pressed"]

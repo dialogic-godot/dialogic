@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://de6yhw4r8jqb3"]
+[gd_scene load_steps=19 format=3 uid="uid://de6yhw4r8jqb3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://c7lmt5cp7bxcm" path="res://addons/dialogic/Editor/Common/broken_reference_manager.tscn" id="10_l1rf8"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/reference_manager_window.gd" id="10_xbkrt"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/CodeCompletionHelper.gd" id="11_fyce4"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_manager.gd" id="14_l6b1p"]
+[ext_resource type="PackedScene" uid="uid://vv3m5m68fwg7" path="res://addons/dialogic/Editor/Common/update_install_window.tscn" id="15_cu4xj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lxu4"]
 content_margin_left = 4.0
@@ -29,7 +31,7 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="Image" id="Image_10vp8"]
+[sub_resource type="Image" id="Image_x5eud"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -39,7 +41,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_drcn6"]
-image = SubResource("Image_10vp8")
+image = SubResource("Image_x5eud")
 
 [node name="EditorView" type="ColorRect"]
 anchors_preset = 15
@@ -153,6 +155,28 @@ script = ExtResource("10_xbkrt")
 
 [node name="Manager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
 
+[node name="UpdateManager" type="Node" parent="."]
+script = ExtResource("14_l6b1p")
+
+[node name="Window" type="Window" parent="UpdateManager"]
+title = "Dialogic Update Checker"
+initial_position = 2
+size = Vector2i(600, 400)
+visible = false
+wrap_controls = true
+
+[node name="UpdateInstallWindow" parent="UpdateManager/Window" instance=ExtResource("15_cu4xj")]
+
+[node name="UpdateCheckRequest" type="HTTPRequest" parent="UpdateManager"]
+timeout = 5.0
+
+[node name="DownloadRequest" type="HTTPRequest" parent="UpdateManager"]
+
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
 [connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]
 [connection signal="close_requested" from="ReferenceManager" to="ReferenceManager" method="_on_close_requested"]
+[connection signal="downdload_completed" from="UpdateManager" to="UpdateManager/Window/UpdateInstallWindow" method="_on_update_manager_downdload_completed"]
+[connection signal="update_check_completed" from="UpdateManager" to="UpdateManager" method="_on_update_check_completed"]
+[connection signal="close_requested" from="UpdateManager/Window" to="UpdateManager/Window/UpdateInstallWindow" method="_on_window_close_requested"]
+[connection signal="request_completed" from="UpdateManager/UpdateCheckRequest" to="UpdateManager" method="_on_UpdateCheck_request_completed"]
+[connection signal="request_completed" from="UpdateManager/DownloadRequest" to="UpdateManager" method="_on_DownloadRequest_completed"]

@@ -36,13 +36,6 @@ func _ready():
 	## MARGINS
 	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
-	
-	## VERSION LABEL
-	var plugin_cfg := ConfigFile.new()
-	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
-	%CurrentVersion.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
-	
-	
 
 
 ################################################################################
@@ -157,3 +150,4 @@ func update_content_list(list:PackedStringArray) -> void:
 			editors_manager.resource_helper.label_directory[i] = list
 	editors_manager.resource_helper.label_directory[''] = list
 	DialogicUtil.set_editor_setting('label_ref', editors_manager.resource_helper.label_directory)
+
