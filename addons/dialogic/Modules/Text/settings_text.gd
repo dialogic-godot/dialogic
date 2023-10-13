@@ -15,10 +15,6 @@ func _get_info_section():
 	return $InformationSection
 
 
-func _ready():
-	%ResetDelaysButton.icon = get_theme_icon("Reload", "EditorIcons")
-
-
 func _refresh():
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
@@ -121,34 +117,6 @@ func _on_IgnoredCharacters_text_changed(text_input):
 	ProjectSettings.save()
 
 
-func _on_ResetDelays_button_up() -> void:
-	var default_is_auto_advanced_on := false
-	ProjectSettings.set_setting('dialogic/text/autoadvance_enabled', default_is_auto_advanced_on)
-	%AutoAdvance.button_pressed = default_is_auto_advanced_on
-
-	var default_fixed_delay := 1
-	ProjectSettings.set_setting('dialogic/text/autoadvance_fixed_delay', default_fixed_delay)
-	%FixedDelay.value = default_fixed_delay
-
-	var default_delay_per_character := 0.1
-	ProjectSettings.set_setting('dialogic/text/autoadvance_per_character_delay', default_delay_per_character)
-	%PerCharacterDelay.value = default_delay_per_character
-
-	var default_delay_per_word := 0
-	ProjectSettings.set_setting('dialogic/text/autoadvance_per_word_delay', default_delay_per_word)
-	%PerWordDelay.value = default_delay_per_word
-
-	var default_ignored_characters := '/\\,.( );?!-+"\''
-	var default_ignored_characters_dictionary := DialogicUtil.str_to_hash_set(default_ignored_characters)
-	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters', default_ignored_characters_dictionary)
-	%IgnoredCharacters.text = default_ignored_characters
-
-	var is_ignore_characters_enabled := true
-	ProjectSettings.set_setting('dialogic/text/autoadvance_ignored_characters_enabled', is_ignore_characters_enabled)
-	%IgnoredCharactersEnabled.button_pressed = is_ignore_characters_enabled
-
-	ProjectSettings.save()
-
 func _on_Skippable_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)
 	ProjectSettings.save()
@@ -247,5 +215,4 @@ func _on_new_events_toggled(button_pressed:bool) -> void:
 func _on_new_event_option_item_selected(index:int) -> void:
 	ProjectSettings.set_setting('dialogic/text/split_at_new_lines_as', index)
 	ProjectSettings.save()
-
 
