@@ -49,15 +49,6 @@ func block_input(time:=skip_delay) -> void:
 ####################################################################################################
 ##								AUTO-ADVANCING
 ####################################################################################################
-func _ready() -> void:
-	add_child(autoadvance_timer)
-	autoadvance_timer.one_shot = true
-	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
-	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
-
-	add_child(input_block_timer)
-	input_block_timer.one_shot = true
-
 
 func start_autoadvance() -> void:
 	if not Dialogic.Text.is_autoadvance_enabled():
@@ -99,7 +90,6 @@ func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
 	if info['await_playing_voice'] and Dialogic.has_subsystem('Voice') and Dialogic.Voice.is_running():
 		delay = max(delay, Dialogic.Voice.get_remaining_time())
 	
-	print(delay)
 	return delay
 
 
@@ -159,6 +149,18 @@ func get_autoadvance_time() -> float:
 	return autoadvance_timer.wait_time
 
 
+
+
+func _ready() -> void:
+	add_child(autoadvance_timer)
+	autoadvance_timer.one_shot = true
+	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
+	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
+
+	add_child(input_block_timer)
+	input_block_timer.one_shot = true
+
+
 func pause() -> void:
 	autoadvance_timer.paused = true
 	input_block_timer.paused = true
@@ -167,6 +169,7 @@ func pause() -> void:
 func stop() -> void:
 	autoadvance_timer.stop()
 	input_block_timer.stop()
+
 
 func resume() -> void:
 	autoadvance_timer.paused = false
