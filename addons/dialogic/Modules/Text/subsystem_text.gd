@@ -158,96 +158,6 @@ func update_name_label(character:DialogicCharacter) -> void:
 			name_label.self_modulate = Color(1,1,1,1)
 
 
-## Returns whether autoadvance is currently considered enabled.
-## Autoadvance is considered on if any of these flags is true:
-## - waiting_for_user_input (becomes false on any dialogic input action)
-## - waiting_for_next_event (becomes false on each text event)
-## - waiting_for_system (becomes false only when disabled via code)
-## 
-## All three can be set with dedicated methods.
-func is_autoadvance_enabled() -> bool:
-	return (get_autoadvance_info()['waiting_for_next_event']
-		or get_autoadvance_info()['waiting_for_user_input']
-		or get_autoadvance_info()['waiting_for_system'])
-
-
-## Fetches all Auto-Advance settings.
-## If they don't exist, returns the default settings.
-## The key's values will be changed upon setting them.
-func get_autoadvance_info() -> Dictionary:
-	if not dialogic.current_state_info.has('autoadvance'):
-		dialogic.current_state_info['autoadvance'] = {
-		'waiting_for_next_event' : false,
-		'waiting_for_user_input' : false,
-		'waiting_for_system' : false,
-		'fixed_delay' : 1,
-		'per_word_delay' : 0,
-		'per_character_delay' : 0.1,
-		'ignored_characters_enabled' : false,
-		'ignored_characters' : {},
-		'override_delay_for_current_event' : 0,
-		'await_playing_voice' : true,
-		}
-	return dialogic.current_state_info['autoadvance']
-
-
-## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
-## If it changed, emits the [member autoadvance_changed] signal.
-func _emit_autoadvance_enabled() -> void:
-	var old_autoadvance_state = _autoadvance_enabled
-	_autoadvance_enabled = is_autoadvance_enabled()
-
-	if old_autoadvance_state != _autoadvance_enabled:
-		autoadvance_changed.emit(_autoadvance_enabled)
-
-
-## Sets the autoadvance waiting_for_user_input flag to [param enabled].
-func set_autoadvance_until_user_input(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_user_input'] = enabled
-	
-	_emit_autoadvance_enabled()
-
-
-## Sets the autoadvance waiting_for_system flag to [param enabled].
-func set_autoadvance_system(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_system'] = enabled
-	
-	_emit_autoadvance_enabled()
-
-
-## Sets the autoadvance waiting_for_next_event flag to [param enabled].
-func set_autoadvance_until_next_event(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_next_event'] = enabled
-	
-	_emit_autoadvance_enabled()
-
-
-func set_autoadvance_override_delay_for_current_event(delay_time := 1.0) -> void:
-	var info := get_autoadvance_info()
-	info['override_delay_for_current_event'] = delay_time
-
-
-func set_manualadvance(enabled:=true, temp:= false) -> void:
-	if !dialogic.current_state_info.has('manual_advance'):
-		dialogic.current_state_info['manual_advance'] = {'enabled':true, 'temp_enabled':true}
-	if temp:
-		dialogic.current_state_info['manual_advance']['temp_enabled'] = enabled
-	else:
-		dialogic.current_state_info['manual_advance']['enabled'] = enabled
-
-
-func set_skippable(skippable:= true, temp:=false) -> void:
-	if !dialogic.current_state_info.has('skippable'):
-		dialogic.current_state_info['skippable'] = {'enabled':false, 'temp_enabled':false}
-	if temp:
-		dialogic.current_state_info['skippable']['temp_enabled'] = skippable
-	else:
-		dialogic.current_state_info['skippable']['enabled'] = skippable
-
-
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
 		typing_sound.load_overwrite(mood)
@@ -324,16 +234,84 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 
 
 
+##################### AUTOADVANCE SYSTEM ###########################################################
 ####################################################################################################
-##					HELPERS
-####################################################################################################
 
-func should_autoadvance() -> bool:
-	return _autoadvance_enabled
+## Returns whether autoadvance is currently considered enabled.
+## Autoadvance is considered on if any of these flags is true:
+## - waiting_for_user_input (becomes false on any dialogic input action)
+## - waiting_for_next_event (becomes false on each text event)
+## - waiting_for_system (becomes false only when disabled via code)
+## 
+## All three can be set with dedicated methods.
+func is_autoadvance_enabled() -> bool:
+	return (get_autoadvance_info()['waiting_for_next_event']
+		or get_autoadvance_info()['waiting_for_user_input']
+		or get_autoadvance_info()['waiting_for_system'])
 
 
-func can_manual_advance() -> bool:
-	return dialogic.current_state_info['manual_advance']['enabled'] and dialogic.current_state_info['manual_advance'].get('temp_enabled', true)
+## Fetches all Auto-Advance settings.
+## If they don't exist, returns the default settings.
+## The key's values will be changed upon setting them.
+func get_autoadvance_info() -> Dictionary:
+	if not dialogic.current_state_info.has('autoadvance'):
+		dialogic.current_state_info['autoadvance'] = {
+		'waiting_for_next_event' : false,
+		'waiting_for_user_input' : false,
+		'waiting_for_system' : false,
+		'fixed_delay' : 1,
+		'per_word_delay' : 0,
+		'per_character_delay' : 0.1,
+		'ignored_characters_enabled' : false,
+		'ignored_characters' : {},
+		'override_delay_for_current_event' : 0,
+		'await_playing_voice' : true,
+		}
+	return dialogic.current_state_info['autoadvance']
+
+
+## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
+## If it changed, emits the [member autoadvance_changed] signal.
+func _emit_autoadvance_enabled() -> void:
+	var old_autoadvance_state = _autoadvance_enabled
+	_autoadvance_enabled = is_autoadvance_enabled()
+
+	if old_autoadvance_state != _autoadvance_enabled:
+		autoadvance_changed.emit(_autoadvance_enabled)
+
+
+## Sets the autoadvance waiting_for_user_input flag to [param enabled].
+func set_autoadvance_until_user_input(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_user_input'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+## Sets the autoadvance waiting_for_system flag to [param enabled].
+func set_autoadvance_system(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_system'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+## Sets the autoadvance waiting_for_next_event flag to [param enabled].
+func set_autoadvance_until_next_event(enabled: bool) -> void:
+	var info := get_autoadvance_info()
+	info['waiting_for_next_event'] = enabled
+	
+	_emit_autoadvance_enabled()
+
+
+func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
+	var info: Dictionary = get_autoadvance_info()
+	info['delay_modifier'] = delay_modifier
+
+
+func set_autoadvance_override_delay_for_current_event(delay_time := 1.0) -> void:
+	var info := get_autoadvance_info()
+	info['override_delay_for_current_event'] = delay_time
 
 
 func get_autoadvance_time() -> float:
@@ -354,12 +332,36 @@ func get_autoadvance_progress() -> float:
 	return progress
 
 
+##################### MANUAL ADVANCE ###############################################################
+####################################################################################################
+
+func set_manualadvance(enabled:=true, temp:= false) -> void:
+	if !dialogic.current_state_info.has('manual_advance'):
+		dialogic.current_state_info['manual_advance'] = {'enabled':false, 'temp_enabled':false}
+	if temp:
+		dialogic.current_state_info['manual_advance']['temp_enabled'] = enabled
+	else:
+		dialogic.current_state_info['manual_advance']['enabled'] = enabled
+
+
+func can_manual_advance() -> bool:
+	return dialogic.current_state_info['manual_advance']['enabled'] and dialogic.current_state_info['manual_advance'].get('temp_enabled', true)
+
+
+func set_skippable(skippable:= true, temp:=false) -> void:
+	if !dialogic.current_state_info.has('skippable'):
+		dialogic.current_state_info['skippable'] = {'enabled':false, 'temp_enabled':false}
+	if temp:
+		dialogic.current_state_info['skippable']['temp_enabled'] = skippable
+	else:
+		dialogic.current_state_info['skippable']['enabled'] = skippable
+
+
 func can_skip() -> bool:
 	return dialogic.current_state_info['skippable']['enabled'] and dialogic.current_state_info['skippable'].get('temp_enabled', true)
 
 
-####################################################################################################
-##					Text Effects & Modifiers
+################### Text Effects & Modifiers ###################################################
 ####################################################################################################
 
 func collect_text_effects() -> void:
@@ -442,6 +444,9 @@ func get_current_speaker() -> DialogicCharacter:
 	return (load(dialogic.current_state_info['speaker']) as DialogicCharacter)
 
 
+#################### HELPERS & OTHER STUFF #########################################################
+####################################################################################################
+
 func _ready():
 	collect_character_names()
 	collect_text_effects()
@@ -459,12 +464,10 @@ func _ready():
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
 
+
 func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
-func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
-	var info: Dictionary = get_autoadvance_info()
-	info['delay_modifier'] = delay_modifier
 
 func color_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
@@ -573,7 +576,6 @@ func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> vo
 	
 	if argument.is_valid_float():
 		set_autoadvance_override_delay_for_current_event(float(argument))
-
 
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")

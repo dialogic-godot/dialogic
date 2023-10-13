@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dyp7m2nvab1aj" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn" id="4_0hlwb"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="5_cc70e"]
 
-[sub_resource type="Image" id="Image_p8wi8"]
+[sub_resource type="Image" id="Image_ga21t"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -16,7 +16,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_e0cmw"]
-image = SubResource("Image_p8wi8")
+image = SubResource("Image_ga21t")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
 
@@ -183,9 +183,16 @@ text = "Auto-Advance"
 
 [node name="HintTooltip" parent="VBoxContainer/HBoxContainer AutoAdvance" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "When enabled, Dialogic will automatically progress the timeline upon completing text display, after a certain delay.
+tooltip_text = "Autoadvance is the concept of automatically progressing to the next event upon completing text display, usually after a certain delay.
 
-The Auto-Advance will wait for Voice Audio to finish playing. This behaviour can be disabled via code. "
+You can enabled autoadvance from code using either:
+- Dialogic.Text.set_autoadvance_until_user_input(true)
+- Dialogic.Text.set_autoadvance_until_next_event(true)
+- Dialogic.Text.set_autoadvance_system(true)
+These add up, so if any of them is true, autoadvance will happen.
+Unless manual advancement is disabled, the autoadvance time can always be skipped by the player.
+
+The autoadvance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
 texture = SubResource("ImageTexture_e0cmw")
 hint_text = "Autoadvance is the concept of automatically progressing to the next event upon completing text display, usually after a certain delay.
 
@@ -302,11 +309,7 @@ text = "Enabled at the start"
 layout_mode = 2
 tooltip_text = "While you would usually enable autoadvance via code, 
 if this is true it will be initially enabled. 
-This kind of autoadvance only stops when enabled via code. 
-
-However from code, you can also use 
-Dialogic.Text.set_autoadvance_until_user_input(true)
-which will automatically reset."
+This kind of autoadvance (system) only stops when disabled via code. "
 texture = SubResource("ImageTexture_e0cmw")
 hint_text = "While you would usually enable autoadvance via code, 
 if this is true it will be initially enabled. 
@@ -424,6 +427,7 @@ fit_content = true
 [connection signal="toggled" from="VBoxContainer/VBox/AutocolorNames" to="." method="_on_AutocolorNames_toggled"]
 [connection signal="toggled" from="VBoxContainer/VBox/HBoxContainer4/NewEvents" to="." method="_on_new_events_toggled"]
 [connection signal="item_selected" from="VBoxContainer/VBox/HBoxContainer4/NewEventOption" to="." method="_on_new_event_option_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/AutoadvanceSettings/FixedDelay" to="." method="_on_FixedDelay_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AdditionalDelayMode" to="." method="_on_additional_delay_mode_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AdditionalDelay" to="." method="_on_additional_delay_value_changed"]
 [connection signal="toggled" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters/IgnoredCharactersEnabled" to="." method="_on_IgnoredCharactersEnabled_toggled"]

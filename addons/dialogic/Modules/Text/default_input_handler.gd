@@ -21,7 +21,7 @@ func _input(event: InputEvent) -> void:
 			return
 
 		# We want to stop auto-advancing that cancels on user inputs.
-		if (!action_was_consumed and Dialogic.Text.should_autoadvance()
+		if (!action_was_consumed and Dialogic.Text.is_autoadvance_enabled()
 				and Dialogic.Text.get_autoadvance_info()['waiting_for_user_input']):
 			Dialogic.Text.set_autoadvance_until_user_input(false)
 			return
@@ -60,7 +60,7 @@ func _ready() -> void:
 
 
 func start_autoadvance() -> void:
-	if not Dialogic.Text.should_autoadvance():
+	if not Dialogic.Text.is_autoadvance_enabled():
 		return
 	
 	autoadvance_timer.start(
