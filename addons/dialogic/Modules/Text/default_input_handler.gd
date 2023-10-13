@@ -54,11 +54,14 @@ func start_autoadvance() -> void:
 	if not Dialogic.Text.is_autoadvance_enabled():
 		return
 	
-	autoadvance_timer.start(
-			_calculate_autoadvance_delay(
+	var delay := _calculate_autoadvance_delay(
 				Dialogic.Text.get_autoadvance_info(), 
 				Dialogic.current_state_info['text_parsed'])
-				)
+	if delay == 0:
+		_on_autoadvance_timer_timeout()
+	else:
+		await get_tree().process_frame
+		autoadvance_timer.start(delay)
 
 
 ## Calculates the autoadvance-time based on settings and text.
@@ -75,7 +78,7 @@ func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
 	var delay := 0.0
 	
 	# Check for temporary time override
-	if info['override_delay_for_current_event'] > 0:
+	if info['override_delay_for_current_event'] >= 0:
 		delay = info['override_delay_for_current_event']
 	else:
 		# Add per word and per character delay

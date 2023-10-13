@@ -129,7 +129,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	speed_multiplier = 1
 
 	set_autoadvance_until_next_event(false)
-	set_autoadvance_override_delay_for_current_event(0)
+	set_autoadvance_override_delay_for_current_event(-1)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
 
@@ -264,7 +264,7 @@ func get_autoadvance_info() -> Dictionary:
 		'per_character_delay' : 0.1,
 		'ignored_characters_enabled' : false,
 		'ignored_characters' : {},
-		'override_delay_for_current_event' : 0,
+		'override_delay_for_current_event' : -1,
 		'await_playing_voice' : true,
 		}
 	return dialogic.current_state_info['autoadvance']
@@ -309,7 +309,7 @@ func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
 	info['delay_modifier'] = delay_modifier
 
 
-func set_autoadvance_override_delay_for_current_event(delay_time := 1.0) -> void:
+func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> void:
 	var info := get_autoadvance_info()
 	info['override_delay_for_current_event'] = delay_time
 
