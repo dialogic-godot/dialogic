@@ -2,14 +2,14 @@
 class_name DialogicTextEvent
 extends DialogicEvent
 
-## Event that stores text. Can be said by a character. 
+## Event that stores text. Can be said by a character.
 ## Should be shown by a DialogicNode_DialogText.
 
 
 ### Settings
 
-## This is the content of the text event. 
-## It is supposed to be displayed by a DialogicNode_DialogText node. 
+## This is the content of the text event.
+## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
 var text: String = ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
@@ -23,7 +23,7 @@ var portrait: String = ""
 ### Helpers
 
 ## This returns the unique name_identifier of the character. This is used by the editor.
-var _character_from_directory: String: 
+var _character_from_directory: String:
 	get:
 		for item in _character_directory.keys():
 			if _character_directory[item]['resource'] == character:
@@ -36,7 +36,7 @@ var _character_from_directory: String:
 			character = null
 		elif value in _character_directory.keys():
 			character = _character_directory[value]['resource']
-		
+
 ## Used by [_character_from_directory] to fetch the unique name_identifier or resource.
 var _character_directory: Dictionary = {}
 # Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
@@ -58,10 +58,10 @@ func _execute() -> void:
 		return
 	
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
-		# if previous characters had a custom style change back to base style 
+		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
 			dialogic.Styles.add_layout_style(dialogic.current_state_info.get('base_style', 'Default'))
-	
+
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.add_layout_style(character.custom_info.style, false)
@@ -77,7 +77,7 @@ func _execute() -> void:
 			dialogic.Text.update_typing_sound_mood(character.custom_info.get('sound_moods', {}).get(character.custom_info.get('sound_mood_default'), {}))
 		else:
 			dialogic.Text.update_typing_sound_mood()
-			
+
 		dialogic.Text.update_name_label(character)
 	else:
 		dialogic.Portraits.change_speaker(null)
@@ -95,23 +95,23 @@ func _execute() -> void:
 				final_text = final_text.replace('\n', '[n]')
 			1:
 				final_text = final_text.replace('\n', '[n+][br]')
-	
+
 	var split_text := []
 	for i in split_regex.search_all(final_text):
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
-	
+
 	for section_idx in range(len(split_text)):
 		dialogic.Text.hide_next_indicators()
 		state = States.REVEALING
 		final_text = dialogic.Text.parse_text(split_text[section_idx][0])
 		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append':split_text[section_idx][1]})
 		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
-		
+
 		# Plays the audio region for the current line.
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			dialogic.Voice.play_voice()
-		
+
 		await dialogic.Text.text_finished
 		state = States.IDLE
 		#end of dialog
@@ -120,24 +120,24 @@ func _execute() -> void:
 			dialogic.Choices.show_current_choices(false)
 			dialogic.current_state = dialogic.States.AWAITING_CHOICE
 			return
-		elif Dialogic.Text.should_autoadvance():
+		elif Dialogic.Text.is_autoadvance_enabled():
 			dialogic.Text.show_next_indicators(false, true)
 			dialogic.Text.input_handler.start_autoadvance()
 		else:
 			dialogic.Text.show_next_indicators()
-		
+
 		if section_idx == len(split_text)-1:
 			state = States.DONE
-		
+
 		if dialogic.has_subsystem('History'):
 			if character:
 				dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
 			else:
 				dialogic.History.store_simple_history_entry(final_text, event_name)
 			dialogic.History.event_was_read(self)
-		
+
 		await advance
-	
+
 	finish()
 
 
@@ -147,10 +147,12 @@ func _on_dialogic_input_action():
 			if Dialogic.Text.can_skip():
 				Dialogic.Text.skip_text_animation()
 				Dialogic.Text.input_handler.block_input()
+				Dialogic.Text.input_handler.stop()
 		_:
 			if Dialogic.Text.can_manual_advance():
 				advance.emit()
 				Dialogic.Text.input_handler.block_input()
+				Dialogic.Text.input_handler.stop()
 
 
 func _on_dialogic_input_autoadvance():
@@ -180,7 +182,7 @@ func to_text() -> String:
 	text_to_use = text_to_use.replace(':', '\\:')
 	if text_to_use.is_empty():
 		text_to_use = "<Empty Text Event>"
-	
+
 	if character:
 		var name := ""
 		for path in _character_directory.keys():
@@ -208,12 +210,12 @@ func from_text(string:String) -> void:
 		_character_directory = Dialogic.character_directory
 	else:
 		_character_directory = self.get_meta("editor_character_directory")
-	
+
 	# load default character
 	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
 		if _character_from_directory in _character_directory.keys():
 			character = _character_directory[_character_from_directory]['resource']
-	
+
 	var result := regex.search(string)
 	if result and !result.get_string('name').is_empty():
 		var name := result.get_string('name').strip_edges()
@@ -230,7 +232,7 @@ func from_text(string:String) -> void:
 					if name in _character_directory[character]['full_path']:
 						character = _character_directory[character]['resource']
 						break
-				
+
 				# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
 				if character == null:
 					if Engine.is_editor_hint() == false:
@@ -243,7 +245,7 @@ func from_text(string:String) -> void:
 
 		if !result.get_string('portrait').is_empty():
 			portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
-		
+
 	if result:
 		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges().trim_prefix('\\')
 		if text == '<Empty Text Event>':
@@ -287,16 +289,16 @@ func _get_property_original_translation(property:String) -> String:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER, 
-			{'file_extension' 	: '.dch', 
-			'suggestions_func' 	: get_character_suggestions, 
+	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER,
+			{'file_extension' 	: '.dch',
+			'suggestions_func' 	: get_character_suggestions,
 			'empty_text' 		: '(No one)',
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER,  
-			{'suggestions_func' : get_portrait_suggestions, 
-			'placeholder' 		: "(Don't change)", 
+	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
+			{'suggestions_func' : get_portrait_suggestions,
+			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
-			'collapse_when_empty':true,}, 
+			'collapse_when_empty':true,},
 			'character != null and !has_no_portraits()')
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
@@ -309,20 +311,20 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
-	
+
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
-	
+
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
+
 	for resource in _character_directory.keys():
 		suggestions[resource] = {
-				'value' 	: resource, 
-				'tooltip' 	: _character_directory[resource]['full_path'], 
+				'value' 	: resource,
+				'tooltip' 	: _character_directory[resource]['full_path'],
 				'icon' 		: icon.duplicate()}
 	return suggestions
-	
+
 
 func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
@@ -342,15 +344,15 @@ var completion_text_effects := {}
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	if completion_text_character_getter_regex.get_pattern().is_empty():
 		completion_text_character_getter_regex.compile("(\"[^\"]*\"|[^\\s:]*)")
-	
+
 	if completion_text_effects.is_empty():
 		for idx in DialogicUtil.get_indexers():
 			for effect in idx._get_text_effects():
 				completion_text_effects[effect['command']] = effect
-	
+
 	if not ':' in line.substr(0, TextNode.get_caret_column()) and symbol == '(':
 		var character := completion_text_character_getter_regex.search(line).get_string().trim_prefix('"').trim_suffix('"')
-		
+
 		CodeCompletionHelper.suggest_portraits(TextNode, character)
 	if symbol == '[':
 		suggest_bbcode(TextNode)
@@ -361,7 +363,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command, TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 	if symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
-	
+
 	if symbol == '=':
 		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('[portrait='):
 			var character := completion_text_character_getter_regex.search(line).get_string('name')
@@ -400,7 +402,7 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 	load_text_effects()
 	if text_random_word_regex.get_pattern().is_empty():
 		text_random_word_regex.compile("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
-	
+
 	var result := regex.search(line)
 	if !result:
 		return dict

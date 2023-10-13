@@ -1,7 +1,7 @@
 class_name DialogicNode_DialogText
 extends RichTextLabel
 
-## Dialogic node that can reveal text at a given (changeable speed). 
+## Dialogic node that can reveal text at a given (changeable speed).
 
 signal started_revealing_text()
 signal continued_revealing_text(new_character)
@@ -22,7 +22,6 @@ var lspeed:float = 0.01
 var speed_counter:float = 0
 
 
-
 func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
 		text = what
@@ -34,7 +33,7 @@ func _set(property, what):
 func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
-	
+
 	bbcode_enabled = true
 	if start_hidden:
 		textbox_root.hide()
@@ -46,10 +45,11 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 	if !enabled:
 		return
 	show()
-	
+
 	if !keep_previous:
 		text = _text
 		base_visible_characters = 0
+
 		if alignment == Alignment.CENTER:
 			text = '[center]'+text
 		elif alignment == Alignment.RIGHT:
@@ -59,7 +59,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 		base_visible_characters = len(text)
 		visible_characters = len(text)
 		text = text+_text
-	
+
 	revealing = true
 	speed_counter = 0
 	started_revealing_text.emit()
@@ -70,10 +70,12 @@ func continue_reveal() -> void:
 	if visible_characters <= get_total_character_count():
 		revealing = false
 		await Dialogic.Text.execute_effects(visible_characters-base_visible_characters, self, false)
+
 		if visible_characters == -1:
 			return
 		revealing = true
 		visible_characters += 1
+
 		if visible_characters > -1 and visible_characters <= len(get_parsed_text()):
 			continued_revealing_text.emit(get_parsed_text()[visible_characters-1])
 	else:
@@ -90,6 +92,7 @@ func finish_text() -> void:
 	Dialogic.Text.execute_effects(-1, self, true)
 	revealing = false
 	Dialogic.current_state = Dialogic.States.IDLE
+
 	emit_signal("finished_revealing_text")
 
 
@@ -97,7 +100,9 @@ func finish_text() -> void:
 func _process(delta:float) -> void:
 	if !revealing or Dialogic.paused:
 		return
+
 	speed_counter += delta
+
 	while speed_counter > lspeed and revealing and !Dialogic.paused:
 		speed_counter -= lspeed
 		continue_reveal()
