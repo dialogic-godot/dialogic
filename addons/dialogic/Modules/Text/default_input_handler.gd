@@ -4,8 +4,10 @@ extends Node
 signal dialogic_action_priority
 signal dialogic_action
 signal autoadvance
+signal autoskip
 
 var autoadvance_timer := Timer.new()
+var autoskip_timer := Timer.new()
 var input_block_timer := Timer.new()
 var skip_delay :float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 
@@ -24,7 +26,12 @@ func _input(event: InputEvent) -> void:
 		if (!action_was_consumed and Dialogic.Text.is_autoadvance_enabled()
 				and Dialogic.Text.get_autoadvance_info()['waiting_for_user_input']):
 			Dialogic.Text.set_autoadvance_until_user_input(false)
-			return
+			action_was_consumed = true
+
+		if (!action_was_consumed and Dialogic.Text.is_autoskip_enabled()
+				and Dialogic.Text.get_autoskip_info()['waiting_for_user_input']):
+			Dialogic.Text.set_autoskip_until_user_input(false)
+			action_was_consumed = true
 
 		dialogic_action_priority.emit()
 
@@ -53,9 +60,9 @@ func block_input(time:=skip_delay) -> void:
 func start_autoadvance() -> void:
 	if not Dialogic.Text.is_autoadvance_enabled():
 		return
-	
+
 	var delay := _calculate_autoadvance_delay(
-				Dialogic.Text.get_autoadvance_info(), 
+				Dialogic.Text.get_autoadvance_info(),
 				Dialogic.current_state_info['text_parsed'])
 	if delay == 0:
 		_on_autoadvance_timer_timeout()
@@ -65,18 +72,18 @@ func start_autoadvance() -> void:
 
 
 ## Calculates the autoadvance-time based on settings and text.
-## 
+##
 ## Takes into account:
 ## - temporary delay time override
 ## - delay per word
 ## - delay per character
 ## - fixed delay
 ## - text time taken
-## - autoadvance delay modifier 
+## - autoadvance delay modifier
 ## - voice audio
 func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
 	var delay := 0.0
-	
+
 	# Check for temporary time override
 	if info['override_delay_for_current_event'] >= 0:
 		delay = info['override_delay_for_current_event']
@@ -86,13 +93,13 @@ func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
 		delay *= Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 		# Apply fixed delay last, so it's not affected by the delay modifier
 		delay += info['fixed_delay']
-		
+
 		delay = max(0, delay)
-	
+
 	# Wait for the voice clip (if longer than the current delay)
 	if info['await_playing_voice'] and Dialogic.has_subsystem('Voice') and Dialogic.Voice.is_running():
 		delay = max(delay, Dialogic.Voice.get_remaining_time())
-	
+
 	return delay
 
 
@@ -126,6 +133,10 @@ func _on_autoadvance_timer_timeout() -> void:
 	autoadvance.emit()
 	autoadvance_timer.stop()
 
+func _on_autoskip_timer_timeout() -> void:
+	autoskip.emit()
+	autoskip_timer.stop()
+
 
 ## Switches the auto-advance mode on or off based on [param is_enabled].
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
@@ -139,6 +150,15 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 	elif !is_enabled and is_autoadvancing():
 		stop()
 
+func _on_autoskip_enabled_change(is_enabled: bool) -> void:
+	if is_enabled:
+		skip()
+
+func skip() -> void:
+	var info = Dialogic.Text.get_autoskip_info()
+	var auto_skip_delay = info['time_per_event']
+	await get_tree().process_frame
+	autoskip_timer.start(auto_skip_delay)
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -152,13 +172,16 @@ func get_autoadvance_time() -> float:
 	return autoadvance_timer.wait_time
 
 
-
-
 func _ready() -> void:
 	add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
+
+	add_child(autoskip_timer)
+	autoskip_timer.one_shot = true
+	autoskip_timer.timeout.connect(_on_autoskip_timer_timeout)
+	Dialogic.Text.autoskip_changed.connect(_on_autoskip_enabled_change)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -166,14 +189,17 @@ func _ready() -> void:
 
 func pause() -> void:
 	autoadvance_timer.paused = true
+	autoskip_timer.paused = true
 	input_block_timer.paused = true
 
 
 func stop() -> void:
 	autoadvance_timer.stop()
+	autoskip_timer.stop()
 	input_block_timer.stop()
 
 
 func resume() -> void:
 	autoadvance_timer.paused = false
+	autoskip_timer.paused = false
 	input_block_timer.paused = false
