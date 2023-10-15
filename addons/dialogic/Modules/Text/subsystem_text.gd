@@ -25,7 +25,8 @@ enum TextTypes {DIALOG_TEXT, CHOICE_TEXT}
 var text_modifiers := []
 var input_handler :Node = null
 
-var _autoadvance_enabled = false
+var _autoadvance_enabled := false
+var _autoskip_enabled := false
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
 var speed_multiplier := 1.0
