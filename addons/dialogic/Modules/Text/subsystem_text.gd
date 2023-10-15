@@ -130,6 +130,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	speed_multiplier = 1
 
 	set_autoadvance_until_next_event(false)
+	set_autoskip_until_next_event(false)
 	set_autoadvance_override_delay_for_current_event(-1)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
