@@ -7,6 +7,7 @@ signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
 signal autoadvance_changed(enabled: bool)
+signal autoskip_changed(enabled: bool)
 signal animation_textbox_new_text
 signal animation_textbox_show
 signal animation_textbox_hide
@@ -331,6 +332,72 @@ func get_autoadvance_progress() -> float:
 
 	return progress
 
+##################### AUTOSKIP SYSTEM ##############################################################
+####################################################################################################
+
+
+## Returns whether Auto-Skip is currently considered enabled.
+## Auto-Skip is considered on, if any of these flags is true:
+## - waiting_for_user_input (becomes false on any dialogic input action)
+## - waiting_for_next_event (becomes false on each text event)
+## - waiting_for_system (becomes false only when disabled via code)
+##
+## All three can be set with dedicated methods.
+func is_autoskip_enabled() -> bool:
+	var info = get_autoadvance_info()
+
+	return (info['waiting_for_next_event']
+		or info['waiting_for_user_input']
+		or info['waiting_for_system'])
+
+## Fetches all Auto-Skip settings.
+## If they don't exist, returns the default settings.
+## The key's values will be changed upon setting them.
+func get_autoskip_info() -> Dictionary:
+	if not dialogic.current_state_info.has('autoskip'):
+		dialogic.current_state_info['autoskip'] = {
+		'waiting_for_next_event' : false,
+		'waiting_for_user_input' : false,
+		'waiting_for_system' : false,
+		'time_per_event' : 1,
+		'is_instant' : false,
+		}
+	return dialogic.current_state_info['autoskip']
+
+## Sets the autoadvance waiting_for_user_input flag to [param enabled].
+func set_autoskip_until_user_input(enabled: bool, is_instant: bool) -> void:
+	var info := get_autoskip_info()
+	info['waiting_for_user_input'] = enabled
+	info['is_instant'] = is_instant
+	info['time_per_event'] = 1
+
+	_autoskip_enabled = true
+
+	_emit_autoskip_enabled()
+
+## Sets the autoadvance waiting_for_system flag to [param enabled].
+func set_autoskip_system(enabled: bool) -> void:
+	var info := get_autoskip_info()
+	info['waiting_for_system'] = enabled
+
+	_emit_autoskip_enabled()
+
+
+## Sets the autoadvance waiting_for_next_event flag to [param enabled].
+func set_autoskip_until_next_event(enabled: bool) -> void:
+	var info := get_autoskip_info()
+	info['waiting_for_next_event'] = enabled
+
+	_emit_autoskip_enabled()
+
+## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
+## If it changed, emits the [member autoskip_changed] signal.
+func _emit_autoskip_enabled() -> void:
+	var old_autoskip_state = _autoskip_enabled
+	_autoskip_enabled = is_autoskip_enabled()
+
+	if old_autoskip_state != _autoskip_enabled:
+		autoskip_changed.emit(_autoskip_enabled)
 
 ##################### MANUAL ADVANCE ###############################################################
 ####################################################################################################
