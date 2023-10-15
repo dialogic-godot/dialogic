@@ -206,6 +206,9 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
 			next_indicator.show()
 
+func handle_seen_event() -> void:
+	if is_autoskip_enabled():
+		input_handler.skip()
 
 func hide_next_indicators(fake_arg=null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
@@ -519,6 +522,9 @@ func _ready():
 	collect_text_effects()
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
+
+	if dialogic.has_subsystem('History'):
+		Dialogic.History.already_read_event_reached.connect(handle_seen_event)
 
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
