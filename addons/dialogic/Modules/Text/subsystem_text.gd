@@ -56,6 +56,8 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	autoadvance_info['ignored_characters_enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 
+	set_autoskip_system(ProjectSettings.get_setting('dialogic/text/autoskip_enabled', false))
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
