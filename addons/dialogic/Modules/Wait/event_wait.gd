@@ -18,13 +18,18 @@ var hide_text: bool = true
 ################################################################################
 
 func _execute() -> void:
+	# Fully skip this event if autoskip is enabled
+	if Dialogic.Text.is_autoskip_enabled():
+		finish()
+		return
+
 	if hide_text and dialogic.has_subsystem("Text"):
 		dialogic.Text.update_dialog_text('')
 		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = dialogic.States.WAITING
 	await dialogic.get_tree().create_timer(time, true, DialogicUtil.is_physics_timer()).timeout
 	dialogic.current_state = dialogic.States.IDLE
-	
+
 	finish()
 
 
