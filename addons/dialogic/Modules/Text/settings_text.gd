@@ -14,7 +14,6 @@ func _get_title() -> String:
 func _get_info_section():
 	return $InformationSection
 
-
 func _refresh():
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
@@ -22,7 +21,7 @@ func _refresh():
 
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-	
+
 	var per_character_delay := ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
 	var per_word_delay := ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	if per_character_delay == 0 and per_word_delay == 0:
@@ -31,8 +30,7 @@ func _refresh():
 		_on_additional_delay_mode_item_selected(2, per_character_delay)
 	else:
 		_on_additional_delay_mode_item_selected(1, per_word_delay)
-	
-	
+
 	%IgnoredCharactersEnabled.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 
 	var ignored_characters: String = ''
@@ -42,6 +40,9 @@ func _refresh():
 		ignored_characters += ignored_character
 
 	%IgnoredCharacters.text = ignored_characters
+
+	%AutoSkip.button_pressed = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', false)
+	%AutoskipTimePerEvent.value = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', 0.1)
 
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
@@ -131,6 +132,14 @@ func _on_DefaultSpeed_value_changed(value):
 	ProjectSettings.set_setting('dialogic/text/letter_speed', value)
 	ProjectSettings.save()
 
+
+func _on_Autoskip_toggled(button_pressed: bool) -> void:
+	ProjectSettings.set_setting('dialogic/text/autoskip_enabled', button_pressed)
+	ProjectSettings.save()
+
+func _on_AutoskipTimePerEvent_value_changed(value: float) -> void:
+	ProjectSettings.set_setting('dialogic/text/autoskip_time_per_event', value)
+	ProjectSettings.save()
 
 func _on_InputAction_value_changed(property_name, value):
 	ProjectSettings.set_setting('dialogic/text/input_action', value)
