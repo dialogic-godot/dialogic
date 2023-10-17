@@ -348,17 +348,19 @@ Sometimes, in Visual Novels, both are available!"
 texture = SubResource("ImageTexture_8hd43")
 hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event.
 
-You can enabled Auto-Skip from code using either:
-- Dialogic.Text.set_autoskip_until_user_input(true)
+You can enable Auto-Skip from code using either:
+- Dialogic.Text.set_autoskip_until_unread_text(true, false)
 - Dialogic.Text.set_autoskip_until_next_event(true)
 - Dialogic.Text.set_autoskip_system(true)
 These add up, so if any of them is true, Auto-Skip will happen.
 
+By default, Auto-Skip will cancel on user input. 
+You can disable this by calling: 
+set_autoskip_disable_on_user_input(false)
+
 Auto-Skip can be used in two modes:
 - Fast mode: Limiting time per event.
-- Instant mode: Seeking the next unread events.
-
-Sometimes, in Visual Novels, both are available!"
+- Instant mode: Seeking the next unread events."
 
 [node name="AutoskipSettings" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -379,7 +381,8 @@ If this is set to 0.1s, each event should finish within this time."
 texture = SubResource("ImageTexture_8hd43")
 hint_text = "The time until Auto-Skip will execute the next event.
 
-If this is set to 0.1s, each event should finish within this time."
+If this is set to 0.1s, each event should finish within this 0.1 seconds.
+Custom events must respect this time, built-in events already handle Auto-Skip."
 
 [node name="AutoskipTimePerEvent" type="SpinBox" parent="VBoxContainer/AutoskipSettings"]
 unique_name_in_owner = true
