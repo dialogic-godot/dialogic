@@ -304,7 +304,7 @@ func _emit_autoadvance_enabled() -> void:
 
 
 ## Sets the autoadvance waiting_for_user_input flag to [param enabled].
-func set_autoadvance_until_user_input(enabled: bool) -> void:
+func set_autoadvance_until_unread_message(enabled: bool) -> void:
 	var info := get_autoadvance_info()
 	info['waiting_for_user_input'] = enabled
 	
@@ -323,7 +323,7 @@ func set_autoadvance_system(enabled: bool) -> void:
 func set_autoadvance_until_next_event(enabled: bool) -> void:
 	var info := get_autoadvance_info()
 	info['waiting_for_next_event'] = enabled
-	
+
 	_emit_autoadvance_enabled()
 
 
