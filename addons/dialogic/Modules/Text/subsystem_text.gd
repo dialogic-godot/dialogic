@@ -212,10 +212,24 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			next_indicator.show()
 
 func handle_seen_event() -> void:
+	var info = get_autoskip_info()
+
+	# If Auto-Skip is disabled but reacts to seen events, we
+	# enable Auto-Skip.
+	if !is_autoskip_enabled() and info['enable_on_seen']:
+		info['waiting_for_unread_event'] = true
+
 	if is_autoskip_enabled():
 		input_handler.skip()
 
-func hide_next_indicators(fake_arg=null) -> void:
+func handle_unseen_event() -> void:
+	var info = get_autoskip_info()
+
+	if is_autoskip_enabled() and info['waiting_for_unread_event']:
+		info['waiting_for_unread_event'] = false
+		input_handler.autoskip_timer.stop()
+
+func hide_next_indicators(_fake_arg = null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		next_indicator.hide()
 
@@ -530,6 +544,7 @@ func _ready():
 
 	if dialogic.has_subsystem('History'):
 		Dialogic.History.already_read_event_reached.connect(handle_seen_event)
+		Dialogic.History.not_read_event_reached.connect(handle_unseen_event)
 
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
