@@ -218,7 +218,7 @@ func handle_seen_event() -> void:
 	# If Auto-Skip is disabled but reacts to seen events, we
 	# enable Auto-Skip.
 	if !is_autoskip_enabled() and info['enable_on_seen']:
-		info['waiting_for_unread_event'] = true
+		set_autoskip_until_unread_text(true, false)
 
 	if is_autoskip_enabled():
 		input_handler.skip()
@@ -361,16 +361,16 @@ func get_autoadvance_progress() -> float:
 
 ## Returns whether Auto-Skip is currently considered enabled.
 ## Auto-Skip is considered on, if any of these flags is true:
-## - waiting_for_user_input (becomes false on any dialogic input action)
+## - waiting_for_unread_event (becomes false on each unread text event)
 ## - waiting_for_next_event (becomes false on each text event)
 ## - waiting_for_system (becomes false only when disabled via code)
 ##
 ## All three can be set with dedicated methods.
+## The usual Visual Novel may want to use [method set_autoskip_until_unread_text].
 func is_autoskip_enabled() -> bool:
 	var info = get_autoskip_info()
 
 	return (info['waiting_for_next_event']
-		or info['waiting_for_user_input']
 		or info['waiting_for_system']
 		or info['waiting_for_unread_event'])
 
@@ -392,9 +392,9 @@ func get_autoskip_info() -> Dictionary:
 	if not dialogic.current_state_info.has('autoskip'):
 		dialogic.current_state_info['autoskip'] = {
 		'waiting_for_next_event' : false,
-		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
 		'waiting_for_unread_event' : false,
+		'disable_on_user_input': true,
 		'time_per_event' : 1,
 		'is_instant' : false,
 		'enable_on_seen' : true,
@@ -402,6 +402,7 @@ func get_autoskip_info() -> Dictionary:
 	return dialogic.current_state_info['autoskip']
 
 ## Sets the Auto-Skip enable_on_seen flag to [param enabled].
+## Auto-Skip will be enabled until a Text Timeline Event has been seen already.
 func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_unread_event'] = enabled
@@ -418,7 +419,20 @@ func set_autoskip_system(enabled: bool) -> void:
 	_emit_autoskip_enabled()
 
 
+## Sets the Auto-Skip disable_on_user_input flag to [param disable].
+## By default, this evaluates to true.
+## A normal Visual Novel may not need to temper with this method, unless we
+## want to continue the Auto-Skip feature despite the player interacting with
+## the game.
+func set_autoskip_disable_on_user_input(disable: bool) -> void:
+	var info := get_autoskip_info()
+	info['disable_on_user_input'] = disable
+
+	_emit_autoskip_enabled()
+
+
 ## Sets the Auto-Skip waiting_for_next_event flag to [param enabled].
+## Auto-Skip will skip the current event only, then stop.
 func set_autoskip_until_next_event(enabled: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_next_event'] = enabled
