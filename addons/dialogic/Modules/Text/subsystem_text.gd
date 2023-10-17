@@ -382,15 +382,17 @@ func get_autoskip_info() -> Dictionary:
 		'waiting_for_next_event' : false,
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
+		'waiting_for_unread_event' : false,
 		'time_per_event' : 1,
 		'is_instant' : false,
+		'enable_on_seen' : true,
 		}
 	return dialogic.current_state_info['autoskip']
 
-## Sets the autoadvance waiting_for_user_input flag to [param enabled].
-func set_autoskip_until_user_input(enabled: bool, is_instant: bool) -> void:
+## Sets the Auto-Skip enable_on_seen flag to [param enabled].
+func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
 	var info := get_autoskip_info()
-	info['waiting_for_user_input'] = enabled
+	info['waiting_for_unread_event'] = enabled
 	info['is_instant'] = is_instant
 	info['time_per_event'] = 1
 
@@ -398,7 +400,7 @@ func set_autoskip_until_user_input(enabled: bool, is_instant: bool) -> void:
 
 	_emit_autoskip_enabled()
 
-## Sets the autoadvance waiting_for_system flag to [param enabled].
+## Sets the Auto-Skip waiting_for_system flag to [param enabled].
 func set_autoskip_system(enabled: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_system'] = enabled
@@ -406,14 +408,14 @@ func set_autoskip_system(enabled: bool) -> void:
 	_emit_autoskip_enabled()
 
 
-## Sets the autoadvance waiting_for_next_event flag to [param enabled].
+## Sets the Auto-Skip waiting_for_next_event flag to [param enabled].
 func set_autoskip_until_next_event(enabled: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_next_event'] = enabled
 
 	_emit_autoskip_enabled()
 
-## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
+## Updates the [member _autoskip_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member autoskip_changed] signal.
 func _emit_autoskip_enabled() -> void:
 	var old_autoskip_state = _autoskip_enabled
