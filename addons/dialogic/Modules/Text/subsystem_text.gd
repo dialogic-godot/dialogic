@@ -47,7 +47,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	dialogic.current_state_info['text'] = ''
 
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
-	
+
 	set_autoadvance_system(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
 	var autoadvance_info := get_autoadvance_info()
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
@@ -57,6 +57,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 
 	var autoskip_info := get_autoskip_info()
+	autoskip_info['enable_on_seen'] = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', false)
 	autoskip_info['time_per_event'] = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', 0.1)
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -71,7 +72,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	var character:DialogicCharacter = null
 	if dialogic.current_state_info.get('speaker', null):
 		character = load(dialogic.current_state_info.get('speaker', null))
-	
+
 	if character:
 		update_name_label(character)
 
@@ -108,7 +109,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
-	
+
 	if text.is_empty():
 		await hide_text_boxes(instant)
 	else:
@@ -117,7 +118,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 			animation_textbox_new_text.emit()
 			if Dialogic.Animation.is_animating():
 				await Dialogic.Animation.finished
-		
+
 	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -265,7 +266,7 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 ## - waiting_for_user_input (becomes false on any dialogic input action)
 ## - waiting_for_next_event (becomes false on each text event)
 ## - waiting_for_system (becomes false only when disabled via code)
-## 
+##
 ## All three can be set with dedicated methods.
 func is_autoadvance_enabled() -> bool:
 	return (get_autoadvance_info()['waiting_for_next_event']
@@ -307,7 +308,7 @@ func _emit_autoadvance_enabled() -> void:
 func set_autoadvance_until_unread_message(enabled: bool) -> void:
 	var info := get_autoadvance_info()
 	info['waiting_for_user_input'] = enabled
-	
+
 	_emit_autoadvance_enabled()
 
 
@@ -315,7 +316,7 @@ func set_autoadvance_until_unread_message(enabled: bool) -> void:
 func set_autoadvance_system(enabled: bool) -> void:
 	var info := get_autoadvance_info()
 	info['waiting_for_system'] = enabled
-	
+
 	_emit_autoadvance_enabled()
 
 
@@ -516,7 +517,7 @@ func collect_text_modifiers() -> void:
 
 func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 	for mod in text_modifiers:
-		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode: 
+		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode:
 			continue
 		text = mod.method.call(text)
 	return text
@@ -667,7 +668,7 @@ func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> vo
 		argument = argument.trim_suffix('?')
 	else:
 		set_autoadvance_until_next_event(true)
-	
+
 	if argument.is_valid_float():
 		set_autoadvance_override_delay_for_current_event(float(argument))
 
