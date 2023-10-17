@@ -60,7 +60,7 @@ func _mark_as_read(final_text: String) -> void:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
 		dialogic.History.event_was_read(self)
 
-func _connect_to_signals() -> void:
+func _connect_signals() -> void:
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 
