@@ -396,8 +396,6 @@ func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
 	info['is_instant'] = is_instant
 	info['time_per_event'] = 1
 
-	_autoskip_enabled = true
-
 	_emit_autoskip_enabled()
 
 ## Sets the Auto-Skip waiting_for_system flag to [param enabled].
