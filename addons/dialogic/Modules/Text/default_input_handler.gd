@@ -22,16 +22,17 @@ func _input(event: InputEvent) -> void:
 		if Dialogic.paused or is_input_blocked():
 			return
 
-		# We want to stop auto-advancing that cancels on user inputs.
-		if (!action_was_consumed and Dialogic.Text.is_autoadvance_enabled()
+		if !action_was_consumed:
+			# We want to stop auto-advancing that cancels on user inputs.
+			if (Dialogic.Text.is_autoadvance_enabled()
 				and Dialogic.Text.get_autoadvance_info()['waiting_for_user_input']):
-			Dialogic.Text.set_autoadvance_until_user_input(false)
-			action_was_consumed = true
+				Dialogic.Text.set_autoadvance_until_user_input(false)
+				action_was_consumed = true
 
-		if (!action_was_consumed and Dialogic.Text.is_autoskip_enabled()
+			if (Dialogic.Text.is_autoskip_enabled()
 				and Dialogic.Text.get_autoskip_info()['waiting_for_user_input']):
-			Dialogic.Text.set_autoskip_until_user_input(false)
-			action_was_consumed = true
+				Dialogic.Text.set_autoskip_until_user_input(false)
+				action_was_consumed = true
 
 		dialogic_action_priority.emit()
 
@@ -151,8 +152,7 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 		stop()
 
 func _on_autoskip_enabled_change(is_enabled: bool) -> void:
-	if is_enabled:
-		skip()
+	pass
 
 func skip() -> void:
 	var info = Dialogic.Text.get_autoskip_info()
@@ -195,7 +195,6 @@ func pause() -> void:
 
 func stop() -> void:
 	autoadvance_timer.stop()
-	autoskip_timer.stop()
 	input_block_timer.stop()
 
 
