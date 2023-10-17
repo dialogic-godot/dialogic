@@ -19,7 +19,6 @@ var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
 var portrait: String = ""
 
-
 ### Helpers
 
 ## This returns the unique name_identifier of the character. This is used by the editor.
@@ -79,7 +78,7 @@ func _execute() -> void:
 	if text.is_empty():
 		finish()
 		return
-	
+
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
@@ -88,8 +87,8 @@ func _execute() -> void:
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.add_layout_style(character.custom_info.style, false)
-		
-		
+
+
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
 			dialogic.Portraits.change_character_portrait(character, portrait)
 		dialogic.Portraits.change_speaker(character, portrait)
@@ -161,7 +160,6 @@ func _execute() -> void:
 	_disconnect_signals()
 	finish()
 
-
 func _on_dialogic_input_action():
 	match state:
 		States.REVEALING:
@@ -180,6 +178,12 @@ func _on_dialogic_input_autoadvance():
 	if state == States.IDLE or state == States.DONE:
 		advance.emit()
 
+## This is called when the next event is about to be executed.
+func _on_dialogic_input_autoskip():
+	# This requires `_execute` to not await a prior signal.
+	# Otherwise, it won't react to this signal.
+	advance.emit()
+
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
@@ -191,7 +195,7 @@ func _init() -> void:
 	event_sorting_index = 0
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 	expand_by_default = true
-	
+
 
 
 ################################################################################
