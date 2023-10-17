@@ -14,7 +14,7 @@ var full_event_history_enabled := false
 var full_event_history_content := []
 signal full_event_history_changed
 
-## Read text history 
+## Read text history
 ## Stores which text events and choices have already been visited
 var already_read_history_enabled := false
 var already_read_history_content := {}
@@ -25,10 +25,10 @@ signal not_read_event_reached
 ##					INITIALIZE
 ####################################################################################################
 
-func _ready() -> void: 
+func _ready() -> void:
 	Dialogic.event_handled.connect(store_full_event)
 	Dialogic.event_handled.connect(check_already_read)
-	
+
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
 	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
@@ -72,15 +72,32 @@ func store_full_event(event:DialogicEvent) -> void:
 ##					ALREADY READ HISTORY
 ####################################################################################################
 
-func event_was_read(event:DialogicEvent) -> void:
-	if !already_read_history_enabled: return
-	already_read_history_content[Dialogic.current_timeline.resource_path+str(Dialogic.current_event_idx)] = Dialogic.current_event_idx
+func _current_event_key() -> String:
+	var resource_path = Dialogic.current_timeline.resource_path
+	var event_idx = str(Dialogic.current_event_idx)
+	var event_key = resource_path+event_idx
 
+	return event_key
 
-# called on each event 
-func check_already_read(event:DialogicEvent) -> void:
-	if !already_read_history_enabled: return
-	if Dialogic.current_timeline.resource_path+str(Dialogic.current_event_idx) in already_read_history_content:
+func event_was_read(event: DialogicEvent) -> void:
+	if !already_read_history_enabled:
+		return
+
+	var event_key = _current_event_key()
+
+	already_read_history_content[event_key] = Dialogic.current_event_idx
+
+# called on each event
+func check_already_read(event: DialogicEvent) -> void:
+	if !already_read_history_enabled:
+		return
+
+	if event.event_name != "Text":
+		return
+
+	var event_key = _current_event_key()
+
+	if event_key in already_read_history_content:
 		already_read_event_reached.emit()
 	else:
 		not_read_event_reached.emit()
