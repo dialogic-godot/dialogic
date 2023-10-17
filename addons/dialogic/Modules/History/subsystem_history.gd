@@ -72,6 +72,8 @@ func store_full_event(event:DialogicEvent) -> void:
 ##					ALREADY READ HISTORY
 ####################################################################################################
 
+## Takes the current timeline event and creates a unique key for it.
+## Uses the timeline resource path as well.
 func _current_event_key() -> String:
 	var resource_path = Dialogic.current_timeline.resource_path
 	var event_idx = str(Dialogic.current_event_idx)
@@ -79,7 +81,8 @@ func _current_event_key() -> String:
 
 	return event_key
 
-func event_was_read(event: DialogicEvent) -> void:
+# Called if a Text event marks an unread Text event as read.
+func event_was_read(_event: DialogicEvent) -> void:
 	if !already_read_history_enabled:
 		return
 
@@ -87,11 +90,14 @@ func event_was_read(event: DialogicEvent) -> void:
 
 	already_read_history_content[event_key] = Dialogic.current_event_idx
 
-# called on each event
+# Called on each event, but we filter for Text events.
 func check_already_read(event: DialogicEvent) -> void:
 	if !already_read_history_enabled:
 		return
 
+	# At this point, we only care about Text events.
+	# There may be a more elegant way of filtering events.
+	# Especially since custom events require this event name.
 	if event.event_name != "Text":
 		return
 
