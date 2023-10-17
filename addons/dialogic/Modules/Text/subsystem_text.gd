@@ -366,7 +366,7 @@ func get_autoadvance_progress() -> float:
 ##
 ## All three can be set with dedicated methods.
 func is_autoskip_enabled() -> bool:
-	var info = get_autoadvance_info()
+	var info = get_autoskip_info()
 
 	return (info['waiting_for_next_event']
 		or info['waiting_for_user_input']
