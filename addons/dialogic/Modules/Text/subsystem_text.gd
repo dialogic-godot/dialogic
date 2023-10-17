@@ -370,7 +370,8 @@ func is_autoskip_enabled() -> bool:
 
 	return (info['waiting_for_next_event']
 		or info['waiting_for_user_input']
-		or info['waiting_for_system'])
+		or info['waiting_for_system']
+		or info['waiting_for_unread_event'])
 
 ## Fetches all Auto-Skip settings.
 ## If they don't exist, returns the default settings.
