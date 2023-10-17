@@ -72,8 +72,8 @@ func _connect_signals() -> void:
 
 func _disconnect_signals() -> void:
 	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
-	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
-	dialogic.Text.input_handler.autoskip.connect(_on_dialogic_input_autoskip)
+	dialogic.Text.input_handler.autoadvance.disconnect(_on_dialogic_input_autoadvance)
+	dialogic.Text.input_handler.autoskip.disconnect(_on_dialogic_input_autoskip)
 
 func _execute() -> void:
 	if text.is_empty():
