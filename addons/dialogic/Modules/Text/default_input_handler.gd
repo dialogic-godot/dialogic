@@ -29,9 +29,9 @@ func _input(event: InputEvent) -> void:
 				Dialogic.Text.set_autoadvance_until_user_input(false)
 				action_was_consumed = true
 
-			if (Dialogic.Text.is_autoskip_enabled()
-				and Dialogic.Text.get_autoskip_info()['waiting_for_user_input']):
-				Dialogic.Text.set_autoskip_until_user_input(false)
+			if (Dialogic.Text.get_autoskip_info()['disable_on_user_input']
+				and Dialogic.Text.is_autoskip_enabled()):
+				Dialogic.Text.cancel_autoskip()
 				action_was_consumed = true
 
 		dialogic_action_priority.emit()
