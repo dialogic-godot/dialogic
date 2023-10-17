@@ -70,6 +70,11 @@ func _connect_signals() -> void:
 	if not dialogic.Text.input_handler.autoskip.is_connected(_on_dialogic_input_autoskip):
 		dialogic.Text.input_handler.autoskip.connect(_on_dialogic_input_autoskip)
 
+func _disconnect_signals() -> void:
+	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
+	dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+	dialogic.Text.input_handler.autoskip.connect(_on_dialogic_input_autoskip)
+
 func _execute() -> void:
 	if text.is_empty():
 		finish()
@@ -101,11 +106,8 @@ func _execute() -> void:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
 
-	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
-		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
-	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
-		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
-	
+	_connect_signals()
+
 	var final_text :String= get_property_translated('text')
 	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
 		match ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0):
@@ -156,6 +158,7 @@ func _execute() -> void:
 
 		await advance
 
+	_disconnect_signals()
 	finish()
 
 
