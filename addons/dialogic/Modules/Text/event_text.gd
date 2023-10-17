@@ -112,7 +112,12 @@ func _execute() -> void:
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			dialogic.Voice.play_voice()
 
-		await dialogic.Text.text_finished
+		# Auto-Skip needs to fire this.
+		if Dialogic.Text._autoskip_enabled:
+			Dialogic.Text.skip_text_animation()
+		else:
+			await dialogic.Text.text_finished
+
 		state = States.IDLE
 		#end of dialog
 		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
