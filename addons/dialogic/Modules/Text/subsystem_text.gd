@@ -374,6 +374,17 @@ func is_autoskip_enabled() -> bool:
 		or info['waiting_for_system']
 		or info['waiting_for_unread_event'])
 
+## Allows to cancel Auto-Skip.
+## This is useful if we want to cancel Auto-Skip in a Timeline Event.
+func cancel_autoskip() -> void:
+	var info = get_autoskip_info()
+	info['waiting_for_unread_event'] = false
+	info['waiting_for_next_event'] = false
+	info['waiting_for_system'] = false
+	input_handler.autoskip_timer.stop()
+
+	_emit_autoskip_enabled()
+
 ## Fetches all Auto-Skip settings.
 ## If they don't exist, returns the default settings.
 ## The key's values will be changed upon setting them.
