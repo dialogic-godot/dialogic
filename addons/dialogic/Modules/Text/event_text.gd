@@ -52,6 +52,24 @@ signal advance
 ## 						EXECUTION
 ################################################################################
 
+func _mark_as_read(final_text: String) -> void:
+	if dialogic.has_subsystem('History'):
+		if character:
+			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+		else:
+			dialogic.History.store_simple_history_entry(final_text, event_name)
+		dialogic.History.event_was_read(self)
+
+func _connect_to_signals() -> void:
+	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
+		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
+
+	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
+		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+
+	if not dialogic.Text.input_handler.autoskip.is_connected(_on_dialogic_input_autoskip):
+		dialogic.Text.input_handler.autoskip.connect(_on_dialogic_input_autoskip)
+
 func _execute() -> void:
 	if text.is_empty():
 		finish()
@@ -82,7 +100,7 @@ func _execute() -> void:
 	else:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
-	
+
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
@@ -134,12 +152,7 @@ func _execute() -> void:
 		if section_idx == len(split_text)-1:
 			state = States.DONE
 
-		if dialogic.has_subsystem('History'):
-			if character:
-				dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
-			else:
-				dialogic.History.store_simple_history_entry(final_text, event_name)
-			dialogic.History.event_was_read(self)
+		_mark_as_read(final_text)
 
 		await advance
 
