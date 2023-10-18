@@ -398,6 +398,7 @@ func get_autoskip_info() -> Dictionary:
 		'time_per_event' : 1,
 		'is_instant' : false,
 		'enable_on_seen' : true,
+		'skip_voice' : true,
 		}
 	return dialogic.current_state_info['autoskip']
 
