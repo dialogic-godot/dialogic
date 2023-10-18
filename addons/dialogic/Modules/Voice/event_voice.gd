@@ -21,12 +21,10 @@ var audio_bus: String = "Master"
 
 func _execute() -> void:
 	# If Auto-Skip is enabled, we may not want to play voice audio.
-	if Dialogic.Text.is_autoskip_enabled():
-		var autoskip_info: Dictionary = Dialogic.Text.get_autoskip_info()
-
-		if autoskip_info['skip_voice']:
-			finish()
-			return
+	if (Dialogic.Text.is_autoskip_enabled()
+	and Dialogic.Text.get_autoskip_info()['skip_voice']):
+		finish()
+		return
 
 	dialogic.Voice.set_file(file_path)
 	dialogic.Voice.set_volume(volume)
