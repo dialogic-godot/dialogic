@@ -213,7 +213,7 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			next_indicator.show()
 
 func handle_seen_event() -> void:
-	var info = get_autoskip_info()
+	var info := get_autoskip_info()
 
 	# If Auto-Skip is disabled but reacts to seen events, we
 	# enable Auto-Skip.
@@ -224,7 +224,7 @@ func handle_seen_event() -> void:
 		input_handler.skip()
 
 func handle_unseen_event() -> void:
-	var info = get_autoskip_info()
+	var info := get_autoskip_info()
 
 	if is_autoskip_enabled() and info['waiting_for_unread_event']:
 		info['waiting_for_unread_event'] = false
@@ -368,7 +368,7 @@ func get_autoadvance_progress() -> float:
 ## All three can be set with dedicated methods.
 ## The usual Visual Novel may want to use [method set_autoskip_until_unread_text].
 func is_autoskip_enabled() -> bool:
-	var info = get_autoskip_info()
+	var info := get_autoskip_info()
 
 	return (info['waiting_for_next_event']
 		or info['waiting_for_system']
@@ -377,7 +377,7 @@ func is_autoskip_enabled() -> bool:
 ## Allows to cancel Auto-Skip.
 ## This is useful if we want to cancel Auto-Skip in a Timeline Event.
 func cancel_autoskip() -> void:
-	var info = get_autoskip_info()
+	var info := get_autoskip_info()
 	info['waiting_for_unread_event'] = false
 	info['waiting_for_next_event'] = false
 	info['waiting_for_system'] = false

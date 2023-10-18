@@ -155,8 +155,8 @@ func _on_autoskip_enabled_change(is_enabled: bool) -> void:
 	pass
 
 func skip() -> void:
-	var info = Dialogic.Text.get_autoskip_info()
-	var auto_skip_delay = info['time_per_event']
+	var info: Dictionary = Dialogic.Text.get_autoskip_info()
+	var auto_skip_delay: float = info['time_per_event']
 	await get_tree().process_frame
 	autoskip_timer.start(auto_skip_delay)
 
