@@ -60,6 +60,12 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 		visible_characters = len(text)
 		text = text+_text
 
+		# If Auto-Skip is enabled and we append the text (keep_previous),
+		# we can skip revealing the text and just show it all at once.
+		if Dialogic.Text.is_autoskip_enabled():
+			visible_characters = 1
+			return
+
 	revealing = true
 	speed_counter = 0
 	started_revealing_text.emit()
