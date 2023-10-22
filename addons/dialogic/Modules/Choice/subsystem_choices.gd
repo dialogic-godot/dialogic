@@ -50,13 +50,13 @@ func show_current_choices(instant:=true) -> void:
 			choice_blocker.start(reveal_delay)
 			choice_blocker.timeout.connect(show_current_choices)
 		if reveal_by_input:
-			Dialogic.Text.input_handler.dialogic_action.connect(show_current_choices)
+			Dialogic.Input.dialogic_action.connect(show_current_choices)
 		return
 	
 	if choice_blocker.timeout.is_connected(show_current_choices):
 		choice_blocker.timeout.disconnect(show_current_choices)
-	if Dialogic.Text.input_handler.dialogic_action.is_connected(show_current_choices):
-		Dialogic.Text.input_handler.dialogic_action.disconnect(show_current_choices)
+	if Dialogic.Input.dialogic_action.is_connected(show_current_choices):
+		Dialogic.Input.dialogic_action.disconnect(show_current_choices)
 	
 	
 	var button_idx := 1

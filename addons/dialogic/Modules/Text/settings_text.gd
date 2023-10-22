@@ -17,7 +17,7 @@ func _get_info_section():
 
 func _refresh():
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
-	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
+	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
@@ -118,12 +118,12 @@ func _on_IgnoredCharacters_text_changed(text_input):
 
 
 func _on_Skippable_toggled(button_pressed):
-	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)
+	ProjectSettings.set_setting('dialogic/text/initial_text_reveal_skippable', button_pressed)
 	ProjectSettings.save()
 
 
 func _on_skippable_delay_value_changed(value: float) -> void:
-	ProjectSettings.set_setting('dialogic/text/skippable_delay', value)
+	ProjectSettings.set_setting('dialogic/text/text_reveal_skip_delay', value)
 	ProjectSettings.save()
 
 

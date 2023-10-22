@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="10"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_input.gd" id="14_d2258"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/autoadvance_indicator.gd" id="15_ptoy3"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/animations.gd" id="16_07l6b"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_button_sound.gd" id="18"]
@@ -257,12 +258,6 @@ box_animation_out = 1
 box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 typing_sounds_sounds_folder = ""
-typing_sounds_pitch = null
-typing_sounds_volume = null
-choice_button_sounds_volume = null
-choice_button_sounds_pressed = null
-choice_button_sounds_hover = null
-choice_button_sounds_focus = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -350,10 +345,10 @@ mouse_filter = 2
 
 [node name="Animations" type="AnimationPlayer" parent="DefaultStyle"]
 unique_name_in_owner = true
-autoplay = "RESET"
 libraries = {
 "": SubResource("AnimationLibrary_c14kh")
 }
+autoplay = "RESET"
 script = ExtResource("16_07l6b")
 
 [node name="DialogicTextAnchor" type="Control" parent="DefaultStyle"]
@@ -516,6 +511,16 @@ script = ExtResource("18")
 sound_pressed = ExtResource("14")
 sound_hover = ExtResource("11")
 sound_focus = SubResource("AudioStream_hu7ba")
+
+[node name="InputCatcher" type="Control" parent="DefaultStyle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("14_d2258")
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1

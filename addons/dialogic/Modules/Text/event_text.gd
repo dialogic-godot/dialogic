@@ -83,10 +83,10 @@ func _execute() -> void:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
 	
-	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
-		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
-	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
-		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+	if not dialogic.Input.dialogic_action.is_connected(_on_dialogic_input_action):
+		dialogic.Input.dialogic_action.connect(_on_dialogic_input_action)
+	if not dialogic.Input.autoadvance.is_connected(_on_dialogic_input_autoadvance):
+		dialogic.Input.autoadvance.connect(_on_dialogic_input_autoadvance)
 	
 	var final_text :String= get_property_translated('text')
 	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
@@ -120,9 +120,9 @@ func _execute() -> void:
 			dialogic.Choices.show_current_choices(false)
 			dialogic.current_state = dialogic.States.AWAITING_CHOICE
 			return
-		elif Dialogic.Text.is_autoadvance_enabled():
+		elif Dialogic.Input.is_autoadvance_enabled():
 			dialogic.Text.show_next_indicators(false, true)
-			dialogic.Text.input_handler.start_autoadvance()
+			dialogic.Input.start_autoadvance()
 		else:
 			dialogic.Text.show_next_indicators()
 
@@ -144,15 +144,15 @@ func _execute() -> void:
 func _on_dialogic_input_action():
 	match state:
 		States.REVEALING:
-			if Dialogic.Text.can_skip():
+			if Dialogic.Text.can_skip_text_reveal():
 				Dialogic.Text.skip_text_animation()
-				Dialogic.Text.input_handler.block_input()
-				Dialogic.Text.input_handler.stop()
+				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				Dialogic.Input.stop()
 		_:
-			if Dialogic.Text.can_manual_advance():
+			if Dialogic.Input.is_manualadvance_enabled():
 				advance.emit()
-				Dialogic.Text.input_handler.block_input()
-				Dialogic.Text.input_handler.stop()
+				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				Dialogic.Input.stop()
 
 
 func _on_dialogic_input_autoadvance():

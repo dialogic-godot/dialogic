@@ -14,7 +14,7 @@ func _execute() -> void:
 	if hide_textbox: 
 		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = Dialogic.States.IDLE
-	await dialogic.Text.input_handler.dialogic_action
+	await dialogic.Input.dialogic_action
 	finish()
 
 ################################################################################
