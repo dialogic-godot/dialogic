@@ -9,7 +9,8 @@ signal autoskip
 var autoadvance_timer := Timer.new()
 var autoskip_timer := Timer.new()
 var input_block_timer := Timer.new()
-var skip_delay :float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
+var skip_delay: float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
+var _autoskip_timer_left: float = 0.0
 
 var action_was_consumed := false
 
@@ -29,7 +30,10 @@ func _input(event: InputEvent) -> void:
 				Dialogic.Text.set_autoadvance_until_user_input(false)
 				action_was_consumed = true
 
+			# We want to stop auto-skipping if it's enabled, we are listening
+			# to user inputs, and it's not instant skipping.
 			if (Dialogic.Text.get_autoskip_info()['disable_on_user_input']
+				and not Dialogic.Text.get_autoskip_info()['is_instant']
 				and Dialogic.Text.is_autoskip_enabled()):
 				Dialogic.Text.cancel_autoskip()
 				action_was_consumed = true
@@ -177,8 +181,9 @@ func skip() -> void:
 		return
 
 	var auto_skip_delay: float = info['time_per_event']
-	await get_tree().process_frame
-	autoskip_timer.start(auto_skip_delay)
+	_autoskip_timer_left = auto_skip_delay
+	set_process(true)
+	print(auto_skip_delay)
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -206,6 +211,9 @@ func _ready() -> void:
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
+	# We use the process method to count down the auto-skip timer.
+	set_process(false)
+
 
 func pause() -> void:
 	autoadvance_timer.paused = true
@@ -222,3 +230,18 @@ func resume() -> void:
 	autoadvance_timer.paused = false
 	autoskip_timer.paused = false
 	input_block_timer.paused = false
+
+################################################################################
+## 						AUTO-SKIP
+################################################################################
+
+## Handles fine-grained Auto-Skip logic.
+## The [method _process] method allows for a more precise timer than the
+## [Timer] class.
+func _process(delta):
+	if _autoskip_timer_left > 0:
+		_autoskip_timer_left -= delta
+
+		if _autoskip_timer_left <= 0:
+			_on_autoadvance_timer_timeout()
+
