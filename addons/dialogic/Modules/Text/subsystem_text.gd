@@ -403,8 +403,18 @@ func get_autoskip_info() -> Dictionary:
 	return dialogic.current_state_info['autoskip']
 
 ## Sets the Auto-Skip enable_on_seen flag to [param enabled].
+## This method will fail, if the current Text Timeline event has not been seen
+## before.
 ## Auto-Skip will be enabled until a Text Timeline Event has been seen already.
+##
+## This method requires the History subsystem to be enabled.
 func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
+	if !Dialogic.has_subsystem("History"):
+		return
+
+	if !Dialogic.History.was_last_event_already_read():
+		return
+
 	var info := get_autoskip_info()
 	info['waiting_for_unread_event'] = enabled
 	info['is_instant'] = is_instant
