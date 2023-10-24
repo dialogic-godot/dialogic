@@ -374,13 +374,45 @@ func is_autoskip_enabled() -> bool:
 		or info['waiting_for_system']
 		or info['waiting_for_unread_event'])
 
+## Returns whether Auto-Skip is currently considered enabled and
+## if it is instant.
+##
+## Auto-Skip is considered [i]instant[/i], if the is_instant flag is true.
+##
+## See [method is_autoskip_enabled] for more information, if Auto-Skip
+## is considered enabled or not.
+func is_instant_autoskip_enabled() -> bool:
+	return is_autoskip_enabled() and get_autoskip_info()['is_instant']
+
+## Sets the Auto-Skip [code]is_instant[/code] flag to [param enabled].
+##
+## If [code]true[/code], method will start instant Auto-Skip.
+## Dialogic will instantly process all Timeline Events until an unread
+## Text Timeline Event is reached or the game expects user input, e.g.
+## choices or text input.
+##
+## The Timeline Events will be processed but not displayed until the
+## instant Auto-Skip has completed.
+## User inputs are ignored during instant Auto-Skip.
+##
+## [b]Warning:[/b]
+## If there are no unread Text Timeline Events, the game will freeze or crash.
+func set_instant_autoskip(is_enabled: bool) -> void:
+	var info := get_autoskip_info()
+	info['waiting_for_unread_event'] = is_enabled
+	info['is_instant'] = is_enabled
+
+	_emit_autoskip_enabled()
+
 ## Allows to cancel Auto-Skip.
 ## This is useful if we want to cancel Auto-Skip in a Timeline Event.
+## This will cancel the instant Auto-Skip as well.
 func cancel_autoskip() -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_unread_event'] = false
 	info['waiting_for_next_event'] = false
 	info['waiting_for_system'] = false
+	info['is_instant'] = false
 	input_handler.autoskip_timer.stop()
 
 	_emit_autoskip_enabled()
@@ -418,7 +450,6 @@ func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_unread_event'] = enabled
 	info['is_instant'] = is_instant
-	info['time_per_event'] = 1
 
 	_emit_autoskip_enabled()
 
@@ -428,7 +459,6 @@ func set_autoskip_system(enabled: bool) -> void:
 	info['waiting_for_system'] = enabled
 
 	_emit_autoskip_enabled()
-
 
 ## Sets the Auto-Skip disable_on_user_input flag to [param disable].
 ## By default, this evaluates to true.
@@ -447,6 +477,21 @@ func set_autoskip_disable_on_user_input(disable: bool) -> void:
 func set_autoskip_until_next_event(enabled: bool) -> void:
 	var info := get_autoskip_info()
 	info['waiting_for_next_event'] = enabled
+
+	_emit_autoskip_enabled()
+
+## Sets the Auto-Skip is_instant flag to [param is_instant].
+## This method won't start Auto-Skip, but will change the behavior of
+## of already running Auto-Skip.
+func set_autoskip_is_instant(is_instant: bool) -> void:
+	var info := get_autoskip_info()
+
+	# We don't want to override the waiting_for_unread_event flag
+	# if we don't enable instant Auto-Skip.
+	if is_instant:
+		info['waiting_for_unread_event'] = true
+
+	info['is_instant'] = is_instant
 
 	_emit_autoskip_enabled()
 
