@@ -152,10 +152,30 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 		stop()
 
 func _on_autoskip_enabled_change(is_enabled: bool) -> void:
-	pass
+	if not Dialogic.has_subsystem('History'):
+		return
 
+	if not Dialogic.History.was_last_event_already_read:
+		return
+
+	# If instant skipping is enabled while we are on an event already,
+	# we will move to the next event.
+	if is_enabled:
+		skip()
+
+## This method will advance the timeline based on Auto-Skip settings.
+## The state, whether Auto-Skip is enabled, is ignored.
+## However, the setting [code]is_instant[/code] is respected.
 func skip() -> void:
 	var info: Dictionary = Dialogic.Text.get_autoskip_info()
+
+	# If we are instant skipping, we will emit the signal and return.
+	if (info['is_instant']
+	and Dialogic.has_subsystem('History')
+	and Dialogic.History.was_last_event_already_read):
+		autoskip.emit()
+		return
+
 	var auto_skip_delay: float = info['time_per_event']
 	await get_tree().process_frame
 	autoskip_timer.start(auto_skip_delay)

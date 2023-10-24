@@ -18,6 +18,8 @@ signal full_event_history_changed
 ## Stores which text events and choices have already been visited
 var already_read_history_enabled := false
 var already_read_history_content := {}
+var _was_last_event_already_read := false
+
 signal already_read_event_reached
 signal not_read_event_reached
 
@@ -89,6 +91,7 @@ func event_was_read(_event: DialogicEvent) -> void:
 	var event_key = _current_event_key()
 
 	already_read_history_content[event_key] = Dialogic.current_event_idx
+	_was_last_event_already_read = true
 
 # Called on each event, but we filter for Text events.
 func check_already_read(event: DialogicEvent) -> void:
@@ -105,5 +108,10 @@ func check_already_read(event: DialogicEvent) -> void:
 
 	if event_key in already_read_history_content:
 		already_read_event_reached.emit()
+		_was_last_event_already_read = true
 	else:
 		not_read_event_reached.emit()
+		_was_last_event_already_read = false
+
+func was_last_event_already_read() -> bool:
+	return _was_last_event_already_read
