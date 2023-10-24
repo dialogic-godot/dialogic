@@ -443,7 +443,7 @@ func set_autoskip_until_next_event(enabled: bool) -> void:
 ## Updates the [member _autoskip_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member autoskip_changed] signal.
 func _emit_autoskip_enabled() -> void:
-	var old_autoskip_state = _autoskip_enabled
+	var old_autoskip_state := _autoskip_enabled
 	_autoskip_enabled = is_autoskip_enabled()
 
 	if old_autoskip_state != _autoskip_enabled:
