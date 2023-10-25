@@ -34,4 +34,4 @@ func _input(event:InputEvent) -> void:
 		$PauseIndictator.visible = Dialogic.paused
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE:
-		Dialogic.Text.set_autoskip_until_unread_text(true, false)
+		Dialogic.Text.set_autoskip_system(true, false)
