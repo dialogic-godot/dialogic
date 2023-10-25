@@ -242,5 +242,5 @@ func _process(delta):
 		_autoskip_timer_left -= delta
 
 		if _autoskip_timer_left <= 0:
-			_on_autoadvance_timer_timeout()
+			_on_autoskip_timer_timeout()
 
