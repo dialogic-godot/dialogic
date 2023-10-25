@@ -159,7 +159,10 @@ func _on_autoskip_enabled_change(is_enabled: bool) -> void:
 	if not Dialogic.has_subsystem('History'):
 		return
 
-	if not Dialogic.History.was_last_event_already_read:
+	# If Auto-Skip is supposed to end on an unread text event,
+	# we must start on an unread text event.
+	if (Dialogic.Text.get_autoskip_info()['waiting_for_unread_event']
+	and not Dialogic.History.was_last_event_already_read):
 		return
 
 	# If instant skipping is enabled while we are on an event already,
