@@ -7,7 +7,6 @@ signal autoadvance
 signal autoskip
 
 var autoadvance_timer := Timer.new()
-var autoskip_timer := Timer.new()
 var input_block_timer := Timer.new()
 var skip_delay: float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 var _autoskip_timer_left: float = 0.0
@@ -140,8 +139,6 @@ func _on_autoadvance_timer_timeout() -> void:
 
 func _on_autoskip_timer_timeout() -> void:
 	autoskip.emit()
-	autoskip_timer.stop()
-
 
 ## Switches the auto-advance mode on or off based on [param is_enabled].
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
@@ -205,9 +202,6 @@ func _ready() -> void:
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
 
-	add_child(autoskip_timer)
-	autoskip_timer.one_shot = true
-	autoskip_timer.timeout.connect(_on_autoskip_timer_timeout)
 	Dialogic.Text.autoskip_changed.connect(_on_autoskip_enabled_change)
 
 	add_child(input_block_timer)
@@ -219,19 +213,22 @@ func _ready() -> void:
 
 func pause() -> void:
 	autoadvance_timer.paused = true
-	autoskip_timer.paused = true
 	input_block_timer.paused = true
+	set_process(false)
 
 
 func stop() -> void:
 	autoadvance_timer.stop()
 	input_block_timer.stop()
+	_autoskip_timer_left = 0.0
 
 
 func resume() -> void:
 	autoadvance_timer.paused = false
-	autoskip_timer.paused = false
 	input_block_timer.paused = false
+
+	var is_autoskip_timer_done := _autoskip_timer_left > 0.0
+	set_process(is_autoskip_timer_done)
 
 ################################################################################
 ## 						AUTO-SKIP
