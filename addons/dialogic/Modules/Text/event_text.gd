@@ -63,17 +63,16 @@ func _connect_signals() -> void:
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 
+		dialogic.Text.autoskip_changed.connect(_on_autoskip_enable)
+
 	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
 		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
-
-	if not dialogic.Text.input_handler.autoskip.is_connected(_on_dialogic_input_autoskip):
-		dialogic.Text.input_handler.autoskip.connect(_on_dialogic_input_autoskip)
 
 ## If the event is done, this method can clean-up signal connections.
 func _disconnect_signals() -> void:
 	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
 	dialogic.Text.input_handler.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	dialogic.Text.input_handler.autoskip.disconnect(_on_dialogic_input_autoskip)
+	dialogic.Text.autoskip_changed.disconnect(_on_autoskip_enable)
 
 ## Tries to play the voice clip for the current line.
 func _try_play_current_line_voice() -> void:
@@ -106,6 +105,7 @@ func _execute() -> void:
 			dialogic.Portraits.change_character_portrait(character, portrait)
 		dialogic.Portraits.change_speaker(character, portrait)
 		var check_portrait :String = portrait if !portrait.is_empty() else dialogic.current_state_info['portraits'].get(character.resource_path, {}).get('portrait', '')
+
 		if check_portrait and character.portraits.get(check_portrait, {}).get('sound_mood', '') in character.custom_info.get('sound_moods', {}):
 			dialogic.Text.update_typing_sound_mood(character.custom_info.get('sound_moods', {}).get(character.portraits[check_portrait].get('sound_mood', {}), {}))
 		elif !character.custom_info.get('sound_mood_default', '').is_empty():
@@ -139,19 +139,13 @@ func _execute() -> void:
 		var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
 
 		var is_append: bool = split_text[section_idx][1]
-		var is_autoskipping: bool = Dialogic.Text.is_autoskip_enabled()
 
 		final_text = segment
 		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+
 		final_text = await dialogic.Text.update_dialog_text(final_text, false, is_append)
 
 		_try_play_current_line_voice()
-
-		# Auto-Skip needs to fire this.
-		if Dialogic.Text._autoskip_enabled:
-			Dialogic.Text.skip_text_animation()
-		else:
-			await dialogic.Text.text_finished
 
 		state = States.IDLE
 		#end of dialog
@@ -171,16 +165,20 @@ func _execute() -> void:
 
 		_mark_as_read(final_text)
 
+		# If we perform Instant Auto-Skip, we will accelerate through all
+		## text parts.
+		if Dialogic.Text.is_instant_autoskip_enabled():
+			Dialogic.Text.skip_text_animation()
+			continue
+
 		# If Auto-Skip is enabled and there are multiple parts of this text
 		# we need to artifically trigger the Auto-Skip for each.
-		# NOTE: Auto-Skip fires only once per event.
-		if (is_autoskipping
-		and Dialogic.has_subsystem('History')
-		and section_idx > 0):
+		if (Dialogic.Text.is_autoskip_enabled()
+		and Dialogic.has_subsystem('History')):
 			Dialogic.Text.skip_text_animation()
-			Dialogic.History.already_read_event_reached.emit()
-
-		await advance
+			await dialogic.Text.input_handler.skip()
+		else:
+			await advance
 
 	_disconnect_signals()
 	finish()
@@ -203,10 +201,13 @@ func _on_dialogic_input_autoadvance():
 	if state == States.IDLE or state == States.DONE:
 		advance.emit()
 
-## This is called when the next event is about to be executed.
-func _on_dialogic_input_autoskip():
-	# This requires `_execute` to not await a prior signal.
-	# Otherwise, it won't react to this signal.
+func _on_autoskip_enable(enabled: bool):
+	if not enabled:
+		return
+
+	if state == States.REVEALING:
+		Dialogic.Text.skip_text_animation()
+
 	advance.emit()
 
 ################################################################################

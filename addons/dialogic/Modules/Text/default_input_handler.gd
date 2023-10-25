@@ -8,6 +8,7 @@ signal autoskip
 
 var autoadvance_timer := Timer.new()
 var input_block_timer := Timer.new()
+
 var skip_delay: float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
 var _autoskip_timer_left: float = 0.0
 
@@ -137,9 +138,6 @@ func _on_autoadvance_timer_timeout() -> void:
 	autoadvance.emit()
 	autoadvance_timer.stop()
 
-func _on_autoskip_timer_timeout() -> void:
-	autoskip.emit()
-
 ## Switches the auto-advance mode on or off based on [param is_enabled].
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
@@ -152,20 +150,7 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 	elif !is_enabled and is_autoadvancing():
 		stop()
 
-func _on_autoskip_enabled_change(is_enabled: bool) -> void:
-	if not Dialogic.has_subsystem('History'):
-		return
 
-	# If Auto-Skip is supposed to end on an unread text event,
-	# we must start on an unread text event.
-	if (Dialogic.Text.get_autoskip_info()['waiting_for_unread_event']
-	and not Dialogic.History.was_last_event_already_read):
-		return
-
-	# If instant skipping is enabled while we are on an event already,
-	# we will move to the next event.
-	if is_enabled:
-		skip()
 
 ## This method will advance the timeline based on Auto-Skip settings.
 ## The state, whether Auto-Skip is enabled, is ignored.
@@ -183,6 +168,7 @@ func skip() -> void:
 	var auto_skip_delay: float = info['time_per_event']
 	_autoskip_timer_left = auto_skip_delay
 	set_process(true)
+	await autoskip
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -201,8 +187,6 @@ func _ready() -> void:
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
-
-	Dialogic.Text.autoskip_changed.connect(_on_autoskip_enabled_change)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -242,5 +226,4 @@ func _process(delta):
 		_autoskip_timer_left -= delta
 
 		if _autoskip_timer_left <= 0:
-			_on_autoskip_timer_timeout()
-
+			autoskip.emit()
