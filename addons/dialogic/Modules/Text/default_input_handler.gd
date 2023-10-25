@@ -183,7 +183,6 @@ func skip() -> void:
 	var auto_skip_delay: float = info['time_per_event']
 	_autoskip_timer_left = auto_skip_delay
 	set_process(true)
-	print(auto_skip_delay)
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
