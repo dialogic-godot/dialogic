@@ -91,7 +91,6 @@ func event_was_read(_event: DialogicEvent) -> void:
 	var event_key = _current_event_key()
 
 	already_read_history_content[event_key] = Dialogic.current_event_idx
-	_was_last_event_already_read = true
 
 # Called on each event, but we filter for Text events.
 func check_already_read(event: DialogicEvent) -> void:
