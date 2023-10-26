@@ -233,6 +233,10 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 		elif p.dialogic_type == resource.ValueType.STRING_ARRAY:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
+		
+		elif p.dialogic_type == resource.ValueType.KEY_VALUE_PAIRS:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/KeyValuePairs.tscn").instantiate()
+		
 			
 		elif p.dialogic_type == resource.ValueType.LABEL:
 			editor_node = Label.new()

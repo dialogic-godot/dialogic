@@ -96,7 +96,7 @@ enum ValueType {
 	# Floats
 	FLOAT, DECIBEL,
 	# Other
-	CUSTOM, BUTTON,
+	CUSTOM, BUTTON, KEY_VALUE_PAIRS
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
