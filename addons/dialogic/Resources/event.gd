@@ -281,6 +281,8 @@ func to_text() -> String:
 						else:
 							result_string += " "+parameter+'="'+var_to_str(option.value).replace('=', "\\=")+'"'
 						break
+			elif typeof(get(params[parameter].property)) == TYPE_DICTIONARY:
+				result_string += " "+parameter+'="'+ JSON.stringify(get(params[parameter].property)).replace('=', "\\=")+'"'
 			else:
 				result_string += " "+parameter+'="'+var_to_str(get(params[parameter].property)).replace('=', "\\=")+'"'
 	result_string += "]"
