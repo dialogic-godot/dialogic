@@ -21,9 +21,12 @@ func set_value(value) -> void:
 	if typeof(value) == TYPE_DICTIONARY:
 		dic = value
 	elif typeof(value) == TYPE_STRING:
-		var result = JSON.parse_string(value)
-		if result != null:
-			dic = result as Dictionary
+		if value.begins_with('{'):
+			var result = JSON.parse_string(value)
+			if result != null:
+				dic = result as Dictionary
+			else:
+				dic = Dictionary()
 		else:
 			dic = Dictionary()
 	
