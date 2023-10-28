@@ -312,7 +312,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_es88k")
 bbcode_enabled = true
-text = "[center]Welcome to dialogic, a plugin that let's you easily create stories and dialogs for your game!"
+text = "[center]Welcome to dialogic, a plugin that lets you easily create stories and dialogs for your game!"
 fit_content = true
 
 [node name="RandomTipSection" type="VBoxContainer" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer2"]
