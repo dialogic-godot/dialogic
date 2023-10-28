@@ -6,7 +6,7 @@ extends HBoxContainer
 signal value_changed()
 
 
-func set_key(value:String):
+func set_key(value:String) -> void:
 	$Key.text = str(value)
 
 

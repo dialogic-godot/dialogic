@@ -15,26 +15,26 @@ func set_value(value) -> void:
 	for child in %Values.get_children():
 		child.queue_free()
 	
-	var dic : Dictionary
+	var dict : Dictionary
 	
 	# attempt to take dictionary values, create a fresh one if not possible
 	if typeof(value) == TYPE_DICTIONARY:
-		dic = value
+		dict = value
 	elif typeof(value) == TYPE_STRING:
 		if value.begins_with('{'):
 			var result = JSON.parse_string(value)
 			if result != null:
-				dic = result as Dictionary
+				dict = result as Dictionary
 			else:
-				dic = Dictionary()
+				dict = Dictionary()
 		else:
-			dic = Dictionary()
+			dict = Dictionary()
 	
-	var keys = dic.keys()
-	var values = dic.values()
+	var keys := dict.keys()
+	var values := dict.values()
 	
-	for index in dic.size():
-		var x = load(PairValue).instantiate()
+	for index in dict.size():
+		var x :Node = load(PairValue).instantiate()
 		%Values.add_child(x)
 		x.set_key(keys[index])
 		x.set_value(values[index])
@@ -46,11 +46,11 @@ func _on_value_changed(value:Variant) -> void:
 
 
 func recalculate_values() -> void:
-	var dic := {}
+	var dict := {}
 	for child in %Values.get_children():
 		if !child.is_queued_for_deletion():
-			dic[child.get_key()] = child.get_value()
-	_on_value_changed(dic)
+			dict[child.get_key()] = child.get_value()
+	_on_value_changed(dict)
 
 
 func _on_AddButton_pressed() -> void:
