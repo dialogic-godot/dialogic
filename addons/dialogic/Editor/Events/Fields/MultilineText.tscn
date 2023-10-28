@@ -8,14 +8,13 @@
 script = ExtResource("1_wj4ha")
 
 [node name="MultilineText" type="CodeEdit"]
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 413.0
+offset_bottom = 15.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = ExtResource("1_dkxlh")
 wrap_mode = 1
 syntax_highlighter = SubResource("SyntaxHighlighter_2q5dk")
-scroll_fit_content_height = true
 symbol_lookup_on_click = true
 delimiter_strings = Array[String]([])
 code_completion_enabled = true
