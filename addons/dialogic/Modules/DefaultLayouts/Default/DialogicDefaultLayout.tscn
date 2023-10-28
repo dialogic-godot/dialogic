@@ -1,8 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://uan2wdyuprb6"]
+[gd_scene load_steps=31 format=3 uid="uid://uan2wdyuprb6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3"]
+[ext_resource type="Material" uid="uid://0wc7bedn7ee8" path="res://addons/dialogic/Modules/Background/default_background_transition.tres" id="3_3r2h6"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="3_dbhei"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="4"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="5_uvb2c"]
@@ -257,16 +258,20 @@ box_animation_out = 1
 box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 typing_sounds_sounds_folder = ""
-typing_sounds_pitch = null
-typing_sounds_volume = null
-choice_button_sounds_volume = null
-choice_button_sounds_pressed = null
-choice_button_sounds_hover = null
-choice_button_sounds_focus = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
 script = ExtResource("5_uvb2c")
+
+[node name="Backgrounds" type="CanvasLayer" parent="DialogicNode_BackgroundHolder"]
+
+[node name="Overlay" type="ColorRect" parent="DialogicNode_BackgroundHolder"]
+material = ExtResource("3_3r2h6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Portraits" type="CanvasLayer" parent="."]
 layer = 0
