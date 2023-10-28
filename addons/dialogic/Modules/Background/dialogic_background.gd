@@ -29,3 +29,11 @@ func _fade_in(time:float) -> bool:
 ## If you return false (by default) it will attempt to animate the "modulate" property. 
 func _fade_out(time:float) -> bool:
 	return false
+
+
+## Returns the texture of the background viewport, which contains what is currently drawn in the background
+func _get_background_texture() -> ViewportTexture:
+	# fail when this method gets called and does not have a proper override.
+	push_error("\"_get_background_texture()\" was not implemented in the child class of DialogicBackground")
+	assert(false,"\"_get_background_texture()\" was not implemented in the child class of DialogicBackground")
+	return null

@@ -2,20 +2,31 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/default_background.gd" id="1_nkdrp"]
 
-[node name="DefaultBackground" type="ColorRect"]
+[node name="DefaultBackground" type="SubViewportContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0)
+stretch = true
 script = ExtResource("1_nkdrp")
 
-[node name="Image" type="TextureRect" parent="."]
-layout_mode = 1
+[node name="BackgroundViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Image" type="TextureRect" parent="BackgroundViewport"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
