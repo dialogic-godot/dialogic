@@ -26,7 +26,7 @@ func _execute() -> void:
 	var final_fade_duration := fade
 
 	if Dialogic.Text.auto_skip.enabled:
-		var time_per_event = Dialogic.Text.auto_skip.time_per_event
+		var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
 
 	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
