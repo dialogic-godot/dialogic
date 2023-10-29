@@ -147,8 +147,16 @@ func _execute() -> void:
 
 		_try_play_current_line_voice()
 
+		_mark_as_read(final_text)
+
+		# We must skip text animation before we potentially return when there
+		# is a Choice event.
+		if Dialogic.Text.auto_skip.enabled:
+			Dialogic.Text.skip_text_animation()
+
 		state = States.IDLE
-		#end of dialog
+
+		# Handling potential Choice Events.
 		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
 			dialogic.Choices.show_current_choices(false)
@@ -163,13 +171,9 @@ func _execute() -> void:
 		if section_idx == len(split_text)-1:
 			state = States.DONE
 
-		_mark_as_read(final_text)
-
 		# If Auto-Skip is enabled and there are multiple parts of this text
-		# we need to artifically trigger the Auto-Skip for each.
-		if (Dialogic.Text.auto_skip.enabled
-		and Dialogic.has_subsystem('History')):
-			Dialogic.Text.skip_text_animation()
+		# we need to skip the text after the defined time per event.
+		if	Dialogic.Text.auto_skip.enabled:
 			await dialogic.Text.input_handler.skip()
 		else:
 			await advance
