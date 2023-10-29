@@ -202,8 +202,9 @@ func collect_subsystems() -> void:
 		if !Engine.is_editor_hint():
 			
 			for subsystem in indexer._get_subsystems():
-				var node = add_subsytsem(subsystem.name, subsystem.script)
-				subsystem_nodes.push_back(node)
+				var subsystem_node := add_subsytsem(subsystem.name, subsystem.script) as DialogicSubsystem
+				if subsystem_node:
+					subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
 		subsystem.post_install()
