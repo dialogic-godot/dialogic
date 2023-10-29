@@ -18,8 +18,9 @@ var hide_text: bool = true
 ################################################################################
 
 func _execute() -> void:
-	# Fully skip this event if autoskip is enabled
-	if Dialogic.Text.is_autoskip_enabled():
+	# Fully skip this event if autoskip is enabled.
+	# Instant Auto-Skip treats this event the same way.
+	if Dialogic.Text.auto_skip.enabled:
 		finish()
 		return
 

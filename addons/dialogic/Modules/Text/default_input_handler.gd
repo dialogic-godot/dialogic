@@ -32,10 +32,9 @@ func _input(event: InputEvent) -> void:
 
 			# We want to stop auto-skipping if it's enabled, we are listening
 			# to user inputs, and it's not instant skipping.
-			if (Dialogic.Text.get_autoskip_info()['disable_on_user_input']
-				and not Dialogic.Text.get_autoskip_info()['is_instant']
-				and Dialogic.Text.is_autoskip_enabled()):
-				Dialogic.Text.cancel_autoskip()
+			if (Dialogic.Text.auto_skip.disable_on_user_input
+			and Dialogic.Text.auto_skip.enabled):
+				Dialogic.Text.auto_skip.enabled = false
 				action_was_consumed = true
 
 		dialogic_action_priority.emit()
@@ -156,16 +155,7 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 ## The state, whether Auto-Skip is enabled, is ignored.
 ## However, the setting [code]is_instant[/code] is respected.
 func skip() -> void:
-	var info: Dictionary = Dialogic.Text.get_autoskip_info()
-
-	# If we are instant skipping, we will emit the signal and return.
-	if (info['is_instant']
-	and Dialogic.has_subsystem('History')
-	and Dialogic.History.was_last_event_already_read):
-		autoskip.emit()
-		return
-
-	var auto_skip_delay: float = info['time_per_event']
+	var auto_skip_delay: float = Dialogic.Text.auto_skip.time_per_event
 	_autoskip_timer_left = auto_skip_delay
 	set_process(true)
 	await autoskip

@@ -26,8 +26,8 @@ var movement_time: float = 0
 func _execute() -> void:
 	var final_movement_time: float = movement_time
 
-	if Dialogic.Text.is_autoskip_enabled():
-		var time_per_event: float = Dialogic.Text.get_autoskip_info()['time_per_event']
+	if Dialogic.Text.auto_skip.enabled:
+		var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
 		final_movement_time = max(movement_time, time_per_event)
 
 	match action:

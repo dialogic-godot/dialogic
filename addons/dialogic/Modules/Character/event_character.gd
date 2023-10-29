@@ -110,17 +110,18 @@ func _execute() -> void:
 			if set_position:
 				var final_position_move_time: float = position_move_time
 
-				if Dialogic.Text.is_autoskip_enabled():
-					var max_time: float = Dialogic.Text.get_autoskip_info()['time_per_event']
+				if Dialogic.Text.auto_skip.enabled:
+					var max_time: float = Dialogic.Text.auto_skip.time_per_event
 					final_position_move_time = min(max_time, position_move_time)
 
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
 
 			if animation_name:
 				var final_animation_length: float = animation_length
+				var final_animation_repitions: int = animation_repeats
 
-				if Dialogic.Text.is_autoskip_enabled():
-					var time_per_event: float = Dialogic.Text.get_autoskip_info()['time_per_event']
+				if Dialogic.Text.auto_skip.enabled:
+					var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
 					var time_for_repitions: float = time_per_event / animation_repeats
 					final_animation_length = time_for_repitions
 
@@ -128,7 +129,7 @@ func _execute() -> void:
 					character,
 					animation_name,
 					final_animation_length,
-					animation_repeats
+					final_animation_repitions
 				)
 
 				if animation_wait:

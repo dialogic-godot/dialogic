@@ -63,7 +63,7 @@ func _connect_signals() -> void:
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 
-		dialogic.Text.autoskip_changed.connect(_on_autoskip_enable)
+		dialogic.Text.auto_skip.autoskip_changed.connect(_on_autoskip_enable)
 
 	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
 		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
@@ -72,13 +72,13 @@ func _connect_signals() -> void:
 func _disconnect_signals() -> void:
 	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
 	dialogic.Text.input_handler.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	dialogic.Text.autoskip_changed.disconnect(_on_autoskip_enable)
+	dialogic.Text.auto_skip.autoskip_changed.disconnect(_on_autoskip_enable)
 
 ## Tries to play the voice clip for the current line.
 func _try_play_current_line_voice() -> void:
 	# If Auto-Skip is enabled and we skip voice clips, we don't want to play.
-	if (dialogic.Text.is_autoskip_enabled()
-	and dialogic.Text.get_autoskip_info()['skip_voice']):
+	if (Dialogic.Text.auto_skip.enabled
+	and dialogic.Text.auto_skip.skip_voice):
 		return
 
 	# Plays the audio region for the current line.
@@ -165,15 +165,9 @@ func _execute() -> void:
 
 		_mark_as_read(final_text)
 
-		# If we perform Instant Auto-Skip, we will accelerate through all
-		## text parts.
-		if Dialogic.Text.is_instant_autoskip_enabled():
-			Dialogic.Text.skip_text_animation()
-			continue
-
 		# If Auto-Skip is enabled and there are multiple parts of this text
 		# we need to artifically trigger the Auto-Skip for each.
-		if (Dialogic.Text.is_autoskip_enabled()
+		if (Dialogic.Text.auto_skip.enabled
 		and Dialogic.has_subsystem('History')):
 			Dialogic.Text.skip_text_animation()
 			await dialogic.Text.input_handler.skip()

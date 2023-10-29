@@ -24,7 +24,7 @@ var allow_empty : bool = false
 ################################################################################
 
 func _execute() -> void:
-	Dialogic.Text.cancel_autoskip()
+	Dialogic.Text.auto_skip.enabled = false
 	dialogic.current_state = Dialogic.States.WAITING
 	dialogic.TextInput.show_text_input(text, default, placeholder, allow_empty)
 	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed, CONNECT_ONE_SHOT)

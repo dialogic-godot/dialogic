@@ -7,7 +7,6 @@ signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
 signal autoadvance_changed(enabled: bool)
-signal autoskip_changed(enabled: bool)
 signal animation_textbox_new_text
 signal animation_textbox_show
 signal animation_textbox_hide
@@ -26,7 +25,6 @@ var text_modifiers := []
 var input_handler :Node = null
 
 var _autoadvance_enabled := false
-var _autoskip_enabled := false
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
 var speed_multiplier := 1.0
@@ -35,6 +33,11 @@ var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
 
 var _autopauses := {}
+
+#region Auto-Skip
+var auto_skip: AutoSkip = null
+
+#endregion
 
 ####################################################################################################
 ##					STATE
@@ -55,10 +58,6 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
 	autoadvance_info['ignored_characters_enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
-
-	var autoskip_info := get_autoskip_info()
-	autoskip_info['enable_on_seen'] = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', false)
-	autoskip_info['time_per_event'] = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', 0.1)
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
@@ -135,7 +134,6 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	speed_multiplier = 1
 
 	set_autoadvance_until_next_event(false)
-	set_autoskip_until_next_event(false)
 	set_autoadvance_override_delay_for_current_event(-1)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
@@ -213,26 +211,12 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			next_indicator.show()
 
 func handle_seen_event() -> void:
-	var info := get_autoskip_info()
-
 	# If Auto-Skip is disabled but reacts to seen events, we
 	# enable Auto-Skip.
-	if !is_autoskip_enabled() and info['enable_on_seen']:
-		set_autoskip_until_unread_text(true, false)
+	if auto_skip.enabled and auto_skip.enable_on_seen:
+		auto_skip.disable_on_unread_text
 
-	if is_autoskip_enabled():
-		input_handler.skip()
-
-func handle_unseen_event() -> void:
-	var info := get_autoskip_info()
-
-	if !is_autoskip_enabled():
-		return
-
-	if info['disable_on_unread_event']:
-		cancel_autoskip()
-
-	else:
+	if auto_skip.enabled:
 		input_handler.skip()
 
 func hide_next_indicators(_fake_arg = null) -> void:
@@ -360,171 +344,6 @@ func get_autoadvance_progress() -> float:
 
 	return progress
 
-##################### AUTOSKIP SYSTEM ##############################################################
-####################################################################################################
-
-
-## Returns whether Auto-Skip is currently considered enabled.
-## Auto-Skip is considered on, if any of these flags is true:
-## - waiting_for_next_event (becomes false on each text event)
-## - waiting_for_system (becomes false only when disabled via code)
-##
-## All three can be set with dedicated methods.
-## The usual Visual Novel may want to use [method set_autoskip_until_unread_text].
-func is_autoskip_enabled() -> bool:
-	var info := get_autoskip_info()
-
-	return (info['waiting_for_next_event']
-		or info['waiting_for_system'])
-
-## Returns whether Auto-Skip is currently considered enabled and
-## if it is instant.
-##
-## Auto-Skip is considered [i]instant[/i], if the is_instant flag is true.
-##
-## See [method is_autoskip_enabled] for more information, if Auto-Skip
-## is considered enabled or not.
-func is_instant_autoskip_enabled() -> bool:
-	return is_autoskip_enabled() and get_autoskip_info()['is_instant']
-
-## Sets the Auto-Skip [code]is_instant[/code] flag to [param enabled].
-##
-## If [code]true[/code], method will start instant Auto-Skip.
-## Dialogic will instantly process all Timeline Events until an unread
-## Text Timeline Event is reached or the game expects user input, e.g.
-## choices or text input.
-##
-## The Timeline Events will be processed but not displayed until the
-## instant Auto-Skip has completed.
-## User inputs are ignored during instant Auto-Skip.
-##
-## [b]Warning:[/b]
-## If there are no unread Text Timeline Events, the game will freeze or crash.
-func set_instant_autoskip(is_enabled: bool) -> void:
-	var info := get_autoskip_info()
-	info['disable_on_unread_event'] = is_enabled
-	info['is_instant'] = is_enabled
-
-	_emit_autoskip_enabled()
-
-## Allows to cancel Auto-Skip.
-## This is useful if we want to cancel Auto-Skip in a Timeline Event.
-## This will cancel the instant Auto-Skip as well.
-func cancel_autoskip() -> void:
-	var info := get_autoskip_info()
-	info['waiting_for_next_event'] = false
-	info['waiting_for_system'] = false
-	info['is_instant'] = false
-	input_handler._autoskip_timer_left = 0.0
-
-	_emit_autoskip_enabled()
-
-## Fetches all Auto-Skip settings.
-## If they don't exist, returns the default settings.
-## The key's values will be changed upon setting them.
-func get_autoskip_info() -> Dictionary:
-	if not dialogic.current_state_info.has('autoskip'):
-		dialogic.current_state_info['autoskip'] = {
-			'waiting_for_next_event' : false,
-			'waiting_for_system' : false,
-			'disable_on_unread_event' : true,
-			'disable_on_user_input': true,
-			'time_per_event' : 1,
-			'is_instant' : false,
-			'enable_on_seen' : true,
-			'skip_voice' : true,
-		}
-	return dialogic.current_state_info['autoskip']
-
-## Sets the Auto-Skip enable_on_seen flag to [param enabled].
-## This method will fail, if the current Text Timeline event has not been seen
-## before.
-## Auto-Skip will be enabled until a Text Timeline Event has been seen already.
-##
-## This method requires the History subsystem to be enabled.
-func set_autoskip_until_unread_text(enabled: bool, is_instant: bool) -> void:
-	if !Dialogic.has_subsystem("History"):
-		return
-
-	if !Dialogic.History.was_last_event_already_read():
-		return
-
-	var info := get_autoskip_info()
-	info['disable_on_unread_event'] = enabled
-	info['waiting_for_system'] = enabled
-	info['is_instant'] = is_instant
-
-	_emit_autoskip_enabled()
-
-## Sets the Auto-Skip waiting_for_system flag to [param enabled].
-## If [param enabled] is true, sets the
-## disable_on_unread_event to false.
-## If [param disable_user_input] is true, sets the
-## disable_on_user_input to false.
-##
-## This method can be used to Auto-Skip unread Text Timeline Events.
-## The term system describes, that scripting forced the Auto-Skip and no
-## user input.
-##
-## Be aware, Auto-Skip behaves differently compared to Auto-Advance.
-## This method does not match the stacking  behaviour
-## of [method set_autoadvance_system].
-func set_autoskip_system(enabled: bool, disable_user_input: bool) -> void:
-	var info := get_autoskip_info()
-	info['waiting_for_system'] = enabled
-
-	if enabled:
-		info['disable_on_unread_event'] = false
-
-	if disable_user_input:
-		info['disable_on_user_input'] = false
-
-	_emit_autoskip_enabled()
-
-## Sets the Auto-Skip disable_on_user_input flag to [param disable].
-## By default, this evaluates to true.
-## A normal Visual Novel may not need to temper with this method, unless we
-## want to continue the Auto-Skip feature despite the player interacting with
-## the game.
-func set_autoskip_disable_on_user_input(disable: bool) -> void:
-	var info := get_autoskip_info()
-	info['disable_on_user_input'] = disable
-
-	_emit_autoskip_enabled()
-
-
-## Sets the Auto-Skip waiting_for_next_event flag to [param enabled].
-## Auto-Skip will skip the current event only, then stop.
-func set_autoskip_until_next_event(enabled: bool) -> void:
-	var info := get_autoskip_info()
-	info['waiting_for_next_event'] = enabled
-
-	_emit_autoskip_enabled()
-
-## Sets the Auto-Skip is_instant flag to [param is_instant].
-## This method won't start Auto-Skip, but will change the behavior of
-## of already running Auto-Skip.
-func set_autoskip_is_instant(is_instant: bool) -> void:
-	var info := get_autoskip_info()
-
-	# We don't want to override the disable_on_unread_event flag
-	# if we don't enable instant Auto-Skip.
-	if is_instant:
-		info['disable_on_unread_event'] = true
-
-	info['is_instant'] = is_instant
-
-	_emit_autoskip_enabled()
-
-## Updates the [member _autoskip_enabled] variable to properly check if the value has changed.
-## If it changed, emits the [member autoskip_changed] signal.
-func _emit_autoskip_enabled() -> void:
-	var old_autoskip_state := _autoskip_enabled
-	_autoskip_enabled = is_autoskip_enabled()
-
-	if old_autoskip_state != _autoskip_enabled:
-		autoskip_changed.emit(_autoskip_enabled)
-
 ##################### MANUAL ADVANCE ###############################################################
 ####################################################################################################
 
@@ -646,9 +465,7 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 
-	if dialogic.has_subsystem('History'):
-		Dialogic.History.already_read_event_reached.connect(handle_seen_event)
-		Dialogic.History.not_read_event_reached.connect(handle_unseen_event)
+	auto_skip = AutoSkip.new()
 
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
@@ -707,7 +524,7 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 		return
 
 	# We want to ignore pauses if we're skipping.
-	if is_autoskip_enabled():
+	if not auto_skip.enabled:
 		return
 
 	var text_speed = Dialogic.Settings.get_setting('text_speed', 1)

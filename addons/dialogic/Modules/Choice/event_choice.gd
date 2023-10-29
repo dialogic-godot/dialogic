@@ -24,7 +24,7 @@ var disabled_text: String = ""
 ################################################################################
 
 func _execute() -> void:
-	Dialogic.Text.cancel_autoskip()
+	Dialogic.Text.auto_skip.enabled = false
 
 	# This event is mostly a placeholder that's used to indicate a position.
 	# Only the selected choice is reached.
