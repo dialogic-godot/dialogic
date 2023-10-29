@@ -6,6 +6,11 @@ var dialogic = null
 enum LoadFlags {FULL_LOAD, ONLY_DNODES}
 
 # To be overriden by sub-classes
+# Called once after every subsystem has been added to the tree
+func install() -> void:
+	pass
+
+# To be overriden by sub-classes
 # Fill in everything that should be cleared (for example before loading a different state)
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	pass

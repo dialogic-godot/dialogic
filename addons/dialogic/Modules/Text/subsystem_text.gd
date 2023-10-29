@@ -461,6 +461,8 @@ func _ready():
 	input_handler.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler)
 
+
+func install():
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
 
