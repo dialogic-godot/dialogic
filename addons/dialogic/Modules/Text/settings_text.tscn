@@ -348,21 +348,14 @@ Auto-Skip can be used in two modes:
 - Fast mode: Limiting time per event.
 - Instant mode: Seeking the next unread events."
 texture = SubResource("ImageTexture_lh1do")
-hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event.
+hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
-You can enable Auto-Skip from code using either:
-- Dialogic.Text.set_autoskip_until_unread_text(true, false)
-- Dialogic.Text.set_autoskip_until_next_event(true)
-- Dialogic.Text.set_autoskip_system(true)
-These add up, so if any of them is true, Auto-Skip will happen.
+You can enable Auto-Skip from code via:
+Dialogic.Text.auto_skip.enabled = true
 
 By default, Auto-Skip will cancel on user input. 
 You can disable this by calling: 
-set_autoskip_disable_on_user_input(false)
-
-Auto-Skip can be used in two modes:
-- Fast mode: Limiting time per event.
-- Instant mode: Seeking the next unread events."
+Dialogic.Text.auto_skip.disable_on_user_input = false"
 
 [node name="AutoskipSettings" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
