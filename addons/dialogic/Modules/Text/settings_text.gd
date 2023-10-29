@@ -41,7 +41,6 @@ func _refresh():
 
 	%IgnoredCharacters.text = ignored_characters
 
-	%AutoSkip.button_pressed = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', false)
 	%AutoskipTimePerEvent.value = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', 0.1)
 
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
