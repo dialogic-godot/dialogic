@@ -87,23 +87,33 @@ func _execute() -> void:
 				await dialogic.Portraits.join_character(character, portrait, position, mirrored, z_index, extra_data, animation_name, final_animation_length, animation_wait)
 
 		Actions.LEAVE:
+			var final_animation_length: float = animation_length
+
+			if Dialogic.Text.auto_skip.enabled:
+				var max_time: float = Dialogic.Text.auto_skip.time_per_event
+				final_animation_length = min(max_time, animation_length)
+
 			if _character_from_directory == '--All--':
+
 				if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
 
-				var final_animation_length: float = animation_length
-
-				if Dialogic.Text.auto_skip.enabled:
-					var max_time: float = Dialogic.Text.auto_skip.time_per_event
-					final_animation_length = min(max_time, animation_length)
-
-				await dialogic.Portraits.leave_all_characters(animation_name, final_animation_length, animation_wait)
+				await dialogic.Portraits.leave_all_characters(
+					animation_name,
+					final_animation_length,
+					animation_wait
+				)
 
 			elif character:
 				if dialogic.has_subsystem('History') and dialogic.Portraits.is_character_joined(character):
 					dialogic.History.store_simple_history_entry(character.display_name+" left", event_name, {'character': character.display_name, 'mode':'Leave'})
 
-				await dialogic.Portraits.leave_character(character, animation_name, animation_length, animation_wait)
+				await dialogic.Portraits.leave_character(
+					character,
+					animation_name,
+					final_animation_length,
+					animation_wait
+				)
 
 		Actions.UPDATE:
 			if !character or !dialogic.Portraits.is_character_joined(character):
