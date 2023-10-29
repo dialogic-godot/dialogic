@@ -132,11 +132,6 @@ func _on_DefaultSpeed_value_changed(value):
 	ProjectSettings.set_setting('dialogic/text/letter_speed', value)
 	ProjectSettings.save()
 
-
-func _on_Autoskip_toggled(button_pressed: bool) -> void:
-	ProjectSettings.set_setting('dialogic/text/autoskip_enabled', button_pressed)
-	ProjectSettings.save()
-
 func _on_AutoskipTimePerEvent_value_changed(value: float) -> void:
 	ProjectSettings.set_setting('dialogic/text/autoskip_time_per_event', value)
 	ProjectSettings.save()
