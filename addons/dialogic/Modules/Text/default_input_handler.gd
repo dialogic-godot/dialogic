@@ -153,7 +153,6 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 
 ## This method will advance the timeline based on Auto-Skip settings.
 ## The state, whether Auto-Skip is enabled, is ignored.
-## However, the setting [code]is_instant[/code] is respected.
 func skip() -> void:
 	var auto_skip_delay: float = Dialogic.Text.auto_skip.time_per_event
 	_autoskip_timer_left = auto_skip_delay
