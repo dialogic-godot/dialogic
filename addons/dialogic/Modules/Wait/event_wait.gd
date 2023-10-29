@@ -18,11 +18,11 @@ var hide_text: bool = true
 ################################################################################
 
 func _execute() -> void:
-	# Fully skip this event if autoskip is enabled.
-	# Instant Auto-Skip treats this event the same way.
+	var final_wait_time := time
+
 	if Dialogic.Text.auto_skip.enabled:
-		finish()
-		return
+		var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
+		final_wait_time = min(time, time_per_event)
 
 	if hide_text and dialogic.has_subsystem("Text"):
 		dialogic.Text.update_dialog_text('')
