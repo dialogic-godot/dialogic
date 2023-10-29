@@ -7,7 +7,7 @@ enum LoadFlags {FULL_LOAD, ONLY_DNODES}
 
 # To be overriden by sub-classes
 # Called once after every subsystem has been added to the tree
-func install() -> void:
+func post_install() -> void:
 	pass
 
 # To be overriden by sub-classes

@@ -462,7 +462,7 @@ func _ready():
 	add_child(input_handler)
 
 
-func install():
+func post_install():
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', _update_autoadvance_delay_modifier)
 

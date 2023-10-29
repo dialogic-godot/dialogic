@@ -206,7 +206,7 @@ func collect_subsystems() -> void:
 				subsystem_nodes.push_back(node)
 
 	for subsystem in subsystem_nodes:
-		subsystem.install()
+		subsystem.post_install()
 	
 	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 	_event_script_cache.push_front(DialogicEndBranchEvent.new())
