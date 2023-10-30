@@ -237,8 +237,14 @@ func set_latest_slot(slot_name:String) -> void:
 func _make_sure_slot_dir_exists() -> void:
 	if not DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
-	if not FileAccess.file_exists(SAVE_SLOTS_DIR.path_join('global_info.txt')):
-		FileAccess.open(SAVE_SLOTS_DIR.path_join('global_info.txt'), FileAccess.WRITE)
+	var global_info_path = SAVE_SLOTS_DIR.path_join('global_info.txt')
+	if not FileAccess.file_exists(global_info_path):
+		var config := ConfigFile.new()
+		var password := get_encryption_password()
+		if password.is_empty():
+			config.save(global_info_path)
+		else:
+			config.save_encrypted_pass(global_info_path, password)
 
 
 ####################################################################################################
