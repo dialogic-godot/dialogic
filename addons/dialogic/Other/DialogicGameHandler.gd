@@ -202,7 +202,7 @@ func collect_subsystems() -> void:
 		if !Engine.is_editor_hint():
 			
 			for subsystem in indexer._get_subsystems():
-				var subsystem_node := add_subsytsem(subsystem.name, subsystem.script) as DialogicSubsystem
+				var subsystem_node := add_subsystem(subsystem.name, subsystem.script) as DialogicSubsystem
 				if subsystem_node:
 					subsystem_nodes.push_back(subsystem_node)
 
@@ -223,7 +223,7 @@ func get_subsystem(_name:String) -> Variant:
 	return get_node(_name)
 
 
-func add_subsytsem(_name:String, _script_path:String) -> Node:
+func add_subsystem(_name:String, _script_path:String) -> Node:
 	var node:Node = Node.new()
 	node.name = _name
 	node.set_script(load(_script_path))
