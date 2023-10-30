@@ -21,6 +21,8 @@ func _refresh():
 	%AutosaveDelay.visible = %AutosaveMode.selected == 1
 	
 	%DefaultSaveSlotName.text = ProjectSettings.get_setting('dialogic/save/default_slot', 'Default')
+	
+	%EncryptionPassword.text = ProjectSettings.get_setting('dialogic/save/encryption_password', "")
 
 
 func _on_autosave_toggled(button_pressed:bool) -> void:
@@ -43,4 +45,9 @@ func _on_autosave_delay_value_changed(value:float):
 
 func _on_default_save_slot_name_text_changed(new_text:String):
 	ProjectSettings.set_setting('dialogic/save/default_slot', new_text)
+	ProjectSettings.save()
+
+
+func _on_encryption_password_text_changed(new_text: String) -> void:
+	ProjectSettings.set_setting('dialogic/save/encryption_password', new_text)
 	ProjectSettings.save()

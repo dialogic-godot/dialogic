@@ -76,8 +76,17 @@ func save_file(slot_name:String, file_name:String, data:Variant) -> void:
 		if !has_slot(slot_name):
 			add_empty_slot(slot_name)
 		
-		var file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
-		file.store_var(data)
+		var encryption_password := get_encryption_password()
+		var file: FileAccess
+		if encryption_password.is_empty():
+			file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
+		else:
+			file = FileAccess.open_encrypted_with_pass(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE, encryption_password)
+		
+		if file:
+			file.store_var(data)
+		else:
+			push_error(FileAccess.get_open_error())
 
 
 ## Loads a file from a given list and returns the contained info as a variable.
@@ -87,27 +96,58 @@ func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
 	var path := get_slot_path(slot_name).path_join(file_name)
 	
 	if FileAccess.file_exists(path):
-		var data = FileAccess.open(path, FileAccess.READ).get_var()
-		return data
+		var encryption_password := get_encryption_password()
+		var file: FileAccess
+		
+		if encryption_password.is_empty():
+			file = FileAccess.open(path, FileAccess.READ)
+		else:
+			file = FileAccess.open_encrypted_with_pass(path, FileAccess.READ, encryption_password)
+		
+		if file:
+			return file.get_var()
+		else:
+			push_error(FileAccess.get_open_error())
+	
 	return default
 
 
 
 func set_global_info(key:String, value:Variant) -> void:
 	var global_info := ConfigFile.new()
-	if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
-		global_info.set_value('main', key, value)
-		global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+	var encryption_password := get_encryption_password()
+	
+	if encryption_password.is_empty():
+		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
+			global_info.set_value('main', key, value)
+			global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+		else:
+			printerr("[Dialogic Error]: Couldn't access global saved info file.")
 	else:
-		printerr("[Dialogic Error]: Couldn't access global saved info file.")
+		if global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
+			global_info.set_value('main', key, value)
+			global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
+		else:
+			printerr("[Dialogic Error]: Couldn't access global saved info file.")
 
 
 func get_global_info(key:String, default:Variant) -> Variant:
 	var global_info := ConfigFile.new()
-	if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
+	var encryption_password := get_encryption_password()
+	
+	if encryption_password.is_empty():
+		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
+			return global_info.get_value('main', key, default)
+		printerr("[Dialogic Error]: Couldn't access global saved info file.")
+	elif global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
 		return global_info.get_value('main', key, default)
-	printerr("[Dialogic Error]: Couldn't access global saved info file.")
 	return default
+
+
+## Gets the encryption password from the project settings if it has been set.
+## If no password has been set, an empty string is returned.
+func get_encryption_password() -> String:
+	return ProjectSettings.get_setting("dialogic/save/encryption_password", "")
 
 
 ####################################################################################################
