@@ -82,6 +82,7 @@ func _execute() -> void:
 	else:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
+		dialogic.Text.update_typing_sound_mood()
 	
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
