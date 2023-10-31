@@ -113,7 +113,7 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 	return default
 
 
-# resets all variables or a specific variable to the value(s) defined in the variable editor
+## resets all variables or a specific variable to the value(s) defined in the variable editor
 func reset(variable:='') -> void:
 	if variable.is_empty():
 		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true)
@@ -121,13 +121,13 @@ func reset(variable:='') -> void:
 		_set_value_in_dictionary(variable, dialogic.current_state_info['variables'], _get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
 
 
-# returns true if a variable with the given path exists
+## returns true if a variable with the given path exists
 func has(variable:='') -> bool:
 	return _get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
 
 
-# this will set a value in a dictionary (or a sub-dictionary based on the path)
-# e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+## this will set a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 	if '.' in path:
 		var from := path.split('.')[0]
@@ -139,8 +139,8 @@ func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 	return dictionary
 
 
-# this will get a value in a dictionary (or a sub-dictionary based on the path)
-# e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+## this will get a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
 	if '.' in path:
 		var from := path.split('.')[0]
@@ -158,7 +158,7 @@ func get_autoloads() -> Array:
 	return autoloads
 
 
-# allows to set dialogic built-in variables 
+## Allows to set dialogic built-in variables 
 func _set(property, value) -> bool:
 	property = str(property)
 	var variables: Dictionary = dialogic.current_state_info['variables']
@@ -171,7 +171,7 @@ func _set(property, value) -> bool:
 	return false
 
 
-# allows to get dialogic built-in variables 
+## Allows to get dialogic built-in variables 
 func _get(property):
 	property = str(property)
 	if property in dialogic.current_state_info['variables'].keys():
@@ -181,9 +181,24 @@ func _get(property):
 			return DialogicUtil.logical_convert(dialogic.current_state_info['variables'][property])
 
 
+func folders() -> Array:
+	var result := []
+	for i in dialogic.current_state_info['variables'].keys():
+		if dialogic.current_state_info['variables'][i] is Dictionary:
+			result.append(VariableFolder.new(dialogic.current_state_info['variables'][i], i, self))
+	return result
+
+
+func variables(absolute:=false) -> Array:
+	var result := []
+	for i in dialogic.current_state_info['variables'].keys():
+		if not dialogic.current_state_info['variables'][i] is Dictionary:
+			result.append(i)
+	return result
+
 class VariableFolder:
-	var data = {}
-	var path = ""
+	var data := {}
+	var path := ""
 	var outside
 	func _init(_data, _path, _outside):
 		data = _data
@@ -198,10 +213,28 @@ class VariableFolder:
 			else:
 				return DialogicUtil.logical_convert(data[property])
 	
-	func _set(property, value):
+	func _set(property, value) -> bool:
 		property = str(property)
 		if not value is VariableFolder:
 			outside._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
-			return true
-		elif VariableFolder:
-			return true
+		return true
+	
+	func has(key) -> bool:
+		return key in data
+	
+	func folders() -> Array:
+		var result := []
+		for i in data.keys():
+			if data[i] is Dictionary:
+				result.append(VariableFolder.new(data[i], path+"."+i, outside))
+		return result
+	
+	func variables(absolute:=false) -> Array:
+		var result := []
+		for i in data.keys():
+			if not data[i] is Dictionary:
+				if absolute:
+					result.append(path+'.'+i)
+				else:
+					result.append(i)
+		return result
