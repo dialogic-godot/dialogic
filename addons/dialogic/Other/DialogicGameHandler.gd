@@ -188,6 +188,7 @@ func collect_subsystems() -> void:
 	# This also builds the event script cache as well
 	_event_script_cache = []
 	
+	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
 		
 		# build event cache
@@ -199,8 +200,13 @@ func collect_subsystems() -> void:
 		
 		# build the subsystems (only at runtime)
 		if !Engine.is_editor_hint():
+			
 			for subsystem in indexer._get_subsystems():
-				add_subsytsem(subsystem.name, subsystem.script)
+				var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
+				subsystem_nodes.push_back(subsystem_node)
+
+	for subsystem in subsystem_nodes:
+		subsystem.post_install()
 	
 	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 	_event_script_cache.push_front(DialogicEndBranchEvent.new())
@@ -216,13 +222,14 @@ func get_subsystem(_name:String) -> Variant:
 	return get_node(_name)
 
 
-func add_subsytsem(_name:String, _script_path:String) -> Node:
+func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 	var node:Node = Node.new()
 	node.name = _name
 	node.set_script(load(_script_path))
+	assert(node is DialogicSubsystem)
 	node.dialogic = self
 	add_child(node)
-	return node
+	return node as DialogicSubsystem
 
 
 func _get(property):
