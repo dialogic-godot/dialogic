@@ -26,7 +26,7 @@ static func get_dialogic_plugin() -> Node:
 ################################################################################
 ##					FILE SYSTEM
 ################################################################################
-static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
+static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false, include_imports := false) -> Array:
 	var files: Array = []
 	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
@@ -36,7 +36,7 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 		while file_name != "":
 			if not file_name.begins_with("."):
 				if files_only:
-					if not dir.current_is_dir() and not file_name.ends_with('.import'):
+					if not dir.current_is_dir() and (not file_name.ends_with('.import') or include_imports):
 						if full_file_path:
 							files.append(path.path_join(file_name))
 						else:
