@@ -213,8 +213,8 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 func handle_seen_event() -> void:
 	# If Auto-Skip is disabled but reacts to seen events, we
 	# enable Auto-Skip.
-	if auto_skip.enabled and auto_skip.enable_on_seen:
-		auto_skip.disable_on_unread_text
+	if not auto_skip.enabled and auto_skip.enable_on_seen:
+		auto_skip.enabled = true
 
 	if auto_skip.enabled:
 		input_handler.skip()

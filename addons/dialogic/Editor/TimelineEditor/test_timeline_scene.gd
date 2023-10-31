@@ -33,7 +33,13 @@ func _input(event:InputEvent) -> void:
 		Dialogic.paused = !Dialogic.paused
 		$PauseIndictator.visible = Dialogic.paused
 
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE:
-		Dialogic.Text.auto_skip.enabled = !Dialogic.Text.auto_skip.enabled
-		Dialogic.Text.auto_skip.disable_on_user_input = !Dialogic.Text.auto_skip.disable_on_user_input
-		Dialogic.Text.auto_skip.disable_on_unread_text = false
+	if (event is InputEventMouseButton
+	and event.is_pressed()
+	and event.button_index == MOUSE_BUTTON_MIDDLE):
+		var auto_skip: AutoSkip = Dialogic.Text.auto_skip
+		var is_auto_skip_enabled := auto_skip.enabled
+
+		auto_skip.disable_on_user_input = !auto_skip.disable_on_user_input
+		auto_skip.disable_on_unread_text = false
+		auto_skip.enabled = !is_auto_skip_enabled
+

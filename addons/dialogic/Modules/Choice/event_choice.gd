@@ -24,8 +24,6 @@ var disabled_text: String = ""
 ################################################################################
 
 func _execute() -> void:
-	Dialogic.Text.auto_skip.enabled = false
-
 	# This event is mostly a placeholder that's used to indicate a position.
 	# Only the selected choice is reached.
 	# However mainly the Choices Subsystem queries the events
@@ -39,6 +37,7 @@ func _execute() -> void:
 			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(text), event_name, {'all_choices': all_choices})
 		else:
 			dialogic.History.store_simple_history_entry(text, event_name, {'all_choices': all_choices})
+
 	finish()
 
 
