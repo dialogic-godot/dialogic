@@ -50,7 +50,7 @@ func _init():
 ## Called when Auto-Skip is enabled or disabled.
 ## Emits [signal autoskip_changed] if the state changed.
 func _set_enabled(is_enabled: bool) -> void:
-	print('Auto-Skip is now', is_enabled)
+	print('Auto-Skip is now ', is_enabled)
 	var previous_enabled = enabled
 	enabled = is_enabled
 

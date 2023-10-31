@@ -39,7 +39,6 @@ func _input(event:InputEvent) -> void:
 		var auto_skip: AutoSkip = Dialogic.Text.auto_skip
 		var is_auto_skip_enabled := auto_skip.enabled
 
-		auto_skip.disable_on_user_input = !auto_skip.disable_on_user_input
 		auto_skip.disable_on_unread_text = false
 		auto_skip.enabled = !is_auto_skip_enabled
 
