@@ -153,6 +153,8 @@ func _execute() -> void:
 		# is a Choice event.
 		if Dialogic.Text.auto_skip.enabled:
 			Dialogic.Text.skip_text_animation()
+		else:
+			await dialogic.Text.text_finished
 
 		state = States.IDLE
 

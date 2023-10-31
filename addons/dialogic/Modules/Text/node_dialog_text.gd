@@ -99,7 +99,7 @@ func finish_text() -> void:
 	revealing = false
 	Dialogic.current_state = Dialogic.States.IDLE
 
-	emit_signal("finished_revealing_text")
+	finished_revealing_text.emit()
 
 
 # Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.
