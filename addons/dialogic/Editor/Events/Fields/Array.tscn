@@ -1,33 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://btmy7ageqpyq1"]
+[gd_scene load_steps=2 format=3 uid="uid://btmy7ageqpyq1"]
 
-[ext_resource type="PackedScene" uid="uid://ch4j2lesn1sis" path="res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Array.gd" id="2"]
 
-[node name="Array" type="VBoxContainer"]
+[node name="Array" type="HFlowContainer"]
+size_flags_horizontal = 3
 script = ExtResource("2")
 
-[node name="Editing" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="LeftText" type="Label" parent="Editing"]
+[node name="Add" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Add" type="Button" parent="Editing"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Values" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Value" parent="Values" instance=ExtResource("1")]
-layout_mode = 2
-
-[node name="Value2" parent="Values" instance=ExtResource("1")]
-layout_mode = 2
-
-[connection signal="pressed" from="Editing/Add" to="." method="_on_AddButton_pressed"]
+tooltip_text = "Add another value"
