@@ -13,12 +13,12 @@ var method: String = "":
 	set(value):
 		method = value
 		update_argument_info()
+		check_arguments_and_update_warning()
 ## A list of arguments to give to the call.
 var arguments: Array = []:
 	set(value):
 		arguments = value
 		check_arguments_and_update_warning()
-		print(arguments)
 
 var _current_method_arg_hints := {'a':null, 'm':null, 'info':{}}
 
@@ -168,7 +168,6 @@ func update_argument_info() -> void:
 		for m in script.get_script_method_list():
 			if m.name == method:
 				_current_method_arg_hints = {'a':autoload_name, 'm':method, 'info':m}
-				print(m)
 				break
 
 
@@ -180,6 +179,8 @@ func check_arguments_and_update_warning():
 	var idx := -1
 	for arg in arguments:
 		idx += 1
+		if len(_current_method_arg_hints.info.args) <= idx:
+			continue
 		if _current_method_arg_hints.info.args[idx].type != 0:
 			if _current_method_arg_hints.info.args[idx].type != typeof(arg):
 				if arg is String and arg.begins_with('@'):
@@ -197,6 +198,9 @@ func check_arguments_and_update_warning():
 
 	if len(arguments) < len(_current_method_arg_hints.info.args)-len(_current_method_arg_hints.info.default_args):
 		ui_update_warning.emit("The method is expecting at least "+str(len(_current_method_arg_hints.info.args)-len(_current_method_arg_hints.info.default_args))+ " arguments, but is given only "+str(len(arguments))+".")
+		return
+	elif len(arguments) > len(_current_method_arg_hints.info.args):
+		ui_update_warning.emit("The method is expecting at most "+str(len(_current_method_arg_hints.info.args))+ " arguments, but is given "+str(len(arguments))+".")
 		return
 	ui_update_warning.emit()
 

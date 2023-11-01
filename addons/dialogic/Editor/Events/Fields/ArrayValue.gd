@@ -76,7 +76,7 @@ func _on_type_changed(prop:String, type:Variant) -> void:
 				current_value = true if current_value else false
 			set_value(current_value)
 		TYPE_STRING:
-			current_value = str(current_value)
+			current_value = str(current_value).trim_prefix('@')
 			set_value(current_value)
 		TYPE_FLOAT, TYPE_INT:
 			current_value = float(current_value)
