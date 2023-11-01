@@ -178,6 +178,10 @@ func _execute() -> void:
 		if	Dialogic.Text.auto_skip.enabled:
 			await dialogic.Text.input_handler.start_auto_skip_timer()
 
+			# Check if Auto-Skip is still enabled.
+			if not dialogic.Text.auto_skip.enabled:
+				await advance
+
 		else:
 			await advance
 

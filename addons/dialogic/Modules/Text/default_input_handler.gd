@@ -225,7 +225,5 @@ func _process(delta):
 			auto_skip_timer_finished.emit()
 
 	else:
-		if Dialogic.Text.auto_skip.enabled:
-			auto_skip_timer_finished.emit()
-
+		auto_skip_timer_finished.emit()
 		set_process(false)
