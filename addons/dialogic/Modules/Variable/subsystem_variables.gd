@@ -2,9 +2,9 @@ extends DialogicSubsystem
 
 ## Subsystem that manages variables and allows to access them.
 
-# Emitted if a dialogic variable changes
+## Emitted if a dialogic variable changes
 signal variable_changed(info:Dictionary)
-# Emitted on any set variable event
+## Emitted on any set variable event
 signal variable_was_set(info:Dictionary)
 
 
@@ -50,11 +50,11 @@ func merge_folder(new, defs) -> Dictionary:
 ## of `player_name` to replace it.
 func parse_variables(text:String) -> String:
 	
-	## First some dirty checks to avoid parsing
+	# First some dirty checks to avoid parsing
 	if not '{' in text:
 		return text
 	
-	## Trying to extract the curly brackets from the text
+	# Trying to extract the curly brackets from the text
 	var regex := RegEx.new()
 	regex.compile("(?<!\\\\)\\{(?<variable>([^{}]|\\{.*\\})*)\\}")
 	
@@ -69,13 +69,13 @@ func parse_variables(text:String) -> String:
 func set_variable(variable_name: String, value: Variant) -> bool:
 	variable_name = variable_name.trim_prefix('{').trim_suffix('}')
 	
-	## First assume this is a simple dialogic variable
+	# First assume this is a simple dialogic variable
 	if has(variable_name):
 		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value) 
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
 	
-	## Second assume this is an autoload variable
+	# Second assume this is an autoload variable
 	elif '.' in variable_name:
 		var from := variable_name.get_slice('.', 0)
 		var variable := variable_name.trim_prefix(from+'.')
@@ -93,24 +93,24 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 	if variable_path.begins_with('{') and variable_path.ends_with('}') and variable_path.count('{') == 1:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 	
-	## First assume this is just a single variable
+	# First assume this is just a single variable
 	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables']) 
 	if value != null:
 		return value
 	
-	## Second assume this is an expression.
+	# Second assume this is an expression.
 	else:
 		value = dialogic.Expression.execute_string(variable_path, null)
 		if value != null:
 			return value
 	
 	
-	## If everything fails, tell the user and return the default
+	# If everything fails, tell the user and return the default
 	printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
 	return default
 
 
-# resets all variables or a specific variable to the value(s) defined in the variable editor
+## resets all variables or a specific variable to the value(s) defined in the variable editor
 func reset(variable:='') -> void:
 	if variable.is_empty():
 		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true)
@@ -118,13 +118,13 @@ func reset(variable:='') -> void:
 		_set_value_in_dictionary(variable, dialogic.current_state_info['variables'], _get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
 
 
-# returns true if a variable with the given path exists
+## returns true if a variable with the given path exists
 func has(variable:='') -> bool:
 	return _get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
 
 
-# this will set a value in a dictionary (or a sub-dictionary based on the path)
-# e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+## this will set a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 	if '.' in path:
 		var from := path.split('.')[0]
@@ -136,8 +136,8 @@ func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 	return dictionary
 
 
-# this will get a value in a dictionary (or a sub-dictionary based on the path)
-# e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+## this will get a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
 	if '.' in path:
 		var from := path.split('.')[0]
@@ -155,7 +155,7 @@ func get_autoloads() -> Array:
 	return autoloads
 
 
-# allows to set dialogic built-in variables 
+## allows to set dialogic built-in variables 
 func _set(property, value) -> bool:
 	property = str(property)
 	var variables: Dictionary = dialogic.current_state_info['variables']
@@ -168,7 +168,7 @@ func _set(property, value) -> bool:
 	return false
 
 
-# allows to get dialogic built-in variables 
+## allows to get dialogic built-in variables 
 func _get(property):
 	property = str(property)
 	if property in dialogic.current_state_info['variables'].keys():
