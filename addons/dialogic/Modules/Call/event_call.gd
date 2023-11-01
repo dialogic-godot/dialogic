@@ -132,7 +132,7 @@ func build_event_editor():
 		'empty_text':'Method',
 		'suggestions_func':get_method_suggestions,
 		'editor_icon':["Callable", "EditorIcons"]}, 'autoload_name')
-	add_body_edit('arguments', ValueType.STRING_ARRAY, {'left_text':'Arguments:'}, 'not autoload_name.is_empty() and not method.is_empty()')
+	add_body_edit('arguments', ValueType.ARRAY, {'left_text':'Arguments:'}, 'not autoload_name.is_empty() and not method.is_empty()')
 
 
 
