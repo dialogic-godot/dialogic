@@ -100,6 +100,10 @@ func _on_continued_revealing_text(new_character:String) -> void:
 
 
 func _on_finished_revealing_text() -> void:
+	# We don't want to play type sounds if Auto-Skip is enabled.
+	if Dialogic.Text.auto_skip.enabled:
+		return
+
 	if end_sound != null:
 		stream = end_sound
 		play()
