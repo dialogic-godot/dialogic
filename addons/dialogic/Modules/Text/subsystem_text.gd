@@ -210,15 +210,6 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
 			next_indicator.show()
 
-func handle_seen_event() -> void:
-	# If Auto-Skip is disabled but reacts to seen events, we
-	# enable Auto-Skip.
-	if not auto_skip.enabled and auto_skip.enable_on_seen:
-		auto_skip.enabled = true
-
-	if auto_skip.enabled:
-		input_handler.skip()
-
 func hide_next_indicators(_fake_arg = null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		next_indicator.hide()

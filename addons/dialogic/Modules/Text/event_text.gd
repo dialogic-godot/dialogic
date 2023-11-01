@@ -176,7 +176,8 @@ func _execute() -> void:
 		# If Auto-Skip is enabled and there are multiple parts of this text
 		# we need to skip the text after the defined time per event.
 		if	Dialogic.Text.auto_skip.enabled:
-			await dialogic.Text.input_handler.skip()
+			await dialogic.Text.input_handler.start_auto_skip_timer()
+
 		else:
 			await advance
 

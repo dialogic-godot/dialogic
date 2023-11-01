@@ -50,7 +50,6 @@ func _init():
 ## Called when Auto-Skip is enabled or disabled.
 ## Emits [signal autoskip_changed] if the state changed.
 func _set_enabled(is_enabled: bool) -> void:
-	print('Auto-Skip is now ', is_enabled)
 	var previous_enabled = enabled
 	enabled = is_enabled
 
@@ -63,16 +62,9 @@ func _handle_seen_event():
 	if not enabled and enable_on_seen:
 		enabled = true
 
-	if enabled:
-		Dialogic.Text.input_handler.skip()
-
 func _handle_unseen_event() -> void:
 	if not enabled:
 		return
 
 	if disable_on_unread_text:
-		print("AA")
 		enabled = false
-
-	else:
-		Dialogic.Text.input_handler.skip()

@@ -4,13 +4,13 @@ extends Node
 signal dialogic_action_priority
 signal dialogic_action
 signal autoadvance
-signal autoskip
+signal autoskip_timer_finished
 
 var autoadvance_timer := Timer.new()
 var input_block_timer := Timer.new()
 
 var skip_delay: float = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
-var _autoskip_timer_left: float = 0.0
+var _auto_skip_timer_left: float = 0.0
 
 var action_was_consumed := false
 
@@ -153,11 +153,11 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 
 ## This method will advance the timeline based on Auto-Skip settings.
 ## The state, whether Auto-Skip is enabled, is ignored.
-func skip() -> void:
+func start_auto_skip_timer() -> void:
 	var auto_skip_delay: float = Dialogic.Text.auto_skip.time_per_event
-	_autoskip_timer_left = auto_skip_delay
+	_auto_skip_timer_left = auto_skip_delay
 	set_process(true)
-	await autoskip
+	await autoskip_timer_finished
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -180,7 +180,7 @@ func _ready() -> void:
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
-	# We use the process method to count down the auto-skip timer.
+	# We use the process method to count down the auto-start_auto_skip_timer timer.
 	set_process(false)
 
 
@@ -193,15 +193,15 @@ func pause() -> void:
 func stop() -> void:
 	autoadvance_timer.stop()
 	input_block_timer.stop()
-	_autoskip_timer_left = 0.0
+	_auto_skip_timer_left = 0.0
 
 
 func resume() -> void:
 	autoadvance_timer.paused = false
 	input_block_timer.paused = false
 
-	var is_autoskip_timer_done := _autoskip_timer_left > 0.0
-	set_process(is_autoskip_timer_done)
+	var is_autoskip_timer_done := _auto_skip_timer_left > 0.0
+	set_process(!is_autoskip_timer_done)
 
 ################################################################################
 ## 						AUTO-SKIP
@@ -211,8 +211,12 @@ func resume() -> void:
 ## The [method _process] method allows for a more precise timer than the
 ## [Timer] class.
 func _process(delta):
-	if _autoskip_timer_left > 0:
-		_autoskip_timer_left -= delta
+	if _auto_skip_timer_left > 0:
+		_auto_skip_timer_left -= delta
 
-		if _autoskip_timer_left <= 0:
-			autoskip.emit()
+		if _auto_skip_timer_left <= 0:
+			autoskip_timer_finished.emit()
+
+	else:
+		autoskip_timer_finished.emit()
+		set_process(false)
