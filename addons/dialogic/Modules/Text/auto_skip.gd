@@ -35,12 +35,6 @@ var skip_voice: bool = true
 ## This is not enforced, each event must implement this behaviour.
 var time_per_event: float = 0.1
 
-## If `true`, Auto-Skip will resume after an event has disabled.
-## This works if Auto-Skip was enabled before the event only.
-##
-## This is useful if the player encounters a Text Input event or a Choice event
-## and ends up on seen Text events afterwards.
-var resume_after_input_event: bool = true
 
 ## Setting up Auto-Skip.
 func _init():
