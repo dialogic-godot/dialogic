@@ -257,12 +257,6 @@ box_animation_out = 1
 box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 typing_sounds_sounds_folder = ""
-typing_sounds_pitch = null
-typing_sounds_volume = null
-choice_button_sounds_volume = null
-choice_button_sounds_pressed = null
-choice_button_sounds_hover = null
-choice_button_sounds_focus = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -350,10 +344,10 @@ mouse_filter = 2
 
 [node name="Animations" type="AnimationPlayer" parent="DefaultStyle"]
 unique_name_in_owner = true
-autoplay = "RESET"
 libraries = {
 "": SubResource("AnimationLibrary_c14kh")
 }
+autoplay = "RESET"
 script = ExtResource("16_07l6b")
 
 [node name="DialogicTextAnchor" type="Control" parent="DefaultStyle"]

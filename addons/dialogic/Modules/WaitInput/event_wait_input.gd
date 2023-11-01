@@ -11,9 +11,10 @@ var hide_textbox := true
 ################################################################################
 
 func _execute() -> void:
-	if hide_textbox: 
+	if hide_textbox:
 		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = Dialogic.States.IDLE
+	Dialogic.Text.auto_skip.enabled = false
 	await dialogic.Text.input_handler.dialogic_action
 	finish()
 
