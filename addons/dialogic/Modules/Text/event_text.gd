@@ -63,7 +63,7 @@ func _connect_signals() -> void:
 	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
 
-		dialogic.Text.auto_skip.autoskip_changed.connect(_on_autoskip_enable)
+		dialogic.Text.auto_skip.auto_skip_changed.connect(_on_auto_skip_enable)
 
 	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
 		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
@@ -72,7 +72,7 @@ func _connect_signals() -> void:
 func _disconnect_signals() -> void:
 	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
 	dialogic.Text.input_handler.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	dialogic.Text.auto_skip.autoskip_changed.disconnect(_on_autoskip_enable)
+	dialogic.Text.auto_skip.auto_skip_changed.disconnect(_on_auto_skip_enable)
 
 ## Tries to play the voice clip for the current line.
 func _try_play_current_line_voice() -> void:
@@ -202,14 +202,21 @@ func _on_dialogic_input_autoadvance():
 	if state == States.IDLE or state == States.DONE:
 		advance.emit()
 
-func _on_autoskip_enable(enabled: bool):
+func _on_auto_skip_enable(enabled: bool):
 	if not enabled:
 		return
 
-	if state == States.REVEALING:
-		Dialogic.Text.skip_text_animation()
+	match state:
+		States.DONE:
+			await dialogic.Text.input_handler.start_auto_skip_timer()
 
-	advance.emit()
+			# If Auto-Skip is still enabled, advance the text.
+			if dialogic.Text.auto_skip.enabled:
+				advance.emit()
+
+		States.REVEALING:
+			Dialogic.Text.skip_text_animation()
+
 
 ################################################################################
 ## 						INITIALIZE
