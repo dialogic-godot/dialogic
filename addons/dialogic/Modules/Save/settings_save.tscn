@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://cd340w7blofak"]
+[gd_scene load_steps=5 format=3 uid="uid://cd340w7blofak"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Save/settings_save.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_v2wt8"]
+
+[sub_resource type="Image" id="Image_mbwql"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_himd7"]
+image = SubResource("Image_mbwql")
 
 [node name="Saving" type="VBoxContainer"]
 offset_right = 1084.0
@@ -22,6 +34,8 @@ text = "Autosave"
 
 [node name="HintTooltip" parent="Grid/HBoxContainer" instance=ExtResource("2_v2wt8")]
 layout_mode = 2
+tooltip_text = "If enabled dialogic will autosave the full state to the current slot depending on the autosave method."
+texture = SubResource("ImageTexture_himd7")
 hint_text = "If enabled dialogic will autosave the full state to the current slot depending on the autosave method."
 
 [node name="Autosave" type="CheckBox" parent="Grid"]
@@ -67,13 +81,57 @@ text = "Default slot name"
 
 [node name="HintTooltip3" parent="Grid/HBoxContainer2" instance=ExtResource("2_v2wt8")]
 layout_mode = 2
-tooltip_text = "If enabled dialogic will autosave the full state to the current slot depending on the autosave method."
+tooltip_text = "The name of the default slot. "
+texture = SubResource("ImageTexture_himd7")
 hint_text = "The name of the default slot. "
 
 [node name="DefaultSaveSlotName" type="LineEdit" parent="Grid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
 expand_to_text_length = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Grid"]
+layout_mode = 2
+
+[node name="EncryptionPasswordLabel" type="Label" parent="Grid/HBoxContainer3"]
+layout_mode = 2
+text = "Encryption Password"
+
+[node name="HintTooltip" parent="Grid/HBoxContainer3" instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "The encryption password used to obfuscate save files. When left empty, the save files will not be encrypted."
+texture = SubResource("ImageTexture_himd7")
+hint_text = "The encryption password used to encrypt save files. When left empty, the save files will not be encrypted."
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EncryptionPassword" type="LineEdit" parent="Grid/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_to_text_length = true
+
+[node name="EncryptionOnExportsSection" type="HBoxContainer" parent="Grid/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EncryptionPasswordLabel" type="Label" parent="Grid/HBoxContainer4/EncryptionOnExportsSection"]
+layout_mode = 2
+text = "Use on exports only"
+
+[node name="HintTooltip" parent="Grid/HBoxContainer4/EncryptionOnExportsSection" instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "The encryption password used to encrypt save files. When left empty, the save files will not be encrypted."
+texture = SubResource("ImageTexture_himd7")
+hint_text = "For easier debugging dialogic will only encrypt saves made by exported project.
+Exported projects with debug mode on or saves made when running in editor 
+will not use encryption."
+
+[node name="EncryptionOnExports" type="CheckBox" parent="Grid/HBoxContainer4/EncryptionOnExportsSection"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="InfoSection" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -90,3 +148,5 @@ autowrap_mode = 3
 [connection signal="item_selected" from="Grid/AutosaveModeContent/AutosaveMode" to="." method="_on_autosave_mode_item_selected"]
 [connection signal="value_changed" from="Grid/AutosaveModeContent/AutosaveDelay" to="." method="_on_autosave_delay_value_changed"]
 [connection signal="text_changed" from="Grid/DefaultSaveSlotName" to="." method="_on_default_save_slot_name_text_changed"]
+[connection signal="text_changed" from="Grid/HBoxContainer4/EncryptionPassword" to="." method="_on_encryption_password_text_changed"]
+[connection signal="toggled" from="Grid/HBoxContainer4/EncryptionOnExportsSection/EncryptionOnExports" to="." method="_on_encryption_on_exports_toggled"]
