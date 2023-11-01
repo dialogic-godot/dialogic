@@ -4,7 +4,7 @@ extends Node
 signal dialogic_action_priority
 signal dialogic_action
 signal autoadvance
-signal autoskip_timer_finished
+signal auto_skip_timer_finished
 
 var autoadvance_timer := Timer.new()
 var input_block_timer := Timer.new()
@@ -157,7 +157,7 @@ func start_auto_skip_timer() -> void:
 	var auto_skip_delay: float = Dialogic.Text.auto_skip.time_per_event
 	_auto_skip_timer_left = auto_skip_delay
 	set_process(true)
-	await autoskip_timer_finished
+	await auto_skip_timer_finished
 
 func is_autoadvancing() -> bool:
 	return !autoadvance_timer.is_stopped()
@@ -176,6 +176,8 @@ func _ready() -> void:
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
+
+	Dialogic.Text.auto_skip.auto_skip_changed.connect(_on_auto_skip_changed)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -207,6 +209,11 @@ func resume() -> void:
 ## 						AUTO-SKIP
 ################################################################################
 
+## If Auto-Skip disables, we want to stop the timer.
+func _on_auto_skip_changed(enabled: bool) -> void:
+	if not enabled:
+		_auto_skip_timer_left = 0.0
+
 ## Handles fine-grained Auto-Skip logic.
 ## The [method _process] method allows for a more precise timer than the
 ## [Timer] class.
@@ -215,8 +222,10 @@ func _process(delta):
 		_auto_skip_timer_left -= delta
 
 		if _auto_skip_timer_left <= 0:
-			autoskip_timer_finished.emit()
+			auto_skip_timer_finished.emit()
 
 	else:
-		autoskip_timer_finished.emit()
+		if Dialogic.Text.auto_skip.enabled:
+			auto_skip_timer_finished.emit()
+
 		set_process(false)
