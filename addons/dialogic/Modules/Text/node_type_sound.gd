@@ -119,9 +119,11 @@ static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 	if path.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(path) is AudioStream:
 		return [load(path)]
 	var _sounds :Array[AudioStream]= []
-	for file in DialogicUtil.listdir(path, true, false, true):
-		if file.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(file) is AudioStream:
-			_sounds.append(load(file))
+	for file in DialogicUtil.listdir(path, true, false, true, true):
+		if !file.ends_with('.import'):
+			continue
+		if file.trim_suffix('.import').get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and ResourceLoader.load(file.trim_suffix('.import')) is AudioStream:
+			_sounds.append(ResourceLoader.load(file.trim_suffix('.import')))
 	return _sounds
 
 

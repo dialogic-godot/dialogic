@@ -117,6 +117,7 @@ func _execute() -> void:
 	else:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
+		dialogic.Text.update_typing_sound_mood()
 
 	_connect_signals()
 

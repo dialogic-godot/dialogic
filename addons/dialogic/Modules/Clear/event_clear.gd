@@ -8,6 +8,7 @@ extends DialogicEvent
 var time := 1.0
 var step_by_step := true
 
+var clear_textbox := true
 var clear_portraits := true
 var clear_style := true
 var clear_music := true
@@ -25,6 +26,12 @@ func _execute() -> void:
 		var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
 		final_time = min(time, time_per_event)
 
+	if clear_textbox and dialogic.has_subsystem("Text"):
+		dialogic.Text.update_dialog_text('')
+		dialogic.Text.hide_text_boxes()
+		dialogic.current_state = dialogic.States.IDLE
+		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
+	
 	if clear_portraits and dialogic.has_subsystem('Portraits') and len(dialogic.Portraits.get_joined_characters()) != 0:
 		if final_time == 0:
 			dialogic.Portraits.leave_all_characters(DialogicUtil.guess_animation_file('Instant In Or Out'), final_time, step_by_step)
@@ -73,6 +80,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_info
 		"time"		: {"property": "time",	 			"default": ""},
 		"step"		: {"property": "step_by_step", 		"default": true},
+		"text"		: {"property": "clear_textbox",		"default": true},
 		"portraits"	: {"property": "clear_portraits", 	"default": true},
 		"music"		: {"property": "clear_music", 		"default": true},
 		"background": {"property": "clear_background", 	"default": true},
@@ -92,9 +100,9 @@ func build_event_editor():
 
 	add_body_edit('step_by_step', ValueType.BOOL, {'left_text':'Step by Step:'}, 'time > 0')
 	add_body_line_break()
-
-#	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "action == Actions.UPDATE")
-	add_body_edit('clear_portraits', ValueType.BOOL, {'left_text':'Clear:', 'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
+	
+	add_body_edit('clear_textbox', ValueType.BOOL, {'left_text':'Clear:', 'icon':load("res://addons/dialogic/Modules/Clear/clear_textbox.svg"), 'tooltip':'Clear Textbox'})
+	add_body_edit('clear_portraits', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
 	add_body_edit('clear_background', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})
 	add_body_edit('clear_music', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Music'})
 	add_body_edit('clear_style', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
