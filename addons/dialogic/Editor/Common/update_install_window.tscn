@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vv3m5m68fwg7"]
+[gd_scene load_steps=9 format=3 uid="uid://vv3m5m68fwg7"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
 [ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_20ke0"]
@@ -23,6 +23,8 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 expand_margin_left = 20.0
 expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j1mw2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4v2s"]
 content_margin_left = 5.0
@@ -111,7 +113,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1g1am")
 
 [node name="VBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel"]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -8
 
 [node name="State" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/VBox"]
 unique_name_in_owner = true
@@ -130,7 +132,7 @@ uppercase = true
 [node name="ShortInfo" type="Label" parent="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"DialogicHintText"
+theme_type_variation = &"DialogicHintText2"
 theme_override_font_sizes/font_size = 10
 text = "12/31/23"
 
@@ -147,6 +149,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/normal_font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_j1mw2")
 bbcode_enabled = true
 text = "[font_size=25]🎉 New alpha, new stuff![/font_size]
 If you are using dialogic 2 alphas then we've got an exciting update. It's not the beta yet, but we are getting closer! As always if you have questions or feedback it's best to reach out on [url=https://discord.gg/2hHQzkf2pX]emilios discord[/url].

@@ -32,28 +32,28 @@ var used_resources_cache : Array = []
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
-	
+
 	tabbar.clear_tabs()
-	
+
 	# Load base editors
 	_add_editor("res://addons/dialogic/Editor/HomePage/home_page.tscn")
 	_add_editor("res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn")
 	_add_editor("res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn")
-	
-	
+
+
 	# Load custom editors
 	for indexer in DialogicUtil.get_indexers():
 		for editor_path in indexer._get_editors():
 			_add_editor(editor_path)
 	_add_editor("res://addons/dialogic/Editor/Settings/settings_editor.tscn")
-	
+
 	tabbar.tab_clicked.connect(_on_editors_tab_changed)
-	
+
 	# Needs to be done here to make sure this node is ready when doing the register calls
 	for editor in editors_holder.get_children():
 		editor.editors_manager = self
 		editor._register()
-	
+
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
 	load_saved_state()
@@ -62,7 +62,7 @@ func _ready() -> void:
 		if !FileAccess.file_exists(res):
 			used_resources_cache.erase(res)
 	sidebar.update_resource_list(used_resources_cache)
-	
+
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 
 
@@ -117,11 +117,11 @@ func edit_resource(resource:Resource, save_previous:bool = true, silent:= false)
 	if resource:
 		if current_editor and save_previous:
 			current_editor._save()
-		
+
 		if !resource.resource_path in used_resources_cache:
 			used_resources_cache.append(resource.resource_path)
 			sidebar.update_resource_list(used_resources_cache)
-		
+
 		## Open the correct editor
 		var extension: String = resource.resource_path.get_extension()
 		for editor in editors.values():
@@ -148,30 +148,30 @@ func toggle_editor(editor) -> void:
 func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:Variant = null) -> void:
 	if current_editor and save_previous:
 		current_editor._save()
-	
+
 	if current_editor:
 		current_editor._close()
 		current_editor.hide()
-	
+
 	if current_editor != previous_editor:
 		previous_editor = current_editor
-	
+
 	editor._open(extra_info)
 	current_editor = editor
 	editor.show()
 	tabbar.current_tab = editor.get_index()
-	
+
 	if editor.current_resource:
 		var text:String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.UNSAVED:
 			text += "(*)"
-	
+
 	## This makes custom button editor-specific
 	## I think it's better without.
 #	toolbar.hide_all_custom_buttons()
 #	for button in editors[current_editor.name]['buttons']:
 #		button.show()
-	
+
 	save_current_state()
 	editor_changed.emit(previous_editor, current_editor)
 
@@ -180,7 +180,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 	if save:
 		editor._save()
-	
+
 	editor._clear()
 
 ## Shows a file selector. Calls [accept_callable] once accepted
@@ -204,7 +204,7 @@ func _on_add_resource_dialog_accepted(path:String, callable:Callable) -> void:
 
 
 ## Called by the plugin.gd script on CTRL+S or Debug Game start
-func save_current_resource() -> void: 
+func save_current_resource() -> void:
 	current_editor._save()
 
 
@@ -223,7 +223,7 @@ func load_saved_state() -> void:
 	var current_resources: Dictionary = DialogicUtil.get_editor_setting('current_resources', {})
 	for editor in current_resources.keys():
 		editors[editor]['node']._open_resource(load(current_resources[editor]))
-	
+
 	var current_editor: String = DialogicUtil.get_editor_setting('current_editor', 'HomePage')
 	open_editor(editors[current_editor]['node'])
 
@@ -240,19 +240,19 @@ func save_current_state() -> void:
 func _on_file_moved(old_name:String, new_name:String) -> void:
 	if !old_name.get_extension() in resources:
 		return
-	
+
 	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
 	if old_name in used_resources_cache:
 		used_resources_cache.insert(used_resources_cache.find(old_name), new_name)
 		used_resources_cache.erase(old_name)
-	
+
 	sidebar.update_resource_list(used_resources_cache)
-	
+
 	for editor in editors:
 		if editors[editor].node.current_resource != null and editors[editor].node.current_resource.resource_path == old_name:
 			editors[editor].node.current_resource.take_over_path(new_name)
 			edit_resource(load(new_name), true, true)
-	
+
 	save_current_state()
 
 
