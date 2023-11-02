@@ -15,26 +15,26 @@ var editor_file_dialog: EditorFileDialog
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
-	
+
 	## REFERENCES
 	editors_manager = $Margin/EditorsManager
-	
+
 	## STYLING
 	color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.bg_color = get_theme_color("dark_color_2", "Editor")
 	$Margin/EditorsManager.editors_holder.add_theme_stylebox_override('panel', editor_tab_bg)
-	
+
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
-	
+
 	var info_message := Label.new()
 	info_message.add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	editor_file_dialog.get_line_edit().get_parent().add_sibling(info_message)
 	info_message.get_parent().move_child(info_message, info_message.get_index()-1)
 	editor_file_dialog.set_meta('info_message_label', info_message)
-	
+
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
 	update_theme_additions()
@@ -44,19 +44,19 @@ func update_theme_additions():
 	if theme == null:
 		theme = Theme.new()
 	theme.clear()
-	
+
 	theme.set_type_variation('DialogicTitle', 'Label')
 	theme.set_font('font', 'DialogicTitle', get_theme_font("title", "EditorFonts"))
 	theme.set_color('font_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
 	theme.set_color('font_uneditable_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
 	theme.set_color('font_selected_color', 'DialogicTitle', get_theme_color('warning_color', 'Editor'))
 	theme.set_font_size('font_size', 'DialogicTitle', get_theme_font_size("doc_size", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicSubTitle', 'Label')
 	theme.set_font('font', 'DialogicSubTitle', get_theme_font("title", "EditorFonts"))
 	theme.set_font_size('font_size', 'DialogicSubTitle', get_theme_font_size("doc_size", "EditorFonts"))
 	theme.set_color('font_color', 'DialogicSubTitle', get_theme_color('accent_color', 'Editor'))
-	
+
 	theme.set_type_variation('DialogicPanelA', 'PanelContainer')
 	var panel_style := DCSS.inline({
 		'border-radius': 10,
@@ -67,16 +67,16 @@ func update_theme_additions():
 	})
 	theme.set_stylebox('panel', 'DialogicPanelA', panel_style)
 	theme.set_stylebox('normal', 'DialogicPanelA', panel_style)
-	
+
 	var dark_panel := panel_style.duplicate()
 	dark_panel.bg_color = get_theme_color("dark_color_3", "Editor")
 	theme.set_stylebox('panel', 'DialogicPanelDarkA', dark_panel)
-	
+
 	var cornerless_panel := panel_style.duplicate()
 	cornerless_panel.corner_radius_top_left = 0
 	theme.set_stylebox('panel', 'DialogicPanelA_cornerless', cornerless_panel)
-	
-	
+
+
 	# panel used for example for portrait previews in character editor
 	theme.set_type_variation('DialogicPanelB', 'PanelContainer')
 	var side_panel :StyleBoxFlat= panel_style.duplicate()
@@ -88,8 +88,8 @@ func update_theme_additions():
 	side_panel.border_width_left = 0
 	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	theme.set_stylebox('panel', 'DialogicPanelB', side_panel)
-	
-	
+
+
 	theme.set_type_variation('DialogicEventEdit', 'Control')
 	var edit_panel := StyleBoxFlat.new()
 	edit_panel.draw_center = true
@@ -102,45 +102,45 @@ func update_theme_additions():
 	edit_panel.set_corner_radius_all(1)
 	theme.set_stylebox('panel', 'DialogicEventEdit', edit_panel)
 	theme.set_stylebox('normal', 'DialogicEventEdit', edit_panel)
-	
+
 	var focus_edit := edit_panel.duplicate()
 	focus_edit.border_color = get_theme_color("property_color_z", "Editor")
 	focus_edit.draw_center = false
 	theme.set_stylebox('focus', 'DialogicEventEdit', focus_edit)
-	
+
 	var hover_edit := edit_panel.duplicate()
 	hover_edit.border_color = get_theme_color("warning_color", "Editor")
-	
+
 	theme.set_stylebox('hover', 'DialogicEventEdit', hover_edit)
 	var disabled_edit := edit_panel.duplicate()
 	disabled_edit.border_color = get_theme_color("property_color", "Editor")
 	theme.set_stylebox('disabled', 'DialogicEventEdit', disabled_edit)
-	
+
 	theme.set_type_variation('DialogicHintText', 'Label')
 	theme.set_color('font_color', 'DialogicHintText', get_theme_color("readonly_color", "Editor"))
 	theme.set_font('font', 'DialogicHintText', get_theme_font("doc_italic", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicHintText2', 'Label')
 	theme.set_color('font_color', 'DialogicHintText2', get_theme_color("property_color_w", "Editor"))
 	theme.set_font('font', 'DialogicHintText2', get_theme_font("doc_italic", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicSection', 'Label')
 	theme.set_font('font', 'DialogicSection', get_theme_font("main_msdf", "EditorFonts"))
 	theme.set_color('font_color', 'DialogicSection', get_theme_color("property_color_z", "Editor"))
 	theme.set_font_size('font_size', 'DialogicSection', get_theme_font_size("doc_size", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicSettingsSection', 'DialogicSection')
 	theme.set_font('font', 'DialogicSettingsSection', get_theme_font("main_msdf", "EditorFonts"))
 	theme.set_color('font_color', 'DialogicSettingsSection', get_theme_color("property_color_z", "Editor"))
 	theme.set_font_size('font_size', 'DialogicSettingsSection', get_theme_font_size("doc_size", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicSectionBig', 'DialogicSection')
 	theme.set_color('font_color', 'DialogicSectionBig', get_theme_color("accent_color", "Editor"))
 	theme.set_font_size('font_size', 'DialogicSectionBig', get_theme_font_size("doc_title_size", "EditorFonts"))
-	
+
 	theme.set_type_variation('DialogicLink', 'LinkButton')
 	theme.set_color('font_hover_color', 'DialogicLink', get_theme_color("warning_color", "Editor"))
-	
+
 	theme.set_type_variation('DialogicMegaSeparator', 'HSeparator')
 	theme.set_stylebox('separator', 'DialogicMegaSeparator', DCSS.inline({
 		'border-radius': 10,
@@ -149,9 +149,9 @@ func update_theme_additions():
 		'padding': [5, 5],
 	}))
 	theme.set_constant('separation', 'DialogicMegaSeparator', 50)
-	
-	
-	
+
+
+
 	theme.set_icon('Plugin', 'Dialogic', load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
 
 
