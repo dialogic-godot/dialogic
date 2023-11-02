@@ -47,7 +47,7 @@ func _input(event: InputEvent) -> void:
 
 
 func is_input_blocked() -> bool:
-	return input_block_timer.time_left > 0.0
+	return input_block_timer.time_left > 0.0 and not input_block_timer.is_stopped()
 
 
 func block_input(time:=skip_delay) -> void:

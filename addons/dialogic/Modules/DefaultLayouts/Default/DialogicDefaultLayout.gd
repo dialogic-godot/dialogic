@@ -74,17 +74,17 @@ enum AnimationsNewText {NONE, WIGGLE}
 func _apply_export_overrides():
 	if !is_inside_tree():
 		await ready
-	
+
 	## FONT SETTINGS
 	%DialogicNode_DialogText.alignment = text_alignment
-	
+
 	%DialogicNode_DialogText.add_theme_font_size_override("normal_font_size", text_size)
 	%DialogicNode_DialogText.add_theme_font_size_override("bold_font_size", text_size)
 	%DialogicNode_DialogText.add_theme_font_size_override("italics_font_size", text_size)
 	%DialogicNode_DialogText.add_theme_font_size_override("bold_italics_font_size", text_size)
-	
+
 	%DialogicNode_DialogText.add_theme_color_override("default_color", text_color)
-	
+
 	if !normal_font.is_empty():
 		%DialogicNode_DialogText.add_theme_font_override("normal_font", load(normal_font))
 	if !bold_font.is_empty():
@@ -93,35 +93,35 @@ func _apply_export_overrides():
 		%DialogicNode_DialogText.add_theme_font_override("italitc_font", load(italic_font))
 	if !bold_italic_font.is_empty():
 		%DialogicNode_DialogText.add_theme_font_override("bold_italics_font", load(bold_italic_font))
-	
+
 	## BOX SETTINGS
 	%DialogTextPanel.self_modulate = box_modulate
 	%DialogTextPanel.custom_minimum_size = box_size
 	%TextInputPanel.self_modulate = box_modulate
-	
+
 	## BOX ANIMATIONS
 	%Animations.animation_in = box_animation_in
 	%Animations.animation_out = box_animation_out
 	%Animations.animation_new_text = box_animation_new_text
-	
-	
+
+
 	## NAME LABEL SETTINGS
 	%DialogicNode_NameLabel.add_theme_font_size_override("font_size", name_label_font_size)
-	
+
 	if !name_label_font.is_empty():
 		%DialogicNode_NameLabel.add_theme_font_override('font', load(name_label_font))
-	
+
 	%DialogicNode_NameLabel.add_theme_color_override("font_color", name_label_color)
-	
+
 	%DialogicNode_NameLabel.use_character_color = name_label_use_character_color
-	
+
 	%NameLabelPanel.self_modulate = name_label_box_modulate
-	
+
 	%NameLabelPanel.position = name_label_box_offset+Vector2(0, -50)
 	%NameLabelPanel.anchor_left = name_label_alignment/2.0
 	%NameLabelPanel.anchor_right = name_label_alignment/2.0
 	%NameLabelPanel.grow_horizontal = [1, 2, 0][name_label_alignment]
-	
+
 	## NEXT INDICATOR SETTINGS
 	if !next_indicator_enabled:
 		%NextIndicator.queue_free()
@@ -131,16 +131,16 @@ func _apply_export_overrides():
 			%NextIndicator.texture = load(next_indicator_texture)
 		%NextIndicator.show_on_questions = next_indicator_show_on_questions
 		%NextIndicator.show_on_autoadvance = next_indicator_show_on_autoadvance
-	
+
 	## PORTRAIT SETTINGS
 	for child in %Portraits.get_children():
 		child.size_mode = portrait_size_mode
-	
+
 	## OTHER
 	%AutoAdvanceProgressbar.enabled = autoadvance_progressbar
-	
+
 	#### SOUNDS
-	
+
 	## TYPING SOUNDS
 	%DialogicNode_TypeSounds.enabled = typing_sounds_enabled
 	%DialogicNode_TypeSounds.mode = typing_sounds_mode
@@ -158,10 +158,10 @@ func _apply_export_overrides():
 	%DialogicNode_TypeSounds.pitch_variance = typing_sounds_pitch_variance
 	%DialogicNode_TypeSounds.volume_variance = typing_sounds_volume_variance
 	%DialogicNode_TypeSounds.ignore_characters = typing_sounds_ignore_characters
-	
+
 	## CHOICE SOUNDS
 	%DialogicNode_ButtonSound.volume_db = choice_button_sounds_volume
 	%DialogicNode_ButtonSound.sound_pressed = load(choice_button_sounds_pressed)
 	%DialogicNode_ButtonSound.sound_hover = load(choice_button_sounds_hover)
 	%DialogicNode_ButtonSound.sound_focus = load(choice_button_sounds_focus)
-	
+

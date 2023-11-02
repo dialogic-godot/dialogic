@@ -47,8 +47,9 @@ func resume() -> void:
 
 func handle_input():
 	if Dialogic.paused or is_input_blocked():
+		print('blocked')
 		return
-
+	print(Time.get_ticks_usec())
 	if !action_was_consumed:
 		# We want to stop auto-advancing that cancels on user inputs.
 		if (auto_advance.is_autoadvance_enabled()
@@ -63,11 +64,6 @@ func handle_input():
 			auto_skip.enabled = false
 			action_was_consumed = true
 
-
-	#if (!action_was_consumed and is_autoadvance_enabled()
-			#and get_autoadvance_info()['waiting_for_user_input']):
-		#set_autoadvance_until_user_input(false)
-		#return
 
 	dialogic_action_priority.emit()
 
@@ -101,7 +97,6 @@ func is_input_blocked() -> bool:
 
 func block_input(time:=0.1) -> void:
 	if time > 0:
-		input_block_timer.stop()
 		input_block_timer.wait_time = time
 		input_block_timer.start()
 
@@ -110,11 +105,10 @@ func _ready() -> void:
 	auto_skip = DialogicAutoSkip.new()
 	auto_advance = DialogicAutoAdvance.new()
 
-	add_child(input_block_timer)
 	# We use the process method to count down the auto-start_autoskip_timer timer.
 	set_process(false)
 
-func _post_install() -> void:
+func post_install() -> void:
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
 	auto_skip.autoskip_changed.connect(_on_autoskip_changed)
 	add_child(input_block_timer)
