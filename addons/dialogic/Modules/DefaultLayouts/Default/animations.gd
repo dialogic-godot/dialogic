@@ -56,7 +56,7 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text():
-	if Dialogic.Text.auto_skip.enabled:
+	if Dialogic.Input.auto_skip.enabled:
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:

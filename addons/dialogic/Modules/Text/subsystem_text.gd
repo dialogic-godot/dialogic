@@ -33,11 +33,6 @@ var _letter_speed_absolute := false
 
 var _autopauses := {}
 
-#region Auto-Skip
-var auto_skip: AutoSkip = null
-
-#endregion
-
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -49,7 +44,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	dialogic.current_state_info['text'] = ''
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
-	
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
@@ -115,8 +110,8 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
 
-	Dialogic.Input.set_autoadvance_until_next_event(false)
-	Dialogic.Input.set_autoadvance_override_delay_for_current_event(-1)
+	Dialogic.Input.auto_advance.set_autoadvance_until_next_event(false)
+	Dialogic.Input.auto_advance.set_autoadvance_override_delay_for_current_event(-1)
 	Dialogic.Input.set_manualadvance(true, true)
 	set_text_reveal_skippable(true, true)
 	return text
@@ -185,7 +180,7 @@ func show_text_boxes(instant:=false) -> void:
 			text_node.textbox_root.show()
 
 
-func show_next_indicators(question=false, autoadvance=false) -> void:
+func show_next_indicators(question:=false, autoadvance:=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
@@ -325,8 +320,6 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 
-	auto_skip = AutoSkip.new()
-
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
@@ -383,7 +376,7 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 		return
 
 	# We want to ignore pauses if we're skipping.
-	if not auto_skip.enabled:
+	if not dialogic.Input.auto_skip.enabled:
 		return
 
 	var text_speed = Dialogic.Settings.get_setting('text_speed', 1)
@@ -428,9 +421,6 @@ func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 	if Dialogic.current_state_info.get('character', null):
 		update_typing_sound_mood(
 			load(Dialogic.current_state_info.character).custom_info.get('sound_moods', {}).get(argument, {}))
-
-
-
 
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")

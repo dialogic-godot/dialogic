@@ -153,7 +153,7 @@ func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 
 ## This method will advance the timeline based on Auto-Skip settings.
 ## The state, whether Auto-Skip is enabled, is ignored.
-func start_auto_skip_timer() -> void:
+func start_autoskip_timer() -> void:
 	var auto_skip_delay: float = Dialogic.Text.auto_skip.time_per_event
 	_auto_skip_timer_left = auto_skip_delay
 	set_process(true)
@@ -177,12 +177,12 @@ func _ready() -> void:
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	Dialogic.Text.autoadvance_changed.connect(_on_autoadvance_enabled_change)
 
-	Dialogic.Text.auto_skip.auto_skip_changed.connect(_on_auto_skip_changed)
+	Dialogic.Text.auto_skip.autoskip_changed.connect(_on_auto_skip_changed)
 
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
-	# We use the process method to count down the auto-start_auto_skip_timer timer.
+	# We use the process method to count down the auto-start_autoskip_timer timer.
 	set_process(false)
 
 
