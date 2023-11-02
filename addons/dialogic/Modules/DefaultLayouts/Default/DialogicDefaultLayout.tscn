@@ -253,11 +253,7 @@ expand_margin_bottom = 5.0
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
-box_animation_in = 1
-box_animation_out = 1
-box_animation_new_text = 1
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-typing_sounds_sounds_folder = ""
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1

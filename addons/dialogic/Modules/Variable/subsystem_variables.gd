@@ -67,23 +67,23 @@ func parse_variables(text:String) -> String:
 
 func set_variable(variable_name: String, value: Variant) -> bool:
 	variable_name = variable_name.trim_prefix('{').trim_suffix('}')
-	
+
 	# First assume this is a simple dialogic variable
 	if has(variable_name):
-		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value) 
+		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value)
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
-	
+
 	# Second assume this is an autoload variable
 	elif '.' in variable_name:
 		var from := variable_name.get_slice('.', 0)
 		var variable := variable_name.trim_prefix(from+'.')
-		
+
 		for a in get_autoloads():
 			if a.name == from:
 				a.set(variable, value)
 				return true
-	
+
 	printerr("[Dialogic] Tried setting non-existant variable '"+variable_name+"'.")
 	return false
 
@@ -91,19 +91,19 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 func get_variable(variable_path:String, default :Variant= null) -> Variant:
 	if variable_path.begins_with('{') and variable_path.ends_with('}') and variable_path.count('{') == 1:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
-	
+
 	# First assume this is just a single variable
-	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables']) 
+	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
 	if value != null:
 		return value
-	
+
 	# Second assume this is an expression.
 	else:
 		value = dialogic.Expression.execute_string(variable_path, null)
 		if value != null:
 			return value
-	
-	
+
+
 	# If everything fails, tell the user and return the default
 	printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
 	return default
@@ -154,7 +154,7 @@ func get_autoloads() -> Array:
 	return autoloads
 
 
-## Allows to set dialogic built-in variables 
+## Allows to set dialogic built-in variables
 func _set(property, value) -> bool:
 	property = str(property)
 	var variables: Dictionary = dialogic.current_state_info['variables']
@@ -163,11 +163,11 @@ func _set(property, value) -> bool:
 			variables[property] = value
 			return true
 		if value is VariableFolder:
-			return true 
+			return true
 	return false
 
 
-## Allows to get dialogic built-in variables 
+## Allows to get dialogic built-in variables
 func _get(property):
 	property = str(property)
 	if property in dialogic.current_state_info['variables'].keys():
@@ -200,7 +200,7 @@ class VariableFolder:
 		data = _data
 		path = _path
 		outside = _outside
-	
+
 	func _get(property):
 		property = str(property)
 		if property in data:
@@ -208,23 +208,23 @@ class VariableFolder:
 				return VariableFolder.new(data[property], path+"."+property, outside)
 			else:
 				return DialogicUtil.logical_convert(data[property])
-	
+
 	func _set(property, value) -> bool:
 		property = str(property)
 		if not value is VariableFolder:
 			outside._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
 		return true
-	
+
 	func has(key) -> bool:
 		return key in data
-	
+
 	func folders() -> Array:
 		var result := []
 		for i in data.keys():
 			if data[i] is Dictionary:
 				result.append(VariableFolder.new(data[i], path+"."+i, outside))
 		return result
-	
+
 	func variables(absolute:=false) -> Array:
 		var result := []
 		for i in data.keys():

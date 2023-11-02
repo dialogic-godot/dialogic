@@ -8,11 +8,11 @@ var current_info : Dictionary = {}
 func _ready():
 	await editor_view.ready
 	theme = editor_view.theme
-	
+
 	%Install.icon = editor_view.get_theme_icon("AssetLib", "EditorIcons")
 	%LoadingIcon.texture = editor_view.get_theme_icon("KeyTrackScale", "EditorIcons")
 	%InstallWarning.modulate = editor_view.get_theme_color("warning_color", "Editor")
-	
+
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
 
 
@@ -56,7 +56,7 @@ func load_info(info:Dictionary, update_type:int) -> void:
 			%Reactions.get_node("Likes").text = "👍 "+str(info.reactions['+1']+info.reactions['-1'])
 		else:
 			%Reactions.get_node("Likes").visible = false
-			
+
 
 func _on_window_close_requested():
 	get_parent().visible = false
@@ -64,7 +64,7 @@ func _on_window_close_requested():
 
 func _on_install_pressed():
 	find_parent('UpdateManager').request_update_download()
-	
+
 	%InfoLabel.text = "Downloading. This can take a moment."
 	%Loading.show()
 	%LoadingIcon.create_tween().set_loops().tween_property(%LoadingIcon, 'rotation', 2*PI, 1).from(0)
@@ -99,43 +99,43 @@ func markdown_to_bbcode(text:String) -> String:
 	while res:
 		text = text.replace(res.get_string(2), '[font_size='+str(font_sizes[len(res.get_string('level'))])+']'+res.get_string('title').strip_edges()+'[/font_size]')
 		res = title_regex.search(text)
-	
+
 	var link_regex := RegEx.create_from_string('(?<!\\!)\\[(?<text>[^\\]]*)]\\((?<link>[^)]*)\\)')
 	res = link_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[url='+res.get_string('link')+']'+res.get_string('text').strip_edges()+'[/url]')
 		res = link_regex.search(text)
-	
+
 	var image_regex := RegEx.create_from_string('\\!\\[(?<text>[^\\]]*)]\\((?<link>[^)]*)\\)\n*')
 	res = image_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[url='+res.get_string('link')+']'+res.get_string('text').strip_edges()+'[/url]')
 		res = image_regex.search(text)
-	
+
 	var italics_regex := RegEx.create_from_string('\\*(?<text>[^\\*\\n]*)\\*')
 	res = italics_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[i]'+res.get_string('text').strip_edges()+'[/i]')
 		res = italics_regex.search(text)
-	
+
 	var bullets_regex := RegEx.create_from_string('(?<=\\n)(\\*|-)(?<text>[^\\*\\n]*)\\n')
 	res = bullets_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[ul]'+res.get_string('text').strip_edges()+'[/ul]\n')
 		res = bullets_regex.search(text)
-	
+
 	var small_code_regex := RegEx.create_from_string('(?<!`)`(?<text>[^`]+)`')
 	res = small_code_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[code][color='+get_theme_color("accent_color", "Editor").to_html()+']'+res.get_string('text').strip_edges()+'[/color][/code]')
 		res = small_code_regex.search(text)
-	
+
 	var big_code_regex := RegEx.create_from_string('(?<!`)```(?<text>[^`]+)```')
 	res = big_code_regex.search(text)
 	while res:
 		text = text.replace(res.get_string(), '[code][bgcolor='+get_theme_color("box_selection_fill_color", "Editor").to_html()+']'+res.get_string('text').strip_edges()+'[/bgcolor][/code]')
 		res = big_code_regex.search(text)
-	
+
 	return text
 
 

@@ -43,7 +43,7 @@ func _ready():
 func _on_started_revealing_text() -> void:
 	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
-	characters_since_last_sound = 0
+	characters_since_last_sound = current_overwrite_data.get('skip_characters', play_every_character-1)+1
 
 
 func _on_continued_revealing_text(new_character:String) -> void:
@@ -51,7 +51,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 		return
 
 	# We don't want to play type sounds if Auto-Skip is enabled.
-	if Dialogic.Input.auto_skip.enabled:
+	if !Engine.is_editor_hint() and Dialogic.Input.auto_skip.enabled:
 		return
 
 	# don't play if a voice-track is running
@@ -101,7 +101,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 
 func _on_finished_revealing_text() -> void:
 	# We don't want to play type sounds if Auto-Skip is enabled.
-	if Dialogic.Input.auto_skip.enabled:
+	if !Engine.is_editor_hint() and Dialogic.Input.auto_skip.enabled:
 		return
 
 	if end_sound != null:
