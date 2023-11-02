@@ -23,30 +23,33 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ####################################################################################################
 
 func add_layout_style(style_name:="", is_base_style:=true) -> Node:
-	var info := {'style':style_name}
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
-	
+	var info := {'style':style_name}
+
 	# is_base_style should only be wrong on temporary changes like character styles
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
-	
+
 	var previous := Dialogic.get_layout_node()
-	
+
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
 	var layout := Dialogic._add_layout_node(layout_path)
-	
+
+
 	# apply export overrides, in case this isn't the exact same style
 	if !layout.has_meta('style') or !layout.get_meta('style', null) == style_name:
 		DialogicUtil.apply_scene_export_overrides(layout, DialogicUtil.get_inherited_style_overrides(style_name))
 		layout.set_meta('style', style_name)
-	
+
 	if layout != previous and previous != null:
 		if previous.has_meta('style'): info['previous'] = previous.get_meta('style')
 		previous.get_parent().remove_child(previous)
 		layout.ready.connect(reload_current_info_into_new_style)
-	
+
+	dialogic.current_state_info['style'] = style_name
+
 	style_changed.emit(info)
 	return layout
 

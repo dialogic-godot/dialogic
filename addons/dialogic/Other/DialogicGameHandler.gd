@@ -178,7 +178,16 @@ func load_full_state(state_info:Dictionary) -> void:
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 
+	## The Style subsystem needs to run first for others to load correctly.
+	if has_subsystem('Style'):
+		get_subsystem('Style').load_full_state()
+
+	await get_tree().process_frame
+
 	for subsystem in get_children():
+		if subsystem.name == 'Style':
+			continue
+
 		subsystem.load_game_state()
 
 ################################################################################
@@ -187,7 +196,7 @@ func load_full_state(state_info:Dictionary) -> void:
 func collect_subsystems() -> void:
 	# This also builds the event script cache as well
 	_event_script_cache = []
-	
+
 	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
 
@@ -200,14 +209,14 @@ func collect_subsystems() -> void:
 
 		# build the subsystems (only at runtime)
 		if !Engine.is_editor_hint():
-			
+
 			for subsystem in indexer._get_subsystems():
 				var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
 				subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
 		subsystem.post_install()
-	
+
 	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
 	_event_script_cache.push_front(DialogicEndBranchEvent.new())
 	_event_script_cache.push_back(DialogicTextEvent.new())
