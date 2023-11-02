@@ -6,8 +6,8 @@ func _process(delta):
 	if !enabled:
 		hide()
 		return
-	if Dialogic.Text.get_autoadvance_progress() < 0:
+	if Dialogic.Input.auto_advance.get_autoadvance_progress() < 0:
 		hide()
 	else:
 		show()
-		value = Dialogic.Text.get_autoadvance_progress()
+		value = Dialogic.Input.auto_advance.get_autoadvance_progress()

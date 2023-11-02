@@ -22,8 +22,8 @@ var clear_background := true
 func _execute() -> void:
 	var final_time := time
 
-	if Dialogic.Text.auto_skip.enabled:
-		var time_per_event: float = Dialogic.Text.auto_skip.time_per_event
+	if Dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
 		final_time = min(time, time_per_event)
 
 	if clear_textbox and dialogic.has_subsystem("Text"):
@@ -31,7 +31,7 @@ func _execute() -> void:
 		dialogic.Text.hide_text_boxes()
 		dialogic.current_state = dialogic.States.IDLE
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
-	
+
 	if clear_portraits and dialogic.has_subsystem('Portraits') and len(dialogic.Portraits.get_joined_characters()) != 0:
 		if final_time == 0:
 			dialogic.Portraits.leave_all_characters(DialogicUtil.guess_animation_file('Instant In Or Out'), final_time, step_by_step)
@@ -100,7 +100,7 @@ func build_event_editor():
 
 	add_body_edit('step_by_step', ValueType.BOOL, {'left_text':'Step by Step:'}, 'time > 0')
 	add_body_line_break()
-	
+
 	add_body_edit('clear_textbox', ValueType.BOOL, {'left_text':'Clear:', 'icon':load("res://addons/dialogic/Modules/Clear/clear_textbox.svg"), 'tooltip':'Clear Textbox'})
 	add_body_edit('clear_portraits', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
 	add_body_edit('clear_background', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})

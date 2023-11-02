@@ -1,18 +1,18 @@
-extends DialogicSubsystem
+extends RefCounted
 ## This class holds the settings for the Auto-Skip feature.
 ## Changing the variables will alter the behaviour of Auto-Skip.
 ##
 ## Auto-Skip must be implemented per event.
-class_name AutoSkip
+class_name DialogicAutoSkip
 
 ## Emitted whenever the Auto-Skip state changes, from `true` to `false` or
 ## vice-versa.
-signal auto_skip_changed(is_enabled: bool)
+signal autoskip_changed(is_enabled: bool)
 
 ## Whether Auto-Skip is enabled or not.
 ## If Auto-Skip is referred to be [i]disabled[/i], it refers to setting this
 ## this variable to `false`.
-## This variable will automatically emit [signal auto_skip_changed] when changed.
+## This variable will automatically emit [signal autoskip_changed] when changed.
 var enabled: bool = false : set = _set_enabled
 
 ## If `true`, Auto-Skip will be disabled when the user presses a recognised
@@ -46,13 +46,13 @@ func _init():
 		Dialogic.History.not_read_event_reached.connect(_handle_unseen_event)
 
 ## Called when Auto-Skip is enabled or disabled.
-## Emits [signal auto_skip_changed] if the state changed.
+## Emits [signal autoskip_changed] if the state changed.
 func _set_enabled(is_enabled: bool) -> void:
-	var previous_enabled = enabled
+	var previous_enabled := enabled
 	enabled = is_enabled
 
 	if enabled != previous_enabled:
-		auto_skip_changed.emit(enabled)
+		autoskip_changed.emit(enabled)
 
 func _handle_seen_event():
 	# If Auto-Skip is disabled but reacts to seen events, we

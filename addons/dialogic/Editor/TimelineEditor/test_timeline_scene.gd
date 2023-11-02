@@ -36,7 +36,7 @@ func _input(event:InputEvent) -> void:
 	if (event is InputEventMouseButton
 	and event.is_pressed()
 	and event.button_index == MOUSE_BUTTON_MIDDLE):
-		var auto_skip: AutoSkip = Dialogic.Text.auto_skip
+		var auto_skip: DialogicAutoSkip = Dialogic.Input.auto_skip
 		var is_auto_skip_enabled := auto_skip.enabled
 
 		auto_skip.disable_on_unread_text = false

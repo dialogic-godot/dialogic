@@ -69,7 +69,7 @@ func load(slot_name:String=""):
 	dialogic.load_full_state(load_file(slot_name, 'state.txt', {}))
 
 
-# Saves a variable to a file in the given slot.
+## Saves a variable to a file in the given slot.
 func save_file(slot_name:String, file_name:String, data:Variant) -> void:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 	if not slot_name.is_empty():
