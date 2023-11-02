@@ -85,10 +85,10 @@ func update_csv_files() -> void:
 
 	var csv_columns := 0
 
-	var timeline_node = settings_editor.editors_manager.editors['Timeline']['node']
+	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
 	# We will close this timeline to ensure it will properly update.
 	# By saving this reference, we can open it again.
-	var current_timeline = timeline_node.current_resource
+	var current_timeline := timeline_node.current_resource
 	# Clean the current editor, this will also close the timeline.
 	settings_editor.editors_manager.clear_editor(timeline_node)
 
@@ -171,7 +171,7 @@ func update_csv_files() -> void:
 					var updated_line: PackedStringArray = line + Array(old_line).slice(2)
 
 					var line_columns: int = updated_line.size()
-					var line_columns_to_add = csv_columns - line_columns
+					var line_columns_to_add := csv_columns - line_columns
 
 					# Add trailing commas to match the amount of columns.
 					for _i in range(line_columns_to_add):
@@ -182,7 +182,7 @@ func update_csv_files() -> void:
 
 				else:
 					var line_columns: int = line.size()
-					var line_columns_to_add = csv_columns - line_columns
+					var line_columns_to_add := csv_columns - line_columns
 
 					# Add trailing commas to match the amount of columns.
 					for _i in range(line_columns_to_add):
@@ -196,7 +196,7 @@ func update_csv_files() -> void:
 			old_csv_lines.clear()
 
 	if translation_mode == TranslationModes.PER_PROJECT:
-		var file_path :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
+		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
 
 		if FileAccess.file_exists(file_path):
 			counts[3] += 1
@@ -213,7 +213,7 @@ func update_csv_files() -> void:
 				var updated_line: PackedStringArray = PackedStringArray(line)+old_line.slice(2)
 
 				var line_columns: int = updated_line.size()
-				var line_columns_to_add = csv_columns - line_columns
+				var line_columns_to_add := csv_columns - line_columns
 
 				# Add trailing commas to match the amount of columns.
 				for _i in range(line_columns_to_add):
@@ -224,7 +224,7 @@ func update_csv_files() -> void:
 
 			else:
 				var line_columns: int = line.size()
-				var line_columns_to_add = csv_columns - line_columns
+				var line_columns_to_add := csv_columns - line_columns
 
 				# Add trailing commas to match the amount of columns.
 				for _i in range(line_columns_to_add):
@@ -245,7 +245,7 @@ func update_csv_files() -> void:
 
 func collect_translations() -> void:
 	var trans_files := []
-	var translation_mode :int = %TransMode.selected
+	var translation_mode: int = %TransMode.selected
 
 	if translation_mode == TranslationModes.PER_TIMELINE:
 		for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
@@ -318,7 +318,7 @@ func erase_translations() -> void:
 				event.update_text_version()
 
 		tml.set_meta("timeline_not_saved", true)
-		var result = ResourceSaver.save(tml, timeline_path)
+		ResourceSaver.save(tml, timeline_path)
 
 	ProjectSettings.set_setting('dialogic/translation/id_counter', 16)
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(trans_files))
