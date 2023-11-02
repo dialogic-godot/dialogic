@@ -47,9 +47,8 @@ func resume() -> void:
 
 func handle_input():
 	if Dialogic.paused or is_input_blocked():
-		print('blocked')
 		return
-	print(Time.get_ticks_usec())
+
 	if !action_was_consumed:
 		# We want to stop auto-advancing that cancels on user inputs.
 		if (auto_advance.is_autoadvance_enabled()
