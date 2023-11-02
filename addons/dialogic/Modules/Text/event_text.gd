@@ -176,7 +176,7 @@ func _execute() -> void:
 
 		# If Auto-Skip is enabled and there are multiple parts of this text
 		# we need to skip the text after the defined time per event.
-		if	Dialogic.Input.auto_skip.enabled:
+		if Dialogic.Input.auto_skip.enabled:
 			await dialogic.Input.start_autoskip_timer()
 
 			# Check if Auto-Skip is still enabled.
@@ -194,13 +194,13 @@ func _on_dialogic_input_action():
 		States.REVEALING:
 			if Dialogic.Text.can_skip_text_reveal():
 				Dialogic.Text.skip_text_animation()
-				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 				Dialogic.Input.stop()
+				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
 			if Dialogic.Input.is_manualadvance_enabled():
 				advance.emit()
-				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 				Dialogic.Input.stop()
+				Dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 
 func _on_dialogic_input_autoadvance():

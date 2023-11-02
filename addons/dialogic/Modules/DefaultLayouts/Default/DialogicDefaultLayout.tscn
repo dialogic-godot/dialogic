@@ -351,6 +351,16 @@ libraries = {
 autoplay = "RESET"
 script = ExtResource("16_07l6b")
 
+[node name="InputCatcher" type="Control" parent="DefaultStyle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("14_d2258")
+
 [node name="DialogicTextAnchor" type="Control" parent="DefaultStyle"]
 layout_mode = 1
 anchors_preset = 7
@@ -370,6 +380,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent"]
 unique_name_in_owner = true
@@ -388,12 +399,14 @@ offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset = Vector2(275, 60)
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogicTextAnchor/DialogTextAnimationParent/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 15
 theme_override_font_sizes/bold_font_size = 15
@@ -511,16 +524,6 @@ script = ExtResource("18")
 sound_pressed = ExtResource("14")
 sound_hover = ExtResource("11")
 sound_focus = SubResource("AudioStream_hu7ba")
-
-[node name="InputCatcher" type="Control" parent="DefaultStyle"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-script = ExtResource("14_d2258")
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1

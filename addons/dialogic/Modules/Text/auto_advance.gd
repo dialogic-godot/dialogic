@@ -8,7 +8,7 @@ class_name DialogicAutoAdvance
 signal autoadvance
 signal autoadvance_changed(enabled: bool)
 
-var enabled = false
+var enabled := false
 var autoadvance_timer := Timer.new()
 
 
