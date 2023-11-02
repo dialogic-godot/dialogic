@@ -33,6 +33,11 @@ var _letter_speed_absolute := false
 
 var _autopauses := {}
 
+#region Auto-Skip
+var auto_skip: AutoSkip = null
+
+#endregion
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -56,7 +61,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	var character:DialogicCharacter = null
 	if dialogic.current_state_info.get('speaker', null):
 		character = load(dialogic.current_state_info.get('speaker', null))
-	
+
 	if character:
 		update_name_label(character)
 
@@ -85,7 +90,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
-	
+
 	if text.is_empty():
 		await hide_text_boxes(instant)
 	else:
@@ -94,7 +99,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 			animation_textbox_new_text.emit()
 			if Dialogic.Animation.is_animating():
 				await Dialogic.Animation.finished
-		
+
 	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
@@ -186,8 +191,7 @@ func show_next_indicators(question=false, autoadvance=false) -> void:
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
 			next_indicator.show()
 
-
-func hide_next_indicators(fake_arg=null) -> void:
+func hide_next_indicators(_fake_arg = null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		next_indicator.hide()
 
@@ -294,7 +298,7 @@ func collect_text_modifiers() -> void:
 
 func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 	for mod in text_modifiers:
-		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode: 
+		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode:
 			continue
 		text = mod.method.call(text)
 	return text
@@ -321,11 +325,15 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 
+	auto_skip = AutoSkip.new()
+
 	_autopauses = {}
 	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
 		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
 
+
+func post_install():
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
 
@@ -372,6 +380,10 @@ func collect_character_names() -> void:
 
 func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
+		return
+
+	# We want to ignore pauses if we're skipping.
+	if not auto_skip.enabled:
 		return
 
 	var text_speed = Dialogic.Settings.get_setting('text_speed', 1)

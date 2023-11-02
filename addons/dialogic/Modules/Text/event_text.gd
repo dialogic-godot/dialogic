@@ -19,7 +19,6 @@ var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
 var portrait: String = ""
 
-
 ### Helpers
 
 ## This returns the unique name_identifier of the character. This is used by the editor.
@@ -52,11 +51,46 @@ signal advance
 ## 						EXECUTION
 ################################################################################
 
+func _mark_as_read(final_text: String) -> void:
+	if dialogic.has_subsystem('History'):
+		if character:
+			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+		else:
+			dialogic.History.store_simple_history_entry(final_text, event_name)
+		dialogic.History.event_was_read(self)
+
+func _connect_signals() -> void:
+	if not dialogic.Text.input_handler.dialogic_action.is_connected(_on_dialogic_input_action):
+		dialogic.Text.input_handler.dialogic_action.connect(_on_dialogic_input_action)
+
+		dialogic.Text.auto_skip.auto_skip_changed.connect(_on_auto_skip_enable)
+
+	if not dialogic.Text.input_handler.autoadvance.is_connected(_on_dialogic_input_autoadvance):
+		dialogic.Text.input_handler.autoadvance.connect(_on_dialogic_input_autoadvance)
+
+## If the event is done, this method can clean-up signal connections.
+func _disconnect_signals() -> void:
+	dialogic.Text.input_handler.dialogic_action.disconnect(_on_dialogic_input_action)
+	dialogic.Text.input_handler.autoadvance.disconnect(_on_dialogic_input_autoadvance)
+	dialogic.Text.auto_skip.auto_skip_changed.disconnect(_on_auto_skip_enable)
+
+## Tries to play the voice clip for the current line.
+func _try_play_current_line_voice() -> void:
+	# If Auto-Skip is enabled and we skip voice clips, we don't want to play.
+	if (Dialogic.Text.auto_skip.enabled
+	and dialogic.Text.auto_skip.skip_voice):
+		return
+
+	# Plays the audio region for the current line.
+	if (dialogic.has_subsystem('Voice')
+	and dialogic.Voice.is_voiced(dialogic.current_event_idx)):
+		dialogic.Voice.play_voice()
+
 func _execute() -> void:
 	if text.is_empty():
 		finish()
 		return
-	
+
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
@@ -65,12 +99,13 @@ func _execute() -> void:
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.add_layout_style(character.custom_info.style, false)
-		
-		
+
+
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
 			dialogic.Portraits.change_character_portrait(character, portrait)
 		dialogic.Portraits.change_speaker(character, portrait)
 		var check_portrait :String = portrait if !portrait.is_empty() else dialogic.current_state_info['portraits'].get(character.resource_path, {}).get('portrait', '')
+
 		if check_portrait and character.portraits.get(check_portrait, {}).get('sound_mood', '') in character.custom_info.get('sound_moods', {}):
 			dialogic.Text.update_typing_sound_mood(character.custom_info.get('sound_moods', {}).get(character.portraits[check_portrait].get('sound_mood', {}), {}))
 		elif !character.custom_info.get('sound_mood_default', '').is_empty():
@@ -82,12 +117,10 @@ func _execute() -> void:
 	else:
 		dialogic.Portraits.change_speaker(null)
 		dialogic.Text.update_name_label(null)
-	
-	if not dialogic.Input.dialogic_action.is_connected(_on_dialogic_input_action):
-		dialogic.Input.dialogic_action.connect(_on_dialogic_input_action)
-	if not dialogic.Input.autoadvance.is_connected(_on_dialogic_input_autoadvance):
-		dialogic.Input.autoadvance.connect(_on_dialogic_input_autoadvance)
-	
+		dialogic.Text.update_typing_sound_mood()
+
+	_connect_signals()
+
 	var final_text :String= get_property_translated('text')
 	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
 		match ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0):
@@ -104,17 +137,29 @@ func _execute() -> void:
 	for section_idx in range(len(split_text)):
 		dialogic.Text.hide_next_indicators()
 		state = States.REVEALING
-		final_text = dialogic.Text.parse_text(split_text[section_idx][0])
-		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append':split_text[section_idx][1]})
-		final_text = await dialogic.Text.update_dialog_text(final_text, false, split_text[section_idx][1])
+		var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
 
-		# Plays the audio region for the current line.
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
-			dialogic.Voice.play_voice()
+		var is_append: bool = split_text[section_idx][1]
 
-		await dialogic.Text.text_finished
+		final_text = segment
+		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+
+		final_text = await dialogic.Text.update_dialog_text(final_text, false, is_append)
+
+		_try_play_current_line_voice()
+
+		_mark_as_read(final_text)
+
+		# We must skip text animation before we potentially return when there
+		# is a Choice event.
+		if Dialogic.Text.auto_skip.enabled:
+			Dialogic.Text.skip_text_animation()
+		else:
+			await dialogic.Text.text_finished
+
 		state = States.IDLE
-		#end of dialog
+
+		# Handling potential Choice Events.
 		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
 			dialogic.Choices.show_current_choices(false)
@@ -129,17 +174,20 @@ func _execute() -> void:
 		if section_idx == len(split_text)-1:
 			state = States.DONE
 
-		if dialogic.has_subsystem('History'):
-			if character:
-				dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
-			else:
-				dialogic.History.store_simple_history_entry(final_text, event_name)
-			dialogic.History.event_was_read(self)
+		# If Auto-Skip is enabled and there are multiple parts of this text
+		# we need to skip the text after the defined time per event.
+		if	Dialogic.Text.auto_skip.enabled:
+			await dialogic.Text.input_handler.start_auto_skip_timer()
 
-		await advance
+			# Check if Auto-Skip is still enabled.
+			if not dialogic.Text.auto_skip.enabled:
+				await advance
 
+		else:
+			await advance
+
+	_disconnect_signals()
 	finish()
-
 
 func _on_dialogic_input_action():
 	match state:
@@ -159,6 +207,22 @@ func _on_dialogic_input_autoadvance():
 	if state == States.IDLE or state == States.DONE:
 		advance.emit()
 
+func _on_auto_skip_enable(enabled: bool):
+	if not enabled:
+		return
+
+	match state:
+		States.DONE:
+			await dialogic.Text.input_handler.start_auto_skip_timer()
+
+			# If Auto-Skip is still enabled, advance the text.
+			if dialogic.Text.auto_skip.enabled:
+				advance.emit()
+
+		States.REVEALING:
+			Dialogic.Text.skip_text_animation()
+
+
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
@@ -170,7 +234,7 @@ func _init() -> void:
 	event_sorting_index = 0
 	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 	expand_by_default = true
-	
+
 
 
 ################################################################################

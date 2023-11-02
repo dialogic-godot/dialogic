@@ -14,7 +14,7 @@ var text :String = ""
 var condition: String = ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
 var else_action: = ElseActions.DEFAULT
-## The text that is displayed if [condition] is false and [else_action] is Disable. 
+## The text that is displayed if [condition] is false and [else_action] is Disable.
 ## If empty [text] will be used for disabled button as well.
 var disabled_text: String = ""
 
@@ -24,9 +24,9 @@ var disabled_text: String = ""
 ################################################################################
 
 func _execute() -> void:
-	# This event is mostly a placeholder that's used to indicate a position. 
-	# Only the selected choice is reached. 
-	# However mainly the Choices Subsystem queries the events 
+	# This event is mostly a placeholder that's used to indicate a position.
+	# Only the selected choice is reached.
+	# However mainly the Choices Subsystem queries the events
 	#   to find the choices that belong to the question.
 	if !dialogic.Choices.last_question_info.has('choices'):
 		finish()
@@ -37,6 +37,7 @@ func _execute() -> void:
 			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(text), event_name, {'all_choices': all_choices})
 		else:
 			dialogic.History.store_simple_history_entry(text, event_name, {'all_choices': all_choices})
+
 	finish()
 
 
@@ -72,17 +73,17 @@ func to_text() -> String:
 	result_string = "- "+text.strip_edges()
 	if condition:
 		result_string += " [if "+condition+"]"
-	
-	
+
+
 	var shortcode = '['
 	if else_action == ElseActions.HIDE:
 		shortcode += 'else="hide"'
 	elif else_action == ElseActions.DISABLE:
 		shortcode += 'else="disable"'
-	
+
 	if disabled_text:
 		shortcode += " alt_text="+'"'+disabled_text+'"'
-	
+
 	if len(shortcode) > 1:
 		result_string += shortcode + "]"
 	return result_string
@@ -99,10 +100,10 @@ func from_text(string:String) -> void:
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		else_action = {
-			'default':ElseActions.DEFAULT, 
+			'default':ElseActions.DEFAULT,
 			'hide':ElseActions.HIDE,
 			'disable':ElseActions.DISABLE}.get(shortcode_params.get('else', ''), ElseActions.DEFAULT)
-		
+
 		disabled_text = shortcode_params.get('alt_text', '')
 
 
@@ -152,14 +153,14 @@ func build_event_editor() -> void:
 			}
 		]}, '!condition.is_empty()')
 	add_body_edit("disabled_text", ValueType.SINGLELINE_TEXT, {
-			'left_text':'Disabled text:', 
+			'left_text':'Disabled text:',
 			'placeholder':'(Empty for same)'}, 'allow_alt_text()')
 
 
 func allow_alt_text() -> bool:
 	return condition and (
-		else_action == ElseActions.DISABLE or 
-		(else_action == ElseActions.DEFAULT and 
+		else_action == ElseActions.DISABLE or
+		(else_action == ElseActions.DEFAULT and
 		ProjectSettings.get_setting("dialogic/choices/def_false_behaviour", 0) == 1))
 
 
@@ -168,13 +169,13 @@ func allow_alt_text() -> bool:
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
 	line = CodeCompletionHelper.get_line_untill_caret(line)
-	
-	
+
+
 	if !'[if' in line:
 		if symbol == '{':
 			CodeCompletionHelper.suggest_variables(TextNode)
 		return
-	
+
 	if symbol == '[':
 		if !'[if' in line and line.count('[') - line.count(']') == 1:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)

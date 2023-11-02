@@ -2,7 +2,7 @@
 class_name DialogicEvent
 extends Resource
 
-## Base event class for all dialogic events. 
+## Base event class for all dialogic events.
 ## Implements basic properties, translation, shortcode saving and usefull methods for creating
 ## the editor UI.
 
@@ -11,7 +11,7 @@ extends Resource
 ## The signal is emmited with the event resource [code]event_resource[/code]
 signal event_started(event_resource)
 
-## Emmited when the event finish. 
+## Emmited when the event finish.
 ## The signal is emmited with the event resource [code]event_resource[/code]
 signal event_finished(event_resource)
 
@@ -63,7 +63,7 @@ var display_name: bool = true
 var disable_editor_button: bool = false
 ## If false the event will hide it's body by default. Recommended for most events
 var expand_by_default : bool = false
-## The URL to open when right_click>Documentation is selected 
+## The URL to open when right_click>Documentation is selected
 var help_page_path : String = ""
 ## Is the event block created by a button?
 var created_by_button : bool = false
@@ -90,13 +90,13 @@ enum ValueType {
 	# Resources
 	COMPLEX_PICKER, FILE,
 	# Array
-	STRING_ARRAY,
+	ARRAY,
 	# Integers
 	FIXED_OPTION_SELECTOR, INTEGER, VECTOR2,
 	# Floats
 	FLOAT, DECIBEL,
 	# Other
-	CUSTOM, BUTTON,
+	CUSTOM, BUTTON, KEY_VALUE_PAIRS
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
@@ -142,7 +142,7 @@ func is_expected_parent_event(event:DialogicEvent) -> bool:
 
 
 ## to be overridden by sub-classes
-## only called if can_contain_events is true. 
+## only called if can_contain_events is true.
 ## return a control node that should show on the END BRANCH node
 func get_end_branch_control() -> Control:
 	return null
@@ -240,7 +240,7 @@ func _load_custom_defaults():
 ## Used by the timeline processor.
 func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
-		return is_valid_event(string.get_slice('#id:', 0)) 
+		return is_valid_event(string.get_slice('#id:', 0))
 	return is_valid_event(string.strip_edges())
 
 
@@ -281,6 +281,8 @@ func to_text() -> String:
 						else:
 							result_string += " "+parameter+'="'+var_to_str(option.value).replace('=', "\\=")+'"'
 						break
+			elif typeof(get(params[parameter].property)) == TYPE_DICTIONARY:
+				result_string += " "+parameter+'="'+ JSON.stringify(get(params[parameter].property)).replace('=', "\\=")+'"'
 			else:
 				result_string += " "+parameter+'="'+var_to_str(get(params[parameter].property)).replace('=', "\\=")+'"'
 	result_string += "]"
@@ -295,8 +297,8 @@ func from_text(string:String) -> void:
 	for parameter in params.keys():
 		if not parameter in data:
 			continue
-		
-		var value :Variant 
+
+		var value :Variant
 		match typeof(get(params[parameter].property)):
 			TYPE_STRING:
 				value = data[parameter].replace('\\=', '=')
@@ -321,7 +323,7 @@ func is_valid_event(string:String) -> bool:
 	return false
 
 
-## has to return true if this string seems to be a full event of this kind 
+## has to return true if this string seems to be a full event of this kind
 ## (only tested if is_valid_event() returned true)
 ## if a shortcode it used it will default to true if the string ends with ']'
 func is_string_full_event(string:String) -> bool:
@@ -385,7 +387,7 @@ func get_event_editor_info() -> Array:
 			editor_list.clear()
 		else:
 			editor_list = []
-		
+
 		build_event_editor()
 		return editor_list
 	else:
@@ -398,21 +400,21 @@ func build_event_editor() -> void:
 
 ## For the methods below the arguments are mostly similar:
 ## @variable: 		String name of the property this field is for
-## @condition: 		String that will be executed as an expression. If it false 
+## @condition: 		String that will be executed as an expression. If it false
 ## @editor_type: 	One of the ValueTypes (see ValueType enum). Defines type of field.
-## @left_text: 		Text that will be shown to the left of the field 
+## @left_text: 		Text that will be shown to the left of the field
 ## @right_text: 	Text that will be shown to the right of the field
-## @extra_info: 	Allows passing a lot more info to the field. 
+## @extra_info: 	Allows passing a lot more info to the field.
 ## 					What info can be passed is differnet for every field
 
 func add_header_label(text:String, condition:String = "") -> void:
 	editor_list.append({
-		"name" 			: "something", 
+		"name" 			: "something",
 		"type" 			:+ TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
 		"dialogic_type" : ValueType.LABEL,
-		"display_info"  : {"text":text}, 
+		"display_info"  : {"text":text},
 		"condition" 	: condition
 		})
 
@@ -445,7 +447,7 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 
 func add_body_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
-		"name" 			: variable, 
+		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.BODY,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
