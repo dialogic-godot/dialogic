@@ -213,7 +213,7 @@ func build_event_editor() -> void:
 func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
 	pass
 
-func load_game_state():
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	pass
 
 
