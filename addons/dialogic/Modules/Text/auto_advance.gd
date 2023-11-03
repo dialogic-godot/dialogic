@@ -26,6 +26,8 @@ var await_playing_voice := true
 
 var override_delay_for_current_event: float = -1.0
 
+var waiting_for_next_event := false
+
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
@@ -148,7 +150,7 @@ func get_autoadvance_time() -> float:
 ##
 ## All three can be set with dedicated methods.
 func is_autoadvance_enabled() -> bool:
-	return (get_autoadvance_info()['waiting_for_next_event']
+	return (waiting_for_next_event
 		or get_autoadvance_info()['waiting_for_user_input']
 		or get_autoadvance_info()['waiting_for_system'])
 
@@ -159,7 +161,6 @@ func is_autoadvance_enabled() -> bool:
 func get_autoadvance_info() -> Dictionary:
 	if not Dialogic.current_state_info.has('autoadvance'):
 		Dialogic.current_state_info['autoadvance'] = {
-		'waiting_for_next_event' : false,
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
 		}
@@ -194,8 +195,7 @@ func set_autoadvance_system(enabled: bool) -> void:
 
 ## Sets the autoadvance waiting_for_next_event flag to [param enabled].
 func set_autoadvance_until_next_event(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_next_event'] = enabled
+	waiting_for_next_event = enabled
 
 	_emit_autoadvance_enabled()
 
