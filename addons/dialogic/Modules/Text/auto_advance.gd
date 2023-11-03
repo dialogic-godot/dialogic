@@ -14,6 +14,7 @@ signal autoadvance_changed(enabled: bool)
 var enabled := false
 var autoadvance_timer := Timer.new()
 
+var fixed_delay: float = 1.0
 
 var per_word_delay: float = 0.0
 var per_character_delay: float = 0.1
@@ -68,7 +69,7 @@ func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") 
 		var modifier: float = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1.0)
 		delay *= modifier
 		# Apply fixed delay last, so it's not affected by the delay modifier
-		delay += info['fixed_delay']
+		delay += fixed_delay
 
 		delay = max(0, delay)
 
@@ -157,7 +158,6 @@ func get_autoadvance_info() -> Dictionary:
 		'waiting_for_next_event' : false,
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
-		'fixed_delay' : 1,
 		'override_delay_for_current_event' : -1,
 		}
 	return Dialogic.current_state_info['autoadvance']
