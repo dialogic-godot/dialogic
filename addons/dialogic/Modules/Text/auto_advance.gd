@@ -28,6 +28,7 @@ var override_delay_for_current_event: float = -1.0
 
 var waiting_for_next_event := false
 var waiting_for_system := false
+var waiting_for_user_input := false
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
@@ -152,7 +153,7 @@ func get_autoadvance_time() -> float:
 ## All three can be set with dedicated methods.
 func is_autoadvance_enabled() -> bool:
 	return (waiting_for_next_event
-		or get_autoadvance_info()['waiting_for_user_input']
+		or waiting_for_user_input
 		or waiting_for_system)
 
 
@@ -162,7 +163,6 @@ func is_autoadvance_enabled() -> bool:
 func get_autoadvance_info() -> Dictionary:
 	if not Dialogic.current_state_info.has('autoadvance'):
 		Dialogic.current_state_info['autoadvance'] = {
-		'waiting_for_user_input' : false,
 		}
 	return Dialogic.current_state_info['autoadvance']
 
@@ -179,8 +179,7 @@ func _emit_autoadvance_enabled() -> void:
 
 ## Sets the autoadvance waiting_for_user_input flag to [param enabled].
 func set_autoadvance_until_user_input(enabled: bool) -> void:
-	var info := get_autoadvance_info()
-	info['waiting_for_user_input'] = enabled
+	waiting_for_user_input = enabled
 
 	_emit_autoadvance_enabled()
 
