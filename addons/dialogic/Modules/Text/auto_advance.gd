@@ -15,6 +15,8 @@ var enabled := false
 var autoadvance_timer := Timer.new()
 
 
+var per_word_delay: float = 0
+
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
@@ -28,7 +30,7 @@ func start_autoadvance() -> void:
 		return
 
 	var delay := _calculate_autoadvance_delay(
-				get_autoadvance_info(),
+				self,
 				Dialogic.current_state_info['text_parsed'])
 	if delay == 0:
 		_on_autoadvance_timer_timeout()
@@ -47,7 +49,7 @@ func start_autoadvance() -> void:
 ## - text time taken
 ## - autoadvance delay modifier
 ## - voice audio
-func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
+func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") -> float:
 	var delay := 0.0
 
 	# Check for temporary time override
@@ -71,8 +73,8 @@ func _calculate_autoadvance_delay(info:Dictionary, text:String="") -> float:
 
 ## Checks how many words can be found by separating the text by whitespace.
 ##   (Uses ` ` aka SPACE right now, could be extended in the future)
-func _calculate_per_word_delay(text: String, info:Dictionary) -> float:
-	return float(text.split(' ', false).size() * info['per_word_delay'])
+func _calculate_per_word_delay(text: String, info: DialogicAutoAdvance) -> float:
+	return float(text.split(' ', false).size() * info.per_word_delay)
 
 
 ## Checks how many characters can be found by iterating each letter.
@@ -149,7 +151,6 @@ func get_autoadvance_info() -> Dictionary:
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
 		'fixed_delay' : 1,
-		'per_word_delay' : 0,
 		'per_character_delay' : 0.1,
 		'ignored_characters_enabled' : false,
 		'ignored_characters' : {},

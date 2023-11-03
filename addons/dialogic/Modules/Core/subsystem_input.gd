@@ -22,7 +22,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	auto_advance.set_autoadvance_system(ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false))
 	var autoadvance_info: Dictionary = auto_advance.get_autoadvance_info()
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-	autoadvance_info['per_word_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
+	auto_advance.per_word_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	autoadvance_info['per_character_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
 	autoadvance_info['ignored_characters_enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
 	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
