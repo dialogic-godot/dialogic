@@ -9,7 +9,7 @@ extends RefCounted
 class_name DialogicAutoAdvance
 
 signal autoadvance
-signal autoadvance_changed(enabled: bool)
+signal toggled(enabled: bool)
 
 var enabled := false
 var autoadvance_timer := Timer.new()
@@ -27,15 +27,15 @@ var await_playing_voice := true
 
 var override_delay_for_current_event: float = -1.0
 
-var waiting_for_next_event := false
+var enabled_until_next_event := false
 var waiting_for_system := false
-var waiting_for_user_input := false
+var enabled_until_user_input := false
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
-	autoadvance_changed.connect(_on_autoadvance_enabled_change)
+	toggled.connect(_on_autoadvance_enabled_change)
 
 #region AUTOADVANCE INTERNALS
 
@@ -146,49 +146,49 @@ func get_autoadvance_time() -> float:
 
 ## Returns whether autoadvance is currently considered enabled.
 ## Autoadvance is considered on if any of these flags is true:
-## - waiting_for_user_input (becomes false on any dialogic input action)
-## - waiting_for_next_event (becomes false on each text event)
+## - enabled_until_user_input (becomes false on any dialogic input action)
+## - enabled_until_next_event (becomes false on each text event)
 ## - waiting_for_system (becomes false only when disabled via code)
 ##
 ## All three can be set with dedicated methods.
 func is_autoadvance_enabled() -> bool:
-	return (waiting_for_next_event
-		or waiting_for_user_input
+	return (enabled_until_next_event
+		or enabled_until_user_input
 		or waiting_for_system)
 
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
-## If it changed, emits the [member autoadvance_changed] signal.
+## If it changed, emits the [member toggled] signal.
 func _emit_autoadvance_enabled() -> void:
 	var old_autoadvance_state := enabled
 	enabled = is_autoadvance_enabled()
 
 	if old_autoadvance_state != enabled:
-		autoadvance_changed.emit(enabled)
+		toggled.emit(enabled)
 
 
-## Sets the autoadvance waiting_for_user_input flag to [param enabled].
-func set_autoadvance_until_user_input(enabled: bool) -> void:
-	waiting_for_user_input = enabled
+## Sets the autoadvance enabled_until_user_input flag to [param enabled].
+func set_autoadvance_until_user_input(is_enabled: bool) -> void:
+	enabled_until_user_input = is_enabled
 
 	_emit_autoadvance_enabled()
 
 
 ## Sets the autoadvance waiting_for_system flag to [param enabled].
-func set_autoadvance_system(enabled: bool) -> void:
-	waiting_for_system = enabled
+func set_autoadvance_system(is_enabled: bool) -> void:
+	waiting_for_system = is_enabled
 
 	_emit_autoadvance_enabled()
 
 
-## Sets the autoadvance waiting_for_next_event flag to [param enabled].
-func set_autoadvance_until_next_event(enabled: bool) -> void:
-	waiting_for_next_event = enabled
+## Sets the autoadvance enabled_until_next_event flag to [param enabled].
+func set_autoadvance_until_next_event(is_enabled: bool) -> void:
+	enabled_until_next_event = is_enabled
 
 	_emit_autoadvance_enabled()
 
-
-func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
-	delay_modifier = delay_modifier
+## An internal method connected to changes on the Delay Modifier setting.
+func _update_autoadvance_delay_modifier(delay_modifier_value: float) -> void:
+	delay_modifier = delay_modifier_value
 
 func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> void:
 	override_delay_for_current_event = delay_time

@@ -112,7 +112,7 @@ func _ready() -> void:
 
 func post_install() -> void:
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
-	auto_skip.autoskip_changed.connect(_on_autoskip_changed)
+	auto_skip.toggled.connect(_on_autoskip_changed)
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
