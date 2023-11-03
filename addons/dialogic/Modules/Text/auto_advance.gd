@@ -15,7 +15,8 @@ var enabled := false
 var autoadvance_timer := Timer.new()
 
 
-var per_word_delay: float = 0
+var per_word_delay: float = 0.0
+var per_character_delay: float = 0.1
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
@@ -57,7 +58,7 @@ func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") 
 		delay = info['override_delay_for_current_event']
 	else:
 		# Add per word and per character delay
-		delay = _calculate_per_word_delay(text, info) + _calculate_per_character_delay(text, info)
+		delay = _calculate_per_word_delay(text) + _calculate_per_character_delay(text, info)
 		delay *= Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 		# Apply fixed delay last, so it's not affected by the delay modifier
 		delay += info['fixed_delay']
@@ -73,13 +74,12 @@ func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") 
 
 ## Checks how many words can be found by separating the text by whitespace.
 ##   (Uses ` ` aka SPACE right now, could be extended in the future)
-func _calculate_per_word_delay(text: String, info: DialogicAutoAdvance) -> float:
-	return float(text.split(' ', false).size() * info.per_word_delay)
+func _calculate_per_word_delay(text: String) -> float:
+	return float(text.split(' ', false).size() * per_word_delay)
 
 
 ## Checks how many characters can be found by iterating each letter.
-func _calculate_per_character_delay(text: String, info:Dictionary) -> float:
-	var per_character_delay: float = info['per_character_delay']
+func _calculate_per_character_delay(text: String, info: Dictionary) -> float:
 	var calculated_delay: float = 0
 
 	if per_character_delay > 0:
