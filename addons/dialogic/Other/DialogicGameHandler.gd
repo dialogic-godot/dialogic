@@ -59,9 +59,9 @@ func _ready() -> void:
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
-# Method to start a timeline without adding a layout scene.
-# @timeline can be either a loaded timeline resource or a path to a timeline file.
-# @label_or_idx can be a label (string) or index (int) to skip to immediatly.
+## Method to start a timeline without adding a layout scene.
+## @timeline can be either a loaded timeline resource or a path to a timeline file.
+## @label_or_idx can be a label (string) or index (int) to skip to immediatly.
 func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) == TYPE_STRING:
@@ -91,8 +91,8 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	handle_next_event()
 
 
-# Preloader function, prepares a timeline and returns an object to hold for later
-## TODO: Question: why is this taking a variant and then only allowing a string?
+## Preloader function, prepares a timeline and returns an object to hold for later
+# TODO: Question: why is this taking a variant and then only allowing a string?
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
@@ -121,6 +121,9 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
 
+	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and get_meta('previous_event').event_finished.is_connected(handle_next_event):
+		get_meta('previous_event').event_finished.disconnect(handle_next_event)
+
 	if paused:
 		await dialogic_resumed
 
@@ -136,15 +139,17 @@ func handle_event(event_index:int) -> void:
 	current_event_idx = event_index
 
 	if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
-		current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
+		current_timeline_events[event_index].event_finished.connect(handle_next_event)
+
+	set_meta('previous_event', current_timeline_events[event_index])
 
 	current_timeline_events[event_index].execute(self)
 	event_handled.emit(current_timeline_events[event_index])
 
 
-# resets dialogics state fully or partially
-# by using the clear flags you can specify what info should be kept
-# for example at timeline end usually it doesn't clear node or subsystem info
+## resets dialogics state fully or partially
+## by using the clear flags you can specify what info should be kept
+## for example at timeline end usually it doesn't clear node or subsystem info
 func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
@@ -392,9 +397,9 @@ func find_timeline(path: String) -> String:
 ################################################################################
 ##						FOR END USER
 ################################################################################
-# Method to start a timeline AND ensure that a layout scene is present.
-# For argument info, checkout start_timeline()
-# -> returns the layout node
+## Method to start a timeline AND ensure that a layout scene is present.
+## For argument info, checkout start_timeline()
+## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
 	var scene :Node= null
 	if !has_active_layout_node():
@@ -409,8 +414,8 @@ func start(timeline:Variant, label:Variant="") -> Node:
 	return scene
 
 
-# Makes sure the layout scene is instanced and will show it if it was hidden.
-# The layout scene will always be added to the tree root.
+## Makes sure the layout scene is instanced and will show it if it was hidden.
+## The layout scene will always be added to the tree root.
 func _add_layout_node(scene_path := "") -> Node:
 	var scene: Node = get_layout_node()
 
