@@ -156,17 +156,6 @@ func is_autoadvance_enabled() -> bool:
 		or waiting_for_user_input
 		or waiting_for_system)
 
-
-## Fetches all Auto-Advance settings.
-## If they don't exist, returns the default settings.
-## The key's values will be changed upon setting them.
-func get_autoadvance_info() -> Dictionary:
-	if not Dialogic.current_state_info.has('autoadvance'):
-		Dialogic.current_state_info['autoadvance'] = {
-		}
-	return Dialogic.current_state_info['autoadvance']
-
-
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member autoadvance_changed] signal.
 func _emit_autoadvance_enabled() -> void:
