@@ -21,6 +21,8 @@ var per_character_delay: float = 0.1
 var ignored_characters_enabled := false
 var ignored_characters := {}
 
+var await_playing_voice := true
+
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
@@ -62,14 +64,16 @@ func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") 
 	else:
 		# Add per word and per character delay
 		delay = _calculate_per_word_delay(text) + _calculate_per_character_delay(text)
-		delay *= Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
+
+		var modifier: float = Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1.0)
+		delay *= modifier
 		# Apply fixed delay last, so it's not affected by the delay modifier
 		delay += info['fixed_delay']
 
 		delay = max(0, delay)
 
 	# Wait for the voice clip (if longer than the current delay)
-	if info['await_playing_voice'] and Dialogic.has_subsystem('Voice') and Dialogic.Voice.is_running():
+	if await_playing_voice and Dialogic.has_subsystem('Voice') and Dialogic.Voice.is_running():
 		delay = max(delay, Dialogic.Voice.get_remaining_time())
 
 	return delay
@@ -154,10 +158,7 @@ func get_autoadvance_info() -> Dictionary:
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
 		'fixed_delay' : 1,
-		'per_character_delay' : 0.1,
-		'ignored_characters' : {},
 		'override_delay_for_current_event' : -1,
-		'await_playing_voice' : true,
 		}
 	return Dialogic.current_state_info['autoadvance']
 
