@@ -24,8 +24,8 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	autoadvance_info['fixed_delay'] = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	auto_advance.per_word_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	auto_advance.per_character_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
-	autoadvance_info['ignored_characters_enabled'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
-	autoadvance_info['ignored_characters'] = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
+	auto_advance.ignored_characters_enabled = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
+	auto_advance.ignored_characters = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 	set_manualadvance(true)
 
 func pause() -> void:

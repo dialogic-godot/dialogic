@@ -18,6 +18,9 @@ var autoadvance_timer := Timer.new()
 var per_word_delay: float = 0.0
 var per_character_delay: float = 0.1
 
+var ignored_characters_enabled := false
+var ignored_characters := {}
+
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
@@ -58,7 +61,7 @@ func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") 
 		delay = info['override_delay_for_current_event']
 	else:
 		# Add per word and per character delay
-		delay = _calculate_per_word_delay(text) + _calculate_per_character_delay(text, info)
+		delay = _calculate_per_word_delay(text) + _calculate_per_character_delay(text)
 		delay *= Dialogic.Settings.get_setting('autoadvance_delay_modifier', 1)
 		# Apply fixed delay last, so it's not affected by the delay modifier
 		delay += info['fixed_delay']
@@ -79,14 +82,14 @@ func _calculate_per_word_delay(text: String) -> float:
 
 
 ## Checks how many characters can be found by iterating each letter.
-func _calculate_per_character_delay(text: String, info: Dictionary) -> float:
+func _calculate_per_character_delay(text: String) -> float:
 	var calculated_delay: float = 0
 
 	if per_character_delay > 0:
 		# If we have characters to ignore, we will iterate each letter.
-		if info['ignored_characters_enabled']:
+		if ignored_characters_enabled:
 			for character in text:
-				if character in info['ignored_characters']:
+				if character in ignored_characters:
 					continue
 				calculated_delay += per_character_delay
 
@@ -152,7 +155,6 @@ func get_autoadvance_info() -> Dictionary:
 		'waiting_for_system' : false,
 		'fixed_delay' : 1,
 		'per_character_delay' : 0.1,
-		'ignored_characters_enabled' : false,
 		'ignored_characters' : {},
 		'override_delay_for_current_event' : -1,
 		'await_playing_voice' : true,
