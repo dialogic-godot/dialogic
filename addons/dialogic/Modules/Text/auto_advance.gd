@@ -24,6 +24,8 @@ var ignored_characters := {}
 
 var await_playing_voice := true
 
+var override_delay_for_current_event: float = -1.0
+
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
@@ -36,9 +38,9 @@ func start_autoadvance() -> void:
 	if not is_autoadvance_enabled():
 		return
 
-	var delay := _calculate_autoadvance_delay(
-				self,
-				Dialogic.current_state_info['text_parsed'])
+	var parsed_text: String = Dialogic.current_state_info['text_parsed']
+	var delay := _calculate_autoadvance_delay(parsed_text)
+
 	if delay == 0:
 		_on_autoadvance_timer_timeout()
 	else:
@@ -56,12 +58,12 @@ func start_autoadvance() -> void:
 ## - text time taken
 ## - autoadvance delay modifier
 ## - voice audio
-func _calculate_autoadvance_delay(info: DialogicAutoAdvance, text: String = "") -> float:
+func _calculate_autoadvance_delay(text: String = "") -> float:
 	var delay := 0.0
 
 	# Check for temporary time override
-	if info['override_delay_for_current_event'] >= 0:
-		delay = info['override_delay_for_current_event']
+	if override_delay_for_current_event >= 0:
+		delay = override_delay_for_current_event
 	else:
 		# Add per word and per character delay
 		delay = _calculate_per_word_delay(text) + _calculate_per_character_delay(text)
@@ -114,7 +116,9 @@ func _on_autoadvance_timer_timeout() -> void:
 func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
 	# we will initiate the auto-advance mode.
-	if (is_enabled and !is_autoadvancing() and Dialogic.current_state == Dialogic.States.IDLE and not Dialogic.current_state_info.get('text', '').is_empty()):
+	if (is_enabled and !is_autoadvancing()
+	and Dialogic.current_state == Dialogic.States.IDLE
+	and not Dialogic.current_state_info.get('text', '').is_empty()):
 		start_autoadvance()
 
 	# If auto-advance is disabled and we are auto-advancing,
@@ -158,7 +162,6 @@ func get_autoadvance_info() -> Dictionary:
 		'waiting_for_next_event' : false,
 		'waiting_for_user_input' : false,
 		'waiting_for_system' : false,
-		'override_delay_for_current_event' : -1,
 		}
 	return Dialogic.current_state_info['autoadvance']
 
@@ -166,7 +169,7 @@ func get_autoadvance_info() -> Dictionary:
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member autoadvance_changed] signal.
 func _emit_autoadvance_enabled() -> void:
-	var old_autoadvance_state = enabled
+	var old_autoadvance_state := enabled
 	enabled = is_autoadvance_enabled()
 
 	if old_autoadvance_state != enabled:
@@ -204,8 +207,7 @@ func _update_autoadvance_delay_modifier(delay_modifier: float) -> void:
 
 
 func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> void:
-	var info := get_autoadvance_info()
-	info['override_delay_for_current_event'] = delay_time
+	override_delay_for_current_event = delay_time
 
 
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
