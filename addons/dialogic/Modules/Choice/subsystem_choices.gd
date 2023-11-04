@@ -90,6 +90,9 @@ func show_current_choices(instant:=true) -> void:
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx := 1
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
+		# FIXME: Godot 4.2 can replace this with a typed for loop.
+		var choice_button := node as DialogicNode_ChoiceButton
+
 		if !node.get_parent().is_visible_in_tree():
 			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
@@ -105,11 +108,22 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			var button_binding := _on_ChoiceButton_choice_selected.bind(event_index,
 			{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index})
 
-			if ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
+			if (ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0) or
+			not choice_button.press_choice_keys.is_empty()):
 				var shortcut := Shortcut.new()
 				var input_key := InputEventKey.new()
+				var shortcut_events: Array[InputEventKey] = []
 
-				input_key.keycode = OS.find_keycode_from_string(str(idx))
+				if idx == 1 and idx < 10:
+					input_key.keycode = OS.find_keycode_from_string(str(idx))
+					shortcut_events.append(input_key)
+
+				# If it was empty, nothing will be appended.
+				for key in choice_button.press_choice_keys:
+					var button_input_key := InputEventKey.new()
+					button_input_key.keycode = key
+					shortcut_events.append_array(choice_button.press_choice_keys)
+
 				shortcut.events = [input_key]
 
 				node.shortcut = shortcut
