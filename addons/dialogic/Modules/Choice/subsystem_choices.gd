@@ -111,20 +111,20 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			if (ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0) or
 			not choice_button.press_choice_keys.is_empty()):
 				var shortcut := Shortcut.new()
-				var input_key := InputEventKey.new()
 				var shortcut_events: Array[InputEventKey] = []
 
 				if idx == 1 and idx < 10:
+					var input_key := InputEventKey.new()
 					input_key.keycode = OS.find_keycode_from_string(str(idx))
 					shortcut_events.append(input_key)
 
-				# If it was empty, nothing will be appended.
+				# Adding the defined keys from the choice button.
 				for key in choice_button.press_choice_keys:
 					var button_input_key := InputEventKey.new()
 					button_input_key.keycode = key
 					shortcut_events.append_array(choice_button.press_choice_keys)
 
-				shortcut.events = [input_key]
+				shortcut.events = shortcut_events
 
 				node.shortcut = shortcut
 				node.pressed.connect(button_binding)
