@@ -3,7 +3,7 @@ extends Button
 
 ## Dialogic Node that displays choices.
 
-## Used to identify what choices to put on. If you leave it at -1, choices will be distributed automatically. 
+## Used to identify what choices to put on. If you leave it at -1, choices will be distributed automatically.
 @export var choice_index:int = -1
 
 ## Can be set to play this sound when pressed. Requires a sibling DialogicNode_ButtonSound node.
@@ -12,7 +12,9 @@ extends Button
 @export var sound_hover: AudioStream
 ## Can be set to play this sound when focused. Requires a sibling DialogicNode_ButtonSound node.
 @export var sound_focus: AudioStream
-
+## These keys will be added to the shortcut mechanism on the choice button.
+## Pressing the key will press the button and pick the choice.
+@export var press_choice_keys: Array[Key]
 
 func _ready():
 	add_to_group('dialogic_choice_button')
