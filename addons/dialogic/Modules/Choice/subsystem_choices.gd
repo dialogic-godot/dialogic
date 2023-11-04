@@ -113,7 +113,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				var shortcut := Shortcut.new()
 				var shortcut_events: Array[InputEventKey] = []
 
-				if idx == 1 and idx < 10:
+				if idx > 0 and idx < 10:
 					var input_key := InputEventKey.new()
 					input_key.keycode = OS.find_keycode_from_string(str(idx))
 					shortcut_events.append(input_key)
