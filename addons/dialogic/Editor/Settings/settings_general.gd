@@ -109,7 +109,6 @@ func _on_reset_colors_button() -> void:
 
 
 func _on_physics_timer_button_toggled(is_toggled: bool) -> void:
-	print(is_toggled)
 	ProjectSettings.set_setting('dialogic/timer/process_in_physics', is_toggled)
 	ProjectSettings.save()
 
