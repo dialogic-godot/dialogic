@@ -102,16 +102,21 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			if idx == 1 and ProjectSettings.get_setting('dialogic/choices/autofocus_first', true):
 				node.grab_focus()
 
+			var button_binding := _on_ChoiceButton_choice_selected.bind(event_index,
+			{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index})
+
 			if ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
 				var shortcut := Shortcut.new()
 				var input_key := InputEventKey.new()
+
 				input_key.keycode = OS.find_keycode_from_string(str(idx))
 				shortcut.events = [input_key]
+
 				node.shortcut = shortcut
+				node.pressed.connect(button_binding)
 
 			node.disabled = not enabled
-			node.button_up.connect(_on_ChoiceButton_choice_selected.bind(event_index,
-				{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
+			node.button_up.connect(button_binding)
 
 		if node.choice_index > 0:
 			idx = node.choice_index
