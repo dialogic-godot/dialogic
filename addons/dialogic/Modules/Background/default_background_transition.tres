@@ -13,4 +13,5 @@ gradient = SubResource("Gradient_vsud1")
 shader = ExtResource("1_uctph")
 shader_parameter/progress = 0.0
 shader_parameter/feather = 1.0
+shader_parameter/keepAspectRatio = false
 shader_parameter/whipeTexture = SubResource("GradientTexture1D_mmq7j")

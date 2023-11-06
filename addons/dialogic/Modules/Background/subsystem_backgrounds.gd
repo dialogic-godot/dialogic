@@ -4,7 +4,7 @@ extends DialogicSubsystem
 
 signal background_changed(info:Dictionary)
 
-var _tween
+var _tween : Tween
 var _tween_callbacks : Array[Callable]
 
 var default_background_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
@@ -83,13 +83,6 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 						_tween_callbacks.append(_free_node.bind(old_bg))
 					else:
 						_free_node(old_bg)
-					
-					#if !old_bg._fade_out(fade_time) and "modulate" in old_bg:
-					#	var tween := old_bg.create_tween()
-					#	tween.tween_property(old_bg, "modulate", Color.TRANSPARENT, fade_time)
-					#	tween.tween_callback(old_bg.queue_free)
-					#else:
-					#	old_bg.queue_free()
 				
 				var new_node:Node
 				if scene.ends_with('.tscn'):
@@ -113,14 +106,6 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 					new_node._fade_in(fade_time) # left in as it can be used to tell the bg that it is fading in
 					
 					mat.set_shader_parameter("nextBackground", new_node._get_background_texture())
-					
-					#if new_node.has_method('_update_background'):
-					#	new_node._update_background(argument, fade_time)
-					
-					#if !new_node._fade_in(fade_time) and "modulate" in new_node:
-					#	new_node.modulate = Color.TRANSPARENT
-					#	var tween := new_node.create_tween()
-					#	tween.tween_property(new_node, "modulate", Color.WHITE, fade_time)
 				
 				_tween.tween_callback(_execute_callbacks_and_reset)
 	
