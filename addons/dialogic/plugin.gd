@@ -1,8 +1,8 @@
 @tool
 extends EditorPlugin
 
-## Main plugin script. Handles communication with the rest of godot. 
-## Most methods are overridables called by godot. 
+## Main plugin script. Handles communication with the rest of godot.
+## Most methods are overridables called by godot.
 
 
 const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
@@ -70,7 +70,10 @@ func _get_plugin_icon():
 
 func _make_visible(visible:bool) -> void:
 	if editor_view:
-		editor_view.visible = visible
+		if editor_view.get_parent() is Window:
+			editor_view.get_parent().grab_focus()
+		else:
+			editor_view.visible = visible
 
 
 func _save_external_data() -> void:

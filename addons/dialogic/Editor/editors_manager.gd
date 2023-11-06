@@ -40,7 +40,6 @@ func _ready() -> void:
 	_add_editor("res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn")
 	_add_editor("res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn")
 
-
 	# Load custom editors
 	for indexer in DialogicUtil.get_indexers():
 		for editor_path in indexer._get_editors():
