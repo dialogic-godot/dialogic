@@ -20,12 +20,12 @@ func _ready() -> void:
 
 	# Signals
 	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
-	%PhysicsTimerButton.pressed.connect(_on_physics_timer_button_toggled)
+	%PhysicsTimerButton.toggled.connect(_on_physics_timer_button_toggled)
 
 	# Colors
 	%ResetColorsButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
-	
+
 	# Extension creator
 	%ExtensionCreator.hide()
 
@@ -34,9 +34,9 @@ func _refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))
 	%ExtensionsFolderPicker.set_value(ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
-	
+
 	update_color_palette()
-	
+
 	%SectionList.clear()
 	%SectionList.create_item()
 	var cached_events :Array[DialogicEvent] = find_parent('Settings').editors_manager.resource_helper.event_script_cache
@@ -50,9 +50,9 @@ func _refresh() -> void:
 			item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
 			item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
 			if ev.event_category in section_order:
-				
+
 				item.move_before(item.get_parent().get_child(min(section_order.find(ev.event_category),item.get_parent().get_child_count()-1)))
-	
+
 	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
 	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
 
@@ -62,18 +62,18 @@ func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_ind
 		item.move_before(item.get_parent().get_child(item.get_index()-1))
 	else:
 		item.move_after(item.get_parent().get_child(item.get_index()+1))
-	
+
 	for child in %SectionList.get_root().get_children():
 		child.set_button_disabled(0, 0, false)
 		child.set_button_disabled(0, 1, false)
-	
+
 	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
 	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
-	
+
 	var sections := []
 	for child in %SectionList.get_root().get_children():
 		sections.append(child.get_text(0))
-	
+
 	DialogicUtil.set_editor_setting('event_section_order', sections)
 	force_event_button_list_reload()
 
@@ -100,7 +100,7 @@ func _on_color_change(color:Color) -> void:
 	for i in %Colors.get_children():
 		new_palette['Color'+str(i.get_index()+1)] = i.color
 	DialogicUtil.set_editor_setting('color_palette', new_palette)
-	
+
 
 
 func _on_reset_colors_button() -> void:
@@ -108,8 +108,8 @@ func _on_reset_colors_button() -> void:
 	update_color_palette()
 
 
-func _on_physics_timer_button_toggled(button_pressed:bool) -> void:
-	ProjectSettings.set_setting('dialogic/timer/process_in_physics', button_pressed)
+func _on_physics_timer_button_toggled(is_toggled: bool) -> void:
+	ProjectSettings.set_setting('dialogic/timer/process_in_physics', is_toggled)
 	ProjectSettings.save()
 
 
