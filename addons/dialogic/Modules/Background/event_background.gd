@@ -2,7 +2,7 @@
 class_name DialogicBackgroundEvent
 extends DialogicEvent
 
-## Event to show scenes in the background and switch between them. 
+## Event to show scenes in the background and switch between them.
 
 ### Settings
 
@@ -11,7 +11,7 @@ extends DialogicEvent
 ## If you set it to a scene path, then that scene will be instanced.
 ## Learn more about custom backgrounds in the Subsystem_Background.gd docs.
 var scene: String = ""
-## The argument that is passed to the background scene. 
+## The argument that is passed to the background scene.
 ## For the default scene it's the path to the image to show.
 var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
@@ -23,7 +23,13 @@ var fade: float = 0.0
 ################################################################################
 
 func _execute() -> void:
-	dialogic.Backgrounds.update_background(scene, argument, fade)
+	var final_fade_duration := fade
+
+	if Dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+		final_fade_duration = min(fade, time_per_event)
+
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
 	finish()
 
 
@@ -60,16 +66,16 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('argument', ValueType.FILE, 
+	add_header_edit('argument', ValueType.FILE,
 			{'left_text' : 'Show',
-			'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files', 
-			'placeholder': "No background", 
-			'editor_icon':["Image", "EditorIcons"]}, 
+			'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
+			'placeholder': "No background",
+			'editor_icon':["Image", "EditorIcons"]},
 			'scene == ""')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {'left_text':'Argument:'}, 'scene != ""')
 	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade Time:'})
 	add_body_edit("scene", ValueType.FILE,
 			{'left_text' :'Scene:',
 			'file_filter':'*.tscn, *.scn; Scene Files',
-			'placeholder': "Default scene", 
+			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})

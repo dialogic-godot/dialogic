@@ -24,16 +24,22 @@ var movement_time: float = 0
 ## 						EXECUTE
 ################################################################################
 func _execute() -> void:
+	var final_movement_time: float = movement_time
+
+	if Dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+		final_movement_time = max(movement_time, time_per_event)
+
 	match action:
 		Actions.SET_RELATIVE:
-			dialogic.Portraits.move_portrait_position(position, vector, true, movement_time)
+			dialogic.Portraits.move_portrait_position(position, vector, true, final_movement_time)
 		Actions.SET_ABSOLUTE:
-			dialogic.Portraits.move_portrait_position(position, vector, false, movement_time)
+			dialogic.Portraits.move_portrait_position(position, vector, false, final_movement_time)
 		Actions.RESET_ALL:
-			dialogic.Portraits.reset_all_portrait_positions(movement_time)
+			dialogic.Portraits.reset_all_portrait_positions(final_movement_time)
 		Actions.RESET:
-			dialogic.Portraits.reset_portrait_position(position, movement_time)
-	
+			dialogic.Portraits.reset_portrait_position(position, final_movement_time)
+
 	finish()
 
 
@@ -62,7 +68,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE, 
+		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE,
 								"suggestions": func(): return {"Set Relative":{'value':0, 'text_alt':['set_relative', 'relative']}, "Set Absolute":{'value':1, 'text_alt':['set_absolute', 'absolute']}, "Reset":{'value':2,'text_alt':['reset'] }, "Reset All":{'value':3,'text_alt':['reset_all']}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
@@ -95,10 +101,10 @@ func build_event_editor():
 			}
 		]
 		})
-	add_header_edit("position", ValueType.INTEGER, {'left_text':"position"}, 
+	add_header_edit("position", ValueType.INTEGER, {'left_text':"position"},
 			'action != Actions.RESET_ALL')
 	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
 	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
-	add_header_edit("vector", ValueType.VECTOR2, {}, 
+	add_header_edit("vector", ValueType.VECTOR2, {},
 			'action != Actions.RESET and action != Actions.RESET_ALL')
 	add_body_edit("movement_time", ValueType.FLOAT, {'left_text':"AnimationTime:", "right_text":"(0 for instant)"})

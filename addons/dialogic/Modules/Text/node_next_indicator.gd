@@ -19,6 +19,7 @@ extends Control
 		if has_node('Texture'):
 			get_node('Texture').texture = texture
 
+var tween: Tween
 
 func _ready():
 	add_to_group('dialogic_next_indicator')
@@ -43,8 +44,12 @@ func _on_visibility_changed():
 
 
 func play_animation(animation: int, time:float) -> void:
+	# clean up previous tween to prevent slipping
+	if tween:
+		tween.stop()
+	
 	if animation == 0:
-		var tween:Tween = (create_tween() as Tween)
+		tween = (create_tween() as Tween)
 		var distance := 4
 		tween.set_parallel(false)
 		tween.set_trans(Tween.TRANS_SINE)
@@ -54,7 +59,7 @@ func play_animation(animation: int, time:float) -> void:
 		tween.tween_property(self, 'position', Vector2(0,distance), time*0.3).as_relative()
 		tween.tween_property(self, 'position', - Vector2(0,distance), time*0.3).as_relative()
 	if animation == 1:
-		var tween:Tween = (create_tween() as Tween)
+		tween = (create_tween() as Tween)
 		tween.set_parallel(false)
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.set_ease(Tween.EASE_IN_OUT)

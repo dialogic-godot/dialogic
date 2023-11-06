@@ -5,7 +5,7 @@ func _ready() -> void:
 	if !ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
-	
+
 	var scene: Node = Dialogic.Styles.add_layout_style(DialogicUtil.get_editor_setting('current_test_style', ''))
 	if not scene is CanvasLayer:
 		if scene is Control:
@@ -32,3 +32,13 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		Dialogic.paused = !Dialogic.paused
 		$PauseIndictator.visible = Dialogic.paused
+
+	if (event is InputEventMouseButton
+	and event.is_pressed()
+	and event.button_index == MOUSE_BUTTON_MIDDLE):
+		var auto_skip: DialogicAutoSkip = Dialogic.Input.auto_skip
+		var is_auto_skip_enabled := auto_skip.enabled
+
+		auto_skip.disable_on_unread_text = false
+		auto_skip.enabled = !is_auto_skip_enabled
+

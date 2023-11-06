@@ -1,6 +1,6 @@
 extends DialogicSubsystem
 
-## Subsystem for managing backgrounds. 
+## Subsystem for managing backgrounds.
 
 signal background_changed(info:Dictionary)
 
@@ -24,12 +24,12 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ##					MAIN METHODS
 ####################################################################################################
 
-## Method that adds a given scene as child of the DialogicNode_BackgroundHolder. 
+## Method that adds a given scene as child of the DialogicNode_BackgroundHolder.
 ## It will call [_update_background()] on that scene with the given argument [argument].
 ## It will call [_fade_in()] on that scene with the given fade time.
 ## Will call fade_out on previous backgrounds scene.
 ##
-## If the scene is the same as the last background you can bypass another instantiating 
+## If the scene is the same as the last background you can bypass another instantiating
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
@@ -44,7 +44,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 			
 			
 			var bg_set: bool = false
-			if scene == dialogic.current_state_info['background_scene']:
+			if scene == dialogic.current_state_info.get('background_scene', ''):
 				for old_bg in backgrounds_node.get_children():
 					if old_bg is DialogicBackground and old_bg._should_do_background_update(argument):
 						old_bg._update_background(argument, fade_time)
@@ -102,7 +102,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 					new_node = default_background_scene.instantiate() as DialogicBackground
 				else:
 					new_node = null
-				
+
 				if new_node:
 					if "self_modulate" in new_node:
 						new_node.self_modulate = Color.TRANSPARENT

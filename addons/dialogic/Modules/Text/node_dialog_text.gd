@@ -60,6 +60,12 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 		visible_characters = len(text)
 		text = text+_text
 
+		# If Auto-Skip is enabled and we append the text (keep_previous),
+		# we can skip revealing the text and just show it all at once.
+		if Dialogic.Input.auto_skip.enabled:
+			visible_characters = 1
+			return
+
 	revealing = true
 	speed_counter = 0
 	started_revealing_text.emit()
@@ -82,7 +88,7 @@ func continue_reveal() -> void:
 		finish_text()
 		# if the text finished organically, add a small input block
 		# this prevents accidental skipping when you expected the text to be longer
-		Dialogic.Text.input_handler.block_input(0.3)
+		Dialogic.Input.block_input(0.3)
 
 
 # shows all the text imidiatly
@@ -93,7 +99,7 @@ func finish_text() -> void:
 	revealing = false
 	Dialogic.current_state = Dialogic.States.IDLE
 
-	emit_signal("finished_revealing_text")
+	finished_revealing_text.emit()
 
 
 # Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.

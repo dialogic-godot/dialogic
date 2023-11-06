@@ -46,7 +46,7 @@ func _on_textbox_hide():
 			play_backwards("textbox_pop")
 		AnimationsOut.FADE_DOWN:
 			play_backwards("textbox_fade_up")
-	
+
 	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
 		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
 
@@ -56,15 +56,18 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text():
+	if Dialogic.Input.auto_skip.enabled:
+		return
+
 	if animation_new_text == AnimationsNewText.NONE:
 		return
-	
+
 	Dialogic.Animation.start_animating()
 	if full_clear:
 		%DialogicNode_DialogText.text = ""
 	match animation_new_text:
 		AnimationsNewText.WIGGLE:
 			play("new_text")
-	
+
 	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
 		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)

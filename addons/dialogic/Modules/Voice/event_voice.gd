@@ -20,10 +20,17 @@ var audio_bus: String = "Master"
 ################################################################################
 
 func _execute() -> void:
+	# If Auto-Skip is enabled, we may not want to play voice audio.
+	# Instant Auto-Skip will always skip voice audio.
+	if (Dialogic.Input.auto_skip.enabled
+	and Dialogic.Input.auto_skip.skip_voice):
+		finish()
+		return
+
 	dialogic.Voice.set_file(file_path)
 	dialogic.Voice.set_volume(volume)
 	dialogic.Voice.set_bus(audio_bus)
-	finish() 
+	finish()
 	# the rest is executed by a text event
 
 
@@ -61,10 +68,10 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('file_path', ValueType.FILE, {
-			'left_text'		: 'Set', 
-			'right_text'	: 'as the next voice audio', 
-			'file_filter'	: "*.mp3, *.ogg, *.wav", 
-			'placeholder' 	: "Select file", 
+			'left_text'		: 'Set',
+			'right_text'	: 'as the next voice audio',
+			'file_filter'	: "*.mp3, *.ogg, *.wav",
+			'placeholder' 	: "Select file",
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
 	add_body_edit('volume', ValueType.DECIBEL, {'left_text':'Volume:'}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')

@@ -7,7 +7,7 @@ extends DialogicEvent
 
 ### Settings
 
-## The name of the style to change to. Can be set on the DialogicNode_Style. 
+## The name of the style to change to. Can be set on the DialogicNode_Style.
 var style_name: String = ""
 
 
@@ -55,7 +55,7 @@ func build_event_editor():
 	add_header_edit('style_name', ValueType.COMPLEX_PICKER, {
 			'left_text'			:'Use style',
 			'placeholder'		: 'Default',
-			'suggestions_func' 	: get_style_suggestions, 
+			'suggestions_func' 	: get_style_suggestions,
 			'editor_icon' 		: ["PopupMenu", "EditorIcons"],
 			'autofocus'			: true})
 

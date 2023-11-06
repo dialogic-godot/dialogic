@@ -25,7 +25,7 @@ func _refresh() -> void:
 
 
 ## Called before the settings editor closes (another editor is opened)
-## Can be used to safe stuff 
+## Can be used to safe stuff
 func _about_to_close() -> void:
 	pass
 
