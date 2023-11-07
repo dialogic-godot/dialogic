@@ -112,14 +112,15 @@ func _change_portrait(character_node:Node2D, portrait:String, update_transform:=
 			character_node.get_child(0).queue_free()
 			character_node.remove_child(character_node.get_child(0))
 
-		if scene_path.is_empty():
-			portrait_node = default_portrait_scene.instantiate()
-		else:
-			var p :PackedScene = load(scene_path)
+		if ResourceLoader.exists(scene_path):
+			var p: PackedScene = load(scene_path)
 			if p:
 				portrait_node = p.instantiate()
 			else:
-				push_error('Dialogic: Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen.')
+				push_error('[Dialogic] Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen. Confirm the path is correct.')
+
+		if !portrait_node:
+			portrait_node = default_portrait_scene.instantiate()
 
 		portrait_node.set_meta('scene', scene_path)
 
