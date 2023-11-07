@@ -167,7 +167,7 @@ func _execute() -> void:
 			return
 		elif Dialogic.Input.auto_advance.is_autoadvance_enabled():
 			dialogic.Text.show_next_indicators(false, true)
-			dialogic.Input.auto_advance.start_autoadvance()
+			dialogic.Input.auto_advance.start()
 		else:
 			dialogic.Text.show_next_indicators()
 

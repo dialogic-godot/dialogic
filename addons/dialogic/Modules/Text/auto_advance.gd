@@ -74,7 +74,7 @@ func _init() -> void:
 
 #region AUTOADVANCE INTERNALS
 
-func start_autoadvance() -> void:
+func start() -> void:
 	if not is_autoadvance_enabled():
 		return
 
@@ -158,7 +158,7 @@ func _on_toggled(is_enabled: bool) -> void:
 	if (is_enabled and !is_autoadvancing()
 	and Dialogic.current_state == Dialogic.States.IDLE
 	and not Dialogic.current_state_info.get('text', '').is_empty()):
-		start_autoadvance()
+		start()
 
 	# If auto-advance is disabled and we are auto-advancing,
 	# we want to cancel the auto-advance mode.
