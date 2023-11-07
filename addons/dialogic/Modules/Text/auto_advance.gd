@@ -6,12 +6,17 @@ extends RefCounted
 ## a player-specific amount of time.
 ## This is useful for visual novels that want the player to read the text
 ## without having to press.
+##
+## Unlike [class DialogicAutoSkip], Auto-Advance uses multiple enable flags,
+## allowing to track the different instances that enabled Auto-Advance.
+## For instance, if a timeline event forces Auto-Advance to be enabled and later
+## disables it, the Auto-Advance will still be enabled if the player didn't
+## cancel it.
 class_name DialogicAutoAdvance
 
 signal autoadvance
 signal toggled(enabled: bool)
 
-var enabled := false
 var autoadvance_timer := Timer.new()
 
 var fixed_delay: float = 1.0
@@ -27,9 +32,32 @@ var await_playing_voice := true
 
 var override_delay_for_current_event: float = -1.0
 
-var enabled_until_next_event := false
-var waiting_for_system := false
-var enabled_until_user_input := false
+## Private variable to track the last Auto-Advance state.
+## This will be used to emit the [signal toggled] signal.
+var _last_enable_state := false
+
+## If true, Auto-Advance will be active until the next event.
+##
+## Use this flag to create a temporary Auto-Advance mode.
+## You can utilise [variable override_delay_for_current_event] to set a
+## temporary Auto-Advance delay for this event.
+##
+## Stacks with [variable enabled_forced] and [variable enabled_until_user_input].
+var enabled_until_next_event := false : set = _set_autoadvance_until_next_event
+
+## If true, Auto-Advance will stay enabled until this is set to false.
+##
+## This boolean can be used to create an automatic text display.
+##
+## Stacks with [variable enabled_forced] and [variable enabled_until_user_input].
+var enabled_forced := false : set = _set_autoadvance_system
+
+## If true, Auto-Advance will be active until the player presses a button.
+##
+## Use this flag when the player wants to enable Auto-Advance.
+##
+## Stacks with [variable enabled_forced] and [variable enabled_until_next_event].
+var enabled_until_user_input := false : set = _set_autoadvance_until_user_input
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
@@ -144,44 +172,44 @@ func get_autoadvance_time() -> float:
 	return autoadvance_timer.wait_time
 
 
-## Returns whether autoadvance is currently considered enabled.
-## Autoadvance is considered on if any of these flags is true:
+## Returns whether Auto-Advance is currently considered enabled.
+## Auto-Advance uses three different enable flags:
 ## - enabled_until_user_input (becomes false on any dialogic input action)
 ## - enabled_until_next_event (becomes false on each text event)
-## - waiting_for_system (becomes false only when disabled via code)
+## - enabled_forced (becomes false only when disabled via code)
 ##
 ## All three can be set with dedicated methods.
 func is_autoadvance_enabled() -> bool:
 	return (enabled_until_next_event
 		or enabled_until_user_input
-		or waiting_for_system)
+		or enabled_forced)
 
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member toggled] signal.
 func _emit_autoadvance_enabled() -> void:
-	var old_autoadvance_state := enabled
-	enabled = is_autoadvance_enabled()
+	var old_autoadvance_state := _last_enable_state
+	_last_enable_state = is_autoadvance_enabled()
 
-	if old_autoadvance_state != enabled:
-		toggled.emit(enabled)
+	if old_autoadvance_state != _last_enable_state:
+		toggled.emit(_last_enable_state)
 
 
 ## Sets the autoadvance enabled_until_user_input flag to [param enabled].
-func set_autoadvance_until_user_input(is_enabled: bool) -> void:
+func _set_autoadvance_until_user_input(is_enabled: bool) -> void:
 	enabled_until_user_input = is_enabled
 
 	_emit_autoadvance_enabled()
 
 
-## Sets the autoadvance waiting_for_system flag to [param enabled].
-func set_autoadvance_system(is_enabled: bool) -> void:
-	waiting_for_system = is_enabled
+## Sets the autoadvance enabled_forced flag to [param enabled].
+func _set_autoadvance_system(is_enabled: bool) -> void:
+	enabled_forced = is_enabled
 
 	_emit_autoadvance_enabled()
 
 
 ## Sets the autoadvance enabled_until_next_event flag to [param enabled].
-func set_autoadvance_until_next_event(is_enabled: bool) -> void:
+func _set_autoadvance_until_next_event(is_enabled: bool) -> void:
 	enabled_until_next_event = is_enabled
 
 	_emit_autoadvance_enabled()

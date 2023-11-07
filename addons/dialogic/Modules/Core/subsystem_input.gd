@@ -22,7 +22,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	var auto_advance_enabled: bool = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 
-	auto_advance.set_autoadvance_system(auto_advance_enabled)
+	auto_advance.enabled_forced = auto_advance_enabled
 	auto_advance.fixed_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 	auto_advance.per_word_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	auto_advance.per_character_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
@@ -56,7 +56,7 @@ func handle_input():
 		# We want to stop auto-advancing that cancels on user inputs.
 		if (auto_advance.is_autoadvance_enabled()
 			and auto_advance.waiting_for_user_input):
-			auto_advance.set_autoadvance_until_user_input(false)
+			auto_advance.enabled_until_next_event = false
 			action_was_consumed = true
 
 		# We want to stop auto-skipping if it's enabled, we are listening
@@ -193,7 +193,7 @@ func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> vo
 	if argument.ends_with('?'):
 		argument = argument.trim_suffix('?')
 	else:
-		auto_advance.set_autoadvance_until_next_event(true)
+		auto_advance.enabled_until_next_event = true
 
 	if argument.is_valid_float():
 		auto_advance.set_autoadvance_override_delay_for_current_event(float(argument))

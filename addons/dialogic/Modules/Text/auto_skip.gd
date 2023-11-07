@@ -7,7 +7,7 @@ class_name DialogicAutoSkip
 
 ## Emitted whenever the Auto-Skip state changes, from `true` to `false` or
 ## vice-versa.
-signal autoskip_changed(is_enabled: bool)
+signal toggled(is_enabled: bool)
 
 ## Whether Auto-Skip is enabled or not.
 ## If Auto-Skip is referred to be [i]disabled[/i], it refers to setting this
@@ -52,7 +52,7 @@ func _set_enabled(is_enabled: bool) -> void:
 	enabled = is_enabled
 
 	if enabled != previous_enabled:
-		autoskip_changed.emit(enabled)
+		toggled.emit(enabled)
 
 func _handle_seen_event():
 	# If Auto-Skip is disabled but reacts to seen events, we

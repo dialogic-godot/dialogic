@@ -110,7 +110,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	# also resets temporary autoadvance and noskip settings:
 	speed_multiplier = 1
 
-	Dialogic.Input.auto_advance.set_autoadvance_until_next_event(false)
+	Dialogic.Input.auto_advance.enabled_until_next_event = false
 	Dialogic.Input.auto_advance.set_autoadvance_override_delay_for_current_event(-1)
 	Dialogic.Input.set_manualadvance(true, true)
 	set_text_reveal_skippable(true, true)
