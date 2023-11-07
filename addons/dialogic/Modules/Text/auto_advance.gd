@@ -216,10 +216,6 @@ func _update_autoadvance_delay_modifier(delay_modifier_value: float) -> void:
 	delay_modifier = delay_modifier_value
 
 
-func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> void:
-	override_delay_for_current_event = delay_time
-
-
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
 ## If auto-advancing is disabled, returns -1.

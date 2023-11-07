@@ -188,5 +188,5 @@ func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> vo
 		auto_advance.enabled_until_next_event = true
 
 	if argument.is_valid_float():
-		auto_advance.set_autoadvance_override_delay_for_current_event(float(argument))
+		auto_advance.override_delay_for_current_event = float(argument)
 #endregion
