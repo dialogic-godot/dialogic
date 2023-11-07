@@ -46,7 +46,7 @@ var _last_enable_state := false
 var enabled_until_next_event := false :
 	set(enabled):
 		enabled_until_next_event = enabled
-		_emit_autoadvance_enabled()
+		_try_emit_toggled()
 
 ## If true, Auto-Advance will stay enabled until this is set to false.
 ##
@@ -56,7 +56,7 @@ var enabled_until_next_event := false :
 var enabled_forced := false :
 	set(enabled):
 		enabled_forced = enabled
-		_emit_autoadvance_enabled()
+		_try_emit_toggled()
 
 ## If true, Auto-Advance will be active until the player presses a button.
 ##
@@ -66,7 +66,7 @@ var enabled_forced := false :
 var enabled_until_user_input := false :
 	set(enabled):
 		enabled_until_user_input = enabled
-		_emit_autoadvance_enabled()
+		_try_emit_toggled()
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
@@ -203,7 +203,7 @@ func is_enabled() -> bool:
 
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member toggled] signal.
-func _emit_autoadvance_enabled() -> void:
+func _try_emit_toggled() -> void:
 	var old_autoadvance_state := _last_enable_state
 	_last_enable_state = is_enabled()
 
