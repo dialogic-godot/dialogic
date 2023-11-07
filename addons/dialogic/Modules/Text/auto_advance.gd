@@ -2,7 +2,7 @@ extends RefCounted
 ## This class holds the settings for the Auto-Advance feature.
 ## Changing the variables will alter the behaviour of Auto-Advance.
 ##
-## Auto-Advance is a feature that automatically advances timeline after
+## Auto-Advance is a feature that automatically advances the timeline after
 ## a player-specific amount of time.
 ## This is useful for visual novels that want the player to read the text
 ## without having to press.
