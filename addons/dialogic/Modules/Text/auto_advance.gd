@@ -43,21 +43,30 @@ var _last_enable_state := false
 ## temporary Auto-Advance delay for this event.
 ##
 ## Stacks with [variable enabled_forced] and [variable enabled_until_user_input].
-var enabled_until_next_event := false : set = _set_autoadvance_until_next_event
+var enabled_until_next_event := false :
+	set(enabled):
+		enabled_until_next_event = enabled
+		_emit_autoadvance_enabled()
 
 ## If true, Auto-Advance will stay enabled until this is set to false.
 ##
 ## This boolean can be used to create an automatic text display.
 ##
 ## Stacks with [variable enabled_until_next_event] and [variable enabled_until_user_input].
-var enabled_forced := false : set = _set_autoadvance_system
+var enabled_forced := false :
+	set(enabled):
+		enabled_forced = enabled
+		_emit_autoadvance_enabled()
 
 ## If true, Auto-Advance will be active until the player presses a button.
 ##
 ## Use this flag when the player wants to enable Auto-Advance.
 ##
 ## Stacks with [variable enabled_forced] and [variable enabled_until_next_event].
-var enabled_until_user_input := false : set = _set_autoadvance_until_user_input
+var enabled_until_user_input := false :
+	set(enabled):
+		enabled_until_user_input = enabled
+		_emit_autoadvance_enabled()
 
 func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
@@ -191,6 +200,7 @@ func is_enabled() -> bool:
 		or enabled_until_user_input
 		or enabled_forced)
 
+
 ## Updates the [member _autoadvance_enabled] variable to properly check if the value has changed.
 ## If it changed, emits the [member toggled] signal.
 func _emit_autoadvance_enabled() -> void:
@@ -201,29 +211,10 @@ func _emit_autoadvance_enabled() -> void:
 		toggled.emit(_last_enable_state)
 
 
-## Sets the autoadvance enabled_until_user_input flag to [param enabled].
-func _set_autoadvance_until_user_input(is_enabled: bool) -> void:
-	enabled_until_user_input = is_enabled
-
-	_emit_autoadvance_enabled()
-
-
-## Sets the autoadvance enabled_forced flag to [param enabled].
-func _set_autoadvance_system(is_enabled: bool) -> void:
-	enabled_forced = is_enabled
-
-	_emit_autoadvance_enabled()
-
-
-## Sets the autoadvance enabled_until_next_event flag to [param enabled].
-func _set_autoadvance_until_next_event(is_enabled: bool) -> void:
-	enabled_until_next_event = is_enabled
-
-	_emit_autoadvance_enabled()
-
 ## An internal method connected to changes on the Delay Modifier setting.
 func _update_autoadvance_delay_modifier(delay_modifier_value: float) -> void:
 	delay_modifier = delay_modifier_value
+
 
 func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> void:
 	override_delay_for_current_event = delay_time
