@@ -1,9 +1,9 @@
 extends RefCounted
+class_name DialogicAutoSkip
 ## This class holds the settings for the Auto-Skip feature.
 ## Changing the variables will alter the behaviour of Auto-Skip.
 ##
 ## Auto-Skip must be implemented per event.
-class_name DialogicAutoSkip
 
 ## Emitted whenever the Auto-Skip state changes, from `true` to `false` or
 ## vice-versa.
