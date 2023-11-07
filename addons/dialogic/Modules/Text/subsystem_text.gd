@@ -95,7 +95,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 			if Dialogic.Animation.is_animating():
 				await Dialogic.Animation.finished
 
-	if !instant: dialogic.current_state = dialogic.States.SHOWING_TEXT
+	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
