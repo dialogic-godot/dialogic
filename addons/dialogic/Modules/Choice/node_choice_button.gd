@@ -12,9 +12,7 @@ extends Button
 @export var sound_hover: AudioStream
 ## Can be set to play this sound when focused. Requires a sibling DialogicNode_ButtonSound node.
 @export var sound_focus: AudioStream
-## These keys will be added to the shortcut mechanism on the choice button.
-## Pressing the key will press the button and pick the choice.
-@export var press_choice_keys: Array[Key]
+
 
 func _ready():
 	add_to_group('dialogic_choice_button')

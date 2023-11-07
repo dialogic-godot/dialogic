@@ -105,32 +105,24 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			if idx == 1 and ProjectSettings.get_setting('dialogic/choices/autofocus_first', true):
 				node.grab_focus()
 
-			var button_binding := _on_ChoiceButton_choice_selected.bind(event_index,
-			{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index})
-
-			if (ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0) or
-			not choice_button.press_choice_keys.is_empty()):
-				var shortcut := Shortcut.new()
-				var shortcut_events: Array[InputEventKey] = []
-
+			## Add 1 to 9 as shortcuts if it's enabled
+			if ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0):
 				if idx > 0 and idx < 10:
+					var shortcut: Shortcut
+					if node.shortcut != null:
+						shortcut = node.shortcut
+					else:
+						shortcut = Shortcut.new()
+
+					var shortcut_events: Array[InputEventKey] = []
 					var input_key := InputEventKey.new()
 					input_key.keycode = OS.find_keycode_from_string(str(idx))
-					shortcut_events.append(input_key)
-
-				# Adding the defined keys from the choice button.
-				for key in choice_button.press_choice_keys:
-					var button_input_key := InputEventKey.new()
-					button_input_key.keycode = key
-					shortcut_events.append_array(choice_button.press_choice_keys)
-
-				shortcut.events = shortcut_events
-
-				node.shortcut = shortcut
-				node.pressed.connect(button_binding)
+					shortcut.events.append(input_key)
+					node.shortcut = shortcut
 
 			node.disabled = not enabled
-			node.button_up.connect(button_binding)
+			node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
+					{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
 
 		if node.choice_index > 0:
 			idx = node.choice_index
