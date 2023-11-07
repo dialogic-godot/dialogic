@@ -1,4 +1,5 @@
 extends RefCounted
+class_name DialogicAutoAdvance
 ## This class holds the settings for the Auto-Advance feature.
 ## Changing the variables will alter the behaviour of Auto-Advance.
 ##
@@ -12,7 +13,6 @@ extends RefCounted
 ## For instance, if a timeline event forces Auto-Advance to be enabled and later
 ## disables it, the Auto-Advance will still be enabled if the player didn't
 ## cancel it.
-class_name DialogicAutoAdvance
 
 signal autoadvance
 signal toggled(enabled: bool)
