@@ -608,7 +608,6 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 		%FitPreview_Toggle.tooltip_text = "Fit into preview"
 		%FitPreview_Toggle.icon = get_theme_icon("CenterContainer", "EditorIcons")
 	DialogicUtil.set_editor_setting('character_preview_fit', button_pressed)
-	print("B")
 	update_preview()
 
 #endregion
