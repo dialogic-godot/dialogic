@@ -49,7 +49,7 @@ var enabled_until_next_event := false : set = _set_autoadvance_until_next_event
 ##
 ## This boolean can be used to create an automatic text display.
 ##
-## Stacks with [variable enabled_forced] and [variable enabled_until_user_input].
+## Stacks with [variable enabled_until_next_event] and [variable enabled_until_user_input].
 var enabled_forced := false : set = _set_autoadvance_system
 
 ## If true, Auto-Advance will be active until the player presses a button.
