@@ -165,7 +165,7 @@ func _execute() -> void:
 			dialogic.Choices.show_current_choices(false)
 			dialogic.current_state = dialogic.States.AWAITING_CHOICE
 			return
-		elif Dialogic.Input.auto_advance.is_autoadvance_enabled():
+		elif Dialogic.Input.auto_advance.is_enabled():
 			dialogic.Text.show_next_indicators(false, true)
 			dialogic.Input.auto_advance.start()
 		else:

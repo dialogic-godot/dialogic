@@ -75,7 +75,7 @@ func _init() -> void:
 #region AUTOADVANCE INTERNALS
 
 func start() -> void:
-	if not is_autoadvance_enabled():
+	if not is_enabled():
 		return
 
 	var parsed_text: String = Dialogic.current_state_info['text_parsed']
@@ -155,27 +155,27 @@ func _on_autoadvance_timer_timeout() -> void:
 func _on_toggled(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
 	# we will initiate the auto-advance mode.
-	if (is_enabled and !is_autoadvancing()
+	if (is_enabled and !is_advancing()
 	and Dialogic.current_state == Dialogic.States.IDLE
 	and not Dialogic.current_state_info.get('text', '').is_empty()):
 		start()
 
 	# If auto-advance is disabled and we are auto-advancing,
 	# we want to cancel the auto-advance mode.
-	elif !is_enabled and is_autoadvancing():
+	elif !is_enabled and is_advancing():
 		Dialogic.Input.stop()
 #endregion
 
 #region AUTOADVANCE HELPERS
-func is_autoadvancing() -> bool:
+func is_advancing() -> bool:
 	return !autoadvance_timer.is_stopped()
 
 
-func get_autoadvance_time_left() -> float:
+func get_time_left() -> float:
 	return autoadvance_timer.time_left
 
 
-func get_autoadvance_time() -> float:
+func get_time() -> float:
 	return autoadvance_timer.wait_time
 
 
@@ -186,7 +186,7 @@ func get_autoadvance_time() -> float:
 ## - enabled_forced (becomes false only when disabled via code)
 ##
 ## All three can be set with dedicated methods.
-func is_autoadvance_enabled() -> bool:
+func is_enabled() -> bool:
 	return (enabled_until_next_event
 		or enabled_until_user_input
 		or enabled_forced)
@@ -195,7 +195,7 @@ func is_autoadvance_enabled() -> bool:
 ## If it changed, emits the [member toggled] signal.
 func _emit_autoadvance_enabled() -> void:
 	var old_autoadvance_state := _last_enable_state
-	_last_enable_state = is_autoadvance_enabled()
+	_last_enable_state = is_enabled()
 
 	if old_autoadvance_state != _last_enable_state:
 		toggled.emit(_last_enable_state)
@@ -232,12 +232,12 @@ func set_autoadvance_override_delay_for_current_event(delay_time := -1.0) -> voi
 ## Returns the progress of the auto-advance timer on a scale between 0 and 1.
 ## The higher the value, the closer the timer is to finishing.
 ## If auto-advancing is disabled, returns -1.
-func get_autoadvance_progress() -> float:
-	if !is_autoadvancing():
+func get_progress() -> float:
+	if !is_advancing():
 		return -1
 
-	var total_time: float = get_autoadvance_time()
-	var time_left: float = get_autoadvance_time_left()
+	var total_time: float = get_time()
+	var time_left: float = get_time_left()
 	var progress: float = (total_time - time_left) / total_time
 
 	return progress
