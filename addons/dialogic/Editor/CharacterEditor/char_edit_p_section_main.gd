@@ -1,7 +1,7 @@
 @tool
 extends DialogicCharacterEditorPortraitSection
 
-## Tab that allows setting a custom scene for a portrait. 
+## Tab that allows setting a custom scene for a portrait.
 
 func _get_title() -> String:
 	return "Scene"
@@ -13,7 +13,7 @@ func _ready() -> void:
 	%ScenePicker.file_filter = "*.tscn, *.scn; Scenes"
 	%ScenePicker.resource_icon = get_theme_icon('PackedScene', 'EditorIcons')
 	%ScenePicker.placeholder = 'Default scene'
-	
+
 	%OpenSceneButton.icon = get_theme_icon("ExternalLink", "EditorIcons")
 
 

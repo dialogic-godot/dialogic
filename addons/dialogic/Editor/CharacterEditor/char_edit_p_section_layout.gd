@@ -1,21 +1,21 @@
 @tool
 extends DialogicCharacterEditorPortraitSection
 
-## Tab that allows setting size, offset and mirror of a portrait. 
+## Tab that allows setting size, offset and mirror of a portrait.
+
 
 func _get_title() -> String:
 	return "Scale, Offset & Mirror"
 
 
 func _load_portrait_data(data:Dictionary) -> void:
-	%IgnoreScale.button_pressed = data.get('ignore_char_scale', false)
-	
+	%IgnoreScale.set_pressed_no_signal(data.get('ignore_char_scale', false))
 	%PortraitScale.value = data.get('scale', 1.0)*100
 	%PortraitOffset.set_value(data.get('offset', Vector2()))
-	%PortraitMirror.button_pressed = data.get('mirror', false)
+	%PortraitMirror.set_pressed_no_signal(data.get('mirror', false))
 
 
-func _on_portrait_scale_value_changed(value) -> void:
+func _on_portrait_scale_value_changed(value:float) -> void:
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['scale'] = value/100.0
 	update_preview.emit()
