@@ -104,7 +104,7 @@ func _ready() -> void:
 
 func post_install() -> void:
 	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
-	auto_skip.toggled.connect(_on_autoskip_changed)
+	auto_skip.toggled.connect(_on_autoskip_toggled)
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
@@ -127,7 +127,7 @@ func start_autoskip_timer() -> void:
 
 
 ## If Auto-Skip disables, we want to stop the timer.
-func _on_autoskip_changed(enabled: bool) -> void:
+func _on_autoskip_toggled(enabled: bool) -> void:
 	if not enabled:
 		_auto_skip_timer_left = 0.0
 

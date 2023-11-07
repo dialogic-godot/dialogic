@@ -63,7 +63,7 @@ func _init() -> void:
 	Dialogic.Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
-	toggled.connect(_on_autoadvance_enabled_change)
+	toggled.connect(_on_toggled)
 
 	auto_advance.enabled_forced = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	auto_advance.fixed_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
@@ -152,7 +152,7 @@ func _on_autoadvance_timer_timeout() -> void:
 
 
 ## Switches the auto-advance mode on or off based on [param is_enabled].
-func _on_autoadvance_enabled_change(is_enabled: bool) -> void:
+func _on_toggled(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
 	# we will initiate the auto-advance mode.
 	if (is_enabled and !is_autoadvancing()
