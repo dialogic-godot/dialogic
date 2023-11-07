@@ -20,14 +20,6 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	if not is_node_ready():
 		await ready
 
-	var auto_advance_enabled: bool = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
-
-	auto_advance.enabled_forced = auto_advance_enabled
-	auto_advance.fixed_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
-	auto_advance.per_word_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
-	auto_advance.per_character_delay = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
-	auto_advance.ignored_characters_enabled = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters_enabled', true)
-	auto_advance.ignored_characters = ProjectSettings.get_setting('dialogic/text/autoadvance_ignored_characters', {})
 
 	set_manualadvance(true)
 
