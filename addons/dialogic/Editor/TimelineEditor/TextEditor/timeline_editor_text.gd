@@ -4,7 +4,7 @@ extends CodeEdit
 ## Sub-Editor that allows editing timelines in a text format.
 
 @onready var timeline_editor := get_parent().get_parent()
-@onready var code_completion_helper :Node= find_parent('EditorsManager').get_node('CodeCompletionHelper') 
+@onready var code_completion_helper :Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
@@ -26,10 +26,12 @@ func clear_timeline():
 
 func load_timeline(timeline:DialogicTimeline) -> void:
 	clear_timeline()
-	
+
 	text = timeline.as_text()
-	
+
 	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
+	clear_undo_history()
+
 	await get_tree().process_frame
 	update_content_list()
 
@@ -37,9 +39,9 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 func save_timeline():
 	if !timeline_editor.current_resource:
 		return
-	
+
 	var text_array:Array = text_timeline_to_array(text)
-	
+
 	timeline_editor.current_resource.events = text_array
 	timeline_editor.current_resource.events_processed = false
 	ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
@@ -52,16 +54,16 @@ func save_timeline():
 func text_timeline_to_array(text:String) -> Array:
 	# Parse the lines down into an array
 	var events := []
-	
+
 	var lines := text.split('\n', true)
 	var idx := -1
-	
+
 	while idx < len(lines)-1:
 		idx += 1
 		var line :String = lines[idx]
 		var line_stripped :String = line.strip_edges(true, true)
 		events.append(line)
-	
+
 	return events
 
 
@@ -151,7 +153,7 @@ func duplicate_line() -> void:
 
 	var lines := text.split("\n")
 	var lines_to_dupl: PackedStringArray = lines.slice(from, to)
-	
+
 	text = "\n".join(lines.slice(0, from)+lines_to_dupl+lines.slice(from))
 
 	set_caret_line(cursor.y+to-from)
@@ -190,7 +192,7 @@ func _on_content_item_clicked(label:String) -> void:
 		set_caret_column(0)
 		adjust_viewport_to_caret()
 		return
-	
+
 	for i in label_regex.search_all(text):
 		if i.get_string('name') == label:
 			set_caret_column(0)

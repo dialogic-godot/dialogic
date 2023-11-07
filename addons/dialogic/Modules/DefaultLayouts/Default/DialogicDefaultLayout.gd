@@ -70,6 +70,7 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export_file("*.wav", "*.ogg", "*.mp3") var choice_button_sounds_hover := "res://addons/dialogic/Example Assets/sound-effects/typing2.wav"
 @export_file("*.wav", "*.ogg", "*.mp3") var choice_button_sounds_focus := "res://addons/dialogic/Example Assets/sound-effects/typing4.wav"
 
+
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides():
 	if !is_inside_tree():

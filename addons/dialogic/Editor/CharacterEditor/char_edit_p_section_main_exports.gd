@@ -14,9 +14,9 @@ func _load_portrait_data(data:Dictionary) -> void:
 	load_portrait_scene_export_variables()
 
 func load_portrait_scene_export_variables():
-	for child in $Grid.get_children(): 
+	for child in $Grid.get_children():
 		child.queue_free()
-	
+
 	var scene = null
 	if !current_portrait_data.get('scene', '').is_empty():
 		scene = load(current_portrait_data.get('scene'))
@@ -24,10 +24,10 @@ func load_portrait_scene_export_variables():
 		scene = load(ProjectSettings.get_setting('dialogic/portraits/default_portrait', ''))
 	else:
 		scene = load(character_editor.def_portrait_path)
-	
+
 	if !scene:
 		return
-	
+
 	scene = scene.instantiate()
 	var skip := true
 	for i in scene.script.get_script_property_list():
@@ -35,15 +35,15 @@ func load_portrait_scene_export_variables():
 			var label = Label.new()
 			label.text = i['name'].capitalize()
 			$Grid.add_child(label)
-			
+
 			var current_value :Variant = scene.get(i['name'])
 			if current_portrait_data.has('export_overrides') and current_portrait_data['export_overrides'].has(i['name']):
 				current_value = str_to_var(current_portrait_data['export_overrides'][i['name']])
-			
+
 			var input :Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			$Grid.add_child(input)
-			
+
 		if i['usage'] & PROPERTY_USAGE_GROUP:
 			if i['name'] == 'Main':
 				skip = false
