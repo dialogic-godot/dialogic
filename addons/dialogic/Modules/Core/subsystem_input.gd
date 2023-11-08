@@ -47,7 +47,7 @@ func handle_input():
 	if !action_was_consumed:
 		# We want to stop auto-advancing that cancels on user inputs.
 		if (auto_advance.is_enabled()
-			and auto_advance.waiting_for_user_input):
+			and auto_advance.enabled_until_user_input):
 			auto_advance.enabled_until_next_event = false
 			action_was_consumed = true
 
