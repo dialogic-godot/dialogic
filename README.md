@@ -1,5 +1,7 @@
-
 <img width="1280" alt="cover" src="https://user-images.githubusercontent.com/2206700/189457799-6327bab0-b085-4421-8640-6a18e395d17d.png">
+
+# Dialogic
+
 Create dialogs, characters and scenes to display conversations in your Godot games.
 
 ## Version 2.0 - Alpha  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.1-%23478cbf)
