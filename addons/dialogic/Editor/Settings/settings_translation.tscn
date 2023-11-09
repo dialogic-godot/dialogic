@@ -235,10 +235,10 @@ godot will import them as .translation files.
 These have to be added to a list (Project Settings > Localization) 
 and this is a quick way to do so."
 texture = SubResource("ImageTexture_yh3a2")
-hint_text = "When you've added translations to a csv file, 
-godot will import them as .translation files. 
-These have to be added to a list (Project Settings > Localization) 
-and this is a quick way to do so."
+hint_text = "Godot imports CSV files as \".translation\" files.
+These must be added to \"Project Settings > Localization\" to function.
+This button adds new translation files to the settings and removes invalid file paths.
+"
 
 [node name="HSeparator3" type="HSeparator" parent="TranslationSettings/VBoxContainer2/Actions"]
 layout_mode = 2
