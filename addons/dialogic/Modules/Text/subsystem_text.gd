@@ -376,13 +376,12 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 		return
 
 	# We want to ignore pauses if we're skipping.
-	if not dialogic.Input.auto_skip.enabled:
+	if dialogic.Input.auto_skip.enabled:
 		return
 
-	var text_speed = Dialogic.Settings.get_setting('text_speed', 1)
+	var text_speed: float = Dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
-
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
 		elif speed_multiplier != 0 and Dialogic.Settings.get_setting('text_speed', 1) != 0:
