@@ -18,6 +18,9 @@ var is_new_file: bool = false
 ## The underlying file used to read and write the CSV file.
 var file: FileAccess
 
+## File path used to load the CSV file.
+var used_file_path: String
+
 ## The amount of events that were updated in the CSV file.
 var updated_events: int = 0
 
@@ -28,6 +31,7 @@ var new_events: int = 0
 ## If the file does not exist, a single entry is added to the [member lines]
 ## array.
 func _init(file_path: String, original_locale: String):
+    used_file_path = file_path
     print("Opening CSV file from path: ", file_path)
 
     # The first entry must be the locale row.
@@ -42,12 +46,13 @@ func _init(file_path: String, original_locale: String):
         # For example: "keys, en"
         column_count = 2
 
-        file = FileAccess.open(file_path, FileAccess.WRITE_READ)
+        file = FileAccess.open(file_path, FileAccess.READ)
         return
 
-    file = FileAccess.open(file_path, FileAccess.READ_WRITE)
+    file = FileAccess.open(file_path, FileAccess.READ)
 
     var locale_csv_row := file.get_csv_line()
+    print("Locale CSV row: ", locale_csv_row)
     column_count = locale_csv_row.size()
     var locale_key := locale_csv_row[0]
 
@@ -62,7 +67,7 @@ func _read_file_into_lines() -> void:
         var row_key := line[0]
         old_lines[row_key] = line
 
-func collect_lines_from_timeline(timeline: DialogicTimeline):
+func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
     for event in timeline.events:
 
         if event.can_be_translated():
@@ -82,9 +87,9 @@ func collect_lines_from_timeline(timeline: DialogicTimeline):
 ## Uses the [member old_lines] dictionary to update existing translations.
 ## If a translation row misses a column, a trailing comma will be added to
 ## conform to the CSV file format.
-func update_csv_file_on_disk():
+func update_csv_file_on_disk() -> void:
     # Clear the current CSV file.
-    file.seek(0)
+    file = FileAccess.open(used_file_path, FileAccess.WRITE)
 
     for line in lines:
         var row_key := line[0]
