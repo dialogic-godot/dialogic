@@ -4,10 +4,11 @@ extends DialogicSubsystem
 
 signal background_changed(info:Dictionary)
 
-var _tween : Tween
-var _tween_callbacks : Array[Callable]
+var _tween: Tween
+var _tween_callbacks: Array[Callable]
 
-var default_background_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
+var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -34,100 +35,96 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
 func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0) -> void:
-	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
-	for node in get_tree().get_nodes_in_group('dialogic_background_holders'):
-		if node.visible:
-			var backgrounds_node = node.get_node("Backgrounds")
-			var transition_overlay = node.get_node("Overlay")
-			var mat = transition_overlay.material as ShaderMaterial
-			
-			
-			
-			var bg_set: bool = false
-			if scene == dialogic.current_state_info.get('background_scene', ''):
-				for old_bg in backgrounds_node.get_children():
-					if old_bg is DialogicBackground and old_bg._should_do_background_update(argument):
-						old_bg._update_background(argument, fade_time)
-						bg_set = true
-						info['same_scene'] = true
-			if !bg_set:
-				
-				# make sure material is clean and ready to go
-				mat.set_shader_parameter("progress", 0)
-				# swap the next background into previous, as that is now the older frame
-				mat.set_shader_parameter("previousBackground", mat.get_shader_parameter("nextBackground"))
-				
-				mat.set_shader_parameter("nextBackground", null)
-				
-				if _tween:
-					_tween.kill()
-					_execute_callbacks_and_reset()
-				_tween = get_tree().create_tween()
-				
-				
-				# could be implemented as passed by the event
-				#mat.set_shader_parameter("whipeTexture", whipe_texture)	# the direction the whipe takes from black to white
-				#mat.set_shader_parameter("feather", feather)				# the trailing smear left behind when the whipe happens
-				
-				_tween.tween_method(func (progress: float):
-					mat.set_shader_parameter("progress", progress)
-				, 0.0, 1.0, fade_time)
-				
-				
-				# remove previous backgrounds
-				for old_bg in backgrounds_node.get_children():
-					if old_bg is DialogicBackground: 
-						old_bg._fade_out(fade_time) # left in as it can be used to tell the bg that it faded out
-						
-						# remove the old background after the fade is over
-						_tween_callbacks.append(_free_node.bind(old_bg))
-					else:
-						_free_node(old_bg)
-				
-				var new_node:Node
-				if scene.ends_with('.tscn'):
-					new_node = load(scene).instantiate()
-					if !new_node is DialogicBackground:
-						printerr("[Dialogic] Tried using custom backgrounds that doesn't extend DialogicBackground class!")
-						new_node.queue_free()
-						new_node  = null
-				elif argument:
-					new_node = default_background_scene.instantiate() as DialogicBackground
-				else:
-					new_node = null
+	var background_holder: DialogicNode_BackgroundHolder = get_tree().get_first_node_in_group('dialogic_background_holders')
+	if background_holder == null:
+		return
 
-				if new_node:
-					if "self_modulate" in new_node:
-						new_node.self_modulate = Color.TRANSPARENT
-					
-					backgrounds_node.add_child(new_node)
-					
-					new_node._update_background(argument, fade_time)
-					new_node._fade_in(fade_time) # left in as it can be used to tell the bg that it is fading in
-					
-					mat.set_shader_parameter("nextBackground", new_node._get_background_texture())
-				
-				_tween.tween_callback(_execute_callbacks_and_reset)
-	
+	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
+	var bg_set := false
+
+	# First try just updating the existing scene.
+	if scene == dialogic.current_state_info.get('background_scene', ''):
+		for old_bg in background_holder.get_children():
+			if !old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
+				continue
+
+			var prev_bg_node: DialogicBackground = old_bg.get_meta('node')
+			if prev_bg_node._should_do_background_update(argument):
+				prev_bg_node._update_background(argument, fade_time)
+				bg_set = true
+				info['same_scene'] = true
+
+	# If that didn't work, add a new scene, then cross-fade
+	if !bg_set:
+		var material: Material = background_holder.material
+		# make sure material is clean and ready to go
+		material.set_shader_parameter("progress", 0)
+		# swap the next background into previous, as that is now the older frame
+		material.set_shader_parameter("previous_background", material.get_shader_parameter("next_background"))
+		material.set_shader_parameter("next_background", null)
+
+		if _tween:
+			_tween.kill()
+
+		_tween = get_tree().create_tween()
+
+		# could be implemented as passed by the event
+		#material.set_shader_parameter("whipe_texture", whipe_texture)	# the direction the whipe takes from black to white
+		#material.set_shader_parameter("feather", feather)				# the trailing smear left behind when the whipe happens
+
+		_tween.tween_method(func (progress: float):
+			material.set_shader_parameter("progress", progress)
+		, 0.0, 1.0, fade_time)
+
+		## remove previous backgrounds
+		for old_bg in background_holder.get_children():
+			if old_bg is SubViewportContainer:
+				old_bg.get_meta('node')._custom_fade_out(fade_time)
+				_tween.chain().tween_callback(old_bg.queue_free)
+
+		var new_node: SubViewportContainer
+		if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
+			new_node = add_background_node(load(scene), background_holder)
+			if not new_node.get_meta('node') is DialogicBackground:
+				printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
+		elif argument:
+			new_node = add_background_node(default_background_scene, background_holder)
+		else:
+			new_node = null
+
+		if new_node:
+			new_node.get_meta('node')._update_background(argument, fade_time)
+			new_node.get_meta('node')._custom_fade_in(fade_time)
+			material.set_shader_parameter("next_background", new_node.get_child(0).get_texture())
+
 	dialogic.current_state_info['background_scene'] = scene
 	dialogic.current_state_info['background_argument'] = argument
 	background_changed.emit(info)
 
 
-# safely frees a node without causing a panic from a dangling node
-func _free_node(node) -> void:
-	if node and is_instance_valid(node) and !node.is_queued_for_deletion():
-		node.queue_free()
+func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
+	var v_con := SubViewportContainer.new()
+	var viewport := SubViewport.new()
+	var b_scene := scene.instantiate()
 
-# executes the callbacks that have to happen after the tween and sets the tween to null
-func _execute_callbacks_and_reset() -> void:
-	for callback in _tween_callbacks:
-		callback.call()
-	
-	_tween_callbacks.clear()
-	
-	if _tween:
-		_tween = null
+	parent.add_child(v_con)
+	v_con.visible = false
+	v_con.stretch = true
+	v_con.size = parent.size
+	v_con.set_anchors_preset(Control.PRESET_FULL_RECT)
+
+	v_con.add_child(viewport)
+	viewport.transparent_bg = true
+	viewport.disable_3d = true
+
+	viewport.add_child(b_scene)
+	b_scene.viewport = viewport
+	b_scene.viewport_container = v_con
+
+	v_con.set_meta('node', b_scene)
+
+	return v_con
+
 
 func has_background() -> bool:
 	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()

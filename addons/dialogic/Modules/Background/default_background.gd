@@ -1,16 +1,16 @@
 extends DialogicBackground
 
-## The default background scene. 
+## The default background scene.
 ## Extend the DialogicBackground class to create your own background scene.
 
-@onready var image_node = $BackgroundViewport/Image
-@onready var color_node = $BackgroundViewport/ColorRect
-@onready var viewport = $BackgroundViewport
+@onready var image_node = $Image
+@onready var color_node = $ColorRect
+
 
 func _ready() -> void:
 	image_node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	image_node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	
+
 	image_node.anchor_right = 1
 	image_node.anchor_bottom = 1
 
@@ -29,7 +29,3 @@ func _update_background(argument:String, time:float) -> void:
 
 func _should_do_background_update(argument:String) -> bool:
 	return false
-
-
-func _get_background_texture() -> ViewportTexture:
-	return viewport.get_texture()
