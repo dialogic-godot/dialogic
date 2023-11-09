@@ -167,35 +167,58 @@ func update_csv_files() -> void:
 
 
 func collect_translations() -> void:
-	var trans_files := []
-	var translation_mode: int = %TransMode.selected
+	var translation_files := []
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
 	if translation_mode == TranslationModes.PER_TIMELINE:
-		for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
+
+		for timeline_path in DialogicUtil.list_resources_of_type('.translation'):
+
 			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				file = timeline_path.get_base_dir().path_join(file)
+
 				if file.ends_with('.translation'):
-					if not file in trans_files:
-						trans_files.append(file)
+
+					if not file in translation_files:
+						translation_files.append(file)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
-		var trans_folder :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
-		for file in DialogicUtil.listdir(trans_folder):
-			file = trans_folder.path_join(file)
+		var translation_folder :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+
+		for file in DialogicUtil.listdir(translation_folder):
+			file = translation_folder.path_join(file)
+
 			if file.ends_with('.translation'):
-				if not file in trans_files:
-					trans_files.append(file)
 
-	var all_trans_files : Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
-	var orig_file_amount := len(all_trans_files)
-	for file in trans_files:
-		if not file in all_trans_files:
-			all_trans_files.append(file)
+				if not file in translation_files:
+					translation_files.append(file)
 
-	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(all_trans_files))
+	var all_translation_files : Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
+	var orig_file_amount := len(all_translation_files)
+	var detected_missing_file := false
+	# This array keeps track of valid translation file paths.
+	var found_file_paths := []
+	var removed_translation_files := 0
+
+	for file_path in translation_files:
+		# If the file path is not valid, we must clean it up.
+		if FileAccess.file_exists(file_path):
+			found_file_paths.append(file_path)
+		else:
+			removed_translation_files += 1
+			continue
+
+		if not file_path in all_translation_files:
+			all_translation_files.append(file_path)
+
+	var valid_translation_files := PackedStringArray(all_translation_files)
+	ProjectSettings.set_setting('internationalization/locale/translations', valid_translation_files)
 	ProjectSettings.save()
 
-	%StatusMessage.text = "Collected "+str(len(all_trans_files)-orig_file_amount) + " new translation files."
+	%StatusMessage.text = (
+		"Added translation files: " + str(len(all_translation_files)-orig_file_amount)
+		+ "\nRemoved translation files: " + str(removed_translation_files)
+		+ "\nTotal translation files: " + str(len(all_translation_files)))
 
 
 func _on_erase_translations_pressed():
