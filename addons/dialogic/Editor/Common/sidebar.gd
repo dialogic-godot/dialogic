@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-## Script that handles the editor sidebar. 
+## Script that handles the editor sidebar.
 
 signal file_activated(file_path)
 
@@ -13,33 +13,33 @@ signal content_item_activated(item_name)
 func _ready():
 	if owner.get_parent() is SubViewport:
 		return
-	
+
 	## CONNECTIONS
 	%ResourcesList.item_selected.connect(_on_resources_list_item_selected)
 	%ResourcesList.item_clicked.connect(_on_resources_list_item_clicked)
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
-	
+
 	%ContentList.item_selected.connect(func (idx:int): content_item_activated.emit(%ContentList.get_item_text(idx)))
-	
+
 	var editor_scale := DialogicUtil.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Logo.custom_minimum_size.y = 30*editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
-	
+
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
-	
+
 	%ContentList.add_theme_color_override("font_hovered_color", get_theme_color("warning_color", "Editor"))
 	%ContentList.add_theme_color_override("font_selected_color", get_theme_color("property_color_z", "Editor"))
-	
+
 	## MARGINS
 	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
 
 
 ################################################################################
-## 						RESOURCE LIST 
+## 						RESOURCE LIST
 ################################################################################
 
 func _on_editors_resource_opened(resource:Resource) -> void:
@@ -51,29 +51,35 @@ func _on_editors_editor_changed(previous:DialogicEditor, current:DialogicEditor)
 	update_resource_list()
 
 
+func clean_resource_list(resources_list:Array = []) -> PackedStringArray:
+	return PackedStringArray(resources_list.filter(func(x): return FileAccess.file_exists(x)))
+
+
 func update_resource_list(resources_list:PackedStringArray = []) -> void:
 	var filter :String = %Search.text
 	var current_file := ""
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
 		current_file = editors_manager.current_editor.current_resource.resource_path
-	
+
 	var character_directory: Dictionary = editors_manager.resource_helper.character_directory
 	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
 	if resources_list.is_empty():
 		resources_list = DialogicUtil.get_editor_setting('last_resources', [])
 		if !current_file in resources_list:
 			resources_list.append(current_file)
-	
+
+	resources_list = clean_resource_list(resources_list)
+
 	%CurrentResource.text = "No Resource"
 	%CurrentResource.add_theme_color_override("font_color", get_theme_color("disabled_font_color", "Editor"))
-	
+
 	%ResourcesList.clear()
 	var idx := 0
 	for character in character_directory.values():
 		if character['full_path'] in resources_list:
 			if filter.is_empty() or filter.to_lower() in character['unique_short_path'].to_lower():
 				%ResourcesList.add_item(
-						character['unique_short_path'], 
+						character['unique_short_path'],
 						load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 				%ResourcesList.set_item_metadata(idx, character['full_path'])
 				%ResourcesList.set_item_tooltip(idx, character['full_path'])
@@ -144,7 +150,7 @@ func update_content_list(list:PackedStringArray) -> void:
 			%ContentList.select(%ContentList.item_count-1)
 	if list.is_empty():
 		return
-	
+
 	for i in editors_manager.resource_helper.timeline_directory:
 		if editors_manager.resource_helper.timeline_directory[i] == editors_manager.get_current_editor().current_resource.resource_path:
 			editors_manager.resource_helper.label_directory[i] = list

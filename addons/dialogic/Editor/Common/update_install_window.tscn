@@ -12,7 +12,7 @@ fill_from = Vector2(0.151515, 0.272727)
 fill_to = Vector2(1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1g1am"]
-content_margin_left = 15.0
+content_margin_left = 0.0
 content_margin_top = 15.0
 content_margin_right = 15.0
 content_margin_bottom = 15.0
