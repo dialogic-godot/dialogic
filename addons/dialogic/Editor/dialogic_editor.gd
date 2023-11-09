@@ -2,7 +2,7 @@
 class_name DialogicEditor
 extends Control
 
-## Base class for all dialogic editors. 
+## Base class for all dialogic editors.
 
 # These signals will automatically be emitted if current_resource_state is changed.
 signal resource_saved()
