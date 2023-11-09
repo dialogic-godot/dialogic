@@ -5,7 +5,7 @@ extends DialogicSettingsPage
 
 
 enum TranslationModes {PER_PROJECT, PER_TIMELINE}
-enum SaveLocationModes {NEXT_TO_TIMELINE, INSIDE_TRANSLATION_FOLDER}
+enum SaveLocationModes {INSIDE_TRANSLATION_FOLDER, NEXT_TO_TIMELINE}
 
 var loading := false
 @onready var settings_editor :Control = find_parent('Settings')
@@ -31,6 +31,9 @@ func _ready() -> void:
 	%TestingLocale.value_changed.connect(store_changes)
 	%TransFolderPicker.value_changed.connect(store_changes)
 
+	%SaveLocationMode.item_selected.connect(store_changes)
+	%TransMode.item_selected.connect(store_changes)
+
 	%UpdateCsvFiles.pressed.connect(update_csv_files)
 	%CollectTranslations.pressed.connect(collect_translations)
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
@@ -49,7 +52,9 @@ func _refresh() -> void:
 
 
 func store_changes(fake_arg = "", fake_arg2 = "") -> void:
-	if loading: return
+	if loading:
+		return
+
 	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
@@ -81,12 +86,6 @@ func update_csv_files() -> void:
 
 	# [new events, new_timelines, updated_events, updated_timelines]
 	var counts := [0,0,0,0]
-	var file : FileAccess
-	var csv_lines := []
-	# Contains already existing csv_lines as [key] = [value, value, ...] dict
-	var old_csv_lines := {}
-
-	var csv_columns := 0
 
 	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
 	# We will close this timeline to ensure it will properly update.
@@ -95,151 +94,63 @@ func update_csv_files() -> void:
 	# Clean the current editor, this will also close the timeline.
 	settings_editor.editors_manager.clear_editor(timeline_node)
 
-	# Collect old lines in per project mode.
+	var csv_per_project: DialogicCsvFile = null
+
+	# Collect old lines from the Per Project CSV.
 	if translation_mode == TranslationModes.PER_PROJECT:
 		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
 
-		if FileAccess.file_exists(file_path):
-			file = FileAccess.open(file_path, FileAccess.READ_WRITE)
+		csv_per_project = DialogicCsvFile.new(file_path, orig_locale)
+
+		if (csv_per_project.is_new_file):
+			counts[1] += 1
+		else:
 			counts[3] += 1
 
-			var locale_csv_row := file.get_csv_line()
-			csv_columns = locale_csv_row.size()
-			old_csv_lines[locale_csv_row[0]] = locale_csv_row
-
-			while !file.eof_reached():
-				var line := file.get_csv_line()
-				old_csv_lines[line[0]] = line
-
-		else:
-			counts[1] += 1
-
-		csv_lines.append(['keys', orig_locale])
-
+	# Iterate over all timelines.
+	# Swap CSV file.
+	# Transform the timeline into translatable lines and collect into the CSV file.
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
-		var file_path: String = timeline_path.trim_suffix('.dtl')+'_translation.csv'
+		var csv_file: DialogicCsvFile = csv_per_project
 
-		# Collect old lines in per timeline mode.
+		# Swap the CSV file to the Per Timeline one.
 		if translation_mode == TranslationModes.PER_TIMELINE:
+			var file_path: String = timeline_path.trim_suffix('.dtl')
 
-			if FileAccess.file_exists(file_path):
-				file = FileAccess.open(file_path, FileAccess.READ_WRITE)
+			if save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
+				var path_parts := file_path.split("/")
+				var timeline_name: String = path_parts[-1]
+				var translation_folder := ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
-				var locale_csv_row := file.get_csv_line()
-				csv_columns = locale_csv_row.size()
-				old_csv_lines[locale_csv_row[0]] = locale_csv_row
+				file_path = translation_folder.path_join(timeline_name)
 
-				while !file.eof_reached():
-					var line := file.get_csv_line()
-					old_csv_lines[line[0]] = line
+			file_path += '_translation.csv'
+			csv_file = DialogicCsvFile.new(file_path, orig_locale)
 
-			csv_lines.append(['keys', orig_locale])
-
-		# load and process timeline (make events to resources)
-		var tml : DialogicTimeline = load(timeline_path)
-		await tml.process()
-
-		# now collect all the current csv_lines from timeline
-		for event in tml.events:
-
-			if event.can_be_translated():
-
-				if event._translation_id.is_empty():
-					event.add_translation_id()
-					event.update_text_version()
-
-				for property in event._get_translatable_properties():
-					csv_lines.append([event.get_property_translation_key(property), event._get_property_original_translation(property)])
-
-		# in case new translation_id's were added, we save the timeline again
-		tml.set_meta("timeline_not_saved", true)
-		ResourceSaver.save(tml, timeline_path)
-
-		# for per_timeline mode save the file now, then reset for next timeline
-		if translation_mode == TranslationModes.PER_TIMELINE:
-			if !FileAccess.file_exists(file_path):
-				pass#counts[1] += 1
-
-			elif len(csv_lines):
+			if csv_file.is_new_file:
+				counts[1] += 1
+			else:
 				counts[3] += 1
 
-			file = FileAccess.open(file_path, FileAccess.WRITE)
+		# Load and process timeline, turn events into resources.
+		var timeline: DialogicTimeline = load(timeline_path)
+		await timeline.process()
 
-			for line in csv_lines:
+		# Collect timeline into CSV.
+		csv_file.collect_lines_from_timeline(timeline)
 
-				# In case there might be translations for this line already,
-				# add them at the end again (orig locale text is replaced).
-				if line[0] in old_csv_lines:
-					var old_line = old_csv_lines[line[0]]
-					var updated_line: PackedStringArray = line + Array(old_line).slice(2)
+		# in case new translation_id's were added, we save the timeline again
+		timeline.set_meta("timeline_not_saved", true)
+		ResourceSaver.save(timeline, timeline_path)
 
-					var line_columns: int = updated_line.size()
-					var line_columns_to_add := csv_columns - line_columns
-
-					# Add trailing commas to match the amount of columns.
-					for _i in range(line_columns_to_add):
-						updated_line.append("")
-
-					file.store_csv_line(updated_line)
-					counts[2] += 1
-
-				else:
-					var line_columns: int = line.size()
-					var line_columns_to_add := csv_columns - line_columns
-
-					# Add trailing commas to match the amount of columns.
-					for _i in range(line_columns_to_add):
-						line.append("")
-
-
-					file.store_csv_line(line)
-					counts[0] += 1
-
-			csv_lines.clear()
-			old_csv_lines.clear()
-
-	if translation_mode == TranslationModes.PER_PROJECT:
-		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
-
-		if FileAccess.file_exists(file_path):
-			counts[3] += 1
-		else:
-			counts[1] += 1
-
-		file = FileAccess.open(file_path, FileAccess.WRITE)
-
-		for line in csv_lines:
-			# in case there might be translations for this line already,
-			# add them at the end again (orig locale text is replaced).
-			if line[0] in old_csv_lines:
-				var old_line: PackedStringArray = old_csv_lines[line[0]]
-				var updated_line: PackedStringArray = PackedStringArray(line)+old_line.slice(2)
-
-				var line_columns: int = updated_line.size()
-				var line_columns_to_add := csv_columns - line_columns
-
-				# Add trailing commas to match the amount of columns.
-				for _i in range(line_columns_to_add):
-					updated_line.append("")
-
-				file.store_csv_line(updated_line)
-				counts[2] += 1
-
-			else:
-				var line_columns: int = line.size()
-				var line_columns_to_add := csv_columns - line_columns
-
-				# Add trailing commas to match the amount of columns.
-				for _i in range(line_columns_to_add):
-					line.append("")
-
-				file.store_csv_line(line)
-				counts[0] += 1
+		csv_file.update_csv_file_on_disk()
 
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 
 	# Silently open the closed timeline.
-	settings_editor.editors_manager.edit_resource(current_timeline, true, true)
+	# May be null, if no timeline was open.
+	if current_timeline != null:
+		settings_editor.editors_manager.edit_resource(current_timeline, true, true)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
