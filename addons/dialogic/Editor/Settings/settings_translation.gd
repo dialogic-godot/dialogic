@@ -85,7 +85,10 @@ func update_csv_files() -> void:
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
 	# [new events, new_timelines, updated_events, updated_timelines]
-	var counts := [0,0,0,0]
+	var new_events := 0
+	var new_timelines := 0
+	var updated_events := 0
+	var updated_timelines := 0
 
 	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
 	# We will close this timeline to ensure it will properly update.
@@ -103,9 +106,9 @@ func update_csv_files() -> void:
 		csv_per_project = DialogicCsvFile.new(file_path, orig_locale)
 
 		if (csv_per_project.is_new_file):
-			counts[1] += 1
+			new_timelines += 1
 		else:
-			counts[3] += 1
+			updated_timelines += 1
 
 	# Iterate over all timelines.
 	# Swap CSV file.
@@ -128,9 +131,9 @@ func update_csv_files() -> void:
 			csv_file = DialogicCsvFile.new(file_path, orig_locale)
 
 			if csv_file.is_new_file:
-				counts[1] += 1
+				new_timelines += 1
 			else:
-				counts[3] += 1
+				updated_timelines += 1
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
@@ -145,6 +148,9 @@ func update_csv_files() -> void:
 
 		csv_file.update_csv_file_on_disk()
 
+		new_events += csv_file.new_events
+		updated_events += csv_file.updated_events
+
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 
 	# Silently open the closed timeline.
@@ -154,7 +160,10 @@ func update_csv_files() -> void:
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
-	%StatusMessage.text = "Indexed " +str(counts[0])+ " new events ("+str(counts[2])+" were updated). \nAdded "+str(counts[1])+" new csv files ("+str(counts[3])+" were updated)."
+	%StatusMessage.text = ("Indexed " + str(new_events)
+		+ " new events ("+ str(updated_events) + " were updated).\n
+		Added " + str(new_timelines)+ " new CSV files ("
+		+ str(updated_timelines) + " were updated).")
 
 
 func collect_translations() -> void:

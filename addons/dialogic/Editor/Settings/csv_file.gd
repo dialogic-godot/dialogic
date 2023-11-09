@@ -18,6 +18,12 @@ var is_new_file: bool = false
 ## The underlying file used to read and write the CSV file.
 var file: FileAccess
 
+## The amount of events that were updated in the CSV file.
+var updated_events: int = 0
+
+## The amount of events that were added to the CSV file.
+var new_events: int = 0
+
 ## Attempts to load the CSV file from [param file_path].
 ## If the file does not exist, a single entry is added to the [member lines]
 ## array.
@@ -97,7 +103,7 @@ func update_csv_file_on_disk():
                 updated_line.append("")
 
             file.store_csv_line(updated_line)
-            #counts[2] += 1
+            updated_events += 1
 
         else:
             var line_columns: int = line.size()
@@ -108,4 +114,6 @@ func update_csv_file_on_disk():
                 line.append("")
 
             file.store_csv_line(line)
-            # counts[0] += 1
+            new_events += 1
+
+    file.close()
