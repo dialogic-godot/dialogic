@@ -5,6 +5,8 @@ extends DialogicSettingsPage
 
 
 enum TranslationModes {PER_PROJECT, PER_TIMELINE}
+enum SaveLocationModes {NEXT_TO_TIMELINE, INSIDE_TRANSLATION_FOLDER}
+
 var loading := false
 @onready var settings_editor :Control = find_parent('Settings')
 
@@ -54,6 +56,7 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
 	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
 	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
+	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
 	ProjectSettings.save()
 
 
@@ -68,13 +71,13 @@ func get_locales(filter:String) -> Dictionary:
 
 
 func update_csv_files() -> void:
-	var orig_locale: String = %OrigLocale.current_value.strip_edges()
+	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
+	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('internationalization/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 
 	if orig_locale.is_empty():
 		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
-		%OrigLocale.set_value(orig_locale)
 
-	var translation_mode: int = %TransMode.selected
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
 	# [new events, new_timelines, updated_events, updated_timelines]
 	var counts := [0,0,0,0]
