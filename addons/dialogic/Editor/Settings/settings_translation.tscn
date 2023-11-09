@@ -112,7 +112,7 @@ text = "Default locale"
 layout_mode = 2
 tooltip_text = "This should be the local of the language your game is written in."
 texture = SubResource("ImageTexture_yh3a2")
-hint_text = "This should be the local of the language your game is written in."
+hint_text = "The locale of the language your timelines are written in."
 
 [node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
 unique_name_in_owner = true
@@ -130,8 +130,7 @@ layout_mode = 2
 tooltip_text = "You can either create one csv with all the strings from the whole 
 project or one csv file per timeline (will be placed next to that timeline). "
 texture = SubResource("ImageTexture_yh3a2")
-hint_text = "You can either create one csv with all the strings from the whole 
-project or one csv file per timeline (will be placed next to that timeline). "
+hint_text = "Select to create one CSV file with all translatable events from every timeline in the  project or one CSV file per timeline."
 
 [node name="TransMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
 unique_name_in_owner = true
@@ -148,13 +147,13 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation"]
 layout_mode = 2
-text = "Save Location"
+text = "Save location mode"
 
 [node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation" instance=ExtResource("2_k2lou")]
 layout_mode = 2
 tooltip_text = "You can decide to save the CSV files next to the timelines or in the translation folder."
 texture = SubResource("ImageTexture_yh3a2")
-hint_text = "You can decide to save the CSV files next to the timelines or in the translation folder."
+hint_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\"."
 
 [node name="SaveLocationMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
 unique_name_in_owner = true
@@ -177,7 +176,7 @@ text = "Translations folder"
 layout_mode = 2
 tooltip_text = "Choose a folder general translations will be saved to. "
 texture = SubResource("ImageTexture_yh3a2")
-hint_text = "Choose a folder general translations will be saved to. "
+hint_text = "Choose a folder to save CSV files in if the \"Save Location Mode\" is set to \"Inside Translation Folder\"."
 
 [node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
 unique_name_in_owner = true
@@ -284,9 +283,11 @@ text = "Setting up translations"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1. Enable translations
-2. Set default locale (the language you used) and file mode. For per-project-mode also select a folder. In per-timeline mode files will be put next to timelines (and need to stay there!).
-3. Hit \"Update CSV files\". This will create new csv files containing all translatable strings from your timelnes as well as one for the character names.
-4. Wait until reimport is finnished. Then click \"Collect translations\""
+2. Set the language you use in your timelines as \"Default timeline\". 
+3. Select \"Translation file mode\"; \"Per Project\" if you want all timelines in one file.
+4. Select \"Save location mode\"; \"Inside Translation Folder\" requires the \"Translation folder\" setting.
+5. Hit \"Update CSV files\". This will create new CSV files containing all translatable strings from your timelnes as well as one for the character names.
+6. Wait until reimport is finished. Then click \"Collect translations\""
 autowrap_mode = 3
 
 [node name="HSeparator" type="HSeparator" parent="InfoSection"]
