@@ -53,7 +53,7 @@ func set_value(value:Variant, text : String = '') -> void:
 		%Search.text = empty_text
 	if text:
 		%Search.text = text
-	
+
 	current_value = value
 
 
@@ -62,7 +62,7 @@ func changed_to_empty() -> void:
 		emit_signal("value_changed", property_name, null)
 	else:
 		emit_signal("value_changed", property_name, "")
-		
+
 
 ################################################################################
 ## 						BASIC
@@ -80,7 +80,7 @@ func _ready():
 	%Suggestions.item_clicked.connect(suggestion_selected)
 	if resource_icon == null:
 		self.resource_icon = null
-	
+
 	editor_reference = find_parent('EditorView')
 
 
@@ -107,14 +107,14 @@ func _on_Search_text_entered(new_text:String) -> void:
 
 func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.clear()
-	
+
 	if new_text == "" and !just_update:
 		changed_to_empty()
 	else:
 		%Search.show()
 
 	var suggestions :Dictionary = get_suggestions_func.call(new_text)
-	
+
 	var line_length:int = 0
 	var idx:int = 0
 	for element in suggestions:
@@ -129,7 +129,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 			idx += 1
-	
+
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
@@ -149,7 +149,7 @@ func get_default_suggestions(input:String) -> Dictionary:
 	var suggestions: Dictionary = {}
 	if file_extension == ".dch":
 		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-		
+
 		for resource in editor_reference.character_directory.keys():
 			suggestions[resource] = {'value': resource, 'tooltip': editor_reference.character_directory[resource]['full_path']}
 	else:
@@ -157,7 +157,7 @@ func get_default_suggestions(input:String) -> Dictionary:
 
 		for resource in resources:
 			suggestions[resource] = {'value':resource, 'tooltip':resource}
-	
+
 	return suggestions
 
 
@@ -166,21 +166,21 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 		return
 	if %Suggestions.is_item_disabled(index):
 		return
-	
+
 	%Search.text = %Suggestions.get_item_text(index)
-	
+
 	if %Suggestions.get_item_metadata(index) == null:
 		current_value = null
-	
+
 	# if this is a resource, then load it instead of assigning the string:
 	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
 		current_value = %Suggestions.get_item_metadata(index)
-	
+
 	hide_suggestions()
-	
+
 	%Search.grab_focus()
 	emit_signal("value_changed", property_name, current_value)
 
@@ -190,7 +190,7 @@ func _input(event:InputEvent):
 			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()) and \
 				!%SelectButton.get_global_rect().has_point(get_global_mouse_position()):
 				hide_suggestions()
-		
+
 
 func hide_suggestions() -> void:
 	%SelectButton.set_pressed_no_signal(false)
@@ -246,7 +246,7 @@ func _can_drop_data(position, data) -> bool:
 		else:
 			return false
 	return false
-	
+
 func _drop_data(position, data) -> void:
 	if data.files[0].ends_with('dch'):
 		for character in editor_reference.character_directory.keys():

@@ -86,6 +86,12 @@ func _open(extra_info:Variant="") -> void:
 	%PortraitChangeInfo.hide()
 
 
+func _clear() -> void:
+	current_resource = null
+	current_resource_state = ResourceStates.SAVED
+	$NoCharacterScreen.show()
+
+
 func _save() -> void:
 	if ! visible or not current_resource:
 		return
