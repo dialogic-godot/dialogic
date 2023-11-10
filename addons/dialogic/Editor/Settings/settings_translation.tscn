@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_dq4j2"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_kvsma"]
 
-[sub_resource type="Image" id="Image_gheb6"]
+[sub_resource type="Image" id="Image_7t2rc"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,7 +15,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_fdokn"]
-image = SubResource("Image_gheb6")
+image = SubResource("Image_7t2rc")
 
 [node name="Translations" type="VBoxContainer"]
 anchors_preset = 15
@@ -118,12 +118,35 @@ hint_text = "The locale of the language your timelines are written in."
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile"]
+layout_mode = 2
+text = "Target folder"
+
+[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Choose a folder to let Dialogic save CSV files in. 
+
+If the \"Save Location Mode\" is set to \"Inside Translation Folder\", this location will be used."
+texture = SubResource("ImageTexture_fdokn")
+hint_text = "Choose a folder to let Dialogic save CSV files in. 
+
+If the \"Save Location Mode\" is set to \"Inside Translation Folder\", this location will be used."
+
+[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_mode = 2
+
 [node name="VBox2" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox2"]
 layout_mode = 2
-text = "Translation file mode"
+text = "File mode"
 
 [node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/VBox2" instance=ExtResource("2_k2lou")]
 layout_mode = 2
@@ -146,11 +169,13 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation"]
 layout_mode = 2
-text = "Save location mode"
+text = "Save location"
 
 [node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\"."
+tooltip_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\".
+
+Note: This button requires the \"Per Timeline\" translation file mode."
 texture = SubResource("ImageTexture_fdokn")
 hint_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\".
 
@@ -165,27 +190,6 @@ popup/item_0/text = "Inside Translation Folder"
 popup/item_0/id = 0
 popup/item_1/text = "Next to Timeline"
 popup/item_1/id = 1
-
-[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile"]
-layout_mode = 2
-text = "Translations folder"
-
-[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
-layout_mode = 2
-tooltip_text = "Choose a folder to save CSV files in if the \"Save Location Mode\" is set to \"Inside Translation Folder\"."
-texture = SubResource("ImageTexture_fdokn")
-hint_text = "Choose a folder to let Dialogic save CSV files in. 
-
-If the \"Save Location Mode\" is set to \"Inside Translation Folder\", this location will be used."
-
-[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-file_mode = 2
 
 [node name="Control" type="Control" parent="TranslationSettings/VBoxContainer/Grid"]
 layout_mode = 2
@@ -222,7 +226,9 @@ text = "Update CSV files"
 
 [node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "This button will scan all timelines and generate or update their CSV files."
+tooltip_text = "This button will scan all timelines and generate or update their CSV files.
+
+Note: This action will be disabled if the \"Translation file mode\" or \"Save location mode\" requires a valid \"Translation folder\" path."
 texture = SubResource("ImageTexture_fdokn")
 hint_text = "This button will scan all timelines and generate or update their CSV files.
 
