@@ -152,7 +152,9 @@ text = "Save location mode"
 layout_mode = 2
 tooltip_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\"."
 texture = SubResource("ImageTexture_fdokn")
-hint_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\"."
+hint_text = "Select to save CSV files next to their related timelines or inside the defined \"Translation folder\".
+
+Note: This button requires the \"Per Timeline\" translation file mode."
 
 [node name="SaveLocationMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
 unique_name_in_owner = true
@@ -175,7 +177,9 @@ text = "Translations folder"
 layout_mode = 2
 tooltip_text = "Choose a folder to save CSV files in if the \"Save Location Mode\" is set to \"Inside Translation Folder\"."
 texture = SubResource("ImageTexture_fdokn")
-hint_text = "Choose a folder to save CSV files in if the \"Save Location Mode\" is set to \"Inside Translation Folder\"."
+hint_text = "Choose a folder to let Dialogic save CSV files in. 
+
+If the \"Save Location Mode\" is set to \"Inside Translation Folder\", this location will be used."
 
 [node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
 unique_name_in_owner = true
@@ -220,7 +224,9 @@ text = "Update CSV files"
 layout_mode = 2
 tooltip_text = "This button will scan all timelines and generate or update their CSV files."
 texture = SubResource("ImageTexture_fdokn")
-hint_text = "This button will scan all timelines and generate or update their CSV files."
+hint_text = "This button will scan all timelines and generate or update their CSV files.
+
+Note: This action will be disabled if the \"Translation file mode\" or \"Save location mode\" requires a valid \"Translation folder\" path."
 
 [node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
 unique_name_in_owner = true
