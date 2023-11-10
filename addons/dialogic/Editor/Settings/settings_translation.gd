@@ -55,11 +55,35 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	if loading:
 		return
 
+	var translation_folder: String = %TransFolderPicker.current_value
+	var save_location_mode: SaveLocationModes = %SaveLocationMode.selected
+	var file_mode: TranslationModes = %TransMode.selected
+
+	if file_mode == TranslationModes.PER_PROJECT:
+		%SaveLocationMode.disabled = true
+	else:
+		%SaveLocationMode.disabled = false
+
+	if (save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER
+	or file_mode == TranslationModes.PER_PROJECT):
+		var valid_translation_folder = (!translation_folder.is_empty()
+			and DirAccess.dir_exists_absolute(translation_folder))
+
+		%UpdateCsvFiles.disabled = !valid_translation_folder
+
+		if not valid_translation_folder:
+			%StatusMessage.text = "Invalid translation folder!"
+		else:
+			%StatusMessage.text = ""
+
+	else:
+		%StatusMessage.text = ""
+
 	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
-	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
+	ProjectSettings.set_setting('dialogic/translation/translation_folder', translation_folder)
 	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
 	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
 	ProjectSettings.save()
