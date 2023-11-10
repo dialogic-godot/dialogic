@@ -122,9 +122,11 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 
 			node.disabled = not enabled
 
-			if not node.pressed.is_connected(_on_ChoiceButton_choice_selected):
-				node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
-					{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
+			if node.pressed.is_connected(_on_ChoiceButton_choice_selected):
+				node.pressed.disconnect(_on_ChoiceButton_choice_selected)
+
+			node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
+				{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
 
 		if node.choice_index > 0:
 			idx = node.choice_index
