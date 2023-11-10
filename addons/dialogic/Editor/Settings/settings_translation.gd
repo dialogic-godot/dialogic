@@ -5,6 +5,8 @@ extends DialogicSettingsPage
 
 
 enum TranslationModes {PER_PROJECT, PER_TIMELINE}
+enum SaveLocationModes {INSIDE_TRANSLATION_FOLDER, NEXT_TO_TIMELINE}
+
 var loading := false
 @onready var settings_editor :Control = find_parent('Settings')
 
@@ -29,33 +31,75 @@ func _ready() -> void:
 	%TestingLocale.value_changed.connect(store_changes)
 	%TransFolderPicker.value_changed.connect(store_changes)
 
+	%SaveLocationMode.item_selected.connect(store_changes)
+	%TransMode.item_selected.connect(store_changes)
+
 	%UpdateCsvFiles.pressed.connect(update_csv_files)
 	%CollectTranslations.pressed.connect(collect_translations)
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
-
+	_verify_translation_file()
 
 func _refresh() -> void:
 	loading = true
+
 	%TransEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/enabled', false)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	%OrigLocale.set_value(ProjectSettings.get_setting('dialogic/translation/original_locale', TranslationServer.get_tool_locale()))
 	%TransMode.select(ProjectSettings.get_setting('dialogic/translation/file_mode', 1))
 	%TransFolderPicker.set_value(ProjectSettings.get_setting('dialogic/translation/translation_folder', ''))
 	%TestingLocale.set_value(ProjectSettings.get_setting('internationalization/locale/test', ''))
+
+	_verify_translation_file()
+
 	loading = false
 
 
 func store_changes(fake_arg = "", fake_arg2 = "") -> void:
-	if loading: return
+	if loading:
+		return
+
+	_verify_translation_file()
+
 	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
 	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
 	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
+	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
 	ProjectSettings.save()
 
+## Checks whether the translation folder path is required.
+## If it is, disables the "Update CSV files" button and shows a warning.
+##
+## The translation folder path is required when either of the following is true:
+## - The translation mode is set to "Per Project".
+## - The save location mode is set to "Inside Translation Folder".
+func _verify_translation_file() -> void:
+	var translation_folder: String = %TransFolderPicker.current_value
+	var save_location_mode: SaveLocationModes = %SaveLocationMode.selected
+	var file_mode: TranslationModes = %TransMode.selected
+
+	if file_mode == TranslationModes.PER_PROJECT:
+		%SaveLocationMode.disabled = true
+	else:
+		%SaveLocationMode.disabled = false
+
+	if (save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER
+	or file_mode == TranslationModes.PER_PROJECT):
+		var valid_translation_folder = (!translation_folder.is_empty()
+			and DirAccess.dir_exists_absolute(translation_folder))
+
+		%UpdateCsvFiles.disabled = !valid_translation_folder
+
+		if not valid_translation_folder:
+			%StatusMessage.text = "Invalid translation folder!"
+		else:
+			%StatusMessage.text = ""
+
+	else:
+		%StatusMessage.text = ""
 
 func get_locales(filter:String) -> Dictionary:
 	var suggestions := {}
@@ -66,24 +110,20 @@ func get_locales(filter:String) -> Dictionary:
 	return suggestions
 
 
-
 func update_csv_files() -> void:
-	var orig_locale: String = %OrigLocale.current_value.strip_edges()
+	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
+	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('internationalization/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 
 	if orig_locale.is_empty():
 		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
-		%OrigLocale.set_value(orig_locale)
 
-	var translation_mode: int = %TransMode.selected
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
 	# [new events, new_timelines, updated_events, updated_timelines]
-	var counts := [0,0,0,0]
-	var file : FileAccess
-	var csv_lines := []
-	# Contains already existing csv_lines as [key] = [value, value, ...] dict
-	var old_csv_lines := {}
-
-	var csv_columns := 0
+	var new_events := 0
+	var new_timelines := 0
+	var updated_events := 0
+	var updated_timelines := 0
 
 	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
 	# We will close this timeline to ensure it will properly update.
@@ -92,190 +132,131 @@ func update_csv_files() -> void:
 	# Clean the current editor, this will also close the timeline.
 	settings_editor.editors_manager.clear_editor(timeline_node)
 
-	# Collect old lines in per project mode.
+	var csv_per_project: DialogicCsvFile = null
+
+	# Collect old lines from the Per Project CSV.
 	if translation_mode == TranslationModes.PER_PROJECT:
 		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
 
-		if FileAccess.file_exists(file_path):
-			file = FileAccess.open(file_path, FileAccess.READ_WRITE)
-			counts[3] += 1
+		csv_per_project = DialogicCsvFile.new(file_path, orig_locale)
 
-			var locale_csv_row := file.get_csv_line()
-			csv_columns = locale_csv_row.size()
-			old_csv_lines[locale_csv_row[0]] = locale_csv_row
-
-			while !file.eof_reached():
-				var line := file.get_csv_line()
-				old_csv_lines[line[0]] = line
-
+		if (csv_per_project.is_new_file):
+			new_timelines += 1
 		else:
-			counts[1] += 1
+			updated_timelines += 1
 
-		csv_lines.append(['keys', orig_locale])
-
+	# Iterate over all timelines.
+	# Swap CSV file.
+	# Transform the timeline into translatable lines and collect into the CSV file.
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
-		var file_path: String = timeline_path.trim_suffix('.dtl')+'_translation.csv'
+		var csv_file: DialogicCsvFile = csv_per_project
 
-		# Collect old lines in per timeline mode.
+		# Swap the CSV file to the Per Timeline one.
 		if translation_mode == TranslationModes.PER_TIMELINE:
+			var file_path: String = timeline_path.trim_suffix('.dtl')
 
-			if FileAccess.file_exists(file_path):
-				file = FileAccess.open(file_path, FileAccess.READ_WRITE)
+			if save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
+				var path_parts := file_path.split("/")
+				var timeline_name: String = path_parts[-1]
+				var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
-				var locale_csv_row := file.get_csv_line()
-				csv_columns = locale_csv_row.size()
-				old_csv_lines[locale_csv_row[0]] = locale_csv_row
+				file_path = translation_folder.path_join(timeline_name)
 
-				while !file.eof_reached():
-					var line := file.get_csv_line()
-					old_csv_lines[line[0]] = line
+			file_path += '_translation.csv'
+			csv_file = DialogicCsvFile.new(file_path, orig_locale)
 
-			csv_lines.append(['keys', orig_locale])
+			if csv_file.is_new_file:
+				new_timelines += 1
+			else:
+				updated_timelines += 1
 
-		# load and process timeline (make events to resources)
-		var tml : DialogicTimeline = load(timeline_path)
-		await tml.process()
+		# Load and process timeline, turn events into resources.
+		var timeline: DialogicTimeline = load(timeline_path)
+		await timeline.process()
 
-		# now collect all the current csv_lines from timeline
-		for event in tml.events:
-
-			if event.can_be_translated():
-
-				if event._translation_id.is_empty():
-					event.add_translation_id()
-					event.update_text_version()
-
-				for property in event._get_translatable_properties():
-					csv_lines.append([event.get_property_translation_key(property), event._get_property_original_translation(property)])
+		# Collect timeline into CSV.
+		csv_file.collect_lines_from_timeline(timeline)
 
 		# in case new translation_id's were added, we save the timeline again
-		tml.set_meta("timeline_not_saved", true)
-		ResourceSaver.save(tml, timeline_path)
+		timeline.set_meta("timeline_not_saved", true)
+		ResourceSaver.save(timeline, timeline_path)
 
-		# for per_timeline mode save the file now, then reset for next timeline
-		if translation_mode == TranslationModes.PER_TIMELINE:
-			if !FileAccess.file_exists(file_path):
-				pass#counts[1] += 1
+		csv_file.update_csv_file_on_disk()
 
-			elif len(csv_lines):
-				counts[3] += 1
-
-			file = FileAccess.open(file_path, FileAccess.WRITE)
-
-			for line in csv_lines:
-
-				# In case there might be translations for this line already,
-				# add them at the end again (orig locale text is replaced).
-				if line[0] in old_csv_lines:
-					var old_line = old_csv_lines[line[0]]
-					var updated_line: PackedStringArray = line + Array(old_line).slice(2)
-
-					var line_columns: int = updated_line.size()
-					var line_columns_to_add := csv_columns - line_columns
-
-					# Add trailing commas to match the amount of columns.
-					for _i in range(line_columns_to_add):
-						updated_line.append("")
-
-					file.store_csv_line(updated_line)
-					counts[2] += 1
-
-				else:
-					var line_columns: int = line.size()
-					var line_columns_to_add := csv_columns - line_columns
-
-					# Add trailing commas to match the amount of columns.
-					for _i in range(line_columns_to_add):
-						line.append("")
-
-
-					file.store_csv_line(line)
-					counts[0] += 1
-
-			csv_lines.clear()
-			old_csv_lines.clear()
-
-	if translation_mode == TranslationModes.PER_PROJECT:
-		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
-
-		if FileAccess.file_exists(file_path):
-			counts[3] += 1
-		else:
-			counts[1] += 1
-
-		file = FileAccess.open(file_path, FileAccess.WRITE)
-
-		for line in csv_lines:
-			# in case there might be translations for this line already,
-			# add them at the end again (orig locale text is replaced).
-			if line[0] in old_csv_lines:
-				var old_line: PackedStringArray = old_csv_lines[line[0]]
-				var updated_line: PackedStringArray = PackedStringArray(line)+old_line.slice(2)
-
-				var line_columns: int = updated_line.size()
-				var line_columns_to_add := csv_columns - line_columns
-
-				# Add trailing commas to match the amount of columns.
-				for _i in range(line_columns_to_add):
-					updated_line.append("")
-
-				file.store_csv_line(updated_line)
-				counts[2] += 1
-
-			else:
-				var line_columns: int = line.size()
-				var line_columns_to_add := csv_columns - line_columns
-
-				# Add trailing commas to match the amount of columns.
-				for _i in range(line_columns_to_add):
-					line.append("")
-
-				file.store_csv_line(line)
-				counts[0] += 1
+		new_events += csv_file.new_events
+		updated_events += csv_file.updated_events
 
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 
 	# Silently open the closed timeline.
-	settings_editor.editors_manager.edit_resource(current_timeline, true, true)
+	# May be null, if no timeline was open.
+	if current_timeline != null:
+		settings_editor.editors_manager.edit_resource(current_timeline, true, true)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
-	%StatusMessage.text = "Indexed " +str(counts[0])+ " new events ("+str(counts[2])+" were updated). \nAdded "+str(counts[1])+" new csv files ("+str(counts[3])+" were updated)."
+	%StatusMessage.text = ("Indexed " + str(new_events)
+		+ " new events ("+ str(updated_events) + " were updated).\n
+		Added " + str(new_timelines)+ " new CSV files ("
+		+ str(updated_timelines) + " were updated).")
 
 
 func collect_translations() -> void:
-	var trans_files := []
-	var translation_mode: int = %TransMode.selected
+	var translation_files := []
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
 	if translation_mode == TranslationModes.PER_TIMELINE:
-		for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
+
+		for timeline_path in DialogicUtil.list_resources_of_type('.translation'):
+
 			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				file = timeline_path.get_base_dir().path_join(file)
+
 				if file.ends_with('.translation'):
-					if not file in trans_files:
-						trans_files.append(file)
+
+					if not file in translation_files:
+						translation_files.append(file)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
-		var trans_folder :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
-		for file in DialogicUtil.listdir(trans_folder):
-			file = trans_folder.path_join(file)
+		var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+
+		for file in DialogicUtil.listdir(translation_folder):
+			file = translation_folder.path_join(file)
+
 			if file.ends_with('.translation'):
-				if not file in trans_files:
-					trans_files.append(file)
 
-	var all_trans_files : Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
-	var orig_file_amount := len(all_trans_files)
-	for file in trans_files:
-		if not file in all_trans_files:
-			all_trans_files.append(file)
+				if not file in translation_files:
+					translation_files.append(file)
 
-	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(all_trans_files))
+	var all_translation_files: Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
+	var orig_file_amount := len(all_translation_files)
+
+	# This array keeps track of valid translation file paths.
+	var found_file_paths := []
+	var removed_translation_files := 0
+
+	for file_path in translation_files:
+		# If the file path is not valid, we must clean it up.
+		if FileAccess.file_exists(file_path):
+			found_file_paths.append(file_path)
+		else:
+			removed_translation_files += 1
+			continue
+
+		if not file_path in all_translation_files:
+			all_translation_files.append(file_path)
+
+	var valid_translation_files := PackedStringArray(all_translation_files)
+	ProjectSettings.set_setting('internationalization/locale/translations', valid_translation_files)
 	ProjectSettings.save()
 
-	%StatusMessage.text = "Collected "+str(len(all_trans_files)-orig_file_amount) + " new translation files."
+	%StatusMessage.text = (
+		"Added translation files: " + str(len(all_translation_files)-orig_file_amount)
+		+ "\nRemoved translation files: " + str(removed_translation_files)
+		+ "\nTotal translation files: " + str(len(all_translation_files)))
 
 
-func _on_erase_translations_pressed():
+func _on_erase_translations_pressed() -> void:
 	$EraseConfirmationDialog.popup_centered()
 
 
@@ -283,30 +264,34 @@ func erase_translations() -> void:
 	var trans_files := Array(ProjectSettings.get_setting('internationalization/locale/translations', []))
 	var translation_mode : int = %TransMode.selected
 
-	var counts := [0,0] # csv files, translation files
+	var deleted_csv_files := 0
+	var deleted_translation_files := 0
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		var trans_path :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv.import')
-		counts[0] += 1
+		deleted_csv_files += 1
+
 		for x_file in DialogicUtil.listdir(trans_path):
 			if x_file.ends_with('.translation'):
 				trans_files.erase(trans_path.get_base_dir().path_join(x_file))
 				DirAccess.remove_absolute(trans_path.get_base_dir().path_join(x_file))
-				counts[1] += 1
+				deleted_translation_files += 1
 
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		# in per project mode, remove all translation files/resources next to the timelines
 		if translation_mode == TranslationModes.PER_TIMELINE:
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv')
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv.import')
-			counts[0] += 1
+			deleted_csv_files += 1
+
 			for x_file in DialogicUtil.listdir(timeline_path.get_base_dir()):
+
 				if x_file.ends_with('.translation'):
 					trans_files.erase(timeline_path.get_base_dir().path_join(x_file))
 					DirAccess.remove_absolute(timeline_path.get_base_dir().path_join(x_file))
-					counts[1] += 1
+					deleted_translation_files += 1
 
 		# clear the timeline events of their translation_id's
 		var tml:DialogicTimeline = load(timeline_path)
@@ -326,6 +311,7 @@ func erase_translations() -> void:
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 
-	%StatusMessage.text = "Removed "+str(counts[0])+" csv files, "+str(counts[1])+" translations and all translation id's."
+	%StatusMessage.text = ("Erased " +str(deleted_csv_files)+ " CSV files, "
+		+ str(deleted_translation_files) + " translations and all translation ID's.")
 	_refresh()
 
