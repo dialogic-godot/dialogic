@@ -58,12 +58,14 @@ func _init(file_path: String, original_locale: String) -> void:
 
     _read_file_into_lines()
 
+
 ## Private function to read the CSV file into the [member lines] array.
 func _read_file_into_lines() -> void:
     while not file.eof_reached():
         var line := file.get_csv_line()
         var row_key := line[0]
         old_lines[row_key] = line
+
 
 func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
     for event in timeline.events:
@@ -79,6 +81,7 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 var line_value: String = event._get_property_original_translation(property)
                 var array_line := PackedStringArray([line_key, line_value])
                 lines.append(array_line)
+
 
 ## Clears the CSV file on disk and writes the current [member lines] array to it.
 ## Uses the [member old_lines] dictionary to update existing translations.
