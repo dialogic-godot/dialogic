@@ -74,7 +74,7 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 ## If it is, disables the "Update CSV files" button and shows a warning.
 ##
 ## The translation folder path is required when either of the following is true:
-## - The translation mode is set to "Per Timeline".
+## - The translation mode is set to "Per Project".
 ## - The save location mode is set to "Inside Translation Folder".
 func _verify_translation_file() -> void:
 	var translation_folder: String = %TransFolderPicker.current_value
