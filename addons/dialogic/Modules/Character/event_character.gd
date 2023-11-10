@@ -545,7 +545,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			if line.begins_with('update'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
 			if line.begins_with('leave'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ALL)
+				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
 			for script in animations:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
 		elif CodeCompletionHelper.get_line_untill_caret(line).ends_with('wait="') or CodeCompletionHelper.get_line_untill_caret(line).ends_with('mirrored="'):
