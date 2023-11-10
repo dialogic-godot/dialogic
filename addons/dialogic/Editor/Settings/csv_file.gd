@@ -1,5 +1,5 @@
-extends RefCounted
 class_name DialogicCsvFile
+extends RefCounted
 ## Handles translation of a [class DialogicTimeline] to a CSV file.
 
 var lines: Array[PackedStringArray] = []
