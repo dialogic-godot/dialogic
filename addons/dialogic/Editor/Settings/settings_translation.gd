@@ -38,16 +38,20 @@ func _ready() -> void:
 	%CollectTranslations.pressed.connect(collect_translations)
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
-
+	_verify_translation_file()
 
 func _refresh() -> void:
 	loading = true
+
 	%TransEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/enabled', false)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	%OrigLocale.set_value(ProjectSettings.get_setting('dialogic/translation/original_locale', TranslationServer.get_tool_locale()))
 	%TransMode.select(ProjectSettings.get_setting('dialogic/translation/file_mode', 1))
 	%TransFolderPicker.set_value(ProjectSettings.get_setting('dialogic/translation/translation_folder', ''))
 	%TestingLocale.set_value(ProjectSettings.get_setting('internationalization/locale/test', ''))
+
+	_verify_translation_file()
+
 	loading = false
 
 
@@ -55,6 +59,24 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	if loading:
 		return
 
+	_verify_translation_file()
+
+	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
+	%TranslationSettings.visible = %TransEnabled.button_pressed
+	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
+	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
+	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
+	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
+	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
+	ProjectSettings.save()
+
+## Checks whether the translation folder path is required.
+## If it is, disables the "Update CSV files" button and shows a warning.
+##
+## The translation folder path is required when either of the following is true:
+## - The translation mode is set to "Per Timeline".
+## - The save location mode is set to "Inside Translation Folder".
+func _verify_translation_file() -> void:
 	var translation_folder: String = %TransFolderPicker.current_value
 	var save_location_mode: SaveLocationModes = %SaveLocationMode.selected
 	var file_mode: TranslationModes = %TransMode.selected
@@ -79,16 +101,6 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	else:
 		%StatusMessage.text = ""
 
-	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
-	%TranslationSettings.visible = %TransEnabled.button_pressed
-	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
-	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
-	ProjectSettings.set_setting('dialogic/translation/translation_folder', translation_folder)
-	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
-	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
-	ProjectSettings.save()
-
-
 func get_locales(filter:String) -> Dictionary:
 	var suggestions := {}
 	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
@@ -96,7 +108,6 @@ func get_locales(filter:String) -> Dictionary:
 	for locale in TranslationServer.get_all_languages():
 		suggestions[locale] = {'value':locale, 'tooltip':TranslationServer.get_language_name(locale)}
 	return suggestions
-
 
 
 func update_csv_files() -> void:
