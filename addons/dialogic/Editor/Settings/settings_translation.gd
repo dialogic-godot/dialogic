@@ -158,7 +158,7 @@ func update_csv_files() -> void:
 			if save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
 				var path_parts := file_path.split("/")
 				var timeline_name: String = path_parts[-1]
-				var translation_folder := ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+				var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
 				file_path = translation_folder.path_join(timeline_name)
 
@@ -218,7 +218,7 @@ func collect_translations() -> void:
 						translation_files.append(file)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
-		var translation_folder :String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+		var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
 		for file in DialogicUtil.listdir(translation_folder):
 			file = translation_folder.path_join(file)
@@ -228,9 +228,9 @@ func collect_translations() -> void:
 				if not file in translation_files:
 					translation_files.append(file)
 
-	var all_translation_files : Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
+	var all_translation_files: Array = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var orig_file_amount := len(all_translation_files)
-	var detected_missing_file := false
+
 	# This array keeps track of valid translation file paths.
 	var found_file_paths := []
 	var removed_translation_files := 0
@@ -256,7 +256,7 @@ func collect_translations() -> void:
 		+ "\nTotal translation files: " + str(len(all_translation_files)))
 
 
-func _on_erase_translations_pressed():
+func _on_erase_translations_pressed() -> void:
 	$EraseConfirmationDialog.popup_centered()
 
 

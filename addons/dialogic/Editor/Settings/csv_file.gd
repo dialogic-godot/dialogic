@@ -1,6 +1,6 @@
 extends RefCounted
-## Handles a CSV file on disk.
 class_name DialogicCsvFile
+## Handles translation of a [class DialogicTimeline] to a CSV file.
 
 var lines: Array[PackedStringArray] = []
 ## Dictionary of lines from the original file.
@@ -30,13 +30,13 @@ var new_events: int = 0
 ## Attempts to load the CSV file from [param file_path].
 ## If the file does not exist, a single entry is added to the [member lines]
 ## array.
-func _init(file_path: String, original_locale: String):
+func _init(file_path: String, original_locale: String) -> void:
     used_file_path = file_path
     print("Opening CSV file from path: ", file_path)
 
     # The first entry must be the locale row.
     # [method collect_lines_from_timeline] will add the other locales, if any.
-    var locale_array_line := PackedStringArray(['keys', original_locale])
+    var locale_array_line := PackedStringArray(["keys", original_locale])
     lines.append(locale_array_line)
 
     if not FileAccess.file_exists(file_path):
@@ -61,7 +61,7 @@ func _init(file_path: String, original_locale: String):
 
 ## Private function to read the CSV file into the [member lines] array.
 func _read_file_into_lines() -> void:
-    while !file.eof_reached():
+    while not file.eof_reached():
         var line := file.get_csv_line()
         var row_key := line[0]
         old_lines[row_key] = line
@@ -78,7 +78,6 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
             for property in event._get_translatable_properties():
                 var line_key: String = event.get_property_translation_key(property)
                 var line_value: String = event._get_property_original_translation(property)
-
                 var array_line := PackedStringArray([line_key, line_value])
                 lines.append(array_line)
 
