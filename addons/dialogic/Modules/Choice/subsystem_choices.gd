@@ -121,7 +121,9 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 					node.shortcut = shortcut
 
 			node.disabled = not enabled
-			node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
+
+			if not node.pressed.is_connected(_on_ChoiceButton_choice_selected):
+				node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
 					{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
 
 		if node.choice_index > 0:
