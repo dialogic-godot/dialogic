@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://0wc7bedn7ee8"]
+
+[ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/default_background_transition.gdshader" id="1_uctph"]
+
+[sub_resource type="Gradient" id="Gradient_4flwl"]
+offsets = PackedFloat32Array(0.496403)
+colors = PackedColorArray(0.524751, 0.524751, 0.524751, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gkpb1"]
+gradient = SubResource("Gradient_4flwl")
+
+[resource]
+shader = ExtResource("1_uctph")
+shader_parameter/progress = 0.035
+shader_parameter/feather = 1.0
+shader_parameter/keepAspectRatio = false
+shader_parameter/whipeTexture = SubResource("GradientTexture1D_gkpb1")
