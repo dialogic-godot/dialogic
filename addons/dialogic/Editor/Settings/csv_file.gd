@@ -46,13 +46,12 @@ func _init(file_path: String, original_locale: String):
         # For example: "keys, en"
         column_count = 2
 
-        file = FileAccess.open(file_path, FileAccess.READ)
+        file = FileAccess.open(file_path, FileAccess.WRITE)
         return
 
     file = FileAccess.open(file_path, FileAccess.READ)
 
     var locale_csv_row := file.get_csv_line()
-    print("Locale CSV row: ", locale_csv_row)
     column_count = locale_csv_row.size()
     var locale_key := locale_csv_row[0]
 
