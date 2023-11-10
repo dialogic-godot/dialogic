@@ -32,7 +32,6 @@ var new_events: int = 0
 ## array.
 func _init(file_path: String, original_locale: String) -> void:
     used_file_path = file_path
-    print("Opening CSV file from path: ", file_path)
 
     # The first entry must be the locale row.
     # [method collect_lines_from_timeline] will add the other locales, if any.
