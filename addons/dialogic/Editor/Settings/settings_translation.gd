@@ -132,13 +132,13 @@ func update_csv_files() -> void:
 	# Clean the current editor, this will also close the timeline.
 	settings_editor.editors_manager.clear_editor(timeline_node)
 
+	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_character_name_translations.csv')
 	var csv_per_project: DialogicCsvFile = null
+	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(translation_folder_path, orig_locale)
 
 	# Collect old lines from the Per Project CSV.
 	if translation_mode == TranslationModes.PER_PROJECT:
-		var file_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
-
-		csv_per_project = DialogicCsvFile.new(file_path, orig_locale)
+		csv_per_project = DialogicCsvFile.new(translation_folder_path, orig_locale)
 
 		if (csv_per_project.is_new_file):
 			new_timelines += 1
@@ -176,6 +176,8 @@ func update_csv_files() -> void:
 
 		# Collect timeline into CSV.
 		csv_file.collect_lines_from_timeline(timeline)
+		var characters := csv_file.collected_characters
+		character_name_csv.collect_lines_from_characters(characters)
 
 		# in case new translation_id's were added, we save the timeline again
 		timeline.set_meta("timeline_not_saved", true)
@@ -185,6 +187,8 @@ func update_csv_files() -> void:
 
 		new_events += csv_file.new_events
 		updated_events += csv_file.updated_events
+
+	character_name_csv.update_csv_file_on_disk()
 
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 

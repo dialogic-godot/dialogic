@@ -27,6 +27,11 @@ var updated_events: int = 0
 ## The amount of events that were added to the CSV file.
 var new_events: int = 0
 
+## Stores all character names from the current CSV.
+##
+## Key: String, Value: PackedStringArray
+var collected_characters: Dictionary = {}
+
 ## Attempts to load the CSV file from [param file_path].
 ## If the file does not exist, a single entry is added to the [member lines]
 ## array.
@@ -67,6 +72,35 @@ func _read_file_into_lines() -> void:
         old_lines[row_key] = line
 
 
+## Collects names from the given [param characters] and adds them to the
+## [member lines].
+##
+## If this is the character name CSV file, use this method to
+## take previously collected characters from other [class DialogicCsvFile]s.
+func collect_lines_from_characters(characters: Dictionary) -> void:
+    for character in characters.values():
+
+        # Check if the character has a valid translation ID.
+        if character._translation_id == null or character._translation_id.is_empty():
+            character.add_translation_id()
+
+        # Add row for display names.
+        var display_name_key: String = character.get_property_translation_key("display_name")
+        var line_value: String = character.display_name
+        var array_line := PackedStringArray([display_name_key, line_value])
+        lines.append(array_line)
+
+        # Add row for nicknames.
+        var nickname_string: String = ", ".join(character.nicknames)
+        var nickname_name_line_key: String = character.get_property_translation_key("nickname")
+        var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
+        lines.append(nick_array_line)
+
+
+## Collects translatable events from the given [param timeline] and adds
+## them to the [member lines].
+##
+## If this is a timeline CSV file,
 func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
     for event in timeline.events:
 
@@ -80,6 +114,14 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 var line_key: String = event.get_property_translation_key(property)
                 var line_value: String = event._get_property_original_translation(property)
                 var array_line := PackedStringArray([line_key, line_value])
+
+                # If the event has a character property, we will take it.
+                var character: DialogicCharacter = event.character
+
+                if (character != null
+                and not collected_characters.has(character.display_name)):
+                    collected_characters[character.display_name] = character
+
                 lines.append(array_line)
 
 
