@@ -3,7 +3,7 @@ extends DialogicPortrait
 
 ## Default portrait scene.
 
-## The parent class has a character and portrait variable. 
+## The parent class has a character and portrait variable.
 @export_group('Main')
 @export_file var image : String = ""
 
@@ -11,15 +11,15 @@ extends DialogicPortrait
 func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String) -> void:
 	if passed_portrait == "" or not passed_portrait in passed_character.portraits.keys():
 		passed_portrait = passed_character.default_portrait
-	
+
 	portrait = passed_portrait
 	character = passed_character
-	
+
 	if character.portraits.has(portrait):
 		$Portrait.texture = null
 		if !image.is_empty():
 			$Portrait.texture = load(image)
-		# This is a leftover from alpha. 
+		# This is a leftover from alpha.
 		# Removing this will break any portraits made before alpha-10
 		elif !character.portraits[portrait].get('image', '').is_empty():
 			$Portrait.texture = load(character.portraits[portrait].get('image'))

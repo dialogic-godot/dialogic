@@ -35,7 +35,7 @@ func add_layout_style(style_name:="", is_base_style:=true) -> Node:
 	var previous := Dialogic.get_layout_node()
 
 	var layout_path := DialogicUtil.get_inherited_style_layout(style_name)
-	var layout := Dialogic._add_layout_node(layout_path)
+	var layout := Dialogic.add_layout_node(layout_path)
 
 
 	# apply export overrides, in case this isn't the exact same style

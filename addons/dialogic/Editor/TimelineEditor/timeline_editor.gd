@@ -11,7 +11,7 @@ var play_timeline_button : Button = null
 func _register() -> void:
 	resource_unsaved.connect(_on_resource_unsaved)
 	resource_saved.connect(_on_resource_saved)
-	
+
 	# register editor
 	editors_manager.register_resource_editor('dtl', self)
 	# add timeline button
@@ -31,11 +31,13 @@ func _register() -> void:
 		self)
 	play_timeline_button.pressed.connect(play_timeline)
 	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
+	if OS.get_name() == "macOS":
+		play_timeline_button.tooltip_text = "Play the current timeline (CTRL+B)"
 	
 	%VisualEditor.load_event_buttons()
-	
+
 	current_editor_mode = DialogicUtil.get_editor_setting('timeline_editor_mode', 0)
-	
+
 	match current_editor_mode:
 		0:
 			%VisualEditor.show()
@@ -45,7 +47,7 @@ func _register() -> void:
 			%VisualEditor.hide()
 			%TextEditor.show()
 			%SwitchEditorMode.text = "Visual Editor"
-	
+
 	$NoTimelineScreen.show()
 	play_timeline_button.disabled = true
 
@@ -84,8 +86,10 @@ func _save() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	
-	if event is InputEventKey and event.keycode == KEY_F5 and event.pressed:
+	var keycode := KEY_F5
+	if OS.get_name() == "macOS":
+		keycode = KEY_B
+	if event is InputEventKey and event.keycode == keycode and event.pressed:
 		if Input.is_key_pressed(KEY_CTRL):
 			play_timeline()
 
@@ -93,12 +97,12 @@ func _input(event: InputEvent) -> void:
 ## Method to play the current timeline. Connected to the button in the sidebar.
 func play_timeline():
 	_save()
-	
+
 	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
-	
+
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
-	
+
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
 
@@ -119,7 +123,7 @@ func toggle_editor_mode():
 			%VisualEditor.load_timeline(current_resource)
 			%VisualEditor.show()
 			%SwitchEditorMode.text = "Text Editor"
-	
+
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
@@ -145,21 +149,21 @@ func new_timeline(path:String) -> void:
 
 func _ready():
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
-	
+
 	# switch editor mode button
 	%SwitchEditorMode.text = "Text editor"
 	%SwitchEditorMode.icon = get_theme_icon("ArrowRight", "EditorIcons")
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
 	var _scale := DialogicUtil.get_editor_scale()
 	%SwitchEditorMode.custom_minimum_size.x = 200 * _scale
-	
-	
+
+
 
 
 
 func _on_create_timeline_button_pressed():
 	editors_manager.show_add_resource_dialog(
-			new_timeline, 
+			new_timeline,
 			'*.dtl; DialogicTimeline',
 			'Create new timeline',
 			'timeline',

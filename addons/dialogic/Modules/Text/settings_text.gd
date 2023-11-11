@@ -14,7 +14,7 @@ func _get_title() -> String:
 func _get_info_section():
 	return $InformationSection
 
-func _refresh():
+func _refresh() -> void:
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true)
 	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
@@ -22,8 +22,8 @@ func _refresh():
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
 
-	var per_character_delay := ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
-	var per_word_delay := ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
+	var per_character_delay: float = ProjectSettings.get_setting('dialogic/text/autoadvance_per_character_delay', 0.1)
+	var per_word_delay: float = ProjectSettings.get_setting('dialogic/text/autoadvance_per_word_delay', 0)
 	if per_character_delay == 0 and per_word_delay == 0:
 		_on_additional_delay_mode_item_selected(0)
 	elif per_word_delay == 0:
