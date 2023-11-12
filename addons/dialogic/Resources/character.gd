@@ -18,6 +18,12 @@ class_name DialogicCharacter
 
 @export var custom_info:Dictionary = {}
 
+## All valid properties that can be accessed by their translation.
+enum TranslatedProperties {
+	NAME,
+	NICKNAMES,
+}
+
 var _translation_id: String = ""
 
 func __get_property_list() -> Array:
@@ -39,9 +45,61 @@ func add_translation_id() -> String:
 func remove_translation_id() -> void:
 	_translation_id = ""
 
+## Checks [param property] and matches it to a translation key.
+##
+## Undefined behaviour if an invalid integer is passed.
+func get_property_translation_key(property: TranslatedProperties) -> String:
+	var property_key := ""
 
-func get_property_translation_key(property_name:String) -> String:
-	return "Character".path_join(_translation_id).path_join(property_name)
+	match property:
+		TranslatedProperties.NAME:
+			property_key = "character"
+		TranslatedProperties.NICKNAMES:
+			property_key = "nicknames"
+
+	return "Character".path_join(_translation_id).path_join(property_key)
+
+
+## Accesses the original text of the character.
+##
+## Undefined behaviour if an invalid integer is passed.
+func _get_property_original_text(property: TranslatedProperties) -> String:
+	match property:
+		TranslatedProperties.NAME:
+			return display_name
+		TranslatedProperties.NICKNAMES:
+			return ", ".join(nicknames)
+
+	return ""
+
+
+## Access a property of the character and if conditions are met, attempts to
+## translate the property.
+##
+## The translation feature must be enabled in the project settings.
+## The translation ID must be set.
+## Otherwise, returns the text property as is.
+##
+## Undefined behaviour if an invalid integer is passed.
+func get_property_translated(property: TranslatedProperties) -> String:
+	var try_translation: bool = (_translation_id != null
+		and not _translation_id.is_empty()
+		and ProjectSettings.get_setting('dialogic/translation/enabled', false)
+	)
+
+	if try_translation:
+		var translation = tr(get_property_translation_key(property))
+
+		# If no translation is found, tr() returns the ID.
+		# However, we want to fallback to the original text.
+		if translation == _translation_id:
+			return _get_property_original_text(property)
+
+		return translation
+
+	else:
+		return _get_property_original_text(property)
+
 
 ## Returns the name of the file (without the extension).
 func get_character_name() -> String:

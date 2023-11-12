@@ -123,17 +123,24 @@ func _on_dialog_text_finished():
 
 func update_name_label(character:DialogicCharacter) -> void:
 	var character_path = character.resource_path if character else null
+
 	if character_path != dialogic.current_state_info.get('character'):
 		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
+
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
+
 		if character:
+			var translated_display_name := character.get_property_translated(character.TranslatedProperties.NAME)
+
 			if dialogic.has_subsystem('VAR'):
-				name_label.text = dialogic.VAR.parse_variables(character.display_name)
+				name_label.text = dialogic.VAR.parse_variables(translated_display_name)
 			else:
-				name_label.text = character.display_name
+				name_label.text = translated_display_name
+
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
+
 		else:
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)

@@ -85,14 +85,16 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
             character.add_translation_id()
 
         # Add row for display names.
-        var display_name_key: String = character.get_property_translation_key("display_name")
+        var name_property := DialogicCharacter.TranslatedProperties.NAME
+        var display_name_key: String = character.get_property_translation_key(name_property)
         var line_value: String = character.display_name
         var array_line := PackedStringArray([display_name_key, line_value])
         lines.append(array_line)
 
         # Add row for nicknames.
+        var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
         var nickname_string: String = ", ".join(character.nicknames)
-        var nickname_name_line_key: String = character.get_property_translation_key("nickname")
+        var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
         var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
         lines.append(nick_array_line)
 
