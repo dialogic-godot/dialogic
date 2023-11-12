@@ -53,7 +53,7 @@ func get_property_translation_key(property: TranslatedProperties) -> String:
 
 	match property:
 		TranslatedProperties.NAME:
-			property_key = "character"
+			property_key = "name"
 		TranslatedProperties.NICKNAMES:
 			property_key = "nicknames"
 
