@@ -119,11 +119,12 @@ func update_csv_files() -> void:
 
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
-	# [new events, new_timelines, updated_events, updated_timelines]
 	var new_events := 0
 	var new_timelines := 0
 	var updated_events := 0
 	var updated_timelines := 0
+	var new_names := 0
+	var updated_names := 0
 
 	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
 	# We will close this timeline to ensure it will properly update.
@@ -185,10 +186,18 @@ func update_csv_files() -> void:
 
 		csv_file.update_csv_file_on_disk()
 
-		new_events += csv_file.new_events
-		updated_events += csv_file.updated_events
+		new_events += csv_file.new_rows
+		updated_events += csv_file.updated_rows
 
 	character_name_csv.update_csv_file_on_disk()
+
+	if character_name_csv.is_new_file:
+		new_timelines += 1
+	else:
+		updated_timelines += 1
+
+	new_names += character_name_csv.new_rows
+	updated_names += character_name_csv.updated_rows
 
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 
@@ -199,10 +208,21 @@ func update_csv_files() -> void:
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
-	%StatusMessage.text = ("Indexed " + str(new_events)
-		+ " new events ("+ str(updated_events) + " were updated).\n
-		Added " + str(new_timelines)+ " new CSV files ("
-		+ str(updated_timelines) + " were updated).")
+
+	var status_message := "Events   created {new_events}   updated {updated_events}
+		Names  created {new_names}   updated {updated_names}
+		CSVs      created {new_timelines}   updated {updated_timelines}"
+
+	var status_message_args := {
+		'new_events': new_events,
+		'updated_events': updated_events,
+		'new_timelines': new_timelines,
+		'updated_timelines': updated_timelines,
+		'new_names': new_names,
+		'updated_names': updated_names,
+	}
+
+	%StatusMessage.text = status_message.format(status_message_args)
 
 
 func collect_translations() -> void:

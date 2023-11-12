@@ -22,10 +22,11 @@ var file: FileAccess
 var used_file_path: String
 
 ## The amount of events that were updated in the CSV file.
-var updated_events: int = 0
+var updated_rows: int = 0
 
 ## The amount of events that were added to the CSV file.
-var new_events: int = 0
+var new_rows: int = 0
+
 
 ## Stores all character names from the current CSV.
 ##
@@ -91,6 +92,9 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
         var array_line := PackedStringArray([display_name_key, line_value])
         lines.append(array_line)
 
+        if character.nicknames.is_empty():
+            return
+
         # Add row for nicknames.
         var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
         var nickname_string: String = ", ".join(character.nicknames)
@@ -152,7 +156,7 @@ func update_csv_file_on_disk() -> void:
                 updated_line.append("")
 
             file.store_csv_line(updated_line)
-            updated_events += 1
+            updated_rows += 1
 
         else:
             var line_columns: int = line.size()
@@ -163,6 +167,6 @@ func update_csv_file_on_disk() -> void:
                 line.append("")
 
             file.store_csv_line(line)
-            new_events += 1
+            new_rows += 1
 
     file.close()
