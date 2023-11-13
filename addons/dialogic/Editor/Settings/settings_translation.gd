@@ -86,20 +86,25 @@ func _verify_translation_file() -> void:
 	else:
 		%SaveLocationMode.disabled = false
 
-	if (save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER
-	or file_mode == TranslationModes.PER_PROJECT):
-		var valid_translation_folder = (!translation_folder.is_empty()
-			and DirAccess.dir_exists_absolute(translation_folder))
+	var valid_translation_folder = (!translation_folder.is_empty()
+		and DirAccess.dir_exists_absolute(translation_folder))
 
-		%UpdateCsvFiles.disabled = !valid_translation_folder
+	%UpdateCsvFiles.disabled = !valid_translation_folder
 
-		if not valid_translation_folder:
-			%StatusMessage.text = "Invalid translation folder!"
+	if not valid_translation_folder:
+		var error_message := "⛔ Cannot update CSVs files!
+			Requires valid translation folder to translate character names"
+
+		if file_mode == TranslationModes.PER_PROJECT:
+			error_message += " and the project CSV file."
 		else:
-			%StatusMessage.text = ""
+			error_message += "."
+
+		%StatusMessage.text = error_message
 
 	else:
 		%StatusMessage.text = ""
+
 
 func get_locales(filter:String) -> Dictionary:
 	var suggestions := {}
@@ -118,7 +123,6 @@ func update_csv_files() -> void:
 		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
 
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
-
 	var new_events := 0
 	var new_timelines := 0
 	var updated_events := 0
@@ -136,7 +140,6 @@ func update_csv_files() -> void:
 	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_character_name_translations.csv')
 	var csv_per_project: DialogicCsvFile = null
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(translation_folder_path, orig_locale)
-
 	# Collect old lines from the Per Project CSV.
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project = DialogicCsvFile.new(translation_folder_path, orig_locale)
