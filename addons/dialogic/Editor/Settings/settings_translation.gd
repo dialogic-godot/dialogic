@@ -137,12 +137,17 @@ func update_csv_files() -> void:
 	# Clean the current editor, this will also close the timeline.
 	settings_editor.editors_manager.clear_editor(timeline_node)
 
-	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_character_name_translations.csv')
+	var translation_folder_path: String = ProjectSettings.get_setting("dialogic/translation/translation_folder", "res://")
+
 	var csv_per_project: DialogicCsvFile = null
-	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(translation_folder_path, orig_locale)
+
+	var names_csv_path := translation_folder_path.path_join("dialogic_timelines_translations.csv")
+	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path, orig_locale)
+
 	# Collect old lines from the Per Project CSV.
 	if translation_mode == TranslationModes.PER_PROJECT:
-		csv_per_project = DialogicCsvFile.new(translation_folder_path, orig_locale)
+		var per_timeline_csv_path := translation_folder_path.path_join("dialogic_character_name_translations.csv")
+		csv_per_project = DialogicCsvFile.new(per_timeline_csv_path, orig_locale)
 
 		if (csv_per_project.is_new_file):
 			new_timelines += 1
