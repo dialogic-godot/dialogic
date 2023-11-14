@@ -51,21 +51,42 @@ func _execute() -> void:
 		if shader_resource is ShaderMaterial:
 			shader_material = shader_resource
 			shader = shader_material.shader
-		#elif shader_resource is Shader:
-		#	shader = shader_resource
-		#	shader_material = ShaderMaterial.new()
-		#	shader_material.shader = shader
+		elif shader_resource is Shader:
+			shader = shader_resource
+			shader_material = ShaderMaterial.new()
+			shader_material.shader = shader
 		else:
 			push_error("[Dialogic] Could not load shader or shader material: '", shader_resource, "'")
 			finish()
 		
-		# filter out uniforms that are managed by Dialogic
-		var uniforms = shader.get_shader_uniform_list().filter(func (entry: Dictionary) -> bool: 
-			return entry["name"] == "progress" || entry["name"] == "previous_background" || entry["name"] == "next_background"
-		)
+		# get uniforms and filter out uniforms that are managed by Dialogic
+		var uniforms := Dictionary()
+		for uniform in shader.get_shader_uniform_list():
+			if uniform["name"] == "progress" || uniform["name"] == "previous_background" || uniform["name"] == "next_background":
+				continue
+			
+			uniforms[uniform["name"]] = uniform
 		
-		# TODO: do more validation in regards to typing of overrides?
+		var is_valid_state:= true
+		for parameter in shader_parameter_overrides:
+			var uniform = uniforms.get(parameter)
+			if uniform == null:
+				push_error("[Dialogic] Shader does not have or does not allow overriding parameter: '", parameter, "'")
+				is_valid_state = false
+				continue
+			
+			# TODO: do more validation in regards to typing of overrides?
+			#var parameter_type := typeof(shader_parameter_overrides[parameter])
+			#if uniform["type"] != parameter_type:
+			#	push_error("[Dialogic] Shader parameter type of override '", parameter,"' does not match the original shader parameter's type")
+			#	is_valid_state = false
+			#	continue
+			# TODO: handle when the override is an object, make sure that it's the same object type
 		
+		if !is_valid_state:
+			finish()
+		
+		shader_arguments.merge(shader_parameter_overrides)
 		
 	elif !wipe_texture_path.is_empty():
 		var wipe_texture = load(wipe_texture_path) as Texture2D
