@@ -17,6 +17,12 @@ var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
 
+## The whipe texture used for a custom whipe.
+var whipe_texture_path: String = ""
+## The size of the smear behine the whipe.
+var feather: float = 0.0
+## Determines if the whipe texture should keep the aspect ratio when scaled to the screen size.
+var keep_aspect_ratio: bool = false
 
 ################################################################################
 ## 						EXECUTION
@@ -28,8 +34,20 @@ func _execute() -> void:
 	if Dialogic.Input.auto_skip.enabled:
 		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
+	
+	# add arguments for custom whipe
+	var shader_arguments = Dictionary()
+	if !whipe_texture_path.is_empty():
+		var whipe_texture = load(whipe_texture_path) as Texture2D
+		if whipe_texture == null:
+			push_error("[Dialogic] Could not load whipe texture: '",whipe_texture_path,"'")
+			finish()
+		
+		shader_arguments["whipe_texture"] = whipe_texture
+		shader_arguments["feather"] = feather
+		shader_arguments["keep_aspect_ratio"] = keep_aspect_ratio
 
-	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, shader_arguments)
 	finish()
 
 
@@ -55,9 +73,12 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"scene" 		: {"property": "scene", 	"default": ""},
-		"arg" 			: {"property": "argument", 	"default": ""},
-		"fade" 			: {"property": "fade", 		"default": 0},
+		"scene" 		: {"property": "scene", 				"default": ""},
+		"arg" 			: {"property": "argument", 				"default": ""},
+		"fade" 			: {"property": "fade", 					"default": 0},
+		"whipe" 		: {"property": "whipe_texture_path",	"default": ""},
+		"feather" 		: {"property": "feather", 				"default": 0.0},
+		"keep_ratio" 	: {"property": "keep_aspect_ratio",		"default": false},
 	}
 
 
@@ -79,3 +100,12 @@ func build_event_editor():
 			'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})
+	add_body_edit("whipe_texture_path", ValueType.FILE,
+			{
+				'left_text'		: 'Whipe texture:',
+				'file_filter'	: '*.tres, *.res, *.bmp, *.dds, *.exr, *.hdr, *.jpg, *.jepg, *.png, *.tga, *.svg, *.svgz, *.webp',
+				'placeholder'	: "No whipe",
+				'editor_icon'	:["Image", "EditorIcons"]
+			})
+	add_body_edit("feather", ValueType.FLOAT, {'left_text':'Whipe Feather:'}, 'whipe_texture_path != ""')
+	add_body_edit("keep_aspect_ratio", ValueType.BOOL, {'left_text':'Keep Aspect Ratio:'}, 'whipe_texture_path != ""')
