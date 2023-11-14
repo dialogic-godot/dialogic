@@ -24,6 +24,11 @@ var feather: float = 0.0
 ## Determines if the whipe texture should keep the aspect ratio when scaled to the screen size.
 var keep_aspect_ratio: bool = false
 
+## The custom shader used for transitions.
+var custom_shader_path: String = ""
+## The shader parameter overrides to selectively change arguments of a shader.
+var shader_parameter_overrides: Dictionary = {}
+
 ################################################################################
 ## 						EXECUTION
 ################################################################################
@@ -37,7 +42,32 @@ func _execute() -> void:
 	
 	# add arguments for custom whipe
 	var shader_arguments = Dictionary()
-	if !wipe_texture_path.is_empty():
+	
+	var shader_material: ShaderMaterial = null
+	if !custom_shader_path.is_empty():
+		var shader_resource = load(custom_shader_path)
+		var shader: Shader
+		
+		if shader_resource is ShaderMaterial:
+			shader_material = shader_resource
+			shader = shader_material.shader
+		#elif shader_resource is Shader:
+		#	shader = shader_resource
+		#	shader_material = ShaderMaterial.new()
+		#	shader_material.shader = shader
+		else:
+			push_error("[Dialogic] Could not load shader or shader material: '", shader_resource, "'")
+			finish()
+		
+		# filter out uniforms that are managed by Dialogic
+		var uniforms = shader.get_shader_uniform_list().filter(func (entry: Dictionary) -> bool: 
+			return entry["name"] == "progress" || entry["name"] == "previous_background" || entry["name"] == "next_background"
+		)
+		
+		# TODO: do more validation in regards to typing of overrides?
+		
+		
+	elif !wipe_texture_path.is_empty():
 		var wipe_texture = load(wipe_texture_path) as Texture2D
 		if wipe_texture == null:
 			push_error("[Dialogic] Could not load whipe texture: '",wipe_texture_path,"'")
@@ -46,8 +76,8 @@ func _execute() -> void:
 		shader_arguments["wipe_texture"] = wipe_texture
 		shader_arguments["feather"] = feather
 		shader_arguments["keep_aspect_ratio"] = keep_aspect_ratio
-
-	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, null, shader_arguments)
+	
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, shader_material, shader_arguments)
 	finish()
 
 
@@ -73,12 +103,14 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"scene" 		: {"property": "scene", 				"default": ""},
-		"arg" 			: {"property": "argument", 				"default": ""},
-		"fade" 			: {"property": "fade", 					"default": 0},
-		"wipe" 			: {"property": "wipe_texture_path",		"default": ""},
-		"feather" 		: {"property": "feather", 				"default": 0.0},
-		"keep_ratio" 	: {"property": "keep_aspect_ratio",		"default": false},
+		"scene" 		: {"property": "scene", 						"default": ""},
+		"arg" 			: {"property": "argument", 						"default": ""},
+		"fade" 			: {"property": "fade", 							"default": 0},
+		"wipe" 			: {"property": "wipe_texture_path",				"default": ""},
+		"feather" 		: {"property": "feather", 						"default": 0.0},
+		"keep_ratio" 	: {"property": "keep_aspect_ratio",				"default": false},
+		"shader" 		: {"property": "custom_shader_path",			"default": ""},
+		"overrides"		: {"property": "shader_parameter_overrides",	"default": {}}
 	}
 
 
@@ -100,12 +132,23 @@ func build_event_editor():
 			'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})
-	add_body_edit("whipe_texture_path", ValueType.FILE,
+	
+	add_body_edit("custom_shader_path", ValueType.FILE,
+			{
+				'left_text'		: 'Custom Shader:',
+				'file_filter'	: '*.tres, *.res, *.material, *.gdshader; Supported Shader Files',
+				'placeholder'	: "Default shader",
+				'tooltip'		: "The path to the shader, can either be a shader material or shader core/graph file.",
+				'editor_icon'	:["Shader", "EditorIcons"]
+			})
+	#add_body_edit('shader_parameter_overrides', ValueType.KEY_VALUE_PAIRS, {'left_text': 'Shader overrides'},'custom_shader_path != ""')
+	
+	add_body_edit("wipe_texture_path", ValueType.FILE,
 			{
 				'left_text'		: 'Whipe texture:',
 				'file_filter'	: '*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
-				'placeholder'	: "No whipe",
+				'placeholder'	: "No wipe",
 				'editor_icon'	:["Image", "EditorIcons"]
-			})
-	add_body_edit("feather", ValueType.FLOAT, {'left_text':'Whipe Feather:', 'max': 1}, 'whipe_texture_path != ""')
-	add_body_edit("keep_aspect_ratio", ValueType.BOOL, {'left_text':'Keep Aspect Ratio:'}, 'whipe_texture_path != ""')
+			}, 'custom_shader_path == ""')
+	add_body_edit("feather", ValueType.FLOAT, {'left_text':'Whipe Feather:', 'max': 1}, 'wipe_texture_path != "" && custom_shader_path == ""')
+	add_body_edit("keep_aspect_ratio", ValueType.BOOL, {'left_text':'Keep Aspect Ratio:'}, 'wipe_texture_path != "" && custom_shader_path == ""')
