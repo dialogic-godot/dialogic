@@ -72,7 +72,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 		#material.set_shader_parameter("whipe_texture", whipe_texture)	# the direction the whipe takes from black to white
 		#material.set_shader_parameter("feather", feather)				# the trailing smear left behind when the whipe happens
 		
-		var shader_parameter_names: Array[String] = shader_arguments.keys()
+		var shader_parameter_names: Array = shader_arguments.keys()
 		var shader_parameter_values: Array = shader_arguments.values()
 		
 		for index in shader_arguments.size():

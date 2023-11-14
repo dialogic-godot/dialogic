@@ -107,5 +107,5 @@ func build_event_editor():
 				'placeholder'	: "No whipe",
 				'editor_icon'	:["Image", "EditorIcons"]
 			})
-	add_body_edit("feather", ValueType.FLOAT, {'left_text':'Whipe Feather:'}, 'whipe_texture_path != ""')
+	add_body_edit("feather", ValueType.FLOAT, {'left_text':'Whipe Feather:', 'max': 1}, 'whipe_texture_path != ""')
 	add_body_edit("keep_aspect_ratio", ValueType.BOOL, {'left_text':'Keep Aspect Ratio:'}, 'whipe_texture_path != ""')
