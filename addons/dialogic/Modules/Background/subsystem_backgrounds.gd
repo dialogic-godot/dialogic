@@ -34,7 +34,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, shader_arguments := Dictionary()) -> void:
+func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, material: ShaderMaterial = null, shader_arguments := Dictionary()) -> void:
 	var background_holder: DialogicNode_BackgroundHolder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
 		return
@@ -56,12 +56,18 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 
 	# If that didn't work, add a new scene, then cross-fade
 	if !bg_set:
-		var material: Material = background_holder.material
+		if material == null:
+			material = preload("res://addons/dialogic/Modules/Background/default_background_transition.tres").duplicate()
+		else:
+			material = material.duplicate()
+		
 		# make sure material is clean and ready to go
 		material.set_shader_parameter("progress", 0)
 		# swap the next background into previous, as that is now the older frame
-		material.set_shader_parameter("previous_background", material.get_shader_parameter("next_background"))
+		material.set_shader_parameter("previous_background", background_holder.material.get_shader_parameter("next_background"))
 		material.set_shader_parameter("next_background", null)
+		
+		background_holder.material = material
 
 		if _tween:
 			_tween.kill()

@@ -47,7 +47,7 @@ func _execute() -> void:
 		shader_arguments["feather"] = feather
 		shader_arguments["keep_aspect_ratio"] = keep_aspect_ratio
 
-	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, shader_arguments)
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, null, shader_arguments)
 	finish()
 
 
