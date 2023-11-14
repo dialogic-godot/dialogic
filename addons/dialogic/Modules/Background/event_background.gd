@@ -18,7 +18,7 @@ var argument: String = ""
 var fade: float = 0.0
 
 ## The whipe texture used for a custom whipe.
-var whipe_texture_path: String = ""
+var wipe_texture_path: String = ""
 ## The size of the smear behine the whipe.
 var feather: float = 0.0
 ## Determines if the whipe texture should keep the aspect ratio when scaled to the screen size.
@@ -37,13 +37,13 @@ func _execute() -> void:
 	
 	# add arguments for custom whipe
 	var shader_arguments = Dictionary()
-	if !whipe_texture_path.is_empty():
-		var whipe_texture = load(whipe_texture_path) as Texture2D
-		if whipe_texture == null:
-			push_error("[Dialogic] Could not load whipe texture: '",whipe_texture_path,"'")
+	if !wipe_texture_path.is_empty():
+		var wipe_texture = load(wipe_texture_path) as Texture2D
+		if wipe_texture == null:
+			push_error("[Dialogic] Could not load whipe texture: '",wipe_texture_path,"'")
 			finish()
 		
-		shader_arguments["whipe_texture"] = whipe_texture
+		shader_arguments["wipe_texture"] = wipe_texture
 		shader_arguments["feather"] = feather
 		shader_arguments["keep_aspect_ratio"] = keep_aspect_ratio
 
@@ -76,7 +76,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"scene" 		: {"property": "scene", 				"default": ""},
 		"arg" 			: {"property": "argument", 				"default": ""},
 		"fade" 			: {"property": "fade", 					"default": 0},
-		"whipe" 		: {"property": "whipe_texture_path",	"default": ""},
+		"wipe" 			: {"property": "wipe_texture_path",		"default": ""},
 		"feather" 		: {"property": "feather", 				"default": 0.0},
 		"keep_ratio" 	: {"property": "keep_aspect_ratio",		"default": false},
 	}
