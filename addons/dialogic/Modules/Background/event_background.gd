@@ -103,7 +103,7 @@ func build_event_editor():
 	add_body_edit("whipe_texture_path", ValueType.FILE,
 			{
 				'left_text'		: 'Whipe texture:',
-				'file_filter'	: '*.tres, *.res, *.bmp, *.dds, *.exr, *.hdr, *.jpg, *.jepg, *.png, *.tga, *.svg, *.svgz, *.webp',
+				'file_filter'	: '*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 				'placeholder'	: "No whipe",
 				'editor_icon'	:["Image", "EditorIcons"]
 			})
