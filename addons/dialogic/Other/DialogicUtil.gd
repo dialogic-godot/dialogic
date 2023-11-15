@@ -202,8 +202,8 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 	return array
 
 
-static func get_default_layout_scene() -> String:
-	return DialogicUtil.get_module_path('DefaultLayouts').path_join("Default/DialogicDefaultLayout.tscn")
+static func get_default_layout_base() -> String:
+	return DialogicUtil.get_module_path('LayoutStuff').path_join("DefaultBase/default_layout_base.tscn")
 
 
 static func get_inherited_style_overrides(style_name:String) -> Dictionary:
@@ -222,29 +222,29 @@ static func get_inherited_style_overrides(style_name:String) -> Dictionary:
 		inheritance.append(styles_info[inheritance[-1]].get('inherits', ''))
 	return info
 
-
-static func get_inherited_style_layout(style_name:String="") -> String:
-	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
-	if style_name.is_empty(): return get_default_layout_scene()
-	return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
-
-
-static func get_inheritance_style_list(style_name:String) -> Array:
-	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
-	if !style_name in style_list:
-		return []
-	var list := [style_name]
-	while !style_list[style_name].get('inherits', '').is_empty():
-		style_name = style_list[style_name].get('inherits', '')
-		list.append(style_name)
-	return list
+#
+#static func get_inherited_style_layout(style_name:String="") -> String:
+	#var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	#if style_name.is_empty(): return get_default_layout_scene()
+	#return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
+#
+#
+#static func get_inheritance_style_list(style_name:String) -> Array:
+	#var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	#if !style_name in style_list:
+		#return []
+	#var list := [style_name]
+	#while !style_list[style_name].get('inherits', '').is_empty():
+		#style_name = style_list[style_name].get('inherits', '')
+		#list.append(style_name)
+	#return list
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
 	var default_info := get_scene_export_defaults(node)
 	if !node.script:
 		return
-	var property_info :Array[Dictionary] = node.script.get_script_property_list()
+	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
 			if i['name'] in export_overrides:

@@ -3,6 +3,8 @@ extends Container
 
 signal clicked
 signal middle_clicked
+signal double_clicked
+signal focused
 
 var base_size = 1
 
@@ -25,8 +27,15 @@ func load_info(info:Dictionary) -> void:
 		%Panel.self_modulate = get_theme_color("property_color_z", "Editor")
 	elif info.preview_image[0].ends_with('scn'):
 		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_previewer().queue_resource_preview(info.preview_image[0], self, 'set_scene_preview', null)
-	else:
+	elif ResourceLoader.exists(info.preview_image[0]):
 		%Image.texture = load(info.preview_image[0])
+
+	if ResourceLoader.exists(info.get('icon', '')):
+		%Icon.show()
+		%Icon.texture = load(info.get('icon'))
+	else:
+		%Icon.hide()
+
 	tooltip_text = info.description
 
 
@@ -54,12 +63,15 @@ func _on_gui_input(event):
 	if event.is_action_pressed('ui_accept') or event.is_action_pressed("ui_select") or (
 				event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		clicked.emit()
+		if not event is InputEventMouseButton or event.double_click:
+			double_clicked.emit()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
 		middle_clicked.emit()
 
 
 func _on_focus_entered():
 	$FocusFG.show()
+	focused.emit()
 
 
 func _on_focus_exited():

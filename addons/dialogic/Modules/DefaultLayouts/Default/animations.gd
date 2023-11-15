@@ -1,6 +1,6 @@
 extends AnimationPlayer
 
-# A custom script/node that adds some animations to the textbox.
+## A custom script/node that adds some animations to the textbox.
 
 # Careful: Sync these with the ones in the root script!
 enum AnimationsIn {NONE, POP_IN, FADE_UP}
@@ -25,7 +25,7 @@ func _on_textbox_show():
 		return
 	play('RESET')
 	Dialogic.Animation.start_animating()
-	%DialogTextPanel.get_parent().modulate = Color.TRANSPARENT
+	%DialogTextPanel.get_parent().get_parent().modulate = Color.TRANSPARENT
 	%DialogicNode_DialogText.text = ""
 	match animation_in:
 		AnimationsIn.POP_IN:
