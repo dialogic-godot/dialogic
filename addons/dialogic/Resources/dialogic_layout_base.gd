@@ -10,8 +10,16 @@ func add_layer(layer:DialogicLayoutLayer) -> Node:
 	return layer
 
 
-func get_layer(layer_name:String) -> Node:
-	return get_node(layer_name)
+func get_layer(index:int) -> Node:
+	return get_child(index)
+
+
+func get_layers() -> Array:
+	var layers := []
+	for child in get_children():
+		if child is DialogicLayoutLayer:
+			layers.append(child)
+	return layers
 
 
 func _apply_export_overrides() -> void:

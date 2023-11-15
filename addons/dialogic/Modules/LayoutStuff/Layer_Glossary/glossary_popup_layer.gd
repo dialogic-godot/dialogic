@@ -80,6 +80,9 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
 
 ## Method that keeps the bubble at mouse position when visible
 func _process(delta) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	if $Pointer.visible:
 		$Pointer.global_position = $Pointer.get_global_mouse_position()
 

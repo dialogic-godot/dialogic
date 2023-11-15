@@ -270,6 +270,7 @@ grow_vertical = 0
 [node name="DialogTextPanel" type="PanelContainer" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_ssa84")

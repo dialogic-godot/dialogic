@@ -7,15 +7,17 @@ signal style_changed(new_style_info)
 
 var current_style_name := ""
 var current_style_info := {}
+var current_style_inherited_info := {}
 
 # -1 is the base scene, 0 to n are the layers
 var current_layer_idx := -1
 var current_layer_info := {}
+
 ## This info is only loaded for preset parts, it is not saved
 var current_layer_info_extras := {}
 var customization_editor_info := {}
 var current_layer_overrides := {}
-
+var current_style_is_inherited := false
 
 
 func _ready() -> void:
@@ -35,6 +37,14 @@ func _ready() -> void:
 func load_style(style_name:String, style_info:Dictionary) -> void:
 	current_style_name = style_name
 	current_style_info = style_info
+	current_style_is_inherited = not style_info.get('inherits', '').is_empty()
+
+	%AddLayerButton.disabled = current_style_is_inherited
+	%ReplaceLayerButton.disabled = current_style_is_inherited
+	%MakeCustomButton.disabled = current_style_is_inherited
+	%DeleteLayerButton.disabled = current_style_is_inherited
+
+	current_style_inherited_info = DialogicUtil.get_inherited_style_info(current_style_name)
 
 	load_style_layer_list()
 
@@ -47,7 +57,7 @@ func load_style_layer_list() -> void:
 	var root := tree.create_item()
 
 
-	var base_scene := current_style_info.get('base_scene_path', '')
+	var base_scene := current_style_inherited_info.get('base_scene_path', '')
 
 	if %StyleBrowser.is_premade_style_part(base_scene):
 		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[base_scene].get('icon', '')):
@@ -59,7 +69,7 @@ func load_style_layer_list() -> void:
 		root.set_button_tooltip_text(0, 0, 'Open Scene')
 	root.set_meta('scene', base_scene)
 
-	for layer in current_style_info.get('layers', []):
+	for layer in current_style_inherited_info.get('layers', []):
 		var layer_item := tree.create_item(root)
 		if %StyleBrowser.is_premade_style_part(layer.get('scene_path', 'Unkown Layer')):
 			if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[layer.get('scene_path')].get('icon', '')):
@@ -87,15 +97,16 @@ func _on_layer_selected() -> void:
 
 func load_layer(layer_idx:=-1):
 	current_layer_idx = layer_idx
-
 	if current_layer_idx == -1:
 		current_layer_info = {
-			'scene_path':current_style_info.get('base_scene_path', ''),
-			'scene_overrides':current_style_info.get('base_scene_overrides', {})}
+			'scene_path':current_style_inherited_info.get('base_scene_path', ''),
+			'scene_overrides':current_style_inherited_info.get('base_scene_overrides', {})}
 		if current_layer_info.scene_path.is_empty():
 			current_layer_info.scene_path = DialogicUtil.get_default_layout_base()
 	else:
-		current_layer_info = current_style_info.get('layers', [])[current_layer_idx]
+		current_layer_info = current_style_inherited_info.get('layers', [])[current_layer_idx]
+
+	current_layer_overrides = current_layer_info.get('scene_overrides', {})
 
 	if %StyleBrowser.is_premade_style_part(current_layer_info.get('scene_path', 'Unkown Layer')):
 		current_layer_info_extras = %StyleBrowser.premade_scenes_reference[current_layer_info.get('scene_path')]
@@ -111,15 +122,32 @@ func load_layer(layer_idx:=-1):
 	%SmallLayerScene.text = current_layer_info.get('scene_path', 'Unkown Layer').get_file()
 	%SmallLayerScene.tooltip_text = current_layer_info.get('scene_path', '')
 
+	var inherited_style_info := DialogicUtil.get_inherited_style_info(current_style_info.get('inherits', ''))
+	var inherited_export_overrides := {}
+	if current_layer_idx == -1:
+		if inherited_style_info.has('base_scene_overrides'):
+			inherited_export_overrides = inherited_style_info.base_scene_overrides.duplicate(true)
+	if inherited_style_info.has('layers') and inherited_style_info.layers[current_layer_idx].has('scene_overrides'):
+		inherited_export_overrides = inherited_style_info.layers[current_layer_idx].get('scene_overrides').duplicate(true)
 
-	load_layout_scene_customization(current_layer_info.get('scene_path', ''), current_layer_info.get('scene_overrides', {}))
+	#print(current_style_name,":", current_layer_info.get('scene_overrides', {}))
+	#print("Inherits:", inherited_export_overrides)
+	load_layout_scene_customization(
+				current_layer_info.get('scene_path', ''),
+				current_layer_info.get('scene_overrides', {}),
+				inherited_export_overrides)
 
 
 func save_layer():
 	if current_layer_idx == -1:
-		current_style_info['base_scene_overrides'] = current_layer_overrides.duplicate()
+		current_style_info['base_scene_overrides'] = current_layer_overrides.duplicate(true)
 	else:
-		current_style_info.layers[current_layer_idx]['scene_overrides'] = current_layer_overrides.duplicate()
+		if not current_style_info.has('layers'):
+			current_style_info['layers'] = []
+
+		while current_style_info.layers.size() - 1 < current_layer_idx:
+			current_style_info.layers.append({})
+		current_style_info.layers[current_layer_idx]['scene_overrides'] = current_layer_overrides.duplicate(true)
 	style_changed.emit(current_style_info)
 
 
@@ -340,7 +368,6 @@ func make_layout_custom(target_folder:String) -> void:
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.get('scene_overrides', {}), false)
 
-	base_scene.print_tree()
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
 	ResourceSaver.save(pckd_scn, target_folder.path_join(current_style_info.base_scene_path.get_file()))
@@ -533,6 +560,7 @@ func set_export_override(property_name:String, value:String = "") -> void:
 
 
 func _on_export_override_reset(property_name:String) -> void:
+
 	current_layer_overrides.erase(property_name)
 	customization_editor_info[property_name]['reset'].disabled = true
 	set_customization_value(property_name, customization_editor_info[property_name]['orig'])
@@ -582,7 +610,6 @@ func _on_layer_tree_layer_moved(from: int, to: int) -> void:
 
 
 func _on_layer_tree_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
-	print(item.get_meta('scene'))
 	if ResourceLoader.exists(item.get_meta('scene')):
 		find_parent('EditorView').plugin_reference.get_editor_interface().open_scene_from_path(item.get_meta('scene'))
 		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor("2D")

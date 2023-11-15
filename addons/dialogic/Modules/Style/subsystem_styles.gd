@@ -27,23 +27,34 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
+
 	var signal_info := {'style':style_name}
 
 	# is_base_style should only be wrong on temporary changes like character styles
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
 
+
+	# This will include stuff from parent-styles (for inherited styles)
+	var full_info := DialogicUtil.get_inherited_style_info(style_name)
+
 	# if this style is the same style as before
 	var previous_layout := get_layout_node()
 	if (is_instance_valid(previous_layout)
-			and previous_layout.has_meta('style')
-			and previous_layout.get_meta('style') == style_name):
+			and previous_layout.has_meta('style')):
+		if previous_layout.get_meta('style') == style_name:
+			return previous_layout
 
-		pass # DO THIS IF IT'S THE EXACT SAME STYLE
-		return previous_layout
+		# If this has the same scene setup, just apply the new overrides
+		var inheritance_list := DialogicUtil.get_style_inheritance_list(style_name)
+		if previous_layout.get_meta('style') in inheritance_list:
+			DialogicUtil.apply_scene_export_overrides(previous_layout, full_info.get('base_scene_overrides', {}))
+			var index := 0
+			for i in previous_layout.get_layers():
+				DialogicUtil.apply_scene_export_overrides(previous_layout, full_info.get('layers', [])[i].get('scene_overrides', {}))
 
 	# if this is another style:
-	var new_layout := create_layout(styles_info[style_name])
+	var new_layout := create_layout(full_info)
 
 	if new_layout != previous_layout and previous_layout != null:
 		if previous_layout.has_meta('style'): signal_info['previous'] = previous_layout.get_meta('style')

@@ -206,38 +206,51 @@ static func get_default_layout_base() -> String:
 	return DialogicUtil.get_module_path('LayoutStuff').path_join("DefaultBase/default_layout_base.tscn")
 
 
-static func get_inherited_style_overrides(style_name:String) -> Dictionary:
+static func get_inherited_style_info(style_name:String) -> Dictionary:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	if !style_name in styles_info:
 		return {}
 
 	var inheritance := [styles_info[style_name].get('inherits', '')]
-	var info :Dictionary = styles_info[style_name].get('export_overrides', {}).duplicate(true)
+	var info: Dictionary = styles_info[style_name].duplicate(true)
 
+	while (not inheritance[-1].is_empty()) and inheritance[-1] in styles_info:
+		info['base_scene_path'] = styles_info[inheritance[-1]].get('base_scene_path', '')
+		if not info.has('base_scene_overrides'):
+			info['base_scene_overrides'] = {}
+		info.base_scene_overrides.merge(styles_info[inheritance[-1]].get('base_scene_overrides', {}))
 
-	while (!inheritance[-1].is_empty()) and inheritance[-1] in styles_info:
-		info.merge(styles_info[inheritance[-1]].get('export_overrides', {}))
-		if !styles_info[inheritance[-1]].get('inherits', '') in styles_info:
+		if not info.has('layers'):
+			info['layers'] = []
+
+		for layer in styles_info[inheritance[-1]].get('layers', []):
+			var found := false
+			for i in range(info.layers.size()):
+				if info.layers[i].scene_path == layer.get('scene_path', ''):
+					if not info.layers[i].has('scene_overrides'):
+						info.layers[i]['scene_overrides'] = {}
+					info.layers[i].scene_overrides.merge(layer.get('scene_overrides', {}))
+					found = true
+
+			if not found:
+				info.layers.append(layer.duplicate(true))
+
+		if not styles_info[inheritance[-1]].get('inherits', '') in styles_info:
 			break
 		inheritance.append(styles_info[inheritance[-1]].get('inherits', ''))
+
 	return info
 
-#
-#static func get_inherited_style_layout(style_name:String="") -> String:
-	#var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
-	#if style_name.is_empty(): return get_default_layout_scene()
-	#return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
-#
-#
-#static func get_inheritance_style_list(style_name:String) -> Array:
-	#var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
-	#if !style_name in style_list:
-		#return []
-	#var list := [style_name]
-	#while !style_list[style_name].get('inherits', '').is_empty():
-		#style_name = style_list[style_name].get('inherits', '')
-		#list.append(style_name)
-	#return list
+
+static func get_style_inheritance_list(style_name:String) -> Array:
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+
+	var inheritance_list := []
+	while not styles_info[style_name].get('inherits', '').is_empty():
+		style_name = styles_info[style_name].get('inherits')
+		inheritance_list.append(style_name)
+
+	return inheritance_list
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
