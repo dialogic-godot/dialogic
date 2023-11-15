@@ -1,3 +1,4 @@
+@tool
 extends DialogicLayoutLayer
 
 ## A layer that allows showing 5 portraits, like in a visual novel.

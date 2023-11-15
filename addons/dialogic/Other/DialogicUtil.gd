@@ -240,7 +240,7 @@ static func get_inherited_style_overrides(style_name:String) -> Dictionary:
 	#return list
 
 
-static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
+static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
 	var default_info := get_scene_export_defaults(node)
 	if !node.script:
 		return
@@ -251,7 +251,7 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 				node.set(i['name'], str_to_var(export_overrides[i['name']]))
 			elif i['name'] in default_info:
 				node.set(i['name'], default_info.get(i['name']))
-	if node.has_method('_apply_export_overrides'):
+	if apply and node.has_method('_apply_export_overrides'):
 		node._apply_export_overrides()
 
 

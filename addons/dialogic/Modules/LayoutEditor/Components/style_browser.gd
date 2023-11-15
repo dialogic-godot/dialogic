@@ -67,6 +67,8 @@ func load_parts() -> void:
 		style_item.focused.connect(_on_style_item_clicked.bind(style_item, info))
 		style_item.double_clicked.connect(emit_signal.bind('activate_part', info))
 
+	await get_tree().process_frame
+
 	if %PartGrid.get_child_count() > 0:
 		%PartGrid.get_child(0).clicked.emit()
 		%PartGrid.get_child(0).grab_focus()

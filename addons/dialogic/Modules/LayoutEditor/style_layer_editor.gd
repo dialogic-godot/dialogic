@@ -82,6 +82,7 @@ func _on_layer_selected() -> void:
 		load_layer(-1)
 	else:
 		load_layer(item.get_index())
+	%DeleteLayerButton.disabled = item == %LayerTree.get_root()
 
 
 func load_layer(layer_idx:=-1):
@@ -252,16 +253,26 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 	make_layout_custom(file)
 
 
-func make_layer_custom(target_folder:String) -> void:
+func make_layer_custom(target_folder:String, custom_name := "") -> void:
 	if not ResourceLoader.exists(current_layer_info.get('scene_path', '')):
 		printerr("[Dialogic] Unable to copy layer that has no scene path specified!")
 		return
 
-	target_folder = target_folder.path_join(%StyleBrowser.premade_scenes_reference[current_layer_info.scene_path].name.to_pascal_case())
-	DirAccess.make_dir_absolute(target_folder)
-	DirAccess.copy_absolute(current_layer_info.scene_path, target_folder.path_join('custom_'+current_layer_info.scene_path.get_file()))
 
-	var file := FileAccess.open(target_folder.path_join('custom_'+current_layer_info.scene_path.get_file()), FileAccess.READ)
+	var target_file := ""
+	if custom_name.is_empty():
+		target_file = 'custom_'+current_layer_info.scene_path.get_file()
+		target_folder = target_folder.path_join(%StyleBrowser.premade_scenes_reference[current_layer_info.scene_path].name.to_pascal_case())
+	else:
+		if not custom_name.ends_with('.tscn'):
+			custom_name += ".tscn"
+		target_file = custom_name
+
+	DirAccess.make_dir_absolute(target_folder)
+
+	DirAccess.copy_absolute(current_layer_info.scene_path, target_folder.path_join(target_file))
+
+	var file := FileAccess.open(target_folder.path_join(target_file), FileAccess.READ)
 	var scene_text := file.get_as_text()
 	file.close()
 	if scene_text.begins_with('[gd_scene'):
@@ -273,17 +284,18 @@ func make_layer_custom(target_folder:String) -> void:
 			scene_text = scene_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
 			result = RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
 
-	file = FileAccess.open(target_folder.path_join('custom_'+current_layer_info.scene_path.get_file()), FileAccess.WRITE)
+	file = FileAccess.open(target_folder.path_join(target_file), FileAccess.WRITE)
 	file.store_string(scene_text)
 	file.close()
 
 	var current_layer: int = %LayerTree.get_selected().get_index()
 	if %LayerTree.get_selected() == %LayerTree.get_root():
 		current_layer = -1
-		current_style_info.base_scene_path = target_folder.path_join('custom_'+current_layer_info.scene_path.get_file())
+		current_style_info.base_scene_path = target_folder.path_join(target_file)
 	else:
-		current_layer_info.scene_path = target_folder.path_join('custom_'+current_layer_info.scene_path.get_file())
+		current_layer_info.scene_path = target_folder.path_join(target_file)
 
+	style_changed.emit(current_style_info)
 	load_style_layer_list()
 
 	if current_layer == -1:
@@ -294,8 +306,12 @@ func make_layer_custom(target_folder:String) -> void:
 
 
 func make_layout_custom(target_folder:String) -> void:
+
+	target_folder = target_folder.path_join("Custom"+current_style_name.to_pascal_case())
+
+	DirAccess.make_dir_absolute(target_folder)
 	%LayerTree.get_root().select(0)
-	make_layer_custom(target_folder)
+	make_layer_custom(target_folder, "custom_"+current_style_name.to_snake_case())
 
 	# Load base scene
 	var base_scene : DialogicLayoutBase
@@ -317,22 +333,24 @@ func make_layout_custom(target_folder:String) -> void:
 
 		var layer_scene : DialogicLayoutLayer = load(layer.get('scene_path', '')).instantiate()
 
-		base_scene._add_layer(layer_scene)
-		layer_scene.layout_base = base_scene
+		base_scene.add_layer(layer_scene)
+		layer_scene.owner = base_scene
+		layer_scene.apply_overrides_on_ready = true
 
 		# Apply layer overrides
-		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.get('scene_overrides', {}))
+		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.get('scene_overrides', {}), false)
 
+	base_scene.print_tree()
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
-	ResourceSaver.save(pckd_scn, target_folder.path_join('custom_layout.tscn'))
+	ResourceSaver.save(pckd_scn, target_folder.path_join(current_style_info.base_scene_path.get_file()))
 
 	current_style_info = {
 		'base_scene_path' : target_folder.path_join(current_style_info.base_scene_path.get_file()),
-		'base_scene_overrides' : current_style_info.base_scene_overrides,
+		'base_scene_overrides' : current_style_info.get('base_scene_overrides', {}),
 		'layers' :[]
 	}
-
+	style_changed.emit(current_style_info)
 	load_style_layer_list()
 
 	%LayerTree.get_root().select(0)
@@ -476,6 +494,9 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 			current_subgroup['id'] = &'SUBGROUP'
 
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
+			if i['name'] == 'apply_overrides_on_ready':
+				continue
+
 			if current_group.is_empty():
 				current_group = {'name':'General', 'added':false, 'id':&"GROUP"}
 

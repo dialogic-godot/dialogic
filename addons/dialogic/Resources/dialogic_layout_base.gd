@@ -5,12 +5,12 @@ extends Node
 ## Base class that should be extended by custom layouts.
 
 
-func _add_layer(layer:DialogicLayoutLayer) -> Node:
+func add_layer(layer:DialogicLayoutLayer) -> Node:
 	add_child(layer)
 	return layer
 
 
-func _get_layer(layer_name:String) -> Node:
+func get_layer(layer_name:String) -> Node:
 	return get_node(layer_name)
 
 
@@ -20,7 +20,7 @@ func _apply_export_overrides() -> void:
 			child._apply_export_overrides()
 
 
-func _get_global_setting(setting:StringName, default:Variant) -> Variant:
+func get_global_setting(setting:StringName, default:Variant) -> Variant:
 	if setting in self:
 		return get(setting)
 

@@ -112,6 +112,7 @@ func _on_add_style_index_pressed(index:int) -> void:
 		%StyleBrowser.current_type = 1
 		%StyleBrowser.load_parts()
 		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
+		picked_info = picked_info.duplicate(true)
 		if not picked_info.is_empty():
 			var undo_redo :EditorUndoRedoManager= DialogicUtil.get_dialogic_plugin().get_undo_redo()
 			undo_redo.create_action('Add Style', UndoRedo.MERGE_ALL)

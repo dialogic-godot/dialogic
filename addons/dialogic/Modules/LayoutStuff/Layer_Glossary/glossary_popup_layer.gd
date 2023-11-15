@@ -1,3 +1,4 @@
+@tool
 extends DialogicLayoutLayer
 
 ## Layer that provides a popup with glossary info,
@@ -30,7 +31,6 @@ enum TextColorModes {GLOBAL, ENTRY, CUSTOM}
 @export var font_extra_size := 15
 
 
-
 @export_group("Box")
 @export_subgroup("Color")
 enum ModulateModes {BASE_COLOR_ONLY, ENTRY_COLOR_ON_BOX, GLOBAL_BG_COLOR}
@@ -41,6 +41,9 @@ enum ModulateModes {BASE_COLOR_ONLY, ENTRY_COLOR_ON_BOX, GLOBAL_BG_COLOR}
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	$Pointer.hide()
 	Dialogic.Text.animation_textbox_hide.connect($Pointer.hide)
 	Dialogic.Text.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)

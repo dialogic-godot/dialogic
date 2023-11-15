@@ -81,8 +81,7 @@ func create_layout(style_info:Dictionary) -> DialogicLayoutBase:
 
 		var layer_scene : DialogicLayoutLayer = load(layer.get('scene_path', '')).instantiate()
 
-		base_scene._add_layer(layer_scene)
-		layer_scene.layout_base = base_scene
+		base_scene.add_layer(layer_scene)
 
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.get('scene_overrides', {}))

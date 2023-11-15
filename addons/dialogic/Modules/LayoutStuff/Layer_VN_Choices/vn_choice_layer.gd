@@ -1,3 +1,4 @@
+@tool
 extends DialogicLayoutLayer
 
 ## A layer that allows showing up to 10 choices.
@@ -71,8 +72,8 @@ func _apply_export_overrides():
 
 	# apply box settings
 	if ResourceLoader.exists(boxes_stylebox_normal):
-		var style_box: StyleBox =  load(boxes_stylebox_normal)
-		if modulate_bg_global_color and style_box == StyleBoxFlat:
+		var style_box: StyleBox = load(boxes_stylebox_normal)
+		if modulate_bg_global_color and style_box is StyleBoxFlat:
 			style_box.bg_color *= get_global_setting('bg_color', Color.WHITE)
 		theme.set_stylebox('normal', 'Button', style_box)
 		theme.set_stylebox('hover', 'Button', style_box)
