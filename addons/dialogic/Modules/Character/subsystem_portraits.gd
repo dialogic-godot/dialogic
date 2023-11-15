@@ -352,8 +352,10 @@ func change_character_portrait(character:DialogicCharacter, portrait:String, upd
 
 	var info := _change_portrait(dialogic.current_state_info.portraits[character.resource_path].node, portrait, update_transform)
 	dialogic.current_state_info.portraits[character.resource_path].portrait = info.portrait
-	if dialogic.current_state_info.portraits[character.resource_path].get('custom_mirror', false):
-		_change_portrait_mirror(dialogic.current_state_info.portraits[character.resource_path].node, true)
+	_change_portrait_mirror(
+			dialogic.current_state_info.portraits[character.resource_path].node,
+			dialogic.current_state_info.portraits[character.resource_path].get('custom_mirror', false)
+			)
 	character_portrait_changed.emit(info)
 
 
@@ -593,9 +595,9 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 ## Called from the [portrait=something] text effect.
 func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
-		if Dialogic.current_state_info.get('character', null):
-			change_character_portrait(load(Dialogic.current_state_info.character), argument)
-			change_speaker(load(Dialogic.current_state_info.character), argument)
+		if Dialogic.current_state_info.get('speaker', null):
+			change_character_portrait(load(Dialogic.current_state_info.speaker), argument)
+			change_speaker(load(Dialogic.current_state_info.speaker), argument)
 
 ################### HELPERS ########################################################################
 ####################################################################################################
