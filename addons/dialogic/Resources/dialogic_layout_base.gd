@@ -22,10 +22,15 @@ func get_layers() -> Array:
 	return layers
 
 
-func _apply_export_overrides() -> void:
+func appply_export_overrides() -> void:
+	_apply_export_overrides()
 	for child in get_children():
 		if child.has_method('_apply_export_overrides'):
 			child._apply_export_overrides()
+
+
+func _apply_export_overrides() -> void:
+	pass
 
 
 func get_global_setting(setting:StringName, default:Variant) -> Variant:

@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://cuoywrmvda1yg"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/ExampleHistoryItem.gd" id="1_dgoja"]
-[ext_resource type="Texture2D" uid="uid://bvqgwmds7enrv" path="res://icon.svg" id="2_ywvym"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/LayoutStuff/Layer_History/example_history_item.gd" id="1_dgoja"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
 content_margin_left = 5.0
@@ -29,7 +28,6 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-texture = ExtResource("2_ywvym")
 expand_mode = 1
 stretch_mode = 4
 

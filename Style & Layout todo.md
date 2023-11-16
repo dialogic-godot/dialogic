@@ -2,9 +2,9 @@
 
 ## Big stuff
 
-- [ ] Inheritance
+- [x] Inheritance
 - [ ] TextBubbles
-- [ ] Realizing Layouts
+- [x] Realizing Layouts
 
 ## Small stuff
 
@@ -13,8 +13,6 @@
 - [ ] LayerPreviewImages
 
 - [ ] HistoryLayer
-
-
 
 ## Layers/Styles
 

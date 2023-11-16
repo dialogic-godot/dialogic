@@ -202,14 +202,22 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 	return array
 
 
+static func get_default_style_info() -> Dictionary:
+	for indexer in DialogicUtil.get_indexers():
+		for layout_part in indexer._get_layout_parts():
+			if layout_part.name == "Visual Novel Style":
+				return layout_part.data
+	return {}
+
+
 static func get_default_layout_base() -> String:
-	return DialogicUtil.get_module_path('LayoutStuff').path_join("DefaultBase/default_layout_base.tscn")
+	return DialogicUtil.get_module_path('LayoutStuff').path_join("Base_Default/default_layout_base.tscn")
 
 
 static func get_inherited_style_info(style_name:String) -> Dictionary:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
-	if !style_name in styles_info:
-		return {}
+	if not style_name in styles_info or styles_info[style_name].is_empty():
+		return get_default_style_info()
 
 	var inheritance := [styles_info[style_name].get('inherits', '')]
 	var info: Dictionary = styles_info[style_name].duplicate(true)
@@ -242,6 +250,7 @@ static func get_inherited_style_info(style_name:String) -> Dictionary:
 	return info
 
 
+
 static func get_style_inheritance_list(style_name:String) -> Array:
 	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 
@@ -264,8 +273,9 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 				node.set(i['name'], str_to_var(export_overrides[i['name']]))
 			elif i['name'] in default_info:
 				node.set(i['name'], default_info.get(i['name']))
-	if apply and node.has_method('_apply_export_overrides'):
-		node._apply_export_overrides()
+	if apply:
+		if node.has_method('apply_export_overrides'):
+			node.apply_export_overrides()
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:

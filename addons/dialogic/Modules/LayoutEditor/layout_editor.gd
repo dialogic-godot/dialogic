@@ -43,7 +43,11 @@ func _ready() -> void:
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_parts():
 			preset_info[layout['path']] = layout
-	style_list = ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+
+	style_list = ProjectSettings.get_setting('dialogic/layout/styles', {})
+	if style_list.is_empty():
+		style_list = {"Default":DialogicUtil.get_default_style_info()}
+
 	default_style = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
 	%AddButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DuplicateButton.icon = get_theme_icon("Duplicate", "EditorIcons")
@@ -59,6 +63,7 @@ func _ready() -> void:
 
 	%InheritanceButton.get_popup().index_pressed.connect(_on_inheritance_index_pressed)
 
+	await get_tree().process_frame
 	load_style_list()
 
 
@@ -80,6 +85,7 @@ func load_style_list() -> void:
 		if style_name == latest:
 			%StyleList.select(%StyleList.item_count-1)
 			_on_style_clicked(%StyleList.item_count-1)
+
 	if !%StyleList.is_anything_selected():
 		%StyleList.select(0)
 		_on_style_clicked(0)
@@ -87,6 +93,7 @@ func load_style_list() -> void:
 
 func _on_style_clicked(idx:int) -> void:
 	load_style(%StyleList.get_item_text(idx))
+
 	%RemoveButton.disabled = %StyleList.get_item_text(idx) == default_style
 
 

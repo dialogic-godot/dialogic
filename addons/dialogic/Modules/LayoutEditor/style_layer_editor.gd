@@ -55,8 +55,6 @@ func load_style_layer_list() -> void:
 	tree.clear()
 
 	var root := tree.create_item()
-
-
 	var base_scene := current_style_inherited_info.get('base_scene_path', '')
 
 	if %StyleBrowser.is_premade_style_part(base_scene):
@@ -96,6 +94,7 @@ func _on_layer_selected() -> void:
 
 
 func load_layer(layer_idx:=-1):
+	current_style_inherited_info = DialogicUtil.get_inherited_style_info(current_style_name)
 	current_layer_idx = layer_idx
 	if current_layer_idx == -1:
 		current_layer_info = {
@@ -107,7 +106,6 @@ func load_layer(layer_idx:=-1):
 		current_layer_info = current_style_inherited_info.get('layers', [])[current_layer_idx]
 
 	current_layer_overrides = current_layer_info.get('scene_overrides', {})
-
 	if %StyleBrowser.is_premade_style_part(current_layer_info.get('scene_path', 'Unkown Layer')):
 		current_layer_info_extras = %StyleBrowser.premade_scenes_reference[current_layer_info.get('scene_path')]
 		%LayerName.text = current_layer_info_extras.get('name', 'Unknown Layer')
@@ -130,8 +128,6 @@ func load_layer(layer_idx:=-1):
 	if inherited_style_info.has('layers') and inherited_style_info.layers[current_layer_idx].has('scene_overrides'):
 		inherited_export_overrides = inherited_style_info.layers[current_layer_idx].get('scene_overrides').duplicate(true)
 
-	#print(current_style_name,":", current_layer_info.get('scene_overrides', {}))
-	#print("Inherits:", inherited_export_overrides)
 	load_layout_scene_customization(
 				current_layer_info.get('scene_path', ''),
 				current_layer_info.get('scene_overrides', {}),
@@ -149,6 +145,7 @@ func save_layer():
 			current_style_info.layers.append({})
 		current_style_info.layers[current_layer_idx]['scene_overrides'] = current_layer_overrides.duplicate(true)
 	style_changed.emit(current_style_info)
+
 
 
 func add_layer(scene_path:="", overrides:= {}):
@@ -277,6 +274,7 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 func _on_make_custom_layer_file_selected(file:String) -> void:
 	make_layer_custom(file)
 
+
 func _on_make_custom_layout_file_selected(file:String) -> void:
 	make_layout_custom(file)
 
@@ -285,7 +283,6 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 	if not ResourceLoader.exists(current_layer_info.get('scene_path', '')):
 		printerr("[Dialogic] Unable to copy layer that has no scene path specified!")
 		return
-
 
 	var target_file := ""
 	if custom_name.is_empty():
@@ -332,7 +329,6 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 		%LayerTree.get_root().get_child(current_layer).select(0)
 
 
-
 func make_layout_custom(target_folder:String) -> void:
 
 	target_folder = target_folder.path_join("Custom"+current_style_name.to_pascal_case())
@@ -349,9 +345,6 @@ func make_layout_custom(target_folder:String) -> void:
 		base_scene = load(current_style_info.base_scene_path).instantiate()
 
 	base_scene.name = "Custom"+clean_scene_name(current_style_info.get('base_scene_path', 'Layout')).to_pascal_case()
-
-	# Apply base scene overrides
-	#DialogicUtil.apply_scene_export_overrides(base_scene, current_style_info.get('base_scene_overrides', {}))
 
 	# Load layers
 	for layer in current_style_info.get('layers', []):
@@ -515,13 +508,13 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 			current_group['id'] = &'GROUP'
 			current_subgroup = {}
 
-		if i['usage'] & PROPERTY_USAGE_SUBGROUP:
+		elif i['usage'] & PROPERTY_USAGE_SUBGROUP:
 			current_subgroup = i
 			current_subgroup['added'] = false
 			current_subgroup['id'] = &'SUBGROUP'
 
-		if i['usage'] & PROPERTY_USAGE_EDITOR:
-			if i['name'] == 'apply_overrides_on_ready':
+		elif i['usage'] & PROPERTY_USAGE_EDITOR:
+			if current_group.get('name', '') == 'Private':
 				continue
 
 			if current_group.is_empty():
@@ -540,7 +533,6 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 
 			i['id'] = &'SETTING'
 			settings.append(i)
-
 	return settings
 
 
@@ -584,16 +576,6 @@ func set_customization_value(property_name:String, value:Variant) -> void:
 
 #endregion
 
-#region Helpers
-####### HELPERS ################################################################
-
-func clean_scene_name(file_path:String) -> String:
-	return file_path.get_file().trim_suffix('.tscn').capitalize()
-
-#endregion
-
-
-
 
 func _on_expand_layer_info_pressed() -> void:
 	if %LayerInfoBody.visible:
@@ -608,8 +590,16 @@ func _on_layer_tree_layer_moved(from: int, to: int) -> void:
 	move_layer(from, to)
 
 
-
 func _on_layer_tree_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
 	if ResourceLoader.exists(item.get_meta('scene')):
 		find_parent('EditorView').plugin_reference.get_editor_interface().open_scene_from_path(item.get_meta('scene'))
 		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor("2D")
+
+
+#region Helpers
+####### HELPERS ################################################################
+
+func clean_scene_name(file_path:String) -> String:
+	return file_path.get_file().trim_suffix('.tscn').capitalize()
+
+#endregion

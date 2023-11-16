@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://lx24i8fl6uo"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayouts/ExampleHistoryScene.gd" id="1_o5tfq"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/LayoutStuff/Layer_History/history_layer.gd" id="1_4mqm3"]
+[ext_resource type="PackedScene" uid="uid://cuoywrmvda1yg" path="res://addons/dialogic/Modules/LayoutStuff/Layer_History/example_history_item.tscn" id="2_x1xgk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hdvb"]
 content_margin_left = 10.0
@@ -25,7 +26,15 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-script = ExtResource("1_o5tfq")
+script = ExtResource("1_4mqm3")
+font_use_global_size = null
+font_custom_size = null
+font_use_global_fonts = null
+font_custom_normal = null
+font_custom_bold = null
+font_custom_italics = null
+HistoryItem = ExtResource("2_x1xgk")
+disabled = null
 
 [node name="HistoryBox" type="ScrollContainer" parent="."]
 unique_name_in_owner = true

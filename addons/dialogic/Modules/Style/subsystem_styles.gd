@@ -23,7 +23,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ####################################################################################################
 
 func load_style(style_name:="", is_base_style:=true) -> Node:
-	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':null})
 
 	if style_name.is_empty() or !style_name in styles_info:
 		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
@@ -65,7 +65,6 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 
 	style_changed.emit(signal_info)
 	return new_layout
-
 
 
 ## Method that adds a layout scene with all the necessary layers.
