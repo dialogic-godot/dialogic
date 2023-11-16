@@ -147,9 +147,9 @@ func update_csv_files() -> void:
 	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
 	var csv_per_project: DialogicCsvFile = null
-	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
+	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
 
-	var names_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
+	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path, orig_locale)
 
 	# Create per project file, it will be needed for characters and if all
