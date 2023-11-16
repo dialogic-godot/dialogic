@@ -4,8 +4,8 @@ extends DialogicSettingsPage
 ## Settings tab that allows enabeling and updating translation csv-files.
 
 
-enum TranslationModes {PER_PROJECT, PER_TIMELINE}
-enum SaveLocationModes {INSIDE_TRANSLATION_FOLDER, NEXT_TO_TIMELINE}
+enum TranslationModes {PER_PROJECT, PER_TIMELINE, NONE}
+enum SaveLocationModes {INSIDE_TRANSLATION_FOLDER, NEXT_TO_TIMELINE, NONE}
 
 var loading := false
 @onready var settings_editor :Control = find_parent('Settings')
@@ -42,8 +42,13 @@ func _ready() -> void:
 	%TransMode.item_selected.connect(store_changes)
 
 	%UpdateCsvFiles.pressed.connect(update_csv_files)
+	%UpdateCsvFiles.icon = get_theme_icon("Add", "EditorIcons")
+
 	%CollectTranslations.pressed.connect(collect_translations)
+	%CollectTranslations.icon = get_theme_icon("File", "EditorIcons")
+
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
+	%TransRemove.icon = get_theme_icon("Remove", "EditorIcons")
 
 	_verify_translation_file()
 
@@ -74,7 +79,7 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
 	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
 	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
-	ProjectSettings.set_setting('internationalization/save_mode', %SaveLocationMode.selected)
+	ProjectSettings.set_setting('dialogic/translation/save_mode', %SaveLocationMode.selected)
 	ProjectSettings.save()
 
 ## Checks whether the translation folder path is required.
@@ -84,6 +89,8 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 ## - The translation mode is set to "Per Project".
 ## - The save location mode is set to "Inside Translation Folder".
 func _verify_translation_file() -> void:
+	var is_locked: bool = ProjectSettings.get_setting('dialogic/translation/locked', false)
+
 	var translation_folder: String = %TransFolderPicker.current_value
 	var save_location_mode: SaveLocationModes = %SaveLocationMode.selected
 	var file_mode: TranslationModes = %TransMode.selected
@@ -96,21 +103,35 @@ func _verify_translation_file() -> void:
 	var valid_translation_folder = (!translation_folder.is_empty()
 		and DirAccess.dir_exists_absolute(translation_folder))
 
-	%UpdateCsvFiles.disabled = !valid_translation_folder
+	%UpdateCsvFiles.disabled = not valid_translation_folder
+
+	%TransMode.disabled = is_locked
+	%SaveLocationMode.disabled = is_locked
+	%OrigLocale.set_enabled(not is_locked)
+	%TransFolderPicker.set_enabled(not is_locked)
+
+	if is_locked:
+		var lock_icon = get_theme_icon("Lock", "EditorIcons")
+		%SettingsIcon.texture = lock_icon
+	else:
+		var settings_icon = get_theme_icon("Unlock", "EditorIcons")
+		%SettingsIcon.texture = settings_icon
+
+	var status_message := ""
 
 	if not valid_translation_folder:
-		var error_message := "⛔ Cannot update CSVs files!
-			Requires valid translation folder to translate character names"
+		status_message += "⛔ Requires valid translation folder to translate character names"
 
 		if file_mode == TranslationModes.PER_PROJECT:
-			error_message += " and the project CSV file."
+			status_message += " and the project CSV file."
 		else:
-			error_message += "."
+			status_message += "."
 
-		%StatusMessage.text = error_message
+	if is_locked:
+		status_message += "\n⛔ Cannot update CSVs files!
+			\nPress the Erase button first!"
 
-	else:
-		%StatusMessage.text = ""
+	%StatusMessage.text = status_message
 
 
 func get_locales(filter:String) -> Dictionary:
@@ -124,7 +145,9 @@ func get_locales(filter:String) -> Dictionary:
 
 func update_csv_files() -> void:
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
-	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('internationalization/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
+	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
+	ProjectSettings.set_setting('dialogic/translation/locked', true)
+	_verify_translation_file()
 
 	if orig_locale.is_empty():
 		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
@@ -149,14 +172,19 @@ func update_csv_files() -> void:
 	var csv_per_project: DialogicCsvFile = null
 	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
 
+	if translation_mode == TranslationModes.PER_PROJECT:
+		csv_per_project = DialogicCsvFile.new(per_project_csv_path, orig_locale)
+
+		if (csv_per_project.is_new_file):
+			new_timelines += 1
+		else:
+			updated_timelines += 1
+
+
 	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path, orig_locale)
 
-	# Create per project file, it will be needed for characters and if all
-	# timelines are inside a single file.
-	csv_per_project = DialogicCsvFile.new(per_project_csv_path, orig_locale)
-
-	if (csv_per_project.is_new_file):
+	if (character_name_csv.is_new_file):
 		new_timelines += 1
 	else:
 		updated_timelines += 1
@@ -174,10 +202,12 @@ func update_csv_files() -> void:
 			var timeline_name: String = path_parts[-1]
 
 			# Adjust the file path to the translation location mode.
-			if save_location_mode == SaveLocationModes.NEXT_TO_TIMELINE:
-				per_timeline_path += '_translation.csv'
-				csv_file = DialogicCsvFile.new(per_timeline_path, orig_locale)
-				new_timelines += 1
+			if save_location_mode == SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
+				per_timeline_path = translation_folder_path.path_join(timeline_name)
+
+			per_timeline_path += '_translation.csv'
+			csv_file = DialogicCsvFile.new(per_timeline_path, orig_locale)
+			new_timelines += 1
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
@@ -192,12 +222,17 @@ func update_csv_files() -> void:
 		timeline.set_meta("timeline_not_saved", true)
 		ResourceSaver.save(timeline, timeline_path)
 
-		csv_file.update_csv_file_on_disk()
+		if translation_mode == TranslationModes.PER_TIMELINE:
+			csv_file.update_csv_file_on_disk()
 
 		new_events += csv_file.new_rows
 		updated_events += csv_file.updated_rows
 
 	character_name_csv.update_csv_file_on_disk()
+
+
+	if translation_mode == TranslationModes.PER_PROJECT:
+		csv_per_project.update_csv_file_on_disk()
 
 	if character_name_csv.is_new_file:
 		new_timelines += 1
@@ -449,4 +484,6 @@ func erase_translations() -> void:
 		'erased_translation_files': deleted_translation_files,
 	}
 
+	ProjectSettings.set_setting('dialogic/translation/locked', false)
+	_verify_translation_file()
 	%StatusMessage.text = status_message.format(status_message_args)

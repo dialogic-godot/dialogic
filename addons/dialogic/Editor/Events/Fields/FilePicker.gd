@@ -48,11 +48,16 @@ func set_value(value:String) -> void:
 	else:
 		%Field.custom_minimum_size.x = 0
 		%Field.expand_to_text_length = true
-	
+
 	%Field.text = text
-	
+
 	%ClearButton.visible = !value.is_empty() and !hide_reset
-	
+
+
+func set_enabled(is_enabled: bool) -> void:
+	%Field.editable = is_enabled
+	%OpenButton.disabled = !is_enabled
+	%ClearButton.disabled = !is_enabled
 
 
 func _on_OpenButton_pressed() -> void:
