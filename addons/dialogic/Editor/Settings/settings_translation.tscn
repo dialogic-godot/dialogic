@@ -242,6 +242,8 @@ This action will be disabled if the \"Translation folder\" is missing or has an 
 texture = SubResource("ImageTexture_wyypx")
 hint_text = "This button will scan all timelines and generate or update their CSV files.
 
+A Dialogic CSV file will be prefixed with \"dialogic_\".
+
 This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
 
 [node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
@@ -282,6 +284,8 @@ texture = SubResource("ImageTexture_wyypx")
 hint_text = "Be very careful with this button!
 
 It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
+CSV and translation files prefixed with \"dialogic_\" are treated as Dialogic-related.
+
 Removes translation IDs (eg. #id:33) from timelines and characters."
 
 [node name="StatusMessage" type="Label" parent="TranslationSettings/VBoxContainer2"]
@@ -362,7 +366,7 @@ size = Vector2i(400, 210)
 min_size = Vector2i(300, 70)
 ok_button_text = "DELETE ALL"
 dialog_text = "You are about to:
-- Delete all CSVs prefixed with \"dialogic\".
+- Delete all CSVs prefixed with \"dialogic_\".
 - Delete the related CSV import files.
 - Delete the related translation files.
 - Remove all \"dialogic\" prefixed translations from 
