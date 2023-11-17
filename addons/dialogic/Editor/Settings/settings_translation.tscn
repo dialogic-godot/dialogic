@@ -362,14 +362,15 @@ dialog_autowrap = true
 [node name="EraseConfirmationDialog" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
 position = Vector2i(0, 36)
-size = Vector2i(400, 210)
+size = Vector2i(500, 280)
 min_size = Vector2i(300, 70)
 ok_button_text = "DELETE ALL"
 dialog_text = "You are about to:
-- Delete all CSVs prefixed with \"dialogic_\".
-- Delete the related CSV import files.
-- Delete the related translation files.
-- Remove all \"dialogic\" prefixed translations from 
+-   Delete all CSVs prefixed with \"dialogic_\".
+-   Delete the related CSV import files.
+-   Delete the related translation files.
+-   Removes translation IDs from timelines and characters.
+-   Remove all \"dialogic\" prefixed translations from 
   \"Project Settings -> Localization\"."
 dialog_autowrap = true
 
