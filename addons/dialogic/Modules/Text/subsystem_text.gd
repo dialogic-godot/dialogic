@@ -122,7 +122,8 @@ func _on_dialog_text_finished():
 
 
 func update_name_label(character:DialogicCharacter) -> void:
-	var character_path = character.resource_path if character else null
+	var character_path := character.resource_path if character else ""
+
 	if character_path != dialogic.current_state_info.get('character'):
 		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
