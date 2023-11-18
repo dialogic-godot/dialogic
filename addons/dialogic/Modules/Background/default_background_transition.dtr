@@ -1,0 +1,11 @@
+{
+"@path": "res://addons/dialogic/Resources/transition.gd",
+"@subpath": NodePath(""),
+"parameters": {
+"feather": 1.0,
+"wipe_texture": Object(GradientTexture1D,"resource_local_to_scene":false,"resource_name":"","gradient":Object(Gradient,"resource_local_to_scene":false,"resource_name":"","interpolation_mode":0,"interpolation_color_space":0,"offsets":PackedFloat32Array(0),"colors":PackedColorArray(0.498039, 0.498039, 0.498039, 1),"script":null)
+,"width":256,"use_hdr":false,"script":null)
+
+},
+"shader": Resource("res://addons/dialogic/Modules/Background/default_background_transition.gdshader")
+}

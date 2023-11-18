@@ -8,6 +8,7 @@ var _tween: Tween
 var _tween_callbacks: Array[Callable]
 
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
+const default_transition: DialogicTransition = preload("res://addons/dialogic/Modules/Background/default_background_transition.dtr")
 
 ####################################################################################################
 ##					STATE
@@ -34,7 +35,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, material: ShaderMaterial = null, shader_arguments := Dictionary()) -> void:
+func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition: DialogicTransition = default_transition) -> void:
 	var background_holder: DialogicNode_BackgroundHolder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
 		return
@@ -56,10 +57,9 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 
 	# If that didn't work, add a new scene, then cross-fade
 	if !bg_set:
-		if material == null:
-			material = preload("res://addons/dialogic/Modules/Background/default_background_transition.tres").duplicate()
-		else:
-			material = material.duplicate()
+		var material := ShaderMaterial.new()
+		
+		material.shader = transition.shader
 		
 		# make sure material is clean and ready to go
 		material.set_shader_parameter("progress", 0)
@@ -73,16 +73,9 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 			_tween.kill()
 
 		_tween = get_tree().create_tween()
-
-		# could be implemented as passed by the event
-		#material.set_shader_parameter("whipe_texture", whipe_texture)	# the direction the whipe takes from black to white
-		#material.set_shader_parameter("feather", feather)				# the trailing smear left behind when the whipe happens
 		
-		var shader_parameter_names: Array = shader_arguments.keys()
-		var shader_parameter_values: Array = shader_arguments.values()
-		
-		for index in shader_arguments.size():
-			material.set_shader_parameter(shader_parameter_names[index], shader_parameter_values[index])
+		for parameter in transition.parameters:
+			material.set_shader_parameter(parameter, transition.parameters[parameter])
 
 		_tween.tween_method(func (progress: float):
 			material.set_shader_parameter("progress", progress)

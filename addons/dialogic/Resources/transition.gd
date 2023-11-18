@@ -42,6 +42,3 @@ func _get_filtered_uniforms() -> Array[Dictionary]:
 		filtered_uniforms.append(uniform)
 	
 	return filtered_uniforms
-
-func _to_string() -> String:
-	return "<{shader}, {parameters}>".format({"shader":var_to_str(shader), "parameters":var_to_str(parameters)})
