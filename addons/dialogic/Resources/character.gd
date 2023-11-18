@@ -101,6 +101,13 @@ func get_property_translated(property: TranslatedProperties) -> String:
 		return _get_property_original_text(property)
 
 
+## Translates the nicknames of the characters and then returns them as an array
+## of strings.
+func get_nicknames_translated() -> Array[String]:
+	var translated_nicknames := get_property_translated(TranslatedProperties.NICKNAMES)
+	return translated_nicknames.split(", ")
+
+
 ## Returns the name of the file (without the extension).
 func get_character_name() -> String:
 	if !resource_path.is_empty():

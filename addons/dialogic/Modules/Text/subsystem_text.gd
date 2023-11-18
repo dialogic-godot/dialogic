@@ -361,15 +361,17 @@ func collect_character_names() -> void:
 		return
 
 	character_colors = {}
+
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
-		var dch := (load(dch_path) as DialogicCharacter)
+		var character := (load(dch_path) as DialogicCharacter)
 
-		if dch.display_name:
-			character_colors[dch.display_name] = dch.color
+		if character.display_name:
+			character_colors[character.display_name] = character.color
 
-		for nickname in dch.nicknames:
+		for nickname in character.get_nicknames_translated():
+
 			if nickname.strip_edges():
-				character_colors[nickname.strip_edges()] = dch.color
+				character_colors[nickname.strip_edges()] = character.color
 
 	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
