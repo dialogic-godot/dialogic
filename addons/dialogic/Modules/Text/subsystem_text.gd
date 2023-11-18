@@ -121,6 +121,8 @@ func _on_dialog_text_finished():
 	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
+## Updates the visible name on all name labels nodes.
+## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter) -> void:
 	var character_path := character.resource_path if character else ""
 
