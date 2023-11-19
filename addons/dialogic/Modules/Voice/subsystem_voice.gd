@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemVoice
 
 ## Subsystem that manages setting voice lines for text events.
 

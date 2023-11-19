@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemVariables
 
 ## Subsystem that manages variables and allows to access them.
 

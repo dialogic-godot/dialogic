@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemJump
 
 ## Subsystem that holds methods for jumping to specific labels, or return to the previous jump.
 

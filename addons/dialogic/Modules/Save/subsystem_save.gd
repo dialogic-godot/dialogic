@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemSave
 
 ### Subsystem that manages saving and loading data.
 

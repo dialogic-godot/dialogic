@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemChoices
 
 ## Subsystem that manages showing and activating of choices.
 

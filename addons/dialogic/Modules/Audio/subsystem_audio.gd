@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemAudio
 
 ## Subsystem that manages music and sounds.
 

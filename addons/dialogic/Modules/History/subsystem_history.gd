@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemHistory
 
 ## Subsystem that manages history storing.
 

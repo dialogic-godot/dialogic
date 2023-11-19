@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemPortraits
 
 ## Subsystem that manages portraits and portrait positions.
 

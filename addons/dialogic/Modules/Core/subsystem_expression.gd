@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemExpression
 
 ## Subsystem that allows executing strings (with the Expression class).
 ## This is used by conditions and to allow expresions as variables.

@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemTextInput
 
 ## Subsystem that handles showing of input promts. 
 

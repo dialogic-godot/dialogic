@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemStyles
 
 ## Subsystem that manages loading layouts with specific styles applied.
 

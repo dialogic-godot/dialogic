@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemBackgrounds
 
 ## Subsystem for managing backgrounds.
 

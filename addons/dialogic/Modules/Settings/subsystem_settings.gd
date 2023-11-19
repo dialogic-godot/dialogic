@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemSettings
 
 ## Subsystem that allows setting and getting settings that are automatically saved slot independent.
 ## All settings that are stored in the project settings dialogic/settings section are supported.
