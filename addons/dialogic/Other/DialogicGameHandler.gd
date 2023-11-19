@@ -80,6 +80,77 @@ var timeline_directory: Dictionary = {}
 var _event_script_cache: Array[DialogicEvent] = []
 
 
+## Built-in subsystems, subsystems from extensions can't be shown currently in GDScript.
+
+var audio: DialogicSubsystemAudio:
+	get:
+		return get_node_or_null("Audio") as DialogicSubsystemAudio
+
+var backgrounds: DialogicSubsystemBackgrounds:
+	get:
+		return get_node_or_null("Backgrounds") as DialogicSubsystemBackgrounds
+
+var portraits: DialogicSubsystemPortraits:
+	get:
+		return get_node_or_null("Portraits") as DialogicSubsystemPortraits
+
+var choices: DialogicSubsystemChoices:
+	get:
+		return get_node_or_null("Choices") as DialogicSubsystemChoices
+
+var expression: DialogicSubsystemExpression:
+	get:
+		return get_node_or_null("Expression") as DialogicSubsystemExpression
+
+var animation: DialogicSubsystemAnimation:
+	get:
+		return get_node_or_null("Animation") as DialogicSubsystemAnimation
+
+var input: DialogicSubsystemInput:
+	get:
+		return get_node_or_null("Input") as DialogicSubsystemInput
+
+var glossary: DialogicSubsystemGlossary:
+	get:
+		return get_node_or_null("Glossary") as DialogicSubsystemGlossary
+
+var history: DialogicSubsystemHistory:
+	get:
+		return get_node_or_null("History") as DialogicSubsystemHistory
+
+var jump: DialogicSubsystemJump:
+	get:
+		return get_node_or_null("Jump") as DialogicSubsystemJump
+
+var save: DialogicSubsystemSave:
+	get:
+		return get_node_or_null("Save") as DialogicSubsystemSave
+
+var settings: DialogicSubsystemSettings:
+	get:
+		return get_node_or_null("Settings") as DialogicSubsystemSettings
+
+var styles: DialogicSubsystemStyles:
+	get:
+		return get_node_or_null("Styles") as DialogicSubsystemStyles
+
+var text: DialogicSubsystemText:
+	get:
+		return get_node_or_null("Text") as DialogicSubsystemText
+
+var text_input: DialogicSubsystemTextInput:
+	get:
+		return get_node_or_null("TextInput") as DialogicSubsystemTextInput
+
+var variables: DialogicSubsystemVariables:
+	get:
+		return get_node_or_null("VAR") as DialogicSubsystemVariables
+
+var voice: DialogicSubsystemVoice:
+	get:
+		return get_node_or_null("Voice") as DialogicSubsystemVoice
+
+
 ## Autoloads are added first, so this happens REALLY early on game startup.
 func _ready() -> void:
 	rebuild_character_directory()
