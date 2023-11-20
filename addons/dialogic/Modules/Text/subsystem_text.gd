@@ -121,19 +121,28 @@ func _on_dialog_text_finished():
 	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
+## Updates the visible name on all name labels nodes.
+## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter) -> void:
-	var character_path = character.resource_path if character else null
-	if character_path != dialogic.current_state_info.get('character'):
+	var character_path := character.resource_path if character else ""
+	var current_character_path: String = dialogic.current_state_info.get('character')
+
+	if character_path != current_character_path:
 		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
+
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
+
 		if character:
+
 			if dialogic.has_subsystem('VAR'):
 				name_label.text = dialogic.VAR.parse_variables(character.display_name)
 			else:
 				name_label.text = character.display_name
+
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
+
 		else:
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
