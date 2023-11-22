@@ -13,10 +13,12 @@ extends Node
 @export_group('Private')
 @export var apply_overrides_on_ready := false
 
+var this_folder: String = get_script().resource_path.get_base_dir()
 
 func _ready() -> void:
 	if apply_overrides_on_ready and not Engine.is_editor_hint():
 		_apply_export_overrides()
+
 
 
 ## Override this and load all your exported settings (apply them to the scene)

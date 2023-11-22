@@ -59,7 +59,7 @@ func collect_styles() -> void:
 		if ResourceLoader.exists(style):
 			styles.append(ResourceLoader.load(style, "DialogicStyle"))
 		else:
-			printerr("[Dialogic] Failed to open style '", style, "'. Might have been moved or deleted.")
+			print("[Dialogic] Failed to open style '", style, "'. Might have been moved or deleted.")
 
 	default_style = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
 
@@ -215,7 +215,7 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 		if not ResourceLoader.exists(picked_info.style_path):
 			return
 
-		var new_style := load(picked_info.style_path)
+		var new_style: DialogicStyle = load(picked_info.style_path).clone()
 		new_style.name = _get_new_name(new_style.name)
 
 		find_parent('EditorView').godot_file_dialog(
@@ -256,7 +256,7 @@ func _on_duplicate_button_pressed():
 	if !%StyleList.is_anything_selected():
 		return
 	find_parent('EditorView').godot_file_dialog(
-		add_style_undoable.bind(current_style.duplicate(), current_style),
+		add_style_undoable.bind(current_style.clone(), current_style),
 		'',
 		EditorFileDialog.FILE_MODE_SAVE_FILE,
 		"Select folder for new style")
@@ -326,7 +326,7 @@ func _on_inheritance_index_pressed(index:int) -> void:
 
 
 func _on_start_styling_button_pressed() -> void:
-	var new_style := DialogicUtil.get_fallback_style().duplicate()
+	var new_style := DialogicUtil.get_fallback_style().clone()
 
 	find_parent('EditorView').godot_file_dialog(
 		add_style_undoable.bind(new_style),
@@ -339,6 +339,7 @@ func _on_start_styling_button_pressed() -> void:
 
 func _on_stylelist_drag(vector:Vector2) -> Variant:
 	return null
+
 
 func _on_stylelist_can_drop(at_position: Vector2, data: Variant) -> bool:
 	if not data is Dictionary:

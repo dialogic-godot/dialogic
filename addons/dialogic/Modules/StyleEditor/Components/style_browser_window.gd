@@ -6,8 +6,8 @@ signal part_selected(info:Dictionary)
 
 
 func _on_close_requested() -> void:
-	part_selected.emit({})
 	info = {}
+	part_selected.emit({})
 	hide()
 
 

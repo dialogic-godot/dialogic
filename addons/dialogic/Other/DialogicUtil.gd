@@ -203,11 +203,11 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 
 
 static func get_default_layout_base() -> PackedScene:
-	return load(DialogicUtil.get_module_path('LayoutStuff').path_join("Base_Default/default_layout_base.tscn"))
+	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Base_Default/default_layout_base.tscn"))
 
 
 static func get_fallback_style() -> DialogicStyle:
-	return load(DialogicUtil.get_module_path('LayoutStuff').path_join("Style_VN_Default/default_vn_style.tres"))
+	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Style_VN_Default/default_vn_style.tres"))
 
 
 static func get_default_style() -> DialogicStyle:
