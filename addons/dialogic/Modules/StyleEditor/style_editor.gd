@@ -362,8 +362,8 @@ func _on_style_list_drop(at_position: Vector2, data: Variant) -> void:
 	save_style_list()
 	load_style_list()
 
-#region Helpers
 
+#region Helpers
 func _get_new_name(base_name:String) -> String:
 	var new_name_idx := 1
 	var found_unique_name := false

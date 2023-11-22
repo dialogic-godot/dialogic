@@ -8,20 +8,9 @@ var current_style: DialogicStyle = null
 
 var customization_editor_info := {}
 
-#
-#var current_style_name := ""
-#var current_style_info := {}
-#var current_style_inherited_info := {}
-#
 ## -1 is the base scene, 0 to n are the layers
 var current_layer_idx := -1
-#var current_layer_info := {}
-#
-### This info is only loaded for preset parts, it is not saved
-#var current_layer_info_extras := {}
-#var customization_editor_info := {}
-#var current_layer_overrides := {}
-#var current_style_is_inherited := false
+
 
 
 func _ready() -> void:
@@ -115,20 +104,6 @@ func load_layer(layer_idx:=-1):
 			layer_info.path,
 			layer_info.overrides,
 			inherited_layer_info.overrides)
-
-#
-#func save_layer():
-	#if current_layer_idx == -1:
-		#current_style_info['base_scene_overrides'] = current_layer_overrides.duplicate(true)
-	#else:
-		#if not current_style_info.has('layers'):
-			#current_style_info['layers'] = []
-#
-		#while current_style_info.layers.size() - 1 < current_layer_idx:
-			#current_style_info.layers.append({})
-		#current_style_info.layers[current_layer_idx]['scene_overrides'] = current_layer_overrides.duplicate(true)
-	#style_changed.emit(current_style_info)
-
 
 
 func add_layer(scene_path:="", overrides:= {}):
