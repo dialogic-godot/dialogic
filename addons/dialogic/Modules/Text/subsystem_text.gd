@@ -125,7 +125,7 @@ func _on_dialog_text_finished():
 ## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter) -> void:
 	var character_path := character.resource_path if character else ""
-	var current_character_path: String = dialogic.current_state_info.get('character')
+	var current_character_path: String = dialogic.current_state_info.get('character', "")
 
 	if character_path != current_character_path:
 		dialogic.current_state_info['speaker'] = character_path
