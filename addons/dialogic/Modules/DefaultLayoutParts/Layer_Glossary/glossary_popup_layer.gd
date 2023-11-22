@@ -100,13 +100,15 @@ func _apply_export_overrides() -> void:
 	elif ResourceLoader.exists(font_custom):
 		font = load(font_custom)
 
-	%Title.add_theme_font_override("font", font)
+	if font:
+		%Title.add_theme_font_override("font", font)
 	%Title.horizontal_alignment = title_alignment
 
 	# Apply font & sizes
 	%Title.add_theme_font_size_override("font_size", font_title_size)
 	for i in [[%Text, font_text_size], [%Extra, font_extra_size]]:
-		i[0].add_theme_font_override('normal_font', font)
+		if font:
+			i[0].add_theme_font_override('normal_font', font)
 
 		i[0].add_theme_font_size_override("normal_font_size", i[1])
 		i[0].add_theme_font_size_override("bold_font_size", i[1])
