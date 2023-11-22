@@ -152,6 +152,8 @@ func update_content_list(list:PackedStringArray) -> void:
 		return
 
 	for i in editors_manager.resource_helper.timeline_directory:
+		if editors_manager.get_current_editor().current_resource == null:
+			break
 		if editors_manager.resource_helper.timeline_directory[i] == editors_manager.get_current_editor().current_resource.resource_path:
 			editors_manager.resource_helper.label_directory[i] = list
 	editors_manager.resource_helper.label_directory[''] = list

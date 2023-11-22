@@ -22,12 +22,11 @@ extends DialogicLayoutLayer
 @export_group('Boxes')
 @export_subgroup('Panels')
 @export_file('*.tres') var boxes_stylebox_normal := "res://addons/dialogic/Modules/LayoutStuff/Layer_VN_Choices/choice_panel_normal.tres"
-@export_file('*.tres') var boxes_stylebox_hovered := ""
+@export_file('*.tres') var boxes_stylebox_hovered := "res://addons/dialogic/Modules/LayoutStuff/Layer_VN_Choices/choice_panel_hover.tres"
 @export_file('*.tres') var boxes_stylebox_pressed := ""
 @export_file('*.tres') var boxes_stylebox_disabled := ""
-@export_file('*.tres') var boxes_stylebox_focused := ""
+@export_file('*.tres') var boxes_stylebox_focused := "res://addons/dialogic/Modules/LayoutStuff/Layer_VN_Choices/choice_panel_focus.tres"
 @export_subgroup('Modulate')
-@export var modulate_bg_global_color := true
 @export_subgroup('Size & Position')
 @export var boxes_v_separation := 10
 @export var boxes_fill_width := true
@@ -73,8 +72,6 @@ func _apply_export_overrides():
 	# apply box settings
 	if ResourceLoader.exists(boxes_stylebox_normal):
 		var style_box: StyleBox = load(boxes_stylebox_normal)
-		if modulate_bg_global_color and style_box is StyleBoxFlat:
-			style_box.bg_color *= get_global_setting('bg_color', Color.WHITE)
 		theme.set_stylebox('normal', 'Button', style_box)
 		theme.set_stylebox('hover', 'Button', style_box)
 		theme.set_stylebox('pressed', 'Button', style_box)

@@ -23,10 +23,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ####################################################################################################
 
 func load_style(style_name:="", is_base_style:=true) -> Node:
-	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':null})
-
-	if style_name.is_empty() or !style_name in styles_info:
-		style_name = ProjectSettings.get_setting('dialogic/layout/default_style', 'Default')
+	var style := DialogicUtil.get_style_by_name(style_name)
 
 	var signal_info := {'style':style_name}
 
@@ -34,30 +31,29 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
 
-
 	# This will include stuff from parent-styles (for inherited styles)
-	var full_info := DialogicUtil.get_inherited_style_info(style_name)
-
+	#var full_info := DialogicUtil.get_inherited_style_info(style_name)
+	# TODO something!
 	# if this style is the same style as before
 	var previous_layout := get_layout_node()
 	if (is_instance_valid(previous_layout)
 			and previous_layout.has_meta('style')):
-		if previous_layout.get_meta('style') == style_name:
+		if previous_layout.get_meta('style').name == style_name:
 			return previous_layout
 
 		# If this has the same scene setup, just apply the new overrides
-		var inheritance_list := DialogicUtil.get_style_inheritance_list(style_name)
-		if previous_layout.get_meta('style') in inheritance_list:
-			DialogicUtil.apply_scene_export_overrides(previous_layout, full_info.get('base_scene_overrides', {}))
+		if previous_layout.get_meta('style') == style.get_inheritance_root():
+			DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(-1))
 			var index := 0
 			for i in previous_layout.get_layers():
-				DialogicUtil.apply_scene_export_overrides(previous_layout, full_info.get('layers', [])[i].get('scene_overrides', {}))
+				DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(index))
+				index += 1
 
 	# if this is another style:
-	var new_layout := create_layout(full_info)
+	var new_layout := create_layout(style)
 
 	if new_layout != previous_layout and previous_layout != null:
-		if previous_layout.has_meta('style'): signal_info['previous'] = previous_layout.get_meta('style')
+		if previous_layout.has_meta('style'): signal_info['previous'] = previous_layout.get_meta('style').name
 		previous_layout.queue_free()
 		new_layout.ready.connect(reload_current_info_into_new_style)
 
@@ -69,34 +65,35 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 
 ## Method that adds a layout scene with all the necessary layers.
 ## The layout scene will be added to the tree root and returned.
-func create_layout(style_info:Dictionary) -> DialogicLayoutBase:
+func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 
 	# Load base scene
 	var base_scene : DialogicLayoutBase
-	if not ResourceLoader.exists(style_info.get('base_scene_path', '')):
-		base_scene = load(DialogicUtil.get_default_layout_base()).instantiate()
+	if style.base_scene == null:
+		base_scene = DialogicUtil.get_default_layout_base().instantiate()
 	else:
-		base_scene = load(style_info.base_scene_path).instantiate()
+		base_scene = style.get_base_scene().instantiate()
 
-	base_scene.name = "DialogicLayout_"+style_info.get('name', "Unnamed").to_pascal_case()
+	base_scene.name = "DialogicLayout_"+style.name.to_pascal_case()
 
 	# Apply base scene overrides
-	DialogicUtil.apply_scene_export_overrides(base_scene, style_info.get('base_scene_overrides', {}))
+	DialogicUtil.apply_scene_export_overrides(base_scene, style.get_layer_inherited_info(-1).overrides)
 
 	# Load layers
-	for layer in style_info.get('layers', []):
+	for layer_idx in range(style.get_layer_count()):
+		var layer := style.get_layer_inherited_info(layer_idx)
 
-		if not ResourceLoader.exists(layer.get('scene_path', '')):
+		if not ResourceLoader.exists(layer.path):
 			continue
 
-		var layer_scene : DialogicLayoutLayer = load(layer.get('scene_path', '')).instantiate()
+		var layer_scene : DialogicLayoutLayer = load(layer.path).instantiate()
 
 		base_scene.add_layer(layer_scene)
 
 		# Apply layer overrides
-		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.get('scene_overrides', {}))
+		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.overrides)
 
-	base_scene.set_meta('style', style_info.get('name', 'UNNAMED STYLE'))
+	base_scene.set_meta('style', style)
 
 	Dialogic.get_parent().call_deferred("add_child", base_scene)
 	Dialogic.get_tree().set_meta('dialogic_layout_node', base_scene)

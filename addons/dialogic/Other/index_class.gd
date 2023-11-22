@@ -96,24 +96,14 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 				'author': config.get_value('style', 'author', 'Anonymous'),
 				'description': config.get_value('style', 'description', 'No description'),
 				'preview_image': [config.get_value('style', 'image', default_image_path)],
-				'data':fill_in_style_data(config.get_value('style', 'data', {})),
+				'style_path':config.get_value('style', 'style_path', ''),
 				'icon':this_folder.path_join(dir_name).path_join(config.get_value('style', 'icon', '')),
 			})
+
+		if not style_list[-1].style_path.begins_with('res://'):
+			style_list[-1].style_path = this_folder.path_join(dir_name).path_join(style_list[-1].style_path)
 
 		dir_name = dir.get_next()
 
 	return style_list
 
-
-func fill_in_style_data(data:Dictionary) -> Dictionary:
-	if data.is_empty():
-		return data
-
-	if not data.get('base_scene_path', 'res://').begins_with('res://'):
-		data.base_scene_path = this_folder.path_join(data.base_scene_path)
-
-	for layer_idx in range(data.get('layers', []).size()):
-		if not data.layers[layer_idx].get('scene_path', 'res://').begins_with('res://'):
-			data.layers[layer_idx].scene_path = this_folder.path_join(data.layers[layer_idx].scene_path)
-
-	return data

@@ -222,6 +222,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_bpydr")
 box_size = Vector2(550, 150)
+name_label_box_modulate = Color(0, 0, 0, 1)
 
 [node name="Animations" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

@@ -13,7 +13,7 @@ func _get_drag_data(position:Vector2) -> Variant:
 	if get_selected() == null or get_selected() == get_root():
 		return
 
-	if find_parent('StyleEditor').current_style_is_inherited:
+	if find_parent('StyleEditor').current_style.inherits != null:
 		return
 
 	drop_mode_flags = DROP_MODE_INBETWEEN
