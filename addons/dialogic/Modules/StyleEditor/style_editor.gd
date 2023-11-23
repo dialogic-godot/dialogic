@@ -293,9 +293,6 @@ func _on_layout_style_name_focus_exited():
 			%LayoutStyleName.text = current_style.name
 			return
 
-	if current_style.name == default_style:
-		default_style = new_name
-
 	current_style.name = new_name
 	DialogicUtil.set_editor_setting('latest_layout_style', new_name)
 	load_style_list()
