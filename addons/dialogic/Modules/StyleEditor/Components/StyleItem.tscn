@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddlxjde1cx035"]
+[gd_scene load_steps=6 format=3 uid="uid://ddlxjde1cx035"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/StyleEditor/Components/StyleItem.gd" id="1_is0qu"]
 
@@ -19,6 +19,15 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnehp"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.847059, 0.847059, 0.847059, 0.384314)
+shadow_size = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxx8t"]
 bg_color = Color(0.435294, 0.435294, 0.435294, 0.211765)
@@ -78,7 +87,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 3
+stretch_mode = 6
 
 [node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image"]
 unique_name_in_owner = true
@@ -95,20 +104,33 @@ grow_horizontal = 0
 tooltip_text = "Currently in use"
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="VBox/Panel/Image"]
-unique_name_in_owner = true
+[node name="Panel" type="Panel" parent="VBox/Panel/Image"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -38.0
-offset_top = -39.0
-offset_right = -8.0
-offset_bottom = -9.0
+offset_left = -37.0
+offset_top = -36.0
+offset_right = -7.0
+offset_bottom = -6.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qnehp")
+
+[node name="Icon" type="TextureRect" parent="VBox/Panel/Image/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 

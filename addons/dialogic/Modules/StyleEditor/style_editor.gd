@@ -212,6 +212,7 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
 		if not picked_info.has('style_path'):
 			return
+
 		if not ResourceLoader.exists(picked_info.style_path):
 			return
 

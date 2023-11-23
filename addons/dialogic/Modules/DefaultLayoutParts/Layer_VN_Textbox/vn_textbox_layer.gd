@@ -60,6 +60,7 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export var name_label_use_global_font_size := true
 @export var name_label_custom_font_size := 15
 @export_subgroup('Box')
+@export_file("*.tres") var name_label_box_panel := this_folder.path_join("vn_textbox_name_label_panel.tres")
 @export var name_label_box_use_global_color := true
 @export var name_label_box_modulate : Color = box_color_custom
 @export_subgroup('Alignment')
@@ -157,6 +158,11 @@ func _apply_export_overrides():
 		%DialogicNode_NameLabel.add_theme_color_override("font_color", name_label_custom_color)
 
 	%DialogicNode_NameLabel.use_character_color = name_label_use_character_color
+
+	if ResourceLoader.exists(name_label_box_panel):
+		%NameLabelPanel.add_theme_stylebox_override('panel', load(name_label_box_panel))
+	else:
+		%NameLabelPanel.add_theme_stylebox_override('panel', load(this_folder.path_join("vn_textbox_name_label_panel.tres")))
 
 	if name_label_box_use_global_color:
 		%NameLabelPanel.self_modulate = get_global_setting('bg_color', name_label_box_modulate)

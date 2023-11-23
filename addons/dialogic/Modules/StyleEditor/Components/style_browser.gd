@@ -84,8 +84,8 @@ func load_part_info(info:Dictionary) -> void:
 	%PartAuthor.text = "by "+info.get('author', 'Anonymus')
 	%PartDescription.text = info.get('description', '')
 
-	if info.get('preview', null):
-		%PreviewImage.texture = load(info.get('preview'))
+	if info.get('preview_image', null):
+		%PreviewImage.texture = load(info.get('preview_image')[0])
 		%PreviewImage.show()
 	else:
 		%PreviewImage.hide()

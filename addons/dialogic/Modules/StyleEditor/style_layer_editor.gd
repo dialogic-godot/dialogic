@@ -86,11 +86,17 @@ func load_layer(layer_idx:=-1):
 
 	var layer_info := current_style.get_layer_inherited_info(layer_idx)
 
+	%SmallLayerPreview.hide()
 	if %StyleBrowser.is_premade_style_part(layer_info.get('path', 'Unkown Layer')):
 		var premade_infos = %StyleBrowser.premade_scenes_reference[layer_info.get('path')]
 		%LayerName.text = premade_infos.get('name', 'Unknown Layer')
 		%SmallLayerAuthor.text = "by "+premade_infos.get('author', '')
 		%SmallLayerDescription.text = premade_infos.get('description', '')
+
+		if premade_infos.get('preview_image', null) and ResourceLoader.exists(premade_infos.get('preview_image')[0]):
+			%SmallLayerPreview.texture = load(premade_infos.get('preview_image')[0])
+			%SmallLayerPreview.show()
+
 	else:
 		%LayerName.text = clean_scene_name(layer_info.get('path', 'Unkown Layer'))
 		%SmallLayerAuthor.text = "Custom Layer"
