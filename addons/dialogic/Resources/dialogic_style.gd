@@ -48,7 +48,10 @@ func get_layer_info(index:int) -> Dictionary:
 		return {'path':get_base_scene().resource_path, 'overrides':base_overrides.duplicate()}
 
 	if index < layers.size():
-		return {'path':layers[index].scene.resource_path, 'overrides':layers[index].overrides.duplicate()}
+		if layers[index].scene != null:
+			return {'path':layers[index].scene.resource_path, 'overrides':layers[index].overrides.duplicate()}
+		else:
+			return {'path':'', 'overrides':layers[index].overrides.duplicate()}
 
 	return {'path':'', 'overrides':{}}
 

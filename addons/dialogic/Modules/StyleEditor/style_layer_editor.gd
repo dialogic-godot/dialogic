@@ -78,7 +78,7 @@ func _on_layer_selected() -> void:
 		load_layer(-1)
 	else:
 		load_layer(item.get_index())
-	%DeleteLayerButton.disabled = item == %LayerTree.get_root() or style.inherits_anything()
+
 
 
 func load_layer(layer_idx:=-1):
@@ -101,6 +101,8 @@ func load_layer(layer_idx:=-1):
 		%LayerName.text = clean_scene_name(layer_info.get('path', 'Unkown Layer'))
 		%SmallLayerAuthor.text = "Custom Layer"
 		%SmallLayerDescription.text = layer_info.get('path', 'Unkown Layer')
+
+	%DeleteLayerButton.disabled = layer_idx == 0 or current_style.inherits_anything()
 
 	%SmallLayerScene.text = layer_info.get('path', 'Unkown Layer').get_file()
 	%SmallLayerScene.tooltip_text = layer_info.get('path', '')
@@ -285,7 +287,8 @@ func make_layout_custom(target_folder:String) -> void:
 	make_layer_custom(target_folder, "custom_" + current_style.name.to_snake_case())
 
 
-	print("here")
+	var target_path := current_style.get_base_scene().resource_path
+
 	# Load base scene
 	var base_scene_pck: PackedScene = current_style.get_base_scene().duplicate()
 	var base_scene := base_scene_pck.instantiate()
@@ -294,7 +297,7 @@ func make_layout_custom(target_folder:String) -> void:
 	# Load layers
 	for layer_idx in range(current_style.get_layer_count()):
 		var layer_info := current_style.get_layer_inherited_info(layer_idx)
-		print(layer_info)
+
 		if not ResourceLoader.exists(layer_info.path):
 			continue
 
@@ -310,10 +313,8 @@ func make_layout_custom(target_folder:String) -> void:
 	base_scene.print_tree()
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
-	var target_path := target_folder.path_join(base_scene_pck.resource_path.get_file())
 	pckd_scn.take_over_path(target_path)
 	ResourceSaver.save(pckd_scn, target_path)
-
 
 	current_style.base_scene = load(target_path)
 	current_style.inherits = null

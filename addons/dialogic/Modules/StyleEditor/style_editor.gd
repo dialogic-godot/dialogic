@@ -85,6 +85,9 @@ func save_style() -> void:
 func add_style(file_path:String, style:DialogicStyle, inherits:DialogicStyle= null) -> void:
 	style.resource_path = file_path
 	style.inherits = inherits
+	if style.layers.is_empty() and style.inherits != null:
+		for l in style.get_layer_list():
+			style.add_layer('', {})
 	ResourceSaver.save(style, file_path)
 	styles.append(style)
 	if len(styles) == 1:

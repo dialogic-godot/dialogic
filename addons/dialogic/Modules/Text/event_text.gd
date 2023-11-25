@@ -95,10 +95,12 @@ func _execute() -> void:
 		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
 			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
+			await dialogic.get_tree().process_frame
 
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.load_style(character.custom_info.style, false)
+			await dialogic.get_tree().process_frame
 
 
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
