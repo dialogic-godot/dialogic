@@ -87,7 +87,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 6
+stretch_mode = 5
 
 [node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image"]
 unique_name_in_owner = true

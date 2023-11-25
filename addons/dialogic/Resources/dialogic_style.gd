@@ -173,7 +173,8 @@ func realize_inheritance() -> void:
 func clone() -> DialogicStyle:
 	var style := DialogicStyle.new()
 	style.name = name
-	style.base_scene = base_scene
+	if base_scene != null:
+		style.base_scene = base_scene.duplicate()
 	style.inherits = inherits
 	style.base_overrides = base_overrides
 	for layer_idx in range(get_layer_count()):

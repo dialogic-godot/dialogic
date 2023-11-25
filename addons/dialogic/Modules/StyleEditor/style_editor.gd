@@ -57,7 +57,11 @@ func collect_styles() -> void:
 	var style_list: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
 	for style in style_list:
 		if ResourceLoader.exists(style):
-			styles.append(ResourceLoader.load(style, "DialogicStyle"))
+			var style_res := load(style)
+			if style != null:
+				styles.append(ResourceLoader.load(style, "DialogicStyle"))
+			else:
+				print("[Dialogic] Failed to open style '", style, "'. Some dependency might be broken.")
 		else:
 			print("[Dialogic] Failed to open style '", style, "'. Might have been moved or deleted.")
 
@@ -74,6 +78,7 @@ func save_style() -> void:
 	if current_style == null:
 		return
 
+	print("[Dialogic] Saved ", current_style.name)
 	ResourceSaver.save(current_style)
 
 

@@ -10,6 +10,9 @@ var base_size = 1
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	%Name.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
 	custom_minimum_size = base_size*Vector2(200, 150)*DialogicUtil.get_editor_scale()
 	%CurrentIcon.texture = get_theme_icon("Favorites", "EditorIcons")
@@ -31,10 +34,10 @@ func load_info(info:Dictionary) -> void:
 		%Image.texture = load(info.preview_image[0])
 
 	if ResourceLoader.exists(info.get('icon', '')):
-		%Icon.show()
+		%Icon.get_parent().show()
 		%Icon.texture = load(info.get('icon'))
 	else:
-		%Icon.hide()
+		%Icon.get_parent().hide()
 
 	tooltip_text = info.description
 
