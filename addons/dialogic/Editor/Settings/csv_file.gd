@@ -116,19 +116,22 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 event.add_translation_id()
                 event.update_text_version()
 
-            for property in event._get_translatable_properties():
+            var properties := event._get_translatable_properties()
+
+            for property in properties:
                 var line_key: String = event.get_property_translation_key(property)
                 var line_value: String = event._get_property_original_translation(property)
                 var array_line := PackedStringArray([line_key, line_value])
+                lines.append(array_line)
 
-                # If the event has a character property, we will take it.
+                if "character" in event:
+                    continue
+
                 var character: DialogicCharacter = event.character
 
                 if (character != null
                 and not collected_characters.has(character.display_name)):
                     collected_characters[character.display_name] = character
-
-                lines.append(array_line)
 
 
 ## Clears the CSV file on disk and writes the current [member lines] array to it.

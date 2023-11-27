@@ -230,7 +230,7 @@ func update_csv_files() -> void:
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
-		await timeline.process()
+		timeline.process()
 
 		# Collect timeline into CSV.
 		csv_file.collect_lines_from_timeline(timeline)
@@ -442,12 +442,13 @@ func erase_translations() -> void:
 				event.update_text_version()
 				cleaned_events += 1
 
-				# Remove character translation IDs.
-				var character: DialogicCharacter = event.character
+				if "character" in event:
+					# Remove character translation IDs.
+					var character: DialogicCharacter = event.character
 
-				if character != null and not character._translation_id.is_empty():
-					character.remove_translation_id()
-					cleaned_characters += 1
+					if character != null and not character._translation_id.is_empty():
+						character.remove_translation_id()
+						cleaned_characters += 1
 
 		timeline.set_meta("timeline_not_saved", true)
 		ResourceSaver.save(timeline, timeline_path)
