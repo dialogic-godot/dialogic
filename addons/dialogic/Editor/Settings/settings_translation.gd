@@ -100,7 +100,6 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 ## - The save location mode is set to "Inside Translation Folder".
 func _verify_translation_file() -> void:
 	var translation_folder: String = %TransFolderPicker.current_value
-	var save_location_mode: SaveLocationModes = %SaveLocationMode.selected
 	var file_mode: TranslationModes = %TransMode.selected
 
 	if file_mode == TranslationModes.PER_PROJECT:
