@@ -138,8 +138,8 @@ func setup_ui() -> void:
 
 	%StyleList.item_selected.connect(_on_stylelist_selected)
 	%AddButton.get_popup().index_pressed.connect(_on_AddStyleMenu_selected)
+	%AddButton.about_to_popup.connect(_on_AddStyleMenu_about_to_popup)
 	%InheritanceButton.get_popup().index_pressed.connect(_on_inheritance_index_pressed)
-
 	%StyleList.set_drag_forwarding(_on_stylelist_drag, _on_stylelist_can_drop, _on_style_list_drop)
 	%StyleView.hide()
 	%NoStyleView.show()
@@ -209,6 +209,10 @@ func load_style(style:DialogicStyle) -> void:
 
 	%StyleView.show()
 	%NoStyleView.hide()
+
+
+func _on_AddStyleMenu_about_to_popup() -> void:
+	%AddButton.get_popup().set_item_disabled(3, not %StyleList.is_anything_selected())
 
 
 func _on_AddStyleMenu_selected(index:int) -> void:

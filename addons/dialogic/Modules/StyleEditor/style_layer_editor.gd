@@ -30,6 +30,11 @@ func _ready() -> void:
 func load_style(style:DialogicStyle) -> void:
 	current_style = style
 
+	if current_style.has_meta('_latest_layer'):
+		current_layer_idx = current_style.get_meta('_latest_layer', -1)
+	else:
+		current_layer_idx = -1
+
 	%AddLayerButton.disabled = style.inherits_anything()
 	%ReplaceLayerButton.disabled = style.inherits_anything()
 	%MakeCustomButton.disabled = style.inherits_anything()
@@ -69,7 +74,10 @@ func load_style_layer_list() -> void:
 
 		layer_item.set_meta('scene', layer_scene)
 
-	root.select(0)
+	if current_layer_idx == -1:
+		root.select(0)
+	else:
+		root.get_child(current_layer_idx).select(0)
 
 
 func _on_layer_selected() -> void:
@@ -84,6 +92,7 @@ func _on_layer_selected() -> void:
 func load_layer(layer_idx:=-1):
 	current_layer_idx = layer_idx
 
+	current_style.set_meta('_latest_layer', current_layer_idx)
 	var layer_info := current_style.get_layer_inherited_info(layer_idx)
 
 	%SmallLayerPreview.hide()

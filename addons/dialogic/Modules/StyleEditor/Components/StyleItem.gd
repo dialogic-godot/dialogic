@@ -10,7 +10,7 @@ var base_size = 1
 
 
 func _ready() -> void:
-	if owner.get_parent() is SubViewport:
+	if get_parent() is SubViewport:
 		return
 
 	%Name.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
