@@ -287,6 +287,8 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 	else:
 		%LayerTree.get_root().get_child(%LayerTree.get_selected().get_index()).select(0)
 
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+
 
 func make_layout_custom(target_folder:String) -> void:
 	target_folder = target_folder.path_join("Custom" + current_style.name.to_pascal_case())
@@ -319,7 +321,6 @@ func make_layout_custom(target_folder:String) -> void:
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides, false)
 
-	base_scene.print_tree()
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
 	pckd_scn.take_over_path(target_path)
@@ -333,6 +334,8 @@ func make_layout_custom(target_folder:String) -> void:
 	load_style_layer_list()
 
 	%LayerTree.get_root().select(0)
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+
 
 
 func _on_delete_layer_button_pressed() -> void:
