@@ -108,7 +108,7 @@ func _verify_translation_file() -> void:
 	else:
 		%SaveLocationMode.disabled = false
 
-	var valid_translation_folder = (!translation_folder.is_empty()
+	var valid_translation_folder := (!translation_folder.is_empty()
 		and DirAccess.dir_exists_absolute(translation_folder))
 
 	%UpdateCsvFiles.disabled = not valid_translation_folder
