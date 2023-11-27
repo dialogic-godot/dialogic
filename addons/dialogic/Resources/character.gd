@@ -81,14 +81,14 @@ func _get_property_original_text(property: TranslatedProperties) -> String:
 ## Otherwise, returns the text property as is.
 ##
 ## Undefined behaviour if an invalid integer is passed.
-func get_property_translated(property: TranslatedProperties) -> String:
+func _get_property_translated(property: TranslatedProperties) -> String:
 	var try_translation: bool = (_translation_id != null
 		and not _translation_id.is_empty()
 		and ProjectSettings.get_setting('dialogic/translation/enabled', false)
 	)
 
 	if try_translation:
-		var translation = tr(get_property_translation_key(property))
+		var translation := tr(get_property_translation_key(property))
 
 		# If no translation is found, tr() returns the ID.
 		# However, we want to fallback to the original text.
@@ -104,8 +104,13 @@ func get_property_translated(property: TranslatedProperties) -> String:
 ## Translates the nicknames of the characters and then returns them as an array
 ## of strings.
 func get_nicknames_translated() -> Array[String]:
-	var translated_nicknames := get_property_translated(TranslatedProperties.NICKNAMES)
+	var translated_nicknames := _get_property_translated(TranslatedProperties.NICKNAMES)
 	return translated_nicknames.split(", ")
+
+
+## Translates and returns the display name of the character.
+func get_display_name_translated() -> String:
+	return _get_property_translated(TranslatedProperties.NAME)
 
 
 ## Returns the name of the file (without the extension).
