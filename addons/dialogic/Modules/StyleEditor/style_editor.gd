@@ -229,7 +229,6 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 			return
 
 		var new_style: DialogicStyle = load(picked_info.style_path).clone()
-		new_style.name = _get_new_name(new_style.name)
 
 		find_parent('EditorView').godot_file_dialog(
 			add_style_undoable.bind(new_style),
@@ -241,20 +240,21 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 		if %StyleList.get_selected_items().is_empty():
 			return
 		find_parent('EditorView').godot_file_dialog(
-			add_style_undoable.bind(DialogicStyle.new(_get_new_name(current_style.name)), current_style),
+			add_style_undoable.bind(DialogicStyle.new(), current_style),
 			'*.tres',
 			EditorFileDialog.FILE_MODE_SAVE_FILE,
 			"Select folder for new style")
 
 	if index == 4:
 		find_parent('EditorView').godot_file_dialog(
-			add_style_undoable.bind(DialogicStyle.new(_get_new_name("Custom Style"))),
+			add_style_undoable.bind(DialogicStyle.new()),
 			'*.tres',
 			EditorFileDialog.FILE_MODE_SAVE_FILE,
 			"Select folder for new style")
 
 
 func add_style_undoable(file_path:String, style:DialogicStyle, inherits:DialogicStyle = null) -> void:
+	style.name = _get_new_name(file_path.get_file().trim_suffix('.'+file_path.get_extension()))
 	var undo_redo: EditorUndoRedoManager = DialogicUtil.get_dialogic_plugin().get_undo_redo()
 	undo_redo.create_action('Add Style', UndoRedo.MERGE_ALL)
 	undo_redo.add_do_method(self, "add_style", file_path, style, inherits)
