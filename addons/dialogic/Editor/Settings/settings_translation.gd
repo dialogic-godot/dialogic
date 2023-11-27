@@ -431,7 +431,7 @@ func erase_translations() -> void:
 
 		# Process the timeline.
 		var timeline: DialogicTimeline = load(timeline_path)
-		await timeline.process()
+		timeline.process()
 		cleaned_timelines += 1
 
 		# Remove event translation IDs.
