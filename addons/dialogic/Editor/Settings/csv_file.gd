@@ -116,7 +116,7 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 event.add_translation_id()
                 event.update_text_version()
 
-            var properties := event._get_translatable_properties()
+            var properties: Array = event._get_translatable_properties()
 
             for property in properties:
                 var line_key: String = event.get_property_translation_key(property)
