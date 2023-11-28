@@ -124,7 +124,7 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 var array_line := PackedStringArray([line_key, line_value])
                 lines.append(array_line)
 
-                if "character" in event:
+                if not "character" in event:
                     continue
 
                 var character: DialogicCharacter = event.character
