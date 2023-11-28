@@ -131,7 +131,7 @@ func update_name_label(character:DialogicCharacter) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 
 		if character:
-			var translated_display_name := character.get_property_translated(character.TranslatedProperties.NAME)
+			var translated_display_name := character.get_display_name_translated()
 
 			if dialogic.has_subsystem('VAR'):
 				name_label.text = dialogic.VAR.parse_variables(translated_display_name)
