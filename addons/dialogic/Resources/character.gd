@@ -92,7 +92,7 @@ func _get_property_translated(property: TranslatedProperties) -> String:
 
 		# If no translation is found, tr() returns the ID.
 		# However, we want to fallback to the original text.
-		if translation == _translation_id:
+		if translation == get_property_translation_key(property):
 			return _get_property_original_text(property)
 
 		return translation
