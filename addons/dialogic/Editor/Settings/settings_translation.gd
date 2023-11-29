@@ -143,8 +143,6 @@ func _on_update_translations_pressed() -> void:
 	var old_file_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/intern/file_mode', file_mode)
 	var old_translation_folder: String = ProjectSettings.get_setting('dialogic/translation/intern/translation_folder', translation_folder)
 
-
-
 	if (old_save_mode == save_mode
 	and old_file_mode == file_mode
 	and old_translation_folder == translation_folder):
@@ -180,12 +178,7 @@ func update_csv_files() -> void:
 	var new_names := 0
 	var updated_names := 0
 
-	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
-	# We will close this timeline to ensure it will properly update.
-	# By saving this reference, we can open it again.
-	var current_timeline := timeline_node.current_resource
-	# Clean the current editor, this will also close the timeline.
-	settings_editor.editors_manager.clear_editor(timeline_node)
+	var current_timeline := _close_active_timeline()
 
 	var csv_per_project: DialogicCsvFile = null
 	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
@@ -249,7 +242,6 @@ func update_csv_files() -> void:
 
 	character_name_csv.update_csv_file_on_disk()
 
-
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
 
@@ -261,12 +253,7 @@ func update_csv_files() -> void:
 	new_names += character_name_csv.new_rows
 	updated_names += character_name_csv.updated_rows
 
-	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
-
-	# Silently open the closed timeline.
-	# May be null, if no timeline was open.
-	if current_timeline != null:
-		settings_editor.editors_manager.edit_resource(current_timeline, true, true)
+	_silently_open_timeline(current_timeline)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
@@ -408,6 +395,8 @@ func erase_translations() -> void:
 	var cleaned_characters := 0
 	var cleaned_events := 0
 
+	var current_timeline := _close_active_timeline()
+
 	# Delete all Dialogic CSV files and their translation files.
 	for csv_path in DialogicUtil.list_resources_of_type(".csv"):
 		var csv_path_parts: PackedStringArray = csv_path.split("/")
@@ -474,6 +463,11 @@ func erase_translations() -> void:
 		'erased_translation_files': deleted_translation_files,
 	}
 
+	_silently_open_timeline(current_timeline)
+
+	# Trigger reimport.
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+
 	# Clear the internal settings.
 	ProjectSettings.clear('dialogic/translation/intern/save_mode')
 	ProjectSettings.clear('dialogic/translation/intern/file_mode')
@@ -481,3 +475,24 @@ func erase_translations() -> void:
 
 	_verify_translation_file()
 	%StatusMessage.text = status_message.format(status_message_args)
+
+
+## Closes the current timeline in the Dialogic Editor and returns the timeline
+## as a resource.
+## If no timeline has been opened, returns null.
+func _close_active_timeline() -> Resource:
+	var timeline_node: DialogicEditor = settings_editor.editors_manager.editors['Timeline']['node']
+	# We will close this timeline to ensure it will properly update.
+	# By saving this reference, we can open it again.
+	var current_timeline := timeline_node.current_resource
+	# Clean the current editor, this will also close the timeline.
+	settings_editor.editors_manager.clear_editor(timeline_node)
+
+	return current_timeline
+
+
+## Opens the timeline resource into the Dialogic Editor.
+## If the timeline is null, does nothing.
+func _silently_open_timeline(timeline_to_open: Resource) -> void:
+	if timeline_to_open != null:
+		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
