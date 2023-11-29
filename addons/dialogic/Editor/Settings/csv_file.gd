@@ -137,15 +137,15 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 var line_key: String = event.get_property_translation_key(property)
                 var line_value: String = event._get_property_original_translation(property)
                 var array_line := PackedStringArray([line_key, line_value])
+                lines.append(array_line)
 
                 if not "character" in event:
-                    lines.append(array_line)
                     continue
 
                 var character: DialogicCharacter = event.character
 
                 if (character != null
-                and not collected_characters.has(character.display_name)):
+                and not collected_characters.has(character._translation_id)):
                     collected_characters[character._translation_id] = character
 
 
