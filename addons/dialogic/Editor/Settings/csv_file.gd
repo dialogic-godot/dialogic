@@ -30,6 +30,14 @@ var new_rows: int = 0
 
 ## Stores all character names from the current CSV.
 ##
+## If this is CSV file for timeline events, every appearing speaker will be
+## added once to this dictionary by their translation ID.
+## If the translation ID does not exist, a new one will be generated.
+##
+## If this is the character name CSV file, this field captures all characters
+## that were added to [member lines] using the
+## [method collect_lines_from_characters].
+##
 ## Key: String, Value: PackedStringArray
 var collected_characters: Dictionary = {}
 
@@ -85,6 +93,11 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
         if character._translation_id == null or character._translation_id.is_empty():
             character.add_translation_id()
 
+        if character._translation_id in collected_characters:
+            return
+        else:
+            collected_characters[character._translation_id] = character
+
         # Add row for display names.
         var name_property := DialogicCharacter.TranslatedProperties.NAME
         var display_name_key: String = character.get_property_translation_key(name_property)
@@ -92,12 +105,14 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
         var array_line := PackedStringArray([display_name_key, line_value])
         lines.append(array_line)
 
-        if character.nicknames.is_empty():
+        var character_nicknames: Array = character.nicknames
+
+        if character_nicknames.is_empty():
             return
 
         # Add row for nicknames.
         var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
-        var nickname_string: String = ", ".join(character.nicknames)
+        var nickname_string: String = ", ".join(character_nicknames)
         var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
         var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
         lines.append(nick_array_line)
@@ -122,16 +137,16 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
                 var line_key: String = event.get_property_translation_key(property)
                 var line_value: String = event._get_property_original_translation(property)
                 var array_line := PackedStringArray([line_key, line_value])
-                lines.append(array_line)
 
                 if not "character" in event:
+                    lines.append(array_line)
                     continue
 
                 var character: DialogicCharacter = event.character
 
                 if (character != null
                 and not collected_characters.has(character.display_name)):
-                    collected_characters[character.display_name] = character
+                    collected_characters[character._translation_id] = character
 
 
 ## Clears the CSV file on disk and writes the current [member lines] array to it.
