@@ -104,9 +104,9 @@ func _get_property_translated(property: TranslatedProperties) -> String:
 
 ## Translates the nicknames of the characters and then returns them as an array
 ## of strings.
-func get_nicknames_translated() -> Array[String]:
+func get_nicknames_translated() -> Array:
 	var translated_nicknames := _get_property_translated(TranslatedProperties.NICKNAMES)
-	return translated_nicknames.split(", ")
+	return (translated_nicknames.split(", ") as Array)
 
 
 ## Translates and returns the display name of the character.
