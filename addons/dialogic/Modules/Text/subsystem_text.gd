@@ -134,11 +134,12 @@ func update_name_label(character:DialogicCharacter) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 
 		if character:
+			var translated_display_name := character.get_display_name_translated()
 
 			if dialogic.has_subsystem('VAR'):
-				name_label.text = dialogic.VAR.parse_variables(character.display_name)
+				name_label.text = dialogic.VAR.parse_variables(translated_display_name)
 			else:
-				name_label.text = character.display_name
+				name_label.text = translated_display_name
 
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
@@ -363,15 +364,17 @@ func collect_character_names() -> void:
 		return
 
 	character_colors = {}
+
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
-		var dch := (load(dch_path) as DialogicCharacter)
+		var character := (load(dch_path) as DialogicCharacter)
 
-		if dch.display_name:
-			character_colors[dch.display_name] = dch.color
+		if character.display_name:
+			character_colors[character.display_name] = character.color
 
-		for nickname in dch.nicknames:
+		for nickname in character.get_nicknames_translated():
+
 			if nickname.strip_edges():
-				character_colors[nickname.strip_edges()] = dch.color
+				character_colors[nickname.strip_edges()] = character.color
 
 	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 

@@ -92,6 +92,10 @@ func _exit_tree():
 func take_autofocus():
 	%Search.grab_focus()
 
+
+func set_enabled(is_enabled: bool) -> void:
+	%SelectButton.disabled = !is_enabled
+
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
