@@ -176,7 +176,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	editor_changed.emit(previous_editor, current_editor)
 
 
-## Rarely used to completely clear a editor.
+## Rarely used to completely clear an editor.
 func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 	if save:
 		editor._save()

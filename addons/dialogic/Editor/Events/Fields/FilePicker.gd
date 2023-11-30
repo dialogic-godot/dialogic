@@ -53,6 +53,11 @@ func set_value(value:String) -> void:
 	%ClearButton.visible = !value.is_empty() and !hide_reset
 
 
+func set_enabled(is_enabled: bool) -> void:
+	%Field.editable = is_enabled
+	%OpenButton.disabled = !is_enabled
+	%ClearButton.disabled = !is_enabled
+
 
 func _on_OpenButton_pressed() -> void:
 	find_parent('EditorView').godot_file_dialog(_on_file_dialog_selected, file_filter, file_mode, "Open "+ property_name)
