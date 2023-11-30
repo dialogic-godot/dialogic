@@ -6,7 +6,7 @@ func _ready() -> void:
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 
-	var scene: Node = Dialogic.Styles.add_layout_style(DialogicUtil.get_editor_setting('current_test_style', ''))
+	var scene: Node = Dialogic.Styles.load_style(DialogicUtil.get_editor_setting('current_test_style', ''))
 	if not scene is CanvasLayer:
 		if scene is Control:
 			scene.position = get_viewport_rect().size/2.0

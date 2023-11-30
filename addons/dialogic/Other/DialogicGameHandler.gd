@@ -99,57 +99,26 @@ func _ready() -> void:
 ## For argument info, checkout start_timeline()
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
+	# If we don't have a style subsystem, default to just start_timeline()
+	if !has_subsystem('Styles'):
+		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
+		clear(ClearFlags.KEEP_VARIABLES)
+		start_timeline(timeline, label)
+		return null
+
+	# Otherwise make sure there is a style active.
 	var scene :Node= null
-	if !has_active_layout_node():
-		if has_subsystem('Styles'):
-			scene = get_subsystem("Styles").add_layout_style()
-		else:
-			scene = add_layout_node()
+	if !self.Styles.has_active_layout_node():
+		scene = self.Styles.load_style()
 	else:
-		scene = get_layout_node()
+		scene = self.Styles.get_layout_node()
+
 	if not scene.is_node_ready():
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
 		scene.ready.connect(start_timeline.bind(timeline, label))
 	else:
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
-	return scene
-
-
-## Method that adds a layout scene unless the same scene is already in use.
-## The layout scene will be added to the tree root and returned.
-##
-## To load a specific style you should instead call
-##  Dialogic.Styles.add_layout_style(style_name)
-## which uses this method internally but also applies style settings.
-func add_layout_node(scene_path := "") -> Node:
-	var scene: Node = get_layout_node()
-
-	if (
-		is_instance_valid(scene)
-		and (
-			scene_path.is_empty()
-			or scene.get_meta('scene_path', scene_path) == scene_path
-		)
-	):
-		# We have an existing valid scene matching the requested path, so
-		# show it.
-		scene.show()
-	else:
-		if is_instance_valid(scene):
-			scene.queue_free()
-		scene = null
-
-		if scene_path.is_empty():
-			scene_path = ProjectSettings.get_setting(
-						'dialogic/layout/layout_scene',
-						DialogicUtil.get_default_layout_scene())
-
-		scene = load(scene_path).instantiate()
-		scene.set_meta('scene_path', scene_path)
-
-		get_parent().call_deferred("add_child", scene)
-		get_tree().set_meta('dialogic_layout_node', scene)
 
 	return scene
 
@@ -502,26 +471,6 @@ func find_timeline(path: String) -> String:
 #region HELPERS
 ################################################################################
 
-func has_active_layout_node() -> bool:
-	return (
-		get_tree().has_meta('dialogic_layout_node')
-		and is_instance_valid(get_tree().get_meta('dialogic_layout_node'))
-		and get_tree().get_meta('dialogic_layout_node').visible
-	)
-
-
-func get_layout_node() -> Node:
-	# `null` doesn't really work as a default for `get_meta`, because it'll
-	# still throw an error if the meta entry doesn't exist. Revisit this if
-	# Godot ever gives us a way to explicitly have `null` as a default.
-	# (oddfacade 2023-07)
-	var tree := get_tree()
-	return (
-		tree.get_meta('dialogic_layout_node')
-		if tree.has_meta('dialogic_layout_node') and
-			is_instance_valid(tree.get_meta('dialogic_layout_node'))
-		else null
-	)
 
 
 func _on_timeline_ended():

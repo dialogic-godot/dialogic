@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2it0xiap3gnt"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble_layer.gd" id="1_b37je"]
+[ext_resource type="PackedScene" uid="uid://dlx7jcvm52tyw" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.tscn" id="2_xncjh"]
+
+[node name="TextBubbleLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_b37je")
+textbubble_scene = ExtResource("2_xncjh")

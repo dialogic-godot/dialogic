@@ -48,7 +48,7 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
-		dialogic.Styles.add_layout_style()
+		dialogic.Styles.load_style()
 
 	if clear_portrait_positions and dialogic.has_subsystem('Portraits'):
 		dialogic.Portraits.reset_all_portrait_positions()
