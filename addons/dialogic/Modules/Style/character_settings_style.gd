@@ -1,7 +1,7 @@
 @tool
 extends DialogicCharacterEditorMainSection
 
-## Character editor tab that allows setting a custom style fot the character. 
+## Character editor tab that allows setting a custom style fot the character.
 
 func _get_title() -> String:
 	return "Style"
@@ -23,8 +23,10 @@ func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 
 
 func get_style_suggestions(filter:String="") -> Dictionary:
-	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	var styles := ProjectSettings.get_setting('dialogic/layout/style_list', [])
 	var suggestions := {}
+	suggestions["No Style"] = {'value': "", 'editor_icon': ["EditorHandleDisabled", "EditorIcons"]}
 	for i in styles:
-		suggestions[i] = {'value': i, 'editor_icon': ["PopupMenu", "EditorIcons"]}
+		var style: DialogicStyle = load(i)
+		suggestions[style.name] = {'value': style.name, 'editor_icon': ["PopupMenu", "EditorIcons"]}
 	return suggestions

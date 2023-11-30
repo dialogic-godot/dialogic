@@ -11,6 +11,13 @@ signal animation_textbox_new_text
 signal animation_textbox_show
 signal animation_textbox_hide
 
+
+# forwards of the dialog_text signals of all present dialog_text nodes
+signal meta_hover_ended(meta:Variant)
+signal meta_hover_started(meta:Variant)
+signal meta_clicked(meta:Variant)
+
+
 # used to color names without searching for all characters each time
 var character_colors := {}
 var color_regex := RegEx.new()
@@ -85,6 +92,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
 	update_text_speed()
+	connect_meta_signals()
 
 	if text.is_empty():
 		await hide_text_boxes(instant)
@@ -340,9 +348,22 @@ func post_install():
 	Dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
 
-
 func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
+
+
+func connect_meta_signals() -> void:
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if not text_node.meta_clicked.is_connected(emit_meta_signal):
+			text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
+		if not text_node.meta_hover_started.is_connected(emit_meta_signal):
+			text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
+		if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
+			text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
+
+
+func emit_meta_signal(meta:Variant, sig:String) -> void:
+	emit_signal(sig, meta)
 
 
 func color_names(text:String) -> String:

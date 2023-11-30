@@ -42,7 +42,6 @@ func set_value(value:String) -> void:
 		text = value.get_file()
 		%Field.tooltip_text = value
 	if len(text) > max_text_length:
-		%Field.custom_minimum_size.x = get_theme_font('font', 'Label').get_string_size(value.get_file()).x
 		%Field.expand_to_text_length = false
 		%Field.size.x = 0
 	else:
