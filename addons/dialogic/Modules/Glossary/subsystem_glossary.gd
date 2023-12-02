@@ -7,6 +7,9 @@ var glossaries := []
 ## If false, no parsing will be done.
 var enabled := true
 
+## Any key in this dictionary will overwrite the color for any item with that name.
+var color_overrides := {}
+
 
 ####################################################################################################
 ##					STATE
@@ -38,9 +41,14 @@ func parse_glossary(text:String) -> String:
 				regex.compile(pattern)
 			else:
 				regex.compile('(?i)'+pattern)
+
+			var color: String = glossary.entries[entry].get('color', def_color).to_html()
+			if entry in color_overrides:
+				color = color_overrides[entry].to_html()
+
 			text = regex.sub(text,
 				'[url=' + entry + ']' +
-				'[color=' + glossary.entries[entry].get('color', def_color).to_html() + ']${word}[/color]' +
+				'[color=' + color + ']${word}[/color]' +
 				'[/url]', true
 				)
 	return text

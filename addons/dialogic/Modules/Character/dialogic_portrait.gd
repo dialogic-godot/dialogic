@@ -12,13 +12,13 @@ var portrait: String
 ## This function can be overridden.
 ## If this returns true, it won't insatnce a new scene, but call _update_portrait on this one.
 ## This is only relevant if the next portrait uses the same scene.
-## This allows implmenting transitions between portraits that use the same scene. 
+## This allows implmenting transitions between portraits that use the same scene.
 func _should_do_portrait_update(character:DialogicCharacter, portrait:String) -> bool:
 	return true
 
 
 ## If the custom portrait accepts a change, then accept it here
-## You should position your portrait so that the root node is at the pivot point*. 
+## You should position your portrait so that the root node is at the pivot point*.
 ## For example for a simple sprite this code would work:
 ## >>> $Sprite.position = $Sprite.get_rect().size * Vector2(-0.5, -1)
 ##
@@ -27,7 +27,7 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 	pass
 
 
-## This should be implemented. It is used for sizing in the 
+## This should be implemented. It is used for sizing in the
 ##   character editor preview and in portrait containers.
 ## Scale and offset will be applied by dialogic.
 ## For example for a simple sprite this should work:

@@ -23,6 +23,7 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 
 	set_manualadvance(true)
 
+
 func pause() -> void:
 	auto_advance.autoadvance_timer.paused = true
 	input_block_timer.paused = true
