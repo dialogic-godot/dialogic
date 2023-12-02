@@ -359,9 +359,6 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	if indent:
 		indent_events()
 
-	if not _building_timeline:
-		piece.focus()
-
 	return piece
 
 
@@ -654,7 +651,6 @@ func _add_event_button_pressed(event_resource:DialogicEvent, force_resource := f
 	else:
 		at_index = %Timeline.get_child_count()
 
-
 	var resource :DialogicEvent = null
 	if force_resource:
 		resource = event_resource
@@ -781,6 +777,7 @@ func move_events_by_indexes(index_dict:Dictionary) -> void:
 		%Timeline.move_child(evts[idx], index_dict[idx])
 
 	indent_events()
+	visual_update_selection()
 	something_changed()
 
 
@@ -788,9 +785,20 @@ func offset_blocks_by_index(blocks:Array, offset:int):
 	var do_indexes := {}
 	var undo_indexes := {}
 
-	for block in blocks:
-		do_indexes[block.get_index()] = block.get_index()+offset+int(offset>0)
-		undo_indexes[block.get_index()+offset] = block.get_index()+int(offset<0)
+	for event in blocks:
+		if event.resource is DialogicEndBranchEvent:
+			if !event.parent_node in blocks:
+				if event.get_index()+offset+int(offset>0) <= event.parent_node.get_index():
+					continue
+		if "end_node" in event and event.end_node:
+			if !event.end_node in blocks:
+				if event.get_index()+offset+int(offset>0) > event.end_node.get_index():
+					if event.end_node.get_index() == event.get_index()+1:
+						blocks.append(event.end_node)
+					else:
+						return
+		do_indexes[event.get_index()] = event.get_index()+offset+int(offset>0)
+		undo_indexes[event.get_index()+offset] = event.get_index()+int(offset<0)
 
 
 	TimelineUndoRedo.create_action("[D] Move events.")
