@@ -89,6 +89,7 @@ func show_current_choices(instant:=true) -> void:
 ## Adds a button with the given text that leads to the given event.
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx := 1
+	var shown_at_all := false
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		# FIXME: Godot 4.2 can replace this with a typed for loop.
 		var choice_button := node as DialogicNode_ChoiceButton
@@ -127,11 +128,14 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 
 			node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
 				{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
+			shown_at_all = true
 
 		if node.choice_index > 0:
 			idx = node.choice_index
 		idx += 1
 
+	if not shown_at_all:
+		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
 func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 	if Dialogic.paused or not choice_blocker.is_stopped():
