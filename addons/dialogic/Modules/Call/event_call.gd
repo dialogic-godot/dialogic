@@ -12,13 +12,15 @@ var autoload_name: String = ""
 var method: String = "":
 	set(value):
 		method = value
-		update_argument_info()
-		check_arguments_and_update_warning()
+		if Engine.is_editor_hint():
+			update_argument_info()
+			check_arguments_and_update_warning()
 ## A list of arguments to give to the call.
 var arguments: Array = []:
 	set(value):
 		arguments = value
-		check_arguments_and_update_warning()
+		if Engine.is_editor_hint():
+			check_arguments_and_update_warning()
 
 var _current_method_arg_hints := {'a':null, 'm':null, 'info':{}}
 
