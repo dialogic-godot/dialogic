@@ -111,7 +111,7 @@ func load_layer(layer_idx:=-1):
 		%SmallLayerAuthor.text = "Custom Layer"
 		%SmallLayerDescription.text = layer_info.get('path', 'Unkown Layer')
 
-	%DeleteLayerButton.disabled = layer_idx == 0 or current_style.inherits_anything()
+	%DeleteLayerButton.disabled = layer_idx == -1 or current_style.inherits_anything()
 
 	%SmallLayerScene.text = layer_info.get('path', 'Unkown Layer').get_file()
 	%SmallLayerScene.tooltip_text = layer_info.get('path', '')
