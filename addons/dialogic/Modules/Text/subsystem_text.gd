@@ -76,14 +76,14 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, glossary:= true, modifiers:= true, effects:= true, color_names:= true) -> String:
 	if variables and dialogic.has_subsystem('VAR'):
 		text = dialogic.VAR.parse_variables(text)
-	if glossary and dialogic.has_subsystem('Glossary'):
-		text = dialogic.Glossary.parse_glossary(text)
 	if modifiers:
 		text = parse_text_modifiers(text, type)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
 		text = color_names(text)
+	if glossary and dialogic.has_subsystem('Glossary'):
+		text = dialogic.Glossary.parse_glossary(text)
 	return text
 
 
@@ -396,6 +396,9 @@ func collect_character_names() -> void:
 
 			if nickname.strip_edges():
 				character_colors[nickname.strip_edges()] = character.color
+
+	if Dialogic.has_subsystem('Glossary'):
+		Dialogic.Glossary.color_overrides.merge(character_colors, true)
 
 	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
