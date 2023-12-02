@@ -223,7 +223,20 @@ func _move_portrait(character_node:Node2D, portrait_container:DialogicNode_Portr
 ## Changes the given portraits z_index.
 func _change_portrait_z_index(character_node:Node2D, z_index:int, update_zindex:= true) -> void:
 	if update_zindex:
-		character_node.z_index = z_index
+		character_node.get_parent().set_meta('z_index', z_index)
+
+		var sorted_children := character_node.get_parent().get_parent().get_children()
+		sorted_children.sort_custom(z_sort_portrait_containers)
+		var idx := 0
+		for con in sorted_children:
+			con.get_parent().move_child(con, idx)
+			idx += 1
+
+
+func z_sort_portrait_containers(con1:DialogicNode_PortraitContainer, con2:DialogicNode_PortraitContainer) -> bool:
+	if con1.get_meta('z_index', 0) < con2.get_meta('z_index', 0):
+		return true
+	return false
 
 
 func _remove_portrait(character_node:Node2D) -> void:
