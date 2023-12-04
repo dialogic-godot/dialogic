@@ -30,7 +30,7 @@ func _ready():
 
 func add_history(historyString, newAudio=''):
 	var regex = RegEx.new()
-	regex.compile("\\[\\s{0,}speed\\s{0,}\\=\\s{0,}\\d{0,}\\s{0,}\\]")
+	regex.compile("\\[\\s*(nw|(nw|speed|signal|play|pause)\\s*=\\s*(.+?)\\s*)\\](.*?)")
 	historyString = regex.sub(historyString, "")
 	TextLabel.append_bbcode(historyString)
 	audioPath = newAudio
