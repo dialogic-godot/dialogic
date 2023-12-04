@@ -307,9 +307,9 @@ func import_portraits_from_folder(path:String) -> void:
 			var file_lower = file_name.to_lower()
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
-					var final_name: String= path+ "/" + file_name
+					var final_name: String = path.path_join(file_name)
 					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()),
-							{'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+							{'scene':"",'export_overrides':{'image':final_name}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 		file_name = dir.get_next()
 
 	## Handle selection
@@ -322,10 +322,10 @@ func import_portraits_from_folder(path:String) -> void:
 	something_changed()
 
 
-func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
+func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'export_overrides':{'image':''}, 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 	if %PortraitTree.get_selected():
-		if %PortraitTree.get_selected().get_metadata(0).has('group'):
+		if %PortraitTree.get_selected().get_metadata(0) and %PortraitTree.get_selected().get_metadata(0).has('group'):
 			parent = %PortraitTree.get_selected()
 		else:
 			parent = %PortraitTree.get_selected().get_parent()

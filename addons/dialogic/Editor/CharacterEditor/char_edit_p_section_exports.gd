@@ -59,6 +59,8 @@ func load_portrait_scene_export_variables():
 			var current_value :Variant = scene.get(i['name'])
 			if current_portrait_data.has('export_overrides') and current_portrait_data['export_overrides'].has(i['name']):
 				current_value = str_to_var(current_portrait_data.export_overrides[i['name']])
+				if current_value == null and typeof(scene.get(i['name'])) == TYPE_STRING:
+					current_value = current_portrait_data['export_overrides'][i['name']]
 
 			var input :Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
