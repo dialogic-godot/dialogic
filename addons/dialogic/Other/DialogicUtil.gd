@@ -242,7 +242,6 @@ static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, 
 	return OK
 
 static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:Dictionary, delete_files:bool = true):
-	print(folder_data)
 	flat_structure[tree +"_Array"].remove(folder_data['step'])
 	
 	if delete_files:
@@ -363,8 +362,8 @@ static func move_file_to_folder(flat_structure:Dictionary, tree:String, original
 
 	var insert_position = destination_data['step']
 	#adjust for the drop position
-	if 	drop_position != -1:
-		insert_position = insert_position + 1	
+	if drop_position != -1:
+		insert_position = insert_position + 1
 	
 	#check to make sure the next item is a file, because if not we need to roll down to the next file at the same level
 	if 'folded' in flat_structure[tree +"_Array"][destination_data['step']]['value']:
@@ -376,6 +375,7 @@ static func move_file_to_folder(flat_structure:Dictionary, tree:String, original
 		
 		#var destination_path = 
 		var searching = true
+		#print(flat_structure[tree +"_Array"])
 		while searching:
 			insert_position = insert_position + 1
 			if 'folded' in flat_structure[tree +"_Array"][insert_position]['value']:
