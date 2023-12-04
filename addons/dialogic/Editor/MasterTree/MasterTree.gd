@@ -765,7 +765,9 @@ func _on_DocumentationPopupMenu_id_pressed(id):
 # it will be added to the selected folder (if it's a timeline folder) or the Timeline root folder
 func new_timeline():
 	var timeline = editor_reference.get_node('MainPanel/TimelineEditor').create_timeline()
-	var folder = get_selected().get_metadata(0)
+	var folder = {'category':'Timelines', 'editor':'Timeline Root', 'name':'', 'path':'', 'step':0}
+	if get_selected() != null:
+		folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Timelines",folder, timeline['metadata']['file'])
 	build_timelines(timeline['metadata']['file'])
 	hide_all_editors()
@@ -774,9 +776,12 @@ func new_timeline():
 
 # creates a new character and opens it
 # it will be added to the selected folder (if it's a character folder) or the Character root folder
+# {category:Characters, editor:Character Root, name:, path:, step:0}
 func new_character():
 	var character = editor_reference.get_node("MainPanel/CharacterEditor").create_character()
-	var folder = get_selected().get_metadata(0)
+	var folder = {'category':'Characters', 'editor':'Character Root', 'name':'', 'path':'', 'step':0}
+	if get_selected() != null:
+		folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Characters",folder, character['metadata']['file'])
 	build_characters(character['metadata']['file'])
 	hide_all_editors()
@@ -786,7 +791,9 @@ func new_character():
 # it will be added to the selected folder (if it's a theme folder) or the Theme root folder
 func new_theme():
 	var theme_file = editor_reference.get_node("MainPanel/ThemeEditor").create_theme()
-	var folder = get_selected().get_metadata(0)
+	var folder = {'category':'Themes', 'editor':'Theme Root', 'name':'', 'path':'', 'step':0}
+	if get_selected() != null:
+		folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Themes",folder, theme_file)
 	build_themes(theme_file)
 	hide_all_editors()
@@ -796,7 +803,9 @@ func new_theme():
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_value_definition():
 	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
-	var folder = get_selected().get_metadata(0)
+	var folder = {'category':'Definitions', 'editor':'Definition Root', 'name':'', 'path':'', 'step':0}
+	if get_selected() != null:
+		folder = get_selected().get_metadata(0)
 	folder['type'] = 0
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
@@ -807,7 +816,9 @@ func new_value_definition():
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_glossary_entry():
 	var definition_id = editor_reference.get_node("MainPanel/GlossaryEntryEditor").create_glossary_entry()
-	var folder = get_selected().get_metadata(0)
+	var folder = {'category':'Definitions', 'editor':'Definition Root', 'name':'', 'path':'', 'step':0}
+	if get_selected() != null:
+		folder = get_selected().get_metadata(0)
 	folder['type'] = 1
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
