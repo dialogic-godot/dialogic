@@ -85,6 +85,9 @@ func _ready() -> void:
 	rebuild_character_directory()
 	rebuild_timeline_directory()
 
+	print(character_directory)
+	print(timeline_directory)
+
 	collect_subsystems()
 
 	clear()
@@ -333,15 +336,18 @@ func _set(property, value):
 #region CHARACTER & TIMELINE DIRECTORIES
 ################################################################################
 # #TODO initial work on a unified method for character and timeline directories!
-#func build_directory(file_extension:String) -> Dictionary:
-#	var files :Array[String] = DialogicUtil.list_resources_of_type(file_extension)
-#
-#	# First sort by length of path, so shorter paths are first
-#	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
-#
-#
-#
-#	return {}
+func build_resource_directory(file_extension:String) -> Dictionary:
+	var files: Array[String] = DialogicUtil.list_resources_of_type(file_extension)
+
+	# First sort by length of path, so shorter paths are first
+	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
+
+	var directory := {}
+
+	for file in files:
+		pass
+
+	return directory
 
 func rebuild_character_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
@@ -470,8 +476,6 @@ func find_timeline(path: String) -> String:
 
 #region HELPERS
 ################################################################################
-
-
 
 func _on_timeline_ended():
 	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):

@@ -50,6 +50,10 @@ func _get_icon() -> Texture:
 
 ## Called when a character is opened somehow
 func _open_resource(resource:Resource) -> void:
+	if resource == null:
+		$NoCharacterScreen.show()
+		return
+
 	## Update resource
 	current_resource = (resource as DialogicCharacter)
 
@@ -82,6 +86,11 @@ func _open(extra_info:Variant="") -> void:
 		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
 	else:
 		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
+
+	if current_resource == null:
+		$NoCharacterScreen.show()
+		return
+
 	update_preview()
 	%PortraitChangeInfo.hide()
 
