@@ -34,29 +34,30 @@ margin_bottom = 390.0
 script = ExtResource( 3 )
 
 [node name="SectionTitle" parent="." instance=ExtResource( 1 )]
-margin_right = 336.0
+margin_right = 304.0
 custom_styles/normal = SubResource( 1 )
 text = "History settings"
 text_key = "History settings"
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_top = 26.0
-margin_right = 336.0
-margin_bottom = 344.0
+margin_right = 304.0
+margin_bottom = 50.0
 columns = 2
 
 [node name="HistoryBox" type="HBoxContainer" parent="GridContainer"]
-margin_right = 158.0
+margin_right = 24.0
 margin_bottom = 24.0
 
 [node name="SettingsCheckbox" parent="GridContainer/HistoryBox" instance=ExtResource( 4 )]
-margin_right = 158.0
+margin_right = 24.0
 margin_bottom = 24.0
 text = "Enable History"
 settings_section = "history"
 settings_key = "enable_history_logging"
 
 [node name="UseDialogTheme" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_left = 162.0
 margin_right = 336.0
 margin_bottom = 24.0
@@ -66,17 +67,20 @@ settings_section = "history"
 settings_key = "enable_dynamic_theme"
 
 [node name="HSeparator" type="HSeparator" parent="GridContainer"]
+visible = false
 margin_top = 28.0
 margin_right = 158.0
 margin_bottom = 32.0
 
 [node name="HSeparator2" type="HSeparator" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 28.0
 margin_right = 336.0
 margin_bottom = 32.0
 
 [node name="ShowOpenButton" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 36.0
 margin_right = 158.0
 margin_bottom = 60.0
@@ -86,6 +90,7 @@ settings_section = "history"
 settings_key = "enable_open_button"
 
 [node name="ShowCloseButton" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_left = 162.0
 margin_top = 36.0
 margin_right = 336.0
@@ -96,6 +101,7 @@ settings_section = "history"
 settings_key = "enable_close_button"
 
 [node name="LogAllChoices" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 64.0
 margin_right = 158.0
 margin_bottom = 88.0
@@ -105,6 +111,7 @@ settings_section = "history"
 settings_key = "log_choices"
 
 [node name="LogChoiceAnswer" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_left = 162.0
 margin_top = 64.0
 margin_right = 336.0
@@ -115,6 +122,7 @@ settings_section = "history"
 settings_key = "log_answers"
 
 [node name="LogCharacterJoins" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 92.0
 margin_right = 158.0
 margin_bottom = 116.0
@@ -124,6 +132,7 @@ settings_section = "history"
 settings_key = "log_arrivals"
 
 [node name="LogBox" type="HBoxContainer" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 92.0
 margin_right = 336.0
@@ -151,15 +160,17 @@ size_flags_horizontal = 3
 text = "has arrived"
 
 [node name="LogCharacterLeaves" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 120.0
 margin_right = 158.0
 margin_bottom = 144.0
 text = "Log character leaves"
 default = true
 settings_section = "history"
-settings_key = "history_scroll_to_bottom"
+settings_key = "log_exits"
 
 [node name="LogBox2" type="HBoxContainer" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 120.0
 margin_right = 336.0
@@ -187,6 +198,7 @@ size_flags_horizontal = 3
 text = "has left"
 
 [node name="ScrollToBottom" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 148.0
 margin_right = 158.0
 margin_bottom = 172.0
@@ -196,6 +208,7 @@ settings_section = "history"
 settings_key = "history_scroll_to_bottom"
 
 [node name="ReverseTimeline" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_left = 162.0
 margin_top = 148.0
 margin_right = 336.0
@@ -205,6 +218,7 @@ settings_section = "history"
 settings_key = "history_reverse_timeline"
 
 [node name="ShowNameColors" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_top = 176.0
 margin_right = 158.0
 margin_bottom = 200.0
@@ -214,6 +228,7 @@ settings_section = "history"
 settings_key = "history_name_color_on"
 
 [node name="LineBreakAfterNames" parent="GridContainer" instance=ExtResource( 4 )]
+visible = false
 margin_left = 162.0
 margin_top = 176.0
 margin_right = 336.0
@@ -223,17 +238,20 @@ settings_section = "history"
 settings_key = "history_break_after_name"
 
 [node name="HSeparator3" type="HSeparator" parent="GridContainer"]
+visible = false
 margin_top = 204.0
 margin_right = 158.0
 margin_bottom = 208.0
 
 [node name="HSeparator4" type="HSeparator" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 204.0
 margin_right = 336.0
 margin_bottom = 208.0
 
 [node name="TLabel8" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 216.0
@@ -244,6 +262,7 @@ text = "History button position"
 text_key = "History button position"
 
 [node name="PositionSelector" type="OptionButton" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 212.0
 margin_right = 336.0
@@ -257,6 +276,7 @@ __meta__ = {
 }
 
 [node name="TLabel9" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 243.0
@@ -269,6 +289,7 @@ text = "Name delimiter"
 text_key = "Name delimiter"
 
 [node name="CharacterDelimiter" type="LineEdit" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 238.0
 margin_right = 336.0
@@ -276,6 +297,7 @@ margin_bottom = 262.0
 text = ":"
 
 [node name="TLabel7" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 271.0
@@ -286,6 +308,7 @@ text = "Screen margin"
 text_key = "Screen margin"
 
 [node name="BoxMargin" type="HBoxContainer" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 266.0
 margin_right = 336.0
@@ -309,6 +332,7 @@ allow_greater = true
 allow_lesser = true
 
 [node name="TLabel5" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 299.0
@@ -318,6 +342,7 @@ text = "Log margin"
 text_key = "Log margin"
 
 [node name="ContainerMargin" type="HBoxContainer" parent="GridContainer"]
+visible = false
 margin_left = 162.0
 margin_top = 294.0
 margin_right = 336.0
