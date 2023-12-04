@@ -309,7 +309,7 @@ func import_portraits_from_folder(path:String) -> void:
 				if not '.import' in file_lower:
 					var final_name: String = path.path_join(file_name)
 					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()),
-							{'scene':"",'export_overrides':{'image':final_name}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+							{'scene':"",'export_overrides':{'image':var_to_str(final_name)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 		file_name = dir.get_next()
 
 	## Handle selection
