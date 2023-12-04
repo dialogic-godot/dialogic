@@ -19,7 +19,7 @@ func load_data(data:Dictionary):
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
-	if data['id'] == null:
+	if data['id'] == null or data['id'] == "":
 		new_id()
 	input_field.text = event_data['name']
 	
