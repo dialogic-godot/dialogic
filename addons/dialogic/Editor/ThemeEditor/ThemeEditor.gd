@@ -517,6 +517,7 @@ func load_theme(filename):
 func create_theme() -> String:
 	var theme_file : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
 	DialogicResources.add_theme(theme_file)
+	DialogicResources.set_theme_value(theme_file, 'settings', 'name', theme_file)
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
 	if DialogicUtil.get_theme_list().size() == 1:
@@ -529,6 +530,11 @@ func duplicate_theme(from_filename) -> void:
 	var duplicate_theme : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
 	DialogicResources.duplicate_theme(from_filename, duplicate_theme)
 	DialogicResources.set_theme_value(duplicate_theme, 'settings', 'name', duplicate_theme)
+	
+	var folder = {'category':'Themes', 'editor':'Theme Root', 'name':'', 'path':DialogicResources.get_path('THEME_DIR', from_filename), 'step':0}
+	
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Themes", folder, duplicate_theme)
+	
 	master_tree.build_themes(duplicate_theme)
 	load_theme(duplicate_theme)
 
