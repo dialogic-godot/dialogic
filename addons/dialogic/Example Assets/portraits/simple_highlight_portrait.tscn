@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://br18lgpga2y2v"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/portraits/simple_highlight_portrait.gd" id="1_ceqva"]
+
+[node name="DefaultPortrait" type="Node2D"]
+script = ExtResource("1_ceqva")
+
+[node name="Portrait" type="Sprite2D" parent="."]
+centered = false
