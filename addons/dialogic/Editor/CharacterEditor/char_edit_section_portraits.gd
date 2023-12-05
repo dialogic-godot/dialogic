@@ -2,10 +2,12 @@
 extends DialogicCharacterEditorMainSection
 
 ## The general portrait settings section
+
 var loading := false
 
 func _get_title() -> String:
 	return "Portraits"
+
 
 func _ready() -> void:
 	# Connecting all necessary signals
@@ -13,16 +15,15 @@ func _ready() -> void:
 	%MainScale.value_changed.connect(main_portrait_settings_update)
 	%MainOffset.value_changed.connect(main_portrait_settings_update)
 	%MainMirror.toggled.connect(main_portrait_settings_update)
-	
+
 	# Setting up Default Portrait Picker
 	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
 
 
-
-# Make sure preview get's updated when portrait settings change
+## Make sure preview get's updated when portrait settings change
 func main_portrait_settings_update(_something=null, _value=null) -> void:
-	if loading: 
+	if loading:
 		return
 	character_editor.current_resource.scale = %MainScale.value/100.0
 	character_editor.current_resource.offset = %MainOffset.current_value
@@ -39,11 +40,12 @@ func default_portrait_changed(property:String, value:String) -> void:
 func _load_character(resource:DialogicCharacter) -> void:
 	loading = true
 	%DefaultPortraitPicker.set_value(resource.default_portrait)
-	
+
 	%MainScale.value = 100*resource.scale
 	%MainOffset.set_value(resource.offset)
 	%MainMirror.button_pressed = resource.mirror
 	loading = false
+
 
 func _save_changes(resource:DialogicCharacter) -> DialogicCharacter:
 	# Portrait settings
@@ -53,14 +55,14 @@ func _save_changes(resource:DialogicCharacter) -> DialogicCharacter:
 		resource.default_portrait = resource.portraits.keys()[0]
 	else:
 		resource.default_portrait = ""
-	
+
 	resource.scale = %MainScale.value/100.0
 	resource.offset = %MainOffset.current_value
 	resource.mirror = %MainMirror.button_pressed
 	return resource
 
 
-# Get suggestions for DefaultPortraitPicker
+## Get suggestions for DefaultPortraitPicker
 func suggest_portraits(search:String) -> Dictionary:
 	var suggestions := {}
 	for portrait in character_editor.get_updated_portrait_dict().keys():

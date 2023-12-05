@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://0wc7bedn7ee8"]
+
+[ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/default_background_transition.gdshader" id="1_uctph"]
+
+[resource]
+shader = ExtResource("1_uctph")
+shader_parameter/progress = 0.035
+shader_parameter/feather = 1.0
+shader_parameter/keep_aspect_ratio = false

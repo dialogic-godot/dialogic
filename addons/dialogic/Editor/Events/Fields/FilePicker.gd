@@ -42,17 +42,21 @@ func set_value(value:String) -> void:
 		text = value.get_file()
 		%Field.tooltip_text = value
 	if len(text) > max_text_length:
-		%Field.custom_minimum_size.x = get_theme_font('font', 'Label').get_string_size(value.get_file()).x
 		%Field.expand_to_text_length = false
 		%Field.size.x = 0
 	else:
 		%Field.custom_minimum_size.x = 0
 		%Field.expand_to_text_length = true
-	
+
 	%Field.text = text
-	
+
 	%ClearButton.visible = !value.is_empty() and !hide_reset
-	
+
+
+func set_enabled(is_enabled: bool) -> void:
+	%Field.editable = is_enabled
+	%OpenButton.disabled = !is_enabled
+	%ClearButton.disabled = !is_enabled
 
 
 func _on_OpenButton_pressed() -> void:

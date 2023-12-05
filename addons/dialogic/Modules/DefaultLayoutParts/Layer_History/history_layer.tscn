@@ -1,0 +1,93 @@
+[gd_scene load_steps=4 format=3 uid="uid://lx24i8fl6uo"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/history_layer.gd" id="1_4mqm3"]
+[ext_resource type="PackedScene" uid="uid://cuoywrmvda1yg" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/example_history_item.tscn" id="2_x1xgk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hdvb"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.776471)
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="ExampleHistoryScene" type="Control"]
+layout_direction = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_4mqm3")
+font_use_global_size = null
+font_custom_size = null
+font_use_global_fonts = null
+font_custom_normal = null
+font_custom_bold = null
+font_custom_italics = null
+HistoryItem = ExtResource("2_x1xgk")
+disabled = null
+
+[node name="HistoryBox" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 74.0
+offset_top = 65.0
+offset_right = -74.0
+offset_bottom = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1hdvb")
+horizontal_scroll_mode = 0
+
+[node name="HistoryLog" type="VBoxContainer" parent="HistoryBox"]
+unique_name_in_owner = true
+layout_direction = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ShowHistory" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -73.0
+offset_top = 7.0
+offset_right = -9.0
+offset_bottom = 38.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "History"
+
+[node name="HideHistory" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -123.0
+offset_top = 58.0
+offset_right = -62.0
+offset_bottom = 89.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Return"
+
+[connection signal="pressed" from="ShowHistory" to="." method="_on_show_history_pressed"]
+[connection signal="pressed" from="HideHistory" to="." method="_on_hide_history_pressed"]

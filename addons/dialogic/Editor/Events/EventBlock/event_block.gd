@@ -119,11 +119,6 @@ func _set_event_icon(icon: Texture) -> void:
 	custom_style.corner_radius_bottom_right = 5 * _scale
 
 
-# called to inform event parts, that a focus is wanted
-func focus():
-	pass
-
-
 func toggle_collapse(toggled:bool) -> void:
 	collapsed = toggled
 	var timeline_editor = find_parent('VisualEditor')

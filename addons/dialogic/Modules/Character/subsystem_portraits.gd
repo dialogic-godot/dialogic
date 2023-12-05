@@ -112,14 +112,15 @@ func _change_portrait(character_node:Node2D, portrait:String, update_transform:=
 			character_node.get_child(0).queue_free()
 			character_node.remove_child(character_node.get_child(0))
 
-		if scene_path.is_empty():
-			portrait_node = default_portrait_scene.instantiate()
-		else:
-			var p :PackedScene = load(scene_path)
+		if ResourceLoader.exists(scene_path):
+			var p: PackedScene = load(scene_path)
 			if p:
 				portrait_node = p.instantiate()
 			else:
-				push_error('Dialogic: Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen.')
+				push_error('[Dialogic] Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen. Confirm the path is correct.')
+
+		if !portrait_node:
+			portrait_node = default_portrait_scene.instantiate()
 
 		portrait_node.set_meta('scene', scene_path)
 
@@ -222,7 +223,20 @@ func _move_portrait(character_node:Node2D, portrait_container:DialogicNode_Portr
 ## Changes the given portraits z_index.
 func _change_portrait_z_index(character_node:Node2D, z_index:int, update_zindex:= true) -> void:
 	if update_zindex:
-		character_node.z_index = z_index
+		character_node.get_parent().set_meta('z_index', z_index)
+
+		var sorted_children := character_node.get_parent().get_parent().get_children()
+		sorted_children.sort_custom(z_sort_portrait_containers)
+		var idx := 0
+		for con in sorted_children:
+			con.get_parent().move_child(con, idx)
+			idx += 1
+
+
+func z_sort_portrait_containers(con1:DialogicNode_PortraitContainer, con2:DialogicNode_PortraitContainer) -> bool:
+	if con1.get_meta('z_index', 0) < con2.get_meta('z_index', 0):
+		return true
+	return false
 
 
 func _remove_portrait(character_node:Node2D) -> void:
@@ -351,8 +365,10 @@ func change_character_portrait(character:DialogicCharacter, portrait:String, upd
 
 	var info := _change_portrait(dialogic.current_state_info.portraits[character.resource_path].node, portrait, update_transform)
 	dialogic.current_state_info.portraits[character.resource_path].portrait = info.portrait
-	if dialogic.current_state_info.portraits[character.resource_path].get('custom_mirror', false):
-		_change_portrait_mirror(dialogic.current_state_info.portraits[character.resource_path].node, true)
+	_change_portrait_mirror(
+			dialogic.current_state_info.portraits[character.resource_path].node,
+			dialogic.current_state_info.portraits[character.resource_path].get('custom_mirror', false)
+			)
 	character_portrait_changed.emit(info)
 
 
@@ -592,9 +608,9 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 ## Called from the [portrait=something] text effect.
 func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
-		if Dialogic.current_state_info.get('character', null):
-			change_character_portrait(load(Dialogic.current_state_info.character), argument)
-			change_speaker(load(Dialogic.current_state_info.character), argument)
+		if Dialogic.current_state_info.get('speaker', null):
+			change_character_portrait(load(Dialogic.current_state_info.speaker), argument)
+			change_speaker(load(Dialogic.current_state_info.speaker), argument)
 
 ################### HELPERS ########################################################################
 ####################################################################################################

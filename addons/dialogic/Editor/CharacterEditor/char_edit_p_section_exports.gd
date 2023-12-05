@@ -1,21 +1,26 @@
 @tool
 extends DialogicCharacterEditorPortraitSection
 
-## Tab that allows setting values of exported scene variables
+## Section that allows setting values of exported scene variables
 ## for custom portrait scenes
+
+var current_portrait_data := {}
+
 
 func _get_title() -> String:
 	return "Settings"
 
+
 func _init():
 	hint_text = "The settings here are @export variables from the used scene."
-
-var current_portrait_data := {}
 
 
 func _load_portrait_data(data:Dictionary) -> void:
 	_recheck(data)
 
+
+## Recheck section visibility and reload export fields.
+## This allows reacting to changes of the portrait_scene setting.
 func _recheck(data:Dictionary):
 	if data.get('scene', '').is_empty() and ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
 		hide()
@@ -36,13 +41,13 @@ func load_portrait_scene_export_variables():
 		scene = load(ProjectSettings.get_setting('dialogic/portraits/default_portrait', ''))
 	else:
 		scene = load(character_editor.def_portrait_path)
-	
+
 	if !scene:
 		return
-	
-	for child in $Grid.get_children(): 
+
+	for child in $Grid.get_children():
 		child.queue_free()
-	
+
 	scene = scene.instantiate()
 	var skip := false
 	for i in scene.script.get_script_property_list():
@@ -50,26 +55,26 @@ func load_portrait_scene_export_variables():
 			var label = Label.new()
 			label.text = i['name'].capitalize()
 			$Grid.add_child(label)
-			
+
 			var current_value :Variant = scene.get(i['name'])
 			if current_portrait_data.has('export_overrides') and current_portrait_data['export_overrides'].has(i['name']):
 				current_value = str_to_var(current_portrait_data.export_overrides[i['name']])
-			
+
 			var input :Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			$Grid.add_child(input)
-		
+
 		if i['usage'] & PROPERTY_USAGE_GROUP:
 			if i['name'] == 'Main':
 				skip = true
 				continue
 			else:
 				skip = false
-	
+
 	$Label.visible = $Grid.get_child_count() == 0
 
 
-
+## On any change, save the export override to the portrait items metadata.
 func set_export_override(property_name:String, value:String = "") -> void:
 	var data:Dictionary = selected_item.get_metadata(0)
 	if !data.has('export_overrides'):

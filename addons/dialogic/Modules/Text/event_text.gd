@@ -63,7 +63,7 @@ func _connect_signals() -> void:
 	if not dialogic.Input.dialogic_action.is_connected(_on_dialogic_input_action):
 		dialogic.Input.dialogic_action.connect(_on_dialogic_input_action)
 
-		dialogic.Input.auto_skip.autoskip_changed.connect(_on_auto_skip_enable)
+		dialogic.Input.auto_skip.toggled.connect(_on_auto_skip_enable)
 
 	if not dialogic.Input.auto_advance.autoadvance.is_connected(_on_dialogic_input_autoadvance):
 		dialogic.Input.auto_advance.autoadvance.connect(_on_dialogic_input_autoadvance)
@@ -72,7 +72,7 @@ func _connect_signals() -> void:
 func _disconnect_signals() -> void:
 	dialogic.Input.dialogic_action.disconnect(_on_dialogic_input_action)
 	dialogic.Input.auto_advance.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	dialogic.Input.auto_skip.autoskip_changed.disconnect(_on_auto_skip_enable)
+	dialogic.Input.auto_skip.toggled.disconnect(_on_auto_skip_enable)
 
 ## Tries to play the voice clip for the current line.
 func _try_play_current_line_voice() -> void:
@@ -94,11 +94,13 @@ func _execute() -> void:
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
-			dialogic.Styles.add_layout_style(dialogic.current_state_info.get('base_style', 'Default'))
+			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
+			await dialogic.get_tree().process_frame
 
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
-			dialogic.Styles.add_layout_style(character.custom_info.style, false)
+			dialogic.Styles.load_style(character.custom_info.style, false)
+			await dialogic.get_tree().process_frame
 
 
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
@@ -165,9 +167,9 @@ func _execute() -> void:
 			dialogic.Choices.show_current_choices(false)
 			dialogic.current_state = dialogic.States.AWAITING_CHOICE
 			return
-		elif Dialogic.Input.auto_advance.is_autoadvance_enabled():
+		elif Dialogic.Input.auto_advance.is_enabled():
 			dialogic.Text.show_next_indicators(false, true)
-			dialogic.Input.auto_advance.start_autoadvance()
+			dialogic.Input.auto_advance.start()
 		else:
 			dialogic.Text.show_next_indicators()
 

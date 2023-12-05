@@ -1,14 +1,15 @@
 @tool
 extends DialogicCharacterEditorMainSection
 
-## Character editor tab that allows editing typing sound moods.
-
-func _get_title() -> String:
-	return "Typing Sounds"
+## Character editor section that allows editing typing sound moods.
 
 var current_mood := ''
 var current_moods_info := {}
 var default_mood := ''
+
+
+func _get_title() -> String:
+	return "Typing Sounds"
 
 ################################################################################
 ##					COMMUNICATION WITH EDITOR
@@ -16,20 +17,18 @@ var default_mood := ''
 
 func _load_character(character:DialogicCharacter):
 	default_mood = character.custom_info.get('sound_mood_default', '')
-	
+
 	current_moods_info = character.custom_info.get('sound_moods', {}).duplicate(true)
-	
+
 	current_mood = ""
 	update_mood_list()
-	
-	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(%MoodList.item_count != 0)
 
 
 func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 	# Quickly save latest mood
 	if current_mood:
 		current_moods_info[current_mood] = get_mood_info()
-	
+
 	character.custom_info['sound_mood_default'] = default_mood
 	character.custom_info['sound_moods'] = current_moods_info.duplicate(true)
 	return character
@@ -57,13 +56,13 @@ func _ready() -> void:
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")
 	%Play.icon = get_theme_icon("Play", "EditorIcons")
 	%Default.icon = get_theme_icon("NonFavorite", "EditorIcons")
-	
+
 	%NameWarning.texture = get_theme_icon("StatusWarning", "EditorIcons")
 
 
 func update_mood_list(selected_name := "") -> void:
 	%MoodList.clear()
-	
+
 	for mood in current_moods_info:
 		var idx :int = %MoodList.add_item(mood, get_theme_icon("AudioStreamPlayer", "EditorIcons"))
 		if mood == selected_name:
@@ -72,18 +71,21 @@ func update_mood_list(selected_name := "") -> void:
 	if !%MoodList.is_anything_selected() and %MoodList.item_count:
 		%MoodList.select(0)
 		_on_mood_list_item_selected(0)
-	
+
 	if %MoodList.item_count == 0:
 		current_mood = ""
-	
+
 	%Delete.disabled = !%MoodList.is_anything_selected()
 	%Play.disabled = !%MoodList.is_anything_selected()
 	%Duplicate.disabled = !%MoodList.is_anything_selected()
 	%Default.disabled = !%MoodList.is_anything_selected()
 	%Settings.visible = %MoodList.is_anything_selected()
-	
+
 	%MoodList.custom_minimum_size.y = min(%MoodList.item_count*45, 100)
 	%MoodList.visible = %MoodList.item_count != 0
+
+	character_editor.get_settings_section_by_name('Typing Sound Mood', false).update_visibility(%MoodList.item_count != 0)
+
 
 
 func _input(event:InputEvent) -> void:
@@ -99,10 +101,10 @@ func _input(event:InputEvent) -> void:
 func _on_mood_list_item_selected(index:int) -> void:
 	if current_mood:
 		current_moods_info[current_mood] = get_mood_info()
-	
+
 	current_mood = %MoodList.get_item_text(index)
 	load_mood_info(current_moods_info[current_mood])
-	
+
 	%Delete.disabled = !%MoodList.is_anything_selected()
 	%Play.disabled = !%MoodList.is_anything_selected()
 	%Duplicate.disabled = !%MoodList.is_anything_selected()
@@ -139,21 +141,22 @@ func get_mood_info() -> Dictionary:
 func _on_add_pressed() -> void:
 	if !current_mood.is_empty():
 		current_moods_info[current_mood] = get_mood_info()
-	
+
 	var new_name := 'Mood '
 	var counter := 1
 	while new_name+str(counter) in current_moods_info:
 		counter+=1
 	new_name += str(counter)
-	
+
 	current_moods_info[new_name] = {'name':new_name}
+
 	update_mood_list(new_name)
 
 
 func _on_duplicate_pressed() -> void:
 	if !current_mood.is_empty():
 		current_moods_info[current_mood] = get_mood_info()
-	
+
 	current_moods_info[current_mood+"_copy"] = get_mood_info()
 	current_moods_info[current_mood+"_copy"].name = current_mood+"_copy"
 	update_mood_list(current_mood+"_copy")
@@ -215,9 +218,9 @@ func preview() -> void:
 	DialogicUtil.update_timer_process_callback(preview_timer)
 	add_child(preview_timer)
 	preview_timer.start(ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01))
-	
+
 	for i in range(20):
 		$Preview._on_continued_revealing_text("a")
 		await preview_timer.timeout
-	
+
 	preview_timer.queue_free()

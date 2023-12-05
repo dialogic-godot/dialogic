@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_dq4j2"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_kvsma"]
 
-[sub_resource type="Image" id="Image_o33h3"]
+[sub_resource type="Image" id="Image_e2a0f"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -14,8 +14,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_w0vi3"]
-image = SubResource("Image_o33h3")
+[sub_resource type="ImageTexture" id="ImageTexture_wyypx"]
+image = SubResource("Image_e2a0f")
 
 [node name="Translations" type="VBoxContainer"]
 anchors_preset = 15
@@ -71,10 +71,10 @@ text = "Testing locale"
 
 [node name="HintTooltip8" parent="HBox/Testing/VBox3" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Change this locale to test your game in a different language (only in-editor). 
+tooltip_text = "Change this locale to test your game in a different language (only in-editor).
 Equivalent of the testing local project setting. "
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "Change this locale to test your game in a different language (only in-editor). 
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Change this locale to test your game in a different language (only in-editor).
 Equivalent of the testing local project setting. "
 
 [node name="TestingLocale" parent="HBox/Testing/VBox3" instance=ExtResource("3_dq4j2")]
@@ -92,7 +92,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Title2" type="Label" parent="TranslationSettings/VBoxContainer"]
+[node name="SettingsTitle" type="Label" parent="TranslationSettings/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Settings"
@@ -110,28 +110,57 @@ text = "Default locale"
 
 [node name="HintTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "This should be the local of the language your game is written in."
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "This should be the local of the language your game is written in."
+tooltip_text = "The locale of the language your timelines are written in."
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "The locale of the language your timelines are written in."
 
 [node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile"]
+layout_mode = 2
+text = "Translation folder"
+
+[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Choose a folder to let Dialogic save CSV files in.
+Also used when saving \"Inside Translation Folder\""
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Choose a folder to let Dialogic save CSV files in.
+Also used when saving \"Inside Translation Folder\""
+
+[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_mode = 2
 
 [node name="VBox2" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox2"]
 layout_mode = 2
-text = "Translation file mode"
+text = "Timeline mode"
 
 [node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/VBox2" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "You can either create one csv with all the strings from the whole 
-project or one csv file per timeline (will be placed next to that timeline). "
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "You can either create one csv with all the strings from the whole 
-project or one csv file per timeline (will be placed next to that timeline). "
+tooltip_text = "Decides how many timeline CSV files will be created.
+
+\"Per Project\": Uses one CSV file for all timelines (e.g. 30 timelines, 1 CSV)
+\"Per Timeline\": Uses one CSV file for each timeline (e.g. 30 timelines, 30 CSVs)
+
+The \"Per Timeline\" option utilises \"Timeline save location\"."
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Decides how many timeline CSV files will be created.
+
+\"Per Project\": Uses one CSV file for all timelines (e.g. 30 timelines, 1 CSV)
+\"Per Timeline\": Uses one CSV file for each timeline (e.g. 30 timelines, 30 CSVs)
+
+The \"Per Timeline\" option utilises \"Timeline save location\"."
 
 [node name="TransMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
 unique_name_in_owner = true
@@ -143,24 +172,42 @@ popup/item_0/id = 0
 popup/item_1/text = "Per Timeline"
 popup/item_1/id = 1
 
-[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+[node name="SaveLocation" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile"]
+[node name="Label2" type="Label" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation"]
 layout_mode = 2
-text = "Translations folder"
+text = "Timeline location"
 
-[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
+[node name="HintTooltip2" parent="TranslationSettings/VBoxContainer/Grid/SaveLocation" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Choose a folder general translations will be saved to. "
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "Choose a folder general translations will be saved to. "
+tooltip_text = "Decides where to save the generated timeline CSV files.
 
-[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
+- \"Inside Translation Folder\": Uses the \"Translation folder\".
+- \"Next To Timeline\": Places them in the timeline's folder.
+
+This button requires the \"Per Timeline\" timeline mode."
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Decides where to save the generated timeline CSV files.
+
+- \"Inside Translation Folder\": Uses the \"Translation folder\".
+- \"Next To Timeline\": Places them in the timeline's folder.
+
+This button requires the \"Per Timeline\" timeline mode."
+
+[node name="SaveLocationMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-file_mode = 2
+disabled = true
+item_count = 2
+selected = 0
+popup/item_0/text = "Inside Translation Folder"
+popup/item_0/id = 0
+popup/item_1/text = "Next to Timeline"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
 
 [node name="HSeparator6" type="VSeparator" parent="TranslationSettings"]
 layout_mode = 2
@@ -177,12 +224,6 @@ layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Actions"
 
-[node name="HintTooltip4" parent="TranslationSettings/VBoxContainer2/HBoxContainer" instance=ExtResource("2_k2lou")]
-layout_mode = 2
-tooltip_text = "Check the Information to learn more about the individual actions."
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "Check the Information to learn more about the individual actions."
-
 [node name="Actions" type="GridContainer" parent="TranslationSettings/VBoxContainer2"]
 layout_mode = 2
 columns = 2
@@ -190,13 +231,20 @@ columns = 2
 [node name="UpdateCsvFiles" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "Update CSV files"
 
 [node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Will check all timelines for events that haven't been added to the csv file(s) and adds them. "
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "Will check all timelines for events that haven't been added to the csv file(s) and adds them. "
+tooltip_text = "This button will scan all timelines and generate or update their CSV files.
+
+This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "This button will scan all timelines and generate or update their CSV files.
+
+A Dialogic CSV file will be prefixed with \"dialogic_\".
+
+This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
 
 [node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
 unique_name_in_owner = true
@@ -205,20 +253,20 @@ text = "Collect translations"
 
 [node name="HintTooltip6" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "When you've added translations to a csv file, 
-godot will import them as .translation files. 
-These have to be added to a list (Project Settings > Localization) 
-and this is a quick way to do so."
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "When you've added translations to a csv file, 
-godot will import them as .translation files. 
-These have to be added to a list (Project Settings > Localization) 
-and this is a quick way to do so."
+tooltip_text = "Godot imports CSV files as \".translation\" files.
+This buttons adds them to \"Project Settings > Localization\".
+"
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Godot imports CSV files as \".translation\" files.
+This buttons adds them to \"Project Settings -> Localization\".
+"
 
-[node name="HSeparator3" type="HSeparator" parent="TranslationSettings/VBoxContainer2/Actions"]
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions"]
+custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 
-[node name="HSeparator4" type="HSeparator" parent="TranslationSettings/VBoxContainer2/Actions"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions"]
+custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 
 [node name="TransRemove" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
@@ -228,17 +276,23 @@ text = "Remove translations"
 
 [node name="HintTooltip7" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
-tooltip_text = "Be very careful with this button. It will try to delete any 
-.csv and .translation files that are related to dialogic. 
-It will also remove translation ids from all events. "
-texture = SubResource("ImageTexture_w0vi3")
-hint_text = "Be very careful with this button. It will try to delete any 
-.csv and .translation files that are related to dialogic. 
-It will also remove translation ids from all events. "
+tooltip_text = "Be very careful with this button!
+
+It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
+Removes translation IDs (eg. #id:33) from timelines and characters."
+texture = SubResource("ImageTexture_wyypx")
+hint_text = "Be very careful with this button!
+
+It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
+CSV and translation files prefixed with \"dialogic_\" are treated as Dialogic-related.
+
+Removes translation IDs (eg. #id:33) from timelines and characters."
 
 [node name="StatusMessage" type="Label" parent="TranslationSettings/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "⛔ Cannot update CSVs files!
+			Requires valid translation folder to translate character names and the project CSV file."
 autowrap_mode = 3
 
 [node name="InfoSection" type="VBoxContainer" parent="."]
@@ -254,13 +308,14 @@ layout_mode = 2
 theme_type_variation = &"DialogicSection"
 text = "Setting up translations"
 
-[node name="Label2" type="Label" parent="InfoSection/Setup"]
+[node name="HowToTranslateLabel" type="Label" parent="InfoSection/Setup"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1. Enable translations
-2. Set default locale (the language you used) and file mode. For per-project-mode also select a folder. In per-timeline mode files will be put next to timelines (and need to stay there!).
-3. Hit \"Update CSV files\". This will create new csv files containing all translatable strings from your timelnes as well as one for the character names.
-4. Wait until reimport is finnished. Then click \"Collect translations\""
+2. Set the language you use in your timelines as \"Default timeline\".
+3. Select \"File mode\" and \"Save location\".
+4. Hit \"Update CSV files\":  This creates new CSV files from your timelines.
+5. Wait until reimport is finished. Then click \"Collect translations\"."
 autowrap_mode = 3
 
 [node name="HSeparator" type="HSeparator" parent="InfoSection"]
@@ -276,25 +331,52 @@ layout_mode = 2
 theme_type_variation = &"DialogicSection"
 text = "How to work with translations"
 
-[node name="Label" type="Label" parent="InfoSection/Workflow"]
+[node name="HowToUseTtranslationLabel" type="Label" parent="InfoSection/Workflow"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Editing:
-You can edit the csv files in most table editors (like google sheets or libre office calc). You can add new languages by creating a new column with a valid locale in the first cell. After doing this you will have to hit \"Collect translations\" again.
+You can edit the CSV files in most editors (like Google Sheets or LibreOffice Calc).
+Create new languages by adding a new column with a valid locale in the first row.
 
 Updating:
-If you make changes to your timelines after having created translations, just hit \"Update CSV files\" again, it will not remove changes already made to the file.
+If you made changes to your timelines, hit \"Update CSV files\" again.
+If you added a new locale to the CSV, hit \"Update CSV files\" and \"Collect translation\".
 
 Testing:
-You can test in different languages by editing the testing locale.
+You can test languages by selecting the testing locale.
+While playing, you can use TranslationServer.set_locale(\"your_locale\")
 
 "
 autowrap_mode = 3
 
-[node name="EraseConfirmationDialog" type="ConfirmationDialog" parent="."]
-size = Vector2i(200, 187)
-ok_button_text = "Yes"
-dialog_text = "This will permanently delete all translation files created by dialogic. Are you sure this is what you want?"
+[node name="UpdateConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Please Decide..."
+size = Vector2i(490, 200)
+ok_button_text = "Delete old & Generate new"
+dialog_text = "You have previously generated CSVs and translation files with different Translation Settings!
+
+Please consider to delete the old CSVs and then generate new changes."
 dialog_autowrap = true
 
+[node name="EraseConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+position = Vector2i(0, 36)
+size = Vector2i(500, 280)
+min_size = Vector2i(300, 70)
+ok_button_text = "DELETE ALL"
+dialog_text = "You are about to:
+-   Delete all CSVs prefixed with \"dialogic_\".
+-   Delete the related CSV import files.
+-   Delete the related translation files.
+-   Removes translation IDs from timelines and characters.
+-   Remove all \"dialogic\" prefixed translations from 
+  \"Project Settings -> Localization\"."
+dialog_autowrap = true
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[connection signal="confirmed" from="UpdateConfirmationDialog" to="." method="_delete_and_update"]
 [connection signal="confirmed" from="EraseConfirmationDialog" to="." method="erase_translations"]
