@@ -595,12 +595,14 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 		_change_portrait_mirror(con.get_child(0))
 
 
-	if speaker and speaker.resource_path != dialogic.current_state_info['speaker']:
-		if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
-			dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
-		if speaker and is_character_joined(speaker):
-			dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(0)._highlight()
-
+	if speaker:
+		if speaker.resource_path != dialogic.current_state_info['speaker']:
+			if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
+				dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
+			if speaker and is_character_joined(speaker):
+				dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(0)._highlight()
+	elif dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
+		dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
 
 ################### TEXT EFFECTS ###################################################################
 ####################################################################################################
