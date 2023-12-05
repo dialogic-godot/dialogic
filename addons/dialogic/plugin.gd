@@ -71,7 +71,10 @@ func _get_plugin_icon():
 func _make_visible(visible:bool) -> void:
 	if editor_view:
 		if editor_view.get_parent() is Window:
-			editor_view.get_parent().grab_focus()
+			if visible:
+				get_editor_interface().set_main_screen_editor("Script")
+				editor_view.show()
+				editor_view.get_parent().grab_focus()
 		else:
 			editor_view.visible = visible
 

@@ -78,7 +78,6 @@ func save_style() -> void:
 	if current_style == null:
 		return
 
-	print("[Dialogic] Saved ", current_style.name)
 	ResourceSaver.save(current_style)
 
 
