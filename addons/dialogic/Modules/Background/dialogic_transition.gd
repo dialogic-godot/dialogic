@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name DialogicTransition
 
@@ -19,6 +20,13 @@ const default_shader = preload("res://addons/dialogic/Modules/Background/default
 func _init(_name:="") -> void:
 	if not _name.is_empty():
 		name = _name
+
+
+func realize_inheritance() -> void:
+	base_overrides = get_transition_overrides()
+	
+	inherits = null
+	changed.emit()
 
 
 ## This always returns the inheritance root's shader.
@@ -46,7 +54,7 @@ func inherits_anything() -> bool:
 
 func get_transition_overrides(inherited_only:=false) -> Dictionary:
 	var transition := self
-	var overrides := base_overrides.duplicate(true) if inherited_only else {}
+	var overrides := base_overrides.duplicate(true) if !inherited_only else {}
 	
 	while transition.inherits != null:
 		transition = transition.inherits
