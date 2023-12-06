@@ -1,9 +1,10 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://0wc7bedn7ee8"]
+[gd_resource type="Resource" script_class="DialogicTransition" load_steps=3 format=3 uid="uid://3ol086bnxiai"]
 
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Background/dialogic_transition.gd" id="1_douvg"]
 [ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/default_background_transition.gdshader" id="1_uctph"]
 
 [resource]
+script = ExtResource("1_douvg")
 shader = ExtResource("1_uctph")
-shader_parameter/progress = 0.035
-shader_parameter/feather = 1.0
-shader_parameter/keep_aspect_ratio = false
+base_overrides = {}
+name = "Transition"
