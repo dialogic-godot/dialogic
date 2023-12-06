@@ -94,14 +94,15 @@ func build_event_editor():
 			{'left_text':'transition',
 			'empty_text':'Default',
 			'suggestions_func':get_transition_suggestions,
-			'editor_icon':["PopupMenu", "EditorIcons"]}, 'autoload_name')
+			'editor_icon':["PopupMenu", "EditorIcons"]})
 
 
 func get_transition_suggestions(filter:String="") -> Dictionary:
-	var transitions := ProjectSettings.get_setting('dialogic/layout/style_list', [])
+	var transitions := ProjectSettings.get_setting('dialogic/transition/transition_list', [])
+	print(transitions)
 	var suggestions := {}
-	suggestions["No Transition"] = {'value': "", 'editor_icon': ["EditorHandleDisabled", "EditorIcons"]}
+	suggestions["Default Transition"] = {'value': "", 'editor_icon': ["EditorHandleDisabled", "EditorIcons"]}
 	for i in transitions:
 		var transition: DialogicTransition = load(i)
-		suggestions[transition.name] = {'value': transition.name, 'editor_icon': ["PopupMenu", "EditorIcons"]}
+		suggestions[transition.name] = {'value': transition.resource_path, 'editor_icon': ["PopupMenu", "EditorIcons"]}
 	return suggestions

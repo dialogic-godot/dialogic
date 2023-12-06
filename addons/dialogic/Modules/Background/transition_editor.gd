@@ -110,14 +110,14 @@ func _on_AddTranstitionMenu_selected(index: int) -> void:
 				"Select folder for new transition")
 		
 		AddTransitionButtonOptions.InheritedTransition:
-			if %StyleList.get_selected_items().is_empty():
+			if %TransitionList.get_selected_items().is_empty():
 				return
 				
 			find_parent('EditorView').godot_file_dialog(
 				add_transition_undoable.bind(DialogicTransition.new(), current_transition),
 				'*.tres',
 				EditorFileDialog.FILE_MODE_SAVE_FILE,
-				"Select folder for new style")
+				"Select folder for new transition")
 
 func add_transition_undoable(file_path: String, transition: DialogicTransition, inherits: DialogicTransition = null) -> void:
 	transition.name = _get_new_name(file_path.get_file().trim_suffix('.'+file_path.get_extension()))
