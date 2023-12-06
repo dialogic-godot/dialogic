@@ -1,10 +1,20 @@
-[gd_resource type="Resource" script_class="DialogicTransition" load_steps=3 format=3 uid="uid://3ol086bnxiai"]
+[gd_resource type="Resource" script_class="DialogicTransition" load_steps=5 format=3 uid="uid://3ol086bnxiai"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/dialogic_transition.gd" id="1_douvg"]
 [ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/default_background_transition.gdshader" id="1_uctph"]
 
+[sub_resource type="Gradient" id="Gradient_n6t2j"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.498039, 0.498039, 0.498039, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fjhwy"]
+gradient = SubResource("Gradient_n6t2j")
+
 [resource]
 script = ExtResource("1_douvg")
 shader = ExtResource("1_uctph")
-base_overrides = {}
+base_overrides = {
+"feather": 1.0,
+"wipe_texture": SubResource("GradientTexture1D_fjhwy")
+}
 name = "Transition"
