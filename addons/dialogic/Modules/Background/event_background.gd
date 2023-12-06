@@ -17,6 +17,8 @@ var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
 
+var transition_path : String = ""
+
 
 ################################################################################
 ## 						EXECUTION
@@ -28,8 +30,16 @@ func _execute() -> void:
 	if Dialogic.Input.auto_skip.enabled:
 		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
+	
+	var transition: DialogicTransition
+	if !transition_path.is_empty():
+		transition = load(transition_path) as DialogicTransition
 
-	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
+	if transition:
+		dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
+	else:
+		dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
+	
 	finish()
 
 
@@ -55,9 +65,10 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"scene" 		: {"property": "scene", 	"default": ""},
-		"arg" 			: {"property": "argument", 	"default": ""},
-		"fade" 			: {"property": "fade", 		"default": 0},
+		"scene" 		: {"property": "scene", 			"default": ""},
+		"arg" 			: {"property": "argument", 			"default": ""},
+		"fade" 			: {"property": "fade", 				"default": 0},
+		"transition"	: {"property": "transition_path",	"default": ""},
 	}
 
 
@@ -79,3 +90,18 @@ func build_event_editor():
 			'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})
+	add_body_edit("transition_path", ValueType.COMPLEX_PICKER,
+			{'left_text':'transition',
+			'empty_text':'Default',
+			'suggestions_func':get_transition_suggestions,
+			'editor_icon':["PopupMenu", "EditorIcons"]}, 'autoload_name')
+
+
+func get_transition_suggestions(filter:String="") -> Dictionary:
+	var transitions := ProjectSettings.get_setting('dialogic/layout/style_list', [])
+	var suggestions := {}
+	suggestions["No Transition"] = {'value': "", 'editor_icon': ["EditorHandleDisabled", "EditorIcons"]}
+	for i in transitions:
+		var transition: DialogicTransition = load(i)
+		suggestions[transition.name] = {'value': transition.name, 'editor_icon': ["PopupMenu", "EditorIcons"]}
+	return suggestions
