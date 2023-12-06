@@ -17,10 +17,12 @@ uniform bool keep_aspect_ratio = false;
 void fragment() {
 	vec2 frag_coord = UV;
 	if(keep_aspect_ratio) {
-    	vec2 ratio = (SCREEN_PIXEL_SIZE.x > SCREEN_PIXEL_SIZE.y)				// determine how to scale
+		vec2 ratio = (SCREEN_PIXEL_SIZE.x > SCREEN_PIXEL_SIZE.y)				// determine how to scale
 			? vec2(SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, 1)				// fit to width
 			: vec2(1, SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y);				// fit to height
-    	frag_coord *= ratio;
+		
+		frag_coord *= ratio;
+		frag_coord += ((vec2(1,1) - ratio) / 2.0);
 	}
 
 	// get the blend factor between the previous and next background.
