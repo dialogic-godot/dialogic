@@ -187,11 +187,11 @@ func collect_transitions() -> void:
 		else:
 			print("[Dialogic] Failed to open transition '", transition, "'. Might have been moved or deleted.")
 
-	default_transition = ProjectSettings.get_setting('dialogic/transition/default_transition', 'Default')
+	default_transition = ProjectSettings.get_setting('dialogic/transition/default_transition', '')
 
 
 func load_transition_list() -> void:
-	var latest := DialogicUtil.get_editor_setting('latest_background_transition', 'Default')
+	var latest := DialogicUtil.get_editor_setting('latest_background_transition', '')
 
 	%TransitionList.clear()
 	var idx := 0

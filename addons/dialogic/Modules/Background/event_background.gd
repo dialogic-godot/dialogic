@@ -34,6 +34,9 @@ func _execute() -> void:
 	var transition: DialogicTransition
 	if !transition_path.is_empty():
 		transition = load(transition_path) as DialogicTransition
+	else:
+		var default_transition_path = ProjectSettings.get_setting('dialogic/transition/default_transition','')
+		transition = load(default_transition_path) as DialogicTransition if !default_transition_path.is_empty() else null
 
 	if transition:
 		dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
