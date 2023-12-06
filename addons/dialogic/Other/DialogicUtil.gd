@@ -87,6 +87,22 @@ static func get_module_path(name:String, builtin:=true) -> String:
 		return ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions').path_join(name)
 
 
+static func update_autoload_subsystem_access() -> void:
+	var script:Script = load("res://addons/dialogic/Other/DialogicGameHandler.gd")
+
+	var new_subsystem_access_list := "#region SUBSYSTEMS\n"
+
+	for indexer in get_indexers():
+		for subsystem in indexer._get_subsystems():
+			new_subsystem_access_list += '\nvar {name} := preload("{script}"):\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
+
+	new_subsystem_access_list += "\n#endregion"
+
+	script.source_code = RegEx.create_from_string("#region SUBSYSTEMS\\n#*\\n((?!#endregion)(.*\\n))*#endregion").sub(script.source_code, new_subsystem_access_list)
+	script.reload()
+	ResourceSaver.save(script)
+
+
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
 	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
