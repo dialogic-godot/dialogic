@@ -75,7 +75,7 @@ func build_event_editor():
 	add_body_edit('fade_length', ValueType.FLOAT, {'left_text':'Fade Time:'})
 	add_body_edit('volume', ValueType.DECIBEL, {'left_text':'Volume:'}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')
-	add_body_edit('loop', ValueType.BOOL, {'left_text':'Loop:'}, '!file_path.is_empty()')
+	add_body_edit('loop', ValueType.BOOL, {'left_text':'Loop:'}, '!file_path.is_empty() and not file_path.to_lower().ends_with(".wav")')
 
 
 func get_bus_suggestions() -> Dictionary:
