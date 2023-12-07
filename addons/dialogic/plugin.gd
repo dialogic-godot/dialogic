@@ -1,8 +1,8 @@
 @tool
 extends EditorPlugin
 
-## Main plugin script. Handles communication with the rest of godot. 
-## Most methods are overridables called by godot. 
+## Main plugin script. Handles communication with the rest of godot.
+## Most methods are overridables called by godot.
 
 
 const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")

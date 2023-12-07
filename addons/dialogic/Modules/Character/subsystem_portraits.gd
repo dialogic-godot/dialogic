@@ -611,20 +611,3 @@ func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> v
 		if Dialogic.current_state_info.get('speaker', null):
 			change_character_portrait(load(Dialogic.current_state_info.speaker), argument)
 			change_speaker(load(Dialogic.current_state_info.speaker), argument)
-
-################### HELPERS ########################################################################
-####################################################################################################
-
-## Returns a character resource based on the name
-func get_character_resource(character_name:String) -> DialogicCharacter:
-	if Dialogic.character_directory.has(character_name):
-		return Dialogic.character_directory[character_name].resource
-	else:
-		for key in Dialogic.character_directory.keys():
-			if Dialogic.character_directory[key].unique_short_path == character_name:
-				return Dialogic.character_directory[key].resource
-
-	var path :String = DialogicUtil.guess_resource('.dch', character_name)
-	if ResourceLoader.exists(path):
-		return load(path)
-	return null

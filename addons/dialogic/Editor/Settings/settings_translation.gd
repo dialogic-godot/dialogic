@@ -202,7 +202,7 @@ func update_csv_files() -> void:
 	# Iterate over all timelines.
 	# Create or update CSV files.
 	# Transform the timeline into translatable lines and collect into the CSV file.
-	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
+	for timeline_path in DialogicResourceUtil.list_resources_of_type('.dtl'):
 		var csv_file: DialogicCsvFile = csv_per_project
 
 		# Swap the CSV file to the Per Timeline one.
@@ -280,7 +280,7 @@ func collect_translations() -> void:
 
 	if translation_mode == TranslationModes.PER_TIMELINE:
 
-		for timeline_path in DialogicUtil.list_resources_of_type('.translation'):
+		for timeline_path in DialogicResourceUtil.list_resources_of_type('.translation'):
 
 			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				file = timeline_path.get_base_dir().path_join(file)
@@ -361,7 +361,7 @@ func delete_per_project_csv(translation_folder: String) -> bool:
 func delete_translations_files(translation_files: Array, csv_name: String) -> int:
 	var deleted_files := 0
 
-	for file_path in DialogicUtil.list_resources_of_type('.translation'):
+	for file_path in DialogicResourceUtil.list_resources_of_type('.translation'):
 		var base_name: String = file_path.get_basename()
 		var path_parts := base_name.split("/")
 		var translation_name: String = path_parts[-1]
@@ -398,7 +398,7 @@ func erase_translations() -> void:
 	var current_timeline := _close_active_timeline()
 
 	# Delete all Dialogic CSV files and their translation files.
-	for csv_path in DialogicUtil.list_resources_of_type(".csv"):
+	for csv_path in DialogicResourceUtil.list_resources_of_type(".csv"):
 		var csv_path_parts: PackedStringArray = csv_path.split("/")
 		var csv_name: String = csv_path_parts[-1].trim_suffix(".csv")
 
@@ -416,7 +416,7 @@ func erase_translations() -> void:
 			print_rich("[color=yellow]Failed to delete CSV file: " + csv_path + "[/color]")
 
 	# Clean timelines.
-	for timeline_path in DialogicUtil.list_resources_of_type(".dtl"):
+	for timeline_path in DialogicResourceUtil.list_resources_of_type(".dtl"):
 
 		# Process the timeline.
 		var timeline: DialogicTimeline = load(timeline_path)

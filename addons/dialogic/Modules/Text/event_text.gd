@@ -24,17 +24,17 @@ var portrait: String = ""
 ## This returns the unique name_identifier of the character. This is used by the editor.
 var _character_from_directory: String:
 	get:
-		for item in _character_directory.keys():
-			if _character_directory[item]['resource'] == character:
-				return item
-				break
+		if character:
+			var identifier := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+			if not identifier.is_empty():
+				return identifier
 		return _character_from_directory
 	set(value):
 		_character_from_directory = value
 		if value.is_empty():
 			character = null
 		elif value in _character_directory.keys():
-			character = _character_directory[value]['resource']
+			character = load(_character_directory[value])
 
 ## Used by [_character_from_directory] to fetch the unique name_identifier or resource.
 var _character_directory: Dictionary = {}
@@ -235,7 +235,7 @@ func _init() -> void:
 	set_default_color('Color1')
 	event_category = "Main"
 	event_sorting_index = 0
-	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
+	_character_directory = DialogicResourceUtil.get_character_directory()
 	expand_by_default = true
 
 
@@ -264,7 +264,7 @@ func to_text() -> String:
 	elif text.begins_with('['):
 		text_to_use = '\\'+text_to_use
 	else:
-		for event in Engine.get_main_loop().get_meta("dialogic_event_cache", []):
+		for event in DialogicResourceUtil.get_event_cache():
 			if not event is DialogicTextEvent and event.is_valid_event(text):
 				text_to_use = '\\'+text
 				continue
@@ -272,46 +272,29 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	_character_directory = {}
-	if Engine.is_editor_hint() == false:
-		_character_directory = Dialogic.character_directory
-	else:
-		_character_directory = self.get_meta("editor_character_directory")
+	_character_directory = DialogicResourceUtil.get_character_directory()
 
-	# load default character
-	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
-		if _character_from_directory in _character_directory.keys():
-			character = _character_directory[_character_from_directory]['resource']
+	# Load default character
+	# This is only of relevance if the default has been overriden (usually not)
+	character = DialogicResourceUtil.get_character_resource(_character_from_directory)
 
 	var result := regex.search(string)
-	if result and !result.get_string('name').is_empty():
+	if result and not result.get_string('name').is_empty():
 		var name := result.get_string('name').strip_edges()
+
 		if name == '_':
 			character = null
-		elif _character_directory != null and _character_directory.size() > 0:
-			character = null
-			if _character_directory.has(name):
-				character = _character_directory[name]['resource']
-			else:
-				name = name.replace('"', "")
-				# First do a full search to see if more of the path is there then necessary:
-				for character in _character_directory:
-					if name in _character_directory[character]['full_path']:
-						character = _character_directory[character]['resource']
-						break
+		else:
+			character = DialogicResourceUtil.get_character_resource(name)
 
-				# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
-				if character == null:
-					if Engine.is_editor_hint() == false:
-						character = DialogicCharacter.new()
-						character.display_name = name
-						var entry: Dictionary = {}
-						entry['resource'] = character
-						entry['full_path'] = "runtime://" + name
-						_character_directory[name] = entry
+			if character == null and Engine.is_editor_hint() == false:
+				character = DialogicCharacter.new()
+				character.display_name = name
+				character.resource_path = "user://"+name+".dch"
+				DialogicResourceUtil.add_resource_to_directory(character.resource_path, DialogicResourceUtil.get_character_directory())
 
-		if !result.get_string('portrait').is_empty():
-			portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
+	if !result.get_string('portrait').is_empty():
+		portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
 
 	if result:
 		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges().trim_prefix('\\')
@@ -370,7 +353,7 @@ func build_event_editor():
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
 func do_any_characters_exist() -> bool:
-	return !Engine.get_main_loop().get_meta('dialogic_character_directory', {}).is_empty()
+	return !DialogicResourceUtil.get_character_directory().is_empty()
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
@@ -380,7 +363,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
+	_character_directory = DialogicResourceUtil.get_character_directory()
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
@@ -388,7 +371,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	for resource in _character_directory.keys():
 		suggestions[resource] = {
 				'value' 	: resource,
-				'tooltip' 	: _character_directory[resource]['full_path'],
+				'tooltip' 	: _character_directory[resource],
 				'icon' 		: icon.duplicate()}
 	return suggestions
 

@@ -20,7 +20,7 @@ func _init() -> void:
 	event_color = Color("#ffffff")
 	event_category = "Main"
 	event_sorting_index = 0
-	
+
 
 
 ################################################################################
@@ -36,7 +36,7 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 # You can alternatively overwrite these 3 functions:
-# - to_text(), 
+# - to_text(),
 # - from_text(),
 # - is_valid_event()
 

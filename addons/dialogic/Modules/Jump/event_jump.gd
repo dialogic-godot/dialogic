@@ -14,8 +14,8 @@ var timeline :DialogicTimeline = null:
 			if !_timeline_file.is_empty():
 				if _timeline_file.contains("res://"):
 					return load(_timeline_file)
-				else: 
-					return load(Dialogic.find_timeline(_timeline_file))
+				else:
+					return DialogicResourceUtil.get_timeline_resource(_timeline_file)
 		return timeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
 var label_name : String = ""
@@ -89,7 +89,7 @@ func is_valid_event(string:String) -> bool:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"timeline"		: {"property": "_timeline_file", 	"default": null, 
+		"timeline"		: {"property": "_timeline_file", 	"default": null,
 							"suggestions": get_timeline_suggestions},
 		"label"			: {"property": "label_name", 		"default": ""},
 	}
@@ -107,7 +107,7 @@ func build_event_editor():
 		'empty_text': '(this timeline)',
 		'autofocus':true
 	})
-	add_header_edit("label_name", ValueType.COMPLEX_PICKER, {'left_text':"at", 
+	add_header_edit("label_name", ValueType.COMPLEX_PICKER, {'left_text':"at",
 		'empty_text':'the beginning',
 		'suggestions_func':get_label_suggestions,
 		'editor_icon':["ArrowRight", "EditorIcons"]})
@@ -115,19 +115,18 @@ func build_event_editor():
 
 func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	var suggestions := {}
-	var resources := DialogicUtil.list_resources_of_type('.dtl')
-	
+
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
-	
-	for resource in Engine.get_main_loop().get_meta('dialogic_timeline_directory').keys():
-		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_main_loop().get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+
+	for resource in  DialogicResourceUtil.get_timeline_directory().keys():
+		suggestions[resource] = {'value': resource, 'tooltip':DialogicResourceUtil.get_timeline_directory()[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions
 
 
 func get_label_suggestions(filter:String="") -> Dictionary:
 	var suggestions := {}
 	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
-	
+
 	if _timeline_file in Engine.get_main_loop().get_meta('dialogic_label_directory').keys():
 		for label in Engine.get_main_loop().get_meta('dialogic_label_directory')[_timeline_file]:
 			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["ArrowRight", "EditorIcons"]}

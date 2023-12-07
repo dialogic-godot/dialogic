@@ -11,9 +11,7 @@ signal editor_changed(previous, current)
 @onready var editors_holder = $HSplit/VBox/Editors
 @onready var toolbar = $HSplit/VBox/Toolbar
 @onready var tabbar = $HSplit/VBox/Toolbar/EditorTabBar
-var resource_helper: Node:
-	get:
-		return get_node("ResourceHelper")
+
 var reference_manager: Node:
 	get:
 		return get_node("../../ReferenceManager")
@@ -58,6 +56,7 @@ func _ready() -> void:
 
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
+
 	load_saved_state()
 	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
 	sidebar.update_resource_list(used_resources_cache)
