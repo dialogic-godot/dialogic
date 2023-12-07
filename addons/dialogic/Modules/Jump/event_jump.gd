@@ -15,7 +15,7 @@ var timeline :DialogicTimeline = null:
 				if _timeline_file.contains("res://"):
 					return load(_timeline_file)
 				else:
-					return load(Dialogic.find_timeline(_timeline_file))
+					return DialogicResourceUtil.get_timeline_resource(_timeline_file)
 		return timeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
 var label_name : String = ""
@@ -115,12 +115,11 @@ func build_event_editor():
 
 func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	var suggestions := {}
-	var resources := DialogicUtil.list_resources_of_type('.dtl')
 
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 
-	for resource in Engine.get_main_loop().get_meta('dialogic_timeline_directory').keys():
-		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_main_loop().get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+	for resource in  DialogicResourceUtil.get_timeline_directory().keys():
+		suggestions[resource] = {'value': resource, 'tooltip':DialogicResourceUtil.get_timeline_directory()[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions
 
 

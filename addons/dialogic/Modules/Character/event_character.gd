@@ -241,10 +241,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	if Engine.is_editor_hint() == false:
-		_character_directory = Dialogic.character_directory
-	else:
-		_character_directory = self.get_meta("editor_character_directory")
+	_character_directory = DialogicResourceUtil.get_character_directory()
 
 	# load default character
 	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
@@ -269,25 +266,10 @@ func from_text(string:String) -> void:
 
 			if _character_directory != null and _character_directory.size() > 0:
 				character = null
+				name = name.replace('"', "")
 				if _character_directory.has(name):
 					character = _character_directory[name]['resource']
-				else:
-					name = name.replace('"', "")
-					# First do a full search to see if more of the path is there then necessary:
-					for character in _character_directory:
-						if name in _character_directory[character]['full_path']:
-							character = _character_directory[character]['resource']
-							break
 
-					# If it doesn't exist, we'll consider it a guest and create a temporary character
-					if character == null:
-						if Engine.is_editor_hint() == false:
-							character = DialogicCharacter.new()
-							character.display_name = name
-							var entry:Dictionary = {}
-							entry['resource'] = character
-							entry['full_path'] = "runtime://" + name
-							Dialogic.character_directory[name] = entry
 
 	if !result.get_string('portrait').is_empty():
 		portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
@@ -451,7 +433,7 @@ func has_no_portraits() -> bool:
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
+	_character_directory = DialogicResourceUtil.get_character_directory()
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
@@ -459,7 +441,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	if action == Actions.LEAVE:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
 	for resource in _character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource], 'icon': icon.duplicate()}
 	return suggestions
 
 

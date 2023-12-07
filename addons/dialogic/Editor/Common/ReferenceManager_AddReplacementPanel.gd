@@ -17,7 +17,7 @@ func _ready() -> void:
 	stl.set_border_width_all(1)
 	stl.set_border_color(get_theme_color("accent_color", "Editor"))
 	add_theme_stylebox_override('panel',stl)
-	
+
 	%Character.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	%Character.get_suggestions_func = get_character_suggestions
 
@@ -29,7 +29,7 @@ func _on_add_pressed() -> void:
 			return
 		elif mode == Modes.EDIT:
 			save()
-	
+
 	%AddButton.text = "Add"
 	mode = Modes.ADD
 	show()
@@ -39,7 +39,7 @@ func _on_add_pressed() -> void:
 	_on_where_item_selected(2)
 	%Old.text = ""
 	%New.text = ""
-	
+
 	_on_resized()
 
 
@@ -56,10 +56,10 @@ func open_existing(_item:TreeItem, info:Dictionary):
 	else:
 		%Where.selected = 0
 	_on_where_item_selected(%Where.selected)
-	
+
 	%Old.text = info.what
 	%New.text = info.forwhat
-	
+
 	_on_resized()
 
 
@@ -97,22 +97,22 @@ func _on_type_item_selected(index:int) -> void:
 
 
 func _on_where_item_selected(index:int) -> void:
-	%Character.visible = index == 1 
+	%Character.visible = index == 1
 
 
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
-	
+
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	var _character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
-	
+	var _character_directory = DialogicResourceUtil.get_character_directory()
+
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
+
 	for resource in _character_directory.keys():
 		suggestions[resource] = {
-				'value' 	: resource, 
-				'tooltip' 	: _character_directory[resource]['full_path'], 
+				'value' 	: resource,
+				'tooltip' 	: _character_directory[resource],
 				'icon' 		: icon.duplicate()}
 	return suggestions
 
@@ -122,13 +122,13 @@ func save():
 		return
 	if %Where.selected == 1 and %Character.current_value == null:
 		return
-	
+
 	var previous := {}
 	if mode == Modes.EDIT:
 		previous = item.get_metadata(0)
 		item.get_parent()
 		item.free()
-	
+
 	var ref_manager := find_parent('ReferenceManager')
 	var character_names := []
 	if %Character.current_value != null:

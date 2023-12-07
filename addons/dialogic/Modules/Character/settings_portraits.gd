@@ -12,13 +12,13 @@ func _ready():
 func _refresh():
 	%CustomPortraitScene.resource_icon = get_theme_icon("PackedScene", "EditorIcons")
 	%CustomPortraitScene.set_value(ProjectSettings.get_setting('dialogic/portraits/default_portrait', ''))
-	
-	
+
+
 	%JoinDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 	%LeaveDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
-	%JoinDefault.set_value(DialogicUtil.pretty_name(ProjectSettings.get_setting('dialogic/animations/join_default', 
+	%JoinDefault.set_value(DialogicUtil.pretty_name(ProjectSettings.get_setting('dialogic/animations/join_default',
 	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))))
-	%LeaveDefault.set_value(ProjectSettings.get_setting('dialogic/animations/leave_default', 
+	%LeaveDefault.set_value(ProjectSettings.get_setting('dialogic/animations/leave_default',
 	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd')))
 	%JoinDefaultLength.set_value(ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5))
 	%LeaveDefaultLength.set_value(ProjectSettings.get_setting('dialogic/animations/leave_default_length', 0.5))
