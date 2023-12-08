@@ -185,3 +185,12 @@ func clone() -> DialogicStyle:
 		style.add_layer(info.path, info.overrides)
 
 	return style
+
+
+func prepare() -> void:
+	if base_scene:
+		ResourceLoader.load_threaded_request(base_scene.resource_path)
+
+	for layer in layers:
+		if layer.scene:
+			ResourceLoader.load_threaded_request(layer.scene.resource_path)
