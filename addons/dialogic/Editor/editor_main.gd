@@ -19,6 +19,7 @@ func _ready() -> void:
 	## REFERENCES
 	editors_manager = $Margin/EditorsManager
 
+
 	## STYLING
 	color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
