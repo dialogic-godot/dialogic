@@ -7,6 +7,7 @@ func _ready() -> void:
 		return
 
 	get_parent().set_tab_title(get_index(), "Unique Identifiers")
+	get_parent().set_tab_icon(get_index(), get_theme_icon("Unlinked", "EditorIcons"))
 
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
 	get_parent().tab_changed.connect(func(tab:int): if tab == get_index(): open())
@@ -14,7 +15,6 @@ func _ready() -> void:
 
 func open() -> void:
 	fill_table()
-	print("Howdie")
 
 
 func fill_table() -> void:

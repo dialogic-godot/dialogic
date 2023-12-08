@@ -1,18 +1,12 @@
 @tool
 class_name DialogicResourceUtil
 
-static var directories := {}
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
 
 
 static func _static_init() -> void:
-	if Engine.is_editor_hint():
-		if not Engine.get_main_loop().root.is_node_ready():
-			await Engine.get_main_loop().root.ready
-		update()
-
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_filesystem_dock().files_moved.connect(_on_files_moved)
+	return
 
 
 static func update() -> void:
@@ -26,18 +20,18 @@ static func update() -> void:
 
 static func get_directory(extension:String) -> Dictionary:
 	extension = extension.trim_prefix('.')
-	if directories.has(extension+'_directory'):
-		return directories.get(extension+'_directory', {})
+	if Engine.has_meta(extension+'_directory'):
+		return Engine.get_meta(extension+'_directory', {})
 
 	var directory := ProjectSettings.get_setting("dialogic/directories/"+extension+'_directory', {})
-	directories[extension+'_directory'] = directory
+	Engine.set_meta(extension+'_directory', directory)
 	return directory
 
 
 static func set_directory(extension:String, directory:Dictionary) -> void:
 	extension = extension.trim_prefix('.')
 	ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
-	directories[extension+'_directory'] = directory
+	Engine.set_meta(extension+'_directory', directory)
 
 
 static func update_directory(extension:String) -> void:

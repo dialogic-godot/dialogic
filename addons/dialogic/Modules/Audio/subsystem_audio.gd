@@ -40,7 +40,7 @@ func resume() -> void:
 func _ready() -> void:
 	base_music_player.name = "Music"
 	add_child(base_music_player)
-	
+
 	base_sound_player.name = "Sound"
 	add_child(base_sound_player)
 

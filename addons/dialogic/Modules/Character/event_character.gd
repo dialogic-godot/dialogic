@@ -47,23 +47,19 @@ var set_position := false
 var set_z_index := false
 var set_mirrored := false
 ## Used to set the character resource from the unique name identifier and vice versa
-var _character_from_directory: String:
+var character_identifier: String:
 	get:
-		if _character_from_directory == '--All--':
+		if character_identifier == '--All--':
 			return '--All--'
-		for item in _character_directory.keys():
-			if _character_directory[item]['resource'] == character:
-				return item
-				break
-		return _character_from_directory
+		if character:
+			var identifier := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+			if not identifier.is_empty():
+				return identifier
+		return character_identifier
 	set(value):
-		_character_from_directory = value
-		if value in _character_directory.keys():
-			character = _character_directory[value]['resource']
-		else:
-			character = null
-## Used by [_character_from_directory]
-var _character_directory: Dictionary = {}
+		character_identifier = value
+		character = DialogicResourceUtil.get_character_resource(value)
+
 # Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
 var regex := RegEx.create_from_string("(?<type>join|update|leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
@@ -93,7 +89,7 @@ func _execute() -> void:
 				var max_time: float = Dialogic.Input.auto_skip.time_per_event
 				final_animation_length = min(max_time, animation_length)
 
-			if _character_from_directory == '--All--':
+			if character_identifier == '--All--':
 
 				if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
@@ -190,15 +186,11 @@ func to_text() -> String:
 
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
-	if character or _character_from_directory == '--All--':
-		if action == Actions.LEAVE and _character_from_directory == '--All--':
+	if character or character_identifier == '--All--':
+		if action == Actions.LEAVE and character_identifier == '--All--':
 			result_string += "--All--"
 		else:
-			var name := ""
-			for path in _character_directory.keys():
-				if _character_directory[path]['resource'] == character:
-					name = path
-					break
+			var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
 			result_string += name
@@ -241,12 +233,10 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	_character_directory = DialogicResourceUtil.get_character_directory()
+	var character_directory := DialogicResourceUtil.get_character_directory()
 
 	# load default character
-	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
-		if _character_from_directory in _character_directory.keys():
-			character = _character_directory[_character_from_directory]['resource']
+	character = DialogicResourceUtil.get_character_resource(character_identifier)
 
 	var result := regex.search(string)
 
@@ -260,15 +250,10 @@ func from_text(string:String) -> void:
 
 	if result.get_string('name').strip_edges():
 		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
-			_character_from_directory = '--All--'
+			character_identifier = '--All--'
 		else:
 			var name := result.get_string('name').strip_edges()
-
-			if _character_directory != null and _character_directory.size() > 0:
-				character = null
-				name = name.replace('"', "")
-				if _character_directory.has(name):
-					character = _character_directory[name]['resource']
+			character = DialogicResourceUtil.get_character_resource(name)
 
 
 	if !result.get_string('portrait').is_empty():
@@ -325,7 +310,7 @@ func get_shortcode_parameters() -> Dictionary:
 										{'value':Actions.JOIN},
 										'Leave':{'value':Actions.LEAVE},
 										'Update':{'value':Actions.UPDATE}}},
-		"character" 	: {"property": "_character_from_directory", 	"default": ""},
+		"character" 	: {"property": "character_identifier", 	"default": ""},
 		"portrait" 		: {"property": "portrait", 						"default": ""},
 		"position" 		: {"property": "position", 						"default": 1},
 
@@ -371,13 +356,13 @@ func build_event_editor() -> void:
 			}
 		]
 	})
-	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER,
+	add_header_edit('character_identifier', ValueType.COMPLEX_PICKER,
 			{'placeholder'		: 'Character',
 			'file_extension' 	: '.dch',
 			'suggestions_func' 	: get_character_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
 			'autofocus'			: true})
-#	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
+#	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and character_identifier != "--All--"')
 
 	add_header_edit('set_portrait', ValueType.BOOL,
 			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
@@ -421,7 +406,7 @@ func build_event_editor() -> void:
 
 
 func should_show_animation_options() -> bool:
-	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--'
+	return (character != null and !character.portraits.is_empty()) or character_identifier == '--All--'
 
 func should_show_portrait_selector() -> bool:
 	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
@@ -433,15 +418,15 @@ func has_no_portraits() -> bool:
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = DialogicResourceUtil.get_character_directory()
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	var character_directory = DialogicResourceUtil.get_character_directory()
 	if action == Actions.LEAVE:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
-	for resource in _character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource], 'icon': icon.duplicate()}
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
 	return suggestions
 
 
