@@ -53,6 +53,8 @@ func _ready() -> void:
 		editor.editors_manager = self
 		editor._register()
 
+	DialogicResourceUtil.update()
+
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
 
