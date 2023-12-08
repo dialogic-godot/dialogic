@@ -7,12 +7,18 @@ func _ready() -> void:
 		return
 
 	get_parent().set_tab_title(get_index(), "Unique Identifiers")
-	get_parent().set_tab_icon(get_index(), get_theme_icon("Unlinked", "EditorIcons"))
+	get_parent().set_tab_icon(get_index(), get_theme_icon("CryptoKey", "EditorIcons"))
+
 
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
 	get_parent().tab_changed.connect(func(tab:int): if tab == get_index(): open())
 
-
+	#get_theme_icon("Info", "EditorIcons")
+	#get_theme_icon("Instance", "EditorIcons")
+	#get_theme_icon("Key", "EditorIcons")
+	#get_theme_icon("Key", "EditorIcons")
+	#get_theme_icon("Pin", "EditorIcons")
+	#get_theme_icon("FileAccess", "EditorIcons")
 func open() -> void:
 	fill_table()
 

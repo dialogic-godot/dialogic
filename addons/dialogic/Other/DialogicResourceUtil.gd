@@ -5,10 +5,6 @@ static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
 
 
-static func _static_init() -> void:
-	return
-
-
 static func update() -> void:
 	update_directory('.dch')
 	update_directory('.dtl')
@@ -89,10 +85,6 @@ static func change_resource_path(old_path:String, new_path:String):
 
 static func is_identifier_unused(extension:String, identifier:String) -> bool:
 	return not identifier in get_directory(extension)
-
-
-static func _on_files_moved(old_path:String, new_path:String) -> void:
-	change_resource_path(old_path, new_path)
 
 #endregion
 
