@@ -86,7 +86,12 @@ func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 		if not ResourceLoader.exists(layer.path):
 			continue
 
-		var layer_scene : DialogicLayoutLayer = load(layer.path).instantiate()
+		var layer_scene : DialogicLayoutLayer = null
+
+		if ResourceLoader.load_threaded_get_status(layer.path) == ResourceLoader.THREAD_LOAD_LOADED:
+			layer_scene = ResourceLoader.load_threaded_get(layer.path).instantiate()
+		else:
+			layer_scene = load(layer.path).instantiate()
 
 		base_scene.add_layer(layer_scene)
 
