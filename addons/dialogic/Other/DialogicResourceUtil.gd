@@ -37,6 +37,10 @@ static func update_directory(extension:String) -> void:
 		if not resource in directory.values():
 			directory = add_resource_to_directory(resource, directory)
 
+	for key in directory:
+		if not ResourceLoader.exists(directory[key]):
+			directory.erase(key)
+
 	set_directory(extension, directory)
 
 

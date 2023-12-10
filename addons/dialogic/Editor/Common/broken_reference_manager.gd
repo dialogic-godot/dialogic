@@ -3,7 +3,10 @@ extends VSplitContainer
 
 ## This manager shows a list of changed references and allows searching for them and replacing them.
 
-var reference_changes :Array[Dictionary] = []
+var reference_changes :Array[Dictionary] = []:
+	set(changes):
+		reference_changes = changes
+		update_indicator()
 
 
 func _ready() -> void:
@@ -34,6 +37,18 @@ func _ready() -> void:
 
 	%SectionTitle2.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
 	%SectionTitle2.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
+
+	await get_parent().ready
+
+	var tab_bar: Control = get_parent().get_tab_bar()
+	var dot := Sprite2D.new()
+	dot.texture = get_theme_icon("GuiGraphNodePort", "EditorIcons")
+	dot.scale = Vector2(0.8, 0.8)
+	dot.z_index = 10
+	dot.position = tab_bar.get_tab_rect(0).position+tab_bar.get_tab_rect(0).size*(Vector2(1,0))#Vector2(tab_button.size.x*0.8, tab_button.size.y*0.2)
+	dot.modulate = get_theme_color("warning_color", "Editor").lightened(0.5)
+
+	tab_bar.add_child(dot)
 
 
 func open() -> void:
@@ -288,6 +303,11 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 	%Replace.disabled = true
 	%CheckButton.disabled = false
 	%State.text = "Done Replacing"
+
+
+func update_indicator() -> void:
+	print("Indicator ", !reference_changes.is_empty())
+	get_parent().get_tab_bar().get_child(0).visible = !reference_changes.is_empty()
 
 
 func close() -> void:
