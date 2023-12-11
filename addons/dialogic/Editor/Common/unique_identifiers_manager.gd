@@ -1,18 +1,17 @@
 @tool
-extends VBoxContainer
+extends PanelContainer
 
 
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
 
-	get_parent().set_tab_title(get_index(), "Unique Identifiers")
-	get_parent().set_tab_icon(get_index(), get_theme_icon("CryptoKey", "EditorIcons"))
-
+	%TabB.text = "Unique Identifiers"
+	%TabB.icon = get_theme_icon("CryptoKey", "EditorIcons")
 
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
-	get_parent().tab_changed.connect(func(tab:int): print(tab); if tab == get_index(): open())
 
+	%RenameNotification.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	#get_theme_icon("Info", "EditorIcons")
 	#get_theme_icon("Instance", "EditorIcons")
 	#get_theme_icon("Key", "EditorIcons")
@@ -20,10 +19,14 @@ func _ready() -> void:
 	#get_theme_icon("Pin", "EditorIcons")
 	#get_theme_icon("FileAccess", "EditorIcons")
 
-func open() -> void:
-	print("open")
-	fill_table()
 
+func open() -> void:
+	fill_table()
+	%RenameNotification.hide()
+
+
+func close() -> void:
+	pass
 
 func fill_table() -> void:
 	var t: Tree = %IdentifierTable
@@ -52,22 +55,30 @@ func fill_table() -> void:
 func _on_identifier_table_item_edited() -> void:
 	var item: TreeItem = %IdentifierTable.get_edited()
 	var new_identifier : String = item.get_text(1)
+
 	if new_identifier.is_empty():
 		item.set_text(1, item.get_metadata(1))
 		return
+
+	if new_identifier == item.get_metadata(1):
+		return
+
 	DialogicResourceUtil.change_unique_identifier(item.get_text(0), new_identifier)
 
-	print(DialogicResourceUtil.get_directory(item.get_parent().get_metadata(0)))
 	match item.get_parent().get_metadata(0):
 		'dch':
 			owner.get_parent().add_character_name_ref_change(item.get_metadata(1), new_identifier)
 		'dtl':
 			owner.get_parent().add_timeline_name_ref_change(item.get_metadata(1), new_identifier)
 
+	%RenameNotification.show()
 	item.set_metadata(1, new_identifier)
 
 
 func _on_identifier_table_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
-	print(column)
 	item.select(column)
 	%IdentifierTable.edit_selected()
+
+
+func _on_help_button_pressed() -> void:
+	pass # Replace with function body.

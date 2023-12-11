@@ -105,6 +105,7 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 
 	if visible:
 		$Manager.open()
+		broken_manager.open()
 
 
 ## Checks for reference cycles or chains.
@@ -151,13 +152,11 @@ func open() -> void:
 
 func _on_close_requested() -> void:
 	hide()
-	update_indicator()
+	broken_manager.close()
 
 
 func update_indicator() -> void:
 	icon_button.get_child(0).visible = !broken_manager.reference_changes.is_empty()
-	for i in broken_manager.reference_changes:
-		i.item = null
 	DialogicUtil.set_editor_setting('reference_changes', broken_manager.reference_changes)
 
 

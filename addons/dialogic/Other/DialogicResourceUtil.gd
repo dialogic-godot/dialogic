@@ -27,6 +27,7 @@ static func get_directory(extension:String) -> Dictionary:
 static func set_directory(extension:String, directory:Dictionary) -> void:
 	extension = extension.trim_prefix('.')
 	ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
+	ProjectSettings.save()
 	Engine.set_meta(extension+'_directory', directory)
 
 
