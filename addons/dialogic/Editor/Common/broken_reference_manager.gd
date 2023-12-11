@@ -13,47 +13,34 @@ func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
 
-	get_parent().set_tab_title(get_index(), "Broken References")
-	get_parent().set_tab_icon(get_index(), get_theme_icon("Unlinked", "EditorIcons"))
+	%TabA.text = "Broken References"
+	%TabA.icon = get_theme_icon("Unlinked", "EditorIcons")
 
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
-	get_parent().tab_changed.connect(func(tab:int): if tab == get_index(): open())
 
 	%ReplacementSection.hide()
 
 	%CheckButton.icon = get_theme_icon("Search", "EditorIcons")
 	%Replace.icon = get_theme_icon("ArrowRight", "EditorIcons")
-	%TitleTooltip.texture = get_theme_icon("NodeInfo", "EditorIcons")
-	%TitleTooltip.modulate = get_theme_color("readonly_color", "Editor")
 
 	%State.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 
-	%Title.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	%Title.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
-	%Title.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-
-	%SectionTitle.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	%SectionTitle.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-
-	%SectionTitle2.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	%SectionTitle2.add_theme_font_size_override("font_size", get_theme_font_size("doc_size", "EditorFonts"))
-
 	await get_parent().ready
 
-	var tab_bar: Control = get_parent().get_tab_bar()
+	var tab_button: Control = %TabA
 	var dot := Sprite2D.new()
 	dot.texture = get_theme_icon("GuiGraphNodePort", "EditorIcons")
 	dot.scale = Vector2(0.8, 0.8)
 	dot.z_index = 10
-	dot.position = tab_bar.get_tab_rect(0).position+tab_bar.get_tab_rect(0).size*(Vector2(1,0))#Vector2(tab_button.size.x*0.8, tab_button.size.y*0.2)
+	dot.position = Vector2(tab_button.size.x, tab_button.size.y*0.25)
 	dot.modulate = get_theme_color("warning_color", "Editor").lightened(0.5)
 
-	tab_bar.add_child(dot)
+	tab_button.add_child(dot)
 
 
 func open() -> void:
 	show()
-	%ReplacementPanel.hide()
+	%ReplacementEditPanel.hide()
 	%ReplacementSection.hide()
 	%ChangeTree.clear()
 	%ChangeTree.create_item()
@@ -88,12 +75,13 @@ func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_but
 			item.get_parent().free()
 		else:
 			item.free()
-
+		update_indicator()
 		%CheckButton.disabled = reference_changes.is_empty()
 
 	if id == 1:
-		%ReplacementPanel.open_existing(item, item.get_metadata(0))
+		%ReplacementEditPanel.open_existing(item, item.get_metadata(0))
 
+	%ReplacementSection.hide()
 
 func _on_change_tree_item_edited() -> void:
 	if !%ChangeTree.get_selected():
@@ -306,17 +294,28 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 
 
 func update_indicator() -> void:
-	print("Indicator ", !reference_changes.is_empty())
-	get_parent().get_tab_bar().get_child(0).visible = !reference_changes.is_empty()
+	%TabA.get_child(0).visible = !reference_changes.is_empty()
 
 
 func close() -> void:
 	var item :TreeItem = %ChangeTree.get_root()
-	while item.get_next_visible():
-		item = item.get_next_visible()
+	if item:
+		while item.get_next_visible():
+			item = item.get_next_visible()
 
-		if item.get_child_count():
-			continue
-		if item.get_text(2) != "" and int(item.get_text(2)) == 0:
-			reference_changes.erase(item.get_metadata(0))
+			if item.get_child_count():
+				continue
+			if item.get_text(2) != "" and int(item.get_text(2)) == 0:
+				reference_changes.erase(item.get_metadata(0))
+	for i in reference_changes:
+		i.item = null
+	update_indicator()
+	find_parent("ReferenceManager").update_indicator()
 
+
+func _on_add_button_pressed() -> void:
+	%ReplacementEditPanel._on_add_pressed()
+
+
+func _on_help_button_pressed() -> void:
+	pass # Replace with function body.

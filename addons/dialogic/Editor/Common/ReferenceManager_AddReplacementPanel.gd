@@ -10,17 +10,11 @@ var item :TreeItem = null
 
 func _ready() -> void:
 	hide()
-	get_parent().icon = get_theme_icon("Add", "EditorIcons")
-	get_parent().pressed.connect(_on_add_pressed)
-	var stl := get_theme_stylebox("PanelForeground", "EditorStyles").duplicate()
-	stl.set_content_margin_all(5)
-	stl.set_border_width_all(1)
-	stl.set_border_color(get_theme_color("accent_color", "Editor"))
-	add_theme_stylebox_override('panel',stl)
-
 	%Character.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	%Character.get_suggestions_func = get_character_suggestions
 
+	%WholeWords.icon = get_theme_icon("FontItem", "EditorIcons")
+	%MatchCase.icon = get_theme_icon("MatchCase", "EditorIcons")
 
 func _on_add_pressed() -> void:
 	if visible:
@@ -40,8 +34,6 @@ func _on_add_pressed() -> void:
 	%Old.text = ""
 	%New.text = ""
 
-	_on_resized()
-
 
 func open_existing(_item:TreeItem, info:Dictionary):
 	mode = Modes.EDIT
@@ -59,16 +51,6 @@ func open_existing(_item:TreeItem, info:Dictionary):
 
 	%Old.text = info.what
 	%New.text = info.forwhat
-
-	_on_resized()
-
-
-func _on_resized() -> void:
-	if !visible:
-		return
-	size = Vector2()
-	position = get_parent().get_global_transform().get_origin()-Vector2(1,0)*size.x+Vector2(0,1) *get_parent().size.y
-
 
 func _on_type_item_selected(index:int) -> void:
 	match index:
