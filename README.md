@@ -11,7 +11,7 @@ Dialogic 2.0 is a major rewrite of the plugin including many compatibility-break
 
 
 ## Installation
-Follow the installation instructions on our [Getting Started](https://dialogic-docs.coppolaemilio.com/documentation/getting-started/#1-installation--activation) documentation.
+Follow the installation instructions on our [Getting Started](https://dialogic-docs.coppolaemilio.com/getting-started.html#1-installation--activation) documentation.
 
 Dialogic comes with an auto-updater so you can install future versions right from within the plugin.
 
