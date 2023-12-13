@@ -12,12 +12,6 @@ func _ready() -> void:
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
 
 	%RenameNotification.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-	#get_theme_icon("Info", "EditorIcons")
-	#get_theme_icon("Instance", "EditorIcons")
-	#get_theme_icon("Key", "EditorIcons")
-	#get_theme_icon("Key", "EditorIcons")
-	#get_theme_icon("Pin", "EditorIcons")
-	#get_theme_icon("FileAccess", "EditorIcons")
 
 
 func open() -> void:
