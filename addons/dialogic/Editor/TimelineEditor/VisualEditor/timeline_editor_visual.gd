@@ -335,7 +335,9 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	var piece :Control = event_node.instantiate()
 	piece.resource = event_resource
 	event_resource._editor_node = piece
+	event_resource._enter_visual_editor(timeline_editor)
 	piece.content_changed.connect(something_changed)
+
 	if event_resource.event_name == "Label":
 		piece.content_changed.connect(update_content_list)
 	if at_index == -1:

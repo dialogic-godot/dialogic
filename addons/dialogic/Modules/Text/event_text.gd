@@ -326,6 +326,10 @@ func _get_property_original_translation(property:String) -> String:
 ## 						EVENT EDITOR
 ################################################################################
 
+func _enter_visual_editor(editor:DialogicEditor):
+	editor.opened.connect(func(): ui_update_needed.emit())
+
+
 func build_event_editor():
 	add_header_edit('character_identifier', ValueType.COMPLEX_PICKER,
 			{'file_extension' 	: '.dch',
