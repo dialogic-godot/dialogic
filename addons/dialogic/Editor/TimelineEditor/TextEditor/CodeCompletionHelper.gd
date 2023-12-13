@@ -20,13 +20,13 @@ var completion_shortcode_param_getter_regex := RegEx.new()
 var shortcode_events := {}
 var custom_syntax_events := []
 var text_event :DialogicTextEvent = null
- 
+
 func _ready():
 	# Compile RegEx's
 	completion_word_regex.compile("(?<s>(\\W)|^)(?<word>\\w*)\\x{FFFF}")
 	completion_shortcode_getter_regex.compile("\\[(?<code>\\w*)")
 	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?(\\w|\\s)*"+String.chr(0xFFFF))
-	
+
 	text_syntax_highlighter.mode = text_syntax_highlighter.Modes.TEXT_EVENT_ONLY
 
 ################################################################################
@@ -55,22 +55,22 @@ func get_line_untill_caret(line:String) -> String:
 
 
 # Called if something was typed
-# Adds all kinds of options depending on the 
+# Adds all kinds of options depending on the
 #   content of the current line, the last word and the symbol that came before
 # Triggers opening of the popup
 func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIGHTING) -> void:
 	## TODO remove this once https://github.com/godotengine/godot/issues/38560 is fixed
 	if mode != Modes.FULL_HIGHLIGHTING:
 		return
-	
+
 	# make sure shortcode event references are loaded
 	if mode == Modes.FULL_HIGHLIGHTING:
 		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 		if shortcode_events.is_empty():
-			for event in text.timeline_editor.editors_manager.resource_helper.event_script_cache:
+			for event in DialogicResourceUtil.get_event_cache():
 				if event.get_shortcode() != 'default_shortcode':
 					shortcode_events[event.get_shortcode()] = event
-					
+
 				else:
 					custom_syntax_events.append(event)
 				if event.event_name in hidden_events:
@@ -79,25 +79,25 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					text_event = event
 					# this is done to force-load the text effects regex which is used below
 					event.load_text_effects()
-	
+
 	# fill helpers
 	var line := get_code_completion_line(text)
 	var word := get_code_completion_word(text)
 	var symbol := get_code_completion_prev_symbol(text)
-	
-	
-	## Note on use of KIND types for options. 
+
+
+	## Note on use of KIND types for options.
 	# These types are mostly useless for us.
 	# However I decidede to assign some special cases for them:
-	# - KIND_PLAIN_TEXT is only shown if the beginnging of the option is already typed 
+	# - KIND_PLAIN_TEXT is only shown if the beginnging of the option is already typed
 			# !word.is_empty() and option.begins_with(word)
 	# - KIND_CLASS is only shown if anything from the options is already typed
 			# !word.is_empty() and word in option
 	# - KIND_CONSTANT is shown and checked against the beginning
 			# option.begins_with(word)
-	# - KIND_MEMBER is shown and searched completely 
+	# - KIND_MEMBER is shown and searched completely
 			# word in option
-	
+
 	## Note on VALUE key
 	# The value key is used to store a potential closing letter for the completion.
 	# The completion will check if the letter is already present and add it otherwise.
@@ -120,26 +120,26 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 			if !current_shortcode:
 				text.update_code_completion_options(false)
 				return
-			
+
 			var code := current_shortcode.get_string('code')
 			if !code in shortcode_events.keys():
 				text.update_code_completion_options(false)
 				return
-			
+
 			# suggest parameters
 			if symbol == ' ':
 				var parameters :Array = shortcode_events[code].get_shortcode_parameters().keys()
 				for param in parameters:
 					if !param+'=' in line:
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
-			
+
 			# suggest values
 			elif symbol == '=' or symbol == '"' or get_code_completion_prev_symbol(text) == '"':
 				var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
 				if !current_parameter_gex:
 					text.update_code_completion_options(false)
 					return
-				
+
 				var current_parameter := current_parameter_gex.get_string('param')
 				if !shortcode_events[code].get_shortcode_parameters().has(current_parameter):
 					text.update_code_completion_options(false)
@@ -151,7 +151,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, word, word, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
 					text.update_code_completion_options(true)
 					return
-				
+
 				var suggestions : Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
 				for key in suggestions.keys():
 					if suggestions[key].has('text_alt'):
@@ -159,23 +159,23 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					else:
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
 
-				
+
 		# Force update and showing of the popup
 		text.update_code_completion_options(true)
 		return
-	
-	
+
+
 	for event in custom_syntax_events:
 		if mode == Modes.TEXT_EVENT_ONLY and !event is DialogicTextEvent:
 			continue
-		
+
 		if ! ' ' in line:
 			event._get_start_code_completion(self, text)
-		
+
 		if event.is_valid_event(line):
 			event._get_code_completion(self, text, line, word, symbol)
 			break
-	
+
 	# Force update and showing of the popup
 	text.update_code_completion_options(true)
 
@@ -183,18 +183,18 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 # Helper that adds all characters as options
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, text_event_start:=false) -> void:
-	for character in text.timeline_editor.editors_manager.resource_helper.character_directory:
+	for character in DialogicResourceUtil.get_character_directory():
 		var result :String = character
 		if " " in character:
 			result = '"'+character+'"'
-		if text_event_start and text.timeline_editor.editors_manager.resource_helper.character_directory[character].resource.portraits.is_empty():
+		if text_event_start and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():
 			result += ':'
 		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 
 
 # Helper that adds all timelines as options
 func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:
-	for timeline in text.timeline_editor.editors_manager.resource_helper.timeline_directory:
+	for timeline in DialogicResourceUtil.get_timeline_directory():
 		text.add_code_completion_option(type, timeline, timeline+'/', color, text.get_theme_icon("TripleBar", "EditorIcons"))
 
 
@@ -206,9 +206,9 @@ func suggest_labels(text:CodeEdit, timeline:String='', end:='', color:=Color()) 
 
 # Helper that adds all portraits of a given character as options
 func suggest_portraits(text:CodeEdit, character_name:String, end_check:=')') -> void:
-	if !character_name in text.timeline_editor.editors_manager.resource_helper.character_directory:
+	if !character_name in DialogicResourceUtil.get_character_directory():
 		return
-	var character_resource :DialogicCharacter= text.timeline_editor.editors_manager.resource_helper.character_directory[character_name]['resource']
+	var character_resource: DialogicCharacter = load(DialogicResourceUtil.get_character_directory()[character_name])
 	for portrait in character_resource.portraits:
 		text.add_code_completion_option(CodeEdit.KIND_MEMBER, portrait, portrait, syntax_highlighter.character_portrait_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), end_check)
 	if character_resource.portraits.is_empty():
@@ -251,7 +251,7 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 # Called when code completion was activated
 # Inserts the selected item
 func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
-	# Note: I decided to ALWAYS use replace mode, as dialogic is supposed to be beginner friendly 
+	# Note: I decided to ALWAYS use replace mode, as dialogic is supposed to be beginner friendly
 	var word := get_code_completion_word(text)
 	var code_completion := text.get_code_completion_option(text.get_code_completion_selected_index())
 	text.remove_text(text.get_caret_line(), text.get_caret_column()-len(word), text.get_caret_line(), text.get_caret_column())
