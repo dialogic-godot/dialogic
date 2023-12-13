@@ -27,7 +27,6 @@ var resource_icon : Texture = null:
 
 ## STORING VALUE AND REFERENCE TO RESOURCE
 var current_value :Variant # Dynamic
-var editor_reference
 
 var current_selected = 0
 
@@ -81,7 +80,6 @@ func _ready():
 	if resource_icon == null:
 		self.resource_icon = null
 
-	editor_reference = find_parent('EditorView')
 
 
 func _exit_tree():
@@ -149,19 +147,12 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 
 func get_default_suggestions(input:String) -> Dictionary:
-	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
+	if file_extension.is_empty():
+		return {'Nothing found!':{'value':''}}
+
 	var suggestions: Dictionary = {}
-	if file_extension == ".dch":
-		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-
-		for resource in editor_reference.character_directory.keys():
-			suggestions[resource] = {'value': resource, 'tooltip': editor_reference.character_directory[resource]['full_path']}
-	else:
-		var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
-
-		for resource in resources:
-			suggestions[resource] = {'value':resource, 'tooltip':resource}
-
+	for resource in DialogicResourceUtil.list_resources_of_type(file_extension):
+		suggestions[resource] = {'value':resource, 'tooltip':resource}
 	return suggestions
 
 
@@ -252,18 +243,20 @@ func _can_drop_data(position, data) -> bool:
 	return false
 
 func _drop_data(position, data) -> void:
-	if data.files[0].ends_with('dch'):
-		for character in editor_reference.character_directory.keys():
-			if editor_reference.character_directory[character]["full_path"] == data.files[0]:
+	if data.files[0].ends_with('.dch'):
+		var character_directory := DialogicResourceUtil.get_character_directory()
+		for character in character_directory:
+			if character_directory[character] == data.files[0]:
 				set_value(character)
 				break
 	elif data.files[0].ends_with('dtl'):
-		for timeline in editor_reference.timeline_directory.keys():
-			if editor_reference.timeline_directory[timeline] == data.files[0]:
+		var timeline_directory := DialogicResourceUtil.get_timeline_directory()
+		for timeline in timeline_directory:
+			if timeline_directory[timeline] == data.files[0]:
 				set_value(timeline)
 				break
 	else:
-		var file = load(data.files[0])
+		var file := load(data.files[0])
 		set_value(file)
-		emit_signal("value_changed", property_name, file)
+		value_changed.emit(property_name, file)
 

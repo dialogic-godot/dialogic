@@ -100,8 +100,8 @@ func _on_search_text_changed(new_text:String) -> void:
 func load_modules_tree() -> void:
 	%Tree.clear()
 	var root :TreeItem = %Tree.create_item()
-	var cached_events :Array = find_parent('EditorsManager').resource_helper.event_script_cache
-	var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var cached_events := DialogicResourceUtil.get_event_cache()
+	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var indexers := DialogicUtil.get_indexers()
 	for i in indexers:
 		var module_item :TreeItem = %Tree.create_item(root)

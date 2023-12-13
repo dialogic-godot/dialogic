@@ -72,18 +72,11 @@ signal signal_event(argument)
 ## Emitted when [signal] effect was reached in text.
 signal text_signal(argument)
 
-## Directory that maps unique character names to each character resource
-var character_directory: Dictionary = {}
-## Directory that maps unique timeline names to each timeline resource.
-var timeline_directory: Dictionary = {}
-## Array holding a reference to each event once.
-var _event_script_cache: Array[DialogicEvent] = []
-
 
 ## Autoloads are added first, so this happens REALLY early on game startup.
 func _ready() -> void:
-	rebuild_character_directory()
-	rebuild_timeline_directory()
+
+	DialogicResourceUtil.update()
 
 	collect_subsystems()
 
@@ -133,7 +126,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 		if timeline.contains("res://"):
 			timeline = load(timeline)
 		else:
-			timeline = load(find_timeline(timeline))
+			timeline = DialogicResourceUtil.get_timeline_resource(timeline)
 
 	if timeline == null:
 		printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
@@ -155,7 +148,6 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	timeline_started.emit()
 	handle_next_event()
-
 
 ## Preloader function, prepares a timeline and returns an object to hold for later
 # TODO: Question: why is this taking a variant and then only allowing a string?
@@ -271,33 +263,14 @@ func load_full_state(state_info:Dictionary) -> void:
 ################################################################################
 
 func collect_subsystems() -> void:
-	# This also builds the event script cache as well
-	_event_script_cache = []
-
 	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
-
-		# build event cache
-		for event in indexer._get_events():
-			if not FileAccess.file_exists(event):
-				continue
-			if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
-				_event_script_cache.append(load(event).new())
-
-		# build the subsystems (only at runtime)
-		if !Engine.is_editor_hint():
-
-			for subsystem in indexer._get_subsystems():
-				var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
-				subsystem_nodes.push_back(subsystem_node)
+		for subsystem in indexer._get_subsystems():
+			var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
+			subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
 		subsystem.post_install()
-
-	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-	_event_script_cache.push_front(DialogicEndBranchEvent.new())
-	_event_script_cache.push_back(DialogicTextEvent.new())
-	Engine.get_main_loop().set_meta("dialogic_event_cache", _event_script_cache)
 
 
 func has_subsystem(_name:String) -> bool:
@@ -330,148 +303,10 @@ func _set(property, value):
 #endregion
 
 
-#region CHARACTER & TIMELINE DIRECTORIES
-################################################################################
-# #TODO initial work on a unified method for character and timeline directories!
-#func build_directory(file_extension:String) -> Dictionary:
-#	var files :Array[String] = DialogicUtil.list_resources_of_type(file_extension)
-#
-#	# First sort by length of path, so shorter paths are first
-#	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
-#
-#
-#
-#	return {}
-
-func rebuild_character_directory() -> void:
-	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
-
-	# First sort by length of path, so shorter paths are first
-	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-
-	# next we prepare the additional arrays needed for building the depth tree
-	var shortened_paths:Array = []
-	var reverse_array:Array = []
-	var reverse_array_splits:Array = []
-
-	for i in characters.size():
-		characters[i] = characters[i].replace("res:///", "res://")
-		var path = characters[i].replace("res://","").replace(".dch", "")
-		if path[0] == "/":
-			path = path.right(-1)
-		shortened_paths.append(path)
-
-		#split the shortened path up, and reverse it
-		var path_breakdown = path.split("/")
-		path_breakdown.reverse()
-
-		#Add the name of the file at beginning now, and another array saving the reversed split within each element
-		reverse_array.append(path_breakdown[0])
-		reverse_array_splits.append(path_breakdown)
-
-
-	# Now the three arrays are prepped, begin the depth search
-	var clean_search_path:bool = false
-	var depth := 1
-
-	while !clean_search_path:
-		var interim_array:Array = []
-		clean_search_path = true
-
-		for i in shortened_paths.size():
-			if reverse_array.count(reverse_array[i]) > 1:
-				clean_search_path = false
-				if depth < reverse_array_splits[i].size():
-					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
-				else:
-					interim_array.append(reverse_array[i])
-			else:
-				interim_array.append(reverse_array[i])
-		depth += 1
-		reverse_array = interim_array
-
-	# Now finally build the database from those arrays
-	for i in characters.size():
-		var entry:Dictionary = {}
-		var charfile: DialogicCharacter= load(characters[i])
-		entry['resource'] = charfile
-		entry['full_path'] = characters[i]
-		entry['unique_short_path'] = reverse_array[i]
-		character_directory[reverse_array[i]] = entry
-
-	Engine.get_main_loop().set_meta("dialogic_character_directory", character_directory)
-
-
-func rebuild_timeline_directory() -> void:
-	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
-
-	# First sort by length of path, so shorter paths are first
-	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-
-	# next we prepare the additional arrays needed for building the depth tree
-	var shortened_paths:Array = []
-	var reverse_array:Array = []
-	var reverse_array_splits:Array = []
-
-	for i in characters.size():
-		characters[i] = characters[i].replace("res:///", "res://")
-		var path = characters[i].replace("res://","").replace(".dtl", "")
-		if path[0] == "/":
-			path = path.right(-1)
-		shortened_paths.append(path)
-
-		#split the shortened path up, and reverse it
-		var path_breakdown = path.split("/")
-		path_breakdown.reverse()
-
-		#Add the name of the file at beginning now, and another array saving the reversed split within each element
-		reverse_array.append(path_breakdown[0])
-		reverse_array_splits.append(path_breakdown)
-
-
-	# Now the three arrays are prepped, begin the depth search
-	var clean_search_path:bool = false
-	var depth := 1
-
-	while !clean_search_path:
-		var interim_array:Array = []
-		clean_search_path = true
-
-		for i in shortened_paths.size():
-			if reverse_array.count(reverse_array[i]) > 1:
-				clean_search_path = false
-				if depth < reverse_array_splits[i].size():
-					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
-				else:
-					interim_array.append(reverse_array[i])
-			else:
-				interim_array.append(reverse_array[i])
-		depth += 1
-		reverse_array = interim_array
-
-	# Now finally build the database from those arrays
-	for i in characters.size():
-		timeline_directory[reverse_array[i]] = characters[i]
-	Engine.get_main_loop().set_meta("dialogic_timeline_directory", timeline_directory)
-
-
-func find_timeline(path: String) -> String:
-	if path in timeline_directory.keys():
-		return timeline_directory[path]
-	else:
-		for i in timeline_directory.keys():
-			if timeline_directory[i].contains(path):
-				return timeline_directory[i]
-
-	return ""
-
-#endregion
 
 
 #region HELPERS
 ################################################################################
-
-
 
 func _on_timeline_ended():
 	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):

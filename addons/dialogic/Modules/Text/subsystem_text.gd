@@ -11,12 +11,10 @@ signal animation_textbox_new_text
 signal animation_textbox_show
 signal animation_textbox_hide
 
-
 # forwards of the dialog_text signals of all present dialog_text nodes
 signal meta_hover_ended(meta:Variant)
 signal meta_hover_started(meta:Variant)
 signal meta_clicked(meta:Variant)
-
 
 # used to color names without searching for all characters each time
 var character_colors := {}
@@ -29,7 +27,6 @@ var text_effects_regex := RegEx.new()
 enum TextModifierModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
 enum TextTypes {DIALOG_TEXT, CHOICE_TEXT}
 var text_modifiers := []
-
 
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
@@ -386,7 +383,7 @@ func collect_character_names() -> void:
 
 	character_colors = {}
 
-	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
+	for dch_path in DialogicResourceUtil.list_resources_of_type('.dch'):
 		var character := (load(dch_path) as DialogicCharacter)
 
 		if character.display_name:

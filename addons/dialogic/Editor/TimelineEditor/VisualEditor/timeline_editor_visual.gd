@@ -64,7 +64,7 @@ func save_timeline() -> void:
 
 	timeline_editor.current_resource.set_meta("unsaved", false)
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
-	timeline_editor.editors_manager.resource_helper.rebuild_timeline_directory()
+	DialogicResourceUtil.update_directory('dtl')
 
 
 func _notification(what:int) -> void:
@@ -166,7 +166,7 @@ func load_event_buttons() -> void:
 			for button in child.get_children():
 				button.queue_free()
 
-	var scripts: Array = timeline_editor.editors_manager.resource_helper.get_event_scripts()
+	var scripts := DialogicResourceUtil.get_event_cache()
 
 	# Event buttons
 	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
@@ -434,17 +434,11 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events := []
 	for event_idx in indexes:
 		# first get a new resource from the text version
-		if !timeline_editor.editors_manager.resource_helper:
-			printerr("[Dialogic] Unable to access resource_helper!")
-			continue
-
 		var event_resource :DialogicEvent
-		for i in timeline_editor.editors_manager.resource_helper.get_event_scripts():
+		for i in DialogicResourceUtil.get_event_cache():
 			if i._test_event_string(indexed_events[event_idx]):
 				event_resource = i.duplicate()
 				break
-
-		event_resource.set_meta('editor_character_directory', timeline_editor.editors_manager.resource_helper.character_directory)
 
 		event_resource.from_text(indexed_events[event_idx])
 
