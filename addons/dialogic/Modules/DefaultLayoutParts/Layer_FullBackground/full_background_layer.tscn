@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://c1k5m0w3r40xf"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.gd" id="1_tu40u"]
-[ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/default_background_transition.gdshader" id="1_ygjlc"]
+[ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/Transition/default_background_transition.gdshader" id="2_4sv2g"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_ghan2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_msuxf"]
-shader = ExtResource("1_ygjlc")
-shader_parameter/progress = null
+shader = ExtResource("2_4sv2g")
+shader_parameter/progress = 0.0
 shader_parameter/feather = 0.1
 shader_parameter/keep_aspect_ratio = false
 

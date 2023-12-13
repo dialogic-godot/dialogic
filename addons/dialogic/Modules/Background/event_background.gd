@@ -17,7 +17,7 @@ var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
 
-var transition_path : String = ""
+var transition : String = ""
 
 
 ################################################################################
@@ -30,19 +30,9 @@ func _execute() -> void:
 	if Dialogic.Input.auto_skip.enabled:
 		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
-	
-	var transition: DialogicTransition
-	if !transition_path.is_empty():
-		transition = load(transition_path) as DialogicTransition
-	else:
-		var default_transition_path = ProjectSettings.get_setting('dialogic/transition/default_transition','')
-		transition = load(default_transition_path) as DialogicTransition if !default_transition_path.is_empty() else null
 
-	if transition:
-		dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
-	else:
-		dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
-	
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
+
 	finish()
 
 

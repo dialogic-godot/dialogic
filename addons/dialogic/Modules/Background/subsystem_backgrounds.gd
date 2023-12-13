@@ -7,8 +7,8 @@ signal background_changed(info:Dictionary)
 var _tween: Tween
 var _tween_callbacks: Array[Callable]
 
-var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
-const default_transition: DialogicTransition = preload("res://addons/dialogic/Modules/Background/default_background_transition.tres")
+var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
+var default_transition: String = get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/Background/default_background_transition.tres')
 
 ####################################################################################################
 ##					STATE
@@ -35,12 +35,15 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition: DialogicTransition = default_transition) -> void:
+func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition) -> void:
 	var background_holder: DialogicNode_BackgroundHolder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
 		return
 
 	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
+	dialogic.current_state_info['background_scene'] = scene
+	dialogic.current_state_info['background_argument'] = argument
+
 	var bg_set := false
 
 	# First try just updating the existing scene.
@@ -55,57 +58,59 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 				bg_set = true
 				info['same_scene'] = true
 
-	# If that didn't work, add a new scene, then cross-fade
-	if !bg_set:
-		var previous_material = background_holder.material
-		var material := ShaderMaterial.new()
-		background_holder.material = material
-		
-		material.shader = transition.shader
-		
-		# make sure material is clean and ready to go
-		material.set_shader_parameter("progress", 0)
-		# swap the next background into previous, as that is now the older frame
-		material.set_shader_parameter("previous_background", previous_material.get_shader_parameter("next_background") if previous_material else null)
-		material.set_shader_parameter("next_background", null)
-		
-		
-		if _tween:
-			_tween.kill()
-		
-		_tween = get_tree().create_tween()
-		
-		var parameter_overrides := transition.get_transition_overrides()
-		for parameter_override in parameter_overrides:
-			material.set_shader_parameter(parameter_override, parameter_overrides[parameter_override])
-		
-		_tween.tween_method(func (progress: float):
-			material.set_shader_parameter("progress", progress)
-		, 0.0, 1.0, fade_time)
+	if bg_set:
+		background_changed.emit(info)
+		return
 
-		## remove previous backgrounds
-		for old_bg in background_holder.get_children():
-			if old_bg is SubViewportContainer:
-				old_bg.get_meta('node')._custom_fade_out(fade_time)
-				_tween.chain().tween_callback(old_bg.queue_free)
 
-		var new_node: SubViewportContainer
-		if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
-			new_node = add_background_node(load(scene), background_holder)
-			if not new_node.get_meta('node') is DialogicBackground:
-				printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
-		elif argument:
-			new_node = add_background_node(default_background_scene, background_holder)
-		else:
-			new_node = null
+	#
+#
+	#
+	## If that didn't work, add a new scene, then cross-fade
+	#var previous_material = background_holder.material
+	#var material := ShaderMaterial.new()
+	#background_holder.material = material
+#
+	#material.shader = transition.shader
+#
+	## make sure material is clean and ready to go
+	#material.set_shader_parameter("progress", 0)
+	## swap the next background into previous, as that is now the older frame
+	#material.set_shader_parameter("previous_background", previous_material.get_shader_parameter("next_background") if previous_material else null)
+	#material.set_shader_parameter("next_background", null)
 
-		if new_node:
-			new_node.get_meta('node')._update_background(argument, fade_time)
-			new_node.get_meta('node')._custom_fade_in(fade_time)
-			material.set_shader_parameter("next_background", new_node.get_child(0).get_texture())
+	## remove previous backgrounds
+	var old_viewport: SubViewportContainer = background_holder.get_meta('current_viewport', null)
 
-	dialogic.current_state_info['background_scene'] = scene
-	dialogic.current_state_info['background_argument'] = argument
+	var new_viewport: SubViewportContainer
+	if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
+		new_viewport = add_background_node(load(scene), background_holder)
+		if not new_viewport.get_meta('node') is DialogicBackground:
+			printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
+			return
+	elif argument:
+		new_viewport = add_background_node(default_background_scene, background_holder)
+	else:
+		new_viewport = null
+
+	var trans_script :Script = load(transition_path)
+	var trans_node := Node.new()
+	trans_node.set_script(trans_script)
+	trans_node = (trans_node as DialogicBackgroundTransition)
+	trans_node.bg_holder = background_holder
+	trans_node.time = fade_time
+
+	if old_viewport:
+		trans_node.prev_node = old_viewport.get_meta('node', null)
+		trans_node.prev_texture = old_viewport.get_child(0).get_texture()
+
+	if new_viewport:
+		trans_node.next_node = new_viewport.get_meta('node', null)
+		trans_node.next_texture = new_viewport.get_child(0).get_texture()
+
+	add_child(trans_node)
+	trans_node._fade()
+
 	background_changed.emit(info)
 
 
@@ -128,6 +133,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	b_scene.viewport = viewport
 	b_scene.viewport_container = v_con
 
+	parent.set_meta('current_viewport', v_con)
 	v_con.set_meta('node', b_scene)
 
 	return v_con
@@ -135,4 +141,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 func has_background() -> bool:
 	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()
+
+
+func guess_transition_file() -> void:
 
