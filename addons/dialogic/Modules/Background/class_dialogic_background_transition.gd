@@ -30,9 +30,23 @@ func _fade() -> void:
 	pass
 
 
-func set_shader(path_to_shader:String=this_folder.path_join("default_background_transition.gdshader")) -> ShaderMaterial:
+func set_shader(path_to_shader:String) -> ShaderMaterial:
 	if bg_holder:
 		bg_holder.material = ShaderMaterial.new()
 		bg_holder.material.shader = load(path_to_shader)
 		return bg_holder.material
 	return null
+
+
+func tween_shader_progress(progress_parameter:="progress") -> void:
+	if !bg_holder:
+		return
+
+	if !bg_holder.material is ShaderMaterial:
+		return
+
+	bg_holder.material.set_shader_parameter("progress", 0.0)
+	var tween := create_tween()
+	tween.tween_property(bg_holder, "material:shader_parameter/progress", 1.0, time)
+	await tween.finished
+	transition_finished.emit()

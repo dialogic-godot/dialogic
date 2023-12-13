@@ -8,7 +8,7 @@ var _tween: Tween
 var _tween_callbacks: Array[Callable]
 
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
-var default_transition: String = get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/Background/default_background_transition.tres')
+var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/simple_fade.gd")
 
 ####################################################################################################
 ##					STATE
@@ -80,7 +80,9 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	#material.set_shader_parameter("next_background", null)
 
 	## remove previous backgrounds
-	var old_viewport: SubViewportContainer = background_holder.get_meta('current_viewport', null)
+	var old_viewport: SubViewportContainer = null
+	if background_holder.has_meta('current_viewport'):
+		old_viewport = background_holder.get_meta('current_viewport', null)
 
 	var new_viewport: SubViewportContainer
 	if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
@@ -93,7 +95,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	else:
 		new_viewport = null
 
-	var trans_script :Script = load(transition_path)
+	var trans_script :Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, default_transition))
 	var trans_node := Node.new()
 	trans_node.set_script(trans_script)
 	trans_node = (trans_node as DialogicBackgroundTransition)
@@ -101,12 +103,14 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	trans_node.time = fade_time
 
 	if old_viewport:
-		trans_node.prev_node = old_viewport.get_meta('node', null)
+		trans_node.prev_scene = old_viewport.get_meta('node', null)
 		trans_node.prev_texture = old_viewport.get_child(0).get_texture()
 
 	if new_viewport:
-		trans_node.next_node = new_viewport.get_meta('node', null)
+		trans_node.next_scene = new_viewport.get_meta('node', null)
 		trans_node.next_texture = new_viewport.get_child(0).get_texture()
+		new_viewport.get_meta('node')._update_background(argument, fade_time)
+		new_viewport.get_meta('node')._custom_fade_in(fade_time)
 
 	add_child(trans_node)
 	trans_node._fade()
@@ -142,6 +146,4 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 func has_background() -> bool:
 	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()
 
-
-func guess_transition_file() -> void:
 
