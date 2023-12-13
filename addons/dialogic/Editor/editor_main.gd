@@ -22,6 +22,7 @@ func _ready() -> void:
 	button.pressed.connect(toggle_floating_window)
 
 
+
 	## STYLING
 	$BG.color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
