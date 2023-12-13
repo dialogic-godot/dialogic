@@ -10,4 +10,4 @@ func _get_subsystems() -> Array:
 
 
 func _get_special_resources() -> Array[Dictionary]:
-	return list_special_resources("Transitions", "BackgroundTransition", ".gd")
+	return list_special_resources("Transitions/Defaults", "BackgroundTransition", ".gd")

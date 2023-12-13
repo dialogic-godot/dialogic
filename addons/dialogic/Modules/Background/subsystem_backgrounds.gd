@@ -8,7 +8,7 @@ var _tween: Tween
 var _tween_callbacks: Array[Callable]
 
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
-var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/simple_fade.gd")
+var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/Defaults/simple_fade.gd")
 
 ####################################################################################################
 ##					STATE

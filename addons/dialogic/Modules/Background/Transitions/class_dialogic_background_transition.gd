@@ -30,7 +30,7 @@ func _fade() -> void:
 	pass
 
 
-func set_shader(path_to_shader:String) -> ShaderMaterial:
+func set_shader(path_to_shader:String=DialogicUtil.get_module_path('Background').path_join("Transitions/default_transition_shader.gdshader")) -> ShaderMaterial:
 	if bg_holder:
 		bg_holder.material = ShaderMaterial.new()
 		bg_holder.material.shader = load(path_to_shader)

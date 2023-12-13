@@ -2,7 +2,7 @@ extends DialogicBackgroundTransition
 
 
 func _fade() -> void:
-	var shader := set_shader(this_folder.path_join("simple_fade_shader.gdshader"))
+	var shader := set_shader()
 	shader.set_shader_parameter("wipe_texture", load(this_folder.path_join("simple_fade.tres")))
 
 	shader.set_shader_parameter("feather", 1)
