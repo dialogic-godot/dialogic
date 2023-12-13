@@ -36,10 +36,10 @@ func _ready() -> void:
 	dot.modulate = get_theme_color("warning_color", "Editor").lightened(0.5)
 
 	tab_button.add_child(dot)
+	update_indicator()
 
 
 func open() -> void:
-	show()
 	%ReplacementEditPanel.hide()
 	%ReplacementSection.hide()
 	%ChangeTree.clear()
@@ -309,6 +309,7 @@ func close() -> void:
 				reference_changes.erase(item.get_metadata(0))
 	for i in reference_changes:
 		i.item = null
+	DialogicUtil.set_editor_setting('reference_changes', reference_changes)
 	update_indicator()
 	find_parent("ReferenceManager").update_indicator()
 

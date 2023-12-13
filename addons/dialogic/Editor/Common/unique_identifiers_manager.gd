@@ -56,11 +56,12 @@ func _on_identifier_table_item_edited() -> void:
 	var item: TreeItem = %IdentifierTable.get_edited()
 	var new_identifier : String = item.get_text(1)
 
-	if new_identifier.is_empty():
-		item.set_text(1, item.get_metadata(1))
-		return
 
 	if new_identifier == item.get_metadata(1):
+		return
+
+	if new_identifier.is_empty() or not DialogicResourceUtil.is_identifier_unused(item.get_parent().get_metadata(0), new_identifier):
+		item.set_text(1, item.get_metadata(1))
 		return
 
 	DialogicResourceUtil.change_unique_identifier(item.get_text(0), new_identifier)
@@ -77,7 +78,7 @@ func _on_identifier_table_item_edited() -> void:
 
 func _on_identifier_table_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
 	item.select(column)
-	%IdentifierTable.edit_selected()
+	%IdentifierTable.edit_selected(true)
 
 
 func _on_help_button_pressed() -> void:

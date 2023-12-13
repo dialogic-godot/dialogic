@@ -38,9 +38,12 @@ static func update_directory(extension:String) -> void:
 		if not resource in directory.values():
 			directory = add_resource_to_directory(resource, directory)
 
+	var keys_to_remove := []
 	for key in directory:
 		if not ResourceLoader.exists(directory[key]):
-			directory.erase(key)
+			keys_to_remove.append(key)
+	for key in keys_to_remove:
+		directory.erase(key)
 
 	set_directory(extension, directory)
 
@@ -48,7 +51,8 @@ static func update_directory(extension:String) -> void:
 static func add_resource_to_directory(file_path:String, directory:Dictionary) -> Dictionary:
 	var suggested_name := file_path.get_file().trim_suffix("."+file_path.get_extension())
 	while suggested_name in directory:
-		suggested_name = file_path.trim_suffix(suggested_name+file_path.get_extension()).get_file()
+		suggested_name = file_path.trim_suffix("/"+suggested_name+"."+file_path.get_extension()).get_file().path_join(suggested_name)
+
 	directory[suggested_name] = file_path
 	return directory
 
@@ -79,7 +83,7 @@ static func change_unique_identifier(file_path:String, new_identifier:String) ->
 	set_directory(file_path.get_extension(), directory)
 
 
-static func change_resource_path(old_path:String, new_path:String):
+static func change_resource_path(old_path:String, new_path:String) -> void:
 	var directory := get_directory(new_path.get_extension())
 	var key := directory.find_key(old_path)
 	while key != null:
@@ -87,6 +91,13 @@ static func change_resource_path(old_path:String, new_path:String):
 		key = directory.find_key(old_path)
 	set_directory(new_path.get_extension(), directory)
 
+
+static func remove_resource(file_path:String) -> void:
+	var directory := get_directory(file_path.get_extension())
+	var key := directory.find_key(file_path)
+	while key != null:
+		directory.erase(key)
+	set_directory(file_path.get_extension(), directory)
 
 static func is_identifier_unused(extension:String, identifier:String) -> bool:
 	return not identifier in get_directory(extension)

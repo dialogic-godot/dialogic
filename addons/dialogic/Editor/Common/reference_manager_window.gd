@@ -40,6 +40,7 @@ func _ready() -> void:
 	hide()
 
 	get_parent().plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
+	get_parent().plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
 	get_parent().get_node('ResourceRenameWarning').confirmed.connect(open)
 
 
@@ -145,6 +146,8 @@ func add_timeline_name_ref_change(old_name:String, new_name:String) -> void:
 
 
 func open() -> void:
+	DialogicResourceUtil.update_directory('dch')
+	DialogicResourceUtil.update_directory('dtl')
 	popup_centered_ratio(0.5)
 	move_to_foreground()
 	grab_focus()
@@ -157,18 +160,20 @@ func _on_close_requested() -> void:
 
 func update_indicator() -> void:
 	icon_button.get_child(0).visible = !broken_manager.reference_changes.is_empty()
-	DialogicUtil.set_editor_setting('reference_changes', broken_manager.reference_changes)
 
 
-## FILE MOVEMENT:
+## FILE MANAGEMENT:
 func _on_file_moved(old_file:String, new_file:String) -> void:
 	if old_file.ends_with('.dch') and new_file.ends_with('.dch'):
 		DialogicResourceUtil.change_resource_path(old_file, new_file)
 		if old_file.get_file() != new_file.get_file():
-			#add_character_name_ref_change(old_file.get_file().trim_suffix('.dch'), new_file.get_file().trim_suffix('.dch'))
 			get_parent().get_node('ResourceRenameWarning').popup_centered()
 	elif old_file.ends_with('.dtl') and new_file.ends_with('.dtl'):
 		DialogicResourceUtil.change_resource_path(old_file, new_file)
 		if old_file.get_file() != new_file.get_file():
-			#add_timeline_name_ref_change(old_file.get_file().trim_suffix('.dtl'), new_file.get_file().trim_suffix('.dtl'))
 			get_parent().get_node('ResourceRenameWarning').popup_centered()
+
+
+func _on_file_removed(file:String) -> void:
+	if file.get_extension() in ['dch', 'dtl']:
+		DialogicResourceUtil.remove_resource(file)
