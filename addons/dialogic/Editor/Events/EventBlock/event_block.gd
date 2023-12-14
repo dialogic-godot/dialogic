@@ -262,7 +262,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 		### --------------------------------------------------------------------
 		### 2. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
-		var location :Control = %HeaderContent
+		var location: Control = %HeaderContent
 		if p.location == 1:
 			location = current_body_container
 		location.add_child(editor_node)
@@ -280,8 +280,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
 		editor_node.tooltip_text = p.display_info.get('tooltip', '')
-		var left_label :Label = null
-		var right_label :Label = null
+		var left_label: Label = null
+		var right_label: Label = null
 		if !p.get('left_text', '').is_empty():
 			left_label = Label.new()
 			left_label.text = p.get('left_text')
@@ -310,9 +310,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.call_deferred('take_autofocus')
 
 	if build_body:
-#		has_body_content = true
 		if current_body_container.get_child_count() == 0:
-#			has_body_content = false
 			expanded = false
 			body_container.visible = false
 
@@ -352,8 +350,9 @@ func set_property(property_name:String, value:Variant) -> void:
 
 func _on_resource_ui_update_needed() -> void:
 	for node_info in field_list:
-		if node_info.node.has_method('set_value'):
+		if node_info.node and node_info.node.has_method('set_value'):
 			node_info.node.set_value(resource.get(node_info.property))
+	recalculate_field_visibility()
 
 
 func _update_color() -> void:
