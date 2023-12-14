@@ -8,7 +8,7 @@ signal style_changed(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	pass
 
 
@@ -100,8 +100,8 @@ func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 
 	base_scene.set_meta('style', style)
 
-	Dialogic.get_parent().call_deferred("add_child", base_scene)
-	Dialogic.get_tree().set_meta('dialogic_layout_node', base_scene)
+	dialogic.get_parent().call_deferred("add_child", base_scene)
+	dialogic.get_tree().set_meta('dialogic_layout_node', base_scene)
 
 	return base_scene
 
@@ -109,14 +109,14 @@ func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 ## When changing to a different layout scene,
 ## we have to load all the info from the current_state_info (basically
 func reload_current_info_into_new_style():
-	for subsystem in Dialogic.get_children():
+	for subsystem in dialogic.get_children():
 		subsystem.load_game_state(LoadFlags.ONLY_DNODES)
 
 
 ## Returns the style currently in use
 func get_current_style() -> String:
-	if Dialogic.has_active_layout_node():
-		return Dialogic.get_layout_node().get_meta('style', '')
+	if dialogic.has_active_layout_node():
+		return dialogic.get_layout_node().get_meta('style', '')
 	return ''
 
 

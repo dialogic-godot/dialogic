@@ -22,8 +22,8 @@ var clear_background := true
 func _execute() -> void:
 	var final_time := time
 
-	if Dialogic.Input.auto_skip.enabled:
-		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+	if dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = dialogic.Input.auto_skip.time_per_event
 		final_time = min(time, time_per_event)
 
 	if clear_textbox and dialogic.has_subsystem("Text"):
