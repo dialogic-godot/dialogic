@@ -41,13 +41,15 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 		return
 
 	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
-	dialogic.current_state_info['background_scene'] = scene
-	dialogic.current_state_info['background_argument'] = argument
 
 	var bg_set := false
 
 	# First try just updating the existing scene.
 	if scene == dialogic.current_state_info.get('background_scene', ''):
+
+		if argument == dialogic.current_state_info.get('background_argument', ''):
+			return
+
 		for old_bg in background_holder.get_children():
 			if !old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
 				continue
@@ -58,28 +60,13 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 				bg_set = true
 				info['same_scene'] = true
 
+	dialogic.current_state_info['background_scene'] = scene
+	dialogic.current_state_info['background_argument'] = argument
+
 	if bg_set:
 		background_changed.emit(info)
 		return
 
-
-	#
-#
-	#
-	## If that didn't work, add a new scene, then cross-fade
-	#var previous_material = background_holder.material
-	#var material := ShaderMaterial.new()
-	#background_holder.material = material
-#
-	#material.shader = transition.shader
-#
-	## make sure material is clean and ready to go
-	#material.set_shader_parameter("progress", 0)
-	## swap the next background into previous, as that is now the older frame
-	#material.set_shader_parameter("previous_background", previous_material.get_shader_parameter("next_background") if previous_material else null)
-	#material.set_shader_parameter("next_background", null)
-
-	## remove previous backgrounds
 	var old_viewport: SubViewportContainer = null
 	if background_holder.has_meta('current_viewport'):
 		old_viewport = background_holder.get_meta('current_viewport', null)
@@ -105,7 +92,8 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	if old_viewport:
 		trans_node.prev_scene = old_viewport.get_meta('node', null)
 		trans_node.prev_texture = old_viewport.get_child(0).get_texture()
-
+		old_viewport.get_meta('node')._custom_fade_out(fade_time)
+		trans_node.transition_finished.connect(old_viewport.queue_free)
 	if new_viewport:
 		trans_node.next_scene = new_viewport.get_meta('node', null)
 		trans_node.next_texture = new_viewport.get_child(0).get_texture()
@@ -114,6 +102,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 
 	add_child(trans_node)
 	trans_node._fade()
+	trans_node.transition_finished.connect(trans_node.queue_free)
 
 	background_changed.emit(info)
 

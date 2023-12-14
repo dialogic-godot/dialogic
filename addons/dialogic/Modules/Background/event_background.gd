@@ -16,7 +16,7 @@ var scene: String = ""
 var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
-
+## Name of the transition to use.
 var transition: String = ""
 
 
@@ -61,7 +61,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"scene" 		: {"property": "scene", 			"default": ""},
 		"arg" 			: {"property": "argument", 			"default": ""},
 		"fade" 			: {"property": "fade", 				"default": 0},
-		"transition"	: {"property": "transition",		"default": ""},
+		"transition"	: {"property": "transition",		"default": "",
+									"suggestions": get_transition_suggestions},
 	}
 
 
