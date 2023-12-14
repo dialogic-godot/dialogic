@@ -359,6 +359,10 @@ func set_default_color(value) -> void:
 	event_color = DialogicUtil.get_color(value)
 
 
+## Called when the resource is assigned to a event block in the visual editor
+func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
+	pass
+
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
