@@ -78,6 +78,7 @@ func _read_file_into_lines() -> void:
 	while not file.eof_reached():
 		var line := file.get_csv_line()
 		var row_key := line[0]
+
 		old_lines[row_key] = line
 
 
@@ -115,6 +116,38 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 		var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
 		var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
 		lines.append(nick_array_line)
+
+
+func append_empty() -> void:
+	var empty_line := PackedStringArray(["", ""])
+	lines.append(empty_line)
+
+
+func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
+	if glossary._translation_id == null or glossary._translation_id.is_empty():
+		glossary.add_translation_id()
+
+	var translation_id := glossary._translation_id
+	var glossary_entries := glossary.entries
+
+	for glossary_entry_name in glossary_entries:
+		var name_key := glossary.get_property_translation_key(glossary_entry_name)
+		var name_key_line := PackedStringArray([name_key, glossary_entry_name])
+		lines.append(name_key_line)
+
+		var glossary_record: Dictionary = glossary_entries[glossary_entry_name]
+
+		for item_key in glossary_record:
+			var item_value: Variant = glossary_record[item_key]
+
+			if not typeof(item_value) == TYPE_STRING or item_value.is_empty():
+				continue
+
+			var glossary_csv_key := glossary.get_property_translation_key(item_key)
+			var glossary_line := PackedStringArray([glossary_csv_key, item_value])
+			lines.append(glossary_line)
+
+		append_empty()
 
 
 ## Collects translatable events from the given [param timeline] and adds

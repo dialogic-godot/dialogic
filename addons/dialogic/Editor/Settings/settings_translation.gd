@@ -17,6 +17,10 @@ const DEFAULT_CHARACTER_CSV_NAME := "dialogic_character_translations.csv"
 ## Only used when all timelines are supposed to be translated in one file.
 const DEFAULT_TIMELINE_CSV_NAME := "dialogic_timeline_translations.csv"
 
+const DEFAULT_GLOSSARY_CSV_NAME := "dialogic_glossary_translations.csv"
+
+## Contains translation changes that were made during the last update.
+
 
 func _get_icon():
 	return get_theme_icon("Translation", "EditorIcons")
@@ -158,6 +162,68 @@ func _delete_and_update() -> void:
 	update_csv_files()
 
 
+
+## Creates or updates the glossary CSV files.
+func handle_glossary_translation(save_location_mode: SaveLocationModes,
+	translation_mode: TranslationModes,
+	translation_folder_path: String,
+	orig_locale: String) -> void:
+	var glossary_csv_path = ""
+	var added_glossary := 0
+	var updated_glossary := 0
+
+	var glossary_csv: DialogicCsvFile = null
+	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
+
+	for glossary_path in glossary_paths:
+
+		if glossary_csv == null:
+			var csv_name := ""
+
+			# Get glossary CSV file name.
+			match translation_mode:
+				TranslationModes.PER_PROJECT:
+					csv_name = DEFAULT_GLOSSARY_CSV_NAME
+
+				TranslationModes.PER_TIMELINE:
+					var glossary_name: String = glossary_path.trim_suffix('.tres')
+					var path_parts := glossary_name.split("/")
+					csv_name = path_parts[-1]
+					csv_name += '_translation.csv'
+
+			# Get glossary CSV file path.
+			match save_location_mode:
+				SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
+					glossary_csv_path = translation_folder_path.path_join(csv_name)
+
+				SaveLocationModes.NEXT_TO_TIMELINE:
+					glossary_csv_path = glossary_path.get_base_dir().path_join(csv_name)
+
+			# Create or update glossary CSV file.
+			glossary_csv = DialogicCsvFile.new(glossary_csv_path, orig_locale)
+
+			if (glossary_csv.is_new_file):
+				added_glossary += 1
+			else:
+				updated_glossary += 1
+
+		var glossary: DialogicGlossary = load(glossary_path)
+		glossary_csv.collect_lines_from_glossary(glossary)
+
+		match translation_mode:
+			TranslationModes.PER_PROJECT:
+				pass
+
+			TranslationModes.PER_TIMELINE:
+				glossary_csv.update_csv_file_on_disk()
+				glossary_csv = null
+
+	# If a Per-Project glossary is still open, we need to save it.
+	if glossary_csv != null:
+		glossary_csv.update_csv_file_on_disk()
+		glossary_csv = null
+
+
 func update_csv_files() -> void:
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
@@ -171,12 +237,7 @@ func update_csv_files() -> void:
 	ProjectSettings.set_setting('dialogic/translation/intern/file_mode', translation_mode)
 	ProjectSettings.set_setting('dialogic/translation/intern/translation_folder', translation_folder_path)
 
-	var new_events := 0
-	var new_timelines := 0
-	var updated_events := 0
-	var updated_timelines := 0
-	var new_names := 0
-	var updated_names := 0
+	var record := DialogicTranslationRecord.new()
 
 	var current_timeline := _close_active_timeline()
 
@@ -187,17 +248,17 @@ func update_csv_files() -> void:
 		csv_per_project = DialogicCsvFile.new(per_project_csv_path, orig_locale)
 
 		if (csv_per_project.is_new_file):
-			new_timelines += 1
+			record.new_timelines += 1
 		else:
-			updated_timelines += 1
+			record.updated_timelines += 1
 
 	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path, orig_locale)
 
 	if (character_name_csv.is_new_file):
-		new_timelines += 1
+		record.new_timelines += 1
 	else:
-		updated_timelines += 1
+		record.updated_timelines += 1
 
 	# Iterate over all timelines.
 	# Create or update CSV files.
@@ -219,7 +280,7 @@ func update_csv_files() -> void:
 
 			per_timeline_path += '_translation.csv'
 			csv_file = DialogicCsvFile.new(per_timeline_path, orig_locale)
-			new_timelines += 1
+			record.new_timelines += 1
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
@@ -237,21 +298,24 @@ func update_csv_files() -> void:
 		if translation_mode == TranslationModes.PER_TIMELINE:
 			csv_file.update_csv_file_on_disk()
 
-		new_events += csv_file.new_rows
-		updated_events += csv_file.updated_rows
+		record.new_events += csv_file.new_rows
+		record.updated_events += csv_file.updated_rows
 
 	character_name_csv.update_csv_file_on_disk()
+
+	handle_glossary_translation(save_location_mode, translation_mode,
+		translation_folder_path, orig_locale)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
 
 	if character_name_csv.is_new_file:
-		new_timelines += 1
+		record.new_timelines += 1
 	else:
-		updated_timelines += 1
+		record.updated_timelines += 1
 
-	new_names += character_name_csv.new_rows
-	updated_names += character_name_csv.updated_rows
+	record.new_names += character_name_csv.new_rows
+	record.updated_names += character_name_csv.updated_rows
 
 	_silently_open_timeline(current_timeline)
 
@@ -263,12 +327,12 @@ func update_csv_files() -> void:
 		CSVs      created {new_timelines}   updated {updated_timelines}"
 
 	var status_message_args := {
-		'new_events': new_events,
-		'updated_events': updated_events,
-		'new_timelines': new_timelines,
-		'updated_timelines': updated_timelines,
-		'new_names': new_names,
-		'updated_names': updated_names,
+		'new_events': record.new_events,
+		'updated_events': record.updated_events,
+		'new_timelines': record.new_timelines,
+		'updated_timelines': record.updated_timelines,
+		'new_names': record.new_names,
+		'updated_names': record.updated_names,
 	}
 
 	%StatusMessage.text = status_message.format(status_message_args)
