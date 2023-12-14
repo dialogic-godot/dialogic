@@ -1,7 +1,7 @@
 extends Node
 class_name DialogicSubsystem
 
-var dialogic = null
+var dialogic: DialogicGameHandler = null
 
 enum LoadFlags {FULL_LOAD, ONLY_DNODES}
 
