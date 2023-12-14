@@ -8,6 +8,8 @@ extends Control
 signal resource_saved()
 signal resource_unsaved()
 
+signal opened
+
 var current_resource: Resource
 
 ## State of the current resource

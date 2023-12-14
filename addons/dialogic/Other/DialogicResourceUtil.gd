@@ -3,7 +3,9 @@ class_name DialogicResourceUtil
 
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
+
 static var special_resources : Array[Dictionary] = []
+
 
 static func update() -> void:
 	update_directory('.dch')
@@ -53,7 +55,6 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 	var suggested_name := file_path.get_file().trim_suffix("."+file_path.get_extension())
 	while suggested_name in directory:
 		suggested_name = file_path.trim_suffix("/"+suggested_name+"."+file_path.get_extension()).get_file().path_join(suggested_name)
-
 	directory[suggested_name] = file_path
 	return directory
 
@@ -98,6 +99,7 @@ static func remove_resource(file_path:String) -> void:
 	var key := directory.find_key(file_path)
 	while key != null:
 		directory.erase(key)
+		key = directory.find_key(file_path)
 	set_directory(file_path.get_extension(), directory)
 
 static func is_identifier_unused(extension:String, identifier:String) -> bool:
