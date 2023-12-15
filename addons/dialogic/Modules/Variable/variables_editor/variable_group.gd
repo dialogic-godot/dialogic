@@ -38,7 +38,7 @@ func get_group_path() -> String:
 	while !current.MainGroup:
 		path = current.get_item_name() + '.' + path
 		current = current.parent_Group
-	
+
 	return path
 
 
@@ -56,7 +56,7 @@ func load_data(group_name:String , data:Dictionary, _parent_Group:Control = null
 		previous_path = get_group_path()
 	else:
 		clear()
-	
+
 	add_data(data)
 
 
@@ -102,25 +102,25 @@ func search(term:String) -> bool:
 			child.visible = term in  str(child.get_item_name()).to_lower() or term in child.get_data().to_lower()
 			if not found_anything:
 				found_anything = child.visible
-	
+
 	if not term.is_empty() and not found_anything and not MainGroup:
 		hide()
 	else:
 		show()
-	
+
 	return found_anything
 
 
 func _get_drag_data(position:Vector2) -> Variant:
 	if MainGroup:
 		return null
-	
+
 	var data := {
 		'data':{},
 		'node':self
 	}
 	data.data[get_item_name()] = get_data()
-	
+
 	var prev :Control = load(PreviewScenePath).instantiate()
 	prev.set_text("Group: "+get_item_name())
 	set_drag_preview(prev)
@@ -141,10 +141,10 @@ func _drop_data(position:Vector2, data:Variant) -> void:
 		if fold == data.node:
 			return
 		fold = fold.parent_Group
-	
+
 	# if everything is good, then add new data and delete old one
 	add_data(data.data)
-	
+
 	if data.node.has_method('get_group_path'):
 		var new_path :String = data.node.previous_path.get_slice('.', data.node.previous_path.get_slice_count('.')-1)
 		if data.node.previous_path.get_slice_count('.') == 0:
@@ -160,14 +160,14 @@ func _drop_data(position:Vector2, data:Variant) -> void:
 			prev_name = data.node.parent_Group.get_group_path()+'.'+data.node.previous_name
 		else:
 			prev_name = data.node.previous_name
-		
+
 		if !get_group_path().is_empty():
 			new_name = get_group_path()+'.'+data.node.previous_name
 		else:
 			new_name = data.node.previous_name
-		
+
 		variables_editor.variable_renamed(prev_name, new_name)
-	
+
 	data.node.queue_free()
 	check_data()
 
@@ -176,7 +176,7 @@ func _drop_data(position:Vector2, data:Variant) -> void:
 func _on_VariableGroup_gui_input(event:InputEvent) -> void:
 	if get_viewport().gui_is_dragging():
 		if get_global_rect().has_point(get_global_mouse_position()):
-#			if not drag_preview: 
+#			if not drag_preview:
 #				drag_preview = Control.new()
 #				drag_preview.custom_minimum_size.y = 30
 #				%Content.add_child(drag_preview)
@@ -217,7 +217,7 @@ func update() -> void:
 		%SearchBar.show()
 		%Dragger.hide()
 		%SearchBar.right_icon = get_theme_icon("Search", "EditorIcons")
-	
+
 	%Dragger.texture = get_theme_icon("TripleBar", "EditorIcons")
 	%NameEdit.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
 	%DeleteButton.icon = get_theme_icon("Remove", "EditorIcons")
@@ -230,7 +230,7 @@ func update() -> void:
 	%NewVariable.tooltip_text = "Add new variable"
 	%FoldButton.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	%FoldButton.tooltip_text = "Hide/Show content"
-	
+
 	%DragSpacer.modulate = get_theme_color("accent_color", "Editor")
 	%DragSpacer.modulate.a = 0.5
 

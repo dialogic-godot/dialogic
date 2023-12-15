@@ -18,9 +18,9 @@ var argument: Variant = ""
 ## 						EXECUTE
 ################################################################################
 
-func _execute() -> void:	
+func _execute() -> void:
 	if argument_type == ArgumentTypes.DICTIONARY:
-		var result := JSON.parse_string(argument) 
+		var result := JSON.parse_string(argument)
 		if result != null:
 			var dict := result as Dictionary
 			dict.make_read_only()
