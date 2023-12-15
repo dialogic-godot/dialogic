@@ -14,7 +14,7 @@ var default_transition: String = get_script().resource_path.get_base_dir().path_
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	update_background()
 
 

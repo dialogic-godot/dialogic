@@ -1,3 +1,4 @@
+class_name DialogicGameHandler
 extends Node
 
 ## Autoload script that allows interacting with all of Dialogics systems:

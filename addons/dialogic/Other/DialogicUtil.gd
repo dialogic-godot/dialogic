@@ -20,6 +20,13 @@ static func get_dialogic_plugin() -> Node:
 
 #endregion
 
+## Returns the autoload when in-game.
+static func autoload() -> DialogicGameHandler:
+	if Engine.is_editor_hint():
+		return null
+	if not Engine.get_main_loop().root.has_node("Dialogic"):
+		return null
+	return Engine.get_main_loop().root.get_node("Dialogic")
 
 #region FILE SYSTEM
 ################################################################################

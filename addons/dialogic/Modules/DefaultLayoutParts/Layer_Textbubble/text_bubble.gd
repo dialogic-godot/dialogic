@@ -80,7 +80,7 @@ func close() -> void:
 func _on_dialog_text_started_revealing_text():
 	var font :Font = %DialogText.get_theme_font("normal_font")
 	%DialogText.size = font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
-	if Dialogic.Choices.is_question(Dialogic.current_event_idx):
+	if DialogicUtil.autoload().Choices.is_question(DialogicUtil.autoload().current_event_idx):
 		font = $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font('font')
 		%DialogText.size.y += font.get_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
 	%DialogText.position = -%DialogText.size/2

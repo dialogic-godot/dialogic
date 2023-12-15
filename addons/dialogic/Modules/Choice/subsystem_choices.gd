@@ -21,7 +21,7 @@ func _ready():
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	hide_all_choices()
 
 
@@ -50,19 +50,19 @@ func show_current_choices(instant:=true) -> void:
 			choice_blocker.start(reveal_delay)
 			choice_blocker.timeout.connect(show_current_choices)
 		if reveal_by_input:
-			Dialogic.Input.dialogic_action.connect(show_current_choices)
+			dialogic.Input.dialogic_action.connect(show_current_choices)
 		return
 
 	if choice_blocker.timeout.is_connected(show_current_choices):
 		choice_blocker.timeout.disconnect(show_current_choices)
-	if Dialogic.Input.dialogic_action.is_connected(show_current_choices):
-		Dialogic.Input.dialogic_action.disconnect(show_current_choices)
+	if dialogic.Input.dialogic_action.is_connected(show_current_choices):
+		dialogic.Input.dialogic_action.disconnect(show_current_choices)
 
 
 	var button_idx := 1
 	last_question_info = {'choices':[]}
 	for choice_index in get_current_choice_indexes():
-		var choice_event :DialogicEvent= dialogic.current_timeline_events[choice_index]
+		var choice_event: DialogicEvent = dialogic.current_timeline_events[choice_index]
 		# check if condition is false
 		if not choice_event.condition.is_empty() and not dialogic.Expression.execute_condition(choice_event.condition):
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT:
@@ -138,7 +138,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
 func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
-	if Dialogic.paused or not choice_blocker.is_stopped():
+	if dialogic.paused or not choice_blocker.is_stopped():
 		return
 	choice_selected.emit(choice_info)
 	hide_all_choices()

@@ -14,17 +14,17 @@ var animation_new_text : AnimationsNewText
 var full_clear := true
 
 func _ready():
-	Dialogic.Text.animation_textbox_hide.connect(_on_textbox_hide)
-	Dialogic.Text.animation_textbox_show.connect(_on_textbox_show)
-	Dialogic.Text.animation_textbox_new_text.connect(_on_textbox_new_text)
-	Dialogic.Text.about_to_show_text.connect(_on_about_to_show_text)
+	DialogicUtil.autoload().Text.animation_textbox_hide.connect(_on_textbox_hide)
+	DialogicUtil.autoload().Text.animation_textbox_show.connect(_on_textbox_show)
+	DialogicUtil.autoload().Text.animation_textbox_new_text.connect(_on_textbox_new_text)
+	DialogicUtil.autoload().Text.about_to_show_text.connect(_on_about_to_show_text)
 
 
 func _on_textbox_show():
 	if animation_in == AnimationsIn.NONE:
 		return
 	play('RESET')
-	Dialogic.Animation.start_animating()
+	DialogicUtil.autoload().Animation.start_animating()
 	%DialogTextPanel.get_parent().get_parent().modulate = Color.TRANSPARENT
 	%DialogicNode_DialogText.text = ""
 	match animation_in:
@@ -32,23 +32,23 @@ func _on_textbox_show():
 			play("textbox_pop")
 		AnimationsIn.FADE_UP:
 			play("textbox_fade_up")
-	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
-		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
+		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
 
 
 func _on_textbox_hide():
 	if animation_out == AnimationsOut.NONE:
 		return
 	play('RESET')
-	Dialogic.Animation.start_animating()
+	DialogicUtil.autoload().Animation.start_animating()
 	match animation_out:
 		AnimationsOut.POP_OUT:
 			play_backwards("textbox_pop")
 		AnimationsOut.FADE_DOWN:
 			play_backwards("textbox_fade_up")
 
-	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
-		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
+		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
 
 
 func _on_about_to_show_text(info:Dictionary) -> void:
@@ -56,18 +56,18 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text():
-	if Dialogic.Input.auto_skip.enabled:
+	if DialogicUtil.autoload().Input.auto_skip.enabled:
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:
 		return
 
-	Dialogic.Animation.start_animating()
+	DialogicUtil.autoload().Animation.start_animating()
 	if full_clear:
 		%DialogicNode_DialogText.text = ""
 	match animation_new_text:
 		AnimationsNewText.WIGGLE:
 			play("new_text")
 
-	if not animation_finished.is_connected(Dialogic.Animation.animation_finished):
-		animation_finished.connect(Dialogic.Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
+		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
