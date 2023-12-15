@@ -25,7 +25,3 @@ func _update_background(argument:String, time:float) -> void:
 	else:
 		image_node.texture = null
 		color_node.color = Color.from_string(argument, Color.TRANSPARENT)
-
-
-func _should_do_background_update(argument:String) -> bool:
-	return false

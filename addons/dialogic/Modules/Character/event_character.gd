@@ -18,7 +18,7 @@ var character : DialogicCharacter = null
 var portrait: String = ""
 ## The index of the position this character should move to
 var position: int = 1
-## Path to an animation script (extending DialogicAnimation).
+## Name of the animation script (extending DialogicAnimation).
 ## On Join/Leave empty (default) will fallback to the animations set in the settings.
 ## On Update empty will mean no animation.
 var animation_name: String = ""
@@ -80,7 +80,10 @@ func _execute() -> void:
 					var max_time: float = Dialogic.Input.auto_skip.time_per_event
 					final_animation_length = min(max_time, animation_length)
 
-				await dialogic.Portraits.join_character(character, portrait, position, mirrored, z_index, extra_data, animation_name, final_animation_length, animation_wait)
+				await dialogic.Portraits.join_character(
+					character, portrait, position,
+					mirrored, z_index, extra_data,
+					animation_name, final_animation_length, animation_wait)
 
 		Actions.LEAVE:
 			var final_animation_length: float = animation_length
@@ -202,7 +205,7 @@ func to_text() -> String:
 
 	var shortcode := "["
 	if animation_name:
-		shortcode += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
+		shortcode += 'animation="'+animation_name+'"'
 
 		if animation_length != default_values.get('animation_length', 0.5):
 			shortcode += ' length="'+str(animation_length)+'"'
@@ -267,25 +270,20 @@ func from_text(string:String) -> void:
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		animation_name = shortcode_params.get('animation', '')
-		if animation_name != "":
-			if !animation_name.ends_with('.gd'):
-				animation_name = DialogicUtil.guess_animation_file(animation_name)
-			if !animation_name.ends_with('.gd'):
-				printerr("[Dialogic] Couldn't identify animation '"+animation_name+"'.")
-				animation_name = ""
 
-			var animLength = shortcode_params.get('length', '0.5').to_float()
-			if typeof(animLength) == TYPE_FLOAT:
-				animation_length = animLength
-			else:
-				animation_length = animLength.to_float()
+		var animLength = shortcode_params.get('length', '0.5').to_float()
+		if typeof(animLength) == TYPE_FLOAT:
+			animation_length = animLength
+		else:
+			animation_length = animLength.to_float()
 
-			animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+		animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 
-			#repeat is supported on Update, the other two should not be checking this
-			if action == Actions.UPDATE:
-				animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
-				position_move_time = float(shortcode_params.get('move_time', position_move_time))
+		#repeat is supported on Update, the other two should not be checking this
+		if action == Actions.UPDATE:
+			animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
+			position_move_time = float(shortcode_params.get('move_time', position_move_time))
+
 		#move time is only supported on Update, but it isnt part of the animations so its separate
 		if action == Actions.UPDATE:
 			position_move_time = float(shortcode_params.get('move_time', position_move_time))
@@ -298,10 +296,10 @@ func from_text(string:String) -> void:
 		extra_data = shortcode_params.get('extra_data', "")
 
 
-# this is only here to provide a list of default values
-# this way the module manager can add custom default overrides to this event.
-# this is also why some properties are commented out,
-# because it's not recommended to overwrite them this way
+## this is only here to provide a list of default values
+## this way the module manager can add custom default overrides to this event.
+## this is also why some properties are commented out,
+## because it's not recommended to overwrite them this way
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
@@ -452,16 +450,8 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 		Actions.UPDATE:
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 
-	match action:
-		Actions.JOIN:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-		Actions.LEAVE:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-		Actions.UPDATE:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+	for anim in DialogicUtil.get_portrait_animation_scripts(action+1):
+		suggestions[DialogicUtil.pretty_name(anim)] = {'value':DialogicUtil.pretty_name(anim), 'editor_icon':["Animation", "EditorIcons"]}
 
 	return suggestions
 
