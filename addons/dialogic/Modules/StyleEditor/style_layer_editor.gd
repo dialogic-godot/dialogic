@@ -350,7 +350,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		child.get_parent().remove_child(child)
 		child.queue_free()
 
-	var scene :Node = null
+	var scene: Node = null
 	if !custom_scene_path.is_empty() and FileAccess.file_exists(custom_scene_path):
 		var pck_scn := load(custom_scene_path)
 		if pck_scn:
@@ -452,6 +452,9 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_grid.add_child(reset)
 				reset.pressed.connect(_on_export_override_reset.bind(i['name']))
 				current_grid.add_child(input)
+
+	if scene:
+		scene.queue_free()
 
 
 func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
