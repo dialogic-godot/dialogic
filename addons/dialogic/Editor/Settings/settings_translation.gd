@@ -188,8 +188,8 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 				TranslationModes.PER_TIMELINE:
 					var glossary_name: String = glossary_path.trim_suffix('.tres')
 					var path_parts := glossary_name.split("/")
-					csv_name = path_parts[-1]
-					csv_name += '_translation.csv'
+					var file_name := path_parts[-1]
+					csv_name = "dialogic_" + file_name + '_translation.csv'
 
 			# Get glossary CSV file path.
 			match save_location_mode:
