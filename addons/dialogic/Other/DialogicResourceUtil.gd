@@ -4,6 +4,9 @@ class_name DialogicResourceUtil
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
 
+static var special_resources : Array[Dictionary] = []
+
+
 static func update() -> void:
 	update_directory('.dch')
 	update_directory('.dtl')
@@ -25,8 +28,9 @@ static func get_directory(extension:String) -> Dictionary:
 
 static func set_directory(extension:String, directory:Dictionary) -> void:
 	extension = extension.trim_prefix('.')
-	ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
-	ProjectSettings.save()
+	if Engine.is_editor_hint():
+		ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
+		ProjectSettings.save()
 	Engine.set_meta(extension+'_directory', directory)
 
 
@@ -158,6 +162,30 @@ static func update_event_cache() -> Array:
 	return event_cache
 
 #endregion
+
+static func update_special_resources() -> void:
+	special_resources = []
+	for indexer in DialogicUtil.get_indexers():
+		special_resources.append_array(indexer._get_special_resources())
+
+
+static func list_special_resources_of_type(type:String) -> Array:
+	if special_resources.is_empty():
+		update_special_resources()
+	return special_resources.filter(func(x:Dictionary): return type == x.get('type','')).map(func(x:Dictionary): return x.get('path', ''))
+
+
+static func guess_special_resource(type:String, name:String, default:="") -> String:
+	if special_resources.is_empty():
+		update_special_resources()
+	if name.begins_with('res://'):
+		return name
+	for path in list_special_resources_of_type(type):
+		if DialogicUtil.pretty_name(path).to_lower() == name.to_lower():
+			return path
+	return default
+
+
 
 #region HELPERS
 ################################################################################
