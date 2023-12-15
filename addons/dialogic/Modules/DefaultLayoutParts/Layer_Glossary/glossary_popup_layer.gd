@@ -45,15 +45,15 @@ func _ready() -> void:
 		return
 
 	$Pointer.hide()
-	Dialogic.Text.animation_textbox_hide.connect($Pointer.hide)
-	Dialogic.Text.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)
-	Dialogic.Text.meta_hover_ended.connect(_on_dialogic_display_dialog_text_meta_hover_ended)
-	Dialogic.Text.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
+	DialogicUtil.autoload().Text.animation_textbox_hide.connect($Pointer.hide)
+	DialogicUtil.autoload().Text.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)
+	DialogicUtil.autoload().Text.meta_hover_ended.connect(_on_dialogic_display_dialog_text_meta_hover_ended)
+	DialogicUtil.autoload().Text.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
 
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
-	var info: Dictionary = Dialogic.Glossary.get_entry(meta)
+	var info: Dictionary = DialogicUtil.autoload().Glossary.get_entry(meta)
 
 	if not info:
 		return
@@ -78,7 +78,7 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
 			%Panel.self_modulate = info.get('color', Color.WHITE)
 			%PanelPoint.self_modulate = info.get('color', Color.WHITE)
 
-	Dialogic.Input.action_was_consumed = true
+	DialogicUtil.autoload().Input.action_was_consumed = true
 
 
 ## Method that keeps the bubble at mouse position when visible
@@ -93,11 +93,11 @@ func _process(delta) -> void:
 ## Method that hides the bubble
 func _on_dialogic_display_dialog_text_meta_hover_ended(meta:String) -> void:
 	$Pointer.hide()
-	Dialogic.Input.action_was_consumed = false
+	DialogicUtil.autoload().Input.action_was_consumed = false
 
 
 func _on_dialogic_display_dialog_text_meta_clicked(meta:String) -> void:
-	Dialogic.Input.action_was_consumed = true
+	DialogicUtil.autoload().Input.action_was_consumed = true
 
 
 func _apply_export_overrides() -> void:

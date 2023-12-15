@@ -20,8 +20,8 @@ var hide_text: bool = true
 func _execute() -> void:
 	var final_wait_time := time
 
-	if Dialogic.Input.auto_skip.enabled:
-		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+	if dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = dialogic.Input.auto_skip.time_per_event
 		final_wait_time = min(time, time_per_event)
 
 	if hide_text and dialogic.has_subsystem("Text"):

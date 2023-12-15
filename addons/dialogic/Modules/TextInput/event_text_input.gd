@@ -24,20 +24,20 @@ var allow_empty : bool = false
 ################################################################################
 
 func _execute() -> void:
-	Dialogic.Input.auto_skip.enabled = false
-	dialogic.current_state = Dialogic.States.WAITING
+	dialogic.Input.auto_skip.enabled = false
+	dialogic.current_state = DialogicGameHandler.States.WAITING
 	dialogic.TextInput.show_text_input(text, default, placeholder, allow_empty)
 	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed, CONNECT_ONE_SHOT)
 
 
 func _on_DialogicTextInput_input_confirmed(input:String) -> void:
-	if !Dialogic.has_subsystem('VAR'):
+	if !dialogic.has_subsystem('VAR'):
 		printerr('[Dialogic] The TextInput event needs the variable subsystem to be present.')
 		finish()
 		return
 	dialogic.VAR.set_variable(variable, input)
 	dialogic.TextInput.hide_text_input()
-	dialogic.current_state = Dialogic.States.IDLE
+	dialogic.current_state = DialogicGameHandler.States.IDLE
 	finish()
 
 
