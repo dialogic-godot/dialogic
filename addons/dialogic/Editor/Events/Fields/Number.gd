@@ -20,7 +20,7 @@ func _ready() -> void:
 	$Spin.icon = get_theme_icon("updown", "SpinBox")
 
 
-func set_value(new_value) -> void:
+func set_value(new_value:Variant) -> void:
 	_on_value_text_submitted(str(new_value), true)
 	$Value.tooltip_text = tooltip_text
 
