@@ -323,60 +323,6 @@ layout_mode = 2
 text = "⛔ Requires valid translation folder to translate character names and the project CSV file."
 autowrap_mode = 3
 
-[node name="InfoSection" type="VBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Setup" type="VBoxContainer" parent="InfoSection"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SetupTitle" type="Label" parent="InfoSection/Setup"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DialogicSection"
-text = "Setting up translations"
-
-[node name="HowToTranslateLabel" type="Label" parent="InfoSection/Setup"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "1. Enable translations
-2. Set the language you use in your timelines as \"Default timeline\".
-3. Select \"File mode\" and \"Save location\".
-4. Hit \"Update CSV files\":  This creates new CSV files from your timelines.
-5. Wait until reimport is finished. Then click \"Collect translations\"."
-autowrap_mode = 3
-
-[node name="HSeparator" type="HSeparator" parent="InfoSection"]
-layout_mode = 2
-
-[node name="Workflow" type="VBoxContainer" parent="InfoSection"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="WorkflowTitle" type="Label" parent="InfoSection/Workflow"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DialogicSection"
-text = "How to work with translations"
-
-[node name="HowToUseTtranslationLabel" type="Label" parent="InfoSection/Workflow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Editing:
-You can edit the CSV files in most editors (like Google Sheets or LibreOffice Calc).
-Create new languages by adding a new column with a valid locale in the first row.
-
-Updating:
-If you made changes to your timelines, hit \"Update CSV files\" again.
-If you added a new locale to the CSV, hit \"Update CSV files\" and \"Collect translation\".
-
-Testing:
-You can test languages by selecting the testing locale.
-While playing, you can use TranslationServer.set_locale(\"your_locale\")
-
-"
-autowrap_mode = 3
-
 [node name="UpdateConfirmationDialog" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
 title = "Please Decide..."
