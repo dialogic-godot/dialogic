@@ -74,9 +74,6 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	var new_viewport: SubViewportContainer
 	if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
 		new_viewport = add_background_node(load(scene), background_holder)
-		if not new_viewport.get_meta('node') is DialogicBackground:
-			printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
-			return
 	elif argument:
 		new_viewport = add_background_node(default_background_scene, background_holder)
 	else:
@@ -111,6 +108,12 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	var v_con := SubViewportContainer.new()
 	var viewport := SubViewport.new()
 	var b_scene := scene.instantiate()
+	if not b_scene is DialogicBackground:
+		printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
+		v_con.queue_free()
+		viewport.queue_free()
+		b_scene.queue_free()
+		return null
 
 	parent.add_child(v_con)
 	v_con.visible = false
