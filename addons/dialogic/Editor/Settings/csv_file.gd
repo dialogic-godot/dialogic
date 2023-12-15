@@ -28,6 +28,11 @@ var updated_rows: int = 0
 var new_rows: int = 0
 
 
+## Whether this CSV handler should add newlines as a separator between sections.
+## A section may be a new character, new timeline, or new glossary item inside
+## a per-project file.
+var add_separator: bool = false
+
 ## Stores all character names from the current CSV.
 ##
 ## If this is CSV file for timeline events, every appearing speaker will be
@@ -44,8 +49,11 @@ var collected_characters: Dictionary = {}
 ## Attempts to load the CSV file from [param file_path].
 ## If the file does not exist, a single entry is added to the [member lines]
 ## array.
-func _init(file_path: String, original_locale: String) -> void:
+## The [param separator_enabled] enables adding newlines as a separator to
+## per-project files. This is useful for readability.
+func _init(file_path: String, original_locale: String, separator_enabled: bool) -> void:
 	used_file_path = file_path
+	add_separator = separator_enabled
 
 	# The first entry must be the locale row.
 	# [method collect_lines_from_timeline] will add the other locales, if any.
@@ -58,8 +66,6 @@ func _init(file_path: String, original_locale: String) -> void:
 		# The "keys" and original locale are the only columns in a new file.
 		# For example: "keys, en"
 		column_count = 2
-
-		file = FileAccess.open(file_path, FileAccess.WRITE)
 		return
 
 	file = FileAccess.open(file_path, FileAccess.READ)
@@ -74,6 +80,7 @@ func _init(file_path: String, original_locale: String) -> void:
 
 
 ## Private function to read the CSV file into the [member lines] array.
+## Cannot be called on a new file.
 func _read_file_into_lines() -> void:
 	while not file.eof_reached():
 		var line := file.get_csv_line()
@@ -117,6 +124,10 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 		var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
 		lines.append(nick_array_line)
 
+		# New character item, if needed, add a separator.
+		if add_separator:
+			append_empty()
+
 
 func append_empty() -> void:
 	var empty_line := PackedStringArray(["", ""])
@@ -147,7 +158,9 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 			var glossary_line := PackedStringArray([glossary_csv_key, item_value])
 			lines.append(glossary_line)
 
-		append_empty()
+		# New glossary item, if needed, add a separator.
+		if add_separator:
+			append_empty()
 
 
 ## Collects translatable events from the given [param timeline] and adds
@@ -180,12 +193,25 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
 				and not collected_characters.has(character._translation_id)):
 					collected_characters[character._translation_id] = character
 
+	# End of timeline, if needed, add a separator.
+	if add_separator:
+		append_empty()
+
 
 ## Clears the CSV file on disk and writes the current [member lines] array to it.
 ## Uses the [member old_lines] dictionary to update existing translations.
 ## If a translation row misses a column, a trailing comma will be added to
 ## conform to the CSV file format.
+##
+## If the locale CSV line was collected only, a new file won't be created and
+## already existing translations won't be updated.
 func update_csv_file_on_disk() -> void:
+	# None or locale row only.
+	if lines.size() < 2:
+		print_rich("[color=yellow]No lines for the CSV file, skipping: " + used_file_path)
+
+		return
+
 	# Clear the current CSV file.
 	file = FileAccess.open(used_file_path, FileAccess.WRITE)
 
