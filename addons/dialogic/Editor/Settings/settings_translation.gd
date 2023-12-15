@@ -288,6 +288,11 @@ func update_csv_files() -> void:
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
+
+		if timeline.events.size() == 0:
+			print_rich("[color=yellow]Empty timeline, skipping: " + timeline_path + "[/color]")
+			continue
+
 		timeline.process()
 
 		# Collect timeline into CSV.
