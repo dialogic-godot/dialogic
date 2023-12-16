@@ -96,6 +96,8 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 		trans_node.next_texture = new_viewport.get_child(0).get_texture()
 		new_viewport.get_meta('node')._update_background(argument, fade_time)
 		new_viewport.get_meta('node')._custom_fade_in(fade_time)
+	else:
+		background_holder.remove_meta('current_viewport')
 
 	add_child(trans_node)
 	trans_node._fade()
