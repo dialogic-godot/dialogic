@@ -160,6 +160,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 		previous_editor = current_editor
 
 	editor._open(extra_info)
+	editor.opened.emit()
 	current_editor = editor
 	editor.show()
 	tabbar.current_tab = editor.get_index()
