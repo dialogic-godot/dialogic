@@ -111,7 +111,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	var viewport := SubViewport.new()
 	var b_scene := scene.instantiate()
 	if not b_scene is DialogicBackground:
-		printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
+		printerr("[Dialogic] Given background scene was not of type DialogicBackground! Make sure the scene has a script that extends DialogicBackground.")
 		v_con.queue_free()
 		viewport.queue_free()
 		b_scene.queue_free()
