@@ -134,3 +134,14 @@ func get_layout_node() -> Node:
 		return tree.get_meta('dialogic_layout_node')
 
 	return null
+
+# Similar to get_tree().get_first_node_in_group('group_name') but filtered to the active layout node subtree
+func get_first_node_in_group(group_name : String):
+	var layout_node = get_layout_node()
+	if null == layout_node:
+		return null
+	var nodes = get_tree().get_nodes_in_group(group_name)
+	for node in nodes:
+		if layout_node.is_ancestor_of(node):
+			return node
+	return null
