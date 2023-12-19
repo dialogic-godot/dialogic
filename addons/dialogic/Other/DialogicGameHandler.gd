@@ -242,20 +242,26 @@ func get_full_state() -> Dictionary:
 func load_full_state(state_info:Dictionary) -> void:
 	clear()
 	current_state_info = state_info
+	## The Style subsystem needs to run first for others to load correctly.
+	var scene: Node = null
+	if has_subsystem('Styles'):
+		get_subsystem('Styles').load_game_state()
+		scene = self.Styles.get_layout_node()
+
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 
-	## The Style subsystem needs to run first for others to load correctly.
-	if has_subsystem('Style'):
-		get_subsystem('Style').load_full_state()
+	var load_subsystems := func():
+		for subsystem in get_children():
+			if subsystem.name == 'Styles':
+				continue
+			subsystem.load_game_state()
 
-	await get_tree().process_frame
-
-	for subsystem in get_children():
-		if subsystem.name == 'Style':
-			continue
-
-		subsystem.load_game_state()
+	if null != scene and not scene.is_node_ready():
+		scene.ready.connect(load_subsystems)
+	else:
+		await get_tree().process_frame
+		load_subsystems.call()
 
 #endregion
 

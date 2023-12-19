@@ -31,9 +31,6 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
 
-	# This will include stuff from parent-styles (for inherited styles)
-	#var full_info := DialogicUtil.get_inherited_style_info(style_name)
-	# TODO something!
 	# if this style is the same style as before
 	var previous_layout := get_layout_node()
 	if (is_instance_valid(previous_layout)
@@ -133,4 +130,15 @@ func get_layout_node() -> Node:
 	if tree.has_meta('dialogic_layout_node') and is_instance_valid(tree.get_meta('dialogic_layout_node')):
 		return tree.get_meta('dialogic_layout_node')
 
+	return null
+
+## Similar to get_tree().get_first_node_in_group('group_name') but filtered to the active layout node subtree
+func get_first_node_in_layout(group_name : String):
+	var layout_node := get_layout_node()
+	if null == layout_node:
+		return null
+	var nodes = get_tree().get_nodes_in_group(group_name)
+	for node in nodes:
+		if layout_node.is_ancestor_of(node):
+			return node
 	return null
