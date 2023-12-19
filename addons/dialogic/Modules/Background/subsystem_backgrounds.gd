@@ -96,6 +96,8 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 		trans_node.next_texture = new_viewport.get_child(0).get_texture()
 		new_viewport.get_meta('node')._update_background(argument, fade_time)
 		new_viewport.get_meta('node')._custom_fade_in(fade_time)
+	else:
+		background_holder.remove_meta('current_viewport')
 
 	add_child(trans_node)
 	trans_node._fade()
@@ -109,7 +111,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	var viewport := SubViewport.new()
 	var b_scene := scene.instantiate()
 	if not b_scene is DialogicBackground:
-		printerr("[Dialogic] Given background scene was not of type DialogicBackground!")
+		printerr("[Dialogic] Given background scene was not of type DialogicBackground! Make sure the scene has a script that extends DialogicBackground.")
 		v_con.queue_free()
 		viewport.queue_free()
 		b_scene.queue_free()
