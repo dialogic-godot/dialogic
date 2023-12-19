@@ -19,7 +19,7 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
-	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''))
+	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''), 0.0, default_transition, true)
 
 
 ####################################################################################################
@@ -35,8 +35,12 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition) -> void:
-	var background_holder: DialogicNode_BackgroundHolder = get_tree().get_first_node_in_group('dialogic_background_holders')
+func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition, force:bool = false) -> void:
+	var background_holder: DialogicNode_BackgroundHolder
+	if dialogic.has_subsystem('Styles'):
+		background_holder = Dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
+	else:
+		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
 		return
 
@@ -47,7 +51,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	# First try just updating the existing scene.
 	if scene == dialogic.current_state_info.get('background_scene', ''):
 
-		if argument == dialogic.current_state_info.get('background_argument', ''):
+		if not force and argument == dialogic.current_state_info.get('background_argument', ''):
 			return
 
 		for old_bg in background_holder.get_children():
