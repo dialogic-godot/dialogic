@@ -37,8 +37,8 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## Then  [_update_background()] will be called directly on that previous scene.
 func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition, force:bool = false) -> void:
 	var background_holder: DialogicNode_BackgroundHolder
-	if Dialogic.has_subsystem('Styles'):
-		background_holder = Dialogic.Styles.get_first_node_in_group('dialogic_background_holders')
+	if dialogic.has_subsystem('Styles'):
+		background_holder = Dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
@@ -51,7 +51,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	# First try just updating the existing scene.
 	if scene == dialogic.current_state_info.get('background_scene', ''):
 
-		if !force && argument == dialogic.current_state_info.get('background_argument', ''):
+		if not force and argument == dialogic.current_state_info.get('background_argument', ''):
 			return
 
 		for old_bg in background_holder.get_children():
