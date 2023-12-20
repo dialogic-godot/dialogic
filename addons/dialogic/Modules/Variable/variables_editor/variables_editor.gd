@@ -24,7 +24,6 @@ func _open(argument:Variant = null):
 
 
 func _save():
-	print(%Tree.get_info())
 	ProjectSettings.set_setting('dialogic/variables', %Tree.get_info())
 	ProjectSettings.save()
 
