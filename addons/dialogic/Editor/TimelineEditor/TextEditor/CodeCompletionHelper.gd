@@ -127,7 +127,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 				return
 
 			# suggest parameters
-			if symbol == ' ':
+			if symbol == ' ' and line.count('"')%2 == 0:
 				var parameters :Array = shortcode_events[code].get_shortcode_parameters().keys()
 				for param in parameters:
 					if !param+'=' in line:
@@ -199,8 +199,8 @@ func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color
 
 
 func suggest_labels(text:CodeEdit, timeline:String='', end:='', color:=Color()) -> void:
-	if timeline in Engine.get_main_loop().get_meta('dialogic_label_directory', {}):
-		for i in Engine.get_main_loop().get_meta('dialogic_label_directory')[timeline]:
+	if timeline in DialogicResourceUtil.get_label_cache():
+		for i in DialogicResourceUtil.get_label_cache()[timeline]:
 			text.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+end, color, load("res://addons/dialogic/Modules/Jump/icon_label.png"))
 
 
