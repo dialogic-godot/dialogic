@@ -3,8 +3,8 @@ extends Tree
 
 enum TreeButtons {ADD_FOLDER, ADD_VARIABLE, DUPLICATE_FOLDER, DELETE, CHANGE_TYPE}
 
-
 @onready var editor: DialogicEditor = find_parent("VariablesEditor")
+
 
 #region INITIAL SETUP
 
@@ -26,6 +26,7 @@ func _ready() -> void:
 
 #endregion
 
+
 #region POPULATING THE TREE
 
 func load_info(dict:Dictionary, parent:TreeItem = null) -> void:
@@ -33,11 +34,13 @@ func load_info(dict:Dictionary, parent:TreeItem = null) -> void:
 		clear()
 		parent = add_folder_item("VAR", null)
 
-	for key in dict:
+	var sorted_keys := dict.keys()
+	sorted_keys.sort()
+	for key in sorted_keys:
 		if typeof(dict[key]) != TYPE_DICTIONARY:
 			add_variable_item(key, dict[key], parent)
 
-	for key in dict:
+	for key in sorted_keys:
 		if typeof(dict[key]) == TYPE_DICTIONARY:
 			var folder := add_folder_item(key, parent)
 			load_info(dict[key], folder)
@@ -54,7 +57,6 @@ func add_variable_item(name:String, value:Variant, parent:TreeItem) -> TreeItem:
 	item.set_icon(0, load(DialogicUtil.get_module_path('Variable').path_join("variable.svg")))
 	var folder_color: Color = parent.get_meta('color', Color.DARK_GOLDENROD)
 	item.set_custom_bg_color(0, folder_color.lerp(get_theme_color("background", "Editor"), 0.8))
-	#item.set_custom_bg_color(1, folder_color, true)
 
 	item.add_button(1, get_theme_icon("String", "EditorIcons"), TreeButtons.CHANGE_TYPE)
 	adjust_variable_type(item, DialogicUtil.get_variable_value_type(value), value)
@@ -90,6 +92,7 @@ func add_folder_item(name:String, parent:TreeItem) -> TreeItem:
 
 
 #endregion
+
 
 #region EDITING THE TREE
 
@@ -258,7 +261,6 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 	var parent: TreeItem = null
 	if (drop_section == 1 and to_item.get_meta('type') == "FOLDER") or to_item == get_root():
 		parent = to_item
-		print("\nDragged onto folder!")
 	else:
 		parent = to_item.get_parent()
 
@@ -271,19 +273,11 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		if test_item == get_root():
 			break
 
-
-	#var parent := get_root()
-	#if to_item:
-		#parent = to_item.get_parent()
-#
-	#if to_item and to_item.get_meta('type') == "FOLDER" and drop_section == 1:
-		#parent = to_item
-#
 	var new_item: TreeItem = null
-	#print(to_item.get_text(0))
 	match item.get_meta('type'):
 		"VARIABLE":
 			new_item = add_variable_item(item.get_text(0), item.get_metadata(2), parent)
+			new_item.set_meta('prev_path', get_item_path(item))
 		"FOLDER":
 			new_item = add_folder_item(item.get_text(0), parent)
 			load_info(get_info(item), new_item)
@@ -295,11 +289,12 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		else:
 			new_item.move_after(to_item)
 
-	##editor.report_name_change(new_item)
+	report_name_changes(new_item)
 
 	item.free()
 
 #endregion
+
 
 #region NAME CHANGES
 ################################################################################
