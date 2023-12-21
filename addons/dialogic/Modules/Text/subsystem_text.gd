@@ -113,7 +113,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
 	# also resets temporary autoadvance and noskip settings:
-	speed_multiplier = 1
+	update_text_speed(-1, false, 1, -1)
 
 	dialogic.Input.auto_advance.enabled_until_next_event = false
 	dialogic.Input.auto_advance.override_delay_for_current_event = -1
