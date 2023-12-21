@@ -142,6 +142,6 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 
 func has_background() -> bool:
-	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()
+	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
 
 
