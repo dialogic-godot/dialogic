@@ -197,9 +197,12 @@ func show_text_boxes(instant:=false) -> void:
 
 func show_next_indicators(question:=false, autoadvance:=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
-		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
+		if next_indicator.enabled:
+			if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
-			next_indicator.show()
+				next_indicator.show()
+		else:
+			next_indicator.hide()
 
 func hide_next_indicators(_fake_arg = null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):

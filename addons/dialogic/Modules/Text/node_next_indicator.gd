@@ -5,6 +5,9 @@ extends Control
 ## Node that is shown when the text is fully revealed.
 ## The default implementation allows to set an icon and animation.
 
+
+@export var enabled := true
+
 ## If true the next indicator will also be shown if the text is a question.
 @export var show_on_questions := false
 ## If true the next indicator will be shown even if dialogic will autocontinue.
