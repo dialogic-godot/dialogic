@@ -84,7 +84,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 	var line := get_code_completion_line(text)
 	var word := get_code_completion_word(text)
 	var symbol := get_code_completion_prev_symbol(text)
-
+	var line_part := get_line_untill_caret(line)
 
 	## Note on use of KIND types for options.
 	# These types are mostly useless for us.
@@ -169,7 +169,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 		if mode == Modes.TEXT_EVENT_ONLY and !event is DialogicTextEvent:
 			continue
 
-		if ! ' ' in line:
+		if ! ' ' in line_part:
 			event._get_start_code_completion(self, text)
 
 		if event.is_valid_event(line):
