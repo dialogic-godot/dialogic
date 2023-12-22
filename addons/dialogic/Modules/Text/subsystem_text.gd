@@ -453,9 +453,9 @@ func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
-	if dialogic.current_state_info.get('character', null):
+	if dialogic.current_state_info.get('speaker', null):
 		update_typing_sound_mood(
-			load(dialogic.current_state_info.character).custom_info.get('sound_moods', {}).get(argument, {}))
+			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
