@@ -38,7 +38,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition, force:bool = false) -> void:
 	var background_holder: DialogicNode_BackgroundHolder
 	if dialogic.has_subsystem('Styles'):
-		background_holder = Dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
+		background_holder = dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 	if background_holder == null:
@@ -142,6 +142,6 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 
 func has_background() -> bool:
-	return !dialogic.current_state_info['background_scene'].is_empty() or !dialogic.current_state_info['background_argument'].is_empty()
+	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
 
 

@@ -117,7 +117,6 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	var suggestions := {}
 
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
-
 	for resource in  DialogicResourceUtil.get_timeline_directory().keys():
 		suggestions[resource] = {'value': resource, 'tooltip':DialogicResourceUtil.get_timeline_directory()[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions
@@ -126,9 +125,8 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 func get_label_suggestions(filter:String="") -> Dictionary:
 	var suggestions := {}
 	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
-
-	if _timeline_file in Engine.get_main_loop().get_meta('dialogic_label_directory').keys():
-		for label in Engine.get_main_loop().get_meta('dialogic_label_directory')[_timeline_file]:
+	if _timeline_file in DialogicResourceUtil.get_label_cache().keys():
+		for label in DialogicResourceUtil.get_label_cache()[_timeline_file]:
 			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["ArrowRight", "EditorIcons"]}
 	return suggestions
 

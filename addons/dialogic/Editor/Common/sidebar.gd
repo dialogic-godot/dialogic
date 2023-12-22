@@ -157,8 +157,11 @@ func update_content_list(list:PackedStringArray) -> void:
 	var label_directory := DialogicResourceUtil.get_label_cache()
 	if current_resource != null:
 		for i in timeline_directory:
-			if timeline_directory[i] ==  current_resource.resource_path:
+			if timeline_directory[i] == current_resource.resource_path:
 				label_directory[i] = list
+
+	# also always store the current timelines labels for easy access
+	label_directory[""] = list
 
 	DialogicResourceUtil.set_label_cache(label_directory)
 

@@ -14,7 +14,7 @@ func _get_icon() -> Texture:
 func _ready():
 	self_modulate = get_theme_color("font_color", "Editor")
 	self_modulate.a = 0.2
-	
+
 	var edit_scale := DialogicUtil.get_editor_scale()
 	%HomePageBox.custom_minimum_size = Vector2(600, 350)*edit_scale
 	%TopPanel.custom_minimum_size.y = 100*edit_scale
@@ -22,7 +22,7 @@ func _ready():
 	var plugin_cfg := ConfigFile.new()
 	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
 	%VersionLabel.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
-	
+
 	%BottomPanel.self_modulate = get_theme_color("dark_color_3", "Editor")
 
 	%RandomTipLabel.add_theme_color_override("font_color", get_theme_color("property_color_z", "Editor"))
@@ -32,7 +32,7 @@ func _ready():
 
 func _register():
 	editors_manager.register_simple_editor(self)
-	
+
 	self.alternative_text = "Welcome to dialogic!"
 
 
@@ -42,7 +42,7 @@ func _open(extra_info:Variant="") -> void:
 		var file := FileAccess.open('res://addons/dialogic/Editor/HomePage/tips.txt', FileAccess.READ)
 		tips = file.get_as_text().split('\n')
 		tips = tips.filter(func(item): return !item.is_empty())
-	
+
 	randomize()
 	var tip :String = tips[randi()%len(tips)]
 	var text := tip.get_slice(';',0).strip_edges()
@@ -57,17 +57,17 @@ func show_tip(text:String='', action:String='') -> void:
 		%TipBox.hide()
 		%RandomTipLabel.hide()
 		return
-	
+
 	%TipBox.show()
 	%RandomTipLabel.show()
 	%RandomTip.text = '[i]'+text
-	
+
 	if action.is_empty():
 		%RandomTipMoreButton.hide()
 		return
-	
+
 	%RandomTipMoreButton.show()
-	
+
 	if %RandomTipMoreButton.pressed.is_connected(_on_tip_action):
 		%RandomTipMoreButton.pressed.disconnect(_on_tip_action)
 	%RandomTipMoreButton.pressed.connect(_on_tip_action.bind(action))

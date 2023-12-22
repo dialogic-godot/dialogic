@@ -113,7 +113,7 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
 	# also resets temporary autoadvance and noskip settings:
-	speed_multiplier = 1
+	update_text_speed(-1, false, 1, -1)
 
 	dialogic.Input.auto_advance.enabled_until_next_event = false
 	dialogic.Input.auto_advance.override_delay_for_current_event = -1
@@ -197,9 +197,12 @@ func show_text_boxes(instant:=false) -> void:
 
 func show_next_indicators(question:=false, autoadvance:=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
-		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
+		if next_indicator.enabled:
+			if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
 			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
-			next_indicator.show()
+				next_indicator.show()
+		else:
+			next_indicator.hide()
 
 func hide_next_indicators(_fake_arg = null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
@@ -450,9 +453,9 @@ func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
-	if dialogic.current_state_info.get('character', null):
+	if dialogic.current_state_info.get('speaker', null):
 		update_typing_sound_mood(
-			load(dialogic.current_state_info.character).custom_info.get('sound_moods', {}).get(argument, {}))
+			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
