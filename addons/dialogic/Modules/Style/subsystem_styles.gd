@@ -26,37 +26,43 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 	var style := DialogicUtil.get_style_by_name(style_name)
 
 	var signal_info := {'style':style_name}
+	dialogic.current_state_info['style'] = style_name
 
 	# is_base_style should only be wrong on temporary changes like character styles
 	if is_base_style:
 		dialogic.current_state_info['base_style'] = style_name
 
-	# if this style is the same style as before
 	var previous_layout := get_layout_node()
-	if (is_instance_valid(previous_layout)
-			and previous_layout.has_meta('style')):
-		if previous_layout.get_meta('style').name == style_name:
+
+	if is_instance_valid(previous_layout) and previous_layout.has_meta('style'):
+		signal_info['previous'] = previous_layout.get_meta('style').name
+
+		# If this is the same style and scene, do nothing
+		if previous_layout.get_meta('style') == style:
 			return previous_layout
 
 		# If this has the same scene setup, just apply the new overrides
-		if previous_layout.get_meta('style') == style.get_inheritance_root():
-			DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(-1))
+		elif previous_layout.get_meta('style') == style.get_inheritance_root():
+			DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(-1).overrides)
 			var index := 0
-			for i in previous_layout.get_layers():
-				DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(index))
+			for layer in previous_layout.get_layers():
+				DialogicUtil.apply_scene_export_overrides(layer, style.get_layer_inherited_info(index).overrides)
 				index += 1
+
+			previous_layout.set_meta('style', style)
+			style_changed.emit(signal_info)
+			return
+
+		else:
+			previous_layout.get_parent().remove_child(previous_layout)
+			previous_layout.queue_free()
 
 	# if this is another style:
 	var new_layout := create_layout(style)
-
-	if new_layout != previous_layout and previous_layout != null:
-		if previous_layout.has_meta('style'): signal_info['previous'] = previous_layout.get_meta('style').name
-		previous_layout.queue_free()
-		new_layout.ready.connect(reload_current_info_into_new_style)
-
-	dialogic.current_state_info['style'] = style_name
+	new_layout.ready.connect(reload_current_info_into_new_style)
 
 	style_changed.emit(signal_info)
+
 	return new_layout
 
 

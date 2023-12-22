@@ -64,7 +64,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"text"			: {"property": "text", 			"default": "Please enter some text:"},
-		"var"			: {"property": "variable", 		"default": ""},
+		"var"			: {"property": "variable", 		"default": "", "suggestions":get_var_suggestions},
 		"placeholder"	: {"property": "placeholder", 	"default": ""},
 		"default"		: {"property": "default", 		"default": ""},
 		"allow_empty"	: {"property": "allow_empty",	"default": false},
@@ -86,7 +86,7 @@ func build_event_editor() -> void:
 	add_body_edit('allow_empty', ValueType.BOOL, {'left_text':'Allow empty:'})
 
 
-func get_var_suggestions(filter:String) -> Dictionary:
+func get_var_suggestions(filter:String="") -> Dictionary:
 	var suggestions := {}
 	if filter:
 		suggestions[filter] = {

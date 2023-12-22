@@ -36,7 +36,8 @@ func parse_glossary(text:String) -> String:
 		for entry in glossary.entries.keys():
 			if !glossary.entries[entry].get('enabled', true):
 				continue
-			var pattern :String = '(?<=\\W|^)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
+
+			var pattern :String = '(?<=\\W|^)(?<!\\\\)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
 			if glossary.entries[entry].get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)
 			else:
@@ -51,6 +52,15 @@ func parse_glossary(text:String) -> String:
 				'[color=' + color + ']${word}[/color]' +
 				'[/url]', true
 				)
+
+			# Then do a pass removing any \ from escaped entries
+			pattern = '\\\\(?<=\\W|^)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
+			if glossary.entries[entry].get('case_sensitive', def_case_sensitive):
+				regex.compile(pattern)
+			else:
+				regex.compile('(?i)'+pattern)
+
+			text = regex.sub(text, "${word}", true)
 	return text
 
 

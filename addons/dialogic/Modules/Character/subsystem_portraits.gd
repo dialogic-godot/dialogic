@@ -480,7 +480,7 @@ func remove_character(character:DialogicCharacter) -> void:
 
 ## Returns true if the given character is currently joined.
 func is_character_joined(character:DialogicCharacter) -> bool:
-	if !character.resource_path in dialogic.current_state_info['portraits']:
+	if not character or !character.resource_path in dialogic.current_state_info['portraits']:
 		return false
 	if dialogic.current_state_info['portraits'][character.resource_path].get('node', null) != null and \
 			is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node):

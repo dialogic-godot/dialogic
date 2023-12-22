@@ -11,4 +11,5 @@ func _apply_export_overrides():
 	# apply portrait size
 	for child in %Portraits.get_children():
 		child.size_mode = portrait_size_mode
+		child.update_portrait_transforms()
 

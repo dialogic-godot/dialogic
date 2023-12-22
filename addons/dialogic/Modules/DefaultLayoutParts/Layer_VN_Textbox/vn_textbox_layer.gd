@@ -132,9 +132,15 @@ func _apply_export_overrides():
 	else:
 		%DialogTextPanel.self_modulate = box_color_custom
 
-	%DialogTextPanel.custom_minimum_size = box_size
-	%Minimizer.size = Vector2.ZERO
-	%Minimizer.position.y = -box_margin_bottom
+	#%DialogTextPanel.hide()
+	#%Minimizer.size = Vector2.ZERO
+	#%Minimizer.position = Vector2(0, -box_margin_bottom)
+	#%Minimizer.grow_vertical = Container.GROW_DIRECTION_BEGIN
+	#%DialogTextPanel.custom_minimum_size = box_size
+	#%DialogTextPanel.show()
+	%Sizer.size = box_size
+	%Sizer.position = box_size * Vector2(-0.5, -1)+Vector2(0, -box_margin_bottom)
+
 
 	## BOX ANIMATIONS
 	%Animations.animation_in = box_animation_in
@@ -178,9 +184,9 @@ func _apply_export_overrides():
 	%NameLabelPanel.grow_horizontal = [1, 2, 0][name_label_alignment]
 
 	## NEXT INDICATOR SETTINGS
-	if !next_indicator_enabled:
-		%NextIndicator.queue_free()
-	else:
+	%NextIndicator.enabled = next_indicator_enabled
+
+	if next_indicator_enabled:
 		%NextIndicator.animation = next_indicator_animation
 		if FileAccess.file_exists(next_indicator_texture):
 			%NextIndicator.texture = load(next_indicator_texture)
