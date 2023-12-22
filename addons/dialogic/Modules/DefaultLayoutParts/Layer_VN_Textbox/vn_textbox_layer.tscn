@@ -248,6 +248,7 @@ mouse_filter = 2
 [node name="Sizer" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent"]
 unique_name_in_owner = true
 layout_mode = 1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
