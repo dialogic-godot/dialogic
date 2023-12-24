@@ -21,7 +21,7 @@ static func get_directory(extension:String) -> Dictionary:
 	if Engine.has_meta(extension+'_directory'):
 		return Engine.get_meta(extension+'_directory', {})
 
-	var directory := ProjectSettings.get_setting("dialogic/directories/"+extension+'_directory', {})
+	var directory: Dictionary = ProjectSettings.get_setting("dialogic/directories/"+extension+'_directory', {})
 	Engine.set_meta(extension+'_directory', directory)
 	return directory
 
@@ -60,7 +60,7 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 
 
 static func get_unique_identifier(file_path:String) -> String:
-	var identifier := get_directory(file_path.get_extension()).find_key(file_path)
+	var identifier: String = get_directory(file_path.get_extension()).find_key(file_path)
 	if typeof(identifier) == TYPE_STRING:
 		return identifier
 	return ""
@@ -75,7 +75,7 @@ static func get_resource_from_identifier(identifier:String, extension:String) ->
 
 static func change_unique_identifier(file_path:String, new_identifier:String) -> void:
 	var directory := get_directory(file_path.get_extension())
-	var key := directory.find_key(file_path)
+	var key: String = directory.find_key(file_path)
 	while key != null:
 		if key == new_identifier:
 			break
@@ -87,7 +87,7 @@ static func change_unique_identifier(file_path:String, new_identifier:String) ->
 
 static func change_resource_path(old_path:String, new_path:String) -> void:
 	var directory := get_directory(new_path.get_extension())
-	var key := directory.find_key(old_path)
+	var key: String = directory.find_key(old_path)
 	while key != null:
 		directory[key] = new_path
 		key = directory.find_key(old_path)
@@ -96,7 +96,7 @@ static func change_resource_path(old_path:String, new_path:String) -> void:
 
 static func remove_resource(file_path:String) -> void:
 	var directory := get_directory(file_path.get_extension())
-	var key := directory.find_key(file_path)
+	var key: String = directory.find_key(file_path)
 	while key != null:
 		directory.erase(key)
 		key = directory.find_key(file_path)

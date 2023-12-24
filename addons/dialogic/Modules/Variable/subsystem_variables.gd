@@ -59,7 +59,7 @@ func parse_variables(text:String) -> String:
 
 	var parsed := text.replace('\\{', '{')
 	for result in regex.search_all(text):
-		var value := get_variable(result.get_string('variable'), "<NOT FOUND>")
+		var value: Variant = get_variable(result.get_string('variable'), "<NOT FOUND>")
 		parsed = parsed.replace("{"+result.get_string('variable')+"}", str(value))
 
 	return parsed
@@ -93,7 +93,7 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 
 	# First assume this is just a single variable
-	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
+	var value: Variant = _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
 	if value != null:
 		return value
 
