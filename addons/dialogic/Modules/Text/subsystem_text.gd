@@ -475,7 +475,7 @@ func modifier_break(text:String) -> String:
 
 
 func modifier_autopauses(text:String) -> String:
-	var absolute := ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
+	var absolute: bool = ProjectSettings.get_setting('dialogic/text/absolute_autopauses', false)
 	for i in _autopauses.keys():
 		var offset := 0
 		for result in i.search_all(text):

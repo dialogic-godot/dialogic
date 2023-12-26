@@ -89,7 +89,7 @@ func move_layer(from_index:int, to_index:int) -> void:
 	if from_index < to_index:
 		to_index -1
 
-	var info := layers.pop_at(from_index)
+	var info: DialogicLayoutLayer = layers.pop_at(from_index)
 	layers.insert(to_index, info)
 	changed.emit()
 

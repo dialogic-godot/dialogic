@@ -207,7 +207,7 @@ static func get_fallback_style() -> DialogicStyle:
 
 
 static func get_default_style() -> DialogicStyle:
-	var default := ProjectSettings.get_setting('dialogic/layout/default_style', '')
+	var default: String = ProjectSettings.get_setting('dialogic/layout/default_style', '')
 	if !ResourceLoader.exists(default):
 		return get_fallback_style()
 	return load(default)
@@ -217,7 +217,7 @@ static func get_style_by_name(name:String) -> DialogicStyle:
 	if name.is_empty():
 		return get_default_style()
 
-	var styles := ProjectSettings.get_setting('dialogic/layout/style_list', [])
+	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
 	for style in styles:
 		if not ResourceLoader.exists(style):
 			continue

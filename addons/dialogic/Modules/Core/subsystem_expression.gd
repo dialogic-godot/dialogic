@@ -37,7 +37,7 @@ func execute_string(string:String, default = null) -> Variant:
 		printerr('Dialogic: Expression failed to parse: ', expr.get_error_text())
 		return default
 
-	var result := expr.execute(autoloads, self)
+	var result: Variant = expr.execute(autoloads, self)
 	if expr.has_execute_failed():
 		printerr('Dialogic: Expression failed to execute: ', expr.get_error_text())
 		return default
