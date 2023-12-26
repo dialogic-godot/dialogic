@@ -316,7 +316,3 @@ func close() -> void:
 
 func _on_add_button_pressed() -> void:
 	%ReplacementEditPanel._on_add_pressed()
-
-
-func _on_help_button_pressed() -> void:
-	pass # Replace with function body.
