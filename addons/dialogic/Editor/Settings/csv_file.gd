@@ -197,7 +197,8 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 			.path_join(glossary._translation_id)
 	)
 
-
+## Collects properties from glossary entries from the given [param glossary] and
+## adds them to the [member lines].
 func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 	for glossary_entry_key: String in glossary.entries.keys():
@@ -233,8 +234,6 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 ## Collects translatable events from the given [param timeline] and adds
 ## them to the [member lines].
-##
-## If this is a timeline CSV file,
 func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
 	for event: DialogicEvent in timeline.events:
 
