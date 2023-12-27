@@ -8,6 +8,10 @@ var current_moods_info := {}
 var default_mood := ''
 
 
+func _init() -> void:
+	hint_text = 'Typing sound moods allow you to vary the "typing" sounds of your character. \nThey can be changed based on the portrait or with the [mood=something] text effect.'
+
+
 func _get_title() -> String:
 	return "Typing Sounds"
 

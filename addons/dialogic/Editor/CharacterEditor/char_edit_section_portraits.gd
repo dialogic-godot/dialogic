@@ -37,6 +37,11 @@ func default_portrait_changed(property:String, value:String) -> void:
 	character_editor.update_default_portrait_star(value)
 
 
+func set_default_portrait(portrait_name:String) -> void:
+	%DefaultPortraitPicker.set_value(portrait_name)
+	default_portrait_changed("", portrait_name)
+
+
 func _load_character(resource:DialogicCharacter) -> void:
 	loading = true
 	%DefaultPortraitPicker.set_value(resource.default_portrait)

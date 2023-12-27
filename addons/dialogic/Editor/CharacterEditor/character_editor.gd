@@ -460,6 +460,7 @@ func _input(event:InputEvent) -> void:
 			delete_portrait_item(%PortraitTree.get_selected())
 			get_viewport().set_input_as_handled()
 
+
 func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# RENAME BUTTON
 	if id == 0:
@@ -470,6 +471,8 @@ func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# DUPLICATE ITEM
 	elif id == 1:
 		duplicate_item(%PortraitTree.get_selected())
+	elif id == 4:
+		get_settings_section_by_name("Portraits").set_default_portrait(%PortraitTree.get_full_item_name(%PortraitTree.get_selected()))
 
 
 # this removes/and adds the DEFAULT star on the portrait list

@@ -11,6 +11,7 @@ func _ready() -> void:
 	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Rename', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Duplicate', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(2, get_theme_icon('Remove', 'EditorIcons'))
+	$PortraitRightClickMenu.set_item_icon(4, get_theme_icon("Favorites", "EditorIcons"))
 
 
 func clear_tree() -> void:
