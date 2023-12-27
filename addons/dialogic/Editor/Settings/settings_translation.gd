@@ -76,6 +76,7 @@ func _refresh() -> void:
 	%TransMode.select(ProjectSettings.get_setting('dialogic/translation/file_mode', 1))
 	%TransFolderPicker.set_value(ProjectSettings.get_setting('dialogic/translation/translation_folder', ''))
 	%TestingLocale.set_value(ProjectSettings.get_setting('internationalization/locale/test', ''))
+	%AddSeparatorEnabled.button_pressed = ProjectSettings.get_setting('dialogic/translation/add_separator', false)
 
 	_verify_translation_file()
 
@@ -131,7 +132,7 @@ func _verify_translation_file() -> void:
 	%StatusMessage.text = status_message
 
 
-func get_locales(filter:String) -> Dictionary:
+func get_locales(filter: String) -> Dictionary:
 	var suggestions := {}
 	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
 	suggestions[TranslationServer.get_tool_locale()] = {'value':TranslationServer.get_tool_locale()}
@@ -170,7 +171,7 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 	translation_mode: TranslationModes,
 	translation_folder_path: String,
 	orig_locale: String) -> void:
-	var glossary_csv_path = ""
+	var glossary_csv_path := ""
 	var added_glossary := 0
 	var updated_glossary := 0
 
@@ -178,7 +179,7 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 	var add_separator_lines: bool = ProjectSettings.get_setting('dialogic/translation/add_separator', false)
 
-	for glossary_path in glossary_paths:
+	for glossary_path: String in glossary_paths:
 
 		if glossary_csv == null:
 			var csv_name := ""
@@ -212,6 +213,8 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 
 		var glossary: DialogicGlossary = load(glossary_path)
 		glossary_csv.collect_lines_from_glossary(glossary)
+		glossary_csv.add_translation_keys_to_glossary(glossary)
+		ResourceSaver.save(glossary)
 
 		match translation_mode:
 			TranslationModes.PER_PROJECT:

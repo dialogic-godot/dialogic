@@ -3,7 +3,7 @@ extends Resource
 class_name DialogicTimeline
 
 
-var events:Array = []:
+var events: Array = []:
 	get:
 		return events
 	set(value):

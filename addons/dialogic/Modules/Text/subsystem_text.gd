@@ -351,10 +351,13 @@ func _update_user_speed(user_speed:float) -> void:
 
 func connect_meta_signals() -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+
 		if not text_node.meta_clicked.is_connected(emit_meta_signal):
 			text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
+
 		if not text_node.meta_hover_started.is_connected(emit_meta_signal):
 			text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
+
 		if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
 			text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
 

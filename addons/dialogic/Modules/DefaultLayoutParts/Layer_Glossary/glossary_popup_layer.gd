@@ -52,32 +52,33 @@ func _ready() -> void:
 
 
 ## Method that shows the bubble and fills in the info
-func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
-	var info: Dictionary = Dialogic.Glossary.get_entry(meta)
+func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
+	var tr_base: String = Dialogic.Glossary.get_translation_key_base(meta)
 
-	if not info:
-		return
+	var entry_title := tr(tr_base.path_join('title'))
+	var entry_text := tr(tr_base.path_join('text'))
+	var entry_extra := tr(tr_base.path_join('extra'))
 
 	$Pointer.show()
-	%Title.text = info.get('title', '')
-	%Text.text = info.get('text', '')
+	%Title.text = entry_title
+	%Text.text = entry_text
 	%Text.text = ['', '[center]', '[right]'][text_alignment] + %Text.text
-	%Extra.text = info.get('extra', '')
+	%Extra.text = entry_extra
 	%Extra.text = ['', '[center]', '[right]'][extra_alignment] + %Extra.text
 	$Pointer.global_position = $Pointer.get_global_mouse_position()
 
-	if title_color_mode == TextColorModes.ENTRY:
-		%Title.add_theme_color_override("font_color", info.get('color', title_custom_color))
-	if text_color_mode == TextColorModes.ENTRY:
-		%Text.add_theme_color_override("default_color", info.get('color', text_custom_color))
-	if extra_color_mode == TextColorModes.ENTRY:
-		%Extra.add_theme_color_override("default_color", info.get('color', extra_custom_color))
+	# if title_color_mode == TextColorModes.ENTRY:
+	#	%Title.add_theme_color_override("font_color", info.get('color', title_custom_color))
+	#if text_color_mode == TextColorModes.ENTRY:
+	#	%Text.add_theme_color_override("default_color", info.get('color', text_custom_color))
+	#if extra_color_mode == TextColorModes.ENTRY:
+	#	%Extra.add_theme_color_override("default_color", info.get('color', extra_custom_color))
 
-	match box_modulate_mode:
-		ModulateModes.ENTRY_COLOR_ON_BOX:
-			%Panel.self_modulate = info.get('color', Color.WHITE)
-			%PanelPoint.self_modulate = info.get('color', Color.WHITE)
-
+	#match box_modulate_mode:
+	#	ModulateModes.ENTRY_COLOR_ON_BOX:
+	#		%Panel.self_modulate = info.get('color', Color.WHITE)
+	#		%PanelPoint.self_modulate = info.get('color', Color.WHITE)
+	#*/
 	Dialogic.Input.action_was_consumed = true
 
 
