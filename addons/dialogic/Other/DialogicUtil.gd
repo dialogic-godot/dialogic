@@ -182,17 +182,72 @@ static func get_next_translation_id() -> String:
 #region VARIABLES
 ################################################################################
 
+enum VarTypes {ANY, STRING, FLOAT, INT, BOOL}
+
+
+static func get_default_variables() -> Dictionary:
+	return ProjectSettings.get_setting('dialogic/variables', {})
+
 # helper that converts a nested variable dictionary into an array with paths
-static func list_variables(dict:Dictionary, path := "") -> Array:
+static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> Array:
+
 	var array := []
 	for key in dict.keys():
 		if typeof(dict[key]) == TYPE_DICTIONARY:
-			array.append_array(list_variables(dict[key], path+key+"."))
+			array.append_array(list_variables(dict[key], path+key+".", type))
 		else:
-			array.append(path+key)
+			if type == VarTypes.ANY or get_variable_value_type(dict[key]) == type:
+				array.append(path+key)
 	return array
 
+
+static func get_variable_value_type(value:Variant) -> int:
+	match typeof(value):
+		TYPE_STRING:
+			return VarTypes.STRING
+		TYPE_FLOAT:
+			return VarTypes.FLOAT
+		TYPE_INT:
+			return VarTypes.INT
+		TYPE_BOOL:
+			return VarTypes.BOOL
+	return VarTypes.ANY
+
+
+static func get_variable_type(path:String, dict:Dictionary={}) -> VarTypes:
+	if dict.is_empty():
+		dict = get_default_variables()
+	return get_variable_value_type(_get_value_in_dictionary(path, dict))
+
+
+## This will set a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
+	if '.' in path:
+		var from := path.split('.')[0]
+		if from in dictionary.keys():
+			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
+	else:
+		if path in dictionary.keys():
+			dictionary[path] = value
+	return dictionary
+
+
+## This will get a value in a dictionary (or a sub-dictionary based on the path)
+## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
+	if '.' in path:
+		var from := path.split('.')[0]
+		if from in dictionary.keys():
+			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
+	else:
+		if path in dictionary.keys():
+			return dictionary[path]
+	return default
+
 #endregion
+
+
 
 
 #region STYLES
