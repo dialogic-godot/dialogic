@@ -93,7 +93,6 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 
 	# First assume this is just a single variable
-	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
 	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
 	if value != null:
 		return value
