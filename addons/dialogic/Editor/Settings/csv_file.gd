@@ -233,6 +233,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 		if add_separator:
 			append_empty()
 
+
 ## Collects translatable events from the given [param timeline] and adds
 ## them to the [member lines].
 func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
