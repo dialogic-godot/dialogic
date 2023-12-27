@@ -197,6 +197,7 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 			.path_join(glossary._translation_id)
 	)
 
+
 ## Collects properties from glossary entries from the given [param glossary] and
 ## adds them to the [member lines].
 func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
