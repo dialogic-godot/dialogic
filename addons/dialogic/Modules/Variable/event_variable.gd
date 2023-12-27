@@ -56,7 +56,7 @@ func _execute() -> void:
 			match _value_type:
 				0: the_value = dialogic.VAR.get_variable('"'+value+'"')
 				2: the_value = dialogic.VAR.get_variable('{'+value+'}')
-				1,3,4: the_value = dialogic.VAR.get_variable(value)
+				1,3,4: the_value = dialogic.VAR.get_variable(str(value))
 
 			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
 				orig = float(orig)
