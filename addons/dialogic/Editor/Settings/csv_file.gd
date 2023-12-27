@@ -99,7 +99,7 @@ func _read_file_into_lines() -> void:
 ## If this is the character name CSV file, use this method to
 ## take previously collected characters from other [class DialogicCsvFile]s.
 func collect_lines_from_characters(characters: Dictionary) -> void:
-	for character in characters.values():
+	for character: DialogicCharacter in characters.values():
 
 		# Check if the character has a valid translation ID.
 		if character._translation_id == null or character._translation_id.is_empty():
@@ -236,7 +236,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 ##
 ## If this is a timeline CSV file,
 func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
-	for event in timeline.events:
+	for event: DialogicEvent in timeline.events:
 
 		if event.can_be_translated():
 
@@ -246,7 +246,7 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
 
 			var properties: Array = event._get_translatable_properties()
 
-			for property in properties:
+			for property: String in properties:
 				var line_key: String = event.get_property_translation_key(property)
 				var line_value: String = event._get_property_original_translation(property)
 				var array_line := PackedStringArray([line_key, line_value])
