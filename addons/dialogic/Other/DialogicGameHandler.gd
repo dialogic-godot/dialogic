@@ -34,28 +34,28 @@ var current_event_idx: int = 0
 ##  relevant for the current situation
 var current_state_info: Dictionary = {}
 ## Current state (see [States] enum)
-var current_state := States.IDLE:
+var current_state : States = States.IDLE:
 	get:
 		return current_state
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
 ## Emitted when [current_state] change.
-signal state_changed(new_state)
+signal state_changed(new_state : States)
 
 ## When true, many dialogic process won't continue until it's false again.
-var paused := false:
+var paused : bool = false:
 	set(value):
 		paused = value
 		if paused:
-			for subsystem in get_children():
-				if subsystem.has_method('pause'):
-					subsystem.pause()
+			for subsystem : Node in get_children():
+				if subsystem.has_method(&'pause'):
+					subsystem.call(&'pause')
 			dialogic_paused.emit()
 		else:
-			for subsystem in get_children():
-				if subsystem.has_method('resume'):
-					subsystem.resume()
+			for subsystem : Node in get_children():
+				if subsystem.has_method(&'resume'):
+					subsystem.call(&'resume')
 			dialogic_resumed.emit()
 
 ## Emitted when [paused] changes to true.
@@ -66,12 +66,12 @@ signal dialogic_resumed
 
 signal timeline_ended()
 signal timeline_started()
-signal event_handled(resource)
+signal event_handled(resource : Variant)
 
 ## Emitted when the Signal event was reached
-signal signal_event(argument)
+signal signal_event(argument : Variant)
 ## Emitted when [signal] effect was reached in text.
-signal text_signal(argument)
+signal text_signal(argument : Variant)
 
 
 ## Autoloads are added first, so this happens REALLY early on game startup.

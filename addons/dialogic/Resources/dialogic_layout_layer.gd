@@ -1,19 +1,19 @@
 @tool
 class_name DialogicLayoutLayer
-extends Node
+extends Control
 
 ## Base class that should be extended by custom dialogic layout layers.
 
 @export_group('Layer')
 @export_subgroup('Disabled')
-@export var disabled := false
+@export var disabled : bool = false
 
 ## This is turned on automatically when the layout is realized [br] [br]
 ## Turn it off, if you want to modify the settings of the nodes yourself.
 @export_group('Private')
-@export var apply_overrides_on_ready := false
+@export var apply_overrides_on_ready : bool = false
 
-var this_folder: String = get_script().resource_path.get_base_dir()
+var this_folder: String = (get_script() as Resource).resource_path.get_base_dir()
 
 func _ready() -> void:
 	if apply_overrides_on_ready and not Engine.is_editor_hint():
@@ -39,6 +39,10 @@ func apply_export_overrides() -> void:
 	_apply_export_overrides()
 
 
+func get_layout() -> DialogicLayoutBase:
+	return get_parent() as DialogicLayoutBase
+
+
 ## Use this to get potential global settings.
 func get_global_setting(setting_name:StringName, default:Variant) -> Variant:
-	return get_parent().get_global_setting(setting_name, default)
+	return get_layout().get_global_setting(setting_name, default)

@@ -28,6 +28,23 @@ static func autoload() -> DialogicGameHandler:
 		return null
 	return Engine.get_main_loop().root.get_node("Dialogic")
 
+
+static func get_text() -> DialogicSubsystemText:
+	return DialogicUtil.autoload().Text
+	
+	
+static func get_input() -> DialogicSubsystemInput:
+	return DialogicUtil.autoload().Input
+	
+	
+static func get_glossary() -> DialogicSubsystemGlossary:
+	return DialogicUtil.autoload().Glossary
+	
+	
+static func get_history() -> DialogicSubsystemHistory:
+	return DialogicUtil.autoload().History
+
+
 #region FILE SYSTEM
 ################################################################################
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false, include_imports := false) -> Array:
