@@ -27,14 +27,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_4mqm3")
-font_use_global_size = null
-font_custom_size = null
-font_use_global_fonts = null
-font_custom_normal = null
-font_custom_bold = null
-font_custom_italics = null
 HistoryItem = ExtResource("2_x1xgk")
-disabled = null
 
 [node name="HistoryBox" type="ScrollContainer" parent="."]
 unique_name_in_owner = true

@@ -1,6 +1,6 @@
 @tool
 class_name DialogicLayoutLayer
-extends Node
+extends Control
 
 ## Base class that should be extended by custom dialogic layout layers.
 
@@ -37,6 +37,10 @@ func apply_export_overrides() -> void:
 		process_mode = Node.PROCESS_MODE_INHERIT
 
 	_apply_export_overrides()
+
+
+func get_layout() -> DialogicLayoutBase:
+	return get_parent() as DialogicLayoutBase
 
 
 ## Use this to get potential global settings.

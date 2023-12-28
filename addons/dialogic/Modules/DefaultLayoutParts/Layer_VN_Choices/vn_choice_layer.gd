@@ -45,6 +45,8 @@ func get_choices() -> VBoxContainer:
 func get_button_sound() -> DialogicNode_ButtonSound:
 	return %DialogicNode_ButtonSound
 
+@onready var choices : VBoxContainer = $Choices
+@onready var button_sound : DialogicNode_ButtonSound = %DialogicNode_ButtonSound
 
 ## Method that applies all exported settings
 func _apply_export_overrides() -> void:
