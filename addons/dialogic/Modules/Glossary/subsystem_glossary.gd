@@ -39,8 +39,8 @@ func parse_glossary(text: String) -> String:
 		if !glossary.enabled:
 			continue
 
-		for entry_key: String in glossary.entries.keys():
-			var entry: Dictionary = glossary.entries.get(entry_key, {})
+		for entry: Dictionary in glossary.entries:
+			var entry_key: String = entry[DialogicGlossary.NAME_PROPERTY]
 
 			if not entry.get('enabled', true):
 				continue
@@ -54,7 +54,7 @@ func parse_glossary(text: String) -> String:
 			else:
 				regex.compile('(?i)'+pattern)
 
-			var color: String = glossary.entries[entry_key].get('color', def_color).to_html()
+			var color: String = entry.get('color', def_color).to_html()
 
 			if entry_key in color_overrides:
 				color = color_overrides[entry_key].to_html()
@@ -78,8 +78,18 @@ func add_glossary(path:String) -> void:
 		printerr('[Dialogic] The glossary file "' + path + '" is missing. Make sure it exists.')
 
 
-## The translation key base is the first part of a glossary entry key.
+func find_glossary_entry(entry_key: String) -> Dictionary:
+	for glossary: DialogicGlossary in glossaries:
 
+		if not glossary._entry_keys.has(entry_key):
+			continue
+
+		return glossary.get_entry(entry_key)
+
+	return {}
+
+
+## The translation key base is the first part of a glossary entry key.
 func get_translation_key_base(entry_key: String, _entry_parse_variables: bool = true) -> String:
 	for glossary: DialogicGlossary in glossaries:
 

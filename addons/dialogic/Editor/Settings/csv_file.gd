@@ -46,6 +46,13 @@ var add_separator: bool = false
 ## Key: String, Value: PackedStringArray
 var collected_characters: Dictionary = {}
 
+
+enum PropertyType {
+	String = 0,
+	Array = 1,
+	Other = 2,
+}
+
 ## The translation property used for the glossary item translation.
 const TRANSLATION_ID := DialogicGlossary.TRANSLATION_PROPERTY
 
@@ -138,54 +145,83 @@ func append_empty() -> void:
 	lines.append(empty_line)
 
 
+func _get_key_type(key: String) -> PropertyType:
+	if key.ends_with(DialogicGlossary.NAME_PROPERTY):
+		return PropertyType.String
+
+	if key.ends_with(DialogicGlossary.ALTERNATIVE_PROPERTY):
+		return PropertyType.Array
+
+	return PropertyType.Other
+
+
+func _process_line_into_array(csv_values: PackedStringArray, property_type: PropertyType) -> Array[String]:
+	const KEY_VALUE_INDEX := 0
+	var values_as_array: Array[String] = []
+
+	for i in csv_values.size():
+
+		if i == KEY_VALUE_INDEX:
+			continue
+
+		var csv_value := csv_values[i]
+
+		if csv_value.is_empty():
+			continue
+
+		match property_type:
+			PropertyType.String:
+				values_as_array.append(csv_value)
+
+			PropertyType.Array:
+				var split_values := csv_value.split(",")
+				values_as_array.append(split_values)
+
+	return values_as_array
+
+
+func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array[PackedStringArray]) -> void:
+	var glossary_prefix_key := glossary._get_glossary_translation_id_prefix()
+	var glossary_translation_id_prefix := _get_glossary_translation_key_prefix(glossary)
+
+	for glossary_line in names:
+		print("glossary_line: " + str(glossary_line))
+
+		if glossary_line.is_empty():
+			continue
+
+		var csv_key := glossary_line[0]
+
+		if not csv_key.begins_with(glossary_prefix_key):
+			continue
+
+		var value_type := _get_key_type(csv_key)
+
+		if (value_type == PropertyType.Other
+		or not csv_key.begins_with(glossary_translation_id_prefix)):
+			continue
+
+		var names_to_add := []
+
+		var new_line_to_add := _process_line_into_array(glossary_line, value_type)
+		names_to_add.append(new_line_to_add)
+		print("new_line_to_add: " + str(new_line_to_add))
+		print(csv_key)
+
+		for name_to_add: String in names_to_add:
+			glossary._translation_keys[name_to_add] = csv_key
+
+
+
 ## Reads all [member lines] and adds them to the given [param glossary]'s
 ## internal collection of words-to-translation-key mappings.
 ##
 ## Populate the CSV's lines with the method [method collect_lines_from_glossary]
 ## before.
 func add_translation_keys_to_glossary(glossary: DialogicGlossary) -> void:
-	var glossary_translation_id_prefix := _get_glossary_translation_key_prefix(glossary)
 	glossary._translation_keys.clear()
-
-	for glossary_entry_name in lines:
-
-		if glossary_entry_name.is_empty():
-			continue
-
-		var csv_key := glossary_entry_name[0]
-		var entry_key := csv_key.trim_suffix(DialogicGlossary.NAME_PROPERTY)
-
-		if (not csv_key.ends_with(DialogicGlossary.NAME_PROPERTY)
-		or not csv_key.begins_with(glossary_translation_id_prefix)):
-			continue
-
-		if csv_key in old_lines:
-			var old_entry: PackedStringArray = old_lines[csv_key]
-
-			for i in old_entry.size():
-
-				if i == 0:
-					continue
-
-				var csv_translation := old_entry[i]
-
-				if csv_translation.is_empty():
-					continue
-
-				glossary._translation_keys[csv_translation] = csv_key
-
-		for i in glossary_entry_name.size():
-
-			if i == 0:
-				continue
-
-			var csv_translation := glossary_entry_name[i]
-			print("CSV translation: " + csv_translation)
-
-			if csv_translation.is_empty():
-				continue
-
-			glossary._translation_keys[csv_translation] = entry_key
+	_add_keys_to_glossary(glossary, lines)
+	_add_keys_to_glossary(glossary, old_lines.values())
 
 
 ## Returns the translation key prefix for the given [param glossary_translation_id].
@@ -202,30 +238,32 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 ## adds them to the [member lines].
 func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
-	for glossary_entry_key: String in glossary.entries.keys():
-		var glossary_entry: Dictionary = glossary.entries[glossary_entry_key]
-		var entry_translation_id := glossary.get_set_glossary_entry_translation_id(glossary_entry_key)
+	for glossary_entry: Dictionary in glossary.entries:
+		var glossary_entry_name: String = glossary_entry[DialogicGlossary.NAME_PROPERTY]
+		var entry_translation_id := glossary.get_set_glossary_entry_translation_id(glossary_entry_name)
 
 		var name_key := glossary._get_glossary_translation_key(entry_translation_id, DialogicGlossary.NAME_PROPERTY)
-		print(name_key)
-		var name_key_line := PackedStringArray([name_key, glossary_entry_key])
+
+		var name_key_line := PackedStringArray([name_key, glossary_entry_name])
 		lines.append(name_key_line)
 
-		for entry_property_key: Variant in glossary_entry:
+		for entry_key: String in glossary_entry.keys():
 			# Ignore private keys.
-			if entry_property_key.begins_with(DialogicGlossary.PRIVATE_PROPERTY_PREFIX):
+			if entry_key.begins_with(DialogicGlossary.PRIVATE_PROPERTY_PREFIX):
 				continue
 
-			# Ignore non-string values.
-			if not typeof(entry_property_key) == TYPE_STRING or entry_property_key.is_empty():
+			var item_value: Variant = glossary_entry[entry_key]
+			var item_value_str := ""
+
+			if item_value is Array:
+				var item_array := item_value as Array
+				item_value_str = ",".join(item_array)
+
+			elif not item_value is String or item_value.is_empty():
 				continue
 
-			var str_entry_property_key: String = entry_property_key
-			var item_value: Variant = glossary_entry[str_entry_property_key]
-
-
-			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, str_entry_property_key)
-			var glossary_line := PackedStringArray([glossary_csv_key, item_value])
+			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, entry_key)
+			var glossary_line := PackedStringArray([glossary_csv_key, item_value_str])
 
 			lines.append(glossary_line)
 

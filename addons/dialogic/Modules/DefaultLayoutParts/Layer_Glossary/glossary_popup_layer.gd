@@ -67,23 +67,27 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 	%Extra.text = ['', '[center]', '[right]'][extra_alignment] + %Extra.text
 	$Pointer.global_position = $Pointer.get_global_mouse_position()
 
-	# if title_color_mode == TextColorModes.ENTRY:
-	#	%Title.add_theme_color_override("font_color", info.get('color', title_custom_color))
-	#if text_color_mode == TextColorModes.ENTRY:
-	#	%Text.add_theme_color_override("default_color", info.get('color', text_custom_color))
-	#if extra_color_mode == TextColorModes.ENTRY:
-	#	%Extra.add_theme_color_override("default_color", info.get('color', extra_custom_color))
+	var entry: Dictionary = Dialogic.Glossary.find_glossary_entry(meta)
 
-	#match box_modulate_mode:
-	#	ModulateModes.ENTRY_COLOR_ON_BOX:
-	#		%Panel.self_modulate = info.get('color', Color.WHITE)
-	#		%PanelPoint.self_modulate = info.get('color', Color.WHITE)
-	#*/
+	if title_color_mode == TextColorModes.ENTRY:
+		%Title.add_theme_color_override("font_color", entry.get('color', title_custom_color))
+
+	if text_color_mode == TextColorModes.ENTRY:
+		%Text.add_theme_color_override("default_color", entry.get('color', text_custom_color))
+
+	if extra_color_mode == TextColorModes.ENTRY:
+		%Extra.add_theme_color_override("default_color", entry.get('color', extra_custom_color))
+
+	match box_modulate_mode:
+		ModulateModes.ENTRY_COLOR_ON_BOX:
+			%Panel.self_modulate = entry.get('color', Color.WHITE)
+			%PanelPoint.self_modulate = entry.get('color', Color.WHITE)
+
 	Dialogic.Input.action_was_consumed = true
 
 
 ## Method that keeps the bubble at mouse position when visible
-func _process(delta) -> void:
+func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 
@@ -92,20 +96,24 @@ func _process(delta) -> void:
 
 
 ## Method that hides the bubble
-func _on_dialogic_display_dialog_text_meta_hover_ended(meta:String) -> void:
+func _on_dialogic_display_dialog_text_meta_hover_ended(_meta: String) -> void:
 	$Pointer.hide()
 	Dialogic.Input.action_was_consumed = false
 
 
-func _on_dialogic_display_dialog_text_meta_clicked(meta:String) -> void:
+func _on_dialogic_display_dialog_text_meta_clicked(_meta: String) -> void:
 	Dialogic.Input.action_was_consumed = true
 
 
 func _apply_export_overrides() -> void:
+	var font_setting: String = get_global_setting("font", "")
+
 	# Apply fonts
 	var font: FontFile
-	if font_use_global and ResourceLoader.exists(get_global_setting('font', '')):
-		font = load(get_global_setting('font', ''))
+
+	if font_use_global and ResourceLoader.exists(font_setting):
+		font = load(font_setting)
+
 	elif ResourceLoader.exists(font_custom):
 		font = load(font_custom)
 
@@ -115,7 +123,8 @@ func _apply_export_overrides() -> void:
 
 	# Apply font & sizes
 	%Title.add_theme_font_size_override("font_size", font_title_size)
-	for i in [[%Text, font_text_size], [%Extra, font_extra_size]]:
+
+	for i: Array in [[%Text, font_text_size], [%Extra, font_extra_size]]:
 		if font:
 			i[0].add_theme_font_override('normal_font', font)
 
@@ -132,7 +141,8 @@ func _apply_export_overrides() -> void:
 		[%Text, 'default_color', text_color_mode, text_custom_color],
 		[%Extra, 'default_color', extra_color_mode, extra_custom_color],
 		]
-	for i in texts:
+
+	for i: Array in texts:
 		match i[2]:
 			TextColorModes.GLOBAL:
 				i[0].add_theme_color_override(i[1], get_global_setting('font_color', i[3]))
@@ -151,4 +161,3 @@ func _apply_export_overrides() -> void:
 		ModulateModes.GLOBAL_BG_COLOR:
 			%Panel.self_modulate = get_global_setting('bg_color', box_base_modulate)
 			%PanelPoint.self_modulate = get_global_setting('bg_color', box_base_modulate)
-
