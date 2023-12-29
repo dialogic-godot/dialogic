@@ -95,7 +95,6 @@ func _read_file_into_lines() -> void:
 	while not file.eof_reached():
 		var line := file.get_csv_line()
 		var row_key := line[0]
-		print(line)
 
 		old_lines[row_key] = line
 
@@ -180,12 +179,12 @@ func _process_line_into_array(csv_values: PackedStringArray, property_type: Prop
 	return values_as_array
 
 
-func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array[PackedStringArray]) -> void:
+func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 	var glossary_prefix_key := glossary._get_glossary_translation_id_prefix()
 	var glossary_translation_id_prefix := _get_glossary_translation_key_prefix(glossary)
 
-	for glossary_line in names:
-		print("glossary_line: " + str(glossary_line))
+	for glossary_line: PackedStringArray in names:
+		print("[GLOSSARY] glossary_line: " + str(glossary_line))
 
 		if glossary_line.is_empty():
 			continue
@@ -201,14 +200,13 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array[PackedString
 		or not csv_key.begins_with(glossary_translation_id_prefix)):
 			continue
 
-		var names_to_add := []
-
 		var new_line_to_add := _process_line_into_array(glossary_line, value_type)
-		names_to_add.append(new_line_to_add)
-		print("new_line_to_add: " + str(new_line_to_add))
-		print(csv_key)
 
-		for name_to_add: String in names_to_add:
+		print("[GLOSSARY] new_line_to_add: " + str(new_line_to_add))
+		print("[GLOSSARY] " + csv_key)
+
+		for name_to_add: String in new_line_to_add:
+			print("[GLOSSARY] name_to_add: " + str(name_to_add))
 			glossary._translation_keys[name_to_add] = csv_key
 
 
