@@ -211,8 +211,15 @@ func remove_entry_translation_ids() -> void:
 			entry[TRANSLATION_PROPERTY] = ""
 
 
-## Clears the translation keys lookup table.
+## Clears the lookup tables using translation keys.
 func clear_translation_keys() -> void:
+	const RESOURCE_NAME_KEY := RESOURCE_NAME + "/"
+
+	for translation_key: String in _entry_keys.keys():
+
+		if translation_key.begins_with(RESOURCE_NAME_KEY):
+			_entry_keys.erase(translation_key)
+
 	_translation_keys.clear()
 
 
