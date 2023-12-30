@@ -448,7 +448,7 @@ func delete_translations_files(translation_files: Array, csv_name: String) -> in
 ## translation IDs.
 ## Deletes the Per-Project CSV file and the character name CSV file.
 func erase_translations() -> void:
-	var files: Array[String] = ProjectSettings.get_setting('internationalization/locale/translations', [])
+	var files: PackedStringArray = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var translation_files := Array(files)
 
 	var deleted_csv_files := 0
@@ -456,6 +456,7 @@ func erase_translations() -> void:
 	var cleaned_timelines := 0
 	var cleaned_characters := 0
 	var cleaned_events := 0
+	var cleaned_glossaries := 0
 
 	var current_timeline := _close_active_timeline()
 
@@ -505,12 +506,16 @@ func erase_translations() -> void:
 		ResourceSaver.save(timeline, timeline_path)
 
 	# Clean glossary.
-	for glossary_path: String in DialogicResourceUtil.list_resources_of_type(".glossary"):
+	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
+
+	for glossary_path: String in glossary_paths:
 		var glossary: DialogicGlossary = load(glossary_path)
 		glossary.remove_translation_id()
 		glossary.remove_entry_translation_ids()
 		glossary.clear_translation_keys()
+		cleaned_glossaries += 1
 		ResourceSaver.save(glossary, glossary_path)
+		print_rich("[color=green]Cleaned up glossary file: " + glossary_path + "[/color]")
 
 	ProjectSettings.set_setting('dialogic/translation/id_counter', 16)
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(translation_files))
@@ -518,9 +523,10 @@ func erase_translations() -> void:
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 
-	var status_message := "Timelines found {cleaned_timelines}
+	var status_message := "Timelines cleaned {cleaned_timelines}
 		Events cleaned {cleaned_events}
 		Characters cleaned {cleaned_characters}
+		Glossaries cleaned {cleaned_glossaries}
 
 		CSVs erased {erased_csv_files}
 		Translations erased {erased_translation_files}"
@@ -529,6 +535,7 @@ func erase_translations() -> void:
 		'cleaned_timelines': cleaned_timelines,
 		'cleaned_characters': cleaned_characters,
 		'cleaned_events': cleaned_events,
+		'cleaned_glossaries': cleaned_glossaries,
 		'erased_csv_files': deleted_csv_files,
 		'erased_translation_files': deleted_translation_files,
 	}
