@@ -275,7 +275,7 @@ func update_csv_files() -> void:
 	# Iterate over all timelines.
 	# Create or update CSV files.
 	# Transform the timeline into translatable lines and collect into the CSV file.
-	for timeline_path in DialogicResourceUtil.list_resources_of_type('.dtl'):
+	for timeline_path: String in DialogicResourceUtil.list_resources_of_type('.dtl'):
 		var csv_file: DialogicCsvFile = csv_per_project
 
 		# Swap the CSV file to the Per Timeline one.
@@ -361,9 +361,9 @@ func collect_translations() -> void:
 
 	if translation_mode == TranslationModes.PER_TIMELINE:
 
-		for timeline_path in DialogicResourceUtil.list_resources_of_type('.translation'):
+		for timeline_path: String in DialogicResourceUtil.list_resources_of_type('.translation'):
 
-			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):
+			for file: String in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				file = timeline_path.get_base_dir().path_join(file)
 
 				if file.ends_with('.translation'):
@@ -374,7 +374,7 @@ func collect_translations() -> void:
 	if translation_mode == TranslationModes.PER_PROJECT:
 		var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 
-		for file in DialogicUtil.listdir(translation_folder):
+		for file: String in DialogicUtil.listdir(translation_folder):
 			file = translation_folder.path_join(file)
 
 			if file.ends_with('.translation'):
@@ -389,7 +389,7 @@ func collect_translations() -> void:
 	var found_file_paths := []
 	var removed_translation_files := 0
 
-	for file_path in translation_files:
+	for file_path: String in translation_files:
 		# If the file path is not valid, we must clean it up.
 		if FileAccess.file_exists(file_path):
 			found_file_paths.append(file_path)
@@ -422,7 +422,7 @@ func _on_erase_translations_pressed() -> void:
 func delete_translations_files(translation_files: Array, csv_name: String) -> int:
 	var deleted_files := 0
 
-	for file_path in DialogicResourceUtil.list_resources_of_type('.translation'):
+	for file_path: String in DialogicResourceUtil.list_resources_of_type('.translation'):
 		var base_name: String = file_path.get_basename()
 		var path_parts := base_name.split("/")
 		var translation_name: String = path_parts[-1]
@@ -448,7 +448,8 @@ func delete_translations_files(translation_files: Array, csv_name: String) -> in
 ## translation IDs.
 ## Deletes the Per-Project CSV file and the character name CSV file.
 func erase_translations() -> void:
-	var translation_files := Array(ProjectSettings.get_setting('internationalization/locale/translations', []))
+	var files: Array[String] = ProjectSettings.get_setting('internationalization/locale/translations', [])
+	var translation_files := Array(files)
 
 	var deleted_csv_files := 0
 	var deleted_translation_files := 0
@@ -459,7 +460,7 @@ func erase_translations() -> void:
 	var current_timeline := _close_active_timeline()
 
 	# Delete all Dialogic CSV files and their translation files.
-	for csv_path in DialogicResourceUtil.list_resources_of_type(".csv"):
+	for csv_path: String in DialogicResourceUtil.list_resources_of_type(".csv"):
 		var csv_path_parts: PackedStringArray = csv_path.split("/")
 		var csv_name: String = csv_path_parts[-1].trim_suffix(".csv")
 
@@ -477,7 +478,7 @@ func erase_translations() -> void:
 			print_rich("[color=yellow]Failed to delete CSV file: " + csv_path + "[/color]")
 
 	# Clean timelines.
-	for timeline_path in DialogicResourceUtil.list_resources_of_type(".dtl"):
+	for timeline_path: String in DialogicResourceUtil.list_resources_of_type(".dtl"):
 
 		# Process the timeline.
 		var timeline: DialogicTimeline = load(timeline_path)
@@ -485,7 +486,7 @@ func erase_translations() -> void:
 		cleaned_timelines += 1
 
 		# Remove event translation IDs.
-		for event in timeline.events:
+		for event: DialogicEvent in timeline.events:
 
 			if event._translation_id and not event._translation_id.is_empty():
 				event.remove_translation_id()
@@ -504,9 +505,12 @@ func erase_translations() -> void:
 		ResourceSaver.save(timeline, timeline_path)
 
 	# Clean glossary.
-	for glossary_path in DialogicResourceUtil.list_resources_of_type(".glossary"):
+	for glossary_path: String in DialogicResourceUtil.list_resources_of_type(".glossary"):
 		var glossary: DialogicGlossary = load(glossary_path)
 		glossary.remove_translation_id()
+		glossary.remove_entry_translation_ids()
+		glossary.clear_translation_keys()
+		ResourceSaver.save(glossary, glossary_path)
 
 	ProjectSettings.set_setting('dialogic/translation/id_counter', 16)
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(translation_files))

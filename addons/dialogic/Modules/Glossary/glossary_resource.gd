@@ -40,7 +40,6 @@ const _MISSING_ENTRY_INDEX := -1
 
 ## Private lookup table used to find the correct entry index for a glossary
 ## entry name such as "name" or "alternatives".
-##
 @export var _entry_keys: Dictionary = {}
 
 func __get_property_list() -> Array:
@@ -158,7 +157,6 @@ func _get_word_options(entry_key: String) -> Array:
 		var translated_alternatives := translated_alternatives_str.split(",")
 
 		for alternative: String in translated_alternatives:
-			print(alternative)
 			word_options.append(alternative)
 
 	return word_options
@@ -186,6 +184,7 @@ func get_set_regex_option(entry_key: String) -> String:
 		return regex_option
 
 	var word_options: Array = _get_word_options(entry_key)
+	print("[GLOSSARY] Word options for: " + entry_key + " are: " + str(word_options))
 	regex_option = "|".join(word_options)
 
 	regex_options[locale_key] = regex_option
@@ -199,8 +198,22 @@ func add_translation_id() -> String:
 	return _translation_id
 
 
+## Removes the translation ID of this glossary.
 func remove_translation_id() -> void:
 	_translation_id = ""
+
+
+## Removes the translation ID of all glossary entries.
+func remove_entry_translation_ids() -> void:
+	for entry: Dictionary in entries:
+
+		if entry.has(TRANSLATION_PROPERTY):
+			entry[TRANSLATION_PROPERTY] = ""
+
+
+## Clears the translation keys lookup table.
+func clear_translation_keys() -> void:
+	_translation_keys.clear()
 
 
 ## Returns a key used to reference this glossary in the translation CSV file.
