@@ -170,11 +170,13 @@ func _process_line_into_array(csv_values: PackedStringArray, property_type: Prop
 
 		match property_type:
 			PropertyType.String:
-				values_as_array.append(csv_value)
+				values_as_array = [csv_value]
 
 			PropertyType.Array:
 				var split_values := csv_value.split(",")
-				values_as_array.append(split_values)
+
+				for value in split_values:
+					values_as_array.append(value)
 
 	return values_as_array
 
@@ -192,12 +194,14 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 		var csv_key := glossary_line[0]
 
 		if not csv_key.begins_with(glossary_prefix_key):
+			print("[GLOSSARY] incorrect csv_key: " + csv_key)
 			continue
 
 		var value_type := _get_key_type(csv_key)
 
 		if (value_type == PropertyType.Other
 		or not csv_key.begins_with(glossary_translation_id_prefix)):
+			print("[GLOSSARY] incorrect value_type: " + str(value_type))
 			continue
 
 		var new_line_to_add := _process_line_into_array(glossary_line, value_type)
@@ -207,7 +211,7 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 
 		for name_to_add: String in new_line_to_add:
 			print("[GLOSSARY] name_to_add: " + str(name_to_add))
-			glossary._translation_keys[name_to_add] = csv_key
+			glossary._translation_keys[name_to_add.strip_edges()] = csv_key
 
 
 
@@ -237,13 +241,9 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 	for glossary_entry: Dictionary in glossary.entries:
+		var index_counter := 0
 		var glossary_entry_name: String = glossary_entry[DialogicGlossary.NAME_PROPERTY]
 		var entry_translation_id := glossary.get_set_glossary_entry_translation_id(glossary_entry_name)
-
-		var name_key := glossary._get_glossary_translation_key(entry_translation_id, DialogicGlossary.NAME_PROPERTY)
-
-		var name_key_line := PackedStringArray([name_key, glossary_entry_name])
-		lines.append(name_key_line)
 
 		for entry_key: String in glossary_entry.keys():
 			# Ignore private keys.
@@ -255,12 +255,21 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 			if item_value is Array:
 				var item_array := item_value as Array
-				item_value_str = ",".join(item_array)
+				# We use a space after the comma to make it easier to read.
+				item_value_str = " ,".join(item_array)
 
 			elif not item_value is String or item_value.is_empty():
 				continue
 
+			else:
+				item_value_str = item_value
+
 			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, entry_key)
+
+			if (entry_key == DialogicGlossary.NAME_PROPERTY
+			or entry_key == DialogicGlossary.ALTERNATIVE_PROPERTY):
+				glossary._entry_keys[glossary_csv_key] = index_counter
+
 			var glossary_line := PackedStringArray([glossary_csv_key, item_value_str])
 
 			lines.append(glossary_line)
@@ -268,6 +277,8 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 		# New glossary item, if needed, add a separator.
 		if add_separator:
 			append_empty()
+
+		index_counter += 1
 
 
 ## Collects translatable events from the given [param timeline] and adds

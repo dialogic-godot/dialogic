@@ -78,24 +78,22 @@ func add_glossary(path:String) -> void:
 		printerr('[Dialogic] The glossary file "' + path + '" is missing. Make sure it exists.')
 
 
-func find_glossary_entry(entry_key: String) -> Dictionary:
+## Iterates over all glossaries and returns the first one that matches the
+## [param entry_key].
+##
+## Returns null if none of the glossaries has an entry with that key.
+## If translation is enabled, uses the [param entry_key] as well to check
+## [member _translation_keys].
+##
+## Runtime complexity:
+## O(n), where n is the number of glossaries.
+func find_glossary(entry_key: String) -> DialogicGlossary:
 	for glossary: DialogicGlossary in glossaries:
 
-		if not glossary._entry_keys.has(entry_key):
-			continue
+		if glossary._entry_keys.has(entry_key):
+			return glossary
 
-		return glossary.get_entry(entry_key)
+		if glossary._translation_keys.has(entry_key):
+			return glossary
 
-	return {}
-
-
-## The translation key base is the first part of a glossary entry key.
-func get_translation_key_base(entry_key: String, _entry_parse_variables: bool = true) -> String:
-	for glossary: DialogicGlossary in glossaries:
-
-		if not glossary._translation_keys.has(entry_key):
-			continue
-
-		return glossary.get_word_translation_key(entry_key)
-
-	return ""
+	return null

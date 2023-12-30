@@ -53,11 +53,50 @@ func _ready() -> void:
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
-	var tr_base: String = Dialogic.Glossary.get_translation_key_base(meta)
+	var glossary: DialogicGlossary = Dialogic.Glossary.find_glossary(meta)
 
-	var entry_title := tr(tr_base.path_join('title'))
-	var entry_text := tr(tr_base.path_join('text'))
-	var entry_extra := tr(tr_base.path_join('extra'))
+	var entry_title := ""
+	var entry_text := ""
+	var entry_extra := ""
+	var entry_color: Variant = null
+
+	var title_color := title_custom_color
+	var text_color := text_custom_color
+	var extra_color := extra_custom_color
+
+	if glossary == null:
+		return
+
+	if glossary._translation_id.is_empty():
+		var entry := glossary.get_entry(meta)
+
+		if entry.is_empty():
+			return
+
+		entry_color = entry.get('color')
+
+	else:
+		var translation_key: String = glossary._translation_keys.get(meta)
+
+		# find last / and remove everything after it
+		var last_slash := translation_key.rfind('/')
+
+		if last_slash == -1:
+			return
+
+		var tr_base := translation_key.substr(0, last_slash)
+
+		entry_title = tr(tr_base.path_join('title'))
+		entry_text = tr(tr_base.path_join('text'))
+		entry_extra = tr(tr_base.path_join('extra'))
+
+		var entry := glossary.get_entry(translation_key)
+		entry_color = entry.get('color')
+
+	if not entry_color == null:
+		title_color = entry_color
+		text_color = entry_color
+		extra_color = entry_color
 
 	$Pointer.show()
 	%Title.text = entry_title
@@ -67,21 +106,20 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 	%Extra.text = ['', '[center]', '[right]'][extra_alignment] + %Extra.text
 	$Pointer.global_position = $Pointer.get_global_mouse_position()
 
-	var entry: Dictionary = Dialogic.Glossary.find_glossary_entry(meta)
 
 	if title_color_mode == TextColorModes.ENTRY:
-		%Title.add_theme_color_override("font_color", entry.get('color', title_custom_color))
+		%Title.add_theme_color_override("font_color", title_color)
 
 	if text_color_mode == TextColorModes.ENTRY:
-		%Text.add_theme_color_override("default_color", entry.get('color', text_custom_color))
+		%Text.add_theme_color_override("default_color", text_color)
 
 	if extra_color_mode == TextColorModes.ENTRY:
-		%Extra.add_theme_color_override("default_color", entry.get('color', extra_custom_color))
+		%Extra.add_theme_color_override("default_color", extra_color)
 
 	match box_modulate_mode:
 		ModulateModes.ENTRY_COLOR_ON_BOX:
-			%Panel.self_modulate = entry.get('color', Color.WHITE)
-			%PanelPoint.self_modulate = entry.get('color', Color.WHITE)
+			%Panel.self_modulate = title_color
+			%PanelPoint.self_modulate = title_color
 
 	Dialogic.Input.action_was_consumed = true
 
