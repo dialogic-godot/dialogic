@@ -154,7 +154,7 @@ func add_entry_key_alias(old_entry_key: String, new_entry_key: String) -> void:
 func _add_entry(entry: Dictionary) -> void:
 	var entry_key: String = entry[NAME_PROPERTY]
 	entries.append(entry)
-	_entry_keys[entry_key] = entries.size()
+	_entry_keys[entry_key] = entries.size() - 1
 
 
 ## Adds a glossary entry.
