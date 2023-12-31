@@ -182,6 +182,11 @@ func _get_word_options(entry_key: String) -> Array:
 	var word_options: Array = []
 
 	var translation_entry_key_id: String = get_property_translation_key(entry_key, NAME_PROPERTY)
+
+	if translation_entry_key_id.is_empty():
+		return []
+
+	print("[GLOSSARY] Translation entry key ID: " + translation_entry_key_id)
 	var translated_entry_key := tr(translation_entry_key_id)
 
 	if not translated_entry_key == translation_entry_key_id:
@@ -245,7 +250,7 @@ func remove_entry_translation_ids() -> void:
 	for entry: Dictionary in entries:
 
 		if entry.has(TRANSLATION_PROPERTY):
-			entry[TRANSLATION_PROPERTY] = ""
+			entry.erase(TRANSLATION_PROPERTY)
 
 
 ## Clears the lookup tables using translation keys.
@@ -264,8 +269,17 @@ func clear_translation_keys() -> void:
 ##
 ## Time complexity: O(1)
 func get_property_translation_key(entry_key: String, property: String) -> String:
-	var entry: Dictionary = get_entry(entry_key)
+	print("[GLOSSARY] Getting translation key for: " + entry_key + " and property: " + property)
+	var entry_index: int = _find_entry_index_by_key(entry_key)
+
+	if entry_index == _MISSING_ENTRY_INDEX:
+		return ""
+
+	var entry := entries[entry_index]
 	var entry_translation_key: String = entry.get(TRANSLATION_PROPERTY, "")
+
+	if entry_translation_key.is_empty() or _translation_id.is_empty():
+		return ""
 
 	var glossary_csv_key := (RESOURCE_NAME
 		.path_join(_translation_id)
@@ -320,12 +334,14 @@ func get_set_glossary_entry_translation_id(entry_key: String) -> String:
 	var glossary_entry: Dictionary = get_entry(entry_key)
 	var entry_translation_id := ""
 
-	if glossary_entry.has(TRANSLATION_PROPERTY):
-		entry_translation_id = glossary_entry[TRANSLATION_PROPERTY]
+	var glossary_translation_id: String = glossary_entry.get(TRANSLATION_PROPERTY, "")
 
-	else:
+	if glossary_translation_id.is_empty():
 		entry_translation_id = DialogicUtil.get_next_translation_id()
 		glossary_entry[TRANSLATION_PROPERTY] = entry_translation_id
+
+	else:
+		entry_translation_id = glossary_entry[TRANSLATION_PROPERTY]
 
 	return entry_translation_id
 
@@ -333,9 +349,8 @@ func get_set_glossary_entry_translation_id(entry_key: String) -> String:
 ## Tries to get the glossary's translation ID.
 ## If it does not exist, a new one will be generated.
 func get_set_glossary_translation_id() -> String:
-
 	if _translation_id == null or _translation_id.is_empty():
-		_translation_id = DialogicUtil.get_next_translation_id()
+		add_translation_id()
 
 	return _translation_id
 
