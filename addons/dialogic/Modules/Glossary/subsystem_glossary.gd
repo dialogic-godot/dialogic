@@ -46,7 +46,8 @@ func parse_glossary(text: String) -> String:
 				continue
 
 			var regex_options := glossary.get_set_regex_option(entry_key)
-			var pattern :String = '(?<=\\W|^)(?<!\\\\)(?<word>' + regex_options + ')(?!])(?=\\W|$)'
+			print('regex_options: ' + regex_options)
+			var pattern: String = '(?<=\\W|^)(?<!\\\\)(?<word>' + regex_options + ')(?!])(?=\\W|$)'
 
 			if entry.get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)
@@ -62,7 +63,8 @@ func parse_glossary(text: String) -> String:
 			text = regex.sub(text,
 				'[url=' + entry_key + ']' +
 				'[color=' + color + ']${word}[/color]' +
-				'[/url]', true
+				'[/url]',
+				true
 				)
 
 	return text
