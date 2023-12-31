@@ -19,7 +19,7 @@ var latest_thumbnail : Image = null
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	_make_sure_slot_dir_exists()
 
 

@@ -19,24 +19,24 @@ signal event_finished(event_resource)
 ### Main Event Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event name that'll be displayed in the editor.
-var event_name:String = "Event"
+var event_name: String = "Event"
 ## Unique identifier used for translatable events.
-var _translation_id :String= ""
+var _translation_id: String = ""
 ## A reference to dialogic during execution, can be used the same as Dialogic (reference to the autoload)
-var dialogic = null
+var dialogic: DialogicGameHandler = null
 
 
 ### Special Event Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ### (these properties store how this event affects indentation/flow of timeline)
 
 ## If true this event can not be toplevel (e.g. Choice)
-var needs_indentation : bool = false
+var needs_indentation: bool = false
 ## If true this event will spawn with an END BRANCH event and higher the indentation
-var can_contain_events : bool = false
+var can_contain_events: bool = false
 ## If [can_contain_events] is true this is a reference to the end branch event
-var end_branch_event : DialogicEndBranchEvent = null
+var end_branch_event: DialogicEndBranchEvent = null
 ## If this is true this event expects a specific parent event.
-var needs_parent_event : bool = false
+var needs_parent_event: bool = false
 
 
 ### Saving/Loading Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,18 +62,18 @@ var display_name: bool = true
 ## If true the event will not have a button in the visual editor sidebar
 var disable_editor_button: bool = false
 ## If false the event will hide it's body by default. Recommended for most events
-var expand_by_default : bool = false
+var expand_by_default: bool = false
 ## The URL to open when right_click>Documentation is selected
-var help_page_path : String = ""
+var help_page_path: String = ""
 ## Is the event block created by a button?
-var created_by_button : bool = false
+var created_by_button: bool = false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
-var _editor_node : Control = null
+var _editor_node: Control = null
 
 ## The categories and which one to put it in (in the visual editor sidebar)
-var event_category:String = "Other"
+var event_category: String = "Other"
 
 
 ### Editor UI creation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +99,7 @@ enum ValueType {
 	CUSTOM, BUTTON, KEY_VALUE_PAIRS
 }
 ## List that stores the fields for the editor
-var editor_list : Array = []
+var editor_list: Array = []
 ## Singal that notifies the visual editor block to update
 signal ui_update_needed
 signal ui_update_warning(text)

@@ -41,9 +41,9 @@ func _init():
 	enable_on_seen = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', enable_on_seen)
 	time_per_event = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', time_per_event)
 
-	if Dialogic.has_subsystem('History'):
-		Dialogic.History.already_read_event_reached.connect(_handle_seen_event)
-		Dialogic.History.not_read_event_reached.connect(_handle_unseen_event)
+	if DialogicUtil.autoload().has_subsystem('History'):
+		DialogicUtil.autoload().History.already_read_event_reached.connect(_handle_seen_event)
+		DialogicUtil.autoload().History.not_read_event_reached.connect(_handle_unseen_event)
 
 ## Called when Auto-Skip is enabled or disabled.
 ## Emits [signal autoskip_changed] if the state changed.

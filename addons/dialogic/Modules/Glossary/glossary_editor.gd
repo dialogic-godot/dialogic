@@ -13,7 +13,9 @@ func _get_title() -> String:
 
 
 func _get_icon() -> Texture:
-	return load(self.get_script().get_path().get_base_dir() + "/icon.svg")
+	var base_directory: String = self.get_script().get_path().get_base_dir()
+	var icon_path := base_directory + "/icon.svg"
+	return load(icon_path)
 
 
 func _register() -> void:
@@ -22,7 +24,10 @@ func _register() -> void:
 
 
 func _ready() -> void:
-	%AddGlossaryFile.icon = load(self.get_script().get_path().get_base_dir() + "/add-glossary.svg")
+	var add_glossary_icon_path: String = self.get_script().get_path().get_base_dir() + "/add-glossary.svg"
+	var add_glossary_icon := load(add_glossary_icon_path)
+	%AddGlossaryFile.icon = add_glossary_icon
+
 	%LoadGlossaryFile.icon = get_theme_icon('Folder', 'EditorIcons')
 	%DeleteGlossaryFile.icon = get_theme_icon('Remove', 'EditorIcons')
 	%DeleteGlossaryEntry.icon = get_theme_icon('Remove', 'EditorIcons')
@@ -86,6 +91,7 @@ func _on_GlossaryList_item_selected(idx:int) -> void:
 		for entry in current_glossary.entries:
 			%EntryList.add_item(entry.get("name", ""), get_theme_icon("Breakpoint", "EditorIcons"))
 			var modulate_color: Color = entry.get('color', %DefaultColor.color)
+			%EntryList.set_item_metadata(entry_idx, entry)
 			%EntryList.set_item_icon_modulate(entry_idx, modulate_color)
 			entry_idx += 1
 
@@ -143,7 +149,7 @@ func _on_delete_glossary_file_pressed() -> void:
 ##					ENTRY LIST
 ################################################################################
 func _on_EntryList_item_selected(idx:int) -> void:
-	current_entry_name = %EntryList.get_item_text(idx)
+	current_entry_name = %EntryList.get_item_metadata(idx)
 	var entry_info: Dictionary = current_glossary.get_entry(current_entry_name)
 
 	%EntrySettings.show()
@@ -180,6 +186,7 @@ func _on_add_glossary_entry_pressed() -> void:
 	%EntryList.add_item(new_name, get_theme_icon("Breakpoint", "EditorIcons"))
 	var item_count: int = %EntryList.item_count - 1
 
+	%EntryList.set_item_metadata(item_count, new_name)
 	%EntryList.set_item_icon_modulate(item_count, %DefaultColor.color)
 	%EntryList.select(item_count)
 
@@ -242,6 +249,7 @@ func _on_entry_name_text_changed(new_name: String) -> void:
 		ResourceSaver.save(current_glossary)
 
 		%EntryList.set_item_text(selected_item, new_name)
+		%EntryList.set_item_metadata(selected_item, new_name)
 		current_entry_name = new_name
 
 

@@ -4,6 +4,9 @@ class_name DialogicResourceUtil
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
 
+static var special_resources : Array[Dictionary] = []
+
+
 static func update() -> void:
 	update_directory('.dch')
 	update_directory('.dtl')
@@ -18,15 +21,16 @@ static func get_directory(extension:String) -> Dictionary:
 	if Engine.has_meta(extension+'_directory'):
 		return Engine.get_meta(extension+'_directory', {})
 
-	var directory := ProjectSettings.get_setting("dialogic/directories/"+extension+'_directory', {})
+	var directory: Dictionary = ProjectSettings.get_setting("dialogic/directories/"+extension+'_directory', {})
 	Engine.set_meta(extension+'_directory', directory)
 	return directory
 
 
 static func set_directory(extension:String, directory:Dictionary) -> void:
 	extension = extension.trim_prefix('.')
-	ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
-	ProjectSettings.save()
+	if Engine.is_editor_hint():
+		ProjectSettings.set_setting("dialogic/directories/"+extension+'_directory', directory)
+		ProjectSettings.save()
 	Engine.set_meta(extension+'_directory', directory)
 
 
@@ -56,7 +60,7 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 
 
 static func get_unique_identifier(file_path:String) -> String:
-	var identifier := get_directory(file_path.get_extension()).find_key(file_path)
+	var identifier: String = get_directory(file_path.get_extension()).find_key(file_path)
 	if typeof(identifier) == TYPE_STRING:
 		return identifier
 	return ""
@@ -71,7 +75,7 @@ static func get_resource_from_identifier(identifier:String, extension:String) ->
 
 static func change_unique_identifier(file_path:String, new_identifier:String) -> void:
 	var directory := get_directory(file_path.get_extension())
-	var key := directory.find_key(file_path)
+	var key: String = directory.find_key(file_path)
 	while key != null:
 		if key == new_identifier:
 			break
@@ -83,7 +87,7 @@ static func change_unique_identifier(file_path:String, new_identifier:String) ->
 
 static func change_resource_path(old_path:String, new_path:String) -> void:
 	var directory := get_directory(new_path.get_extension())
-	var key := directory.find_key(old_path)
+	var key: String = directory.find_key(old_path)
 	while key != null:
 		directory[key] = new_path
 		key = directory.find_key(old_path)
@@ -92,7 +96,7 @@ static func change_resource_path(old_path:String, new_path:String) -> void:
 
 static func remove_resource(file_path:String) -> void:
 	var directory := get_directory(file_path.get_extension())
-	var key := directory.find_key(file_path)
+	var key: String = directory.find_key(file_path)
 	while key != null:
 		directory.erase(key)
 		key = directory.find_key(file_path)
@@ -158,6 +162,30 @@ static func update_event_cache() -> Array:
 	return event_cache
 
 #endregion
+
+static func update_special_resources() -> void:
+	special_resources = []
+	for indexer in DialogicUtil.get_indexers():
+		special_resources.append_array(indexer._get_special_resources())
+
+
+static func list_special_resources_of_type(type:String) -> Array:
+	if special_resources.is_empty():
+		update_special_resources()
+	return special_resources.filter(func(x:Dictionary): return type == x.get('type','')).map(func(x:Dictionary): return x.get('path', ''))
+
+
+static func guess_special_resource(type:String, name:String, default:="") -> String:
+	if special_resources.is_empty():
+		update_special_resources()
+	if name.begins_with('res://'):
+		return name
+	for path in list_special_resources_of_type(type):
+		if DialogicUtil.pretty_name(path).to_lower() == name.to_lower():
+			return path
+	return default
+
+
 
 #region HELPERS
 ################################################################################

@@ -1,6 +1,6 @@
 extends DialogicSubsystem
 
-## Subsystem that handles showing of input promts. 
+## Subsystem that handles showing of input promts.
 
 ## Signal that is fired when a confirmation button was pressed.
 signal input_confirmed(input:String)
@@ -11,7 +11,7 @@ signal input_shown(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	hide_text_input()
 
 

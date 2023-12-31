@@ -20,10 +20,8 @@ func execute_string(string:String, default = null) -> Variant:
 	var regex: RegEx = RegEx.create_from_string('{([^{}]*)}')
 
 	for res in regex.search_all(string):
-		var value: String = str(dialogic.VAR.get_variable(res.get_string()))
-		if !value.is_valid_float():
-			value = '"'+value+'"'
-		string = string.replace(res.get_string(), value)
+		var value: Variant = dialogic.VAR.get_variable(res.get_string())
+		string = string.replace(res.get_string(), var_to_str(value))
 
 	var expr := Expression.new()
 
@@ -37,7 +35,7 @@ func execute_string(string:String, default = null) -> Variant:
 		printerr('Dialogic: Expression failed to parse: ', expr.get_error_text())
 		return default
 
-	var result := expr.execute(autoloads, self)
+	var result: Variant = expr.execute(autoloads, self)
 	if expr.has_execute_failed():
 		printerr('Dialogic: Expression failed to execute: ', expr.get_error_text())
 		return default

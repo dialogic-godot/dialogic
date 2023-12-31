@@ -64,7 +64,7 @@ tracks/3/keys = {
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel:rotation")
+tracks/4/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -79,7 +79,7 @@ length = 0.4
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel:rotation")
+tracks/0/path = NodePath("DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -245,7 +245,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Minimizer" type="CenterContainer" parent="DialogicTextAnchor/DialogTextAnimationParent"]
+[node name="Sizer" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -253,23 +253,27 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -17.0
+offset_left = -150.0
 offset_top = -50.0
-offset_right = 17.0
-offset_bottom = -10.0
+offset_right = 150.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="DialogTextPanel" type="PanelContainer" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer"]
+[node name="DialogTextPanel" type="PanelContainer" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-custom_minimum_size = Vector2(400, 100)
-layout_mode = 2
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_ssa84")
 metadata/_edit_layout_mode = 1
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -284,12 +288,12 @@ visible_characters_behavior = 1
 script = ExtResource("3_4634k")
 textbox_root = NodePath("..")
 
-[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel/DialogicNode_DialogText"]
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel/DialogicNode_DialogText"]
 unique_name_in_owner = true
 script = ExtResource("4_ma5mw")
 play_every_character = 0
 
-[node name="NextIndicator" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel"]
+[node name="NextIndicator" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -299,7 +303,7 @@ show_on_questions = true
 texture = ExtResource("6_uch03")
 metadata/_edit_layout_mode = 1
 
-[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel"]
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.188235)
 custom_minimum_size = Vector2(0, 10)
@@ -311,11 +315,11 @@ value = 0.5
 show_percentage = false
 script = ExtResource("6_07xym")
 
-[node name="NameLabelHolder" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel"]
+[node name="NameLabelHolder" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NameLabelPanel" type="PanelContainer" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel/NameLabelHolder"]
+[node name="NameLabelPanel" type="PanelContainer" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel/NameLabelHolder"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 layout_mode = 1
@@ -327,7 +331,7 @@ metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 metadata/_edit_group_ = true
 
-[node name="DialogicNode_NameLabel" type="Label" parent="DialogicTextAnchor/DialogTextAnimationParent/Minimizer/DialogTextPanel/NameLabelHolder/NameLabelPanel" node_paths=PackedStringArray("name_label_root")]
+[node name="DialogicNode_NameLabel" type="Label" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel/NameLabelHolder/NameLabelPanel" node_paths=PackedStringArray("name_label_root")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)

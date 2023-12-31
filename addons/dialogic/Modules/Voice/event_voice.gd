@@ -22,8 +22,8 @@ var audio_bus: String = "Master"
 func _execute() -> void:
 	# If Auto-Skip is enabled, we may not want to play voice audio.
 	# Instant Auto-Skip will always skip voice audio.
-	if (Dialogic.Input.auto_skip.enabled
-	and Dialogic.Input.auto_skip.skip_voice):
+	if (dialogic.Input.auto_skip.enabled
+	and dialogic.Input.auto_skip.skip_voice):
 		finish()
 		return
 

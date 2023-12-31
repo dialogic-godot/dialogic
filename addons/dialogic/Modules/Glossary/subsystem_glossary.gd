@@ -15,7 +15,7 @@ var color_overrides := {}
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(_clear_flag := Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	glossaries = []
 
 	for path: String in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
@@ -46,7 +46,7 @@ func parse_glossary(text: String) -> String:
 				continue
 
 			var regex_options := glossary.get_set_regex_option(entry_key)
-			var pattern: String = "(?<=\\W|^)(?<word>" + regex_options + ")(?!])(?=\\W|$)"
+			var pattern :String = '(?<=\\W|^)(?<!\\\\)(?<word>' + regex_options + ')(?!])(?=\\W|$)'
 
 			if entry.get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)

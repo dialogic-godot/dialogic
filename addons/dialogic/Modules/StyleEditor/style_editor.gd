@@ -144,7 +144,7 @@ func setup_ui() -> void:
 	%NoStyleView.show()
 
 func load_style_list() -> void:
-	var latest := DialogicUtil.get_editor_setting('latest_layout_style', 'Default')
+	var latest: String = DialogicUtil.get_editor_setting('latest_layout_style', 'Default')
 
 	%StyleList.clear()
 	var idx := 0

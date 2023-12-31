@@ -18,8 +18,8 @@ var slot_name: String = ""
 
 func _execute() -> void:
 	if slot_name.is_empty():
-		if Dialogic.Save.get_latest_slot():
-			dialogic.Save.save(Dialogic.Save.get_latest_slot())
+		if dialogic.Save.get_latest_slot():
+			dialogic.Save.save(dialogic.Save.get_latest_slot())
 		else:
 			dialogic.Save.save()
 	else:

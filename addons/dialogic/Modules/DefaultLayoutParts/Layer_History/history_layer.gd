@@ -41,8 +41,8 @@ func _ready() -> void:
 
 
 func _apply_export_overrides() -> void:
-	if Dialogic.has_subsystem('History'):
-		$ShowHistory.visible = show_open_button and Dialogic.History.simple_history_enabled
+	if DialogicUtil.autoload().has_subsystem('History'):
+		$ShowHistory.visible = show_open_button and DialogicUtil.autoload().History.simple_history_enabled
 	else:
 		self.visible = false
 
@@ -75,7 +75,7 @@ func _process(delta):
 
 
 func _on_show_history_pressed():
-	Dialogic.paused = true
+	DialogicUtil.autoload().paused = true
 	show_history()
 
 
@@ -83,7 +83,7 @@ func show_history() -> void:
 	for child in %HistoryLog.get_children():
 		child.queue_free()
 
-	for info in Dialogic.History.get_simple_history():
+	for info in DialogicUtil.autoload().History.get_simple_history():
 		var history_item = HistoryItem.instantiate()
 		history_item.theme = history_item_theme
 		match info.event_type:
@@ -125,7 +125,7 @@ func show_history() -> void:
 
 
 func _on_hide_history_pressed():
-	Dialogic.paused = false
+	DialogicUtil.autoload().paused = false
 	%HistoryBox.hide()
 	$HideHistory.hide()
-	$ShowHistory.visible = show_open_button and Dialogic.History.simple_history_enabled
+	$ShowHistory.visible = show_open_button and DialogicUtil.autoload().History.simple_history_enabled

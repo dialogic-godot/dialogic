@@ -16,6 +16,8 @@ var scene: String = ""
 var argument: String = ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
+## Name of the transition to use.
+var transition: String = ""
 
 
 ################################################################################
@@ -25,11 +27,12 @@ var fade: float = 0.0
 func _execute() -> void:
 	var final_fade_duration := fade
 
-	if Dialogic.Input.auto_skip.enabled:
-		var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+	if dialogic.Input.auto_skip.enabled:
+		var time_per_event: float = dialogic.Input.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
 
-	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration)
+	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
+
 	finish()
 
 
@@ -55,9 +58,11 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"scene" 		: {"property": "scene", 	"default": ""},
-		"arg" 			: {"property": "argument", 	"default": ""},
-		"fade" 			: {"property": "fade", 		"default": 0},
+		"scene" 		: {"property": "scene", 			"default": ""},
+		"arg" 			: {"property": "argument", 			"default": ""},
+		"fade" 			: {"property": "fade", 				"default": 0},
+		"transition"	: {"property": "transition",		"default": "",
+									"suggestions": get_transition_suggestions},
 	}
 
 
@@ -72,10 +77,23 @@ func build_event_editor():
 			'placeholder': "No background",
 			'editor_icon':["Image", "EditorIcons"]},
 			'scene == ""')
-	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {'left_text':'Argument:'}, 'scene != ""')
-	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade Time:'})
-	add_body_edit("scene", ValueType.FILE,
+	add_header_edit("scene", ValueType.FILE,
 			{'left_text' :'Scene:',
 			'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})
+	add_body_edit('argument', ValueType.SINGLELINE_TEXT, {'left_text':'Argument:'}, 'scene != ""')
+	add_body_edit("transition", ValueType.COMPLEX_PICKER,
+			{'left_text':'Transition:',
+			'empty_text':'Simple Fade',
+			'suggestions_func':get_transition_suggestions,
+			'editor_icon':["PopupMenu", "EditorIcons"]})
+	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade Time:'})
+
+
+func get_transition_suggestions(filter:String="") -> Dictionary:
+	var transitions := DialogicResourceUtil.list_special_resources_of_type("BackgroundTransition")
+	var suggestions := {}
+	for i in transitions:
+		suggestions[DialogicUtil.pretty_name(i)] = {'value': DialogicUtil.pretty_name(i), 'editor_icon': ["PopupMenu", "EditorIcons"]}
+	return suggestions

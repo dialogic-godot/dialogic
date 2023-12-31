@@ -11,8 +11,12 @@ func _ready() -> void:
 	toggled.connect(_on_value_changed)
 
 
-func set_value(value:bool) -> void:
-	button_pressed = value
+func set_value(value:Variant) -> void:
+	match DialogicUtil.get_variable_value_type(value):
+		DialogicUtil.VarTypes.STRING:
+			button_pressed = value and not value == "false"
+		_:
+			button_pressed = value and true
 
 
 func _on_value_changed(value:bool) -> void:

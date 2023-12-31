@@ -75,5 +75,21 @@ func _on_identifier_table_button_clicked(item: TreeItem, column: int, id: int, m
 	%IdentifierTable.edit_selected(true)
 
 
-func _on_help_button_pressed() -> void:
-	pass # Replace with function body.
+func filter_tree(filter:String= "", item:TreeItem = null) -> bool:
+	if item == null:
+		item = %IdentifierTable.get_root()
+
+	var any := false
+	for child in item.get_children():
+		if child.get_child_count() > 0:
+			child.visible = filter_tree(filter, child)
+			if child.visible: any = true
+		else:
+			child.visible = filter.is_empty() or filter.to_lower() in child.get_text(0).to_lower() or filter.to_lower() in child.get_text(1).to_lower()
+			if child.visible: any = true
+
+	return any
+
+
+func _on_search_text_changed(new_text: String) -> void:
+	filter_tree(new_text)
