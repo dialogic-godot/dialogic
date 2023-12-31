@@ -13,9 +13,9 @@ static func get_editor_scale() -> float:
 ## Although this does in fact always return a EditorPlugin node,
 ##  that class is apparently not present in export and referencing it here creates a crash.
 static func get_dialogic_plugin() -> Node:
-	for child in Engine.get_main_loop().get_root().get_children():
+	for child : Node in Engine.get_main_loop().get_root().get_children():
 		if child.get_class() == "EditorNode":
-			return child.get_node('DialogicPlugin')
+			return child.get_node(^'DialogicPlugin')
 	return null
 
 #endregion
@@ -24,25 +24,9 @@ static func get_dialogic_plugin() -> Node:
 static func autoload() -> DialogicGameHandler:
 	if Engine.is_editor_hint():
 		return null
-	if not Engine.get_main_loop().root.has_node("Dialogic"):
+	if not Engine.get_main_loop().root.has_node(^"Dialogic"):
 		return null
-	return Engine.get_main_loop().root.get_node("Dialogic")
-
-
-static func get_text() -> DialogicSubsystemText:
-	return DialogicUtil.autoload().Text
-	
-	
-static func get_input() -> DialogicSubsystemInput:
-	return DialogicUtil.autoload().Input
-	
-	
-static func get_glossary() -> DialogicSubsystemGlossary:
-	return DialogicUtil.autoload().Glossary
-	
-	
-static func get_history() -> DialogicSubsystemHistory:
-	return DialogicUtil.autoload().History
+	return Engine.get_main_loop().root.get_node(^"Dialogic")
 
 
 #region FILE SYSTEM
