@@ -149,7 +149,7 @@ func _on_delete_glossary_file_pressed() -> void:
 ##					ENTRY LIST
 ################################################################################
 func _on_EntryList_item_selected(idx:int) -> void:
-	current_entry_name = %EntryList.get_item_metadata(idx)
+	current_entry_name = %EntryList.get_item_text(idx)
 	var entry_info: Dictionary = current_glossary.get_entry(current_entry_name)
 
 	%EntrySettings.show()
@@ -245,15 +245,17 @@ func _on_entry_name_text_changed(new_name: String) -> void:
 				Color.TRANSPARENT
 			)
 
+		print_rich("[color=green]Renaming entry '" + current_entry_name + "'' to '" + new_name + "'[/color]")
 		current_glossary.replace_entry_key(current_entry_name, new_name)
-		ResourceSaver.save(current_glossary)
+
 
 		%EntryList.set_item_text(selected_item, new_name)
 		%EntryList.set_item_metadata(selected_item, new_name)
+		ResourceSaver.save(current_glossary)
 		current_entry_name = new_name
 
 
-func _on_entry_case_sensitive_toggled(button_pressed:bool) -> void:
+func _on_entry_case_sensitive_toggled(button_pressed: bool) -> void:
 	current_glossary.get_entry(current_entry_name)['case_sensitive'] = button_pressed
 	ResourceSaver.save(current_glossary)
 

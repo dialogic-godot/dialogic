@@ -56,25 +56,61 @@ func remove_entry_key(entry_key: String) -> void:
 ##
 ## This method fails if the [param old_entry_key] does not exist.
 func replace_entry_key(old_entry_key: String, new_entry_key: String) -> void:
-	var old_key: int = _entry_keys.get(old_entry_key, _MISSING_ENTRY_INDEX)
+	var entry_index: int = _find_entry_index_by_key(old_entry_key)
 
-	if old_key == _MISSING_ENTRY_INDEX:
+	if entry_index == _MISSING_ENTRY_INDEX:
 		return
 
+	var entry := entries[entry_index]
+
+	entry[NAME_PROPERTY] = new_entry_key
+
 	_entry_keys.erase(old_entry_key)
-	_entry_keys[new_entry_key] = old_key
-	print("[GLOSSARY] Replaced entry key: " + old_entry_key + " with: " + new_entry_key)
+	_entry_keys[new_entry_key] = entry_index
 
 
-func erase_entry(entry_key: String) -> void:
+## If the entry key does not exist, the entry may still exist.
+## This happens when a manipulation of the glossary fails at some point or
+## the file is corrupted.
+##
+## Runtime complexity: O(n), where n is the number of entries in this glossary.
+func _find_entry_index_by_key(entry_key: String) -> int:
 	var entry_index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
 
 	if entry_index == _MISSING_ENTRY_INDEX:
-		print("[GLOSSARY] Could not find entry key: " + entry_key)
-		return
 
-	entries.remove_at(entry_index)
+		for i in entries.size():
+			var entry: Dictionary = entries[i]
+
+			if (entry[NAME_PROPERTY] == entry_key
+			or entry_key in entry[ALTERNATIVE_PROPERTY]):
+				return i
+
+		return _MISSING_ENTRY_INDEX
+
+	return entry_index
+
+
+## Erases an entry from this glossary.
+##
+## Returns -1 if the entry does not exist.
+func erase_entry(entry_key: String) -> int:
+	var entry_index: int = _find_entry_index_by_key(entry_key)
+
+	if _MISSING_ENTRY_INDEX:
+		return _MISSING_ENTRY_INDEX
+
+	_remove_entry_at(entry_index)
 	_entry_keys.erase(entry_key)
+
+	return entry_index
+
+
+## Removes an entry at the given [param entry_index].
+## Does not remove the matching entry key from the [member _entry_keys]
+## lookup table.
+func _remove_entry_at(entry_index: int) -> void:
+	entries.remove_at(entry_index)
 
 	for key: String in _entry_keys.keys():
 		var index: int = _entry_keys[key]
@@ -84,6 +120,7 @@ func erase_entry(entry_key: String) -> void:
 
 		elif index > entry_index:
 			_entry_keys[key] = index - 1
+
 
 
 ## The [param entry_key] must be valid name of an entry.
