@@ -39,6 +39,7 @@ enum ModulateModes {BASE_COLOR_ONLY, ENTRY_COLOR_ON_BOX, GLOBAL_BG_COLOR}
 @export_subgroup("Size")
 @export var box_width := 200
 
+const MISSING_INDEX := -1
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -67,7 +68,9 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 	if glossary == null:
 		return
 
-	if glossary._translation_id.is_empty():
+	var is_translation_enabled: bool = ProjectSettings.get_setting('dialogic/translation/enabled', false)
+
+	if not is_translation_enabled or glossary._translation_id.is_empty():
 		var entry := glossary.get_entry(meta)
 
 		if entry.is_empty():
@@ -77,14 +80,13 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 
 	else:
 		var translation_key: String = glossary._translation_keys.get(meta)
-
-		# find last / and remove everything after it
 		var last_slash := translation_key.rfind('/')
 
-		if last_slash == -1:
+		if last_slash == MISSING_INDEX:
 			return
 
 		var tr_base := translation_key.substr(0, last_slash)
+		print(tr_base)
 
 		entry_title = tr(tr_base.path_join('title'))
 		entry_text = tr(tr_base.path_join('text'))
