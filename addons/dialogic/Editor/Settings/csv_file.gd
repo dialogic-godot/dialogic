@@ -129,7 +129,7 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 
 		# Add row for nicknames.
 		var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
-		var nickname_string: String = ", ".join(character_nicknames)
+		var nickname_string: String = ",".join(character_nicknames)
 		var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
 		var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
 		lines.append(nick_array_line)
@@ -193,15 +193,15 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 
 		var csv_key := glossary_line[0]
 
+		# CSV line separators will be empty.
 		if not csv_key.begins_with(glossary_prefix_key):
-			print("[GLOSSARY] incorrect csv_key: " + csv_key)
 			continue
 
 		var value_type := _get_key_type(csv_key)
 
+		# String and Array are the only valid types.
 		if (value_type == PropertyType.Other
 		or not csv_key.begins_with(glossary_translation_id_prefix)):
-			print("[GLOSSARY] incorrect value_type: " + str(value_type))
 			continue
 
 		var new_line_to_add := _process_line_into_array(glossary_line, value_type)
@@ -243,6 +243,8 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 	for glossary_entry: Dictionary in glossary.entries:
 		var index_counter := 0
 		var glossary_entry_name: String = glossary_entry[DialogicGlossary.NAME_PROPERTY]
+
+		var _glossary_translation_id := glossary.get_set_glossary_translation_id()
 		var entry_translation_id := glossary.get_set_glossary_entry_translation_id(glossary_entry_name)
 
 		for entry_key: String in glossary_entry.keys():
