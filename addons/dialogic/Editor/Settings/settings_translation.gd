@@ -22,11 +22,9 @@ const DEFAULT_GLOSSARY_CSV_NAME := "dialogic_glossary_translations.csv"
 ## Contains translation changes that were made during the last update.
 
 
-func _get_icon():
+func _get_icon() -> Texture2D:
 	return get_theme_icon("Translation", "EditorIcons")
 
-func _get_info_section() -> Control:
-	return $InfoSection
 
 func _is_feature_tab() -> bool:
 	return true
