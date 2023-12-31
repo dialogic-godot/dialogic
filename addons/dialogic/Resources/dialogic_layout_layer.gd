@@ -29,11 +29,11 @@ func _apply_export_overrides() -> void:
 func apply_export_overrides() -> void:
 	if disabled:
 		if "visible" in self:
-			set('visible', false)
+			set(&'visible', false)
 		process_mode = Node.PROCESS_MODE_DISABLED
 	else:
 		if "visible" in self:
-			set('visible', true)
+			set(&'visible', true)
 		process_mode = Node.PROCESS_MODE_INHERIT
 
 	_apply_export_overrides()

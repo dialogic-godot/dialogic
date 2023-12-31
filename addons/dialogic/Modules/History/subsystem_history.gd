@@ -6,20 +6,20 @@ class_name DialogicSubsystemHistory
 
 ## Simple history that stores limited information
 ## Used for the history display
-var simple_history_enabled : bool = true
+var simple_history_enabled := true
 var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
 ## Full event history (can be used for undo)
-var full_event_history_enabled : bool = false
-var full_event_history_content : Array = []
+var full_event_history_enabled := false
+var full_event_history_content := []
 signal full_event_history_changed
 
 ## Read text history
 ## Stores which text events and choices have already been visited
-var already_read_history_enabled : bool = false
-var already_read_history_content : Dictionary = {}
-var _was_last_event_already_read : bool = false
+var already_read_history_enabled := false
+var already_read_history_content := {}
+var _was_last_event_already_read := false
 
 signal already_read_event_reached
 signal not_read_event_reached
@@ -47,7 +47,7 @@ func _ready() -> void:
 ##					SIMPLE HISTORY
 ####################################################################################################
 
-func store_simple_history_entry(text:String, event_type:String, extra_info : Dictionary = {}) -> void:
+func store_simple_history_entry(text:String, event_type:String, extra_info := {}) -> void:
 	if !simple_history_enabled: return
 	extra_info['text'] = text
 	extra_info['event_type'] = event_type
@@ -80,7 +80,7 @@ func store_full_event(event:DialogicEvent) -> void:
 func _current_event_key() -> String:
 	var resource_path : String = dialogic.current_timeline.resource_path
 	var event_idx : String = str(dialogic.current_event_idx)
-	var event_key : String = resource_path+event_idx
+	var event_key : String = resource_path + event_idx
 
 	return event_key
 

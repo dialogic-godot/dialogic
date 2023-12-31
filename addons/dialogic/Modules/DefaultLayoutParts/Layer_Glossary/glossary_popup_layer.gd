@@ -52,16 +52,18 @@ func _ready() -> void:
 		return
 
 	pointer.hide()
-	var text_system : DialogicSubsystemText = DialogicUtil.get_text()
-	text_system.animation_textbox_hide.connect(pointer.hide)
-	text_system.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)
-	text_system.meta_hover_ended.connect(_on_dialogic_display_dialog_text_meta_hover_ended)
-	text_system.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
+	var text_system : DialogicSubsystemText = DialogicUtil.autoload().get(&'Text')
+	var _error : int = 0
+	_error = text_system.animation_textbox_hide.connect(pointer.hide)
+	_error = text_system.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)
+	_error = text_system.meta_hover_ended.connect(_on_dialogic_display_dialog_text_meta_hover_ended)
+	_error = text_system.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
 
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
-	var info: Dictionary = DialogicUtil.get_glossary().get_entry(meta)
+	var glossary_system : DialogicSubsystemGlossary = DialogicUtil.autoload().get(&'Glossary')
+	var info: Dictionary = glossary_system.get_entry(meta)
 
 	if not info:
 		return
@@ -86,7 +88,7 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
 			panel.self_modulate = info.get(&'color', Color.WHITE)
 			panel_point.self_modulate = info.get(&'color', Color.WHITE)
 
-	DialogicUtil.get_input().action_was_consumed = true
+	(DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).action_was_consumed = true
 
 
 ## Method that keeps the bubble at mouse position when visible
@@ -101,11 +103,11 @@ func _process(_delta : float) -> void:
 ## Method that hides the bubble
 func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
 	pointer.hide()
-	DialogicUtil.get_input().action_was_consumed = false
+	(DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).action_was_consumed = false
 
 
 func _on_dialogic_display_dialog_text_meta_clicked(_meta:String) -> void:
-	DialogicUtil.get_input().action_was_consumed = true
+	(DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).action_was_consumed = true
 
 
 func _apply_export_overrides() -> void:

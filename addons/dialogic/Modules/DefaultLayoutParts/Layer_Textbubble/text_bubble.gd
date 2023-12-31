@@ -1,7 +1,6 @@
 extends Control
+class_name DialogicNode_TextBubble
 
-@onready var tail : Line2D = $Tail
-@onready var bubble : Control = $Background
 var speaker_node : Node = null
 var character : DialogicCharacter = null
 var max_width := 300
@@ -12,6 +11,13 @@ var base_position := Vector2.ZERO
 var base_direction := Vector2(1.0, -1.0).normalized()
 var safe_zone := 50.0
 var padding := Vector2()
+
+@onready var tail : Line2D = $Tail
+@onready var bubble : Control = $Background
+@onready var choice_container : Container = $DialogText/ChoiceContainer
+@onready var name_label_panel : PanelContainer = $DialogText/NameLabel
+@onready var name_label : DialogicNode_NameLabel = %NameLabel
+@onready var dialog_text : DialogicNode_DialogText = %DialogText
 
 func _ready() -> void:
 	scale = Vector2.ZERO
@@ -61,7 +67,7 @@ func _process(delta):
 
 func open() -> void:
 	show()
-	%DialogText.enabled = true
+	dialog_text.enabled = true
 	var open_tween := create_tween().set_parallel(true)
 	open_tween.tween_property(self, "scale", Vector2.ONE, 0.1).from(Vector2.ZERO)
 	open_tween.tween_property(self, "modulate:a", 1.0, 0.1).from(0.0)
@@ -69,7 +75,7 @@ func open() -> void:
 
 
 func close() -> void:
-	%DialogText.enabled = false
+	dialog_text.enabled = false
 	var close_tween := create_tween().set_parallel(true)
 	close_tween.tween_property(self, "scale", Vector2.ONE * 0.8, 0.1)
 	close_tween.tween_property(self, "modulate:a", 0.0, 0.1)
@@ -78,27 +84,27 @@ func close() -> void:
 
 
 func _on_dialog_text_started_revealing_text():
-	var font :Font = %DialogText.get_theme_font("normal_font")
-	%DialogText.size = font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
+	var font :Font = dialog_text.get_theme_font("normal_font")
+	dialog_text.size = font.get_multiline_string_size(dialog_text.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
 	if DialogicUtil.autoload().Choices.is_question(DialogicUtil.autoload().current_event_idx):
 		font = $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font('font')
-		%DialogText.size.y += font.get_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
-	%DialogText.position = -%DialogText.size/2
+		dialog_text.size.y += font.get_string_size(dialog_text.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
+	dialog_text.position = -dialog_text.size/2
 
 	_resize_bubble()
 
 
 func _resize_bubble() -> void:
-	var bubble_size :Vector2 = %DialogText.size+(padding*2)
+	var bubble_size :Vector2 = dialog_text.size+(padding*2)
 	var half_size :Vector2= (bubble_size / 2.0)
-	%DialogText.pivot_offset = half_size
+	dialog_text.pivot_offset = half_size
 	bubble.pivot_offset = half_size
 	bubble_rect = Rect2(position, bubble_size * Vector2(1.1, 1.1))
 	bubble.size = bubble_size
 	bubble.position = -half_size
 
-	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	t.tween_property(bubble, "scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
+	var t : Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	t.tween_property(bubble, ^"scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
 
 	# set bubble's ratio
 	var bubble_ratio := Vector2.ONE
@@ -107,5 +113,5 @@ func _resize_bubble() -> void:
 	else:
 		bubble_ratio.x = bubble_rect.size.x / bubble_rect.size.y
 
-	bubble.material.set("shader_parameter/ratio", bubble_ratio)
+	bubble.material.set(&"shader_parameter/ratio", bubble_ratio)
 

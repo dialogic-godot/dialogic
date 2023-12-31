@@ -1,6 +1,6 @@
 @tool
 class_name DialogicLayoutBase
-extends CanvasLayer
+extends Node
 
 ## Base class that should be extended by custom layouts.
 

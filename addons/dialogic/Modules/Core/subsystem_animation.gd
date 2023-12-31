@@ -1,4 +1,5 @@
 extends DialogicSubsystem
+class_name DialogicSubsystemAnimation
 
 ## Subsystem that allows entering and leaving an animation state.
 
