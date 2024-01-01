@@ -66,6 +66,7 @@ jobs:
         run: |
             git clone --branch v4.2.0 --single-branch https://github.com/MikeSchulze/gdUnit4
             rsync -av gdUnit4/addons/ ./addons/
+            rm -rf ./gdUnit4
 
       - name: Print Directory Structure
         run: |
