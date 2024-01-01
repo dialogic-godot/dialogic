@@ -156,6 +156,11 @@ func add_entry_key_alias(entry_key: String, alias: String) -> bool:
 	return index
 
 
+## Adds a new entry to this glossary.
+## Adds the name and alternatives as entry keys.
+##
+## This is a private method, it's recommended to use [method set_entry],
+## which uses this method internally, if the entry key does not exist yet.
 func _add_entry(entry: Dictionary) -> void:
 	var entry_key: String = entry[NAME_PROPERTY]
 	entries.append(entry)
