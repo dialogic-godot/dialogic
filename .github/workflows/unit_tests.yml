@@ -28,11 +28,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        godot-version: ['4.1.1'] # Insert here the Godot version you want to run your tests with
+        # Insert here the Godot version you want to run your tests with.
+        godot-version: ['4.2.0']
 
     name: "CI Unit Test v${{ matrix.godot-version }}"
     runs-on: 'ubuntu-22.04'
-    timeout-minutes: 10 # The overall timeout
+    # The overall timeout.
+    timeout-minutes: 10
 
     steps:
       - name: "Checkout your Repository"
@@ -62,18 +64,20 @@ jobs:
           echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
-      # We need to update the project before running tests, Godot has actually issues with loading the plugin
+      # We need to update the project before running tests, Godot has actually issues with loading the plugin.
       - name: "Update Project"
         if: ${{ !cancelled() }}
         timeout-minutes: 1
-        continue-on-error: true # we still ignore the timeout, the script is not quit and we run into a timeout
+        # We still ignore the timeout, the script is not quit and we run into a timeout.
+        continue-on-error: true
         shell: bash
         run: |
           ${{ env.GODOT_BIN }} -e --path . -s res://addons/gdUnit4/bin/ProjectScanner.gd --headless --audio-driver Dummy
 
       - name: "Run Unit Tests"
         if: ${{ !cancelled() }}
-        timeout-minutes: 8 # set your expected test timeout
+        # Set your expected test timeout.
+        timeout-minutes: 8
         env:
           GODOT_BIN: ${{ env.GODOT_BIN }}
         shell: bash
