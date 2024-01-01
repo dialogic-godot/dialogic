@@ -2,10 +2,19 @@ name: unit-test
 run-name: ${{ github.head_ref || github.ref_name }}-unit-test
 
 on:
+  push:
+    branches:
+        - main
+
+    paths-ignore:
+        - '**.yml'
+        - '**.md'
+
   pull_request:
     paths-ignore:
       - '**.yml'
       - '**.md'
+
   workflow_dispatch:
 
 
