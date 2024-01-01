@@ -64,6 +64,9 @@ jobs:
           echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
+      - name: "Clone the gdUnit4 repository"
+        run: git clone --branch master https://github.com/MikeSchulze/gdUnit4 addons/gdUnit4
+
       # We need to update the project before running tests, Godot has actually issues with loading the plugin.
       - name: "Update Project"
         if: ${{ !cancelled() }}
