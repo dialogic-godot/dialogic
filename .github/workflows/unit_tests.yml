@@ -90,8 +90,8 @@ jobs:
           GODOT_BIN: ${{ env.GODOT_BIN }}
         shell: bash
         run: |
-          chmod +x ./addons/gdUnit4/runtest.sh
-          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://test" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+          chmod +x ./addons/dialogic/addons/gdUnit4/runtest.sh
+          xvfb-run --auto-servernum ./addons/dialogic/addons/gdUnit4/runtest.sh --add "res://test" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
 
       - name: "Publish Test Report"
         if: ${{ always() }}
