@@ -65,7 +65,7 @@ jobs:
       - name: "Clone the gdUnit4 repository"
         run: |
             git clone --branch master https://github.com/MikeSchulze/gdUnit4
-            mv gdUnit4/addons/gdUnit4 .
+            mv gdUnit4/addons/gdUnit4 .addons/
 
       # We need to update the project before running tests, Godot has actually issues with loading the plugin.
       - name: "Update Project"
