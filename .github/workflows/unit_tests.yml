@@ -67,6 +67,10 @@ jobs:
             git clone --branch master https://github.com/MikeSchulze/gdUnit4
             mv gdUnit4/addons/ ./addons/
 
+      - name: Print Directory Structure
+        run: |
+            ls -R
+
       # We need to update the project before running tests, Godot has actually issues with loading the plugin.
       - name: "Update Project"
         if: ${{ !cancelled() }}
