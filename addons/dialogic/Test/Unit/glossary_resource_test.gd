@@ -1,3 +1,4 @@
+## This test suite tests the DialogicGlossary class.
 class_name GlossaryResourceTest
 extends GdUnitTestSuite
 
