@@ -78,9 +78,9 @@ func store_full_event(event:DialogicEvent) -> void:
 ## Takes the current timeline event and creates a unique key for it.
 ## Uses the timeline resource path as well.
 func _current_event_key() -> String:
-	var resource_path : String = dialogic.current_timeline.resource_path
-	var event_idx : String = str(dialogic.current_event_idx)
-	var event_key : String = resource_path + event_idx
+	var resource_path = dialogic.current_timeline.resource_path
+	var event_idx = str(dialogic.current_event_idx)
+	var event_key = resource_path+event_idx
 
 	return event_key
 
@@ -89,7 +89,7 @@ func event_was_read(_event: DialogicEvent) -> void:
 	if !already_read_history_enabled:
 		return
 
-	var event_key : String = _current_event_key()
+	var event_key = _current_event_key()
 
 	already_read_history_content[event_key] = dialogic.current_event_idx
 
@@ -104,7 +104,7 @@ func check_already_read(event: DialogicEvent) -> void:
 	if event.event_name != "Text":
 		return
 
-	var event_key : String = _current_event_key()
+	var event_key = _current_event_key()
 
 	if event_key in already_read_history_content:
 		already_read_event_reached.emit()

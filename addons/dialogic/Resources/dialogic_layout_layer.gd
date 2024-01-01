@@ -1,6 +1,6 @@
 @tool
 class_name DialogicLayoutLayer
-extends Control
+extends Node
 
 ## Base class that should be extended by custom dialogic layout layers.
 

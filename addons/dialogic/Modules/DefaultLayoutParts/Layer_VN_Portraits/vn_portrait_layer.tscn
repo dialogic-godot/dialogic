@@ -29,15 +29,6 @@ anchor_bottom = 1.0
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
-mode = 0
-position_index = 0
-portrait_prefix = ""
-size_mode = 3
-mirrored = false
-origin_anchor = 7
-origin_offset = Vector2(0, 0)
-debug_character = null
-debug_character_portrait = ""
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits"]
@@ -49,15 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
-mode = 0
 position_index = 1
-portrait_prefix = ""
-size_mode = 3
-mirrored = false
-origin_anchor = 7
-origin_offset = Vector2(0, 0)
-debug_character = null
-debug_character_portrait = ""
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits"]
@@ -69,15 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
-mode = 0
 position_index = 2
-portrait_prefix = ""
-size_mode = 3
-mirrored = false
-origin_anchor = 7
-origin_offset = Vector2(0, 0)
-debug_character = null
-debug_character_portrait = ""
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits"]
@@ -89,15 +64,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
-mode = 0
 position_index = 3
-portrait_prefix = ""
-size_mode = 3
-mirrored = false
-origin_anchor = 7
-origin_offset = Vector2(0, 0)
-debug_character = null
-debug_character_portrait = ""
 metadata/_edit_use_anchors_ = true
 
 [node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits"]
@@ -110,13 +77,5 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
-mode = 0
 position_index = 4
-portrait_prefix = ""
-size_mode = 3
-mirrored = false
-origin_anchor = 7
-origin_offset = Vector2(0, 0)
-debug_character = null
-debug_character_portrait = ""
 metadata/_edit_use_anchors_ = true

@@ -291,14 +291,7 @@ textbox_root = NodePath("..")
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel/DialogicNode_DialogText"]
 unique_name_in_owner = true
 script = ExtResource("4_ma5mw")
-enabled = true
-mode = 0
-sounds = Array[AudioStream]([])
-end_sound = null
 play_every_character = 0
-pitch_variance = 0.0
-volume_variance = 0.0
-ignore_characters = " .,"
 
 [node name="NextIndicator" type="Control" parent="DialogicTextAnchor/DialogTextAnimationParent/Sizer/DialogTextPanel"]
 unique_name_in_owner = true
