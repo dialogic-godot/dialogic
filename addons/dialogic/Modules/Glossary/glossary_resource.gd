@@ -142,19 +142,29 @@ func get_entry(entry_name: String) -> Dictionary:
 	return {}
 
 
-func add_entry_key_alias(old_entry_key: String, new_entry_key: String) -> void:
-	var index: int = _entry_keys.get(old_entry_key, _MISSING_ENTRY_INDEX)
+## The [param entry_key] must be valid entry key for an entry.
+## Adds the [param alias] as a valid entry key for that entry.
+##
+## Returns the index of the entry, -1 if the entry does not exist.
+func add_entry_key_alias(entry_key: String, alias: String) -> bool:
+	var index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
 
 	if index == _MISSING_ENTRY_INDEX:
-		return
+		return _MISSING_ENTRY_INDEX
 
-	_entry_keys[new_entry_key] = index
+	_entry_keys[alias] = index
+	return index
 
 
 func _add_entry(entry: Dictionary) -> void:
 	var entry_key: String = entry[NAME_PROPERTY]
 	entries.append(entry)
-	_entry_keys[entry_key] = entries.size() - 1
+	var highest_new_index := _entry_keys.size() - 1
+
+	for alternative: String in entry[ALTERNATIVE_PROPERTY]:
+		_entry_keys[alternative] = highest_new_index
+
+	_entry_keys[entry_key] = highest_new_index
 
 
 ## Adds a glossary entry.
