@@ -284,7 +284,7 @@ layout_mode = 2
 theme_type_variation = &"DialogicLink"
 text = "  Bug / Request"
 underline = 2
-uri = "https://github.com/coppolaemilio/dialogic/issues/new/choose"
+uri = "https://github.com/dialogic-godot/dialogic/issues/new/choose"
 
 [node name="DiscordButton" type="LinkButton" parent="CenterContainer/HomePageBox/BottomPanel/ScrollContainer/HBoxContainer/CenterContainer"]
 layout_mode = 2
