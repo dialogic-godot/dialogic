@@ -65,7 +65,7 @@ jobs:
       - name: "Clone the gdUnit4 repository"
         run: |
             git clone --branch v4.2.0 --single-branch https://github.com/MikeSchulze/gdUnit4
-            rsync -av gdUnit4/addons/ ./addons/
+            rsync -av gdUnit4/addons/ ./addons/dialogic/addons/
             rm -rf ./gdUnit4
 
       - name: Print Directory Structure
