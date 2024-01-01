@@ -5,9 +5,10 @@ extends DialogicLayoutLayer
 
 
 func _apply_export_overrides() -> void:
-	if self.theme == null:
-		self.theme = Theme.new()
+	var layer_theme : Theme = get(&'theme')
+	if layer_theme == null:
+		layer_theme = Theme.new()
 
 	if get_global_setting(&'font', ''):
-		self.theme.default_font = load(get_global_setting(&'font', '') as String)
-	self.theme.default_font_size = get_global_setting(&'font_size', 0)
+		layer_theme.default_font = load(get_global_setting(&'font', '') as String)
+	layer_theme.default_font_size = get_global_setting(&'font_size', 0)

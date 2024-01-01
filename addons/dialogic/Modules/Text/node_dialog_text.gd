@@ -4,7 +4,7 @@ extends RichTextLabel
 ## Dialogic node that can reveal text at a given (changeable speed).
 
 signal started_revealing_text()
-signal continued_revealing_text(new_character : Variant)
+signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
 enum Alignment {LEFT, CENTER, RIGHT}
 

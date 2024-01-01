@@ -104,7 +104,7 @@ func _apply_export_overrides() -> void:
 
 		choice.custom_minimum_size = boxes_min_size
 
-	self.theme = layer_theme
+	set(&'theme', layer_theme)
 
 	# apply sound settings
 	button_sound.volume_db = sounds_volume

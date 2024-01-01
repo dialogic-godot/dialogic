@@ -49,7 +49,7 @@ func _apply_export_overrides() -> void:
 	if DialogicUtil.autoload().has_subsystem('History'):
 		show_history_button.visible = show_open_button and (DialogicUtil.autoload().get(&'History') as DialogicSubsystemHistory).simple_history_enabled
 	else:
-		self.visible = false
+		set(&'visible', false)
 
 	history_item_theme = Theme.new()
 
