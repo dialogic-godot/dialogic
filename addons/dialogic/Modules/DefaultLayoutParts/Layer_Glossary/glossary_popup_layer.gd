@@ -39,22 +39,38 @@ enum ModulateModes {BASE_COLOR_ONLY, ENTRY_COLOR_ON_BOX, GLOBAL_BG_COLOR}
 @export_subgroup("Size")
 @export var box_width : int = 200
 
-@onready var pointer : Control = $Pointer
-@onready var title : Label = %Title
-@onready var text : RichTextLabel = %Text
-@onready var extra : RichTextLabel = %Extra
-@onready var panel : PanelContainer = %Panel
-@onready var panel_point : PanelContainer = %PanelPoint
+func get_pointer() -> Control:
+	return $Pointer
+
+
+func get_title() -> Label:
+	return %Title
+
+
+func get_text() -> RichTextLabel:
+	return %Text
+
+
+func get_extra() -> RichTextLabel:
+	return %Extra
+
+
+func get_panel() -> PanelContainer:
+	return %Panel
+
+
+func get_panel_point() -> PanelContainer:
+	return %PanelPoint
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	pointer.hide()
+	get_pointer().hide()
 	var text_system : DialogicSubsystemText = DialogicUtil.autoload().get(&'Text')
 	var _error : int = 0
-	_error = text_system.animation_textbox_hide.connect(pointer.hide)
+	_error = text_system.animation_textbox_hide.connect(get_pointer().hide)
 	_error = text_system.meta_hover_started.connect(_on_dialogic_display_dialog_text_meta_hover_started)
 	_error = text_system.meta_hover_ended.connect(_on_dialogic_display_dialog_text_meta_hover_ended)
 	_error = text_system.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
@@ -68,25 +84,25 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
 	if not info:
 		return
 
-	pointer.show()
-	title.text = info.get(&'title', '')
-	text.text = info.get(&'text', '')
-	text.text = ['', '[center]', '[right]'][text_alignment] + text.text
-	extra.text = info.get(&'extra', '')
-	extra.text = ['', '[center]', '[right]'][extra_alignment] + extra.text
-	pointer.global_position = pointer.get_global_mouse_position()
+	get_pointer().show()
+	get_title().text = info.get(&'title', '')
+	get_text().text = info.get(&'text', '')
+	get_text().text = ['', '[center]', '[right]'][text_alignment] + get_text().text
+	get_extra().text = info.get(&'extra', '')
+	get_extra().text = ['', '[center]', '[right]'][extra_alignment] + get_extra().text
+	get_pointer().global_position = get_pointer().get_global_mouse_position()
 
 	if title_color_mode == TextColorModes.ENTRY:
-		title.add_theme_color_override(&"font_color", info.get(&'color', title_custom_color) as Color)
+		get_title().add_theme_color_override(&"font_color", info.get(&'color', title_custom_color) as Color)
 	if text_color_mode == TextColorModes.ENTRY:
-		text.add_theme_color_override(&"default_color", info.get(&'color', text_custom_color) as Color)
+		get_text().add_theme_color_override(&"default_color", info.get(&'color', text_custom_color) as Color)
 	if extra_color_mode == TextColorModes.ENTRY:
-		extra.add_theme_color_override(&"default_color", info.get(&'color', extra_custom_color) as Color)
+		get_extra().add_theme_color_override(&"default_color", info.get(&'color', extra_custom_color) as Color)
 
 	match box_modulate_mode:
 		ModulateModes.ENTRY_COLOR_ON_BOX:
-			panel.self_modulate = info.get(&'color', Color.WHITE)
-			panel_point.self_modulate = info.get(&'color', Color.WHITE)
+			get_panel().self_modulate = info.get(&'color', Color.WHITE)
+			get_panel_point().self_modulate = info.get(&'color', Color.WHITE)
 
 	(DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).action_was_consumed = true
 
@@ -96,13 +112,14 @@ func _process(_delta : float) -> void:
 	if Engine.is_editor_hint():
 		return
 
+	var pointer : Control = get_pointer()
 	if pointer.visible:
 		pointer.global_position = pointer.get_global_mouse_position()
 
 
 ## Method that hides the bubble
 func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
-	pointer.hide()
+	get_pointer().hide()
 	(DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).action_was_consumed = false
 
 
@@ -118,13 +135,14 @@ func _apply_export_overrides() -> void:
 	elif ResourceLoader.exists(font_custom):
 		font = load(font_custom)
 
+	var title : Label = get_title()
 	if font:
 		title.add_theme_font_override(&"font", font)
 	title.horizontal_alignment = title_alignment as HorizontalAlignment
 
 	# Apply font & sizes
 	title.add_theme_font_size_override(&"font_size", font_title_size)
-	var labels : Array[RichTextLabel] = [text, extra]
+	var labels : Array[RichTextLabel] = [get_text(), get_extra()]
 	var sizes : PackedInt32Array = [font_text_size, font_extra_size]
 	for i : int in len(labels):
 		if font:
@@ -138,7 +156,7 @@ func _apply_export_overrides() -> void:
 
 
 	# Apply text colors
-	var controls : Array[Control] = [title, text, extra]
+	var controls : Array[Control] = [get_title(), get_text(), get_extra()]
 	var global_settings : Array[StringName] = [&'font_color', &'default_color', &'default_color']
 	var color_modes : Array[TextColorModes] = [title_color_mode, text_color_mode, extra_color_mode]
 	var custom_colors : PackedColorArray = [title_custom_color, text_custom_color, extra_custom_color]
@@ -150,6 +168,7 @@ func _apply_export_overrides() -> void:
 				controls[i].add_theme_color_override(global_settings[i], custom_colors[i])
 
 	# Apply box size
+	var panel : PanelContainer = get_panel()
 	panel.size.x = box_width
 	panel.position.x = -box_width/2.0
 
@@ -157,8 +176,8 @@ func _apply_export_overrides() -> void:
 	match box_modulate_mode:
 		ModulateModes.BASE_COLOR_ONLY:
 			panel.self_modulate = box_base_modulate
-			panel_point.self_modulate = box_base_modulate
+			get_panel_point().self_modulate = box_base_modulate
 		ModulateModes.GLOBAL_BG_COLOR:
 			panel.self_modulate = get_global_setting(&'bg_color', box_base_modulate)
-			panel_point.self_modulate = get_global_setting(&'bg_color', box_base_modulate)
+			get_panel_point().self_modulate = get_global_setting(&'bg_color', box_base_modulate)
 

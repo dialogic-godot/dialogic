@@ -92,22 +92,13 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export_range(0.0, 10) var typing_sounds_volume_variance : float = 0.0
 @export var typing_sounds_ignore_characters : String = " .,!?"
 
-@onready var dialog_text : DialogicNode_DialogText = %DialogicNode_DialogText
-@onready var dialog_text_panel : PanelContainer = %DialogTextPanel
-@onready var sizer : Control = %Sizer
-@onready var animations : AnimationPlayer = %Animations
-@onready var name_label : DialogicNode_NameLabel = %DialogicNode_NameLabel
-@onready var name_label_panel : PanelContainer = %NameLabelPanel
-@onready var next_indicator : DNextIndicator = %NextIndicator
-@onready var type_sounds : DialogicNode_TypeSounds = %DialogicNode_TypeSounds
-@onready var progress_bar : ProgressBar = %AutoAdvanceProgressbar
-
 
 func _apply_export_overrides() -> void:
 	if !is_inside_tree():
 		await ready
 
 	## FONT SETTINGS
+	var dialog_text : DialogicNode_DialogText = %DialogicNode_DialogText
 	dialog_text.alignment = text_alignment as DialogicNode_DialogText.Alignment
 
 	if text_use_global_size:
@@ -134,6 +125,7 @@ func _apply_export_overrides() -> void:
 		dialog_text.add_theme_font_override(&"bold_italics_font", load(bold_italic_font) as Font)
 
 	## BOX SETTINGS
+	var dialog_text_panel : PanelContainer = %DialogTextPanel
 	if ResourceLoader.exists(box_panel):
 		dialog_text_panel.add_theme_stylebox_override(&'panel', load(box_panel) as StyleBox)
 
@@ -148,16 +140,19 @@ func _apply_export_overrides() -> void:
 	#%Minimizer.grow_vertical = Container.GROW_DIRECTION_BEGIN
 	#dialog_text_panel.custom_minimum_size = box_size
 	#dialog_text_panel.show()
+	var sizer : Control = %Sizer
 	sizer.size = box_size
 	sizer.position = box_size * Vector2(-0.5, -1)+Vector2(0, -box_margin_bottom)
 
 
 	## BOX ANIMATIONS
+	var animations : AnimationPlayer = %Animations
 	animations.set(&'animation_in', box_animation_in)
 	animations.set(&'animation_out', box_animation_out)
 	animations.set(&'animation_new_text', box_animation_new_text)
 
 	## NAME LABEL SETTINGS
+	var name_label : DialogicNode_NameLabel = %DialogicNode_NameLabel
 	if name_label_use_global_font_size:
 		name_label.add_theme_font_size_override(&"font_size", get_global_setting(&'font_size', name_label_custom_font_size) as int)
 	else:
@@ -175,6 +170,7 @@ func _apply_export_overrides() -> void:
 
 	name_label.use_character_color = name_label_use_character_color
 
+	var name_label_panel : PanelContainer = %NameLabelPanel
 	if ResourceLoader.exists(name_label_box_panel):
 		name_label_panel.add_theme_stylebox_override(&'panel', load(name_label_box_panel) as StyleBox)
 	else:
@@ -194,6 +190,7 @@ func _apply_export_overrides() -> void:
 	name_label_panel.grow_horizontal = [1, 2, 0][name_label_alignment]
 
 	## NEXT INDICATOR SETTINGS
+	var next_indicator : DNextIndicator = %NextIndicator
 	next_indicator.enabled = next_indicator_enabled
 
 	if next_indicator_enabled:
@@ -205,11 +202,13 @@ func _apply_export_overrides() -> void:
 		next_indicator.texture_size = next_indicator_size
 
 	## OTHER
+	var progress_bar : ProgressBar = %AutoAdvanceProgressbar
 	progress_bar.set(&'enabled', autoadvance_progressbar)
 
 	#### SOUNDS
 
 	## TYPING SOUNDS
+	var type_sounds : DialogicNode_TypeSounds = %DialogicNode_TypeSounds
 	type_sounds.enabled = typing_sounds_enabled
 	type_sounds.mode = typing_sounds_mode
 	if not typing_sounds_sounds_folder.is_empty():

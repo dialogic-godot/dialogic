@@ -34,10 +34,20 @@ var scroll_to_bottom_flag: bool = false
 
 var history_item_theme : Theme = null
 
-@onready var show_history_button : Button = $ShowHistory
-@onready var hide_history_button : Button = $HideHistory
-@onready var history_box : ScrollContainer = %HistoryBox
-@onready var history_log : VBoxContainer = %HistoryLog
+func get_show_history_button() -> Button:
+	return $ShowHistory
+
+
+func get_hide_history_button() -> Button:
+	return $HideHistory
+
+
+func get_history_box() -> ScrollContainer:
+	return %HistoryBox
+
+
+func get_history_log() -> VBoxContainer:
+	return %HistoryLog
 
 
 func _ready() -> void:
@@ -46,8 +56,9 @@ func _ready() -> void:
 
 
 func _apply_export_overrides() -> void:
-	if DialogicUtil.autoload().has_subsystem('History'):
-		show_history_button.visible = show_open_button and (DialogicUtil.autoload().get(&'History') as DialogicSubsystemHistory).simple_history_enabled
+	var history_subsystem : DialogicSubsystemHistory = DialogicUtil.autoload().get(&'History')
+	if history_subsystem != null:
+		get_show_history_button().visible = show_open_button and history_subsystem.simple_history_enabled
 	else:
 		set(&'visible', false)
 
@@ -73,9 +84,9 @@ func _apply_export_overrides() -> void:
 func _process(_delta : float) -> void:
 	if Engine.is_editor_hint():
 		return
-	if scroll_to_bottom_flag and history_box.visible and history_log.get_child_count():
+	if scroll_to_bottom_flag and get_history_box().visible and get_history_log().get_child_count():
 		await get_tree().process_frame
-		history_box.ensure_control_visible(history_log.get_children()[-1] as Control)
+		get_history_box().ensure_control_visible(get_history_log().get_children()[-1] as Control)
 		scroll_to_bottom_flag = false
 
 
@@ -85,7 +96,7 @@ func _on_show_history_pressed() -> void:
 
 
 func show_history() -> void:
-	for child : Node in history_log.get_children():
+	for child : Node in get_history_log().get_children():
 		child.queue_free()
 
 	for info : Dictionary in (DialogicUtil.autoload().get(&'History') as DialogicSubsystemHistory).get_simple_history():
@@ -119,18 +130,18 @@ func show_history() -> void:
 					choices_text += "- [b]"+info['text']+"[/b]\n"
 				history_item.call(&'load_info', choices_text)
 
-		history_log.add_child(history_item)
+		get_history_log().add_child(history_item)
 
 	if scroll_to_bottom:
 		scroll_to_bottom_flag = true
 
-	show_history_button.hide()
-	hide_history_button.visible = show_close_button
-	history_box.show()
+	get_show_history_button().hide()
+	get_hide_history_button().visible = show_close_button
+	get_history_box().show()
 
 
 func _on_hide_history_pressed() -> void:
 	DialogicUtil.autoload().paused = false
-	history_box.hide()
-	hide_history_button.hide()
-	show_history_button.visible = show_open_button and (DialogicUtil.autoload().get(&'History') as DialogicSubsystemHistory).simple_history_enabled
+	get_history_box().hide()
+	get_hide_history_button().hide()
+	get_show_history_button().visible = show_open_button and (DialogicUtil.autoload().get(&'History') as DialogicSubsystemHistory).simple_history_enabled

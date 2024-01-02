@@ -13,8 +13,13 @@ var animation_new_text : AnimationsNewText
 
 var full_clear : bool = true
 
-@onready var text_panel : PanelContainer = %DialogTextPanel
-@onready var dialog : DialogicNode_DialogText = %DialogicNode_DialogText
+func get_text_panel() -> PanelContainer:
+	return %DialogTextPanel
+
+
+func get_dialog() -> DialogicNode_DialogText:
+	return %DialogicNode_DialogText
+
 
 func _ready() -> void:
 	var text_system : DialogicSubsystemText = DialogicUtil.autoload().get(&'Text')
@@ -31,8 +36,8 @@ func _on_textbox_show() -> void:
 	play('RESET')
 	var animation_system : DialogicSubsystemAnimation = DialogicUtil.autoload().get(&'Animation')
 	animation_system.start_animating()
-	text_panel.get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
-	dialog.text = ""
+	get_text_panel().get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
+	get_dialog().text = ""
 	match animation_in:
 		AnimationsIn.POP_IN:
 			play("textbox_pop")
@@ -72,7 +77,7 @@ func _on_textbox_new_text() -> void:
 	var animation_system : DialogicSubsystemAnimation = DialogicUtil.autoload().get(&'Animation')
 	animation_system.start_animating()
 	if full_clear:
-		dialog.text = ""
+		get_dialog().text = ""
 	match animation_new_text:
 		AnimationsNewText.WIGGLE:
 			play("new_text")

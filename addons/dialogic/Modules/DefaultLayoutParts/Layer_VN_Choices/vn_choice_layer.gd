@@ -38,8 +38,13 @@ extends DialogicLayoutLayer
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_hover : String = "res://addons/dialogic/Example Assets/sound-effects/typing2.wav"
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_focus : String = "res://addons/dialogic/Example Assets/sound-effects/typing4.wav"
 
-@onready var choices : VBoxContainer = $Choices
-@onready var button_sound : DialogicNode_ButtonSound = %DialogicNode_ButtonSound
+func get_choices() -> VBoxContainer:
+	return $Choices
+
+
+func get_button_sound() -> DialogicNode_ButtonSound:
+	return %DialogicNode_ButtonSound
+
 
 ## Method that applies all exported settings
 func _apply_export_overrides() -> void:
@@ -90,9 +95,9 @@ func _apply_export_overrides() -> void:
 	if ResourceLoader.exists(boxes_stylebox_focused):
 		layer_theme.set_stylebox(&'focus', &'Button', load(boxes_stylebox_focused) as StyleBox)
 
-	choices.add_theme_constant_override(&"separation", boxes_v_separation)
+	get_choices().add_theme_constant_override(&"separation", boxes_v_separation)
 
-	for child : Node in choices.get_children():
+	for child : Node in get_choices().get_children():
 		if not child is DialogicNode_ChoiceButton:
 			continue
 		var choice : DialogicNode_ChoiceButton = child as DialogicNode_ChoiceButton
@@ -107,6 +112,7 @@ func _apply_export_overrides() -> void:
 	set(&'theme', layer_theme)
 
 	# apply sound settings
+	var button_sound : DialogicNode_ButtonSound = get_button_sound()
 	button_sound.volume_db = sounds_volume
 	button_sound.sound_pressed = load(sounds_pressed)
 	button_sound.sound_hover = load(sounds_hover)

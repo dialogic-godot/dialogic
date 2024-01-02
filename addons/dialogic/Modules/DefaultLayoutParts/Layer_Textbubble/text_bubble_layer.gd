@@ -70,7 +70,7 @@ func _apply_export_overrides() -> void:
 
 func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	## TEXT FONT AND COLOR
-	var rtl : RichTextLabel = bubble.dialog_text
+	var rtl : RichTextLabel = bubble.get_dialog_text()
 	rtl.add_theme_font_size_override(&'normal_font', text_size)
 	rtl.add_theme_font_size_override(&"normal_font_size", text_size)
 	rtl.add_theme_font_size_override(&"bold_font_size", text_size)
@@ -91,19 +91,22 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 
 
 	## BOX & TAIL COLOR
-	bubble.tail.default_color = box_modulate
-	bubble.bubble.set(&'color', box_modulate)
-	var bubble_material : ShaderMaterial = bubble.bubble.get(&'material')
+	var tail : Line2D = bubble.get_tail()
+	var background : Control = bubble.get_bubble()
+	var bubble_material : ShaderMaterial = background.get(&'material')
+
+	tail.default_color = box_modulate
+	background.set(&'color', box_modulate)
 	bubble_material.set_shader_parameter(&'radius', box_corner_radius)
 	bubble_material.set_shader_parameter(&'crease', box_wobbliness*0.1)
 	bubble_material.set_shader_parameter(&'speed', box_wobble_speed)
 	if box_modulate_by_character_color and bubble.character != null:
-		bubble.tail.modulate = bubble.character.color
-		bubble.bubble.modulate = bubble.character.color
+		tail.modulate = bubble.character.color
+		background.modulate = bubble.character.color
 	bubble.padding = box_padding
 
 	## NAME LABEL SETTINGS
-	var nl : DialogicNode_NameLabel = bubble.name_label
+	var nl : DialogicNode_NameLabel = bubble.get_name_label()
 	nl.add_theme_font_size_override(&"font_size", name_label_font_size)
 
 	if !name_label_font.is_empty():
@@ -113,7 +116,7 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	if !nl.use_character_color:
 		nl.add_theme_color_override(&"font_color", name_label_color)
 
-	var nlp : PanelContainer = bubble.name_label_panel
+	var nlp : PanelContainer = bubble.get_name_label_panel()
 	nlp.self_modulate = name_label_box_modulate
 	nlp.get_theme_stylebox(&'panel').content_margin_left = name_label_padding.x
 	nlp.get_theme_stylebox(&'panel').content_margin_right = name_label_padding.x
@@ -133,7 +136,7 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	choice_theme.set_color(&'font_hover_color', &'Button', choices_text_color_hover)
 	choice_theme.set_color(&'font_focus_color', &'Button', choices_text_color_focus)
 
-	bubble.choice_container.theme = choice_theme
+	bubble.get_choice_container().theme = choice_theme
 
 	## BEHAVIOUR
 	bubble.safe_zone = behaviour_distance

@@ -5,12 +5,12 @@ extends Node
 ## Base class that should be extended by custom layouts.
 
 
-func add_dialogic_layer(dialogic_layer:DialogicLayoutLayer) -> DialogicLayoutLayer:
+func add_layer(dialogic_layer:DialogicLayoutLayer) -> DialogicLayoutLayer:
 	add_child(dialogic_layer)
 	return dialogic_layer
 
 
-func get_dialogic_layer(index:int) -> DialogicLayoutLayer:
+func get_layer(index:int) -> DialogicLayoutLayer:
 	return get_child(index)
 
 

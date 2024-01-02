@@ -48,16 +48,11 @@ enum NameLabelColorModes {GLOBAL_COLOR, CHARACTER_COLOR, CUSTOM_COLOR}
 @export var portrait_position : LimitedAlignments = LimitedAlignments.LEFT
 @export var portrait_bg_modulate : Color = Color(0, 0, 0, 0.5137255191803)
 
-@onready var dialog_text : DialogicNode_DialogText = %DialogicNode_DialogText
-@onready var panel : PanelContainer = %Panel
-@onready var name_label : DialogicNode_NameLabel = %DialogicNode_NameLabel
-@onready var portrait_panel : Panel = %PortraitPanel
-@onready var portrait_background_color : ColorRect = %PortraitBackgroundColor
-
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides() -> void:
 	## FONT SETTINGS
+	var dialog_text : DialogicNode_DialogText = %DialogicNode_DialogText
 	dialog_text.alignment = text_alignment as DialogicNode_DialogText.Alignment
 
 	var text_size : int = text_custom_size
@@ -89,6 +84,8 @@ func _apply_export_overrides() -> void:
 		dialog_text.add_theme_font_override(&"bold_italics_font", load(custom_bold_italic_font) as Font)
 
 	## BOX SETTINGS
+	var panel : PanelContainer = %Panel
+	var portrait_panel : Panel = %PortraitPanel
 	if box_modulate_global_color:
 		panel.self_modulate = get_global_setting(&'bg_color', box_modulate_custom_color)
 	else:
@@ -101,10 +98,13 @@ func _apply_export_overrides() -> void:
 	panel.add_theme_stylebox_override(&'panel', stylebox)
 
 	## PORTRAIT SETTINGS
+	var portrait_background_color : ColorRect = %PortraitBackgroundColor
 	portrait_background_color.color = portrait_bg_modulate
+	
 	portrait_panel.get_parent().move_child(portrait_panel, portrait_position)
 
 	## NAME LABEL SETTINGS
+	var name_label : DialogicNode_NameLabel = %DialogicNode_NameLabel
 	if name_label_use_global_size:
 		name_label.add_theme_font_size_override(&"font_size", get_global_setting(&'font_size', name_label_custom_size) as int)
 	else:
