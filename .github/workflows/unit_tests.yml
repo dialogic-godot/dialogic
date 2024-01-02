@@ -62,6 +62,9 @@ jobs:
           echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
+      - name: "Add project.godot"
+        run: cp .github/workflows/resources/project.godot .
+
       - name: "Clone the gdUnit4 repository"
         run: |
             git clone --branch v4.2.0 --single-branch https://github.com/MikeSchulze/gdUnit4
