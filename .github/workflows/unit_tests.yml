@@ -62,7 +62,7 @@ jobs:
           echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
-      - name: "Add project.godot"
+      - name: "Copy `project.godot`"
         run: cp .github/workflows/resources/project.godot .
 
       - name: "Clone the gdUnit4 repository"
@@ -94,7 +94,7 @@ jobs:
         shell: bash
         run: |
           chmod +x ./addons/gdUnit4/runtest.sh
-          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://test" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://addons/dialogic/Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
 
       - name: "Publish Test Report"
         if: ${{ always() }}
