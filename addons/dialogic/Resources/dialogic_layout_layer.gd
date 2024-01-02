@@ -39,10 +39,6 @@ func apply_export_overrides() -> void:
 	_apply_export_overrides()
 
 
-func get_layout() -> DialogicLayoutBase:
-	return get_parent() as DialogicLayoutBase
-
-
 ## Use this to get potential global settings.
 func get_global_setting(setting_name:StringName, default:Variant) -> Variant:
 	return (get_parent() as DialogicLayoutBase).get_global_setting(setting_name, default)
