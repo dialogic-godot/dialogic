@@ -27,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         # Insert here the Godot version you want to run your tests with.
-        godot-version: ['4.2']
+        godot-version: ['4.2.1']
 
     name: "CI Unit Test v${{ matrix.godot-version }}"
     runs-on: 'ubuntu-22.04'
