@@ -3,8 +3,6 @@ run-name: ${{ github.head_ref || github.ref_name }}-unit-test
 
 on:
   push:
-    branches:
-        - main
 
     paths-ignore:
         - '**.yml'
@@ -29,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         # Insert here the Godot version you want to run your tests with.
-        godot-version: ['4.2']
+        godot-version: ['4.2.1']
 
     name: "CI Unit Test v${{ matrix.godot-version }}"
     runs-on: 'ubuntu-22.04'
@@ -64,6 +62,19 @@ jobs:
           echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
+      - name: "Copy `project.godot`"
+        run: cp .github/workflows/resources/project.godot .
+
+      - name: "Clone the gdUnit4 repository"
+        run: |
+            git clone --branch v4.2.0 --single-branch https://github.com/MikeSchulze/gdUnit4
+            rsync -av gdUnit4/addons/ ./addons/
+            rm -rf ./gdUnit4
+
+      - name: Print Directory Structure
+        run: |
+            ls -R
+
       # We need to update the project before running tests, Godot has actually issues with loading the plugin.
       - name: "Update Project"
         if: ${{ !cancelled() }}
@@ -72,7 +83,7 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          ${{ env.GODOT_BIN }} -e --path . -s res://addons/gdUnit4/bin/ProjectScanner.gd --headless --audio-driver Dummy
+          xvfb-run --auto-servernum  ${{ env.GODOT_BIN }} -e --path . -s res://addons/gdUnit4/bin/ProjectScanner.gd --headless --audio-driver Dummy
 
       - name: "Run Unit Tests"
         if: ${{ !cancelled() }}
@@ -83,7 +94,7 @@ jobs:
         shell: bash
         run: |
           chmod +x ./addons/gdUnit4/runtest.sh
-          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://test" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://addons/dialogic/Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
 
       - name: "Publish Test Report"
         if: ${{ always() }}
