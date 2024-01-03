@@ -10,7 +10,7 @@ enum UpdateCheckResult {UPDATE_AVAILABLE, UP_TO_DATE, NO_ACCESS}
 enum DownloadResult {SUCCESS, FAILURE}
 enum ReleaseState {ALPHA, BETA, STABLE}
 
-const REMOTE_RELEASES_URL := "https://api.github.com/repos/coppolaemilio/dialogic/releases"
+const REMOTE_RELEASES_URL := "https://api.github.com/repos/dialogic-godot/dialogic/releases"
 const TEMP_FILE_NAME = "user://temp.zip"
 
 var current_version : String = ""
