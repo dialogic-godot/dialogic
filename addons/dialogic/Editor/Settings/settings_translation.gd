@@ -81,7 +81,7 @@ func _refresh() -> void:
 	loading = false
 
 
-func store_changes(fake_arg = "", fake_arg2 = "") -> void:
+func store_changes(_fake_arg := "", _fake_arg2 := "") -> void:
 	if loading:
 		return
 
@@ -96,6 +96,7 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	ProjectSettings.set_setting('dialogic/translation/save_mode', %SaveLocationMode.selected)
 	ProjectSettings.set_setting('dialogic/translation/add_separator', %AddSeparatorEnabled.button_pressed)
 	ProjectSettings.save()
+
 
 ## Checks whether the translation folder path is required.
 ## If it is, disables the "Update CSV files" button and shows a warning.
@@ -130,7 +131,7 @@ func _verify_translation_file() -> void:
 	%StatusMessage.text = status_message
 
 
-func get_locales(filter: String) -> Dictionary:
+func get_locales(_filter: String) -> Dictionary:
 	var suggestions := {}
 	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
 	suggestions[TranslationServer.get_tool_locale()] = {'value':TranslationServer.get_tool_locale()}
@@ -163,15 +164,14 @@ func _delete_and_update() -> void:
 	update_csv_files()
 
 
-
 ## Creates or updates the glossary CSV files.
-func handle_glossary_translation(save_location_mode: SaveLocationModes,
+func _handle_glossary_translation(
+	csv_data: CsvUpdateData,
+	save_location_mode: SaveLocationModes,
 	translation_mode: TranslationModes,
 	translation_folder_path: String,
 	orig_locale: String) -> void:
 	var glossary_csv_path := ""
-	var added_glossary := 0
-	var updated_glossary := 0
 
 	var glossary_csv: DialogicCsvFile = null
 	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
@@ -205,9 +205,9 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 			glossary_csv = DialogicCsvFile.new(glossary_csv_path, orig_locale, add_separator_lines)
 
 			if (glossary_csv.is_new_file):
-				added_glossary += 1
+				csv_data.new_glossaries += 1
 			else:
-				updated_glossary += 1
+				csv_data.updated_glossaries += 1
 
 		var glossary: DialogicGlossary = load(glossary_path)
 		glossary_csv.collect_lines_from_glossary(glossary)
@@ -228,6 +228,26 @@ func handle_glossary_translation(save_location_mode: SaveLocationModes,
 		glossary_csv = null
 
 
+## Keeps information about the amount of new and updated CSV rows and what
+## resources were populated with translation IDs.
+## The final data can be used to display a status message.
+class CsvUpdateData:
+	var new_events := 0
+	var updated_events := 0
+
+	var new_timelines := 0
+	var updated_timelines := 0
+
+	var new_names := 0
+	var updated_names := 0
+
+	var new_glossaries := 0
+	var updated_glossaries := 0
+
+	var new_glossary_entries := 0
+	var updated_glossary_entries := 0
+
+
 func update_csv_files() -> void:
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
@@ -235,12 +255,7 @@ func update_csv_files() -> void:
 	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 	var add_separator_lines: bool = ProjectSettings.get_setting('dialogic/translation/add_separator', false)
 
-	var new_events := 0
-	var new_timelines := 0
-	var updated_events := 0
-	var updated_timelines := 0
-	var new_names := 0
-	var updated_names := 0
+	var csv_data := CsvUpdateData.new()
 
 	if orig_locale.is_empty():
 		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
@@ -258,17 +273,9 @@ func update_csv_files() -> void:
 		csv_per_project = DialogicCsvFile.new(per_project_csv_path, orig_locale, add_separator_lines)
 
 		if (csv_per_project.is_new_file):
-			new_timelines += 1
+			csv_data.new_timelines += 1
 		else:
-			updated_timelines += 1
-
-	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
-	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path, orig_locale, add_separator_lines)
-
-	if (character_name_csv.is_new_file):
-		new_timelines += 1
-	else:
-		updated_timelines += 1
+			csv_data.updated_timelines += 1
 
 	# Iterate over all timelines.
 	# Create or update CSV files.
@@ -290,7 +297,7 @@ func update_csv_files() -> void:
 
 			per_timeline_path += '_translation.csv'
 			csv_file = DialogicCsvFile.new(per_timeline_path, orig_locale, false)
-			new_timelines += 1
+			csv_data.new_timelines += 1
 
 		# Load and process timeline, turn events into resources.
 		var timeline: DialogicTimeline = load(timeline_path)
@@ -303,8 +310,6 @@ func update_csv_files() -> void:
 
 		# Collect timeline into CSV.
 		csv_file.collect_lines_from_timeline(timeline)
-		var characters := csv_file.collected_characters
-		character_name_csv.collect_lines_from_characters(characters)
 
 		# in case new translation_id's were added, we save the timeline again
 		timeline.set_meta("timeline_not_saved", true)
@@ -313,44 +318,86 @@ func update_csv_files() -> void:
 		if translation_mode == TranslationModes.PER_TIMELINE:
 			csv_file.update_csv_file_on_disk()
 
-		new_events += csv_file.new_rows
-		updated_events += csv_file.updated_rows
+		csv_data.new_events += csv_file.new_rows
+		csv_data.updated_events += csv_file.updated_rows
 
-	character_name_csv.update_csv_file_on_disk()
+	_handle_glossary_translation(
+		csv_data,
+		save_location_mode,
+		translation_mode,
+		translation_folder_path,
+		orig_locale
+	)
 
-	handle_glossary_translation(save_location_mode, translation_mode,
-		translation_folder_path, orig_locale)
+	_handle_character_names(
+		csv_data,
+		orig_locale,
+		translation_folder_path,
+		add_separator_lines
+	)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
-
-	if character_name_csv.is_new_file:
-		new_timelines += 1
-	else:
-		updated_timelines += 1
-
-	new_names += character_name_csv.new_rows
-	updated_names += character_name_csv.updated_rows
 
 	_silently_open_timeline(current_timeline)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 
-	var status_message := "Events   created {new_events}   updated {updated_events}
-		Names  created {new_names}   updated {updated_names}
-		CSVs      created {new_timelines}   updated {updated_timelines}"
+	var status_message := "Events   created {new_events}   found {updated_events}
+		Names  created {new_names}   found {updated_names}
+		CSVs      created {new_timelines}   found {updated_timelines}
+		Glossary  created {new_glossaries}   found {updated_glossaries}
+		Entries   created {new_glossary_entries}   found {updated_glossary_entries}"
 
 	var status_message_args := {
-		'new_events': new_events,
-		'updated_events': updated_events,
-		'new_timelines': new_timelines,
-		'updated_timelines': updated_timelines,
-		'new_names': new_names,
-		'updated_names': updated_names,
+		'new_events': csv_data.new_events,
+		'updated_events': csv_data.updated_events,
+		'new_timelines': csv_data.new_timelines,
+		'updated_timelines': csv_data.updated_timelines,
+		'new_glossaries': csv_data.new_glossaries,
+		'updated_glossaries': csv_data.updated_glossaries,
+		'new_names': csv_data.new_names,
+		'updated_names': csv_data.updated_names,
+		'new_glossary_entries': csv_data.new_glossary_entries,
+		'updated_glossary_entries': csv_data.updated_glossary_entries,
 	}
 
 	%StatusMessage.text = status_message.format(status_message_args)
+
+## Iterates over all character resource files and creates or updates CSV files
+## that contain the translations for character properties.
+## This will save each character resource file to disk.
+func _handle_character_names(
+	    csv_data: CsvUpdateData,
+		original_locale: String,
+		translation_folder_path: String,
+		add_separator_lines: bool) -> void:
+	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
+	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path,
+		 original_locale,
+		 add_separator_lines
+	)
+
+	var all_characters := {}
+
+	for character_path: String in DialogicResourceUtil.list_resources_of_type('.dch'):
+		print(character_path)
+		var character: DialogicCharacter = load(character_path)
+
+		if character._translation_id.is_empty():
+			csv_data.new_names += 1
+
+		else:
+			csv_data.updated_names += 1
+
+		var translation_id := character.get_set_translation_id()
+		all_characters[translation_id] = character
+
+		ResourceSaver.save(character)
+
+	character_name_csv.collect_lines_from_characters(all_characters)
+	character_name_csv.update_csv_file_on_disk()
 
 
 func collect_translations() -> void:
@@ -503,17 +550,8 @@ func erase_translations() -> void:
 		timeline.set_meta("timeline_not_saved", true)
 		ResourceSaver.save(timeline, timeline_path)
 
-	# Clean glossary.
-	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
-
-	for glossary_path: String in glossary_paths:
-		var glossary: DialogicGlossary = load(glossary_path)
-		glossary.remove_translation_id()
-		glossary.remove_entry_translation_ids()
-		glossary.clear_translation_keys()
-		cleaned_glossaries += 1
-		ResourceSaver.save(glossary, glossary_path)
-		print_rich("[color=green]Cleaned up glossary file: " + glossary_path + "[/color]")
+	_erase_glossary_translation_ids()
+	_erase_character_name_translation_ids()
 
 	ProjectSettings.set_setting('dialogic/translation/id_counter', 16)
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(translation_files))
@@ -550,6 +588,27 @@ func erase_translations() -> void:
 
 	_verify_translation_file()
 	%StatusMessage.text = status_message.format(status_message_args)
+
+
+func _erase_glossary_translation_ids() -> void:
+	# Clean glossary.
+	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
+
+	for glossary_path: String in glossary_paths:
+		var glossary: DialogicGlossary = load(glossary_path)
+		glossary.remove_translation_id()
+		glossary.remove_entry_translation_ids()
+		glossary.clear_translation_keys()
+		ResourceSaver.save(glossary, glossary_path)
+		print_rich("[color=green]Cleaned up glossary file: " + glossary_path + "[/color]")
+
+
+func _erase_character_name_translation_ids() -> void:
+	for character_path: String in DialogicResourceUtil.list_resources_of_type('.dch'):
+		var character: DialogicCharacter = load(character_path)
+
+		character.remove_translation_id()
+		ResourceSaver.save(character)
 
 
 ## Closes the current timeline in the Dialogic Editor and returns the timeline

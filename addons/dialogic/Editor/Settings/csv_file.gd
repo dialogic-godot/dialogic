@@ -27,25 +27,10 @@ var updated_rows: int = 0
 ## The amount of events that were added to the CSV file.
 var new_rows: int = 0
 
-
 ## Whether this CSV handler should add newlines as a separator between sections.
 ## A section may be a new character, new timeline, or new glossary item inside
 ## a per-project file.
 var add_separator: bool = false
-
-## Stores all character names from the current CSV.
-##
-## If this is CSV file for timeline events, every appearing speaker will be
-## added once to this dictionary by their translation ID.
-## If the translation ID does not exist, a new one will be generated.
-##
-## If this is the character name CSV file, this field captures all characters
-## that were added to [member lines] using the
-## [method collect_lines_from_characters].
-##
-## Key: String, Value: PackedStringArray
-var collected_characters: Dictionary = {}
-
 
 enum PropertyType {
 	String = 0,
@@ -106,16 +91,6 @@ func _read_file_into_lines() -> void:
 ## take previously collected characters from other [class DialogicCsvFile]s.
 func collect_lines_from_characters(characters: Dictionary) -> void:
 	for character: DialogicCharacter in characters.values():
-
-		# Check if the character has a valid translation ID.
-		if character._translation_id == null or character._translation_id.is_empty():
-			character.add_translation_id()
-
-		if character._translation_id in collected_characters:
-			continue
-		else:
-			collected_characters[character._translation_id] = character
-
 		# Add row for display names.
 		var name_property := DialogicCharacter.TranslatedProperties.NAME
 		var display_name_key: String = character.get_property_translation_key(name_property)
@@ -123,27 +98,27 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 		var array_line := PackedStringArray([display_name_key, line_value])
 		lines.append(array_line)
 
-		var character_nicknames: Array = character.nicknames
-		if character_nicknames.is_empty() or (character_nicknames.size() == 1 and character_nicknames[0].is_empty()):
-			return
+		var nicknames: Array = character.nicknames
 
-		# Add row for nicknames.
-		var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
-		var nickname_string: String = ",".join(character_nicknames)
-		var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
-		var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
-		lines.append(nick_array_line)
+		if not nicknames.is_empty():
+			var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
+			var nickname_string: String = ",".join(nicknames)
+			var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
+			var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
+			lines.append(nick_array_line)
 
 		# New character item, if needed, add a separator.
 		if add_separator:
-			append_empty()
+			_append_empty()
 
 
-func append_empty() -> void:
+## Appends an empty line to the [member lines] array.
+func _append_empty() -> void:
 	var empty_line := PackedStringArray(["", ""])
 	lines.append(empty_line)
 
 
+## Returns the property type for the given [param key].
 func _get_key_type(key: String) -> PropertyType:
 	if key.ends_with(DialogicGlossary.NAME_PROPERTY):
 		return PropertyType.String
@@ -278,7 +253,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 		# New glossary item, if needed, add a separator.
 		if add_separator:
-			append_empty()
+			_append_empty()
 
 		index_counter += 1
 
@@ -302,18 +277,9 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
 				var array_line := PackedStringArray([line_key, line_value])
 				lines.append(array_line)
 
-				if not "character" in event:
-					continue
-
-				var character: DialogicCharacter = event.character
-
-				if (character != null
-				and not collected_characters.has(character._translation_id)):
-					collected_characters[character._translation_id] = character
-
 	# End of timeline, if needed, add a separator.
 	if add_separator:
-		append_empty()
+		_append_empty()
 
 
 ## Clears the CSV file on disk and writes the current [member lines] array to it.
