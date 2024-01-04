@@ -15,15 +15,9 @@ on:
 
   workflow_dispatch:
 
-permissions:
-    contents: read
-    actions: read
-    checks: write
-
 concurrency:
   group: unit-test${{ github.event.number }}
   cancel-in-progress: true
-
 
 jobs:
   unit-test:
@@ -100,20 +94,11 @@ jobs:
           chmod +x ./addons/gdUnit4/runtest.sh
           xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://addons/dialogic/Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
 
-      - name: "Publish Test Report"
-        if: ${{ always() }}
-        uses: dorny/test-reporter@v1.6.0
-        with:
-          name: "test_report_${{ matrix.godot-version }}"
-          path: "reports/**/results.xml"
-          reporter: java-junit
-          fail-on-error: 'false'
-
       - name: "Upload Unit Test Reports"
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: "test_report_${{ matrix.godot-version }}"
+          name: "godot-version"
           path: |
             reports/**
             /var/lib/systemd/coredump/**
