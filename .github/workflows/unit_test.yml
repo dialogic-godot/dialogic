@@ -103,7 +103,6 @@ jobs:
             reports/**
             /var/lib/systemd/coredump/**
             /var/log/syslog
-          fail-on-error: 'false'
 
   finalize:
     if: ${{ !cancelled() }}
