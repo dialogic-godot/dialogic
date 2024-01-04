@@ -1,0 +1,24 @@
+name: 'publish-test'
+on:
+  workflow_run:
+    workflows: ['unit-test']
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "Publish Test Report"
+      if: ${{ always() }}
+      uses: dorny/test-reporter@v1.6.0
+      with:
+        name: "test_report"
+        path: "reports/**/results.xml"
+        reporter: java-junit
