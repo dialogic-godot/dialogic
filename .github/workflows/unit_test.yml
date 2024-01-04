@@ -9,9 +9,6 @@ on:
         - '**.md'
 
   pull_request:
-    paths-ignore:
-      - '**.yml'
-      - '**.md'
 
   workflow_dispatch:
 
