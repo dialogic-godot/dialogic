@@ -25,6 +25,7 @@ signal not_read_event_reached
 
 
 signal open_requested
+signal close_requested
 
 ####################################################################################################
 ##					INITIALIZE
@@ -42,6 +43,10 @@ func _ready() -> void:
 
 func open_history() -> void:
 	open_requested.emit()
+
+
+func close_history() -> void:
+	close_requested.emit()
 
 
 ####################################################################################################
