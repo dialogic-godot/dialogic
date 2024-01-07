@@ -326,7 +326,7 @@ func skip_text_animation() -> void:
 
 
 func get_current_speaker() -> DialogicCharacter:
-	return (load(dialogic.current_state_info['speaker']) as DialogicCharacter)
+	return (load(dialogic.current_state_info.get('speaker', "")) as DialogicCharacter)
 
 
 #################### HELPERS & OTHER STUFF #########################################################
