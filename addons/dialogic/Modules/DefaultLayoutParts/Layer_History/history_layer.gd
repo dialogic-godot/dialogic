@@ -38,6 +38,7 @@ var history_item_theme : Theme = null
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	Dialogic.History.open_requested.connect(_on_show_history_pressed)
 
 
 func _apply_export_overrides() -> void:

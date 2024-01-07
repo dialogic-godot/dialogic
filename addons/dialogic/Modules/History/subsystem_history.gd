@@ -23,6 +23,9 @@ var _was_last_event_already_read := false
 signal already_read_event_reached
 signal not_read_event_reached
 
+
+signal open_requested
+
 ####################################################################################################
 ##					INITIALIZE
 ####################################################################################################
@@ -34,6 +37,11 @@ func _ready() -> void:
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
 	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
+
+
+
+func open_history() -> void:
+	open_requested.emit()
 
 
 ####################################################################################################
