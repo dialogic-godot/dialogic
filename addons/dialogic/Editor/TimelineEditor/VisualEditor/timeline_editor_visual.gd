@@ -701,11 +701,10 @@ func move_blocks_to_index(blocks:Array, index:int):
 					return
 		if "end_node" in event and event.end_node:
 			if !event.end_node in blocks:
-				if index > event.end_node.get_index():
-					if event.end_node.get_index() == event.get_index()+1:
-						blocks.append(event.end_node)
-					else:
-						return
+				if event.end_node.get_index() == event.get_index()+1:
+					blocks.append(event.end_node)
+				else:
+					return
 		index_shift += int(event.get_index() < index)
 
 	var do_indexes := {}
