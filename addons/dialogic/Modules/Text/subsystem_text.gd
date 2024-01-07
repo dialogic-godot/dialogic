@@ -44,7 +44,7 @@ var _autopauses := {}
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
-	dialogic.current_state_info['speaker'] = null
+	dialogic.current_state_info['speaker'] = ""
 	dialogic.current_state_info['text'] = ''
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
@@ -58,8 +58,8 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character:DialogicCharacter = null
-	if dialogic.current_state_info.get('speaker', null):
-		character = load(dialogic.current_state_info.get('speaker', null))
+	if dialogic.current_state_info.get('speaker', ""):
+		character = load(dialogic.current_state_info.get('speaker', ""))
 
 	if character:
 		update_name_label(character)
@@ -453,7 +453,7 @@ func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
-	if dialogic.current_state_info.get('speaker', null):
+	if dialogic.current_state_info.get('speaker', ""):
 		update_typing_sound_mood(
 			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
