@@ -15,9 +15,19 @@ Follow the installation instructions on our [Getting Started](https://dialogic-d
 
 Dialogic comes with an auto-updater so you can install future versions right from within the plugin.
 
+
 ## Documentation
 As the plugin is still in alpha state, only limited documentation is available. However you can read all the existing documentation here:
 [Dialogic Documentation](https://dialogic-docs.coppolaemilio.com/)
+
+
+## Testing
+
+Dialogic uses [Unit Tests](https://en.wikipedia.org/wiki/Unit_testing) to ensure specific parts function as expected. These tests run on every git push and pull request.\
+The framework to do these tests is called [gdUnit4](https://github.com/MikeSchulze/gdUnit4) and our tests reside in the [addons/dialogic/Tests/Unit](https://github.com/dialogic-godot/dialogic/tree/main/addons/dialogic/Tests/Unit) path.\
+We recommend installing the `gdUnit4` add-on from the `AssetLib`, with this add-on, you can run tests locally.
+
+To get started, take a look at the existing files in the path and read the documentation to [create your first test](https://mikeschulze.github.io/gdUnit4/first_steps/firstTest/).
 
 ---
 
