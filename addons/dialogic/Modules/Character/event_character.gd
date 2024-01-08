@@ -335,7 +335,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit('action', ValueType.FIXED_OPTIONS, {
 		'selector_options': [
 			{
 				'label': 'Join',

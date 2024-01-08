@@ -137,7 +137,7 @@ func _get_property_original_translation(property:String) -> String:
 func build_event_editor() -> void:
 	add_header_edit("text", ValueType.SINGLELINE_TEXT, {'autofocus':true})
 	add_body_edit("condition", ValueType.CONDITION, {'left_text':'if '})
-	add_body_edit("else_action", ValueType.FIXED_OPTION_SELECTOR, {'left_text':'else ',
+	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'else ',
 		'selector_options': [
 			{
 				'label': 'Default',

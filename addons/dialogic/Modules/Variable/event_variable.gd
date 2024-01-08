@@ -186,7 +186,7 @@ func build_event_editor():
 			'icon' 					: load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder'			:'Select Variable'}
 			)
-	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit('operation', ValueType.FIXED_OPTIONS, {
 		'selector_options': [
 			{
 				'label': 'to be',
@@ -211,7 +211,7 @@ func build_event_editor():
 			}
 		]
 	}, '!name.is_empty()')
-	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit('_value_type', ValueType.FIXED_OPTIONS, {
 		'selector_options': [
 			{
 				'label': 'String',

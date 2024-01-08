@@ -67,7 +67,7 @@ func build_event_editor():
 	add_header_label("Emit dialogic signal with argument")
 	add_header_label("(Dictionary in body)", 'argument_type == ArgumentTypes.DICTIONARY')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, 'argument_type == ArgumentTypes.STRING')
-	add_body_edit('argument_type',ValueType.FIXED_OPTION_SELECTOR, {'left_text':'Argument Type:', 'selector_options': [
+	add_body_edit('argument_type',ValueType.FIXED_OPTIONS, {'left_text':'Argument Type:', 'selector_options': [
 			{
 				'label': 'String',
 				'value': ArgumentTypes.STRING,

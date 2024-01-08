@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="1_rr7mq"]
 [ext_resource type="PackedScene" uid="uid://d3bhehatwoio" path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn" id="4_27ir8"]
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/Number.tscn" id="4_al48y"]
-[ext_resource type="PackedScene" uid="uid://c0vkcehgjsjy" path="res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn" id="4_b5vlr"]
-[ext_resource type="PackedScene" uid="uid://dm5hxmhyyxgq" path="res://addons/dialogic/Editor/Events/Fields/Bool.tscn" id="6_ltaor"]
+[ext_resource type="PackedScene" uid="uid://c0vkcehgjsjy" path="res://addons/dialogic/Editor/Events/Fields/field_singleline_text.tscn" id="4_b5vlr"]
+[ext_resource type="PackedScene" uid="uid://dm5hxmhyyxgq" path="res://addons/dialogic/Editor/Events/Fields/field_bool_check.tscn" id="6_ltaor"]
 
 [sub_resource type="Image" id="Image_2qcj3"]
 data = {

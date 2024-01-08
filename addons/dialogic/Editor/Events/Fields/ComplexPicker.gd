@@ -87,12 +87,9 @@ func _exit_tree():
 	event_resource = null
 
 
-func take_autofocus():
+func _autofocus():
 	%Search.grab_focus()
 
-
-func set_enabled(is_enabled: bool) -> void:
-	%SelectButton.disabled = !is_enabled
 
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP

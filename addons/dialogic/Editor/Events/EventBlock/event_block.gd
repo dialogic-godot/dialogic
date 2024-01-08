@@ -3,68 +3,117 @@ extends MarginContainer
 
 ## Scene that represents an event in the visual timeline editor.
 
-signal option_action(action_name)
 signal content_changed()
 
-# Resource
+## REFERENCES
 var resource : DialogicEvent
-
-var selected : bool = false
-
-### internal node eferences
-@onready var warning := %Warning
-@onready var icon_texture  := %IconTexture
-@onready var header_content_container := %HeaderContent
-@onready var body_container := %Body
-@onready var body_content_container := %BodyContent
-
-# is the body visible
-var expanded := true
-
-# was the body content loaded
-var body_was_build := false
-
-# does the body have elements?
-var has_any_enabled_body_content := false
-
-# list that stores visibility conditions
-var field_list := []
-
+var editor_reference
 # for choice and condition
-var end_node:Node = null:
+var end_node: Node = null:
 	get:
 		return end_node
 	set(node):
 		end_node = node
 		%CollapseButton.visible = true if end_node else false
 
+
+## FLAGS
+var selected := false
+# Whether the body is visible
+var expanded := true
+var body_was_build := false
+var has_any_enabled_body_content := false
+# Whether contained events (e.g. in choices) are visible
 var collapsed := false
 
-### extarnal node references
-var editor_reference
 
-### Icon size
-var icon_size := 28
+## CONSTANTS
+const icon_size := 28
+const indent_size := 22
 
-### the indent size
-var indent_size := 22
+## STATE
+# List that stores visibility conditions
+var field_list := []
 var current_indent_level := 1
 
-# Setting this to true will ignore the event while saving
-# Useful for making placeholder events in drag and drop
-var ignore_save := false
+
+#region UI AND LOGIC INITIALIZATION
+################################################################################
+
+func _ready():
+	if get_parent() is SubViewport:
+		return
+
+	if not resource:
+		printerr("[Dialogic] Event block was added without a resource specified.")
+		return
+
+	initialize_logic()
+	initialize_ui()
 
 
-## *****************************************************************************
-##								PUBLIC METHODS
-## *****************************************************************************
+func initialize_ui() -> void:
+	var _scale := DialogicUtil.get_editor_scale()
+
+	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
+
+	# Warning Icon
+	%Warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
+	%Warning.size = Vector2(16 * _scale, 16 * _scale)
+	%Warning.position = Vector2(-5 * _scale, -10 * _scale)
+
+	# Expand Button
+	%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
+
+	# Icon Panel
+	%IconPanel.tooltip_text = resource.event_name
+	%IconPanel.self_modulate = resource.event_color
+
+	# Event Icon
+	%IconTexture.texture = resource._get_icon()
+
+	%IconPanel.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
+	%IconTexture.custom_minimum_size = %IconPanel.custom_minimum_size
+
+	var custom_style: StyleBoxFlat = %IconPanel.get_theme_stylebox('panel')
+	custom_style.set_corner_radius_all(5 * _scale)
+
+	# Focus Mode
+	set_focus_mode(1) # Allowing this node to grab focus
+
+	# Separation on the header
+	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
+
+	# Collapse Button
+	%CollapseButton.toggled.connect(_on_collapse_toggled)
+	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
+	%CollapseButton.hide()
+
+	visual_deselect()
+
+
+func initialize_logic() -> void:
+	resized.connect(get_parent().get_parent().queue_redraw)
+
+	resource.ui_update_needed.connect(_on_resource_ui_update_needed)
+	resource.ui_update_warning.connect(set_warning)
+
+	_on_ExpandButton_toggled(resource.expand_by_default)
+
+	content_changed.connect(recalculate_field_visibility)
+
+#endregion
+
+
+#region VISUAL METHODS
+################################################################################
 
 func visual_select() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
 	selected = true
 	%IconPanel.self_modulate = resource.event_color
 	%IconTexture.modulate = get_theme_color("icon_saturation", "Editor")
-#	%IconTexture.self_modulate.a = 1
 
 
 func visual_deselect() -> void:
@@ -72,66 +121,53 @@ func visual_deselect() -> void:
 	selected = false
 	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
 	%IconTexture.modulate = get_theme_color('font_color', 'Label')
-#	%IconTexture.self_modulate.a = 0.7
 
 
 func is_selected() -> bool:
 	return selected
 
-# called by the timeline before adding it to the tree
-func load_data(data:DialogicEvent) -> void:
-	resource = data
-
 
 func set_warning(text:String= "") -> void:
 	if !text.is_empty():
-		warning.show()
-		warning.tooltip_text = text
+		%Warning.show()
+		%Warning.tooltip_text = text
 	else:
-		warning.hide()
+		%Warning.hide()
 
 
 func set_indent(indent: int) -> void:
-	add_theme_constant_override("margin_left", indent_size*indent)
+	add_theme_constant_override("margin_left", indent_size*indent*DialogicUtil.get_editor_scale())
 	current_indent_level = indent
 
-
-## *****************************************************************************
-##								PRIVATE METHODS
-## *****************************************************************************
-
-func _set_event_icon(icon: Texture) -> void:
-	icon_texture.texture = icon
-	var _scale := DialogicUtil.get_editor_scale()
-	var ip := %IconPanel
-	var ipc := icon_texture
-
-	# Resizing the icon acording to the scale
-
-	ip.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
-	ipc.custom_minimum_size = ip.custom_minimum_size
-
-	# Updating the theme properties to scale
-	var custom_style :StyleBox = ip.get_theme_stylebox('panel')
-	custom_style.corner_radius_top_left = 5 * _scale
-	custom_style.corner_radius_top_right = 5 * _scale
-	custom_style.corner_radius_bottom_left = 5 * _scale
-	custom_style.corner_radius_bottom_right = 5 * _scale
+#endregion
 
 
-func toggle_collapse(toggled:bool) -> void:
-	collapsed = toggled
-	var timeline_editor = find_parent('VisualEditor')
-	if (timeline_editor != null):
-		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
-		# consider to make it "public" or add a public helper function
-		timeline_editor.indent_events()
+#region EVENT FIELDS
+################################################################################
 
+var FIELD_SCENES := {
+	DialogicEvent.ValueType.MULTILINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_multiline_text.tscn",
+	DialogicEvent.ValueType.SINGLELINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_singleline_text.tscn",
+	DialogicEvent.ValueType.BOOL: 				"res://addons/dialogic/Editor/Events/Fields/Bool.tscn",
+	DialogicEvent.ValueType.BOOL_BUTTON: 		"res://addons/dialogic/Editor/Events/Fields/BoolButton.tscn",
+	DialogicEvent.ValueType.FILE: 				"res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn",
+	DialogicEvent.ValueType.ARRAY: 				"res://addons/dialogic/Editor/Events/Fields/Array.tscn",
+	DialogicEvent.ValueType.COMPLEX_PICKER: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.INTEGER: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.FLOAT: 				"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.FIXED_OPTIONS	: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.CONDITION: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.DECIBEL: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.KEY_VALUE_PAIRS: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
-	var current_body_container :HFlowContainer = null
+	var current_body_container: HFlowContainer = null
 
-	if build_body and body_was_build: build_body = false
+	if build_body and body_was_build:
+		build_body = false
+
 	if build_body:
 		if body_was_build:
 			return
@@ -162,29 +198,21 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			%BodyContent.add_child(current_body_container)
 			continue
 
-		### STRINGS
-		elif p.dialogic_type == resource.ValueType.MULTILINE_TEXT:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
-		elif p.dialogic_type == resource.ValueType.SINGLELINE_TEXT:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
-			editor_node.placeholder = p.display_info.get('placeholder', '')
+		elif p.field_type in FIELD_SCENES:
+			editor_node = load(FIELD_SCENES[p.field_type]).instantiate()
+
+
+		#elif p.dialogic_type == resource.ValueType.MULTILINE_TEXT:
+			#editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
+		#elif p.dialogic_type == resource.ValueType.SINGLELINE_TEXT:
+			#editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
+
 		elif p.dialogic_type == resource.ValueType.BOOL:
-			if p.display_info.has('icon') or p.display_info.has('editor_icon'):
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/BoolButton.tscn").instantiate()
-				if p.display_info.has('editor_icon'):
-					editor_node.icon = callv('get_theme_icon', p.display_info.editor_icon)
-				else:
-					editor_node.icon = p.display_info.get('icon', null)
-			else:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
-			editor_node.tooltip_text = p.display_info.get('tooltip', "")
+
+			#else:
+				#editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
 		elif p.dialogic_type == resource.ValueType.FILE:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
-			editor_node.file_filter = p.display_info.get('file_filter', '')
-			editor_node.placeholder = p.display_info.get('placeholder', '')
-			editor_node.resource_icon = p.display_info.get('icon', null)
-			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
-				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
 
 		elif p.dialogic_type == resource.ValueType.CONDITION:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ConditionPicker.tscn").instantiate()
@@ -217,7 +245,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		elif p.dialogic_type == resource.ValueType.DECIBEL:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_decibel_mode()
-		elif p.dialogic_type == resource.ValueType.FIXED_OPTION_SELECTOR:
+		elif p.dialogic_type == resource.ValueType.FIXED_OPTIONS:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instantiate()
 			editor_node.options = p.display_info.get('selector_options', [])
 			editor_node.disabled = p.display_info.get('disabled', false)
@@ -231,7 +259,6 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 		elif p.dialogic_type == resource.ValueType.KEY_VALUE_PAIRS:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/KeyValuePairs.tscn").instantiate()
-
 
 		elif p.dialogic_type == resource.ValueType.LABEL:
 			editor_node = Label.new()
@@ -270,16 +297,26 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		### --------------------------------------------------------------------
 		### 3. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
 		field_list[-1]['node'] = editor_node
-		if "event_resource" in editor_node:
+		if editor_node is DialogicVisualEditorField:
 			editor_node.event_resource = resource
-		if 'property_name' in editor_node:
+
 			editor_node.property_name = p.name
 			field_list[-1]['property'] = p.name
-		if editor_node.has_method('set_value'):
-			editor_node.set_value(resource.get(p.name))
-		if editor_node.has_signal('value_changed'):
+
+			editor_node._load_display_info(p.display_info)
+
+			editor_node._set_value(resource.get(p.name))
+
 			editor_node.value_changed.connect(set_property)
-		editor_node.tooltip_text = p.display_info.get('tooltip', '')
+
+			editor_node.tooltip_text = p.display_info.get('tooltip', '')
+
+			# Apply autofocus
+			if resource.created_by_button and p.display_info.get('autofocus', false):
+				editor_node.call_deferred('take_autofocus')
+
+		### --------------------------------------------------------------------
+		### 4. ADD LEFT AND RIGHT TEXT
 		var left_label: Label = null
 		var right_label: Label = null
 		if !p.get('left_text', '').is_empty():
@@ -297,6 +334,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			location.add_child(right_label)
 			location.move_child(right_label, editor_node.get_index()+1)
 
+		### --------------------------------------------------------------------
+		### 5. REGISTER CONDITION
 		if p.has('condition'):
 			field_list[-1]['condition'] = p.condition
 			if left_label:
@@ -304,15 +343,11 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			if right_label:
 				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
 
-		### --------------------------------------------------------------------
-		### 4. GETTING THE PATH OF THE FIELD WE WANT TO FOCUS (in case we want)
-		if resource.created_by_button and p.display_info.get('autofocus', false) and editor_node.has_method('take_autofocus'):
-			editor_node.call_deferred('take_autofocus')
 
 	if build_body:
 		if current_body_container.get_child_count() == 0:
 			expanded = false
-			body_container.visible = false
+			%Body.visible = false
 
 	recalculate_field_visibility()
 
@@ -355,60 +390,17 @@ func _on_resource_ui_update_needed() -> void:
 	recalculate_field_visibility()
 
 
-func _update_color() -> void:
-	if resource.dialogic_color_name != '':
-		%IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
-
-
-######################## OVERRIDES #############################################
+#region SIGNALS
 ################################################################################
 
-func _ready():
-	resized.connect(get_parent().get_parent().queue_redraw)
+func _on_collapse_toggled(toggled:bool) -> void:
+	collapsed = toggled
+	var timeline_editor = find_parent('VisualEditor')
+	if (timeline_editor != null):
+		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
+		# consider to make it "public" or add a public helper function
+		timeline_editor.indent_events()
 
-	## DO SOME STYLING
-	var _scale := DialogicUtil.get_editor_scale()
-	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
-	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
-	warning.size = Vector2(16 * _scale, 16 * _scale)
-	warning.position = Vector2(-5 * _scale, -10 * _scale)
-
-	indent_size = indent_size * DialogicUtil.get_editor_scale()
-
-	%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
-
-	if resource:
-		if resource.event_name:
-			%TitleLabel.add_theme_color_override("font_color", resource.event_color.lightened(0.4))
-			%TitleLabel.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-			%TitleLabel.text = resource.event_name
-			%IconPanel.tooltip_text = resource.event_name
-		if resource._get_icon() != null:
-			_set_event_icon(resource._get_icon())
-		resource.ui_update_needed.connect(_on_resource_ui_update_needed)
-		resource.ui_update_warning.connect(set_warning)
-
-		%IconPanel.self_modulate = resource.event_color
-
-		_on_ExpandButton_toggled(resource.expand_by_default)
-
-	set_focus_mode(1) # Allowing this node to grab focus
-
-	# signals
-	# TODO godot4 react to changes of the colors, the signal was removed
-	#ProjectSettings.project_settings_changed.connect(_update_color)
-
-	# Separation on the header
-	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
-
-	content_changed.connect(recalculate_field_visibility)
-
-#	_on_Indent_visibility_changed()
-	%CollapseButton.toggled.connect(toggle_collapse)
-	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
-	%CollapseButton.hide()
-	visual_deselect()
 
 
 func _on_ExpandButton_toggled(button_pressed:bool) -> void:
@@ -420,8 +412,8 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	else:
 		%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 	expanded = button_pressed
-	body_container.visible = button_pressed
-	body_container.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
+	%Body.visible = button_pressed
+	%Body.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
 
 	if find_parent('VisualEditor') != null:
 		find_parent('VisualEditor').indent_events()
@@ -443,3 +435,5 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 				popup.set_item_disabled(0, true)
 			else:
 				popup.set_item_disabled(0, false)
+
+#endregion
