@@ -1,5 +1,4 @@
 extends DialogicSubsystem
-class_name DialogicSubsystemGlossary
 
 ## Subsystem that handles glossaries.
 

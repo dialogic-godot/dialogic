@@ -1,5 +1,4 @@
 extends DialogicSubsystem
-class_name DialogicSubsystemInput
 
 ## Subsystem that handles input, autoadvance & skipping.
 

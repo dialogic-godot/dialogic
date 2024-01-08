@@ -1,5 +1,4 @@
 extends DialogicSubsystem
-class_name DialogicSubsystemText
 
 ## Subsystem that handles showing of dialog text (+text effects & modifiers), name label, and next indicator
 

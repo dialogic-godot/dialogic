@@ -22,20 +22,20 @@ func get_dialog() -> DialogicNode_DialogText:
 
 
 func _ready() -> void:
-	var text_system : DialogicSubsystemText = DialogicUtil.autoload().get(&'Text')
+	var text_system : Node = DialogicUtil.autoload().get(&'Text')
 	var _error : int = 0
-	_error = text_system.animation_textbox_hide.connect(_on_textbox_hide)
-	_error = text_system.animation_textbox_show.connect(_on_textbox_show)
-	_error = text_system.animation_textbox_new_text.connect(_on_textbox_new_text)
-	_error = text_system.about_to_show_text.connect(_on_about_to_show_text)
+	_error = text_system.connect(&'animation_textbox_hide', _on_textbox_hide)
+	_error = text_system.connect(&'animation_textbox_show', _on_textbox_show)
+	_error = text_system.connect(&'animation_textbox_new_text', _on_textbox_new_text)
+	_error = text_system.connect(&'about_to_show_text', _on_about_to_show_text)
 
 
 func _on_textbox_show() -> void:
 	if animation_in == AnimationsIn.NONE:
 		return
 	play('RESET')
-	var animation_system : DialogicSubsystemAnimation = DialogicUtil.autoload().get(&'Animation')
-	animation_system.start_animating()
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	animation_system.call(&'start_animating')
 	get_text_panel().get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
 	get_dialog().text = ""
 	match animation_in:
@@ -51,8 +51,8 @@ func _on_textbox_hide() -> void:
 	if animation_out == AnimationsOut.NONE:
 		return
 	play('RESET')
-	var animation_system : DialogicSubsystemAnimation = DialogicUtil.autoload().get(&'Animation')
-	animation_system.start_animating()
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	animation_system.call(&'start_animating')
 	match animation_out:
 		AnimationsOut.POP_OUT:
 			play_backwards("textbox_pop")
@@ -68,14 +68,14 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text() -> void:
-	if (DialogicUtil.autoload().get(&'Input') as DialogicSubsystemInput).auto_skip.enabled:
+	if DialogicUtil.autoload().get(&'Input').get(&'auto_skip').get(&'enabled'):
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:
 		return
 
-	var animation_system : DialogicSubsystemAnimation = DialogicUtil.autoload().get(&'Animation')
-	animation_system.start_animating()
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	animation_system.call(&'start_animating')
 	if full_clear:
 		get_dialog().text = ""
 	match animation_new_text:
