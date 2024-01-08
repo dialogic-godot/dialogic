@@ -32,7 +32,7 @@ func _execute() -> void:
 
 
 ## Returns whether the currently playing audio resource is the same as this
-## event's [file_path].
+## event's [member file_path].
 func _is_playing_resource_already() -> bool:
 	var music_player: AudioStreamPlayer = dialogic.Audio.base_music_player
 
