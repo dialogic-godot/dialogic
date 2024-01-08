@@ -96,7 +96,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('_scene_type', ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit('_scene_type', ValueType.FIXED_OPTIONS, {
 		'left_text' :'Show',
 		'selector_options': [
 			{
@@ -115,7 +115,7 @@ func build_event_editor():
 			{'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Default scene",
 			}, '_scene_type == SceneTypes.CUSTOM')
-	add_header_edit('_arg_type', ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
 		'left_text' : 'with',
 		'selector_options': [
 			{
