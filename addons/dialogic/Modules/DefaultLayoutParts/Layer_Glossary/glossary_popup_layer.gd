@@ -7,37 +7,37 @@ extends DialogicLayoutLayer
 
 @export_group('Text')
 enum Alignment {LEFT, CENTER, RIGHT}
-@export var title_alignment : Alignment = Alignment.LEFT
-@export var text_alignment : Alignment = Alignment.LEFT
-@export var extra_alignment : Alignment = Alignment.RIGHT
+@export var title_alignment: Alignment = Alignment.LEFT
+@export var text_alignment: Alignment = Alignment.LEFT
+@export var extra_alignment: Alignment = Alignment.RIGHT
 
 @export_subgroup("Colors")
 enum TextColorModes {GLOBAL, ENTRY, CUSTOM}
-@export var title_color_mode : TextColorModes = TextColorModes.ENTRY
-@export var title_custom_color : Color = Color.WHITE
-@export var text_color_mode : TextColorModes = TextColorModes.ENTRY
-@export var text_custom_color : Color = Color.WHITE
-@export var extra_color_mode : TextColorModes = TextColorModes.ENTRY
-@export var extra_custom_color : Color = Color.WHITE
+@export var title_color_mode: TextColorModes = TextColorModes.ENTRY
+@export var title_custom_color: Color = Color.WHITE
+@export var text_color_mode: TextColorModes = TextColorModes.ENTRY
+@export var text_custom_color: Color = Color.WHITE
+@export var extra_color_mode: TextColorModes = TextColorModes.ENTRY
+@export var extra_custom_color: Color = Color.WHITE
 
 
 @export_group("Font")
-@export var font_use_global : bool = true
-@export_file('*.ttf') var font_custom : String = ""
+@export var font_use_global: bool = true
+@export_file('*.ttf') var font_custom: String = ""
 
 @export_subgroup('Sizes')
-@export var font_title_size : int = 18
-@export var font_text_size : int = 17
-@export var font_extra_size : int = 15
+@export var font_title_size: int = 18
+@export var font_text_size: int = 17
+@export var font_extra_size: int = 15
 
 
 @export_group("Box")
 @export_subgroup("Color")
 enum ModulateModes {BASE_COLOR_ONLY, ENTRY_COLOR_ON_BOX, GLOBAL_BG_COLOR}
-@export var box_modulate_mode : ModulateModes = ModulateModes.ENTRY_COLOR_ON_BOX
-@export var box_base_modulate : Color = Color.WHITE
+@export var box_modulate_mode: ModulateModes = ModulateModes.ENTRY_COLOR_ON_BOX
+@export var box_base_modulate: Color = Color.WHITE
 @export_subgroup("Size")
-@export var box_width : int = 200
+@export var box_width: int = 200
 
 func get_pointer() -> Control:
 	return $Pointer
@@ -68,8 +68,8 @@ func _ready() -> void:
 		return
 
 	get_pointer().hide()
-	var text_system : Node = DialogicUtil.autoload().get(&'Text')
-	var _error : int = 0
+	var text_system: Node = DialogicUtil.autoload().get(&'Text')
+	var _error: int = 0
 	_error = text_system.connect(&'animation_textbox_hide', get_pointer().hide)
 	_error = text_system.connect(&'meta_hover_started', _on_dialogic_display_dialog_text_meta_hover_started)
 	_error = text_system.connect(&'meta_hover_ended', _on_dialogic_display_dialog_text_meta_hover_ended)
@@ -78,7 +78,7 @@ func _ready() -> void:
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
-	var info : Dictionary = DialogicUtil.autoload().get(&'Glossary').call(&'get_entry', meta)
+	var info: Dictionary = DialogicUtil.autoload().get(&'Glossary').call(&'get_entry', meta)
 
 	if not info:
 		return
@@ -111,7 +111,7 @@ func _process(_delta : float) -> void:
 	if Engine.is_editor_hint():
 		return
 
-	var pointer : Control = get_pointer()
+	var pointer: Control = get_pointer()
 	if pointer.visible:
 		pointer.global_position = pointer.get_global_mouse_position()
 
@@ -134,15 +134,15 @@ func _apply_export_overrides() -> void:
 	elif ResourceLoader.exists(font_custom):
 		font = load(font_custom)
 
-	var title : Label = get_title()
+	var title: Label = get_title()
 	if font:
 		title.add_theme_font_override(&"font", font)
 	title.horizontal_alignment = title_alignment as HorizontalAlignment
 
 	# Apply font & sizes
 	title.add_theme_font_size_override(&"font_size", font_title_size)
-	var labels : Array[RichTextLabel] = [get_text(), get_extra()]
-	var sizes : PackedInt32Array = [font_text_size, font_extra_size]
+	var labels: Array[RichTextLabel] = [get_text(), get_extra()]
+	var sizes: PackedInt32Array = [font_text_size, font_extra_size]
 	for i : int in len(labels):
 		if font:
 			labels[i].add_theme_font_override(&'normal_font', font)
@@ -155,10 +155,10 @@ func _apply_export_overrides() -> void:
 
 
 	# Apply text colors
-	var controls : Array[Control] = [get_title(), get_text(), get_extra()]
-	var global_settings : Array[StringName] = [&'font_color', &'default_color', &'default_color']
-	var color_modes : Array[TextColorModes] = [title_color_mode, text_color_mode, extra_color_mode]
-	var custom_colors : PackedColorArray = [title_custom_color, text_custom_color, extra_custom_color]
+	var controls: Array[Control] = [get_title(), get_text(), get_extra()]
+	var global_settings: Array[StringName] = [&'font_color', &'default_color', &'default_color']
+	var color_modes: Array[TextColorModes] = [title_color_mode, text_color_mode, extra_color_mode]
+	var custom_colors: PackedColorArray = [title_custom_color, text_custom_color, extra_custom_color]
 	for i : int in len(controls):
 		match color_modes[i]:
 			TextColorModes.GLOBAL:
@@ -167,7 +167,7 @@ func _apply_export_overrides() -> void:
 				controls[i].add_theme_color_override(global_settings[i], custom_colors[i])
 
 	# Apply box size
-	var panel : PanelContainer = get_panel()
+	var panel: PanelContainer = get_panel()
 	panel.size.x = box_width
 	panel.position.x = -box_width/2.0
 

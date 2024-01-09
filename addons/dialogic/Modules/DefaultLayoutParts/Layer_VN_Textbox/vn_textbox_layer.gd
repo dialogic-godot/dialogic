@@ -20,16 +20,16 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 @export_group("Text")
 @export_subgroup("Alignment & Size")
-@export var text_alignment :Alignments= Alignments.LEFT
-@export var text_use_global_size : bool = true
-@export var text_size : int = 15
+@export var text_alignment: Alignments= Alignments.LEFT
+@export var text_use_global_size: bool = true
+@export var text_size: int = 15
 
 @export_subgroup("Color")
-@export var text_use_global_color : bool = true
-@export var text_custom_color : Color = Color.WHITE
+@export var text_use_global_color: bool = true
+@export var text_custom_color: Color = Color.WHITE
 
 @export_subgroup('Font')
-@export var text_use_global_font : bool = true
+@export var text_use_global_font: bool = true
 @export_file('*.ttf') var normal_font:String = ""
 @export_file('*.ttf') var bold_font:String = ""
 @export_file('*.ttf') var italic_font:String = ""
@@ -37,60 +37,60 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 @export_group("Box")
 @export_subgroup("Panel")
-@export_file("*.tres") var box_panel : String = this_folder.path_join("vn_textbox_default_panel.tres")
+@export_file("*.tres") var box_panel: String = this_folder.path_join("vn_textbox_default_panel.tres")
 @export_subgroup("Color")
-@export var box_color_use_global : bool = true
-@export var box_color_custom : Color = Color.BLACK
+@export var box_color_use_global: bool = true
+@export var box_color_custom: Color = Color.BLACK
 @export_subgroup("Size & Position")
-@export var box_size : Vector2 = Vector2(550, 110)
-@export var box_margin_bottom : int = 15
+@export var box_size: Vector2 = Vector2(550, 110)
+@export var box_margin_bottom: int = 15
 @export_subgroup("Animation")
-@export var box_animation_in : AnimationsIn = AnimationsIn.FADE_UP
-@export var box_animation_out : AnimationsOut = AnimationsOut.FADE_DOWN
-@export var box_animation_new_text : AnimationsNewText = AnimationsNewText.NONE
+@export var box_animation_in: AnimationsIn = AnimationsIn.FADE_UP
+@export var box_animation_out: AnimationsOut = AnimationsOut.FADE_DOWN
+@export var box_animation_new_text: AnimationsNewText = AnimationsNewText.NONE
 
 @export_group("Name Label")
 @export_subgroup('Color')
-@export var name_label_use_global_color : bool= true
-@export var name_label_use_character_color : bool = true
-@export var name_label_custom_color : Color = Color.WHITE
+@export var name_label_use_global_color: bool= true
+@export var name_label_use_character_color: bool = true
+@export var name_label_custom_color: Color = Color.WHITE
 @export_subgroup('Font')
-@export var name_label_use_global_font : bool = true
-@export_file('*.ttf') var name_label_font : String = ""
-@export var name_label_use_global_font_size : bool = true
-@export var name_label_custom_font_size : int = 15
+@export var name_label_use_global_font: bool = true
+@export_file('*.ttf') var name_label_font: String = ""
+@export var name_label_use_global_font_size: bool = true
+@export var name_label_custom_font_size: int = 15
 @export_subgroup('Box')
-@export_file("*.tres") var name_label_box_panel : String = this_folder.path_join("vn_textbox_name_label_panel.tres")
-@export var name_label_box_use_global_color : bool = true
-@export var name_label_box_modulate : Color = box_color_custom
+@export_file("*.tres") var name_label_box_panel: String = this_folder.path_join("vn_textbox_name_label_panel.tres")
+@export var name_label_box_use_global_color: bool = true
+@export var name_label_box_modulate: Color = box_color_custom
 @export_subgroup('Alignment')
-@export var name_label_alignment : Alignments = Alignments.LEFT
-@export var name_label_box_offset : Vector2 = Vector2.ZERO
+@export var name_label_alignment: Alignments = Alignments.LEFT
+@export var name_label_box_offset: Vector2 = Vector2.ZERO
 
 @export_group("Indicators")
 @export_subgroup("Next Indicator")
-@export var next_indicator_enabled : bool = true
-@export var next_indicator_show_on_questions : bool = true
-@export var next_indicator_show_on_autoadvance : bool = false
-@export_enum('bounce', 'blink', 'none') var next_indicator_animation : int = 0
-@export_file("*.png","*.svg") var next_indicator_texture : String = ''
-@export var next_indicator_size : Vector2 = Vector2(25,25)
+@export var next_indicator_enabled: bool = true
+@export var next_indicator_show_on_questions: bool = true
+@export var next_indicator_show_on_autoadvance: bool = false
+@export_enum('bounce', 'blink', 'none') var next_indicator_animation: int = 0
+@export_file("*.png","*.svg") var next_indicator_texture: String = ''
+@export var next_indicator_size: Vector2 = Vector2(25,25)
 
 @export_subgroup("Autoadvance")
-@export var autoadvance_progressbar : bool = true
+@export var autoadvance_progressbar: bool = true
 
 @export_group('Sounds')
 @export_subgroup('Typing Sounds')
-@export var typing_sounds_enabled : bool = true
-@export var typing_sounds_mode : DialogicNode_TypeSounds.Modes = DialogicNode_TypeSounds.Modes.INTERRUPT
-@export_dir var typing_sounds_sounds_folder : String = "res://addons/dialogic/Example Assets/sound-effects/"
-@export_file("*.wav", "*.ogg", "*.mp3") var typing_sounds_end_sound : String = ""
-@export_range(1, 999, 1) var typing_sounds_every_nths_character : int = 1
-@export_range(0.01, 4, 0.01) var typing_sounds_pitch : float = 1.0
-@export_range(0.0, 3.0) var typing_sounds_pitch_variance : float = 0.0
-@export_range(-80, 24, 0.01) var typing_sounds_volume : float = -10
-@export_range(0.0, 10) var typing_sounds_volume_variance : float = 0.0
-@export var typing_sounds_ignore_characters : String = " .,!?"
+@export var typing_sounds_enabled: bool = true
+@export var typing_sounds_mode: DialogicNode_TypeSounds.Modes = DialogicNode_TypeSounds.Modes.INTERRUPT
+@export_dir var typing_sounds_sounds_folder: String = "res://addons/dialogic/Example Assets/sound-effects/"
+@export_file("*.wav", "*.ogg", "*.mp3") var typing_sounds_end_sound: String = ""
+@export_range(1, 999, 1) var typing_sounds_every_nths_character: int = 1
+@export_range(0.01, 4, 0.01) var typing_sounds_pitch: float = 1.0
+@export_range(0.0, 3.0) var typing_sounds_pitch_variance: float = 0.0
+@export_range(-80, 24, 0.01) var typing_sounds_volume: float = -10
+@export_range(0.0, 10) var typing_sounds_volume_variance: float = 0.0
+@export var typing_sounds_ignore_characters: String = " .,!?"
 
 
 func _apply_export_overrides() -> void:
@@ -98,7 +98,7 @@ func _apply_export_overrides() -> void:
 		await ready
 
 	## FONT SETTINGS
-	var dialog_text : DialogicNode_DialogText = %DialogicNode_DialogText
+	var dialog_text: DialogicNode_DialogText = %DialogicNode_DialogText
 	dialog_text.alignment = text_alignment as DialogicNode_DialogText.Alignment
 
 	if text_use_global_size:
@@ -125,7 +125,7 @@ func _apply_export_overrides() -> void:
 		dialog_text.add_theme_font_override(&"bold_italics_font", load(bold_italic_font) as Font)
 
 	## BOX SETTINGS
-	var dialog_text_panel : PanelContainer = %DialogTextPanel
+	var dialog_text_panel: PanelContainer = %DialogTextPanel
 	if ResourceLoader.exists(box_panel):
 		dialog_text_panel.add_theme_stylebox_override(&'panel', load(box_panel) as StyleBox)
 
@@ -134,25 +134,18 @@ func _apply_export_overrides() -> void:
 	else:
 		dialog_text_panel.self_modulate = box_color_custom
 
-	#dialog_text_panel.hide()
-	#%Minimizer.size = Vector2.ZERO
-	#%Minimizer.position = Vector2(0, -box_margin_bottom)
-	#%Minimizer.grow_vertical = Container.GROW_DIRECTION_BEGIN
-	#dialog_text_panel.custom_minimum_size = box_size
-	#dialog_text_panel.show()
-	var sizer : Control = %Sizer
+	var sizer: Control = %Sizer
 	sizer.size = box_size
 	sizer.position = box_size * Vector2(-0.5, -1)+Vector2(0, -box_margin_bottom)
 
-
 	## BOX ANIMATIONS
-	var animations : AnimationPlayer = %Animations
+	var animations: AnimationPlayer = %Animations
 	animations.set(&'animation_in', box_animation_in)
 	animations.set(&'animation_out', box_animation_out)
 	animations.set(&'animation_new_text', box_animation_new_text)
 
 	## NAME LABEL SETTINGS
-	var name_label : DialogicNode_NameLabel = %DialogicNode_NameLabel
+	var name_label: DialogicNode_NameLabel = %DialogicNode_NameLabel
 	if name_label_use_global_font_size:
 		name_label.add_theme_font_size_override(&"font_size", get_global_setting(&'font_size', name_label_custom_font_size) as int)
 	else:
@@ -170,7 +163,7 @@ func _apply_export_overrides() -> void:
 
 	name_label.use_character_color = name_label_use_character_color
 
-	var name_label_panel : PanelContainer = %NameLabelPanel
+	var name_label_panel: PanelContainer = %NameLabelPanel
 	if ResourceLoader.exists(name_label_box_panel):
 		name_label_panel.add_theme_stylebox_override(&'panel', load(name_label_box_panel) as StyleBox)
 	else:
@@ -190,7 +183,7 @@ func _apply_export_overrides() -> void:
 	name_label_panel.grow_horizontal = [1, 2, 0][name_label_alignment]
 
 	## NEXT INDICATOR SETTINGS
-	var next_indicator : DNextIndicator = %NextIndicator
+	var next_indicator: DNextIndicator = %NextIndicator
 	next_indicator.enabled = next_indicator_enabled
 
 	if next_indicator_enabled:
@@ -202,13 +195,13 @@ func _apply_export_overrides() -> void:
 		next_indicator.texture_size = next_indicator_size
 
 	## OTHER
-	var progress_bar : ProgressBar = %AutoAdvanceProgressbar
+	var progress_bar: ProgressBar = %AutoAdvanceProgressbar
 	progress_bar.set(&'enabled', autoadvance_progressbar)
 
 	#### SOUNDS
 
 	## TYPING SOUNDS
-	var type_sounds : DialogicNode_TypeSounds = %DialogicNode_TypeSounds
+	var type_sounds: DialogicNode_TypeSounds = %DialogicNode_TypeSounds
 	type_sounds.enabled = typing_sounds_enabled
 	type_sounds.mode = typing_sounds_mode
 	if not typing_sounds_sounds_folder.is_empty():

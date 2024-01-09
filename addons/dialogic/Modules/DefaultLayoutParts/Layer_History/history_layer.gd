@@ -6,12 +6,12 @@ extends DialogicLayoutLayer
 
 @export_group('Look')
 @export_subgroup('Font')
-@export var font_use_global_size : bool = true
-@export var font_custom_size : int = 15
-@export var font_use_global_fonts : bool = true
-@export_file('*.ttf') var font_custom_normal : String = ""
-@export_file('*.ttf') var font_custom_bold : String = ""
-@export_file('*.ttf') var font_custom_italics : String = ""
+@export var font_use_global_size: bool = true
+@export var font_custom_size: int = 15
+@export var font_use_global_fonts: bool = true
+@export_file('*.ttf') var font_custom_normal: String = ""
+@export_file('*.ttf') var font_custom_bold: String = ""
+@export_file('*.ttf') var font_custom_italics: String = ""
 
 @export_subgroup('Buttons')
 @export var show_open_button: bool = true
@@ -32,7 +32,7 @@ var scroll_to_bottom_flag: bool = false
 @export_group('Private')
 @export var HistoryItem: PackedScene = null
 
-var history_item_theme : Theme = null
+var history_item_theme: Theme = null
 
 func get_show_history_button() -> Button:
 	return $ShowHistory
@@ -56,7 +56,7 @@ func _ready() -> void:
 
 
 func _apply_export_overrides() -> void:
-	var history_subsystem : Node = DialogicUtil.autoload().get(&'History')
+	var history_subsystem: Node = DialogicUtil.autoload().get(&'History')
 	if history_subsystem != null:
 		get_show_history_button().visible = show_open_button and history_subsystem.get(&'simple_history_enabled')
 	else:
@@ -96,10 +96,10 @@ func _on_show_history_pressed() -> void:
 
 
 func show_history() -> void:
-	for child : Node in get_history_log().get_children():
+	for child: Node in get_history_log().get_children():
 		child.queue_free()
 
-	for info : Dictionary in DialogicUtil.autoload().get(&'History').call(&'get_simple_history'):
+	for info: Dictionary in DialogicUtil.autoload().get(&'History').call(&'get_simple_history'):
 		var history_item : Node = HistoryItem.instantiate()
 		history_item.set(&'theme', history_item_theme)
 		match info.event_type:
@@ -117,7 +117,7 @@ func show_history() -> void:
 					continue
 				history_item.call(&'load_info', '[i]'+info['text'])
 			"Choice":
-				var choices_text : String = ""
+				var choices_text: String = ""
 				if show_all_choices:
 					for i : String in info['all_choices']:
 						if i.ends_with('#disabled'):

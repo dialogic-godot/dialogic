@@ -5,42 +5,42 @@ extends DialogicLayoutLayer
 
 @export_group("Main")
 @export_subgroup("Text")
-@export var text_size : int = 15
+@export var text_size: int = 15
 @export var text_color: Color = Color.BLACK
 @export_file('*.ttf') var normal_font: String = ""
 @export_file('*.ttf') var bold_font: String = ""
 @export_file('*.ttf') var italic_font: String = ""
 @export_file('*.ttf') var bold_italic_font: String = ""
-@export var text_max_width : int = 300
+@export var text_max_width: int = 300
 
 @export_subgroup('Box')
-@export var box_modulate : Color = Color.WHITE
-@export var box_modulate_by_character_color : bool = false
-@export var box_padding : Vector2 = Vector2(10,10)
-@export_range(0.1, 2) var box_corner_radius : float = 0.3
-@export_range(0.1, 5) var box_wobble_speed : float= 1
-@export_range(0, 1) var box_wobbliness : float = 0.2
+@export var box_modulate: Color = Color.WHITE
+@export var box_modulate_by_character_color: bool = false
+@export var box_padding: Vector2 = Vector2(10,10)
+@export_range(0.1, 2) var box_corner_radius: float = 0.3
+@export_range(0.1, 5) var box_wobble_speed: float= 1
+@export_range(0, 1) var box_wobbliness: float = 0.2
 
 @export_subgroup('Behaviour')
-@export var behaviour_distance : int = 50
-@export var behaviour_direction : Vector2 = Vector2(1, -1)
+@export var behaviour_distance: int = 50
+@export var behaviour_direction: Vector2 = Vector2(1, -1)
 
 @export_group('Name Label & Choices')
 @export_subgroup("Name Label")
-@export var name_label_enabled : bool = true
-@export var name_label_font_size : int = 15
+@export var name_label_enabled: bool = true
+@export var name_label_font_size: int = 15
 @export_file('*.ttf') var name_label_font: String = ""
-@export var name_label_use_character_color : bool = true
-@export var name_label_color : Color = Color.BLACK
-@export var name_label_box_modulate : Color = Color.WHITE
-@export var name_label_padding : Vector2 = Vector2(5,0)
-@export var name_label_offset : Vector2 = Vector2(0,0)
+@export var name_label_use_character_color: bool = true
+@export var name_label_color: Color = Color.BLACK
+@export var name_label_box_modulate: Color = Color.WHITE
+@export var name_label_padding: Vector2 = Vector2(5,0)
+@export var name_label_offset: Vector2 = Vector2(0,0)
 
 @export_subgroup('Choices Text')
-@export var choices_text_size : int = 15
-@export var choices_text_color : Color = Color.LIGHT_SLATE_GRAY
-@export var choices_text_color_hover : Color = Color.DARK_GRAY
-@export var choices_text_color_focus : Color = Color.BLACK
+@export var choices_text_size: int = 15
+@export var choices_text_color: Color = Color.LIGHT_SLATE_GRAY
+@export var choices_text_color_hover: Color = Color.DARK_GRAY
+@export var choices_text_color_focus: Color = Color.BLACK
 
 
 var bubbles: Array[DialogicNode_TextBubble] = []
@@ -61,7 +61,7 @@ func add_bubble() -> DialogicNode_TextBubble:
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides() -> void:
-	for bubble : DialogicNode_TextBubble in bubbles:
+	for bubble: DialogicNode_TextBubble in bubbles:
 		bubble_apply_overrides(bubble)
 
 	if fallback_bubble:
@@ -70,7 +70,7 @@ func _apply_export_overrides() -> void:
 
 func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	## TEXT FONT AND COLOR
-	var rtl : RichTextLabel = bubble.get_dialog_text()
+	var rtl: RichTextLabel = bubble.get_dialog_text()
 	rtl.add_theme_font_size_override(&'normal_font', text_size)
 	rtl.add_theme_font_size_override(&"normal_font_size", text_size)
 	rtl.add_theme_font_size_override(&"bold_font_size", text_size)
@@ -91,9 +91,9 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 
 
 	## BOX & TAIL COLOR
-	var tail : Line2D = bubble.get_tail()
-	var background : Control = bubble.get_bubble()
-	var bubble_material : ShaderMaterial = background.get(&'material')
+	var tail: Line2D = bubble.get_tail()
+	var background: Control = bubble.get_bubble()
+	var bubble_material: ShaderMaterial = background.get(&'material')
 
 	tail.default_color = box_modulate
 	background.set(&'color', box_modulate)
@@ -106,7 +106,7 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	bubble.padding = box_padding
 
 	## NAME LABEL SETTINGS
-	var nl : DialogicNode_NameLabel = bubble.get_name_label()
+	var nl: DialogicNode_NameLabel = bubble.get_name_label()
 	nl.add_theme_font_size_override(&"font_size", name_label_font_size)
 
 	if !name_label_font.is_empty():
@@ -116,7 +116,7 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 	if !nl.use_character_color:
 		nl.add_theme_color_override(&"font_color", name_label_color)
 
-	var nlp : PanelContainer = bubble.get_name_label_panel()
+	var nlp: PanelContainer = bubble.get_name_label_panel()
 	nlp.self_modulate = name_label_box_modulate
 	nlp.get_theme_stylebox(&'panel').content_margin_left = name_label_padding.x
 	nlp.get_theme_stylebox(&'panel').content_margin_right = name_label_padding.x
@@ -129,7 +129,7 @@ func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
 
 
 	## CHOICE SETTINGS
-	var choice_theme : Theme = Theme.new()
+	var choice_theme: Theme = Theme.new()
 	choice_theme.set_font_size(&'font_size', &'Button', choices_text_size)
 	choice_theme.set_color(&'font_color', &'Button', choices_text_color)
 	choice_theme.set_color(&'font_pressed_color', &'Button', choices_text_color)

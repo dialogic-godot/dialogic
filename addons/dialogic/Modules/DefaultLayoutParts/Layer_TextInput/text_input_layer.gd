@@ -5,7 +5,7 @@ extends DialogicLayoutLayer
 
 
 func _apply_export_overrides() -> void:
-	var layer_theme : Theme = get(&'theme')
+	var layer_theme: Theme = get(&'theme')
 	if layer_theme == null:
 		layer_theme = Theme.new()
 
