@@ -115,7 +115,7 @@ func change_field_type(type:int) -> void:
 			value_field.text_changed.connect(_on_str_text_changed)
 			value_field.expand_to_text_length = true
 		TYPE_FLOAT, TYPE_INT:
-			value_field = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
+			value_field = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
 			if type == TYPE_FLOAT:
 				value_field.use_float_mode()
 			else:
