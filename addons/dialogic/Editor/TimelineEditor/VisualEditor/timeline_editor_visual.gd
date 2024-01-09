@@ -701,11 +701,10 @@ func move_blocks_to_index(blocks:Array, index:int):
 					return
 		if "end_node" in event and event.end_node:
 			if !event.end_node in blocks:
-				if index > event.end_node.get_index():
-					if event.end_node.get_index() == event.get_index()+1:
-						blocks.append(event.end_node)
-					else:
-						return
+				if event.end_node.get_index() == event.get_index()+1:
+					blocks.append(event.end_node)
+				else:
+					return
 		index_shift += int(event.get_index() < index)
 
 	var do_indexes := {}
@@ -889,18 +888,22 @@ func indent_events() -> void:
 func _on_event_popup_menu_index_pressed(index:int) -> void:
 	var item :Control = %EventPopupMenu.current_event
 	if index == 0:
+		if not item in selected_items:
+			selected_items = [item]
+		duplicate_selected()
+	elif index == 2:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
-	elif index == 1:
+	elif index == 3:
 		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
 		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
-	elif index == 3 or index == 4:
-		if index == 3:
+	elif index == 5 or index == 6:
+		if index == 5:
 			offset_blocks_by_index(selected_items, -1)
 		else:
 			offset_blocks_by_index(selected_items, +1)
 
-	elif index == 6:
+	elif index == 8:
 		var events_indexed := get_events_indexed([item])
 		TimelineUndoRedo.create_action("[D] Deleting 1 event.")
 		TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))
@@ -939,6 +942,16 @@ func _on_right_sidebar_resized():
 
 #################### SHORTCUTS #################################################
 ################################################################################
+
+func duplicate_selected() -> void:
+	if len(selected_items) > 0:
+		var events := get_events_indexed(selected_items).values()
+		var at_index: int = selected_items[-1].get_index()+1
+		TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
+		TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
+		TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, len(events)))
+		TimelineUndoRedo.commit_action()
+
 
 func _input(event:InputEvent) -> void:
 	# we protect this with is_visible_in_tree to not
@@ -1064,13 +1077,7 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 		"Ctrl+D":
-			if len(selected_items) > 0:
-				var events := get_events_indexed(selected_items).values()
-				var at_index :int= selected_items[-1].get_index()
-				TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
-				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
-				TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, len(events)))
-				TimelineUndoRedo.commit_action()
+			duplicate_selected()
 			get_viewport().set_input_as_handled()
 
 		"Alt+Up", "Option+Up":

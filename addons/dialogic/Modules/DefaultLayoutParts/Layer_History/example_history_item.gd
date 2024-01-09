@@ -14,14 +14,3 @@ func load_info(text:String, character:String = "", character_color:=Color(), ico
 	else:
 		%Icon.show()
 		%Icon.texture = icon
-
-#
-#func prepare_textbox(history_root:Node) -> void:
-	#%TextBox.add_theme_font_override("normal_font", history_root.history_font_normal)
-	#%NameLabel.add_theme_font_override("font", history_root.history_font_normal)
-	#%NameLabel.add_theme_font_size_override("font_size", history_root.history_font_size)
-	#%TextBox.add_theme_font_override("bold_font", history_root.history_font_bold)
-	#%TextBox.add_theme_font_override("italics_font", history_root.history_font_italics)
-	#%TextBox.add_theme_font_size_override("normal_font_size", history_root.history_font_size)
-	#%TextBox.add_theme_font_size_override("bold_font_size", history_root.history_font_size)
-	#%TextBox.add_theme_font_size_override("italics_font_size", history_root.history_font_size)
