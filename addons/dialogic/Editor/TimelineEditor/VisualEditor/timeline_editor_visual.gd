@@ -290,7 +290,7 @@ func _on_event_block_gui_input(event, item: Node):
 
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if !%TimelineArea.dragging:
+			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging():
 				sort_selection()
 				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, selected_items)
 

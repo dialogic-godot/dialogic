@@ -48,8 +48,8 @@ func _ready():
 		printerr("[Dialogic] Event block was added without a resource specified.")
 		return
 
-	initialize_logic()
 	initialize_ui()
+	initialize_logic()
 
 
 func initialize_ui() -> void:
@@ -63,7 +63,7 @@ func initialize_ui() -> void:
 	%Warning.position = Vector2(-5 * _scale, -10 * _scale)
 
 	# Expand Button
-	%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+	%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
 
 	# Icon Panel
@@ -90,6 +90,8 @@ func initialize_ui() -> void:
 	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%CollapseButton.hide()
 
+	%Body.add_theme_constant_override("margin_left", icon_size * _scale)
+
 	visual_deselect()
 
 
@@ -99,9 +101,9 @@ func initialize_logic() -> void:
 	resource.ui_update_needed.connect(_on_resource_ui_update_needed)
 	resource.ui_update_warning.connect(set_warning)
 
-	_on_ExpandButton_toggled(resource.expand_by_default)
-
 	content_changed.connect(recalculate_field_visibility)
+
+	_on_ExpandButton_toggled(resource.expand_by_default or resource.created_by_button)
 
 #endregion
 
@@ -162,6 +164,7 @@ var FIELD_SCENES := {
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 	var current_body_container: HFlowContainer = null
+
 	if build_body and body_was_build:
 		build_body = false
 
@@ -348,13 +351,14 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	if button_pressed and !body_was_build:
 		build_editor(false, true)
 	%ExpandButton.set_pressed_no_signal(button_pressed)
+
 	if button_pressed:
 		%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	else:
 		%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
+
 	expanded = button_pressed
 	%Body.visible = button_pressed
-	%Body.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
 
 	if find_parent('VisualEditor') != null:
 		find_parent('VisualEditor').indent_events()
