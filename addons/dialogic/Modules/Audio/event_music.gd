@@ -1,8 +1,8 @@
 @tool
+## Event that can change the currently playing background music.
+## This event won't play new music if it's already playing.
 class_name DialogicMusicEvent
 extends DialogicEvent
-
-## Event that can change the currently playing background music.
 
 
 ### Settings
@@ -24,9 +24,10 @@ var loop: bool = true
 ################################################################################
 
 func _execute() -> void:
-	dialogic.Audio.update_music(file_path, volume, audio_bus, fade_length, loop)
-	finish()
+	if not dialogic.Audio.is_music_playing_resource():
+		dialogic.Audio.update_music(file_path, volume, audio_bus, fade_length, loop)
 
+	finish()
 
 ################################################################################
 ## 						INITIALIZE
@@ -66,7 +67,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('file_path', ValueType.FILE, {
 			'left_text'		: 'Play',
 			'file_filter' 	: "*.mp3, *.ogg, *.wav; Supported Audio Files",
