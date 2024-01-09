@@ -9,8 +9,6 @@ extends DialogicVisualEditorField
 @export var empty_text := ""
 enum Modes {PURE_STRING, PRETTY_PATH, IDENTIFIER}
 @export var mode := Modes.PURE_STRING
-
-#@export var enable_pretty_name := false
 @export var fit_text_length := true
 var collapse_when_empty := false
 var valid_file_drop_extension := ""
@@ -158,10 +156,6 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 	if %Suggestions.get_item_metadata(index) == null:
 		current_value = ""
 
-	## if this is a resource, then load it instead of assigning the string:
-	#elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
-		#var file = load(%Suggestions.get_item_metadata(index))
-		#current_value = file
 	else:
 		current_value = %Suggestions.get_item_metadata(index)
 

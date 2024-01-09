@@ -34,7 +34,7 @@ border_width_bottom = 2
 corner_detail = 1
 
 [node name="Field_File" type="MarginContainer"]
-offset_right = 160.0
+offset_right = 314.0
 offset_bottom = 40.0
 theme_type_variation = &"DialogicEventEdit"
 script = ExtResource("1_0grcf")

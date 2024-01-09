@@ -20,7 +20,7 @@ var resource_icon:Texture:
 		else:
 			%Field.theme_type_variation = "LineEditWithIcon"
 
-var max_text_length := 16
+var max_width := 200
 var current_value : String
 var hide_reset:bool = false
 
@@ -59,8 +59,12 @@ func _set_value(value:Variant) -> void:
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
 		text = value.get_file()
 		%Field.tooltip_text = value
-	if len(text) > max_text_length:
+
+	if %Field.get_theme_font('font').get_string_size(
+		text, 0, -1,
+		%Field.get_theme_font_size('font_size')).x > max_width:
 		%Field.expand_to_text_length = false
+		%Field.custom_minimum_size.x = max_width
 		%Field.size.x = 0
 	else:
 		%Field.custom_minimum_size.x = 0
