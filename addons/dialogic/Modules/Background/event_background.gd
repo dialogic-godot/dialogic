@@ -98,7 +98,7 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('_scene_type', ValueType.FIXED_OPTIONS, {
 		'left_text' :'Show',
-		'selector_options': [
+		'options': [
 			{
 				'label': 'Default Scene',
 				'value': SceneTypes.DEFAULT,
@@ -117,7 +117,7 @@ func build_event_editor():
 			}, '_scene_type == SceneTypes.CUSTOM')
 	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
 		'left_text' : 'with',
-		'selector_options': [
+		'options': [
 			{
 				'label': 'Image',
 				'value': ArgumentTypes.IMAGE,
@@ -131,17 +131,17 @@ func build_event_editor():
 		], "symbol_only": true}, "_scene_type == SceneTypes.CUSTOM")
 	add_header_edit('argument', ValueType.FILE,
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
-			'placeholder': "No background",
+			'placeholder': "No Image",
 			},
 			'_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.CUSTOM')
 
-	add_body_edit("transition", ValueType.COMPLEX_PICKER,
+	add_body_edit("transition", ValueType.DYNAMIC_OPTIONS,
 			{'left_text':'Transition:',
 			'empty_text':'Simple Fade',
 			'suggestions_func':get_transition_suggestions,
 			'editor_icon':["PopupMenu", "EditorIcons"]})
-	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade time:'})
+	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade time:'})
 
 
 func get_transition_suggestions(filter:String="") -> Dictionary:
