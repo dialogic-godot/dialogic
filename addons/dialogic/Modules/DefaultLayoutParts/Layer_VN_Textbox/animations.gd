@@ -68,9 +68,7 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text() -> void:
-	var input_system: Node = DialogicUtil.autoload().get(&'Input')
-	var auto_skip: DialogicAutoAdvance = input_system.get(&'auto_skip')
-	if auto_skip.get(&'enabled'):
+	if DialogicUtil.autoload().Input.auto_skip.enabled:
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:

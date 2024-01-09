@@ -78,8 +78,7 @@ func _ready() -> void:
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
-	var glossary_system: Node = DialogicUtil.autoload().get(&'Glossary')
-	var info: Dictionary = glossary_system.call(&'get_entry', meta)
+	var info: Dictionary = DialogicUtil.autoload().Glossary.get_entry(meta)
 
 	if not info:
 		return
@@ -104,8 +103,7 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
 			get_panel().self_modulate = info.get(&'color', Color.WHITE)
 			get_panel_point().self_modulate = info.get(&'color', Color.WHITE)
 
-	var input_system: Node = DialogicUtil.autoload().get(&'Input')
-	input_system.set(&'action_was_consumed', true)
+	DialogicUtil.autoload().Input.action_was_consumed = true
 
 
 ## Method that keeps the bubble at mouse position when visible
@@ -121,13 +119,11 @@ func _process(_delta : float) -> void:
 ## Method that hides the bubble
 func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
 	get_pointer().hide()
-	var input_system: Node = DialogicUtil.autoload().get(&'Input')
-	input_system.set(&'action_was_consumed', false)
+	DialogicUtil.autoload().Input.action_was_consumed = false
 
 
 func _on_dialogic_display_dialog_text_meta_clicked(_meta:String) -> void:
-	var input_system: Node = DialogicUtil.autoload().get(&'Input')
-	input_system.set(&'action_was_consumed', true)
+	DialogicUtil.autoload().Input.action_was_consumed = true
 
 
 func _apply_export_overrides() -> void:

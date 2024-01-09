@@ -6,10 +6,8 @@ func _process(_delta : float) -> void:
 	if !enabled:
 		hide()
 		return
-	var input_system : Node = DialogicUtil.autoload().get(&'Input')
-	var auto_advance : DialogicAutoAdvance = input_system.get(&'auto_advance')
-	if auto_advance.get_progress() < 0:
+	if DialogicUtil.autoload().Input.auto_advance.get_progress() < 0:
 		hide()
 	else:
 		show()
-		value = auto_advance.get_progress()
+		value = DialogicUtil.autoload().Input.auto_advance.get_progress()
