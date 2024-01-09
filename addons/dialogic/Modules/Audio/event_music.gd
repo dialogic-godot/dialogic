@@ -24,20 +24,10 @@ var loop: bool = true
 ################################################################################
 
 func _execute() -> void:
-
-	if not _is_playing_resource_already():
+	if not dialogic.Audio.is_music_playing_resource():
 		dialogic.Audio.update_music(file_path, volume, audio_bus, fade_length, loop)
 
 	finish()
-
-
-## Returns whether the currently playing audio resource is the same as this
-## event's [member file_path].
-func _is_playing_resource_already() -> bool:
-	var music_player: AudioStreamPlayer = dialogic.Audio.base_music_player
-
-	return music_player.is_playing() and music_player.stream.resource_path == file_path
-
 
 ################################################################################
 ## 						INITIALIZE
