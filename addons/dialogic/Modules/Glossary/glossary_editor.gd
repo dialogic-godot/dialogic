@@ -179,6 +179,7 @@ func _on_add_glossary_entry_pressed() -> void:
 
 	var new_glossary := {}
 	new_glossary[DialogicGlossary.NAME_PROPERTY] = new_name
+
 	current_glossary.set_entry(new_name, new_glossary)
 
 	ResourceSaver.save(current_glossary)
@@ -205,7 +206,10 @@ func _on_delete_glossary_entry_pressed() -> void:
 			current_glossary.erase_entry(current_entry_name)
 			ResourceSaver.save(current_glossary)
 
-		%EntryList.remove_item(selected_items[0])
+			%EntryList.remove_item(selected_items[0])
+			var entries_count: int = %EntryList.item_count
+			%EntryList.select(entries_count - 1)
+
 
 
 func _on_entry_search_text_changed(new_text: String) -> void:
