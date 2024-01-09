@@ -100,7 +100,7 @@ func build_event_editor():
 		'left_text' :'Show',
 		'options': [
 			{
-				'label': 'Default Scene',
+				'label': 'Background',
 				'value': SceneTypes.DEFAULT,
 				'icon': ["GuiRadioUnchecked", "EditorIcons"]
 			},
@@ -109,11 +109,12 @@ func build_event_editor():
 				'value': SceneTypes.CUSTOM,
 				'icon': ["PackedScene", "EditorIcons"]
 			}
-		], "symbol_only": true})
-	add_header_label("Default BG Scene with", '_scene_type == SceneTypes.DEFAULT')
+		]})
+	add_header_label("with image", "_scene_type == SceneTypes.DEFAULT")
 	add_header_edit("scene", ValueType.FILE,
 			{'file_filter':'*.tscn, *.scn; Scene Files',
-			'placeholder': "Default scene",
+			'placeholder': "Custom scene",
+			'editor_icon': ["PackedScene", "EditorIcons"],
 			}, '_scene_type == SceneTypes.CUSTOM')
 	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
 		'left_text' : 'with',
@@ -132,6 +133,7 @@ func build_event_editor():
 	add_header_edit('argument', ValueType.FILE,
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 			'placeholder': "No Image",
+			'editor_icon': ["Image", "EditorIcons"],
 			},
 			'_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.CUSTOM')
