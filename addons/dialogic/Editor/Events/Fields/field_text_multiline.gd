@@ -63,7 +63,7 @@ func queue_height_recalculation():
 
 
 ## This shouldn't be necessary bug [fit_content_height] creates a crash.
-## Remove again once https://github.com/godotengine/godot/issues/80546 is fixed.
+## TODO Remove again once https://github.com/godotengine/godot/issues/80546 is fixed.
 func recalculate_height() -> void:
 	height_recalculation_queued = false
 	var font :Font = get_theme_font("font")

@@ -123,7 +123,7 @@ func is_valid_event(string:String) -> bool:
 
 func build_event_editor():
 	add_header_edit('mode', ValueType.FIXED_OPTIONS, {
-		'selector_options': [{
+		'options': [{
 				'label': 'Set',
 				'value': Modes.SET,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
@@ -138,9 +138,9 @@ func build_event_editor():
 			},
 			]})
 
-	add_header_edit('name', ValueType.COMPLEX_PICKER, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
+	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
 	add_header_edit('_value_type', ValueType.FIXED_OPTIONS, {'left_text':'to',
-		'selector_options': [
+		'options': [
 			{
 				'label': 'String',
 				'icon': ["String", "EditorIcons"],
@@ -161,8 +161,8 @@ func build_event_editor():
 		'symbol_only':true},
 		'!name.is_empty() and mode == 0')
 	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
-	add_header_edit('value', ValueType.FLOAT, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
-	add_header_edit('value', ValueType.COMPLEX_PICKER,
+	add_header_edit('value', ValueType.NUMBER, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
+	add_header_edit('value', ValueType.DYNAMIC_OPTIONS,
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'},
 			'!name.is_empty() and _value_type == 2 and mode == 0')
 

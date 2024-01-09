@@ -9,7 +9,7 @@ extends DialogicVisualEditorField
 @export var file_filter := ""
 @export var placeholder := ""
 @export var file_mode : EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
-@export var resource_icon:Texture = null:
+var resource_icon:Texture:
 	get:
 		return resource_icon
 	set(new_icon):
@@ -48,6 +48,7 @@ func _load_display_info(info:Dictionary) -> void:
 	file_filter = info.get('file_filter', '')
 	placeholder = info.get('placeholder', '')
 	resource_icon = info.get('icon', null)
+	await ready
 	if resource_icon == null and info.has('editor_icon'):
 		resource_icon = callv('get_theme_icon', info.editor_icon)
 

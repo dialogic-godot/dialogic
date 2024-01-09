@@ -146,25 +146,22 @@ func set_indent(indent: int) -> void:
 ################################################################################
 
 var FIELD_SCENES := {
-	DialogicEvent.ValueType.MULTILINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_multiline_text.tscn",
-	DialogicEvent.ValueType.SINGLELINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_singleline_text.tscn",
-	DialogicEvent.ValueType.BOOL: 				"res://addons/dialogic/Editor/Events/Fields/Bool.tscn",
-	DialogicEvent.ValueType.BOOL_BUTTON: 		"res://addons/dialogic/Editor/Events/Fields/BoolButton.tscn",
-	DialogicEvent.ValueType.FILE: 				"res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn",
-	DialogicEvent.ValueType.ARRAY: 				"res://addons/dialogic/Editor/Events/Fields/Array.tscn",
-	DialogicEvent.ValueType.COMPLEX_PICKER: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.INTEGER: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.FLOAT: 				"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.FIXED_OPTIONS	: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.CONDITION: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.DECIBEL: 			"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
-	DialogicEvent.ValueType.KEY_VALUE_PAIRS: 	"res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn",
+	DialogicEvent.ValueType.MULTILINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_text_multiline.tscn",
+	DialogicEvent.ValueType.SINGLELINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_text_singleline.tscn",
+	DialogicEvent.ValueType.FILE: 				"res://addons/dialogic/Editor/Events/Fields/field_file.tscn",
+	DialogicEvent.ValueType.BOOL: 				"res://addons/dialogic/Editor/Events/Fields/field_bool_check.tscn",
+	DialogicEvent.ValueType.BOOL_BUTTON: 		"res://addons/dialogic/Editor/Events/Fields/field_bool_button.tscn",
+	DialogicEvent.ValueType.CONDITION: 			"res://addons/dialogic/Editor/Events/Fields/field_condition.tscn",
+	DialogicEvent.ValueType.ARRAY: 				"res://addons/dialogic/Editor/Events/Fields/field_array.tscn",
+	DialogicEvent.ValueType.DICTIONARY: 		"res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn",
+	DialogicEvent.ValueType.DYNAMIC_OPTIONS: 	"res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn",
+	DialogicEvent.ValueType.FIXED_OPTIONS	: 	"res://addons/dialogic/Editor/Events/Fields/field_options_fixed.tscn",
+	DialogicEvent.ValueType.NUMBER: 			"res://addons/dialogic/Editor/Events/Fields/field_number.tscn",
+	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn",
 	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 	var current_body_container: HFlowContainer = null
-
 	if build_body and body_was_build:
 		build_body = false
 
@@ -201,72 +198,14 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		elif p.field_type in FIELD_SCENES:
 			editor_node = load(FIELD_SCENES[p.field_type]).instantiate()
 
-
-		#elif p.dialogic_type == resource.ValueType.MULTILINE_TEXT:
-			#editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
-		#elif p.dialogic_type == resource.ValueType.SINGLELINE_TEXT:
-			#editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
-
-		elif p.dialogic_type == resource.ValueType.BOOL:
-
-			#else:
-				#editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
-		elif p.dialogic_type == resource.ValueType.FILE:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
-
-		elif p.dialogic_type == resource.ValueType.CONDITION:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ConditionPicker.tscn").instantiate()
-
-		## Complex Picker
-		elif p.dialogic_type == resource.ValueType.COMPLEX_PICKER:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instantiate()
-
-			editor_node.file_extension = p.display_info.get('file_extension', '')
-			editor_node.collapse_when_empty = p.display_info.get('collapse_when_empty', false)
-			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)
-			editor_node.empty_text = p.display_info.get('empty_text', '')
-			editor_node.placeholder_text = p.display_info.get('placeholder', 'Select Resource')
-			editor_node.resource_icon = p.display_info.get('icon', null)
-			editor_node.enable_pretty_name = p.display_info.get('enable_pretty_name', false)
-			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
-				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
-
-		## INTEGERS
-		elif p.dialogic_type == resource.ValueType.INTEGER:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
-			editor_node.use_int_mode()
-			editor_node.max = p.display_info.get('max', 9999)
-			editor_node.min = p.display_info.get('min', -9999)
-		elif p.dialogic_type == resource.ValueType.FLOAT:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
-			editor_node.use_float_mode()
-			editor_node.max = p.display_info.get('max', 9999)
-			editor_node.min = p.display_info.get('min', 0)
-		elif p.dialogic_type == resource.ValueType.DECIBEL:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
-			editor_node.use_decibel_mode()
-		elif p.dialogic_type == resource.ValueType.FIXED_OPTIONS:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instantiate()
-			editor_node.options = p.display_info.get('selector_options', [])
-			editor_node.disabled = p.display_info.get('disabled', false)
-			editor_node.symbol_only = p.display_info.get('symbol_only', false)
-
-		elif p.dialogic_type == resource.ValueType.VECTOR2:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
-
-		elif p.dialogic_type == resource.ValueType.ARRAY:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
-
-		elif p.dialogic_type == resource.ValueType.KEY_VALUE_PAIRS:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/KeyValuePairs.tscn").instantiate()
-
-		elif p.dialogic_type == resource.ValueType.LABEL:
+		elif p.field_type == resource.ValueType.LABEL:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			editor_node.set('custom_colors/font_color', Color("#7b7b7b"))
 			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
-		elif p.dialogic_type == resource.ValueType.BUTTON:
+
+		elif p.field_type == resource.ValueType.BUTTON:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
 			if typeof(p.display_info.icon) == TYPE_ARRAY:
@@ -276,8 +215,9 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.flat = true
 			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
 			editor_node.pressed.connect(p.display_info.callable)
+
 		## CUSTOM
-		elif p.dialogic_type == resource.ValueType.CUSTOM:
+		elif p.field_type == resource.ValueType.CUSTOM:
 			if p.display_info.has('path'):
 				editor_node = load(p.display_info.path).instantiate()
 
@@ -287,16 +227,10 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.text = p.name
 			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 
-		### --------------------------------------------------------------------
-		### 2. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
-		var location: Control = %HeaderContent
-		if p.location == 1:
-			location = current_body_container
-		location.add_child(editor_node)
 
-		### --------------------------------------------------------------------
-		### 3. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
 		field_list[-1]['node'] = editor_node
+		### --------------------------------------------------------------------
+		# Some things need to be called BEFORE the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
 			editor_node.event_resource = resource
 
@@ -305,6 +239,13 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 			editor_node._load_display_info(p.display_info)
 
+		var location: Control = %HeaderContent
+		if p.location == 1:
+			location = current_body_container
+		location.add_child(editor_node)
+
+		# Some things need to be called AFTER the field is added to the tree
+		if editor_node is DialogicVisualEditorField:
 			editor_node._set_value(resource.get(p.name))
 
 			editor_node.value_changed.connect(set_property)

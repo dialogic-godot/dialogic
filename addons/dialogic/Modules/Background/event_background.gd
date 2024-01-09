@@ -83,12 +83,12 @@ func build_event_editor():
 			'placeholder': "Default scene",
 			'editor_icon':["PackedScene", "EditorIcons"]})
 	add_body_edit('argument', ValueType.SINGLELINE_TEXT, {'left_text':'Argument:'}, 'scene != ""')
-	add_body_edit("transition", ValueType.COMPLEX_PICKER,
+	add_body_edit("transition", ValueType.DYNAMIC_OPTIONS,
 			{'left_text':'Transition:',
 			'empty_text':'Simple Fade',
 			'suggestions_func':get_transition_suggestions,
 			'editor_icon':["PopupMenu", "EditorIcons"]})
-	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade Time:'})
+	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade Time:'})
 
 
 func get_transition_suggestions(filter:String="") -> Dictionary:

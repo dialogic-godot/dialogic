@@ -27,5 +27,9 @@ func _autofocus() -> void:
 #endregion
 
 
+func set_value(value:Variant) -> void:
+	_set_value(value)
+
+
 func take_autofocus() -> void:
 	_autofocus()

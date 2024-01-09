@@ -1,17 +1,32 @@
 @tool
-extends Control
+extends DialogicVisualEditorField
 
 ## Event block field for displaying conditions in either a simple or complex way.
-
-signal value_changed
-var property_name : String
-var event_resource : DialogicEvent = null
 
 var _current_value1 :Variant = ""
 var _current_value2 :Variant = ""
 
-func _ready() -> void:
 
+#region MAIN METHODS
+################################################################################
+
+func _set_value(value:Variant) -> void:
+	var too_complex := is_too_complex(value)
+	%ToggleComplex.disabled = too_complex
+	%ToggleComplex.button_pressed = too_complex
+	%ComplexEditor.visible = too_complex
+	%SimpleEditor.visible = !too_complex
+	%ComplexEditor.text = value
+	if not too_complex:
+		load_simple_editor(value)
+
+
+func _autofocus():
+	%Value1Variable.grab_focus()
+
+#endregion
+
+func _ready() -> void:
 	for i in [%Value1Type, %Value2Type]:
 		i.options = [{
 				'label': 'String',
@@ -61,16 +76,6 @@ func _ready() -> void:
 		{'label': '!=', 'value': '!='}
 	]
 
-
-func set_value(value:String) -> void:
-	var too_complex := is_too_complex(value)
-	%ToggleComplex.disabled = too_complex
-	%ToggleComplex.button_pressed = too_complex
-	%ComplexEditor.visible = too_complex
-	%SimpleEditor.visible = !too_complex
-	%ComplexEditor.text = value
-	if not too_complex:
-		load_simple_editor(value)
 
 
 func load_simple_editor(condition_string:String) -> void:
