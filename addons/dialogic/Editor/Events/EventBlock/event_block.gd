@@ -373,8 +373,6 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 			popup.current_event = self
 			popup.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 			if resource.help_page_path == "":
-				popup.set_item_disabled(0, true)
+				popup.set_item_disabled(2, true)
 			else:
-				popup.set_item_disabled(0, false)
-
-#endregion
+				popup.set_item_disabled(2, false)
