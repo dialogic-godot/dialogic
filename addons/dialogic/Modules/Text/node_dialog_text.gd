@@ -8,21 +8,21 @@ signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
 enum Alignment {LEFT, CENTER, RIGHT}
 
-@export var enabled : bool = true
-@export var alignment : Alignment = Alignment.LEFT
-@export var textbox_root : CanvasItem = self
+@export var enabled := true
+@export var alignment := Alignment.LEFT
+@export var textbox_root : Node = self
 
-@export var hide_when_empty : bool = false
-@export var start_hidden : bool = true
+@export var hide_when_empty := false
+@export var start_hidden := true
 
-var revealing : bool = false
-var base_visible_characters : int = 0
+var revealing := false
+var base_visible_characters := 0
 # time per character
 var lspeed:float = 0.01
 var speed_counter:float = 0
 
 
-func _set(property : StringName, what : Variant) -> bool:
+func _set(property:StringName, what:Variant) -> bool:
 	if property == &'text' and typeof(what) == TYPE_STRING:
 		text = what
 		if hide_when_empty:
@@ -45,7 +45,7 @@ func _ready() -> void:
 
 
 # this is called by the DialogicGameHandler to set text
-func reveal_text(_text:String, keep_previous: bool =false) -> void:
+func reveal_text(_text:String, keep_previous:bool=false) -> void:
 	if !enabled:
 		return
 	show()

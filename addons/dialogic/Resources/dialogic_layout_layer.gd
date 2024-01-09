@@ -6,14 +6,14 @@ extends Node
 
 @export_group('Layer')
 @export_subgroup('Disabled')
-@export var disabled : bool = false
+@export var disabled := false
 
 ## This is turned on automatically when the layout is realized [br] [br]
 ## Turn it off, if you want to modify the settings of the nodes yourself.
 @export_group('Private')
-@export var apply_overrides_on_ready : bool = false
+@export var apply_overrides_on_ready := false
 
-var this_folder: String = (get_script() as Resource).resource_path.get_base_dir()
+var this_folder: String = get_script().resource_path.get_base_dir()
 
 func _ready() -> void:
 	if apply_overrides_on_ready and not Engine.is_editor_hint():
@@ -29,11 +29,11 @@ func _apply_export_overrides() -> void:
 func apply_export_overrides() -> void:
 	if disabled:
 		if "visible" in self:
-			set(&'visible', false)
+			set('visible', false)
 		process_mode = Node.PROCESS_MODE_DISABLED
 	else:
 		if "visible" in self:
-			set(&'visible', true)
+			set('visible', true)
 		process_mode = Node.PROCESS_MODE_INHERIT
 
 	_apply_export_overrides()
@@ -41,4 +41,4 @@ func apply_export_overrides() -> void:
 
 ## Use this to get potential global settings.
 func get_global_setting(setting_name:StringName, default:Variant) -> Variant:
-	return (get_parent() as DialogicLayoutBase).get_global_setting(setting_name, default)
+	return get_parent().get_global_setting(setting_name, default)

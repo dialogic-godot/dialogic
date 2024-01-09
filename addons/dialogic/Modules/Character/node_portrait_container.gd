@@ -9,17 +9,17 @@ enum PositionModes {
 	SPEAKER,  ## This container has no index and is joined/left automatically based on the speaker.
 	}
 
-@export var mode : PositionModes = PositionModes.POSITION
+@export var mode := PositionModes.POSITION
 
 @export_subgroup('Mode: Position')
 ## The position this node corresponds to.
-@export var position_index : int = 0
+@export var position_index := 0
 
 
 @export_subgroup('Mode: Speaker')
 ## Can be used to use a different portrait.
 ## E.g. "Faces/" would mean instead of "happy" it will use portrait "Faces/happy"
-@export var portrait_prefix : String = ''
+@export var portrait_prefix := ''
 
 @export_subgroup('Portrait Placement')
 enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
@@ -30,7 +30,7 @@ enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 		_update_debug_portrait_size_position()
 
 ## If true, portraits will be mirrored in this position.
-@export var mirrored : bool = false :
+@export var mirrored := false :
 	set(mirror):
 		mirrored = mirror
 		_update_debug_portrait_scene()
@@ -45,7 +45,7 @@ enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_
 		_update_debug_origin()
 
 ## An offset to apply to the origin. Rarely useful.
-@export var origin_offset : Vector2 = Vector2() :
+@export var origin_offset := Vector2() :
 	set(offset):
 		origin_offset = offset
 		_update_debug_origin()
@@ -65,12 +65,12 @@ enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_
 var debug_character_holder_node :Node2D = null
 var debug_character_scene_node : Node = null
 var debug_origin : Sprite2D = null
-var default_portrait_scene : String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
+var default_portrait_scene :String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
 # Used if no debug character is specified
-var default_debug_character : Resource = load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
+var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
 
 
-func _ready() -> void:
+func _ready():
 	match mode:
 		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
@@ -80,7 +80,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		resized.connect(_update_debug_origin)
 
-		if ProjectSettings.get_setting('dialogic/portraits/default_portrait', '') != "":
+		if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
 			default_portrait_scene = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
 
 		debug_origin = Sprite2D.new()
@@ -97,13 +97,13 @@ func _ready() -> void:
 ##						MAIN METHODS
 ################################################################################
 
-func update_portrait_transforms() -> void:
-	for child : Node in get_children():
+func update_portrait_transforms():
+	for child in get_children():
 		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
 
 ## Returns a Rect2 with the position as the position and the scale as the size.
-func get_local_portrait_transform(portrait_rect:Rect2, character_scale: float =1.0) -> Rect2:
-	var transform : Rect2 = Rect2()
+func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> Rect2:
+	var transform := Rect2()
 	transform.position = _get_origin_position()
 
 	# Mode that ignores the containers size

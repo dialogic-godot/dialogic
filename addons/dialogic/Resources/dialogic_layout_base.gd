@@ -5,18 +5,18 @@ extends Node
 ## Base class that should be extended by custom layouts.
 
 
-func add_layer(dialogic_layer:DialogicLayoutLayer) -> DialogicLayoutLayer:
-	add_child(dialogic_layer)
-	return dialogic_layer
+func add_layer(layer:DialogicLayoutLayer) -> Node:
+	add_child(layer)
+	return layer
 
 
-func get_layer(index:int) -> DialogicLayoutLayer:
+func get_layer(index:int) -> Node:
 	return get_child(index)
 
 
-func get_layers() -> Array[DialogicLayoutLayer]:
-	var layers : Array[DialogicLayoutLayer] = []
-	for child : Node in get_children():
+func get_layers() -> Array:
+	var layers := []
+	for child in get_children():
 		if child is DialogicLayoutLayer:
 			layers.append(child)
 	return layers
@@ -24,9 +24,9 @@ func get_layers() -> Array[DialogicLayoutLayer]:
 
 func appply_export_overrides() -> void:
 	_apply_export_overrides()
-	for child : Node in get_children():
+	for child in get_children():
 		if child.has_method('_apply_export_overrides'):
-			child.call('_apply_export_overrides')
+			child._apply_export_overrides()
 
 
 func _apply_export_overrides() -> void:

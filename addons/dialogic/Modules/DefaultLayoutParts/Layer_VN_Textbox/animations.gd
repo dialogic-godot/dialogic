@@ -43,8 +43,8 @@ func _on_textbox_show() -> void:
 			play("textbox_pop")
 		AnimationsIn.FADE_UP:
 			play("textbox_fade_up")
-	if not animation_finished.is_connected(animation_system.animation_finished):
-		var _error : int = animation_finished.connect(animation_system.animation_finished, CONNECT_ONE_SHOT)
+	if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+		var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
 
 
 func _on_textbox_hide() -> void:
@@ -59,8 +59,8 @@ func _on_textbox_hide() -> void:
 		AnimationsOut.FADE_DOWN:
 			play_backwards("textbox_fade_up")
 
-	if not animation_finished.is_connected(animation_system.animation_finished):
-		var _error : int = animation_finished.connect(animation_system.animation_finished, CONNECT_ONE_SHOT)
+	if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+		var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
 
 
 func _on_about_to_show_text(info:Dictionary) -> void:
@@ -68,7 +68,9 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text() -> void:
-	if DialogicUtil.autoload().get(&'Input').get(&'auto_skip').get(&'enabled'):
+	var input_system: Node = DialogicUtil.autoload().get(&'Input')
+	var auto_skip: DialogicAutoAdvance = input_system.get(&'auto_skip')
+	if auto_skip.get(&'enabled'):
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:
@@ -82,5 +84,5 @@ func _on_textbox_new_text() -> void:
 		AnimationsNewText.WIGGLE:
 			play("new_text")
 
-	if not animation_finished.is_connected(animation_system.animation_finished):
-		var _error : int = animation_finished.connect(animation_system.animation_finished, CONNECT_ONE_SHOT)
+			if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+				var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
