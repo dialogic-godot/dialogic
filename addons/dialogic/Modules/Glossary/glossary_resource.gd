@@ -166,7 +166,7 @@ func _add_entry(entry: Dictionary) -> void:
 	entries.append(entry)
 	var highest_new_index := _entry_keys.size() - 1
 
-	for alternative: String in entry[ALTERNATIVE_PROPERTY]:
+	for alternative: String in entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, []):
 		_entry_keys[alternative] = highest_new_index
 
 	_entry_keys[entry_key] = highest_new_index
