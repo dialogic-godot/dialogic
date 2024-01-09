@@ -83,7 +83,7 @@ func _find_entry_index_by_key(entry_key: String) -> int:
 			var entry: Dictionary = entries[i]
 
 			if (entry[NAME_PROPERTY] == entry_key
-			or entry_key in entry[ALTERNATIVE_PROPERTY]):
+			or entry_key in entry.get(ALTERNATIVE_PROPERTY, [])):
 				return i
 
 		return _MISSING_ENTRY_INDEX
