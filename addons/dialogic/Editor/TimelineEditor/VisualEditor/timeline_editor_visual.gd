@@ -332,36 +332,36 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 		if event_resource['event_node_as_text'] != "":
 			event_resource._load_from_string(event_resource['event_node_as_text'])
 
-	var piece :Control = event_node.instantiate()
-	piece.resource = event_resource
-	event_resource._editor_node = piece
+	var block: Control = event_node.instantiate()
+	block.resource = event_resource
+	event_resource._editor_node = block
 	event_resource._enter_visual_editor(timeline_editor)
-	piece.content_changed.connect(something_changed)
+	block.content_changed.connect(something_changed)
 
 	if event_resource.event_name == "Label":
-		piece.content_changed.connect(update_content_list)
+		block.content_changed.connect(update_content_list)
 	if at_index == -1:
 		if len(selected_items) != 0:
-			selected_items[0].add_sibling(piece)
+			selected_items[0].add_sibling(block)
 		else:
-			%Timeline.add_child(piece)
+			%Timeline.add_child(block)
 	else:
-		%Timeline.add_child(piece)
-		%Timeline.move_child(piece, at_index)
+		%Timeline.add_child(block)
+		%Timeline.move_child(block, at_index)
 
-	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
+	block.gui_input.connect(_on_event_block_gui_input.bind(block))
 
 	# Building editing part
-	piece.build_editor(true, event_resource.expand_by_default)
+	block.build_editor(true, event_resource.expand_by_default)
 
 	if auto_select:
-		select_item(piece, false)
+		select_item(block, false)
 
 	# Indent on create
 	if indent:
 		indent_events()
 
-	return piece
+	return block
 
 
 func create_end_branch_event(at_index:int, parent_node:Node) -> Node:
@@ -828,54 +828,54 @@ func indent_events() -> void:
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
 
-	for event in event_list:
-		if (not "resource" in event):
+	for block in event_list:
+		if (not "resource" in block):
 			continue
 
-		if (not currently_hidden) and event.resource.can_contain_events and event.end_node and event.collapsed:
+		if (not currently_hidden) and block.resource.can_contain_events and block.end_node and block.collapsed:
 			currently_hidden = true
-			hidden_until = event.end_node
+			hidden_until = block.end_node
 			hidden_count = 0
-		elif currently_hidden and event == hidden_until:
-			event.update_hidden_events_indicator(hidden_count)
+		elif currently_hidden and block == hidden_until:
+			block.update_hidden_events_indicator(hidden_count)
 			currently_hidden = false
 			hidden_until = null
 		elif currently_hidden:
-			event.hide()
+			block.hide()
 			hidden_count += 1
 		else:
-			event.show()
-			if event.resource is DialogicEndBranchEvent:
-				event.update_hidden_events_indicator(0)
+			block.show()
+			if block.resource is DialogicEndBranchEvent:
+				block.update_hidden_events_indicator(0)
 
 		delayed_indent = 0
 
-		if event.resource.can_contain_events:
+		if block.resource.can_contain_events:
 			delayed_indent = 1
 
-		if event.resource.needs_parent_event:
-			var current_block_above := get_block_above(event)
+		if block.resource.needs_parent_event:
+			var current_block_above := get_block_above(block)
 			while current_block_above != null and current_block_above.resource is DialogicEndBranchEvent:
-				if current_block_above.parent_node == event:
+				if current_block_above.parent_node == block:
 					break
 				current_block_above = get_block_above(current_block_above.parent_node)
 
-			if current_block_above != null and event.resource.is_expected_parent_event(current_block_above.resource):
+			if current_block_above != null and block.resource.is_expected_parent_event(current_block_above.resource):
 				indent += 1
-				event.set_warning()
+				block.set_warning()
 			else:
-				event.set_warning('This event needs a specific parent event!')
+				block.set_warning('This event needs a specific parent event!')
 
-		elif event.resource is DialogicEndBranchEvent:
-			event.parent_node_changed()
+		elif block.resource is DialogicEndBranchEvent:
+			block.parent_node_changed()
 			delayed_indent -= 1
-			if event.parent_node.resource.needs_parent_event:
+			if block.parent_node.resource.needs_parent_event:
 				delayed_indent -= 1
 
 		if indent >= 0:
-			event.set_indent(indent)
+			block.set_indent(indent)
 		else:
-			event.set_indent(0)
+			block.set_indent(0)
 		indent += delayed_indent
 
 	%TimelineArea.queue_redraw()

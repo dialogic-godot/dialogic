@@ -13,7 +13,6 @@ func _get_title() -> String:
 func _ready() -> void:
 	%StyleName.resource_icon = get_theme_icon("PopupMenu", "EditorIcons")
 	%StyleName.get_suggestions_func = get_style_suggestions
-	%StyleName.force_string = true
 
 
 func _load_character(character:DialogicCharacter) -> void:

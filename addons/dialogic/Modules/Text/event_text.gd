@@ -331,12 +331,13 @@ func _enter_visual_editor(editor:DialogicEditor):
 
 
 func build_event_editor():
-	add_header_edit('character_identifier', ValueType.COMPLEX_PICKER,
+	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'file_extension' 	: '.dch',
+			'mode'				: 2,
 			'suggestions_func' 	: get_character_suggestions,
 			'empty_text' 		: '(No one)',
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
+	add_header_edit('portrait', ValueType.DYNAMIC_OPTIONS,
 			{'suggestions_func' : get_portrait_suggestions,
 			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),

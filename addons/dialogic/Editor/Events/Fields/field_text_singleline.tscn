@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0vkcehgjsjy"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_text_singleline.gd" id="1_4vnxv"]
+
+[node name="Field_Text_Singleline" type="LineEdit"]
+offset_right = 1152.0
+offset_bottom = 81.0
+theme_type_variation = &"DialogicEventEdit"
+expand_to_text_length = true
+script = ExtResource("1_4vnxv")
