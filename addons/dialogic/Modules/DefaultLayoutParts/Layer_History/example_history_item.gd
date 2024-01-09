@@ -28,14 +28,3 @@ func load_info(text:String, character:String = "", character_color: Color =Color
 	else:
 		icon_node.show()
 		icon_node.texture = icon
-
-#
-#func prepare_textbox(history_root:Node) -> void:
-	#get_text_box().add_theme_font_override("normal_font", history_root.history_font_normal)
-	#get_name_label().add_theme_font_override("font", history_root.history_font_normal)
-	#get_name_label().add_theme_font_size_override("font_size", history_root.history_font_size)
-	#get_text_box().add_theme_font_override("bold_font", history_root.history_font_bold)
-	#get_text_box().add_theme_font_override("italics_font", history_root.history_font_italics)
-	#get_text_box().add_theme_font_size_override("normal_font_size", history_root.history_font_size)
-	#get_text_box().add_theme_font_size_override("bold_font_size", history_root.history_font_size)
-	#get_text_box().add_theme_font_size_override("italics_font_size", history_root.history_font_size)

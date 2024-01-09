@@ -21,7 +21,7 @@ func _ready() -> void:
 func _highlight():
 	create_tween().tween_property(self, 'modulate', Color.WHITE, 0.15)
 	prev_z_index = DialogicUtil.autoload().Portraits.get_character_info(character).get('z_index', 0)
-	DialogicUtil.autoload().Portraits.change_character_z_index(character, 10)
+	DialogicUtil.autoload().Portraits.change_character_z_index(character, 99)
 
 
 func _unhighlight():

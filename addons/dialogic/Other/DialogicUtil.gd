@@ -377,13 +377,13 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if value != null:
 				input.value = value
 		TYPE_VECTOR2:
-			input = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn").instantiate()
 			input.set_value(value)
 			input.property_name = property_info['name']
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
-				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
+				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
 				input.file_filter = property_info['hint_string']
 				input.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 				if property_info['hint'] == PROPERTY_HINT_DIR:

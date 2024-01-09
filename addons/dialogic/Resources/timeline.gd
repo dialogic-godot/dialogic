@@ -150,7 +150,7 @@ func process() -> void:
 				_events.append(end_event.duplicate())
 		# Add an end event if the indent is the same but the previous was an opener
 		# (so for example choice that is empty)
-		elif prev_was_opener and len(indent) == len(prev_indent):
+		if prev_was_opener and len(indent) <= len(prev_indent):
 			_events.append(end_event.duplicate())
 		prev_indent = indent
 

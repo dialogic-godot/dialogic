@@ -1,25 +1,25 @@
 @tool
-extends HFlowContainer
+extends DialogicVisualEditorField
 
 ## Event block field for editing arrays.
 
-signal value_changed
-var property_name : String
 
-const ArrayValue := "res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn"
+const ArrayValue := "res://addons/dialogic/Editor/Events/Fields/array_part.tscn"
+
 
 func _ready():
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 	%Add.pressed.connect(_on_AddButton_pressed)
 
-func set_value(value:Array) -> void:
+
+func _set_value(value:Variant) -> void:
+	value = value as Array
 	for child in get_children():
 		if child != %Add:
 			child.queue_free()
 
-
 	for item in value:
-		var x :Node= load(ArrayValue).instantiate()
+		var x: Node = load(ArrayValue).instantiate()
 		add_child(x)
 		x.set_value(item)
 		x.value_changed.connect(recalculate_values)
@@ -27,7 +27,7 @@ func set_value(value:Array) -> void:
 
 
 func _on_value_changed(value:Variant) -> void:
-	emit_signal("value_changed", property_name, value)
+	value_changed.emit(property_name, value)
 
 
 func recalculate_values() -> void:

@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp463rpri5j8a"]
+[gd_scene load_steps=8 format=3 uid="uid://7mvxuaulctcq"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/settings_portraits.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_dce78"]
-[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_m06d8"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_file.gd" id="1_0grcf"]
 
-[sub_resource type="Image" id="Image_8p738"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tr837"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wq6bt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6b7on"]
+
+[sub_resource type="Image" id="Image_kg01j"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -14,112 +17,71 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_wre7v"]
-image = SubResource("Image_8p738")
+[sub_resource type="ImageTexture" id="ImageTexture_j8aof"]
+image = SubResource("Image_kg01j")
 
-[node name="Portraits" type="VBoxContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource("2")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_raavq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
 
-[node name="Animations3" type="HBoxContainer" parent="."]
+[node name="Field_File" type="MarginContainer"]
+offset_right = 314.0
+offset_bottom = 40.0
+theme_type_variation = &"DialogicEventEdit"
+script = ExtResource("1_0grcf")
+
+[node name="BG" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"DialogicEventEdit"
+
+[node name="HBox" type="HBoxContainer" parent="BG"]
+layout_mode = 2
+alignment = 2
+
+[node name="Icon" type="TextureRect" parent="BG/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Field" type="LineEdit" parent="BG/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tr837")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wq6bt")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_6b7on")
+expand_to_text_length = true
 
-[node name="Title2" type="Label" parent="Animations3"]
-layout_mode = 2
-theme_type_variation = &"DialogicSettingsSection"
-text = "Default Portrait Scene
-"
-
-[node name="HintTooltip" parent="Animations3" instance=ExtResource("2_dce78")]
-layout_mode = 2
-tooltip_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
-texture = SubResource("ImageTexture_wre7v")
-hint_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
-layout_mode = 2
-text = "Scene"
-
-[node name="CustomPortraitScene" parent="HBoxContainer" instance=ExtResource("3_m06d8")]
+[node name="OpenButton" type="Button" parent="BG/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-file_filter = "*.tscn, *.scn; PortraitScene"
-placeholder = "Default Scene"
+icon = SubResource("ImageTexture_j8aof")
+flat = true
 
-[node name="Animations2" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
-
-[node name="Title2" type="Label" parent="Animations2"]
-layout_mode = 2
-theme_type_variation = &"DialogicSettingsSection"
-text = "Default Animations
-"
-
-[node name="HintTooltip" parent="Animations2" instance=ExtResource("2_dce78")]
-layout_mode = 2
-tooltip_text = "These settings are used for Leave and Join events if no animation is selected."
-texture = SubResource("ImageTexture_wre7v")
-hint_text = "These settings are used for Leave and Join events if no animation is selected."
-
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 2
-columns = 2
-
-[node name="Label3" type="Label" parent="GridContainer"]
-layout_mode = 2
-text = "Join"
-
-[node name="DefaultIn" type="HBoxContainer" parent="GridContainer"]
-layout_mode = 2
-
-[node name="JoinDefault" parent="GridContainer/DefaultIn" instance=ExtResource("3")]
+[node name="ClearButton" type="Button" parent="BG/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+icon = SubResource("ImageTexture_j8aof")
+flat = true
 
-[node name="JoinDefaultLength" type="SpinBox" parent="GridContainer/DefaultIn"]
-unique_name_in_owner = true
+[node name="FocusStyle" type="Panel" parent="."]
+visible = false
 layout_mode = 2
-step = 0.1
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_raavq")
 
-[node name="JoinDefaultWait" type="CheckButton" parent="GridContainer/DefaultIn"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Wait:"
-
-[node name="Label4" type="Label" parent="GridContainer"]
-layout_mode = 2
-text = "Leave"
-
-[node name="DefaultOut" type="HBoxContainer" parent="GridContainer"]
-layout_mode = 2
-
-[node name="LeaveDefault" parent="GridContainer/DefaultOut" instance=ExtResource("3")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="LeaveDefaultLength" type="SpinBox" parent="GridContainer/DefaultOut"]
-unique_name_in_owner = true
-layout_mode = 2
-step = 0.1
-
-[node name="LeaveDefaultWait" type="CheckButton" parent="GridContainer/DefaultOut"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Wait:"
-
-[connection signal="value_changed" from="HBoxContainer/CustomPortraitScene" to="." method="_on_custom_portrait_scene_value_changed"]
-[connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefault" to="." method="_on_JoinDefault_value_changed"]
-[connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefaultLength" to="." method="_on_JoinDefaultLength_value_changed"]
-[connection signal="toggled" from="GridContainer/DefaultIn/JoinDefaultWait" to="." method="_on_JoinDefaultWait_toggled"]
-[connection signal="value_changed" from="GridContainer/DefaultOut/LeaveDefault" to="." method="_on_LeaveDefault_value_changed"]
-[connection signal="value_changed" from="GridContainer/DefaultOut/LeaveDefaultLength" to="." method="_on_LeaveDefaultLength_value_changed"]
-[connection signal="toggled" from="GridContainer/DefaultOut/LeaveDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]
+[connection signal="focus_entered" from="BG/HBox/Field" to="." method="_on_field_focus_entered"]
+[connection signal="focus_exited" from="BG/HBox/Field" to="." method="_on_field_focus_exited"]
+[connection signal="text_submitted" from="BG/HBox/Field" to="." method="_on_file_dialog_selected"]

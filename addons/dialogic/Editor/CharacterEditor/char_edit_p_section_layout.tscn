@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://crke8suvv52c6"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_layout.gd" id="1_76vf2"]
-[ext_resource type="PackedScene" uid="uid://dtimnsj014cu" path="res://addons/dialogic/Editor/Events/Fields/Vector2.tscn" id="2_c8kyi"]
+[ext_resource type="PackedScene" uid="uid://dtimnsj014cu" path="res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn" id="2_c8kyi"]
 
 [node name="Layout" type="HFlowContainer"]
 offset_right = 428.0
