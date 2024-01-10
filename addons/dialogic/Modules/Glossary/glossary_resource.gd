@@ -191,10 +191,21 @@ func set_entry(entry_key: String, entry: Dictionary) -> void:
 		entries[entry_index] = entry
 
 
-## Returns an array of translated words that can trigger the glossary popup.
-## These words may be: The entry key and the alternative words.
+## Returns an array of words that can trigger the glossary popup.
+## This method respects whether translation is enabled or not.
+## The words may be: The entry key and the alternative words.
 func _get_word_options(entry_key: String) -> Array:
 	var word_options: Array = []
+
+	var translation_enabled: bool = ProjectSettings.get_setting("dialogic/translation/enabled", false)
+
+	if not translation_enabled:
+		word_options.append(entry_key)
+
+		for alternative: String in get_entry(entry_key).get(ALTERNATIVE_PROPERTY, []):
+			word_options.append(alternative)
+
+		return word_options
 
 	var translation_entry_key_id: String = get_property_translation_key(entry_key, NAME_PROPERTY)
 
