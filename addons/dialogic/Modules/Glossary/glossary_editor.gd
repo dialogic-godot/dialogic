@@ -32,6 +32,8 @@ func _ready() -> void:
 	%DeleteGlossaryFile.icon = get_theme_icon('Remove', 'EditorIcons')
 	%DeleteGlossaryEntry.icon = get_theme_icon('Remove', 'EditorIcons')
 
+	%DeleteGlossaryFile.pressed.connect(_on_delete_glossary_file_pressed)
+
 	%AddGlossaryEntry.icon = get_theme_icon('Add', 'EditorIcons')
 	%EntrySearch.right_icon = get_theme_icon('Search', 'EditorIcons')
 
@@ -81,6 +83,11 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 	var tooltip_item: String = %GlossaryList.get_item_tooltip(idx)
 
 	if FileAccess.file_exists(tooltip_item):
+		var glossary_item := load(tooltip_item)
+
+		if not glossary_item is DialogicGlossary:
+			return
+
 		current_glossary = load(tooltip_item)
 
 		if not current_glossary is DialogicGlossary:
@@ -138,11 +145,12 @@ func _on_delete_glossary_file_pressed() -> void:
 
 	if not selected_items.is_empty():
 		var list: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
-		var item_to_erase := selected_items[0]
+		var selected_item_index := selected_items[0]
+		list.remove_at(selected_item_index)
 
-		list.erase(item_to_erase)
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
 		ProjectSettings.save()
+
 		_open()
 
 ################################################################################
