@@ -904,7 +904,11 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 			offset_blocks_by_index(selected_items, +1)
 
 	elif index == 8:
-		var events_indexed := get_events_indexed([item])
+		var events_indexed : Dictionary
+		if item in selected_items:
+			events_indexed =  get_events_indexed(selected_items)
+		else:
+			events_indexed =  get_events_indexed([item])
 		TimelineUndoRedo.create_action("[D] Deleting 1 event.")
 		TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))
 		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
