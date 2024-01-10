@@ -30,7 +30,7 @@ func parse_glossary(text: String) -> String:
 	if not enabled:
 		return text
 
-	var def_case_sensitive:bool = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
+	var def_case_sensitive: bool = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
 	var def_color: Color = ProjectSettings.get_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
 	var regex := RegEx.new()
 

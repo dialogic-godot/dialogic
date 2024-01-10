@@ -52,6 +52,15 @@ func _ready() -> void:
 	DialogicUtil.autoload().Text.meta_clicked.connect(_on_dialogic_display_dialog_text_meta_clicked)
 
 
+func _try_translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
+	var tr_key := tr_base.path_join(property)
+	var tr_value := tr(tr_key)
+
+	if tr_key == tr_value:
+		tr_value = fallback_entry.get(property, "")
+
+	return tr_value
+
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 	var glossary: DialogicGlossary = DialogicUtil.autoload().Glossary.find_glossary(meta)
@@ -76,7 +85,10 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 		if entry.is_empty():
 			return
 
-		entry_color = entry.get('color')
+		entry_title = entry.get("title", "")
+		entry_text = entry.get("text", "")
+		entry_extra = entry.get("extra", "")
+		entry_color = entry.get("color")
 
 	else:
 		var translation_key: String = glossary._translation_keys.get(meta)
@@ -88,12 +100,12 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 		var tr_base := translation_key.substr(0, last_slash)
 		print(tr_base)
 
-		entry_title = tr(tr_base.path_join('title'))
-		entry_text = tr(tr_base.path_join('text'))
-		entry_extra = tr(tr_base.path_join('extra'))
-
 		var entry := glossary.get_entry(translation_key)
 		entry_color = entry.get('color')
+
+		entry_title = _try_translate(tr_base, "title", entry)
+		entry_text = _try_translate(tr_base, "text", entry)
+		entry_extra = _try_translate(tr_base, "extra", entry)
 
 	if not entry_color == null:
 		title_color = entry_color
