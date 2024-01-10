@@ -81,7 +81,7 @@ func _refresh() -> void:
 	loading = false
 
 
-func store_changes(_fake_arg := "", _fake_arg2 := "") -> void:
+func store_changes(_fake_arg: Variant, _fake_arg2: Variant) -> void:
 	if loading:
 		return
 
