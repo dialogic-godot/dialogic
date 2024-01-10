@@ -76,7 +76,7 @@ func _open(_argument: Variant = null) -> void:
 ################################################################################
 ##					GLOSSARY LIST
 ################################################################################
-func _on_GlossaryList_item_selected(idx:int) -> void:
+func _on_GlossaryList_item_selected(idx: int) -> void:
 	%EntryList.clear()
 	var tooltip_item: String = %GlossaryList.get_item_tooltip(idx)
 
@@ -201,14 +201,18 @@ func _on_delete_glossary_entry_pressed() -> void:
 	var selected_items: Array = %EntryList.get_selected_items()
 
 	if not selected_items.is_empty():
+		var selected_item_index: int = selected_items[0]
 
 		if not current_glossary == null:
 			current_glossary.erase_entry(current_entry_name)
 			ResourceSaver.save(current_glossary)
 
-			%EntryList.remove_item(selected_items[0])
+			%EntryList.remove_item(selected_item_index)
 			var entries_count: int = %EntryList.item_count
-			%EntryList.select(entries_count - 1)
+
+			if entries_count > 0:
+				var previous_item_index := selected_item_index - 1
+				%EntryList.select(previous_item_index)
 
 
 
