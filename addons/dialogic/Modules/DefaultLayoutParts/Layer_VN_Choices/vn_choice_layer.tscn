@@ -8,7 +8,7 @@
 
 [sub_resource type="AudioStream" id="AudioStream_pe27w"]
 
-[node name="VN_Choice_Layer" type="Control"]
+[node name="VN_ChoiceLayer" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
