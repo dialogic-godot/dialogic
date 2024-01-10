@@ -35,7 +35,10 @@ var speed_multiplier := 1.0
 var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
 
+var _reveal_to_playing_voice := true
+
 var _autopauses := {}
+
 
 ####################################################################################################
 ##					STATE
@@ -83,46 +86,59 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 		text = dialogic.Glossary.parse_glossary(text)
 	return text
 
-
-## Shows the given text on all visible DialogText nodes.
-## Instant can be used to skip all revieling.
-## If additional is true, the previous text will be kept.
-func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
-	update_text_speed()
-	connect_meta_signals()
-
+## When an event updates the text spoken, this can adjust the state of
+## the dialog text box.
+## This method is async.
+func update_text_boxes(text: String, instant: bool = false) -> void:
 	if text.is_empty():
 		await hide_text_boxes(instant)
 	else:
 		await show_text_boxes(instant)
+
 		if !dialogic.current_state_info['text'].is_empty():
 			animation_textbox_new_text.emit()
+
 			if dialogic.Animation.is_animating():
 				await dialogic.Animation.finished
 
+
+## Shows the given text on all visible DialogText nodes.
+## Instant can be used to skip all revieling.
+## If additional is true, the previous text will be kept.
+func update_dialog_text(text: String, instant := false, additional := false) -> String:
+	update_text_speed()
+
+
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 	dialogic.current_state_info['text'] = text
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		connect_meta_signals(text_node)
+
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
+
 			if instant:
 				text_node.text = text
+
 			else:
 				text_node.reveal_text(text, additional)
+
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
+
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
-	# also resets temporary autoadvance and noskip settings:
+	# Reset Auto-Advance temporarily and the No-Skip setting:
 	update_text_speed(-1, false, 1, -1)
-
 	dialogic.Input.auto_advance.enabled_until_next_event = false
 	dialogic.Input.auto_advance.override_delay_for_current_event = -1
 	dialogic.Input.set_manualadvance(true, true)
 	set_text_reveal_skippable(true, true)
+
 	return text
 
 
-func _on_dialog_text_finished():
+func _on_dialog_text_finished() -> void:
 	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
@@ -209,9 +225,32 @@ func hide_next_indicators(_fake_arg = null) -> void:
 		next_indicator.hide()
 
 
-func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_multiplier:float= -1, _user_speed:float=-1) -> void:
+## Sets how fast text will be revealed.
+##
+## [param absolute] will force test to display at the given speed, regardless
+## of the user's text speed setting.
+##
+## [param _speed_multiplier] adjusts the speed of the text, if set to -1,
+## the value won't be updated and the current value will persist.
+##
+## [param _user_speed] adjusts the speed of the text, if set to -1, the
+## project setting 'text_speed' will be used.operator
+##
+## [param sync_to_voice] will sync the text speed to the voice speed, if a
+## voice is playing. For instance, if the voice is playing for four seconds,
+## the text will finish revealing after this time. It's not respecting when
+## the voice is saying a new word or taking a pause.
+## By default, the old value will be used.
+func update_text_speed(letter_speed: float = -1,
+		absolute: bool = false,
+		_speed_multiplier: float = -1,
+		_user_speed: float = -1,
+		reveal_to_playing_voice := _reveal_to_playing_voice
+	) -> void:
+
 	if letter_speed == -1:
 		letter_speed = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
+
 	_pure_letter_speed = letter_speed
 	_letter_speed_absolute = absolute
 
@@ -223,19 +262,22 @@ func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_mu
 	if _user_speed == -1:
 		_user_speed = dialogic.Settings.get_setting('text_speed', 1)
 
+	_reveal_to_playing_voice = reveal_to_playing_voice
+
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		text_node.sync_reveal_to_voice = reveal_to_playing_voice
+
 		if absolute:
 			text_node.lspeed = letter_speed
 		else:
-			text_node.lspeed = letter_speed*_speed_multiplier*_user_speed
-
-
+			text_node.lspeed = letter_speed * _speed_multiplier * _user_speed
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
 	if !dialogic.current_state_info.has('text_reveal_skippable'):
 		dialogic.current_state_info['text_reveal_skippable'] = {'enabled':false, 'temp_enabled':false}
+
 	if temp:
 		dialogic.current_state_info['text_reveal_skippable']['temp_enabled'] = skippable
 	else:
@@ -352,14 +394,15 @@ func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
-func connect_meta_signals() -> void:
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if not text_node.meta_clicked.is_connected(emit_meta_signal):
-			text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
-		if not text_node.meta_hover_started.is_connected(emit_meta_signal):
-			text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
-		if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
-			text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
+func connect_meta_signals(text_node: Node) -> void:
+	if not text_node.meta_clicked.is_connected(emit_meta_signal):
+		text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
+
+	if not text_node.meta_hover_started.is_connected(emit_meta_signal):
+		text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
+
+	if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
+		text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
 
 
 func emit_meta_signal(meta:Variant, sig:String) -> void:
