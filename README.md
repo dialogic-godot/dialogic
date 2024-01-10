@@ -17,6 +17,7 @@
 - [License](#license)
 
 ## Version
+## Alpha 
 Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for Godot 4 and requires at least Godot 4.1.
 
 ![Godot v4.0](https://img.shields.io/badge/Godot-v4.1-%23478cbf)
