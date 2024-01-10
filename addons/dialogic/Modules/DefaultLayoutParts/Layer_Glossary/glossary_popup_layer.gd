@@ -100,7 +100,7 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 		var tr_base := translation_key.substr(0, last_slash)
 		print(tr_base)
 
-		var entry := glossary.get_entry(translation_key)
+		var entry := glossary.get_entry(meta)
 		entry_color = entry.get('color')
 
 		entry_title = _try_translate(tr_base, "title", entry)
