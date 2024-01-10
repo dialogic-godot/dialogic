@@ -20,6 +20,7 @@ var varSubsystemInstalled = false
 var anchorNames = {}
 var prefixCharacters = false
 
+var timelineKeys: Dictionary = {} # dictionary for change_timeline conversion
 
 func _get_title():
 	return 'Converter'
@@ -230,7 +231,23 @@ func _on_begin_pressed():
 	%OutputLog.text += "Please be aware, Godot may take some time on the next project load to reload all of the Characters and Timelines. This is normal, and should only happen the one time."
 
 
+func convertTimelinePrep():
+	for item in timelineFolderBreakdown:
+		var file := FileAccess.open("res://dialogic/timelines/" + item, FileAccess.READ)
+		var fileContent = file.get_as_text()
+		var json_object = JSON.new()
+
+		var error = json_object.parse(fileContent)
+		if error == OK:
+			contents = json_object.get_data()
+			var fileName = contents["metadata"]["name"]
+			timelineKeys[item] = fileName
+		else:
+			%OutputLog.text += "[color=red]There was a problem parsing this file while prepping![/color]\r\n"
+
+
 func convertTimelines():
+	convertTimelinePrep()
 	%OutputLog.text += "Converting timelines: \r\n"
 	for item in timelineFolderBreakdown:
 		var folderPath = timelineFolderBreakdown[item]
@@ -575,9 +592,12 @@ func convertTimelines():
 							#file.store_string(eventLine + "# jump label, just a comment for testing")
 						"dialogic_020":
 							#Change Timeline event
-							# we will need to come back to this one on second pass, since we may not know the new path yet
+							#first pass performed by convertTimelinePrep() for timelineKeys
+							var jumpDictionaryKey = event['change_timeline']
+							if timelineKeys.has(jumpDictionaryKey):
+								file.store_string(eventLine + "jump " + timelineKeys[jumpDictionaryKey] + "/")
 
-							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+							#file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
 							#file.store_string(eventLine + "# jump timeline, just a comment for testing")
 						"dialogic_021":
 							#Change Background event
