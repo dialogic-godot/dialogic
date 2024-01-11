@@ -1,11 +1,10 @@
 @tool
+## Resource used to store glossary entries. Can be saved to disc and used as a glossary.
+## Add/create glossaries fom the glossaries editor
 class_name DialogicGlossary
 extends Resource
 
-## Resource used to store glossary entries. Can be saved to disc and used as a glossary.
-## Add/create glossaries fom the glossaries editor
-
-## Stores all entry information
+## Stores all entries for the glossary.
 @export var entries: Array[Dictionary] = []
 
 ## If false, no entries from this glossary will be shown
@@ -45,13 +44,19 @@ const _MISSING_ENTRY_INDEX := -1
 @export var _translation_keys: Dictionary = {}
 
 ## Private lookup table used to find the correct entry index for a glossary
-## entry name such as "name" or "alternatives".
+## entry key such as "name" or "alternatives".
+## The values correspond to the matching index in [member entries].
+##
+## We cannot use use a dictionary with multiple keys for the [member entries]
+## leading to the same in-memory dictionaries, because when this resource
+## is saved to disk, the dictionary references will turn into duplicates.
 @export var _entry_keys: Dictionary = {}
 
 func __get_property_list() -> Array:
 	return []
 
 
+## Erases an entry key based the given [param entry_key].
 func remove_entry_key(entry_key: String) -> void:
 	_entry_keys.erase(entry_key)
 
@@ -79,11 +84,14 @@ func replace_entry_key(old_entry_key: String, new_entry_key: String) -> void:
 ## This happens when a manipulation of the glossary fails at some point or
 ## the file is corrupted.
 ##
-## Runtime complexity: O(n), where n is the number of entries in this glossary.
+## Runtime complexity:
+## In case where the entry key couldn't be found, the runtime complexity is
+## O(n), where n is the number of entries in this glossary.
 func _find_entry_index_by_key(entry_key: String) -> int:
 	var entry_index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
+	var is_valid := entry_index < entries.size()
 
-	if entry_index == _MISSING_ENTRY_INDEX:
+	if entry_index == _MISSING_ENTRY_INDEX or not is_valid:
 
 		for i in entries.size():
 			var entry: Dictionary = entries[i]
@@ -170,13 +178,12 @@ func add_entry_key_alias(entry_key: String, alias: String) -> bool:
 func _add_entry(entry: Dictionary) -> void:
 	var entry_key: String = entry[NAME_PROPERTY]
 	entries.append(entry)
-	var highest_new_index := _entry_keys.size() - 1
+	var highest_new_index := entries.size() - 1
 
 	for alternative: String in entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, []):
 		_entry_keys[alternative] = highest_new_index
 
 	_entry_keys[entry_key] = highest_new_index
-
 
 ## Adds a glossary entry.
 ## Sets [param entry_key] as valid entry key and [param entry] as
