@@ -18,6 +18,12 @@ const RESOURCE_NAME := "Glossary"
 const NAME_PROPERTY := "name"
 ## Property in a glossary entry. Alternative words for the entry name.
 const ALTERNATIVE_PROPERTY := "alternatives"
+## Property in a glossary entry.
+const TITLE_PROPERTY := "title"
+## Property in a glossary entry.
+const TEXT_PROPERTY := "text"
+## Property in a glossary entry.
+const EXTRA_PROPERTY := "extra"
 ## Property in a glossary entry. The translation ID of the entry.
 ## May be empty if the entry has not been translated yet.
 const TRANSLATION_PROPERTY := "_translation_id"

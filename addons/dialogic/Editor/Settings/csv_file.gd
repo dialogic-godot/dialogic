@@ -211,6 +211,27 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 	)
 
 
+## Returns whether [param value_b] is greater than [param value_a].
+##
+## This method helps to sort glossary entry properties by their importance
+## matching the order in the editor.
+##
+## TODO: Allow Dialogic users to define their own order.
+func _sort_glossary_entry_property_keys(property_key_a: String, property_key_b: String) -> bool:
+	const GLOSSARY_CSV_LINE_ORDER := {
+        DialogicGlossary.NAME_PROPERTY: 0,
+        DialogicGlossary.ALTERNATIVE_PROPERTY: 1,
+        DialogicGlossary.TEXT_PROPERTY: 2,
+        DialogicGlossary.EXTRA_PROPERTY: 3,
+    }
+	const UNKNOWN_PROPERTY_ORDER := 100
+
+	var value_a: int = GLOSSARY_CSV_LINE_ORDER.get(property_key_a, UNKNOWN_PROPERTY_ORDER)
+	var value_b: int = GLOSSARY_CSV_LINE_ORDER.get(property_key_b, UNKNOWN_PROPERTY_ORDER)
+
+	return value_a < value_b
+
+
 ## Collects properties from glossary entries from the given [param glossary] and
 ## adds them to the [member lines].
 func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
@@ -222,7 +243,10 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 		var _glossary_translation_id := glossary.get_set_glossary_translation_id()
 		var entry_translation_id := glossary.get_set_glossary_entry_translation_id(glossary_entry_name)
 
-		for entry_key: String in glossary_entry.keys():
+		var entry_property_keys := glossary_entry.keys().duplicate()
+		entry_property_keys.sort_custom(_sort_glossary_entry_property_keys)
+
+		for entry_key: String in entry_property_keys:
 			# Ignore private keys.
 			if entry_key.begins_with(DialogicGlossary.PRIVATE_PROPERTY_PREFIX):
 				continue
