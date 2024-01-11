@@ -351,8 +351,7 @@ func convertTimelines():
 
 										for i in event['position']:
 											if event['position'][i] == true:
-												#1.x uses positions 0-4, while the default 2.0 scene uses positions 1-5
-												eventLine += str(i.to_int() + 1)
+												eventLine += str(i.to_int())
 
 										if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -392,7 +391,7 @@ func convertTimelines():
 
 													if event['position'][i] == true:
 														positionCheck = true
-														eventLine += str(i.to_int() + 1)
+														eventLine += str(i.to_int())
 
 											if !positionCheck:
 												eventLine += " 0"
