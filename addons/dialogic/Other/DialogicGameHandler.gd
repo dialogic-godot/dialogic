@@ -1,3 +1,4 @@
+class_name DialogicGameHandler
 extends Node
 
 ## Autoload script that allows interacting with all of Dialogics systems:
@@ -82,58 +83,58 @@ var _event_script_cache: Array[DialogicEvent] = []
 # Careful, this section is repopulated automatically at certain moments
 #region SUBSYSTEMS
 
-var Audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd"):
+var audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd"):
 	get: return get_subsystem("Audio")
 
-var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd"):
+var backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd"):
 	get: return get_subsystem("Backgrounds")
 
-var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd"):
+var portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd"):
 	get: return get_subsystem("Portraits")
 
-var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd"):
+var choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd"):
 	get: return get_subsystem("Choices")
 
-var Expression := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd"):
+var expression := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd"):
 	get: return get_subsystem("Expression")
 
-var Animation := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd"):
+var animation := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd"):
 	get: return get_subsystem("Animation")
 
-var Input := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd"):
+var input := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd"):
 	get: return get_subsystem("Input")
 
-var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd"):
+var glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd"):
 	get: return get_subsystem("Glossary")
 
-var History := preload("res://addons/dialogic/Modules/History/subsystem_history.gd"):
+var history := preload("res://addons/dialogic/Modules/History/subsystem_history.gd"):
 	get: return get_subsystem("History")
 
-var Jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd"):
+var jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd"):
 	get: return get_subsystem("Jump")
 
-var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd"):
+var save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd"):
 	get: return get_subsystem("Save")
 
-var Settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd"):
+var settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd"):
 	get: return get_subsystem("Settings")
 
-var Styles := preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd"):
+var styles := preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd"):
 	get: return get_subsystem("Styles")
 
-var Text := preload("res://addons/dialogic/Modules/Text/subsystem_text.gd"):
+var text := preload("res://addons/dialogic/Modules/Text/subsystem_text.gd"):
 	get: return get_subsystem("Text")
 
-var TextInput := preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd"):
+var text_input := preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd"):
 	get: return get_subsystem("TextInput")
 
-var VAR := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd"):
+var variable := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd"):
 	get: return get_subsystem("VAR")
 
-var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd"):
+var voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd"):
 	get: return get_subsystem("Voice")
 
-var Props := preload("res://addons/dialogic_additions/Props/subsystem_props.gd"):
+var props := preload("res://addons/dialogic_additions/Props/subsystem_props.gd"):
 	get: return get_subsystem("Props")
 
 #endregion
