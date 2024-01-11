@@ -47,6 +47,9 @@ func parse_glossary(text: String) -> String:
 
 			var regex_options := glossary.get_set_regex_option(entry_key)
 
+			if regex_options.is_empty():
+				continue
+
 			var pattern: String = '(?<=\\W|^)(?<!\\\\)(?<word>' + regex_options + ')(?!])(?=\\W|$)'
 
 			if entry.get('case_sensitive', def_case_sensitive):
