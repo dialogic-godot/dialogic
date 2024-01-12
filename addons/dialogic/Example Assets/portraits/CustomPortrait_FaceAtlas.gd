@@ -1,5 +1,5 @@
 @tool
-extends Node2D
+extends DialogicPortrait
 
 enum Faces {BASED_ON_PORTRAIT_NAME, NEUTRAL, HAPPY, SAD, JOY, SHOCK, ANGRY}
 
@@ -44,7 +44,7 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 		elif emotion == Faces.SHOCK: $Faces/Shock.show()
 		elif emotion == Faces.ANGRY: $Faces/Anger.show()
 		else: $Faces/Neutral.show()
-	
+
 	$Alien.visible = alien
 
 func _set_mirror(mirror:bool) -> void:
