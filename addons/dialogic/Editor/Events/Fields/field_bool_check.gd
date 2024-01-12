@@ -16,7 +16,7 @@ func _load_display_info(info:Dictionary) -> void:
 func _set_value(value:Variant) -> void:
 	match DialogicUtil.get_variable_value_type(value):
 		DialogicUtil.VarTypes.STRING:
-			self.button_pressed = value and not value == "false"
+			self.button_pressed = value and not value.strip_edges() == "false"
 		_:
 			self.button_pressed = value and true
 #endregion
