@@ -274,6 +274,10 @@ func symbol_lookup(symbol:String, line:int, column:int) -> void:
 	if symbol in shortcode_events.keys():
 		if !shortcode_events[symbol].help_page_path.is_empty():
 			OS.shell_open(shortcode_events[symbol].help_page_path)
+	if symbol in DialogicResourceUtil.get_character_directory():
+		EditorInterface.edit_resource(DialogicResourceUtil.get_resource_from_identifier(symbol, 'dch'))
+	if symbol in DialogicResourceUtil.get_timeline_directory():
+		EditorInterface.edit_resource(DialogicResourceUtil.get_resource_from_identifier(symbol, 'dtl'))
 
 
 # Called to test if a symbol can be clicked
@@ -281,3 +285,8 @@ func symbol_validate(symbol:String, text:CodeEdit) -> void:
 	if symbol in shortcode_events.keys():
 		if !shortcode_events[symbol].help_page_path.is_empty():
 			text.set_symbol_lookup_word_as_valid(true)
+	if symbol in DialogicResourceUtil.get_character_directory():
+		text.set_symbol_lookup_word_as_valid(true)
+	if symbol in DialogicResourceUtil.get_timeline_directory():
+		text.set_symbol_lookup_word_as_valid(true)
+
