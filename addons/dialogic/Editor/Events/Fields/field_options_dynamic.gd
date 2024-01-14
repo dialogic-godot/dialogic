@@ -12,9 +12,9 @@ enum Modes {PURE_STRING, PRETTY_PATH, IDENTIFIER}
 @export var fit_text_length := true
 var collapse_when_empty := false
 var valid_file_drop_extension := ""
-var get_suggestions_func : Callable
+var get_suggestions_func: Callable
 
-var resource_icon : Texture = null:
+var resource_icon: Texture = null:
 	get:
 		return resource_icon
 	set(new_icon):
@@ -43,6 +43,7 @@ func _set_value(value:Variant, text:String = '') -> void:
 
 	%Search.visible = not collapse_when_empty or value
 	current_value = str(value)
+
 
 
 func _load_display_info(info:Dictionary) -> void:
@@ -114,8 +115,8 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
-	var line_length:int = 0
-	var idx:int = 0
+	var line_length: int = 0
+	var idx: int = 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
 			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
@@ -132,7 +133,6 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
-		#%Suggestions.position = Vector2()
 		%Suggestions.size.x = max(%Search.size.x, line_length)
 		%Suggestions.size.y = min(%Suggestions.get_item_count()*35*DialogicUtil.get_editor_scale(), 200*DialogicUtil.get_editor_scale())
 
@@ -202,6 +202,16 @@ func _on_search_gui_input(event: InputEvent) -> void:
 			current_selected = wrapi(current_selected-1, 0, %Suggestions.item_count)
 		%Suggestions.select(current_selected)
 		%Suggestions.ensure_current_is_visible()
+
+	if Input.is_key_pressed(KEY_CTRL):
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			if valid_file_drop_extension in [".dch", ".dtl"] and not current_value.is_empty():
+				EditorInterface.edit_resource(DialogicResourceUtil.get_resource_from_identifier(current_value, valid_file_drop_extension))
+
+		if valid_file_drop_extension in [".dch", ".dtl"] and not current_value.is_empty():
+			%Search.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+	else:
+		%Search.mouse_default_cursor_shape = CURSOR_IBEAM
 
 
 func _on_search_focus_entered() -> void:

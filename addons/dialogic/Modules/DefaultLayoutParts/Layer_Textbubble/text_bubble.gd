@@ -1,7 +1,6 @@
 extends Control
+class_name DialogicNode_TextBubble
 
-@onready var tail : Line2D = $Tail
-@onready var bubble : Control = $Background
 var speaker_node : Node = null
 var character : DialogicCharacter = null
 var max_width := 300
@@ -12,6 +11,31 @@ var base_position := Vector2.ZERO
 var base_direction := Vector2(1.0, -1.0).normalized()
 var safe_zone := 50.0
 var padding := Vector2()
+
+
+func get_tail() -> Line2D:
+	return $Tail
+
+
+func get_bubble() -> Control:
+	return $Background
+
+
+func get_choice_container() -> Container:
+	return $DialogText/ChoiceContainer
+
+
+func get_name_label_panel() -> PanelContainer:
+	return $DialogText/NameLabel
+
+
+func get_name_label() -> DialogicNode_NameLabel:
+	return %NameLabel
+
+
+func get_dialog_text() -> DialogicNode_DialogText:
+	return %DialogText
+
 
 func _ready() -> void:
 	scale = Vector2.ZERO
@@ -55,13 +79,13 @@ func _process(delta):
 	var direction_point := Vector2(0, (point_b.y - point_a.y))
 	curve.add_point(point_a, Vector2.ZERO, direction_point * 0.5)
 	curve.add_point(point_b)
-	tail.points = curve.tessellate(5)
-	tail.width = bubble_rect.size.x * 0.15
+	get_tail().points = curve.tessellate(5)
+	get_tail().width = bubble_rect.size.x * 0.15
 
 
 func open() -> void:
 	show()
-	%DialogText.enabled = true
+	get_dialog_text().enabled = true
 	var open_tween := create_tween().set_parallel(true)
 	open_tween.tween_property(self, "scale", Vector2.ONE, 0.1).from(Vector2.ZERO)
 	open_tween.tween_property(self, "modulate:a", 1.0, 0.1).from(0.0)
@@ -69,7 +93,7 @@ func open() -> void:
 
 
 func close() -> void:
-	%DialogText.enabled = false
+	get_dialog_text().enabled = false
 	var close_tween := create_tween().set_parallel(true)
 	close_tween.tween_property(self, "scale", Vector2.ONE * 0.8, 0.1)
 	close_tween.tween_property(self, "modulate:a", 0.0, 0.1)
@@ -78,27 +102,29 @@ func close() -> void:
 
 
 func _on_dialog_text_started_revealing_text():
-	var font :Font = %DialogText.get_theme_font("normal_font")
-	%DialogText.size = font.get_multiline_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, %DialogText.get_theme_font_size("normal_font_size"))
+	var dialog_text : DialogicNode_DialogText = get_dialog_text()
+	var font :Font = dialog_text.get_theme_font("normal_font")
+	dialog_text.size = font.get_multiline_string_size(dialog_text.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, dialog_text.get_theme_font_size("normal_font_size"))
 	if DialogicUtil.autoload().Choices.is_question(DialogicUtil.autoload().current_event_idx):
 		font = $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font('font')
-		%DialogText.size.y += font.get_string_size(%DialogText.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
-	%DialogText.position = -%DialogText.size/2
+		dialog_text.size.y += font.get_string_size(dialog_text.get_parsed_text(), HORIZONTAL_ALIGNMENT_LEFT, max_width, $DialogText/ChoiceContainer/DialogicNode_ChoiceButton.get_theme_font_size("font_size")).y
+	dialog_text.position = -dialog_text.size/2
 
 	_resize_bubble()
 
 
 func _resize_bubble() -> void:
-	var bubble_size :Vector2 = %DialogText.size+(padding*2)
+	var bubble : Control = get_bubble()
+	var bubble_size :Vector2 = get_dialog_text().size+(padding*2)
 	var half_size :Vector2= (bubble_size / 2.0)
-	%DialogText.pivot_offset = half_size
+	get_dialog_text().pivot_offset = half_size
 	bubble.pivot_offset = half_size
 	bubble_rect = Rect2(position, bubble_size * Vector2(1.1, 1.1))
 	bubble.size = bubble_size
 	bubble.position = -half_size
 
-	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	t.tween_property(bubble, "scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
+	var t : Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	t.tween_property(bubble, ^"scale", Vector2.ONE, 0.2).from(Vector2.ZERO)
 
 	# set bubble's ratio
 	var bubble_ratio := Vector2.ONE
@@ -107,5 +133,5 @@ func _resize_bubble() -> void:
 	else:
 		bubble_ratio.x = bubble_rect.size.x / bubble_rect.size.y
 
-	bubble.material.set("shader_parameter/ratio", bubble_ratio)
+	bubble.material.set(&"shader_parameter/ratio", bubble_ratio)
 
