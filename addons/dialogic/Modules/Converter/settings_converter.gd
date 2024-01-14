@@ -517,27 +517,36 @@ func convertTimelines():
 						"dialogic_012":
 							#If event
 							var valueLookup = "broken variable"
-							if definitionFolderBreakdown.size():
-								valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+							if event.has('definition') and event['definition'] in definitionFolderBreakdown:
+								if definitionFolderBreakdown.size():
+									var definition = definitionFolderBreakdown[event['definition']]
+									if 'path' in definition and 'name' in definition:
+										valueLookup = variableNameConversion( "[" + definition['path'] + definition['name'] + "]")
+									else:
+										# Handle the case where 'path' or 'name' keys are missing
+										%OutputLog.text += "[color=red]Path or name not found in definition[/color]" + "\r\n"
 
-							eventLine += "if "
-							eventLine += valueLookup
-							if event['condition'] != "":
-								eventLine += " " + event['condition']
+								eventLine += "if "
+								eventLine += valueLookup
+								if event['condition'] != "":
+									eventLine += " " + event['condition']
+								else:
+									#default is true, so it may not store it
+									eventLine += " =="
+
+								# weird line due to missing type casts on String in current Godot 4 alpha
+								if event['value'] == str(event['value'].to_int()):
+									eventLine += " " + event['value']
+								else:
+									eventLine += " \"" + event['value'] + "\""
+
+								eventLine += ":"
+								file.store_string(eventLine)
+								#print("if branch node")
+								depth.push_front("condition")
 							else:
-								#default is true, so it may not store it
-								eventLine += " =="
-
-							# weird line due to missing type casts on String in current Godot 4 alpha
-							if event['value'] == str(event['value'].to_int()):
-								eventLine += " " + event['value']
-							else:
-								eventLine += " \"" + event['value'] + "\""
-
-							eventLine += ":"
-							file.store_string(eventLine)
-							#print("if branch node")
-							depth.push_front("condition")
+								# Handle the case where 'definition' key is missing or not in definitionFolderBreakdown
+								%OutputLog.text += "[color=red]Definition not found in event or definitionFolderBreakdown[/color]" + "\r\n"
 
 							#print ("bracnh depth now" + str(depth))
 						"dialogic_013":
