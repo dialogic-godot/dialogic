@@ -24,7 +24,7 @@ var loop: bool = true
 ################################################################################
 
 func _execute() -> void:
-	if not dialogic.Audio.is_music_playing_resource():
+	if not dialogic.Audio.is_music_playing_resource(file_path):
 		dialogic.Audio.update_music(file_path, volume, audio_bus, fade_length, loop)
 
 	finish()
