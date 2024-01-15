@@ -86,10 +86,7 @@ func move_layer(from_index:int, to_index:int) -> void:
 	if not has_layer(from_index) or not has_layer(to_index-1):
 		return
 
-	if from_index < to_index:
-		to_index -1
-
-	var info := layers.pop_at(from_index)
+	var info: Resource = layers.pop_at(from_index)
 	layers.insert(to_index, info)
 	changed.emit()
 
@@ -185,3 +182,12 @@ func clone() -> DialogicStyle:
 		style.add_layer(info.path, info.overrides)
 
 	return style
+
+
+func prepare() -> void:
+	if base_scene:
+		ResourceLoader.load_threaded_request(base_scene.resource_path)
+
+	for layer in layers:
+		if layer.scene:
+			ResourceLoader.load_threaded_request(layer.scene.resource_path)

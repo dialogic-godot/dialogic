@@ -18,7 +18,7 @@ var character : DialogicCharacter = null
 var portrait: String = ""
 ## The index of the position this character should move to
 var position: int = 1
-## Path to an animation script (extending DialogicAnimation).
+## Name of the animation script (extending DialogicAnimation).
 ## On Join/Leave empty (default) will fallback to the animations set in the settings.
 ## On Update empty will mean no animation.
 var animation_name: String = ""
@@ -47,23 +47,19 @@ var set_position := false
 var set_z_index := false
 var set_mirrored := false
 ## Used to set the character resource from the unique name identifier and vice versa
-var _character_from_directory: String:
+var character_identifier: String:
 	get:
-		if _character_from_directory == '--All--':
+		if character_identifier == '--All--':
 			return '--All--'
-		for item in _character_directory.keys():
-			if _character_directory[item]['resource'] == character:
-				return item
-				break
-		return _character_from_directory
+		if character:
+			var identifier := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+			if not identifier.is_empty():
+				return identifier
+		return character_identifier
 	set(value):
-		_character_from_directory = value
-		if value in _character_directory.keys():
-			character = _character_directory[value]['resource']
-		else:
-			character = null
-## Used by [_character_from_directory]
-var _character_directory: Dictionary = {}
+		character_identifier = value
+		character = DialogicResourceUtil.get_character_resource(value)
+
 # Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
 var regex := RegEx.create_from_string("(?<type>join|update|leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
@@ -80,20 +76,23 @@ func _execute() -> void:
 
 				var final_animation_length: float = animation_length
 
-				if Dialogic.Input.auto_skip.enabled:
-					var max_time: float = Dialogic.Input.auto_skip.time_per_event
+				if dialogic.Input.auto_skip.enabled:
+					var max_time: float = dialogic.Input.auto_skip.time_per_event
 					final_animation_length = min(max_time, animation_length)
 
-				await dialogic.Portraits.join_character(character, portrait, position, mirrored, z_index, extra_data, animation_name, final_animation_length, animation_wait)
+				await dialogic.Portraits.join_character(
+					character, portrait, position,
+					mirrored, z_index, extra_data,
+					animation_name, final_animation_length, animation_wait)
 
 		Actions.LEAVE:
 			var final_animation_length: float = animation_length
 
-			if Dialogic.Input.auto_skip.enabled:
-				var max_time: float = Dialogic.Input.auto_skip.time_per_event
+			if dialogic.Input.auto_skip.enabled:
+				var max_time: float = dialogic.Input.auto_skip.time_per_event
 				final_animation_length = min(max_time, animation_length)
 
-			if _character_from_directory == '--All--':
+			if character_identifier == '--All--':
 
 				if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
@@ -132,8 +131,8 @@ func _execute() -> void:
 			if set_position:
 				var final_position_move_time: float = position_move_time
 
-				if Dialogic.Input.auto_skip.enabled:
-					var max_time: float = Dialogic.Input.auto_skip.time_per_event
+				if dialogic.Input.auto_skip.enabled:
+					var max_time: float = dialogic.Input.auto_skip.time_per_event
 					final_position_move_time = min(max_time, position_move_time)
 
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
@@ -142,8 +141,8 @@ func _execute() -> void:
 				var final_animation_length: float = animation_length
 				var final_animation_repitions: int = animation_repeats
 
-				if Dialogic.Input.auto_skip.enabled:
-					var time_per_event: float = Dialogic.Input.auto_skip.time_per_event
+				if dialogic.Input.auto_skip.enabled:
+					var time_per_event: float = dialogic.Input.auto_skip.time_per_event
 					var time_for_repitions: float = time_per_event / animation_repeats
 					final_animation_length = time_for_repitions
 
@@ -155,9 +154,9 @@ func _execute() -> void:
 				)
 
 				if animation_wait:
-					dialogic.current_state = Dialogic.States.ANIMATING
+					dialogic.current_state = DialogicGameHandler.States.ANIMATING
 					await anim.finished
-					dialogic.current_state = Dialogic.States.IDLE
+					dialogic.current_state = DialogicGameHandler.States.IDLE
 
 	finish()
 
@@ -190,15 +189,11 @@ func to_text() -> String:
 
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
-	if character or _character_from_directory == '--All--':
-		if action == Actions.LEAVE and _character_from_directory == '--All--':
+	if character or character_identifier == '--All--':
+		if action == Actions.LEAVE and character_identifier == '--All--':
 			result_string += "--All--"
 		else:
-			var name := ""
-			for path in _character_directory.keys():
-				if _character_directory[path]['resource'] == character:
-					name = path
-					break
+			var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
 			result_string += name
@@ -210,7 +205,7 @@ func to_text() -> String:
 
 	var shortcode := "["
 	if animation_name:
-		shortcode += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
+		shortcode += 'animation="'+animation_name+'"'
 
 		if animation_length != default_values.get('animation_length', 0.5):
 			shortcode += ' length="'+str(animation_length)+'"'
@@ -241,15 +236,10 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	if Engine.is_editor_hint() == false:
-		_character_directory = Dialogic.character_directory
-	else:
-		_character_directory = self.get_meta("editor_character_directory")
+	var character_directory := DialogicResourceUtil.get_character_directory()
 
 	# load default character
-	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
-		if _character_from_directory in _character_directory.keys():
-			character = _character_directory[_character_from_directory]['resource']
+	character = DialogicResourceUtil.get_character_resource(character_identifier)
 
 	var result := regex.search(string)
 
@@ -263,31 +253,11 @@ func from_text(string:String) -> void:
 
 	if result.get_string('name').strip_edges():
 		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
-			_character_from_directory = '--All--'
+			character_identifier = '--All--'
 		else:
 			var name := result.get_string('name').strip_edges()
+			character = DialogicResourceUtil.get_character_resource(name)
 
-			if _character_directory != null and _character_directory.size() > 0:
-				character = null
-				if _character_directory.has(name):
-					character = _character_directory[name]['resource']
-				else:
-					name = name.replace('"', "")
-					# First do a full search to see if more of the path is there then necessary:
-					for character in _character_directory:
-						if name in _character_directory[character]['full_path']:
-							character = _character_directory[character]['resource']
-							break
-
-					# If it doesn't exist, we'll consider it a guest and create a temporary character
-					if character == null:
-						if Engine.is_editor_hint() == false:
-							character = DialogicCharacter.new()
-							character.display_name = name
-							var entry:Dictionary = {}
-							entry['resource'] = character
-							entry['full_path'] = "runtime://" + name
-							Dialogic.character_directory[name] = entry
 
 	if !result.get_string('portrait').is_empty():
 		portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
@@ -300,25 +270,20 @@ func from_text(string:String) -> void:
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		animation_name = shortcode_params.get('animation', '')
-		if animation_name != "":
-			if !animation_name.ends_with('.gd'):
-				animation_name = DialogicUtil.guess_animation_file(animation_name)
-			if !animation_name.ends_with('.gd'):
-				printerr("[Dialogic] Couldn't identify animation '"+animation_name+"'.")
-				animation_name = ""
 
-			var animLength = shortcode_params.get('length', '0.5').to_float()
-			if typeof(animLength) == TYPE_FLOAT:
-				animation_length = animLength
-			else:
-				animation_length = animLength.to_float()
+		var animLength = shortcode_params.get('length', '0.5').to_float()
+		if typeof(animLength) == TYPE_FLOAT:
+			animation_length = animLength
+		else:
+			animation_length = animLength.to_float()
 
-			animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+		animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 
-			#repeat is supported on Update, the other two should not be checking this
-			if action == Actions.UPDATE:
-				animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
-				position_move_time = float(shortcode_params.get('move_time', position_move_time))
+		#repeat is supported on Update, the other two should not be checking this
+		if action == Actions.UPDATE:
+			animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
+			position_move_time = float(shortcode_params.get('move_time', position_move_time))
+
 		#move time is only supported on Update, but it isnt part of the animations so its separate
 		if action == Actions.UPDATE:
 			position_move_time = float(shortcode_params.get('move_time', position_move_time))
@@ -331,10 +296,10 @@ func from_text(string:String) -> void:
 		extra_data = shortcode_params.get('extra_data', "")
 
 
-# this is only here to provide a list of default values
-# this way the module manager can add custom default overrides to this event.
-# this is also why some properties are commented out,
-# because it's not recommended to overwrite them this way
+## this is only here to provide a list of default values
+## this way the module manager can add custom default overrides to this event.
+## this is also why some properties are commented out,
+## because it's not recommended to overwrite them this way
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
@@ -343,7 +308,7 @@ func get_shortcode_parameters() -> Dictionary:
 										{'value':Actions.JOIN},
 										'Leave':{'value':Actions.LEAVE},
 										'Update':{'value':Actions.UPDATE}}},
-		"character" 	: {"property": "_character_from_directory", 	"default": ""},
+		"character" 	: {"property": "character_identifier", 	"default": ""},
 		"portrait" 		: {"property": "portrait", 						"default": ""},
 		"position" 		: {"property": "position", 						"default": 1},
 
@@ -370,8 +335,8 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
-		'selector_options': [
+	add_header_edit('action', ValueType.FIXED_OPTIONS, {
+		'options': [
 			{
 				'label': 'Join',
 				'value': Actions.JOIN,
@@ -389,57 +354,58 @@ func build_event_editor() -> void:
 			}
 		]
 	})
-	add_header_edit('_character_from_directory', ValueType.COMPLEX_PICKER,
+	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'Character',
 			'file_extension' 	: '.dch',
+			'mode'				: 2,
 			'suggestions_func' 	: get_character_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
 			'autofocus'			: true})
-#	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
+#	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and character_identifier != "--All--"')
 
-	add_header_edit('set_portrait', ValueType.BOOL,
+	add_header_edit('set_portrait', ValueType.BOOL_BUTTON,
 			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
 			 'tooltip':'Change Portrait'}, "should_show_portrait_selector() and action == Actions.UPDATE")
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
+	add_header_edit('portrait', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'Default',
 			'collapse_when_empty':true,
 			'suggestions_func' 	: get_portrait_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")},
 			'should_show_portrait_selector() and (action != Actions.UPDATE or set_portrait)')
-	add_header_edit('set_position', ValueType.BOOL,
+	add_header_edit('set_position', ValueType.BOOL_BUTTON,
 			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
 	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
-	add_header_edit('position', ValueType.INTEGER, {},
+	add_header_edit('position', ValueType.NUMBER, {'mode':1},
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
 
 	# Body
-	add_body_edit('animation_name', ValueType.COMPLEX_PICKER,
+	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
 			{'left_text'		: 'Animation:',
 			'suggestions_func' 	: get_animation_suggestions,
 			'editor_icon' 			: ["Animation", "EditorIcons"],
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true},
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.FLOAT, {'left_text':'Length:'},
+	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.INTEGER, {'left_text':'Repeat:'},
+	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
-	add_body_edit('position_move_time', ValueType.FLOAT, {'left_text':'Movement duration:'},
+	add_body_edit('position_move_time', ValueType.NUMBER, {'left_text':'Movement duration:'},
 			'action == %s and set_position' %Actions.UPDATE)
-	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
-	add_body_edit('z_index', ValueType.INTEGER, {'left_text':'Z-index:'},
+	add_body_edit('set_z_index', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z-index:', 'mode':1},
 			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
-	add_body_edit('set_mirrored', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('set_mirrored', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
 
 
 func should_show_animation_options() -> bool:
-	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--'
+	return (character != null and !character.portraits.is_empty()) or character_identifier == '--All--'
 
 func should_show_portrait_selector() -> bool:
 	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
@@ -451,15 +417,15 @@ func has_no_portraits() -> bool:
 func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-	_character_directory = Engine.get_main_loop().get_meta('dialogic_character_directory')
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	var character_directory = DialogicResourceUtil.get_character_directory()
 	if action == Actions.LEAVE:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
-	for resource in _character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
 	return suggestions
 
 
@@ -485,16 +451,8 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 		Actions.UPDATE:
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 
-	match action:
-		Actions.JOIN:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-		Actions.LEAVE:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-		Actions.UPDATE:
-			for anim in DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION):
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+	for anim in DialogicUtil.get_portrait_animation_scripts(action+1):
+		suggestions[DialogicUtil.pretty_name(anim)] = {'value':DialogicUtil.pretty_name(anim), 'editor_icon':["Animation", "EditorIcons"]}
 
 	return suggestions
 

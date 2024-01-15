@@ -23,17 +23,30 @@ var _was_last_event_already_read := false
 signal already_read_event_reached
 signal not_read_event_reached
 
+
+signal open_requested
+signal close_requested
+
 ####################################################################################################
 ##					INITIALIZE
 ####################################################################################################
 
 func _ready() -> void:
-	Dialogic.event_handled.connect(store_full_event)
-	Dialogic.event_handled.connect(check_already_read)
+	dialogic.event_handled.connect(store_full_event)
+	dialogic.event_handled.connect(check_already_read)
 
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
 	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
+
+
+
+func open_history() -> void:
+	open_requested.emit()
+
+
+func close_history() -> void:
+	close_requested.emit()
 
 
 ####################################################################################################
@@ -77,8 +90,8 @@ func store_full_event(event:DialogicEvent) -> void:
 ## Takes the current timeline event and creates a unique key for it.
 ## Uses the timeline resource path as well.
 func _current_event_key() -> String:
-	var resource_path = Dialogic.current_timeline.resource_path
-	var event_idx = str(Dialogic.current_event_idx)
+	var resource_path = dialogic.current_timeline.resource_path
+	var event_idx = str(dialogic.current_event_idx)
 	var event_key = resource_path+event_idx
 
 	return event_key
@@ -90,7 +103,7 @@ func event_was_read(_event: DialogicEvent) -> void:
 
 	var event_key = _current_event_key()
 
-	already_read_history_content[event_key] = Dialogic.current_event_idx
+	already_read_history_content[event_key] = dialogic.current_event_idx
 
 # Called on each event, but we filter for Text events.
 func check_already_read(event: DialogicEvent) -> void:

@@ -1,0 +1,115 @@
+name: unit-test
+run-name: ${{ github.head_ref || github.ref_name }}-unit-test
+
+on:
+  push:
+
+    paths-ignore:
+        - '**.yml'
+        - '**.md'
+
+  pull_request:
+
+  workflow_dispatch:
+
+concurrency:
+  group: unit-test${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  unit-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        # Insert here the Godot version you want to run your tests with.
+        godot-version: ['4.2.1']
+
+    name: "CI Unit Test v${{ matrix.godot-version }}"
+    runs-on: 'ubuntu-22.04'
+    # The overall timeout.
+    timeout-minutes: 10
+
+    steps:
+      - name: "Checkout your Repository"
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: "Download and Install Godot ${{ matrix.godot-version }}"
+        continue-on-error: false
+        shell: bash
+        run: |
+          GODOT_HOME=$HOME/bin
+          GODOT_BIN=$GODOT_HOME/godot
+          mkdir -p $GODOT_HOME
+          chmod 770 $GODOT_HOME
+          GODOT_CONF_PATH=$HOME/.config/godot
+          if [ ! -d $GODOT_CONF_PATH ]; then
+            mkdir -p $GODOT_CONF_PATH
+            chmod 770 $GODOT_CONF_PATH
+          fi
+
+          GODOT_PACKAGE=Godot_v${{ matrix.godot-version }}-stable_linux.x86_64
+          wget https://github.com/godotengine/godot/releases/download/${{ matrix.godot-version }}-stable/$GODOT_PACKAGE.zip -P ${{ runner.temp }}
+          unzip ${{ runner.temp }}/$GODOT_PACKAGE.zip -d $GODOT_HOME
+          mv $GODOT_HOME/$GODOT_PACKAGE $GODOT_BIN
+          chmod u+x $GODOT_BIN
+          echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: "Copy `project.godot`"
+        run: cp .github/workflows/resources/project.godot .
+
+      - name: "Clone the gdUnit4 repository"
+        run: |
+            git clone --branch v4.2.0 --single-branch https://github.com/MikeSchulze/gdUnit4
+            rsync -av gdUnit4/addons/ ./addons/
+            rm -rf ./gdUnit4
+
+      - name: Print Directory Structure
+        run: |
+            ls -R
+
+      # We need to update the project before running tests, Godot has actually issues with loading the plugin.
+      - name: "Update Project"
+        if: ${{ !cancelled() }}
+        timeout-minutes: 1
+        # We still ignore the timeout, the script is not quit and we run into a timeout.
+        continue-on-error: true
+        shell: bash
+        run: |
+          xvfb-run --auto-servernum  ${{ env.GODOT_BIN }} -e --path . -s res://addons/gdUnit4/bin/ProjectScanner.gd --headless --audio-driver Dummy
+
+      - name: "Run Unit Tests"
+        if: ${{ !cancelled() }}
+        # Set your expected test timeout.
+        timeout-minutes: 8
+        env:
+          GODOT_BIN: ${{ env.GODOT_BIN }}
+        shell: bash
+        run: |
+          chmod +x ./addons/gdUnit4/runtest.sh
+          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://addons/dialogic/Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+
+      - name: "Upload Unit Test Reports"
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: "godot-version"
+          path: |
+            reports/**
+            /var/lib/systemd/coredump/**
+            /var/log/syslog
+
+  finalize:
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    name: Final Results
+    needs: [unit-test]
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+              contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+          }}

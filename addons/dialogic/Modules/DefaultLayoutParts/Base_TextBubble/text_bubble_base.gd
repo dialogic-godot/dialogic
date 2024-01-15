@@ -11,7 +11,7 @@ func _ready():
 	if Engine.is_editor_hint():
 		return
 
-	Dialogic.Text.about_to_show_text.connect(_on_dialogic_text_event)
+	DialogicUtil.autoload().Text.about_to_show_text.connect(_on_dialogic_text_event)
 	$Example/ExamplePoint.position = $Example.get_viewport_rect().size/2
 
 	if not has_node('TextBubbleLayer'):

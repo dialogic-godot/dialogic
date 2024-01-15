@@ -4,7 +4,7 @@ extends RichTextLabel
 ## Dialogic node that can reveal text at a given (changeable speed).
 
 signal started_revealing_text()
-signal continued_revealing_text(new_character)
+signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
 enum Alignment {LEFT, CENTER, RIGHT}
 
@@ -22,12 +22,13 @@ var lspeed:float = 0.01
 var speed_counter:float = 0
 
 
-func _set(property, what):
-	if property == 'text' and typeof(what) == TYPE_STRING:
+func _set(property:StringName, what:Variant) -> bool:
+	if property == &'text' and typeof(what) == TYPE_STRING:
 		text = what
 		if hide_when_empty:
-			textbox_root.visible = !what.is_empty()
+			textbox_root.visible = !text.is_empty()
 		return true
+	return false
 
 
 func _ready() -> void:
@@ -44,7 +45,7 @@ func _ready() -> void:
 
 
 # this is called by the DialogicGameHandler to set text
-func reveal_text(_text:String, keep_previous:=false) -> void:
+func reveal_text(_text:String, keep_previous:bool=false) -> void:
 	if !enabled:
 		return
 	show()
@@ -65,7 +66,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 
 		# If Auto-Skip is enabled and we append the text (keep_previous),
 		# we can skip revealing the text and just show it all at once.
-		if Dialogic.Input.auto_skip.enabled:
+		if DialogicUtil.autoload().Input.auto_skip.enabled:
 			visible_characters = 1
 			return
 
@@ -78,7 +79,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 func continue_reveal() -> void:
 	if visible_characters <= get_total_character_count():
 		revealing = false
-		await Dialogic.Text.execute_effects(visible_characters-base_visible_characters, self, false)
+		await DialogicUtil.autoload().Text.execute_effects(visible_characters-base_visible_characters, self, false)
 
 		if visible_characters == -1:
 			return
@@ -91,27 +92,28 @@ func continue_reveal() -> void:
 		finish_text()
 		# if the text finished organically, add a small input block
 		# this prevents accidental skipping when you expected the text to be longer
-		Dialogic.Input.block_input(0.3)
+		# TODO! Make this configurable in the settings!
+		DialogicUtil.autoload().Input.block_input(0.3)
 
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text() -> void:
 	visible_ratio = 1
-	Dialogic.Text.execute_effects(-1, self, true)
+	DialogicUtil.autoload().Text.execute_effects(-1, self, true)
 	revealing = false
-	Dialogic.current_state = Dialogic.States.IDLE
+	DialogicUtil.autoload().current_state = DialogicGameHandler.States.IDLE
 
 	finished_revealing_text.emit()
 
 
 # Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.
 func _process(delta:float) -> void:
-	if !revealing or Dialogic.paused:
+	if !revealing or DialogicUtil.autoload().paused:
 		return
 
 	speed_counter += delta
 
-	while speed_counter > lspeed and revealing and !Dialogic.paused:
+	while speed_counter > lspeed and revealing and !DialogicUtil.autoload().paused:
 		speed_counter -= lspeed
 		continue_reveal()

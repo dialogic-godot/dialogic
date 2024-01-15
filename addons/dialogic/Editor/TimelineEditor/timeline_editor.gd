@@ -33,7 +33,7 @@ func _register() -> void:
 	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
 	if OS.get_name() == "macOS":
 		play_timeline_button.tooltip_text = "Play the current timeline (CTRL+B)"
-	
+
 	%VisualEditor.load_event_buttons()
 
 	current_editor_mode = DialogicUtil.get_editor_setting('timeline_editor_mode', 0)
@@ -70,9 +70,7 @@ func _open_resource(resource:Resource) -> void:
 		1:
 			%TextEditor.load_timeline(current_resource)
 	$NoTimelineScreen.hide()
-	for t in editors_manager.resource_helper.timeline_directory.keys():
-		if editors_manager.resource_helper.timeline_directory[t] == current_resource.resource_path:
-			%TimelineName.text = t
+	%TimelineName.text = DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)
 	play_timeline_button.disabled = false
 
 
@@ -143,7 +141,7 @@ func new_timeline(path:String) -> void:
 	new_timeline.resource_path = path
 	new_timeline.set_meta('timeline_not_saved', true)
 	var err := ResourceSaver.save(new_timeline)
-	editors_manager.resource_helper.rebuild_timeline_directory()
+	DialogicResourceUtil.update_directory('dtl')
 	editors_manager.edit_resource(new_timeline)
 
 

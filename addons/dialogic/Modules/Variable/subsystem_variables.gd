@@ -12,9 +12,9 @@ signal variable_was_set(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	# loading default variables
-	if ! clear_flag & Dialogic.ClearFlags.KEEP_VARIABLES:
+	if ! clear_flag & DialogicGameHandler.ClearFlags.KEEP_VARIABLES:
 		reset()
 
 
@@ -59,7 +59,7 @@ func parse_variables(text:String) -> String:
 
 	var parsed := text.replace('\\{', '{')
 	for result in regex.search_all(text):
-		var value := get_variable(result.get_string('variable'), "<NOT FOUND>")
+		var value: Variant = get_variable(result.get_string('variable'), "<NOT FOUND>")
 		parsed = parsed.replace("{"+result.get_string('variable')+"}", str(value))
 
 	return parsed
@@ -70,7 +70,7 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 
 	# First assume this is a simple dialogic variable
 	if has(variable_name):
-		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value)
+		DialogicUtil._set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value)
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
 
@@ -93,7 +93,7 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 
 	# First assume this is just a single variable
-	var value := _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
+	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
 	if value != null:
 		return value
 
@@ -102,7 +102,6 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 		value = dialogic.Expression.execute_string(variable_path, null)
 		if value != null:
 			return value
-
 
 	# If everything fails, tell the user and return the default
 	printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
@@ -114,38 +113,14 @@ func reset(variable:='') -> void:
 	if variable.is_empty():
 		dialogic.current_state_info['variables'] = ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true)
 	else:
-		_set_value_in_dictionary(variable, dialogic.current_state_info['variables'], _get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
+		DialogicUtil._set_value_in_dictionary(variable, dialogic.current_state_info['variables'], DialogicUtil._get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
 
 
 ## Returns true if a variable with the given path exists
 func has(variable:='') -> bool:
-	return _get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
+	return DialogicUtil._get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
 
 
-## This will set a value in a dictionary (or a sub-dictionary based on the path)
-## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
-	if '.' in path:
-		var from := path.split('.')[0]
-		if from in dictionary.keys():
-			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
-	else:
-		if path in dictionary.keys():
-			dictionary[path] = value
-	return dictionary
-
-
-## This will get a value in a dictionary (or a sub-dictionary based on the path)
-## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
-	if '.' in path:
-		var from := path.split('.')[0]
-		if from in dictionary.keys():
-			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
-	else:
-		if path in dictionary.keys():
-			return dictionary[path]
-	return default
 
 func get_autoloads() -> Array:
 	var autoloads := []

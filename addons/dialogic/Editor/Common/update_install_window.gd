@@ -33,20 +33,37 @@ func load_info(info:Dictionary, update_type:int) -> void:
 		%ShortInfo.text = "Huh, what happened here?"
 		%ReadFull.hide()
 		%Install.disabled = true
+		return
+
+	# If we are up to date (or beyond):
+	if info.is_empty():
+		info['name'] = "You are in the future, Marty!"
+		info["body"] = "# 😎 You are using the WIP branch!\nSeems like you are using a version that isn't even released yet. Be careful and give us your feedback ;)"
+		info["published_at"] = "????T"
+		info["author"] = {'login':"???"}
+		%State.text = "Where are we Doc?"
+		%UpdateName.add_theme_color_override("font_color", editor_view.get_theme_color("property_color_z", "Editor"))
+		%Install.disabled = true
+
+	elif update_type == 0:
+		%State.text = "Update Available!"
+		%UpdateName.add_theme_color_override("font_color", editor_view.get_theme_color("warning_color", "Editor"))
+		%Install.disabled = false
 	else:
-		%UpdateName.text = info.name
-		%Content.text = markdown_to_bbcode('#'+info.body.get_slice('#', 1)).strip_edges()
-		%ShortInfo.text = "Published on "+info.published_at.substr(0, info.published_at.find('T'))+" by "+info.author.login
+		%State.text = "You are up to date:"
+		%UpdateName.add_theme_color_override("font_color", editor_view.get_theme_color("success_color", "Editor"))
+		%Install.disabled = true
+
+	%UpdateName.text = info.name
+	%Content.text = markdown_to_bbcode('#'+info.body.get_slice('#', 1)).strip_edges()
+	%ShortInfo.text = "Published on "+info.published_at.substr(0, info.published_at.find('T'))+" by "+info.author.login
+	if info.has("html_url"):
 		%ReadFull.uri = info.html_url
 		%ReadFull.show()
-		if update_type == 0:
-			%State.text = "Update Available!"
-			%UpdateName.add_theme_color_override("font_color", editor_view.get_theme_color("warning_color", "Editor"))
-			%Install.disabled = false
-		else:
-			%State.text = "You are up to date:"
-			%UpdateName.add_theme_color_override("font_color", editor_view.get_theme_color("success_color", "Editor"))
-			%Install.disabled = true
+	else:
+		%ReadFull.hide()
+	if info.has('reactions'):
+		%Reactions.show()
 		var reactions := {"laugh":"😂", "hooray":"🎉", "confused":"😕", "heart":"❤️", "rocket":"🚀", "eyes":"👀"}
 		for i in reactions:
 			%Reactions.get_node(i.capitalize()).visible = info.reactions[i] > 0
@@ -56,7 +73,8 @@ func load_info(info:Dictionary, update_type:int) -> void:
 			%Reactions.get_node("Likes").text = "👍 "+str(info.reactions['+1']+info.reactions['-1'])
 		else:
 			%Reactions.get_node("Likes").visible = false
-
+	else:
+		%Reactions.hide()
 
 func _on_window_close_requested():
 	get_parent().visible = false
@@ -93,7 +111,7 @@ func _on_resources_reimported(resources:Array) -> void:
 
 
 func markdown_to_bbcode(text:String) -> String:
-	var font_sizes := {1:16, 2:16, 3:16,4:14, 5:14}
+	var font_sizes := {1:20, 2:16, 3:16,4:14, 5:14}
 	var title_regex := RegEx.create_from_string('(^|\n)((?<level>#+)(?<title>.*))\\n')
 	var res := title_regex.search(text)
 	while res:

@@ -19,11 +19,10 @@ var _portrait_holder_reference: Node = null
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_character(load(character))
 	dialogic.current_state_info['portraits'] = {}
-	dialogic.current_state_info['speaker_portraits'] = {}
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
@@ -37,8 +36,11 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 						character_info.get('z_index', 0),
 						character_info.get('extra_data', ""),
 						"InstantInOrOut", 0, false)
-	if dialogic.current_state_info.get('speaker', ''):
-		change_speaker(load(dialogic.current_state_info['speaker']))
+	var speaker: Variant = dialogic.current_state_info.get('speaker', "")
+	if speaker:
+		dialogic.current_state_info['speaker'] = ""
+		change_speaker(load(speaker))
+	dialogic.current_state_info['speaker'] = speaker
 
 
 func pause() -> void:
@@ -279,9 +281,9 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 		if animation_name.is_empty():
 			animation_length = _get_join_default_length()
 		if animation_wait:
-			dialogic.current_state = Dialogic.States.ANIMATING
+			dialogic.current_state = DialogicGameHandler.States.ANIMATING
 			await get_tree().create_timer(animation_length).timeout
-			dialogic.current_state = Dialogic.States.IDLE
+			dialogic.current_state = DialogicGameHandler.States.IDLE
 		move_character(character, position_idx, animation_length)
 		change_character_mirror(character, mirrored)
 		return
@@ -301,19 +303,19 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 	character_joined.emit(info)
 
 	if animation_name.is_empty():
-		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default',
-			get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))
+		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 		animation_length = _get_join_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/join_default_wait', true)
 
+	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
 
 	if animation_name and animation_length > 0:
 		var anim:DialogicAnimation = _animate_portrait(character_node, animation_name, animation_length)
 
 		if animation_wait:
-			dialogic.current_state = Dialogic.States.ANIMATING
+			dialogic.current_state = DialogicGameHandler.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.States.IDLE
+			dialogic.current_state = DialogicGameHandler.States.IDLE
 
 	return character_node
 
@@ -402,6 +404,9 @@ func change_character_extradata(character:DialogicCharacter, extra_data:="") -> 
 func animate_character(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
 	if !is_character_joined(character):
 		return null
+
+	animation_path = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_path, "")
+
 	return _animate_portrait(dialogic.current_state_info.portraits[character.resource_path].node, animation_path, length, repeats)
 
 
@@ -434,15 +439,17 @@ func leave_character(character:DialogicCharacter, animation_name :String = "", a
 		animation_length = _get_leave_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 
+	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
+
 	if !animation_name.is_empty():
 		var anim := animate_character(character, animation_name, animation_length)
 
 		anim.finished.connect(remove_character.bind(character))
 
 		if animation_wait:
-			dialogic.current_state = Dialogic.States.ANIMATING
+			dialogic.current_state = DialogicGameHandler.States.ANIMATING
 			await anim.finished
-			dialogic.current_state = Dialogic.States.IDLE
+			dialogic.current_state = DialogicGameHandler.States.IDLE
 	else:
 		remove_character(character)
 
@@ -457,9 +464,9 @@ func leave_all_characters(animation_name:String="", animation_length:float= 0, a
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 
 	if animation_wait:
-		dialogic.current_state = Dialogic.States.ANIMATING
+		dialogic.current_state = DialogicGameHandler.States.ANIMATING
 		await get_tree().create_timer(animation_length).timeout
-		dialogic.current_state = Dialogic.States.IDLE
+		dialogic.current_state = DialogicGameHandler.States.IDLE
 
 
 ## Removes the given characters portrait. Only works with joined characters
@@ -475,7 +482,7 @@ func remove_character(character:DialogicCharacter) -> void:
 
 ## Returns true if the given character is currently joined.
 func is_character_joined(character:DialogicCharacter) -> bool:
-	if !character.resource_path in dialogic.current_state_info['portraits']:
+	if not character or !character.resource_path in dialogic.current_state_info['portraits']:
 		return false
 	if dialogic.current_state_info['portraits'][character.resource_path].get('node', null) != null and \
 			is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node):
@@ -594,7 +601,6 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 
 		_change_portrait_mirror(con.get_child(0))
 
-
 	if speaker:
 		if speaker.resource_path != dialogic.current_state_info['speaker']:
 			if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
@@ -610,23 +616,6 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 ## Called from the [portrait=something] text effect.
 func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:
-		if Dialogic.current_state_info.get('speaker', null):
-			change_character_portrait(load(Dialogic.current_state_info.speaker), argument)
-			change_speaker(load(Dialogic.current_state_info.speaker), argument)
-
-################### HELPERS ########################################################################
-####################################################################################################
-
-## Returns a character resource based on the name
-func get_character_resource(character_name:String) -> DialogicCharacter:
-	if Dialogic.character_directory.has(character_name):
-		return Dialogic.character_directory[character_name].resource
-	else:
-		for key in Dialogic.character_directory.keys():
-			if Dialogic.character_directory[key].unique_short_path == character_name:
-				return Dialogic.character_directory[key].resource
-
-	var path :String = DialogicUtil.guess_resource('.dch', character_name)
-	if ResourceLoader.exists(path):
-		return load(path)
-	return null
+		if dialogic.current_state_info.get('speaker', null):
+			change_character_portrait(load(dialogic.current_state_info.speaker), argument)
+			change_speaker(load(dialogic.current_state_info.speaker), argument)

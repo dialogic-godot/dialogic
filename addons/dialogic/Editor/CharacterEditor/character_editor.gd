@@ -50,6 +50,10 @@ func _get_icon() -> Texture:
 
 ## Called when a character is opened somehow
 func _open_resource(resource:Resource) -> void:
+	if resource == null:
+		$NoCharacterScreen.show()
+		return
+
 	## Update resource
 	current_resource = (resource as DialogicCharacter)
 
@@ -68,9 +72,7 @@ func _open_resource(resource:Resource) -> void:
 	loading = false
 	character_loaded.emit(resource.resource_path)
 
-	for character in editors_manager.resource_helper.character_directory.values():
-		if character.resource == resource:
-			%CharacterName.text = character.unique_short_path
+	%CharacterName.text = DialogicResourceUtil.get_unique_identifier(resource.resource_path)
 
 	$NoCharacterScreen.hide()
 	%PortraitChangeInfo.hide()
@@ -82,6 +84,11 @@ func _open(extra_info:Variant="") -> void:
 		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
 	else:
 		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
+
+	if current_resource == null:
+		$NoCharacterScreen.show()
+		return
+
 	update_preview()
 	%PortraitChangeInfo.hide()
 
@@ -106,7 +113,7 @@ func _save() -> void:
 
 	ResourceSaver.save(current_resource, current_resource.resource_path)
 	current_resource_state = ResourceStates.SAVED
-	editors_manager.resource_helper.rebuild_character_directory()
+	DialogicResourceUtil.update_directory('dch')
 
 
 ## Saves a new empty character to the given path
@@ -118,7 +125,7 @@ func new_character(path: String) -> void:
 	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(resource, path)
-	editors_manager.resource_helper.rebuild_character_directory()
+	DialogicResourceUtil.update_directory('dch')
 	editors_manager.edit_resource(resource)
 
 #endregion
@@ -453,6 +460,7 @@ func _input(event:InputEvent) -> void:
 			delete_portrait_item(%PortraitTree.get_selected())
 			get_viewport().set_input_as_handled()
 
+
 func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# RENAME BUTTON
 	if id == 0:
@@ -463,6 +471,8 @@ func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# DUPLICATE ITEM
 	elif id == 1:
 		duplicate_item(%PortraitTree.get_selected())
+	elif id == 4:
+		get_settings_section_by_name("Portraits").set_default_portrait(%PortraitTree.get_full_item_name(%PortraitTree.get_selected()))
 
 
 # this removes/and adds the DEFAULT star on the portrait list
@@ -512,7 +522,7 @@ func report_name_change(item:TreeItem) -> void:
 		editors_manager.reference_manager.add_portrait_ref_change(
 			item.get_meta('previous_name'),
 			%PortraitTree.get_full_item_name(item),
-			[editors_manager.resource_helper.get_character_short_path(current_resource)])
+			[DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)])
 	item.set_meta('previous_name', %PortraitTree.get_full_item_name(item))
 	%PortraitChangeInfo.show()
 

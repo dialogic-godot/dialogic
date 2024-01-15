@@ -21,6 +21,8 @@ func _ready() -> void:
 	var button :Button = editors_manager.add_icon_button(get_theme_icon("MakeFloating", "EditorIcons"), 'Make floating')
 	button.pressed.connect(toggle_floating_window)
 
+
+
 	## STYLING
 	$BG.color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")

@@ -38,6 +38,8 @@ func _get_character_editor_sections() -> Array:
 	return []
 
 
+#region TEXT EFFECTS & MODIFIERS
+
 ## Should return array of dictionaries with the following keys:[br]
 ## "command" 	-> the text e.g. "speed"[br]
 ## "node_path" or "subsystem" -> whichever contains your effect method[br]
@@ -50,15 +52,36 @@ func _get_text_effects() -> Array[Dictionary]:
 func _get_text_modifiers() -> Array[Dictionary]:
 	return []
 
+#endregion
 
-## Should return array of animation scripts.
-func _get_portrait_animations() -> Array:
+
+## Return a list of resources, scripts, etc.
+## These can later be retrieved with DialogicResourceUtil.
+## Each dictionary should contain (at least "type" and "path").
+## 		E.g. {"type":"Animation", "path": "res://..."}
+func _get_special_resources() -> Array[Dictionary]:
 	return []
 
+
+#region HELPERS
+################################################################################
 
 func list_dir(subdir:='') -> Array:
 	return Array(DirAccess.get_files_at(this_folder.path_join(subdir))).map(func(file):return this_folder.path_join(subdir).path_join(file))
 
+
+func list_special_resources(subdir:='', type:='', extension:="") -> Array[Dictionary]:
+	var array := []
+	for i in list_dir(subdir):
+		if extension.is_empty() or i.ends_with(extension):
+			array.append({'type':type, 'path':i})
+	return Array(array, TYPE_DICTIONARY, "", null)
+
+#endregion
+
+
+#region STYLES & LAYOUTS
+################################################################################
 
 func _get_style_presets() -> Array[Dictionary]:
 	return []
@@ -107,3 +130,4 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 
 	return style_list
 
+#endregion

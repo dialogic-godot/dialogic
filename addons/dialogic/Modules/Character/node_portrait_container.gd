@@ -99,7 +99,7 @@ func _ready():
 
 func update_portrait_transforms():
 	for child in get_children():
-		Dialogic.Portraits._update_portrait_transform(child)
+		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
 
 ## Returns a Rect2 with the position as the position and the scale as the size.
 func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> Rect2:

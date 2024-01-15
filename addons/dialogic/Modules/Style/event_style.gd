@@ -52,7 +52,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('style_name', ValueType.COMPLEX_PICKER, {
+	add_header_edit('style_name', ValueType.DYNAMIC_OPTIONS, {
 			'left_text'			:'Use style',
 			'placeholder'		: 'Default',
 			'suggestions_func' 	: get_style_suggestions,
@@ -61,7 +61,7 @@ func build_event_editor():
 
 
 func get_style_suggestions(filter:String="") -> Dictionary:
-	var styles := ProjectSettings.get_setting('dialogic/layout/style_list', [])
+	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
 
 	var suggestions := {}
 	suggestions['<Default Style>'] = {'value':'', 'editor_icon':["MenuBar", "EditorIcons"]}

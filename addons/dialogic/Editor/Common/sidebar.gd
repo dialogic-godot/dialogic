@@ -61,8 +61,8 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
 		current_file = editors_manager.current_editor.current_resource.resource_path
 
-	var character_directory: Dictionary = editors_manager.resource_helper.character_directory
-	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
+	var character_directory: Dictionary = DialogicResourceUtil.get_character_directory()
+	var timeline_directory: Dictionary = DialogicResourceUtil.get_timeline_directory()
 	if resources_list.is_empty():
 		resources_list = DialogicUtil.get_editor_setting('last_resources', [])
 		if !current_file in resources_list:
@@ -75,18 +75,18 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 
 	%ResourcesList.clear()
 	var idx := 0
-	for character in character_directory.values():
-		if character['full_path'] in resources_list:
-			if filter.is_empty() or filter.to_lower() in character['unique_short_path'].to_lower():
+	for character_name in character_directory:
+		if character_directory[character_name] in resources_list:
+			if filter.is_empty() or filter.to_lower() in character_name.to_lower():
 				%ResourcesList.add_item(
-						character['unique_short_path'],
+						character_name,
 						load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-				%ResourcesList.set_item_metadata(idx, character['full_path'])
-				%ResourcesList.set_item_tooltip(idx, character['full_path'])
-				if character['full_path'] == current_file:
+				%ResourcesList.set_item_metadata(idx, character_directory[character_name])
+				%ResourcesList.set_item_tooltip(idx, character_directory[character_name])
+				if character_directory[character_name] == current_file:
 					%ResourcesList.select(idx)
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
-					%CurrentResource.text = character['unique_short_path']+'.dch'
+					%CurrentResource.text = character_directory[character_name].get_file()
 				idx += 1
 	for timeline_name in timeline_directory:
 		if timeline_directory[timeline_name] in resources_list:
@@ -153,15 +153,15 @@ func update_content_list(list:PackedStringArray) -> void:
 
 	var current_resource: Resource = editors_manager.get_current_editor().current_resource
 
+	var timeline_directory := DialogicResourceUtil.get_timeline_directory()
+	var label_directory := DialogicResourceUtil.get_label_cache()
 	if current_resource != null:
-		var current_resource_path := current_resource.resource_path
+		for i in timeline_directory:
+			if timeline_directory[i] == current_resource.resource_path:
+				label_directory[i] = list
 
-		for i in editors_manager.resource_helper.timeline_directory:
+	# also always store the current timelines labels for easy access
+	label_directory[""] = list
 
-			if editors_manager.resource_helper.timeline_directory[i] == current_resource_path:
-				editors_manager.resource_helper.label_directory[i] = list
-
-
-	editors_manager.resource_helper.label_directory[''] = list
-	DialogicUtil.set_editor_setting('label_ref', editors_manager.resource_helper.label_directory)
+	DialogicResourceUtil.set_label_cache(label_directory)
 

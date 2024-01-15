@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3bhehatwoio"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_options_fixed.gd" id="1"]
+
+[node name="Field_FixedOptions" type="MenuButton"]
+offset_right = 137.0
+offset_bottom = 43.0
+focus_mode = 2
+theme_type_variation = &"DialogicEventEdit"
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 1)
+text = "Placeholder Text"
+flat = false
+script = ExtResource("1")

@@ -15,7 +15,7 @@ var color_overrides := {}
 ##					STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	glossaries = []
 	for path in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 		add_glossary(path)
@@ -36,7 +36,8 @@ func parse_glossary(text:String) -> String:
 		for entry in glossary.entries.keys():
 			if !glossary.entries[entry].get('enabled', true):
 				continue
-			var pattern :String = '(?<=\\W|^)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
+
+			var pattern :String = '(?<=\\W|^)(?<!\\\\)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
 			if glossary.entries[entry].get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)
 			else:
@@ -51,6 +52,15 @@ func parse_glossary(text:String) -> String:
 				'[color=' + color + ']${word}[/color]' +
 				'[/url]', true
 				)
+
+			# Then do a pass removing any \ from escaped entries
+			pattern = '\\\\(?<=\\W|^)(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
+			if glossary.entries[entry].get('case_sensitive', def_case_sensitive):
+				regex.compile(pattern)
+			else:
+				regex.compile('(?i)'+pattern)
+
+			text = regex.sub(text, "${word}", true)
 	return text
 
 
@@ -72,10 +82,10 @@ func get_entry(name:String, parse_variables:bool = true) -> Dictionary:
 	for glossary in glossaries:
 		if name in glossary.entries:
 			var info:Dictionary = glossary.entries[name].duplicate()
-			if parse_variables and Dialogic.has_subsystem('VAR'):
+			if parse_variables and dialogic.has_subsystem('VAR'):
 				for key in info.keys():
 					if typeof(info[key]) == TYPE_STRING:
-						info[key] = Dialogic.VAR.parse_variables(info[key])
+						info[key] = dialogic.VAR.parse_variables(info[key])
 			return info
 	return {}
 

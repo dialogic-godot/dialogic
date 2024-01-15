@@ -18,9 +18,9 @@ var argument: Variant = ""
 ## 						EXECUTE
 ################################################################################
 
-func _execute() -> void:	
+func _execute() -> void:
 	if argument_type == ArgumentTypes.DICTIONARY:
-		var result := JSON.parse_string(argument) 
+		var result: Variant = JSON.parse_string(argument)
 		if result != null:
 			var dict := result as Dictionary
 			dict.make_read_only()
@@ -67,7 +67,7 @@ func build_event_editor():
 	add_header_label("Emit dialogic signal with argument")
 	add_header_label("(Dictionary in body)", 'argument_type == ArgumentTypes.DICTIONARY')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, 'argument_type == ArgumentTypes.STRING')
-	add_body_edit('argument_type',ValueType.FIXED_OPTION_SELECTOR, {'left_text':'Argument Type:', 'selector_options': [
+	add_body_edit('argument_type',ValueType.FIXED_OPTIONS, {'left_text':'Argument Type:', 'options': [
 			{
 				'label': 'String',
 				'value': ArgumentTypes.STRING,
@@ -78,4 +78,4 @@ func build_event_editor():
 			}
 		]})
 	add_body_line_break('argument_type == ArgumentTypes.DICTIONARY')
-	add_body_edit('argument', ValueType.KEY_VALUE_PAIRS, {'left_text': 'Dictionary'},'argument_type == ArgumentTypes.DICTIONARY')
+	add_body_edit('argument', ValueType.DICTIONARY, {'left_text': 'Dictionary'},'argument_type == ArgumentTypes.DICTIONARY')

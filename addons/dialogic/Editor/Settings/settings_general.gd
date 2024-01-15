@@ -39,7 +39,7 @@ func _refresh() -> void:
 
 	%SectionList.clear()
 	%SectionList.create_item()
-	var cached_events :Array[DialogicEvent] = find_parent('Settings').editors_manager.resource_helper.event_script_cache
+	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
 	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
 	for ev in cached_events:

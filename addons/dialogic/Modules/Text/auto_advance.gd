@@ -69,7 +69,7 @@ var enabled_until_user_input := false :
 		_try_emit_toggled()
 
 func _init() -> void:
-	Dialogic.Input.add_child(autoadvance_timer)
+	DialogicUtil.autoload().Input.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	toggled.connect(_on_toggled)
@@ -87,13 +87,13 @@ func start() -> void:
 	if not is_enabled():
 		return
 
-	var parsed_text: String = Dialogic.current_state_info['text_parsed']
+	var parsed_text: String = DialogicUtil.autoload().current_state_info['text_parsed']
 	var delay := _calculate_autoadvance_delay(parsed_text)
 
 	if delay == 0:
 		_on_autoadvance_timer_timeout()
 	else:
-		await Dialogic.get_tree().process_frame
+		await DialogicUtil.autoload().get_tree().process_frame
 		autoadvance_timer.start(delay)
 
 
@@ -124,8 +124,8 @@ func _calculate_autoadvance_delay(text: String = "") -> float:
 		delay = max(0, delay)
 
 	# Wait for the voice clip (if longer than the current delay)
-	if await_playing_voice and Dialogic.has_subsystem('Voice') and Dialogic.Voice.is_running():
-		delay = max(delay, Dialogic.Voice.get_remaining_time())
+	if await_playing_voice and DialogicUtil.autoload().has_subsystem('Voice') and DialogicUtil.autoload().Voice.is_running():
+		delay = max(delay, DialogicUtil.autoload().Voice.get_remaining_time())
 
 	return delay
 
@@ -165,14 +165,14 @@ func _on_toggled(is_enabled: bool) -> void:
 	# If auto-advance is enabled and we are not auto-advancing yet,
 	# we will initiate the auto-advance mode.
 	if (is_enabled and !is_advancing()
-	and Dialogic.current_state == Dialogic.States.IDLE
-	and not Dialogic.current_state_info.get('text', '').is_empty()):
+	and DialogicUtil.autoload().current_state == DialogicGameHandler.States.IDLE
+	and not DialogicUtil.autoload().current_state_info.get('text', '').is_empty()):
 		start()
 
 	# If auto-advance is disabled and we are auto-advancing,
 	# we want to cancel the auto-advance mode.
 	elif !is_enabled and is_advancing():
-		Dialogic.Input.stop()
+		DialogicUtil.autoload().Input.stop()
 #endregion
 
 #region AUTOADVANCE HELPERS
