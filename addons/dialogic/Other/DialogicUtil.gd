@@ -20,6 +20,7 @@ static func get_dialogic_plugin() -> Node:
 
 #endregion
 
+
 ## Returns the autoload when in-game.
 static func autoload() -> DialogicGameHandler:
 	if Engine.is_editor_hint():
@@ -27,6 +28,7 @@ static func autoload() -> DialogicGameHandler:
 	if not Engine.get_main_loop().root.has_node("Dialogic"):
 		return null
 	return Engine.get_main_loop().root.get_node("Dialogic")
+
 
 #region FILE SYSTEM
 ################################################################################
@@ -64,20 +66,18 @@ static func get_module_path(name:String, builtin:=true) -> String:
 
 
 static func update_autoload_subsystem_access() -> void:
-	var script:Script = load("res://addons/dialogic/Other/DialogicGameHandler.gd")
+	var script: Script = load("res://addons/dialogic/Other/DialogicGameHandler.gd")
 
 	var new_subsystem_access_list := "#region SUBSYSTEMS\n"
 
 	for indexer in get_indexers():
 		for subsystem in indexer._get_subsystems().duplicate(true):
-			subsystem["snake_name"] = subsystem.name.to_snake_case()
-			new_subsystem_access_list += '\nvar {snake_name} := preload("{script}"):\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
+			new_subsystem_access_list += '\nvar {name} := preload("{script}").new():\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
 
 	new_subsystem_access_list += "\n#endregion"
 
 	script.source_code = RegEx.create_from_string("#region SUBSYSTEMS\\n#*\\n((?!#endregion)(.*\\n))*#endregion").sub(script.source_code, new_subsystem_access_list)
 	ResourceSaver.save(script)
-	script.reload()
 
 
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:

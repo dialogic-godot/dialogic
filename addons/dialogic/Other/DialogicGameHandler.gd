@@ -77,58 +77,58 @@ signal text_signal(argument)
 # Careful, this section is repopulated automatically at certain moments
 #region SUBSYSTEMS
 
-var audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd"):
+var Audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd").new():
 	get: return get_subsystem("Audio")
 
-var backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd"):
+var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd").new():
 	get: return get_subsystem("Backgrounds")
 
-var portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd"):
+var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
 	get: return get_subsystem("Portraits")
 
-var choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd"):
+var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
 	get: return get_subsystem("Choices")
 
-var expression := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd"):
-	get: return get_subsystem("Expression")
+var Expressions := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd").new():
+	get: return get_subsystem("Expressions")
 
-var animation := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd"):
-	get: return get_subsystem("Animation")
+var Animations := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd").new():
+	get: return get_subsystem("Animations")
 
-var input := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd"):
-	get: return get_subsystem("Input")
+var Inputs := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd").new():
+	get: return get_subsystem("Inputs")
 
-var glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd"):
+var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd").new():
 	get: return get_subsystem("Glossary")
 
-var history := preload("res://addons/dialogic/Modules/History/subsystem_history.gd"):
+var History := preload("res://addons/dialogic/Modules/History/subsystem_history.gd").new():
 	get: return get_subsystem("History")
 
-var jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd"):
+var Jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd").new():
 	get: return get_subsystem("Jump")
 
-var save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd"):
+var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd").new():
 	get: return get_subsystem("Save")
 
-var settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd"):
+var Settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd").new():
 	get: return get_subsystem("Settings")
 
-var styles := preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd"):
+var Styles := preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd").new():
 	get: return get_subsystem("Styles")
 
-var text := preload("res://addons/dialogic/Modules/Text/subsystem_text.gd"):
+var Text := preload("res://addons/dialogic/Modules/Text/subsystem_text.gd").new():
 	get: return get_subsystem("Text")
 
-var text_input := preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd"):
+var TextInput := preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd").new():
 	get: return get_subsystem("TextInput")
 
-var variable := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd"):
+var VAR := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd").new():
 	get: return get_subsystem("VAR")
 
-var voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd"):
+var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd").new():
 	get: return get_subsystem("Voice")
 
-var props := preload("res://addons/dialogic_additions/Props/subsystem_props.gd"):
+var Props := preload("res://addons/dialogic_additions/Props/subsystem_props.gd").new():
 	get: return get_subsystem("Props")
 
 #endregion
@@ -356,15 +356,15 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 	add_child(node)
 	return node as DialogicSubsystem
 
-
-func _get(property):
-	if has_subsystem(property):
-		return get_node(str(property))
-
-
-func _set(property, value):
-	if has_subsystem(property):
-		return true
+#
+#func _get(property):
+	#if has_subsystem(property):
+		#return get_node(str(property))
+#
+#
+#func _set(property, value):
+	#if has_subsystem(property):
+		#return true
 
 #endregion
 
