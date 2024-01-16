@@ -1,4 +1,3 @@
-class_name AutoAdvanceTest
 extends GdUnitTestSuite
 
 ## Ensure Auto-Advance is enabled properly using the user input flag.
