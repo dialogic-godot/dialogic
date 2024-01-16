@@ -1,4 +1,3 @@
-class_name GdUnitExampleTest
 extends GdUnitTestSuite
 
 func test_example() -> void:
