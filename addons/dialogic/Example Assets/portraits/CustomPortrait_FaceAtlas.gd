@@ -52,13 +52,11 @@ func _update_portrait(_passed_character: DialogicCharacter, passed_portrait: Str
 
 
 func _set_mirror(is_mirrored: bool) -> void:
-	var nd: Node2D = get_parent().get_child(0)
-
 	if is_mirrored:
-		nd.scale.x = -1
+		self.scale.x = -1
 
 	else:
-		nd.scale.x = 1
+		self.scale.x = 1
 
 
 ## If implemented, this is used by the editor for the "full view" mode
