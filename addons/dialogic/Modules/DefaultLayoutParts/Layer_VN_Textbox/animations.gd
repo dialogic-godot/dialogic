@@ -34,7 +34,7 @@ func _on_textbox_show() -> void:
 	if animation_in == AnimationsIn.NONE:
 		return
 	play('RESET')
-	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.call(&'start_animating')
 	get_text_panel().get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
 	get_dialog().text = ""
@@ -68,7 +68,7 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 
 
 func _on_textbox_new_text() -> void:
-	if DialogicUtil.autoload().Input.auto_skip.enabled:
+	if DialogicUtil.autoload().Inputs.auto_skip.enabled:
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:
