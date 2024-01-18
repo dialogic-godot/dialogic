@@ -187,7 +187,7 @@ class VariableFolder:
 	func _set(property, value) -> bool:
 		property = str(property)
 		if not value is VariableFolder:
-			outside._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
+			DialogicUtil._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
 		return true
 
 	func has(key) -> bool:
