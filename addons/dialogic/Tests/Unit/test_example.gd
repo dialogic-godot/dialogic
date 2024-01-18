@@ -1,8 +1,0 @@
-extends GdUnitTestSuite
-
-func test_example() -> void:
-    const EXAMPLE_STRING := "Dialogic Test!"
-
-    assert_str(EXAMPLE_STRING)\
-        .has_length(EXAMPLE_STRING.length())\
-        .starts_with("Dia")
