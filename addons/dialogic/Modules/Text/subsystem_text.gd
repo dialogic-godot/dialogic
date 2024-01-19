@@ -35,7 +35,7 @@ var _speed_multiplier := 1.0
 var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
 
-var _reveal_to_playing_voice := false
+var _voice_synced_text := false
 
 var _autopauses := {}
 
@@ -231,7 +231,7 @@ func hide_next_indicators(_fake_arg = null) -> void:
 ## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
 ## the reveal.
 func set_voice_synced_text(enabled: bool) -> void:
-	_reveal_to_playing_voice = enabled
+	_voice_synced_text = enabled
 	update_text_speed()
 
 
@@ -252,7 +252,7 @@ func update_text_speed(letter_speed: float = -1,
 		absolute := false,
 		speed_multiplier := _speed_multiplier,
 		user_speed: float = dialogic.Settings.get_setting('text_speed', 1),
-		reveal_to_playing_voice := _reveal_to_playing_voice
+		reveal_to_playing_voice := _voice_synced_text
 	) -> void:
 
 	if letter_speed == -1:
@@ -262,7 +262,7 @@ func update_text_speed(letter_speed: float = -1,
 	_letter_speed_absolute = absolute
 	_speed_multiplier = speed_multiplier
 
-	_reveal_to_playing_voice = reveal_to_playing_voice
+	_voice_synced_text = reveal_to_playing_voice
 
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
