@@ -30,7 +30,7 @@ var text_modifiers := []
 
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
-var speed_multiplier := 1.0
+var _speed_multiplier := 1.0
 # stores the pure letter speed (unmultiplied)
 var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
@@ -249,9 +249,9 @@ func set_voice_synced_text(enabled: bool) -> void:
 ## [param sync_to_voice] will enable voice-synced text.
 ## See [method set_voice_synced_text] for more.
 func update_text_speed(letter_speed: float = -1,
-		absolute: bool = false,
-		_speed_multiplier: float = -1,
-		_user_speed: float = -1,
+		absolute := false,
+		speed_multiplier := _speed_multiplier,
+		user_speed: float = dialogic.Settings.get_setting('text_speed', 1),
 		reveal_to_playing_voice := _reveal_to_playing_voice
 	) -> void:
 
@@ -260,14 +260,7 @@ func update_text_speed(letter_speed: float = -1,
 
 	_pure_letter_speed = letter_speed
 	_letter_speed_absolute = absolute
-
-	if _speed_multiplier == -1:
-		_speed_multiplier = speed_multiplier
-	else:
-		speed_multiplier = _speed_multiplier
-
-	if _user_speed == -1:
-		_user_speed = dialogic.Settings.get_setting('text_speed', 1)
+	_speed_multiplier = speed_multiplier
 
 	_reveal_to_playing_voice = reveal_to_playing_voice
 
@@ -278,7 +271,7 @@ func update_text_speed(letter_speed: float = -1,
 		if absolute:
 			text_node.lspeed = letter_speed
 		else:
-			text_node.lspeed = letter_speed * _speed_multiplier * _user_speed
+			text_node.lspeed = letter_speed * _speed_multiplier * user_speed
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
