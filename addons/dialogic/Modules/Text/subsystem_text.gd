@@ -224,6 +224,17 @@ func hide_next_indicators(_fake_arg = null) -> void:
 		next_indicator.hide()
 
 
+## This method will sync the text speed to the voice audio clip length, if a
+## voice is playing.
+## For instance, if the voice is playing for four seconds, the text will finish
+## revealing after this time.
+## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
+## the reveal.
+func set_voice_synced_text(enabled: bool) -> void:
+	_reveal_to_playing_voice = enabled
+	update_text_speed()
+
+
 ## Sets how fast text will be revealed.
 ##
 ## [param absolute] will force test to display at the given speed, regardless
@@ -235,11 +246,8 @@ func hide_next_indicators(_fake_arg = null) -> void:
 ## [param _user_speed] adjusts the speed of the text, if set to -1, the
 ## project setting 'text_speed' will be used.operator
 ##
-## [param sync_to_voice] will sync the text speed to the voice speed, if a
-## voice is playing. For instance, if the voice is playing for four seconds,
-## the text will finish revealing after this time. It's not respecting when
-## the voice is saying a new word or taking a pause.
-## By default, the old value will be used.
+## [param sync_to_voice] will enable voice-synced text.
+## See [method set_voice_synced_text] for more.
 func update_text_speed(letter_speed: float = -1,
 		absolute: bool = false,
 		_speed_multiplier: float = -1,
