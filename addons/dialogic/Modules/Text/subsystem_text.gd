@@ -35,7 +35,7 @@ var speed_multiplier := 1.0
 var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
 
-var _reveal_to_playing_voice := true
+var _reveal_to_playing_voice := false
 
 var _autopauses := {}
 
@@ -55,7 +55,6 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
-
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
