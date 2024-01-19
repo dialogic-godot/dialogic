@@ -239,26 +239,25 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
-	var text_to_use := text.replace('\n', '\\\n')
-	text_to_use = text_to_use.replace(':', '\\:')
-	if text_to_use.is_empty():
-		text_to_use = "<Empty Text Event>"
+	var result := text.replace('\n', '\\\n')
+	result = result.replace(':', '\\:')
+	if result.is_empty():
+		result = "<Empty Text Event>"
 
 	if character:
 		var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
 		if name.count(" ") > 0:
 			name = '"' + name + '"'
 		if not portrait.is_empty():
-			return name+" ("+portrait+"): "+text_to_use
-		return name+": "+text_to_use
-	elif text.begins_with('['):
-		text_to_use = '\\'+text_to_use
-	else:
-		for event in DialogicResourceUtil.get_event_cache():
-			if not event is DialogicTextEvent and event.is_valid_event(text):
-				text_to_use = '\\'+text
-				continue
-	return text_to_use
+			result =  name+" ("+portrait+"): "+result
+		else:
+			result = name+": "+result
+	for event in DialogicResourceUtil.get_event_cache():
+		if not event is DialogicTextEvent and event.is_valid_event(result):
+			result = '\\'+result
+			break
+
+	return result
 
 
 func from_text(string:String) -> void:
@@ -266,7 +265,7 @@ func from_text(string:String) -> void:
 	# This is only of relevance if the default has been overriden (usually not)
 	character = DialogicResourceUtil.get_character_resource(character_identifier)
 
-	var result := regex.search(string)
+	var result := regex.search(string.trim_prefix('\\'))
 	if result and not result.get_string('name').is_empty():
 		var name := result.get_string('name').strip_edges()
 
@@ -331,12 +330,13 @@ func _enter_visual_editor(editor:DialogicEditor):
 
 
 func build_event_editor():
-	add_header_edit('character_identifier', ValueType.COMPLEX_PICKER,
+	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'file_extension' 	: '.dch',
+			'mode'				: 2,
 			'suggestions_func' 	: get_character_suggestions,
 			'empty_text' 		: '(No one)',
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
+	add_header_edit('portrait', ValueType.DYNAMIC_OPTIONS,
 			{'suggestions_func' : get_portrait_suggestions,
 			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),

@@ -112,5 +112,15 @@ func stop_all_sounds() -> void:
 		if "Sound" in node.name:
 			node.queue_free()
 
+
 func interpolate_volume_linearly(value :float, node:Node) -> void:
 	node.volume_db = linear_to_db(value)
+
+
+## Returns whether the currently playing audio resource is the same as this
+## event's [param resource_path].
+func is_music_playing_resource(resource_path: String) -> bool:
+	var is_playing_resource: bool = (base_music_player.is_playing()
+		and base_music_player.stream.resource_path == resource_path)
+
+	return is_playing_resource

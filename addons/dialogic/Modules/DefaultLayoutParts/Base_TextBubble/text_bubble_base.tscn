@@ -22,15 +22,16 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 13.0
-offset_top = -210.0
-offset_right = 647.0
+offset_top = -227.0
+offset_right = 836.0
 offset_bottom = -16.0
 grow_vertical = 0
 bbcode_enabled = true
 text = "This is a fallback bubble, that is not actually connected to any character. In game use the following code to add speech bubbles to a character:
 [color=darkgray]
-var layout = Dialogic.start(@timeline_path)
-layout.register_character(@character_resource, @node)
+var layout = Dialogic.start(timeline_path)
+layout.register_character(character_resource, node)
 [/color]
-[color=lightblue]@character_resource[/color] should be a loaded DialogicCharacter (a .dtl file)
-[color=lightblue]@node[/color] should be the 2D node the bubble should point at."
+[color=lightblue]@character_resource[/color] should be a loaded DialogicCharacter (a .dch file).
+[color=lightblue]@node[/color] should be the 2D node the bubble should point at.
+	-> E.g. [color=darkgray]layout.register_character(load(\"res://path/to/my/character.dch\"), $BubbleMarker)"

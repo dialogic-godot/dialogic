@@ -76,7 +76,7 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor() -> void:
 	add_header_label('Show an input and store it in')
-	add_header_edit('variable', ValueType.COMPLEX_PICKER,
+	add_header_edit('variable', ValueType.DYNAMIC_OPTIONS,
 			{'suggestions_func'	: get_var_suggestions,
 			'icon'		 : load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
 			'placeholder':'Select Variable'})
