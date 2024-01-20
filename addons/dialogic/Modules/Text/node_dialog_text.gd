@@ -26,7 +26,7 @@ var active_speed: float = lspeed
 var speed_counter: float = 0
 
 # If true, [member active_speed] will be overwritten by the voice speed.
-var sync_reveal_to_voice := false
+var voice_synced_text := false
 
 func _set(property: StringName, what: Variant) -> bool:
 	if property == 'text' and typeof(what) == TYPE_STRING:
@@ -80,7 +80,7 @@ func reveal_text(_text: String, keep_previous:=false) -> void:
 			visible_characters = 1
 			return
 
-	if sync_reveal_to_voice and DialogicUtil.autoload().Voice.is_running():
+	if voice_synced_text and DialogicUtil.autoload().Voice.is_running():
 		var total_characters := get_total_character_count() as float
 		var remaining_time: float = DialogicUtil.autoload().Voice.get_remaining_time()
 		var synced_speed :=  remaining_time / total_characters
