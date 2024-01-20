@@ -23,7 +23,6 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_character(load(character))
 	dialogic.current_state_info['portraits'] = {}
-	dialogic.current_state_info['speaker_portraits'] = {}
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
@@ -37,8 +36,11 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 						character_info.get('z_index', 0),
 						character_info.get('extra_data', ""),
 						"InstantInOrOut", 0, false)
-	if dialogic.current_state_info.get('speaker', ''):
-		change_speaker(load(dialogic.current_state_info['speaker']))
+	var speaker: Variant = dialogic.current_state_info.get('speaker', "")
+	if speaker:
+		dialogic.current_state_info['speaker'] = ""
+		change_speaker(load(speaker))
+	dialogic.current_state_info['speaker'] = speaker
 
 
 func pause() -> void:
@@ -598,7 +600,6 @@ func change_speaker(speaker:DialogicCharacter= null, portrait:= ""):
 			continue
 
 		_change_portrait_mirror(con.get_child(0))
-
 
 	if speaker:
 		if speaker.resource_path != dialogic.current_state_info['speaker']:

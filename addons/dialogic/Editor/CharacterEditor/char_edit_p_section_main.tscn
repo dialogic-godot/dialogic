@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://djq4aasoihexj"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main.gd" id="1_ht8lu"]
-[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="2_k8xs0"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="2_k8xs0"]
 
 [sub_resource type="Image" id="Image_sbh6e"]
 data = {

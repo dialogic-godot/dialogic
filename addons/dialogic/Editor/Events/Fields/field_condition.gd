@@ -1,17 +1,32 @@
 @tool
-extends Control
+extends DialogicVisualEditorField
 
 ## Event block field for displaying conditions in either a simple or complex way.
-
-signal value_changed
-var property_name : String
-var event_resource : DialogicEvent = null
 
 var _current_value1 :Variant = ""
 var _current_value2 :Variant = ""
 
-func _ready() -> void:
+#region MAIN METHODS
+################################################################################
 
+func _set_value(value:Variant) -> void:
+	var too_complex := is_too_complex(value)
+	%ToggleComplex.disabled = too_complex
+	%ToggleComplex.button_pressed = too_complex
+	%ComplexEditor.visible = too_complex
+	%SimpleEditor.visible = !too_complex
+	%ComplexEditor.text = value
+	if not too_complex:
+		load_simple_editor(value)
+
+
+
+func _autofocus():
+	%Value1Variable.grab_focus()
+
+#endregion
+
+func _ready() -> void:
 	for i in [%Value1Type, %Value2Type]:
 		i.options = [{
 				'label': 'String',
@@ -48,6 +63,8 @@ func _ready() -> void:
 	%Value2Number.value_changed.connect(something_changed)
 	%Value1Text.value_changed.connect(something_changed)
 	%Value2Text.value_changed.connect(something_changed)
+	%Value1Bool.value_changed.connect(something_changed)
+	%Value2Bool.value_changed.connect(something_changed)
 
 	%ToggleComplex.icon = get_theme_icon("Enum", "EditorIcons")
 
@@ -60,17 +77,6 @@ func _ready() -> void:
 		{'label': '>=', 'value': '>='},
 		{'label': '!=', 'value': '!='}
 	]
-
-
-func set_value(value:String) -> void:
-	var too_complex := is_too_complex(value)
-	%ToggleComplex.disabled = too_complex
-	%ToggleComplex.button_pressed = too_complex
-	%ComplexEditor.visible = too_complex
-	%SimpleEditor.visible = !too_complex
-	%ComplexEditor.text = value
-	if not too_complex:
-		load_simple_editor(value)
 
 
 func load_simple_editor(condition_string:String) -> void:
@@ -145,34 +151,41 @@ func trim_value(value:Variant, value_type:int) -> String:
 	match value_type:
 		0: return value.trim_prefix('"').trim_suffix('"').replace('\\"', '"')
 		2: return value.trim_prefix('{').trim_suffix('}')
-		3: return "true" if value else "false"
+		3:
+			if value == "true" or (value and (typeof(value) != TYPE_STRING or value != "false")):
+				return "true"
+			else:
+				return "false"
 		_: return value
 
 
 func something_changed(fake_arg1=null, fake_arg2 = null):
 	if %ComplexEditor.visible:
 		value_changed.emit(property_name, %ComplexEditor.text)
+		return
 
-	else:
-		match %Value1Type.current_value:
-			0: _current_value1 = prep_value(%Value1Text.text, %Value1Type.current_value)
-			1: _current_value1 = str(%Value1Number.get_value())
-			2: _current_value1 = prep_value(%Value1Variable.current_value, %Value1Type.current_value)
-			_: _current_value1 = prep_value(%Value1Text.text, %Value1Type.current_value)
 
-		match %Value2Type.current_value:
-			0: _current_value2 = prep_value(%Value2Text.text, %Value2Type.current_value)
-			1: _current_value2 = str(%Value2Number.get_value())
-			2: _current_value2 = prep_value(%Value2Variable.current_value, %Value2Type.current_value)
-			_: _current_value2 = prep_value(%Value2Text.text, %Value2Type.current_value)
+	match %Value1Type.current_value:
+		0: _current_value1 = prep_value(%Value1Text.text, %Value1Type.current_value)
+		1: _current_value1 = str(%Value1Number.get_value())
+		2: _current_value1 = prep_value(%Value1Variable.current_value, %Value1Type.current_value)
+		3: _current_value1 = prep_value(%Value1Bool.button_pressed, %Value1Type.current_value)
+		_: _current_value1 = prep_value(%Value1Text.text, %Value1Type.current_value)
 
-		if event_resource:
-			if not %Operator.text in ['==', '!='] and get_value_type(_current_value2, 0) in [0, 3]:
-				event_resource.ui_update_warning.emit("This operator doesn't work with strings and booleans.")
-			else:
-				event_resource.ui_update_warning.emit("")
+	match %Value2Type.current_value:
+		0: _current_value2 = prep_value(%Value2Text.text, %Value2Type.current_value)
+		1: _current_value2 = str(%Value2Number.get_value())
+		2: _current_value2 = prep_value(%Value2Variable.current_value, %Value2Type.current_value)
+		3: _current_value2 = prep_value(%Value2Bool.button_pressed, %Value2Type.current_value)
+		_: _current_value2 = prep_value(%Value2Text.text, %Value2Type.current_value)
 
-		value_changed.emit(property_name, get_simple_condition())
+	if event_resource:
+		if not %Operator.text in ['==', '!='] and get_value_type(_current_value2, 0) in [0, 3]:
+			event_resource.ui_update_warning.emit("This operator doesn't work with strings and booleans.")
+		else:
+			event_resource.ui_update_warning.emit("")
+
+	value_changed.emit(property_name, get_simple_condition())
 
 
 func is_too_complex(condition:String) -> bool:
@@ -232,7 +245,6 @@ func get_variable_suggestions(filter:String) -> Dictionary:
 
 func _on_value_1_variable_value_changed(property_name: Variant, value: Variant) -> void:
 	var type := DialogicUtil.get_variable_type(value)
-	print(get_value_type(_current_value2, -1))
 	match type:
 		DialogicUtil.VarTypes.BOOL:
 			if not %Operator.text in ["==", "!="]:
@@ -247,7 +259,6 @@ func _on_value_1_variable_value_changed(property_name: Variant, value: Variant) 
 				%Value2Type.insert_options()
 				%Value2Type.index_pressed(0)
 		DialogicUtil.VarTypes.FLOAT, DialogicUtil.VarTypes.INT:
-			print("lol")
 			if get_value_type(_current_value2, 1) in [0,3]:
 				%Value2Type.insert_options()
 				%Value2Type.index_pressed(1)

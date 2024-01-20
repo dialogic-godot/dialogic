@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c74bnmhefu72w"]
+[gd_scene load_steps=5 format=3 uid="uid://b27yweami3mxi"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/KeyValuePairs.gd" id="1_3mn6b"]
-[ext_resource type="PackedScene" uid="uid://b27yweami3mxi" path="res://addons/dialogic/Editor/Events/Fields/KeyValuePairValue.tscn" id="2_g20vj"]
+[ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="1_4ehmb"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/dictionary_part.gd" id="2_q88pg"]
 
 [sub_resource type="Image" id="Image_esvau"]
 data = {
@@ -15,32 +15,24 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_bywig"]
 image = SubResource("Image_esvau")
 
-[node name="Pairs" type="VBoxContainer"]
-script = ExtResource("1_3mn6b")
+[node name="Value" type="HBoxContainer"]
+theme = ExtResource("1_4ehmb")
+script = ExtResource("2_q88pg")
 
-[node name="Editing" type="HBoxContainer" parent="."]
+[node name="Key" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-alignment = 2
+expand_to_text_length = true
 
-[node name="LeftText" type="Label" parent="Editing"]
-unique_name_in_owner = true
+[node name="Value" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+expand_to_text_length = true
 
-[node name="Add" type="Button" parent="Editing"]
-unique_name_in_owner = true
+[node name="Delete" type="Button" parent="."]
 layout_mode = 2
 icon = SubResource("ImageTexture_bywig")
 
-[node name="Values" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Value" parent="Values" instance=ExtResource("2_g20vj")]
-layout_mode = 2
-
-[node name="Value2" parent="Values" instance=ExtResource("2_g20vj")]
-layout_mode = 2
-
-[connection signal="pressed" from="Editing/Add" to="." method="_on_AddButton_pressed"]
+[connection signal="text_changed" from="Key" to="." method="_on_Key_text_changed"]
+[connection signal="text_changed" from="Value" to="." method="_on_Value_text_changed"]
+[connection signal="pressed" from="Delete" to="." method="_on_Delete_pressed"]

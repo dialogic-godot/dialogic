@@ -4,7 +4,7 @@ extends RichTextLabel
 ## Dialogic node that can reveal text at a given (changeable speed).
 
 signal started_revealing_text()
-signal continued_revealing_text(new_character)
+signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
 enum Alignment {LEFT, CENTER, RIGHT}
 
@@ -30,12 +30,14 @@ var voice_synced_text := false
 
 func _set(property: StringName, what: Variant) -> bool:
 	if property == 'text' and typeof(what) == TYPE_STRING:
+
 		text = what
 
 		if hide_when_empty:
 			textbox_root.visible = !what.is_empty()
 
 		return true
+	return false
 
 	return false
 
@@ -54,6 +56,7 @@ func _ready() -> void:
 
 
 # this is called by the DialogicGameHandler to set text
+
 func reveal_text(_text: String, keep_previous:=false) -> void:
 	if !enabled:
 		return

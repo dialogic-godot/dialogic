@@ -1,22 +1,20 @@
 @tool
-extends VBoxContainer
+extends DialogicVisualEditorField
 
-## Event block field for editing arrays. 
+## Event block field for editing arrays.
 
-signal value_changed
-var property_name : String
-
-const PairValue = "res://addons/dialogic/Editor/Events/Fields/KeyValuePairValue.tscn"
+const PairValue = "res://addons/dialogic/Editor/Events/Fields/dictionary_part.tscn"
 
 func _ready():
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 
-func set_value(value) -> void:
+
+func _set_value(value:Variant) -> void:
 	for child in %Values.get_children():
 		child.queue_free()
-	
+
 	var dict : Dictionary
-	
+
 	# attempt to take dictionary values, create a fresh one if not possible
 	if typeof(value) == TYPE_DICTIONARY:
 		dict = value
@@ -29,10 +27,10 @@ func set_value(value) -> void:
 				dict = Dictionary()
 		else:
 			dict = Dictionary()
-	
+
 	var keys := dict.keys()
 	var values := dict.values()
-	
+
 	for index in dict.size():
 		var x :Node = load(PairValue).instantiate()
 		%Values.add_child(x)
@@ -42,7 +40,7 @@ func set_value(value) -> void:
 
 
 func _on_value_changed(value:Variant) -> void:
-	emit_signal("value_changed", property_name, value)
+	value_changed.emit(property_name, value)
 
 
 func recalculate_values() -> void:
@@ -60,10 +58,3 @@ func _on_AddButton_pressed() -> void:
 	x.set_value("")
 	x.value_changed.connect(recalculate_values)
 	recalculate_values()
-
-
-## Overridable
-func set_left_text(value:String) -> void:
-	%LeftText.text = str(value)
-	%LeftText.visible = value.is_empty()
-

@@ -81,8 +81,8 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
-		'selector_options': [
+	add_header_edit('action', ValueType.FIXED_OPTIONS, {
+		'options': [
 			{
 				'label': 'Change',
 				'value': Actions.SET_RELATIVE,
@@ -101,10 +101,10 @@ func build_event_editor():
 			}
 		]
 		})
-	add_header_edit("position", ValueType.INTEGER, {'left_text':"position"},
+	add_header_edit("position", ValueType.NUMBER, {'left_text':"position", 'mode':1},
 			'action != Actions.RESET_ALL')
 	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
 	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
 	add_header_edit("vector", ValueType.VECTOR2, {},
 			'action != Actions.RESET and action != Actions.RESET_ALL')
-	add_body_edit("movement_time", ValueType.FLOAT, {'left_text':"AnimationTime:", "right_text":"(0 for instant)"})
+	add_body_edit("movement_time", ValueType.NUMBER, {'left_text':"AnimationTime:", "right_text":"(0 for instant)"})

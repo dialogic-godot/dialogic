@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtimnsj014cu"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_vector2.gd" id="1_v6lp0"]
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="2_a0b6y"]
+
+[node name="Field_Vector2" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = -7
+script = ExtResource("1_v6lp0")
+
+[node name="X" parent="." instance=ExtResource("2_a0b6y")]
+layout_mode = 2
+step = 1.0
+min = -9999.0
+max = 9999.0
+suffix = "x"
+
+[node name="Y" parent="." instance=ExtResource("2_a0b6y")]
+layout_mode = 2
+step = 1.0
+min = -9999.0
+max = 9999.0
+suffix = "y"

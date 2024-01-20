@@ -84,19 +84,18 @@ enum Location {HEADER, BODY}
 ## To differentiate the different types of fields for event properties in the visual editor
 enum ValueType {
 	# Strings
-	LABEL, MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION,
+	MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION, FILE,
 	# Booleans
-	BOOL,
-	# Resources
-	COMPLEX_PICKER, FILE,
-	# Array
-	ARRAY,
-	# Integers
-	FIXED_OPTION_SELECTOR, INTEGER, VECTOR2,
-	# Floats
-	FLOAT, DECIBEL,
+	BOOL, BOOL_BUTTON,
+	# Options
+	DYNAMIC_OPTIONS, FIXED_OPTIONS,
+	# Containers,
+	ARRAY, DICTIONARY,
+	# Numbers
+	NUMBER,
+	VECTOR2,
 	# Other
-	CUSTOM, BUTTON, KEY_VALUE_PAIRS
+	CUSTOM, BUTTON, LABEL
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
@@ -417,7 +416,7 @@ func add_header_label(text:String, condition:String = "") -> void:
 		"type" 			:+ TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
-		"dialogic_type" : ValueType.LABEL,
+		"field_type" : ValueType.LABEL,
 		"display_info"  : {"text":text},
 		"condition" 	: condition
 		})
@@ -429,7 +428,7 @@ func add_header_edit(variable:String, editor_type = ValueType.LABEL, extra_info:
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : editor_type,
+		"field_type" : editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),
@@ -443,7 +442,7 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 		"type" 			: TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : ValueType.BUTTON,
+		"field_type" : ValueType.BUTTON,
 		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
 		"condition" 	: condition,
 	})
@@ -455,7 +454,7 @@ func add_body_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Di
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.BODY,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : editor_type,
+		"field_type" : editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),
