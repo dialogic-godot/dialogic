@@ -20,6 +20,7 @@ var varSubsystemInstalled = false
 var anchorNames = {}
 var prefixCharacters = false
 
+var timelineKeys: Dictionary = {} # dictionary for change_timeline conversion
 
 func _get_title():
 	return 'Converter'
@@ -230,7 +231,23 @@ func _on_begin_pressed():
 	%OutputLog.text += "Please be aware, Godot may take some time on the next project load to reload all of the Characters and Timelines. This is normal, and should only happen the one time."
 
 
+func convertTimelinePrep():
+	for item in timelineFolderBreakdown:
+		var file := FileAccess.open("res://dialogic/timelines/" + item, FileAccess.READ)
+		var fileContent = file.get_as_text()
+		var json_object = JSON.new()
+
+		var error = json_object.parse(fileContent)
+		if error == OK:
+			contents = json_object.get_data()
+			var fileName = contents["metadata"]["name"]
+			timelineKeys[item] = fileName
+		else:
+			%OutputLog.text += "[color=red]There was a problem parsing this file while prepping![/color]\r\n"
+
+
 func convertTimelines():
+	convertTimelinePrep()
 	%OutputLog.text += "Converting timelines: \r\n"
 	for item in timelineFolderBreakdown:
 		var folderPath = timelineFolderBreakdown[item]
@@ -334,8 +351,7 @@ func convertTimelines():
 
 										for i in event['position']:
 											if event['position'][i] == true:
-												#1.x uses positions 0-4, while the default 2.0 scene uses positions 1-5
-												eventLine += str(i.to_int() + 1)
+												eventLine += str(i.to_int())
 
 										if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -375,7 +391,7 @@ func convertTimelines():
 
 													if event['position'][i] == true:
 														positionCheck = true
-														eventLine += str(i.to_int() + 1)
+														eventLine += str(i.to_int())
 
 											if !positionCheck:
 												eventLine += " 0"
@@ -501,27 +517,36 @@ func convertTimelines():
 						"dialogic_012":
 							#If event
 							var valueLookup = "broken variable"
-							if definitionFolderBreakdown.size():
-								valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+							if event.has('definition') and event['definition'] in definitionFolderBreakdown:
+								if definitionFolderBreakdown.size():
+									var definition = definitionFolderBreakdown[event['definition']]
+									if 'path' in definition and 'name' in definition:
+										valueLookup = variableNameConversion( "[" + definition['path'] + definition['name'] + "]")
+									else:
+										# Handle the case where 'path' or 'name' keys are missing
+										%OutputLog.text += "[color=red]Path or name not found in definition[/color]" + "\r\n"
 
-							eventLine += "if "
-							eventLine += valueLookup
-							if event['condition'] != "":
-								eventLine += " " + event['condition']
+								eventLine += "if "
+								eventLine += valueLookup
+								if event['condition'] != "":
+									eventLine += " " + event['condition']
+								else:
+									#default is true, so it may not store it
+									eventLine += " =="
+
+								# weird line due to missing type casts on String in current Godot 4 alpha
+								if event['value'] == str(event['value'].to_int()):
+									eventLine += " " + event['value']
+								else:
+									eventLine += " \"" + event['value'] + "\""
+
+								eventLine += ":"
+								file.store_string(eventLine)
+								#print("if branch node")
+								depth.push_front("condition")
 							else:
-								#default is true, so it may not store it
-								eventLine += " =="
-
-							# weird line due to missing type casts on String in current Godot 4 alpha
-							if event['value'] == str(event['value'].to_int()):
-								eventLine += " " + event['value']
-							else:
-								eventLine += " \"" + event['value'] + "\""
-
-							eventLine += ":"
-							file.store_string(eventLine)
-							#print("if branch node")
-							depth.push_front("condition")
+								# Handle the case where 'definition' key is missing or not in definitionFolderBreakdown
+								%OutputLog.text += "[color=red]Definition not found in event or definitionFolderBreakdown[/color]" + "\r\n"
 
 							#print ("bracnh depth now" + str(depth))
 						"dialogic_013":
@@ -575,9 +600,12 @@ func convertTimelines():
 							#file.store_string(eventLine + "# jump label, just a comment for testing")
 						"dialogic_020":
 							#Change Timeline event
-							# we will need to come back to this one on second pass, since we may not know the new path yet
+							#first pass performed by convertTimelinePrep() for timelineKeys
+							var jumpDictionaryKey = event['change_timeline']
+							if timelineKeys.has(jumpDictionaryKey):
+								file.store_string(eventLine + "jump " + timelineKeys[jumpDictionaryKey] + "/")
 
-							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+							#file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
 							#file.store_string(eventLine + "# jump timeline, just a comment for testing")
 						"dialogic_021":
 							#Change Background event
