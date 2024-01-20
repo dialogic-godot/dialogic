@@ -68,6 +68,7 @@ var enabled_until_user_input := false :
 		enabled_until_user_input = enabled
 		_try_emit_toggled()
 
+
 func _init() -> void:
 	DialogicUtil.autoload().Inputs.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true

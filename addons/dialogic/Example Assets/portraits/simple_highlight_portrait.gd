@@ -15,7 +15,8 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 
 
 func _ready() -> void:
-	self.modulate = unhighlighted_color
+	if not Engine.is_editor_hint():
+		self.modulate = unhighlighted_color
 
 
 func _highlight():
