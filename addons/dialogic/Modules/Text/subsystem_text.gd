@@ -461,12 +461,15 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
+
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
-	elif speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+
+		elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
+			await get_tree().create_timer(float(argument) * speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+
+	elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
+		await get_tree().create_timer(0.5 * _speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
