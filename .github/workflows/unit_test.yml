@@ -89,7 +89,7 @@ jobs:
         shell: bash
         run: |
           chmod +x ./addons/gdUnit4/runtest.sh
-          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://addons/dialogic/Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+          xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://Tests/" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
 
       - name: "Upload Unit Test Reports"
         if: ${{ always() }}
