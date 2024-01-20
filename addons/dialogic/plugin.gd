@@ -17,7 +17,7 @@ signal dialogic_save
 
 ## Initialization
 func _init() -> void:
-	self.name = PLUGIN_NAME
+	self.name = "DialogicPlugin"
 
 
 #region ACTIVATION & EDITOR SETUP
