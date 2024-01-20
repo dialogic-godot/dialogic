@@ -128,9 +128,6 @@ var VAR := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.g
 var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd").new():
 	get: return get_subsystem("Voice")
 
-var Props := preload("res://addons/dialogic_additions/Props/subsystem_props.gd").new():
-	get: return get_subsystem("Props")
-
 #endregion
 
 ## Autoloads are added first, so this happens REALLY early on game startup.
