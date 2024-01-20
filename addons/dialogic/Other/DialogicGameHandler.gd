@@ -41,7 +41,7 @@ var current_state := States.IDLE:
 		current_state = new_state
 		emit_signal('state_changed', new_state)
 ## Emitted when [current_state] change.
-signal state_changed(new_state)
+signal state_changed(new_state:States)
 
 ## When true, many dialogic process won't continue until it's false again.
 var paused := false:
@@ -49,13 +49,13 @@ var paused := false:
 		paused = value
 		if paused:
 			for subsystem in get_children():
-				if subsystem.has_method('pause'):
-					subsystem.pause()
+				if subsystem is DialogicSubsystem:
+					(subsystem as DialogicSubsystem).pause()
 			dialogic_paused.emit()
 		else:
 			for subsystem in get_children():
-				if subsystem.has_method('resume'):
-					subsystem.resume()
+				if subsystem is DialogicSubsystem:
+					(subsystem as DialogicSubsystem).resume()
 			dialogic_resumed.emit()
 
 ## Emitted when [paused] changes to true.
@@ -66,12 +66,12 @@ signal dialogic_resumed
 
 signal timeline_ended()
 signal timeline_started()
-signal event_handled(resource)
+signal event_handled(resource:DialogicEvent)
 
 ## Emitted when the Signal event was reached
-signal signal_event(argument)
+signal signal_event(argument:Variant)
 ## Emitted when [signal] effect was reached in text.
-signal text_signal(argument)
+signal text_signal(argument:String)
 
 
 # Careful, this section is repopulated automatically at certain moments
@@ -183,16 +183,16 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if timeline.contains("res://"):
-			timeline = load(timeline)
+		if (timeline as String).contains("res://"):
+			timeline = load((timeline as String))
 		else:
-			timeline = DialogicResourceUtil.get_timeline_resource(timeline)
+			timeline = DialogicResourceUtil.get_timeline_resource((timeline as String))
 
 	if timeline == null:
 		printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 		return
 
-	await timeline.process()
+	await (timeline as DialogicTimeline).process()
 
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
@@ -201,7 +201,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	if typeof(label_or_idx) == TYPE_STRING:
 		if label_or_idx:
 			if has_subsystem('Jump'):
-				self.Jump.jump_to_label(label_or_idx)
+				Jump.jump_to_label((label_or_idx as String))
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
@@ -214,14 +214,14 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
-		timeline_resource = load(timeline_resource)
+		timeline_resource = load((timeline_resource as String))
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return false
 		else:
-			await timeline_resource.process()
+			await (timeline_resource as DialogicTimeline).process()
 			return timeline_resource
-	return false
+	return null
 
 
 func end_timeline() -> void:
@@ -239,8 +239,8 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
 
-	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and get_meta('previous_event').event_finished.is_connected(handle_next_event):
-		get_meta('previous_event').event_finished.disconnect(handle_next_event)
+	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and (get_meta('previous_event') as DialogicEvent).event_finished.is_connected(handle_next_event):
+		(get_meta('previous_event') as DialogicEvent).event_finished.disconnect(handle_next_event)
 
 	if paused:
 		await dialogic_resumed
@@ -251,8 +251,8 @@ func handle_event(event_index:int) -> void:
 
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
-	if current_timeline_events[event_index]['event_node_ready'] == false:
-		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['event_node_as_text'])
+	if current_timeline_events[event_index].event_node_ready == false:
+		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index].event_node_as_text)
 
 	current_event_idx = event_index
 
@@ -272,7 +272,8 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
 		for subsystem in get_children():
-			subsystem.clear_game_state(clear_flags)
+			if subsystem is DialogicSubsystem:
+				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
 
 	# Resetting variables
 	current_timeline = null
@@ -310,11 +311,11 @@ func load_full_state(state_info:Dictionary) -> void:
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 
-	var load_subsystems := func():
+	var load_subsystems := func() -> void:
 		for subsystem in get_children():
 			if subsystem.name == 'Styles':
 				continue
-			subsystem.load_game_state()
+			(subsystem as DialogicSubsystem).load_game_state()
 
 	if null != scene and not scene.is_node_ready():
 		scene.ready.connect(load_subsystems)
@@ -332,7 +333,7 @@ func collect_subsystems() -> void:
 	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
 		for subsystem in indexer._get_subsystems():
-			var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
+			var subsystem_node := add_subsystem(str(subsystem.name), str(subsystem.script))
 			subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
@@ -343,7 +344,7 @@ func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
 
 
-func get_subsystem(_name:String) -> Variant:
+func get_subsystem(_name:String) -> DialogicSubsystem:
 	return get_node(_name)
 
 
@@ -351,20 +352,11 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 	var node:Node = Node.new()
 	node.name = _name
 	node.set_script(load(_script_path))
-	assert(node is DialogicSubsystem)
+	node = node as DialogicSubsystem
 	node.dialogic = self
 	add_child(node)
-	return node as DialogicSubsystem
+	return node
 
-#
-#func _get(property):
-	#if has_subsystem(property):
-		#return get_node(str(property))
-#
-#
-#func _set(property, value):
-	#if has_subsystem(property):
-		#return true
 
 #endregion
 
@@ -372,12 +364,13 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 #region HELPERS
 ################################################################################
 
-func _on_timeline_ended():
+func _on_timeline_ended() -> void:
 	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
 			0:
-				get_tree().get_meta('dialogic_layout_node', '').queue_free()
+				(get_tree().get_meta('dialogic_layout_node', '') as Node).queue_free()
 			1:
+				@warning_ignore("unsafe_method_access")
 				get_tree().get_meta('dialogic_layout_node', '').hide()
 
 #endregion Helpers

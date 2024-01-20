@@ -16,7 +16,7 @@ func _get_subsystems() -> Array:
 
 func _get_text_effects() -> Array[Dictionary]:
 	return [
-		{'command':'aa', 'subsystem':'Input', 'method':'effect_autoadvance'},
-		{'command':'ns', 'subsystem':'Input', 'method':'effect_noskip'},
-		{'command':'input', 'subsystem':'Input', 'method':'effect_input'},
+		{'command':'aa', 'subsystem':'Inputs', 'method':'effect_autoadvance'},
+		{'command':'ns', 'subsystem':'Inputs', 'method':'effect_noskip'},
+		{'command':'input', 'subsystem':'Inputs', 'method':'effect_input'},
 	]
