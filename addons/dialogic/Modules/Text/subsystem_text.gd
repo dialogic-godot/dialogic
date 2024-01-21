@@ -235,6 +235,11 @@ func set_voice_synced_text(enabled: bool) -> void:
 	update_text_speed()
 
 
+## Returns whether voice-synced text is enabled.
+func get_voice_synced_text() -> bool:
+	return _voice_synced_text
+
+
 ## Sets how fast text will be revealed.
 ##
 ## [param absolute] will force test to display at the given speed, regardless
