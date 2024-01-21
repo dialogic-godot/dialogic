@@ -11,9 +11,6 @@ func _get_title() -> String:
 	return "Text"
 
 
-func _get_info_section():
-	return $InformationSection
-
 func _refresh() -> void:
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true)
