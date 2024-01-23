@@ -51,6 +51,6 @@ func tween_shader_progress(progress_parameter:="progress") -> PropertyTweener:
 
 	bg_holder.material.set_shader_parameter("progress", 0.0)
 	var tween := create_tween()
-	var tweener := tween.tween_property(bg_holder, "material:shader_parameter/progress", 1.0, time)
+	var tweener := tween.tween_property(bg_holder, "material:shader_parameter/progress", 1.0, time).from(0.0)
 	tween.tween_callback(emit_signal.bind('transition_finished'))
 	return tweener
