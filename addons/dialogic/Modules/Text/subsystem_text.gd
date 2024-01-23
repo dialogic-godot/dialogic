@@ -230,13 +230,13 @@ func hide_next_indicators(_fake_arg = null) -> void:
 ## revealing after this time.
 ## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
 ## the reveal.
-func set_voice_synced_text(enabled: bool) -> void:
+func set_text_voice_synced(enabled: bool = true) -> void:
 	_voice_synced_text = enabled
 	update_text_speed()
 
 
 ## Returns whether voice-synced text is enabled.
-func get_voice_synced_text() -> bool:
+func is_text_voice_synced() -> bool:
 	return _voice_synced_text
 
 
@@ -250,15 +250,10 @@ func get_voice_synced_text() -> bool:
 ##
 ## [param _user_speed] adjusts the speed of the text, if set to -1, the
 ## project setting 'text_speed' will be used.operator
-##
-## [param sync_to_voice] will enable voice-synced text.
-## See [method set_voice_synced_text] for more.
 func update_text_speed(letter_speed: float = -1,
 		absolute := false,
 		speed_multiplier := _speed_multiplier,
-		user_speed: float = dialogic.Settings.get_setting('text_speed', 1),
-		reveal_to_playing_voice := _voice_synced_text
-	) -> void:
+		user_speed: float = dialogic.Settings.get_setting('text_speed', 1)) -> void:
 
 	if letter_speed == -1:
 		letter_speed = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
@@ -267,12 +262,7 @@ func update_text_speed(letter_speed: float = -1,
 	_letter_speed_absolute = absolute
 	_speed_multiplier = speed_multiplier
 
-	_voice_synced_text = reveal_to_playing_voice
-
-
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		text_node.sync_reveal_to_voice = reveal_to_playing_voice
-
 		if absolute:
 			text_node.lspeed = letter_speed
 		else:
