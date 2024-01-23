@@ -30,12 +30,15 @@ var text_modifiers := []
 
 
 # set by the [speed] effect, multies the letter speed and [pause] effects
-var speed_multiplier := 1.0
+var _speed_multiplier := 1.0
 # stores the pure letter speed (unmultiplied)
 var _pure_letter_speed := 0.1
 var _letter_speed_absolute := false
 
+var _voice_synced_text := false
+
 var _autopauses := {}
+
 
 ####################################################################################################
 ##					STATE
@@ -52,7 +55,6 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
-
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
@@ -83,46 +85,61 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables:= true, g
 		text = dialogic.Glossary.parse_glossary(text)
 	return text
 
-
-## Shows the given text on all visible DialogText nodes.
-## Instant can be used to skip all revieling.
-## If additional is true, the previous text will be kept.
-func update_dialog_text(text:String, instant:bool= false, additional:= false) -> String:
-	update_text_speed()
-	connect_meta_signals()
-
+## When an event updates the text spoken, this can adjust the state of
+## the dialog text box.
+## This method is async.
+func update_text_boxes(text: String, instant: bool = false) -> void:
 	if text.is_empty():
 		await hide_text_boxes(instant)
 	else:
 		await show_text_boxes(instant)
+
 		if !dialogic.current_state_info['text'].is_empty():
 			animation_textbox_new_text.emit()
+
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
 
+
+
+## Shows the given text on all visible DialogText nodes.
+## Instant can be used to skip all revieling.
+## If additional is true, the previous text will be kept.
+func update_dialog_text(text: String, instant := false, additional := false) -> String:
+	update_text_speed()
+
+
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 	dialogic.current_state_info['text'] = text
+
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		connect_meta_signals(text_node)
+
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
+
 			if instant:
 				text_node.text = text
+
 			else:
 				text_node.reveal_text(text, additional)
+
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
+
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
-	# also resets temporary autoadvance and noskip settings:
+	# Reset Auto-Advance temporarily and the No-Skip setting:
 	update_text_speed(-1, false, 1, -1)
-
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
 	dialogic.Inputs.set_manualadvance(true, true)
+  
 	set_text_reveal_skippable(true, true)
+
 	return text
 
 
-func _on_dialog_text_finished():
+func _on_dialog_text_finished() -> void:
 	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
@@ -209,33 +226,55 @@ func hide_next_indicators(_fake_arg = null) -> void:
 		next_indicator.hide()
 
 
-func update_text_speed(letter_speed:float = -1, absolute:bool = false, _speed_multiplier:float= -1, _user_speed:float=-1) -> void:
+## This method will sync the text speed to the voice audio clip length, if a
+## voice is playing.
+## For instance, if the voice is playing for four seconds, the text will finish
+## revealing after this time.
+## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
+## the reveal.
+func set_text_voice_synced(enabled: bool = true) -> void:
+	_voice_synced_text = enabled
+	update_text_speed()
+
+
+## Returns whether voice-synced text is enabled.
+func is_text_voice_synced() -> bool:
+	return _voice_synced_text
+
+
+## Sets how fast text will be revealed.
+##
+## [param absolute] will force test to display at the given speed, regardless
+## of the user's text speed setting.
+##
+## [param _speed_multiplier] adjusts the speed of the text, if set to -1,
+## the value won't be updated and the current value will persist.
+##
+## [param _user_speed] adjusts the speed of the text, if set to -1, the
+## project setting 'text_speed' will be used.operator
+func update_text_speed(letter_speed: float = -1,
+		absolute := false,
+		speed_multiplier := _speed_multiplier,
+		user_speed: float = dialogic.Settings.get_setting('text_speed', 1)) -> void:
+
 	if letter_speed == -1:
 		letter_speed = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
+
 	_pure_letter_speed = letter_speed
 	_letter_speed_absolute = absolute
-
-	if _speed_multiplier == -1:
-		_speed_multiplier = speed_multiplier
-	else:
-		speed_multiplier = _speed_multiplier
-
-	if _user_speed == -1:
-		_user_speed = dialogic.Settings.get_setting('text_speed', 1)
-
+	_speed_multiplier = speed_multiplier
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if absolute:
 			text_node.lspeed = letter_speed
 		else:
-			text_node.lspeed = letter_speed*_speed_multiplier*_user_speed
-
-
+			text_node.lspeed = letter_speed * _speed_multiplier * user_speed
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
 	if !dialogic.current_state_info.has('text_reveal_skippable'):
 		dialogic.current_state_info['text_reveal_skippable'] = {'enabled':false, 'temp_enabled':false}
+
 	if temp:
 		dialogic.current_state_info['text_reveal_skippable']['temp_enabled'] = skippable
 	else:
@@ -352,14 +391,15 @@ func _update_user_speed(user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
-func connect_meta_signals() -> void:
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if not text_node.meta_clicked.is_connected(emit_meta_signal):
-			text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
-		if not text_node.meta_hover_started.is_connected(emit_meta_signal):
-			text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
-		if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
-			text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
+func connect_meta_signals(text_node: Node) -> void:
+	if not text_node.meta_clicked.is_connected(emit_meta_signal):
+		text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
+
+	if not text_node.meta_hover_started.is_connected(emit_meta_signal):
+		text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
+
+	if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
+		text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
 
 
 func emit_meta_signal(meta:Variant, sig:String) -> void:
@@ -418,12 +458,15 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
+
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
-		elif speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-			await get_tree().create_timer(float(argument)*speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
-	elif speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-		await get_tree().create_timer(0.5*speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+
+		elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
+			await get_tree().create_timer(float(argument) * _speed_multiplier * dialogic.Settings.get_setting('text_speed', 1)).timeout
+
+	elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
+		await get_tree().create_timer(0.5 * _speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
 
 
 func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:

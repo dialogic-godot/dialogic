@@ -17,17 +17,25 @@ enum Alignment {LEFT, CENTER, RIGHT}
 
 var revealing := false
 var base_visible_characters := 0
-# time per character
-var lspeed:float = 0.01
-var speed_counter:float = 0
 
+# Letter speed used per revealed character.
+var lspeed: float = 0.01
+# The used speed per revealed character.
+# May be overwritten when syncing reveal speed to voice.
+var active_speed: float = lspeed
+var speed_counter: float = 0
 
-func _set(property:StringName, what:Variant) -> bool:
-	if property == &'text' and typeof(what) == TYPE_STRING:
+func _set(property: StringName, what: Variant) -> bool:
+	if property == 'text' and typeof(what) == TYPE_STRING:
+
 		text = what
+
 		if hide_when_empty:
-			textbox_root.visible = !text.is_empty()
+			textbox_root.visible = !what.is_empty()
+
 		return true
+	return false
+
 	return false
 
 
@@ -45,7 +53,8 @@ func _ready() -> void:
 
 
 # this is called by the DialogicGameHandler to set text
-func reveal_text(_text:String, keep_previous:bool=false) -> void:
+
+func reveal_text(_text: String, keep_previous:=false) -> void:
 	if !enabled:
 		return
 	show()
@@ -59,10 +68,11 @@ func reveal_text(_text:String, keep_previous:bool=false) -> void:
 		elif alignment == Alignment.RIGHT:
 			text = '[right]'+text
 		visible_characters = 0
+
 	else:
 		base_visible_characters = len(text)
 		visible_characters = len(text)
-		text = text+_text
+		text = text + _text
 
 		# If Auto-Skip is enabled and we append the text (keep_previous),
 		# we can skip revealing the text and just show it all at once.
@@ -70,19 +80,32 @@ func reveal_text(_text:String, keep_previous:bool=false) -> void:
 			visible_characters = 1
 			return
 
+	if DialogicUtil.autoload().Text.is_text_voice_synced() and DialogicUtil.autoload().Voice.is_running():
+		var total_characters := get_total_character_count() as float
+		var remaining_time: float = DialogicUtil.autoload().Voice.get_remaining_time()
+		var synced_speed :=  remaining_time / total_characters
+		active_speed = synced_speed
+
+	else:
+		active_speed = lspeed
+
+
 	revealing = true
 	speed_counter = 0
 	started_revealing_text.emit()
 
 
-# called by the timer -> reveals more text
+## Reveals one additional character.
 func continue_reveal() -> void:
 	if visible_characters <= get_total_character_count():
 		revealing = false
-		await DialogicUtil.autoload().Text.execute_effects(visible_characters-base_visible_characters, self, false)
+
+		var current_index := visible_characters - base_visible_characters
+		await DialogicUtil.autoload().Text.execute_effects(current_index, self, false)
 
 		if visible_characters == -1:
 			return
+
 		revealing = true
 		visible_characters += 1
 
@@ -96,8 +119,7 @@ func continue_reveal() -> void:
 		DialogicUtil.autoload().Inputs.block_input(0.3)
 
 
-# shows all the text imidiatly
-# called by this thing itself or the DialogicGameHandler
+## Reveals the entire text instantly.
 func finish_text() -> void:
 	visible_ratio = 1
 	DialogicUtil.autoload().Text.execute_effects(-1, self, true)
@@ -107,13 +129,13 @@ func finish_text() -> void:
 	finished_revealing_text.emit()
 
 
-# Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.
-func _process(delta:float) -> void:
+## Checks if the next character in the text can be revealed.
+func _process(delta: float) -> void:
 	if !revealing or DialogicUtil.autoload().paused:
 		return
 
 	speed_counter += delta
 
-	while speed_counter > lspeed and revealing and !DialogicUtil.autoload().paused:
-		speed_counter -= lspeed
+	while speed_counter > active_speed and revealing and !DialogicUtil.autoload().paused:
+		speed_counter -= active_speed
 		continue_reveal()
