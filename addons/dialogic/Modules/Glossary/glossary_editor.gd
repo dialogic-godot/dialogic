@@ -50,6 +50,7 @@ func set_setting(value: Variant, setting: String)  -> void:
 	ProjectSettings.set_setting(setting, value)
 	ProjectSettings.save()
 
+
 func _open(_argument: Variant = null) -> void:
 	%DefaultColor.color = ProjectSettings.get_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
 	%DefaultCaseSensitive.button_pressed = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
@@ -95,7 +96,11 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 
 		var entry_idx := 0
 
-		for entry in current_glossary.entries:
+		for entry: Variant in current_glossary.entries.values():
+
+			if entry is String:
+				continue
+
 			%EntryList.add_item(entry.get("name", ""), get_theme_icon("Breakpoint", "EditorIcons"))
 			var modulate_color: Color = entry.get('color', %DefaultColor.color)
 			%EntryList.set_item_metadata(entry_idx, entry)
@@ -152,6 +157,7 @@ func _on_delete_glossary_file_pressed() -> void:
 		ProjectSettings.save()
 
 		_open()
+
 
 ################################################################################
 ##					ENTRY LIST
@@ -243,13 +249,27 @@ func hide_entry_editor() -> void:
 	%EntrySettings.hide()
 
 
+func _update_alias_entries(old_alias_value_key: String, new_alias_value_key: String) -> void:
+	for entry_key: String in current_glossary.entries.keys():
+
+		var entry_value: Variant = current_glossary.entries.get(entry_key)
+
+		if not entry_value is String:
+			continue
+
+		if not entry_value == old_alias_value_key:
+			continue
+
+		current_glossary.entries[entry_key] = new_alias_value_key
+
+
 func _on_entry_name_text_changed(new_name: String) -> void:
 	new_name = new_name.strip_edges()
 
 	if current_entry_name != new_name:
 		var selected_item: int = %EntryList.get_selected_items()[0]
 
-		if new_name.is_empty() or new_name in current_glossary._entry_keys:
+		if new_name.is_empty() or new_name in current_glossary.entries.keys():
 			%EntryList.set_item_custom_bg_color(selected_item,
 					get_theme_color("warning_color", "Editor").darkened(0.8))
 			%EntryList.set_item_text(selected_item, new_name + " (invalid name)")
@@ -262,6 +282,9 @@ func _on_entry_name_text_changed(new_name: String) -> void:
 			)
 
 		print_rich("[color=green]Renaming entry '" + current_entry_name + "'' to '" + new_name + "'[/color]")
+
+		_update_alias_entries(current_entry_name, new_name)
+
 		current_glossary.replace_entry_key(current_entry_name, new_name)
 
 

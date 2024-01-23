@@ -39,7 +39,12 @@ func parse_glossary(text: String) -> String:
 		if !glossary.enabled:
 			continue
 
-		for entry: Dictionary in glossary.entries:
+		for entry_value: Variant in glossary.entries.values():
+
+			if not entry_value is Dictionary:
+				continue
+
+			var entry: Dictionary = entry_value
 			var entry_key: String = entry[DialogicGlossary.NAME_PROPERTY]
 
 			if not entry.get('enabled', true):
@@ -95,10 +100,10 @@ func add_glossary(path:String) -> void:
 func find_glossary(entry_key: String) -> DialogicGlossary:
 	for glossary: DialogicGlossary in glossaries:
 
-		if glossary._entry_keys.has(entry_key):
+		if glossary.entries.has(entry_key):
 			return glossary
 
-		if glossary._translation_keys.has(entry_key):
+		if glossary.entries.has(entry_key):
 			return glossary
 
 	return null

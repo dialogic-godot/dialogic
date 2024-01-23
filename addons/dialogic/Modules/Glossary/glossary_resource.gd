@@ -5,7 +5,10 @@ class_name DialogicGlossary
 extends Resource
 
 ## Stores all entries for the glossary.
-@export var entries: Array[Dictionary] = []
+##
+## The value may either be a dictionary, representing an entry, or
+## a string, representing the actual key for the key used.
+@export var entries: Dictionary = {}
 
 ## If false, no entries from this glossary will be shown
 @export var enabled: bool = true
@@ -43,22 +46,24 @@ const _MISSING_ENTRY_INDEX := -1
 ## The values (String) are the translation ID.
 @export var _translation_keys: Dictionary = {}
 
-## Private lookup table used to find the correct entry index for a glossary
-## entry key such as "name" or "alternatives".
-## The values correspond to the matching index in [member entries].
-##
-## We cannot use use a dictionary with multiple keys for the [member entries]
-## leading to the same in-memory dictionaries, because when this resource
-## is saved to disk, the dictionary references will turn into duplicates.
-@export var _entry_keys: Dictionary = {}
 
 func __get_property_list() -> Array:
 	return []
 
 
 ## Erases an entry key based the given [param entry_key].
-func remove_entry_key(entry_key: String) -> void:
-	_entry_keys.erase(entry_key)
+##
+## Returns true if [param entry_key] lead to a value and the value
+## was an alias.
+func remove_entry_key(entry_key: String) -> bool:
+	var value: Variant = entries.get(entry_key, null)
+
+	if value == null or value is Dictionary:
+		return false
+
+	entries.erase(entry_key)
+
+	return true
 
 
 ## Updates the glossary entry's name and the [member _entry_keys] lookup table.
@@ -66,94 +71,57 @@ func remove_entry_key(entry_key: String) -> void:
 ## The [param new_entry_key] is the new unique name of the entry.
 ##
 ## This method fails if the [param old_entry_key] does not exist.
+## Do not use this to update alternative names.
 func replace_entry_key(old_entry_key: String, new_entry_key: String) -> void:
-	var entry_index: int = _find_entry_index_by_key(old_entry_key)
+	var entry := get_entry(old_entry_key)
 
-	if entry_index == _MISSING_ENTRY_INDEX:
+	if entry == null:
 		return
 
-	var entry := entries[entry_index]
+	entry.name = new_entry_key
 
-	entry[NAME_PROPERTY] = new_entry_key
-
-	_entry_keys.erase(old_entry_key)
-	_entry_keys[new_entry_key] = entry_index
+	entries.erase(old_entry_key)
+	entries[new_entry_key] = entry
 
 
-## If the entry key does not exist, the entry may still exist.
-## This happens when a manipulation of the glossary fails at some point or
-## the file is corrupted.
+## Gets the glossary entry for the given [param entry_key].
+## If there is no matching entry, an empty Dictionary will be returned.
+## Valid glossary entry dictionaries will never be empty.
+func get_entry(entry_key: String) -> Dictionary:
+	var entry: Variant = entries.get(entry_key, {})
+
+	# Handle alias value.
+	if entry is String:
+		entry = entries.get(entry, {})
+
+	return entry
+
+
+## Gets the glossary entry name for the given [param entry_key].
+## This key may be an alias, such as a translation ID or an alternative word.
 ##
-## Runtime complexity:
-## In case where the entry key couldn't be found, the runtime complexity is
-## O(n), where n is the number of entries in this glossary.
-func _find_entry_index_by_key(entry_key: String) -> int:
-	var entry_index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
-	var is_valid := entry_index < entries.size()
+## Returns an empty string if the entry does not exist.
+func get_entry_name(entry_key: String) -> String:
+	var entry: Dictionary = get_entry(entry_key)
 
-	if entry_index == _MISSING_ENTRY_INDEX or not is_valid:
+	if entry == null:
+		return ""
 
-		for i in entries.size():
-			var entry: Dictionary = entries[i]
-
-			if (entry[NAME_PROPERTY] == entry_key
-			or entry_key in entry.get(ALTERNATIVE_PROPERTY, [])):
-				return i
-
-		return _MISSING_ENTRY_INDEX
-
-	return entry_index
+	return entry[NAME_PROPERTY]
 
 
 ## Erases an entry from this glossary.
 ##
-## Returns -1 if the entry does not exist.
-func erase_entry(entry_key: String) -> int:
-	var entry_index: int = _find_entry_index_by_key(entry_key)
+## Returns false if the entry does not exist.
+func erase_entry(entry_key: String) -> bool:
+	var entry_name := get_entry_name(entry_key)
 
-	if _MISSING_ENTRY_INDEX:
-		return _MISSING_ENTRY_INDEX
+	if entry_name.is_empty():
+		return false
 
-	_remove_entry_at(entry_index)
-	_entry_keys.erase(entry_key)
+	entries.erase(entry_name)
 
-	return entry_index
-
-
-## Removes an entry at the given [param entry_index].
-## Does not remove the matching entry key from the [member _entry_keys]
-## lookup table.
-func _remove_entry_at(entry_index: int) -> void:
-	entries.remove_at(entry_index)
-
-	for key: String in _entry_keys.keys():
-		var index: int = _entry_keys[key]
-
-		if index == entry_index:
-			_entry_keys.erase(key)
-
-		elif index > entry_index:
-			_entry_keys[key] = index - 1
-
-
-
-## The [param entry_key] must be valid name of an entry.
-## Valid names are the unique entry "name" or any of the comma-delimited
-## "alternatives".
-##
-## If the [param entry_key] is not valid, an empty dictionary will be returned.
-## A valid dictionary is never empty.
-##
-## The returned dictionary is a reference and can be mutated.
-## Be aware, the glossary resource must be saved to disc for the changes to
-## to persist.
-func get_entry(entry_name: String) -> Dictionary:
-	var entry_key: int = _entry_keys.get(entry_name, _MISSING_ENTRY_INDEX)
-
-	if entries.size() > entry_key:
-		return entries[entry_key]
-
-	return {}
+	return true
 
 
 ## The [param entry_key] must be valid entry key for an entry.
@@ -161,29 +129,15 @@ func get_entry(entry_name: String) -> Dictionary:
 ##
 ## Returns the index of the entry, -1 if the entry does not exist.
 func add_entry_key_alias(entry_key: String, alias: String) -> bool:
-	var index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
+	var entry := get_entry(entry_key)
+	var alias_entry := get_entry(alias)
 
-	if index == _MISSING_ENTRY_INDEX:
-		return _MISSING_ENTRY_INDEX
+	if not entry.is_empty() and alias_entry.is_empty():
+		entries[alias] = entry_key
+		return true
 
-	_entry_keys[alias] = index
-	return index
+	return false
 
-
-## Adds a new entry to this glossary.
-## Adds the name and alternatives as entry keys.
-##
-## This is a private method, it's recommended to use [method set_entry],
-## which uses this method internally, if the entry key does not exist yet.
-func _add_entry(entry: Dictionary) -> void:
-	var entry_key: String = entry[NAME_PROPERTY]
-	entries.append(entry)
-	var highest_new_index := entries.size() - 1
-
-	for alternative: String in entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, []):
-		_entry_keys[alternative] = highest_new_index
-
-	_entry_keys[entry_key] = highest_new_index
 
 ## Adds a glossary entry.
 ## Sets [param entry_key] as valid entry key and [param entry] as
@@ -195,13 +149,7 @@ func _add_entry(entry: Dictionary) -> void:
 ## To update an entry, use [method get_entry] and mutate the returned
 ## dictionary.
 func set_entry(entry_key: String, entry: Dictionary) -> void:
-	var entry_index: int = _entry_keys.get(entry_key, _MISSING_ENTRY_INDEX)
-
-	if entry_index == _MISSING_ENTRY_INDEX:
-		_add_entry(entry)
-
-	else:
-		entries[entry_index] = entry
+	entries[entry_key] = entry
 
 
 ## Returns an array of words that can trigger the glossary popup.
@@ -296,10 +244,10 @@ func remove_entry_translation_ids() -> void:
 func clear_translation_keys() -> void:
 	const RESOURCE_NAME_KEY := RESOURCE_NAME + "/"
 
-	for translation_key: String in _entry_keys.keys():
+	for translation_key: String in entries.keys():
 
 		if translation_key.begins_with(RESOURCE_NAME_KEY):
-			_entry_keys.erase(translation_key)
+			entries.erase(translation_key)
 
 	_translation_keys.clear()
 
@@ -309,12 +257,11 @@ func clear_translation_keys() -> void:
 ## Time complexity: O(1)
 func get_property_translation_key(entry_key: String, property: String) -> String:
 	print("[GLOSSARY] Getting translation key for: " + entry_key + " and property: " + property)
-	var entry_index: int = _find_entry_index_by_key(entry_key)
+	var entry := get_entry(entry_key)
 
-	if entry_index == _MISSING_ENTRY_INDEX:
+	if entry == null:
 		return ""
 
-	var entry := entries[entry_index]
 	var entry_translation_key: String = entry.get(TRANSLATION_PROPERTY, "")
 
 	if entry_translation_key.is_empty() or _translation_id.is_empty():
