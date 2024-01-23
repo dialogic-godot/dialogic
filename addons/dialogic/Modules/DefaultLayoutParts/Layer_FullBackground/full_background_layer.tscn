@@ -1,14 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1k5m0w3r40xf"]
+[gd_scene load_steps=3 format=3 uid="uid://c1k5m0w3r40xf"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.gd" id="1_tu40u"]
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_ghan2"]
-[ext_resource type="Shader" path="res://addons/dialogic/Modules/Background/Transitions/default_transition_shader.gdshader" id="2_mwc4m"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_msuxf"]
-shader = ExtResource("2_mwc4m")
-shader_parameter/progress = 0.0
-shader_parameter/feather = 0.1
-shader_parameter/keep_aspect_ratio = false
 
 [node name="BackgroundLayer" type="Control"]
 layout_mode = 3
@@ -20,11 +13,11 @@ grow_vertical = 2
 script = ExtResource("1_tu40u")
 
 [node name="DialogicNode_BackgroundHolder" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_msuxf")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("2_ghan2")
