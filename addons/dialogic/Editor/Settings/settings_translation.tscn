@@ -355,7 +355,7 @@ dialog_text = "You are about to:
 -   Delete the related translation files.
 -   Remove translation IDs from timelines and characters.
 -   Remove all \"dialogic\" prefixed translations from \"Project Settings -> Localization\".
--   Remove the \"_translation_keys\" and entries in \"_entry_keys\" starting with \"Glossary/\"."
+-   Remove the \"_translation_keys\" and \"entries\" starting with \"Glossary/\"."
 dialog_autowrap = true
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]

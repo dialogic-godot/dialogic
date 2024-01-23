@@ -27,7 +27,7 @@ func test_add_entry() -> void:
 	const NAME_COUNTER := 1
 	var total_entry_count := ALTERNATIVE_ENTRIES.size() + NAME_COUNTER
 
-	var error :=  "Must have " + str(total_entry_count) + " entries, not " + str(glossary._entry_keys.size()) + "."
+	var error :=  "Must have " + str(total_entry_count) + " entries, not " + str(glossary.entries.size()) + "."
 	assert(glossary.entries.size() == total_entry_count, error)
 
 	for alternative: String in ALTERNATIVE_ENTRIES:

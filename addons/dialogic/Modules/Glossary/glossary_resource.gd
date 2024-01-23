@@ -8,6 +8,8 @@ extends Resource
 ##
 ## The value may either be a dictionary, representing an entry, or
 ## a string, representing the actual key for the key used.
+## The string key-value pairs are the alias keys, they allow to redirect
+## the actual glossary entry.
 @export var entries: Dictionary = {}
 
 ## If false, no entries from this glossary will be shown
@@ -66,7 +68,7 @@ func remove_entry_key(entry_key: String) -> bool:
 	return true
 
 
-## Updates the glossary entry's name and the [member _entry_keys] lookup table.
+## Updates the glossary entry's name and related alias keys.
 ## The [param old_entry_key] is the old unique name of the entry.
 ## The [param new_entry_key] is the new unique name of the entry.
 ##
