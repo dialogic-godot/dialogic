@@ -32,7 +32,7 @@ static func autoload() -> DialogicGameHandler:
 
 #region FILE SYSTEM
 ################################################################################
-static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false, include_imports := false) -> Array:
+static func listdir(path: String, files_only:= true, throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
 	var files: Array = []
 	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
@@ -84,10 +84,10 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
 
-	var indexers : Array[DialogicIndexer] = []
+	var indexers: Array[DialogicIndexer] = []
 
 	for file in listdir(DialogicUtil.get_module_path(''), false):
-		var possible_script:String = DialogicUtil.get_module_path(file).path_join("index.gd")
+		var possible_script: String = DialogicUtil.get_module_path(file).path_join("index.gd")
 		if FileAccess.file_exists(possible_script):
 			indexers.append(load(possible_script).new())
 
@@ -205,9 +205,9 @@ enum VarTypes {ANY, STRING, FLOAT, INT, BOOL}
 static func get_default_variables() -> Dictionary:
 	return ProjectSettings.get_setting('dialogic/variables', {})
 
+
 # helper that converts a nested variable dictionary into an array with paths
 static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> Array:
-
 	var array := []
 	for key in dict.keys():
 		if typeof(dict[key]) == TYPE_DICTIONARY:
@@ -263,7 +263,6 @@ static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default
 	return default
 
 #endregion
-
 
 
 
@@ -347,7 +346,7 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 ################################################################################
 
 static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, property_changed:Callable) -> Control:
-	var input :Control = null
+	var input: Control = null
 	match property_info['type']:
 		TYPE_BOOL:
 			input = CheckBox.new()
@@ -413,7 +412,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
 			elif property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
-				var options :PackedStringArray = []
+				var options: PackedStringArray = []
 				for x in property_info['hint_string'].split(','):
 					options.append(x.split(':')[0].strip_edges())
 					input.add_item(options[-1])
@@ -434,6 +433,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.text = value
 			input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_info.name, property_changed))
 	return input
+
 
 static func _on_export_input_text_submitted(text:String, property_name:String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(text))
