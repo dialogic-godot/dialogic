@@ -28,7 +28,7 @@ func _execute() -> void:
 
 	if clear_textbox and dialogic.has_subsystem("Text"):
 		dialogic.Text.update_dialog_text('')
-		dialogic.Text.hide_text_boxes()
+		dialogic.Text.hide_textbox()
 		dialogic.current_state = dialogic.States.IDLE
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 

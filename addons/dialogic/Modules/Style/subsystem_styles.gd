@@ -4,8 +4,8 @@ extends DialogicSubsystem
 
 signal style_changed(info:Dictionary)
 
-####################################################################################################
-##					STATE
+
+#region STATE
 ####################################################################################################
 
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
@@ -17,9 +17,10 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 		return
 	load_style(dialogic.current_state_info.get('style', ''))
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 func load_style(style_name:="", is_base_style:=true) -> Node:
@@ -71,7 +72,7 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 
 	# Load base scene
-	var base_scene : DialogicLayoutBase
+	var base_scene: DialogicLayoutBase
 	if style.base_scene == null:
 		base_scene = DialogicUtil.get_default_layout_base().instantiate()
 	else:
@@ -89,7 +90,7 @@ func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 		if not ResourceLoader.exists(layer.path):
 			continue
 
-		var layer_scene : DialogicLayoutLayer = null
+		var layer_scene: DialogicLayoutLayer = null
 
 		if ResourceLoader.load_threaded_get_status(layer.path) == ResourceLoader.THREAD_LOAD_LOADED:
 			layer_scene = ResourceLoader.load_threaded_get(layer.path).instantiate()
@@ -138,13 +139,16 @@ func get_layout_node() -> Node:
 
 	return null
 
+
 ## Similar to get_tree().get_first_node_in_group('group_name') but filtered to the active layout node subtree
 func get_first_node_in_layout(group_name : String):
 	var layout_node := get_layout_node()
 	if null == layout_node:
 		return null
-	var nodes = get_tree().get_nodes_in_group(group_name)
+	var nodes := get_tree().get_nodes_in_group(group_name)
 	for node in nodes:
 		if layout_node.is_ancestor_of(node):
 			return node
 	return null
+
+#endregion

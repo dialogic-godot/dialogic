@@ -11,22 +11,23 @@ var choice_blocker := Timer.new()
 
 var last_question_info := {}
 
-func _ready():
-	choice_blocker.one_shot = true
-	DialogicUtil.update_timer_process_callback(choice_blocker)
-	add_child(choice_blocker)
 
-
-####################################################################################################
-##					STATE
+#region STATE
 ####################################################################################################
 
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	hide_all_choices()
 
 
-####################################################################################################
-##					MAIN METHODS
+func _ready():
+	choice_blocker.one_shot = true
+	DialogicUtil.update_timer_process_callback(choice_blocker)
+	add_child(choice_blocker)
+
+#endregion
+
+
+#region MAIN METHODS
 ####################################################################################################
 
 ## Hides all choice buttons.
@@ -43,7 +44,7 @@ func show_current_choices(instant:=true) -> void:
 	choice_blocker.stop()
 
 	var reveal_delay := float(ProjectSettings.get_setting('dialogic/choices/reveal_delay', 0.0))
-	var reveal_by_input :bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
+	var reveal_by_input: bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
 
 	if !instant and (reveal_delay != 0 or reveal_by_input):
 		if reveal_delay != 0:
@@ -137,6 +138,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 	if not shown_at_all:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
+
 func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 	if dialogic.paused or not choice_blocker.is_stopped():
 		return
@@ -148,7 +150,7 @@ func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 
 func get_current_choice_indexes() -> Array:
 	var choices := []
-	var evt_idx :int= dialogic.current_event_idx
+	var evt_idx := dialogic.current_event_idx
 	var ignore := 0
 	while true:
 
@@ -169,8 +171,10 @@ func get_current_choice_indexes() -> Array:
 			ignore -= 1
 	return choices
 
-####################################################################################################
-##					HELPERS
+#endregion
+
+
+#region HELPERS
 ####################################################################################################
 
 func is_question(index:int) -> bool:
@@ -180,3 +184,4 @@ func is_question(index:int) -> bool:
 				return true
 	return false
 
+#endregion
