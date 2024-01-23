@@ -39,7 +39,7 @@ func _execute() -> void:
 		var args := []
 		for arg in arguments:
 			if arg is String and arg.begins_with('@'):
-				args.append(dialogic.Expression.execute_string(arg.trim_prefix('@')))
+				args.append(dialogic.Expressions.execute_string(arg.trim_prefix('@')))
 			else:
 				args.append(arg)
 		dialogic.current_state = dialogic.States.WAITING

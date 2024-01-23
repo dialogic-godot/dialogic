@@ -8,15 +8,15 @@ func _get_events() -> Array:
 
 func _get_subsystems() -> Array:
 	return [
-		{'name':'Expression', 'script':this_folder.path_join('subsystem_expression.gd')},
-		{'name':'Animation', 'script':this_folder.path_join('subsystem_animation.gd')},
-		{'name':'Input', 'script':this_folder.path_join('subsystem_input.gd')},
+		{'name':'Expressions', 'script':this_folder.path_join('subsystem_expression.gd')},
+		{'name':'Animations', 'script':this_folder.path_join('subsystem_animation.gd')},
+		{'name':'Inputs', 'script':this_folder.path_join('subsystem_input.gd')},
 		]
 
 
 func _get_text_effects() -> Array[Dictionary]:
 	return [
-		{'command':'aa', 'subsystem':'Input', 'method':'effect_autoadvance'},
-		{'command':'ns', 'subsystem':'Input', 'method':'effect_noskip'},
-		{'command':'input', 'subsystem':'Input', 'method':'effect_input'},
+		{'command':'aa', 'subsystem':'Inputs', 'method':'effect_autoadvance'},
+		{'command':'ns', 'subsystem':'Inputs', 'method':'effect_noskip'},
+		{'command':'input', 'subsystem':'Inputs', 'method':'effect_input'},
 	]
