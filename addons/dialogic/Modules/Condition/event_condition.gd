@@ -24,7 +24,7 @@ func _execute() -> void:
 
 	if condition.is_empty(): condition = "true"
 
-	var result :bool= dialogic.Expression.execute_condition(condition)
+	var result :bool= dialogic.Expressions.execute_condition(condition)
 	if not result:
 		var idx :int= dialogic.current_event_idx
 		var ignore := 1

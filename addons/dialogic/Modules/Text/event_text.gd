@@ -55,25 +55,25 @@ func _mark_as_read(final_text: String) -> void:
 		dialogic.History.event_was_read(self)
 
 func _connect_signals() -> void:
-	if not dialogic.Input.dialogic_action.is_connected(_on_dialogic_input_action):
-		dialogic.Input.dialogic_action.connect(_on_dialogic_input_action)
+	if not dialogic.Inputs.dialogic_action.is_connected(_on_dialogic_input_action):
+		dialogic.Inputs.dialogic_action.connect(_on_dialogic_input_action)
 
-		dialogic.Input.auto_skip.toggled.connect(_on_auto_skip_enable)
+		dialogic.Inputs.auto_skip.toggled.connect(_on_auto_skip_enable)
 
-	if not dialogic.Input.auto_advance.autoadvance.is_connected(_on_dialogic_input_autoadvance):
-		dialogic.Input.auto_advance.autoadvance.connect(_on_dialogic_input_autoadvance)
+	if not dialogic.Inputs.auto_advance.autoadvance.is_connected(_on_dialogic_input_autoadvance):
+		dialogic.Inputs.auto_advance.autoadvance.connect(_on_dialogic_input_autoadvance)
 
 ## If the event is done, this method can clean-up signal connections.
 func _disconnect_signals() -> void:
-	dialogic.Input.dialogic_action.disconnect(_on_dialogic_input_action)
-	dialogic.Input.auto_advance.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	dialogic.Input.auto_skip.toggled.disconnect(_on_auto_skip_enable)
+	dialogic.Inputs.dialogic_action.disconnect(_on_dialogic_input_action)
+	dialogic.Inputs.auto_advance.autoadvance.disconnect(_on_dialogic_input_autoadvance)
+	dialogic.Inputs.auto_skip.toggled.disconnect(_on_auto_skip_enable)
 
 ## Tries to play the voice clip for the current line.
 func _try_play_current_line_voice() -> void:
 	# If Auto-Skip is enabled and we skip voice clips, we don't want to play.
-	if (dialogic.Input.auto_skip.enabled
-	and dialogic.Input.auto_skip.skip_voice):
+	if (dialogic.Inputs.auto_skip.enabled
+	and dialogic.Inputs.auto_skip.skip_voice):
 		return
 
 	# Plays the audio region for the current line.
@@ -149,7 +149,7 @@ func _execute() -> void:
 
 		# We must skip text animation before we potentially return when there
 		# is a Choice event.
-		if dialogic.Input.auto_skip.enabled:
+		if dialogic.Inputs.auto_skip.enabled:
 			dialogic.Text.skip_text_animation()
 		else:
 			await dialogic.Text.text_finished
@@ -162,9 +162,9 @@ func _execute() -> void:
 			dialogic.Choices.show_current_choices(false)
 			dialogic.current_state = dialogic.States.AWAITING_CHOICE
 			return
-		elif dialogic.Input.auto_advance.is_enabled():
+		elif dialogic.Inputs.auto_advance.is_enabled():
 			dialogic.Text.show_next_indicators(false, true)
-			dialogic.Input.auto_advance.start()
+			dialogic.Inputs.auto_advance.start()
 		else:
 			dialogic.Text.show_next_indicators()
 
@@ -173,11 +173,11 @@ func _execute() -> void:
 
 		# If Auto-Skip is enabled and there are multiple parts of this text
 		# we need to skip the text after the defined time per event.
-		if dialogic.Input.auto_skip.enabled:
-			await dialogic.Input.start_autoskip_timer()
+		if dialogic.Inputs.auto_skip.enabled:
+			await dialogic.Inputs.start_autoskip_timer()
 
 			# Check if Auto-Skip is still enabled.
-			if not dialogic.Input.auto_skip.enabled:
+			if not dialogic.Inputs.auto_skip.enabled:
 				await advance
 
 		else:
@@ -191,13 +191,13 @@ func _on_dialogic_input_action():
 		States.REVEALING:
 			if dialogic.Text.can_skip_text_reveal():
 				dialogic.Text.skip_text_animation()
-				dialogic.Input.stop()
-				dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				dialogic.Inputs.stop()
+				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
-			if dialogic.Input.is_manualadvance_enabled():
+			if dialogic.Inputs.is_manualadvance_enabled():
 				advance.emit()
-				dialogic.Input.stop()
-				dialogic.Input.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				dialogic.Inputs.stop()
+				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 
 func _on_dialogic_input_autoadvance():
@@ -211,10 +211,10 @@ func _on_auto_skip_enable(enabled: bool):
 
 	match state:
 		States.DONE:
-			await dialogic.Input.start_autoskip_timer()
+			await dialogic.Inputs.start_autoskip_timer()
 
 			# If Auto-Skip is still enabled, advance the text.
-			if dialogic.Input.auto_skip.enabled:
+			if dialogic.Inputs.auto_skip.enabled:
 				advance.emit()
 
 		States.REVEALING:

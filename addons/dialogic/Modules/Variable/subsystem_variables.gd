@@ -99,7 +99,7 @@ func get_variable(variable_path:String, default :Variant= null) -> Variant:
 
 	# Second assume this is an expression.
 	else:
-		value = dialogic.Expression.execute_string(variable_path, null)
+		value = dialogic.Expressions.execute_string(variable_path, null)
 		if value != null:
 			return value
 

@@ -97,8 +97,8 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 		await show_text_boxes(instant)
 		if !dialogic.current_state_info['text'].is_empty():
 			animation_textbox_new_text.emit()
-			if dialogic.Animation.is_animating():
-				await dialogic.Animation.finished
+			if dialogic.Animations.is_animating():
+				await dialogic.Animations.finished
 
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 	dialogic.current_state_info['text'] = text
@@ -115,9 +115,9 @@ func update_dialog_text(text:String, instant:bool= false, additional:= false) ->
 	# also resets temporary autoadvance and noskip settings:
 	update_text_speed(-1, false, 1, -1)
 
-	dialogic.Input.auto_advance.enabled_until_next_event = false
-	dialogic.Input.auto_advance.override_delay_for_current_event = -1
-	dialogic.Input.set_manualadvance(true, true)
+	dialogic.Inputs.auto_advance.enabled_until_next_event = false
+	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
+	dialogic.Inputs.set_manualadvance(true, true)
 	set_text_reveal_skippable(true, true)
 	return text
 
@@ -167,8 +167,8 @@ func hide_text_boxes(instant:=false) -> void:
 		name_label.text = ""
 	if !emitted and !get_tree().get_nodes_in_group('dialogic_dialog_text').is_empty() and get_tree().get_nodes_in_group('dialogic_dialog_text')[0].textbox_root.visible:
 		animation_textbox_hide.emit()
-		if dialogic.Animation.is_animating():
-			await dialogic.Animation.finished
+		if dialogic.Animations.is_animating():
+			await dialogic.Animations.finished
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.textbox_root.visible and !emitted:
 			textbox_visibility_changed.emit(false)
@@ -187,8 +187,8 @@ func show_text_boxes(instant:=false) -> void:
 		if !text_node.textbox_root.visible and !emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
-			if dialogic.Animation.is_animating():
-				await dialogic.Animation.finished
+			if dialogic.Animations.is_animating():
+				await dialogic.Animations.finished
 			textbox_visibility_changed.emit(true)
 			emitted = true
 		else:
@@ -412,7 +412,7 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 		return
 
 	# We want to ignore pauses if we're skipping.
-	if dialogic.Input.auto_skip.enabled:
+	if dialogic.Inputs.auto_skip.enabled:
 		return
 
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)

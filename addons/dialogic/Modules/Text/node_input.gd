@@ -18,4 +18,4 @@ func _input(event: InputEvent) -> void:
 func _on_gui_input(event:InputEvent) -> void:
 	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if event is InputEventMouseButton and event.pressed:
-			DialogicUtil.autoload().Input.handle_input()
+			DialogicUtil.autoload().Inputs.handle_input()

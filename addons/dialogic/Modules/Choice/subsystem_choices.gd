@@ -50,13 +50,13 @@ func show_current_choices(instant:=true) -> void:
 			choice_blocker.start(reveal_delay)
 			choice_blocker.timeout.connect(show_current_choices)
 		if reveal_by_input:
-			dialogic.Input.dialogic_action.connect(show_current_choices)
+			dialogic.Inputs.dialogic_action.connect(show_current_choices)
 		return
 
 	if choice_blocker.timeout.is_connected(show_current_choices):
 		choice_blocker.timeout.disconnect(show_current_choices)
-	if dialogic.Input.dialogic_action.is_connected(show_current_choices):
-		dialogic.Input.dialogic_action.disconnect(show_current_choices)
+	if dialogic.Inputs.dialogic_action.is_connected(show_current_choices):
+		dialogic.Inputs.dialogic_action.disconnect(show_current_choices)
 
 
 	var button_idx := 1
@@ -64,7 +64,7 @@ func show_current_choices(instant:=true) -> void:
 	for choice_index in get_current_choice_indexes():
 		var choice_event: DialogicEvent = dialogic.current_timeline_events[choice_index]
 		# check if condition is false
-		if not choice_event.condition.is_empty() and not dialogic.Expression.execute_condition(choice_event.condition):
+		if not choice_event.condition.is_empty() and not dialogic.Expressions.execute_condition(choice_event.condition):
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT:
 				choice_event.else_action = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0)
 
