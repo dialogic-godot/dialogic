@@ -15,7 +15,7 @@ func _get_resource_type(path: String) -> String:
 	var ext = path.get_extension().to_lower()
 	if ext == "dch":
 		return "Resource"
-	
+
 	return ""
 
 
