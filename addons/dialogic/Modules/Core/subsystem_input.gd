@@ -171,9 +171,9 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	dialogic.Text.show_next_indicators()
-	await dialogic.Input.dialogic_action_priority
+	await dialogic.Inputs.dialogic_action_priority
 	dialogic.Text.hide_next_indicators()
-	dialogic.Input.action_was_consumed = true
+	dialogic.Inputs.action_was_consumed = true
 
 
 func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:

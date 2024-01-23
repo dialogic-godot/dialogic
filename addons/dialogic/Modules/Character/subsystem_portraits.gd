@@ -250,8 +250,8 @@ func _remove_portrait(character_node:Node2D) -> void:
 func _get_join_default_length() -> float:
 	var default_time = ProjectSettings.get_setting('dialogic/animations/join_default_length', 0.5)
 
-	if dialogic.Input.auto_skip.enabled:
-		default_time = min(default_time, dialogic.Input.auto_skip.time_per_event)
+	if dialogic.Inputs.auto_skip.enabled:
+		default_time = min(default_time, dialogic.Inputs.auto_skip.time_per_event)
 
 	return default_time
 
@@ -260,8 +260,8 @@ func _get_join_default_length() -> float:
 func _get_leave_default_length() -> float:
 	var default_time = ProjectSettings.get_setting('dialogic/animations/leave_default_length', 0.5)
 
-	if dialogic.Input.auto_skip.enabled:
-		default_time = min(default_time, dialogic.Input.auto_skip.time_per_event)
+	if dialogic.Inputs.auto_skip.enabled:
+		default_time = min(default_time, dialogic.Inputs.auto_skip.time_per_event)
 
 	return default_time
 
