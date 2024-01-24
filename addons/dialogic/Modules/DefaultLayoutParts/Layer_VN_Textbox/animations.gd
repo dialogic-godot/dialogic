@@ -51,7 +51,7 @@ func _on_textbox_hide() -> void:
 	if animation_out == AnimationsOut.NONE:
 		return
 	play('RESET')
-	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.call(&'start_animating')
 	match animation_out:
 		AnimationsOut.POP_OUT:
