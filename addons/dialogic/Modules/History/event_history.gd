@@ -19,11 +19,11 @@ var action := Actions.PAUSE
 func _execute() -> void:
 	match action:
 		Actions.CLEAR:
-			dialogic.History.full_history = []
+			dialogic.History.simple_history_content = []
 		Actions.PAUSE:
-			dialogic.History.full_history_enabled = false
+			dialogic.History.simple_history_enabled = false
 		Actions.RESUME:
-			dialogic.History.full_history_enabled = true
+			dialogic.History.simple_history_enabled = true
 
 	finish()
 
@@ -50,7 +50,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 		: property_info
 		"action" 			: {"property": "action", "default": Actions.PAUSE,
-								"suggestions": func(): return {"Clear":{'value':0}, "Pause":{'value':1}, "Resume":{'value':2}}},
+								"suggestions": func(): return {"Clear":{'value':0, 'text_alt':['clear']}, "Pause":{'value':1, 'text_alt':['pause']}, "Resume":{'value':2, 'text_alt':['resume', 'start']}}},
 	}
 
 ################################################################################
