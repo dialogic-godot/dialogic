@@ -173,7 +173,7 @@ func _on_toggled(is_enabled: bool) -> void:
 	# If auto-advance is disabled and we are auto-advancing,
 	# we want to cancel the auto-advance mode.
 	elif !is_enabled and is_advancing():
-		DialogicUtil.autoload().Inputs.stop()
+		DialogicUtil.autoload().Inputs.stop_timers()
 #endregion
 
 #region AUTOADVANCE HELPERS

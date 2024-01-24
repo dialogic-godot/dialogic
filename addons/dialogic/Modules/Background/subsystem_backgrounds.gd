@@ -4,14 +4,12 @@ extends DialogicSubsystem
 
 signal background_changed(info:Dictionary)
 
-var _tween: Tween
-var _tween_callbacks: Array[Callable]
 
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
 var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/Defaults/simple_fade.gd")
 
-####################################################################################################
-##					STATE
+
+#region STATE
 ####################################################################################################
 
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
@@ -21,9 +19,10 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''), 0.0, default_transition, true)
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 ## Method that adds a given scene as child of the DialogicNode_BackgroundHolder.
@@ -35,7 +34,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0, transition_path:=default_transition, force:bool = false) -> void:
+func update_background(scene := "", argument := "", fade_time := 0.0, transition_path:=default_transition, force := false) -> void:
 	var background_holder: DialogicNode_BackgroundHolder
 	if dialogic.has_subsystem('Styles'):
 		background_holder = dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
@@ -83,7 +82,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 	else:
 		new_viewport = null
 
-	var trans_script :Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, default_transition))
+	var trans_script: Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, default_transition))
 	var trans_node := Node.new()
 	trans_node.set_script(trans_script)
 	trans_node = (trans_node as DialogicBackgroundTransition)
@@ -161,4 +160,4 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 func has_background() -> bool:
 	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
 
-
+#endregion
