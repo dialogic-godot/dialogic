@@ -2,9 +2,6 @@ extends DialogicSubsystem
 
 ## Subsystem that manages history storing.
 
-signal already_read_event_reached
-signal not_read_event_reached
-
 signal open_requested
 signal close_requested
 
@@ -25,6 +22,8 @@ signal full_event_history_changed
 var already_read_history_enabled := false
 var already_read_history_content := {}
 var _was_last_event_already_read := false
+signal already_read_event_reached
+signal not_read_event_reached
 
 
 #region INITIALIZE
@@ -69,7 +68,7 @@ func get_simple_history() -> Array:
 #region FULL EVENT HISTORY
 ####################################################################################################
 
-# called on each event
+## Called on each event
 func store_full_event(event:DialogicEvent) -> void:
 	if !full_event_history_enabled: return
 	full_event_history_content.append(event)
