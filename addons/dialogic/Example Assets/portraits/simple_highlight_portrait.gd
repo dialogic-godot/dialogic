@@ -2,7 +2,7 @@
 extends DialogicPortrait
 
 @export_group('Main')
-@export_file var image : String = ""
+@export_file var image: String = ""
 
 var unhighlighted_color := Color.DARK_GRAY
 var prev_z_index := 0

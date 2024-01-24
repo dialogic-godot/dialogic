@@ -12,7 +12,7 @@ class_name DialogicStyle
 			return "Unkown Style"
 		return name
 
-@export var inherits : DialogicStyle = null
+@export var inherits: DialogicStyle = null
 
 @export var base_scene: PackedScene = null
 @export var base_overrides := {}
@@ -149,7 +149,7 @@ func get_inheritance_root() -> DialogicStyle:
 	if inherits == null:
 		return self
 
-	var style : DialogicStyle = self
+	var style: DialogicStyle = self
 	while style.inherits != null:
 		style = style.inherits
 

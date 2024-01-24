@@ -4,12 +4,10 @@ extends DialogicSubsystem
 ## This is used by conditions and to allow expresions as variables.
 
 
-
-####################################################################################################
-##					MAIN METHODS
+#region MAIN METHODS
 ####################################################################################################
 
-func execute_string(string:String, default = null) -> Variant:
+func execute_string(string:String, default: Variant = null) -> Variant:
 	# Some methods are not supported by the expression class, but very useful.
 	# Thus they are recreated below and secretly added.
 	string = string.replace('range(', 'd_range(')
@@ -47,9 +45,10 @@ func execute_condition(condition:String) -> bool:
 		return true
 	return false
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region HELPERS
 ####################################################################################################
 func d_range(a1, a2=null,a3=null,a4=null) -> Array:
 	if !a2:
@@ -67,10 +66,12 @@ func d_len(arg:Variant) -> int:
 
 # Checks if there is a match in a string based on a regex pattern string.
 func d_regex(input: String, pattern: String, offset: int = 0, end: int = -1) -> bool:
-	var regex : RegEx = RegEx.create_from_string(pattern)
+	var regex: RegEx = RegEx.create_from_string(pattern)
 	regex.compile(pattern)
 	var match := regex.search(input, offset, end)
 	if match:
 		return true
 	else:
 		return false
+
+#endregion

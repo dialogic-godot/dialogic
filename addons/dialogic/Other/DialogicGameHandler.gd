@@ -64,8 +64,8 @@ signal dialogic_paused
 signal dialogic_resumed
 
 
-signal timeline_ended()
-signal timeline_started()
+signal timeline_ended
+signal timeline_started
 signal event_handled(resource:DialogicEvent)
 
 ## Emitted when the Signal event was reached
@@ -132,7 +132,6 @@ var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd").n
 
 ## Autoloads are added first, so this happens REALLY early on game startup.
 func _ready() -> void:
-
 	DialogicResourceUtil.update()
 
 	collect_subsystems()
@@ -157,7 +156,7 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		return null
 
 	# Otherwise make sure there is a style active.
-	var scene :Node= null
+	var scene: Node= null
 	if !self.Styles.has_active_layout_node():
 		scene = self.Styles.load_style()
 	else:
@@ -205,6 +204,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	timeline_started.emit()
 	handle_next_event()
+
 
 ## Preloader function, prepares a timeline and returns an object to hold for later
 # TODO: Question: why is this taking a variant and then only allowing a string?
@@ -346,7 +346,7 @@ func get_subsystem(_name:String) -> DialogicSubsystem:
 
 
 func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
-	var node:Node = Node.new()
+	var node: Node = Node.new()
 	node.name = _name
 	node.set_script(load(_script_path))
 	node = node as DialogicSubsystem
@@ -370,4 +370,4 @@ func _on_timeline_ended() -> void:
 				@warning_ignore("unsafe_method_access")
 				get_tree().get_meta('dialogic_layout_node', '').hide()
 
-#endregion Helpers
+#endregion
