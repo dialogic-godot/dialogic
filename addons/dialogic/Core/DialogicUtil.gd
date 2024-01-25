@@ -66,7 +66,7 @@ static func get_module_path(name:String, builtin:=true) -> String:
 
 
 static func update_autoload_subsystem_access() -> void:
-	var script: Script = load("res://addons/dialogic/Other/DialogicGameHandler.gd")
+	var script: Script = load("res://addons/dialogic/Core/DialogicGameHandler.gd")
 
 	var new_subsystem_access_list := "#region SUBSYSTEMS\n"
 

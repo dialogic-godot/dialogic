@@ -4,7 +4,7 @@ extends EditorPlugin
 ## Preload the main panel scene
 const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
 const PLUGIN_NAME := "Dialogic"
-const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Other/DialogicGameHandler.gd"
+const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
 const PLUGIN_ICON_PATH := "res://addons/dialogic/Editor/Images/plugin-icon.svg"
 
 ## References used by various other scripts to quickly reference these things
