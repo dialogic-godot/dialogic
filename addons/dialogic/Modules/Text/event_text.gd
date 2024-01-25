@@ -183,7 +183,7 @@ func _disconnect_signals() -> void:
 		dialogic.Inputs.dialogic_action.disconnect(_on_dialogic_input_action)
 	if dialogic.Inputs.auto_advance.autoadvance.is_connected(_on_dialogic_input_autoadvance):
 		dialogic.Inputs.auto_advance.autoadvance.disconnect(_on_dialogic_input_autoadvance)
-	if dialogic.Inputs.auto_skip.toggled.is_connected(_on_dialogic_input_autoadvance):
+	if dialogic.Inputs.auto_skip.toggled.is_connected(_on_auto_skip_enable):
 		dialogic.Inputs.auto_skip.toggled.disconnect(_on_auto_skip_enable)
 
 
