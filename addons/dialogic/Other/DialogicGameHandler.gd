@@ -222,8 +222,6 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 
 
 func end_timeline() -> void:
-	current_timeline = null
-	current_timeline_events = []
 	clear(ClearFlags.TIMLEINE_INFO_ONLY)
 	timeline_ended.emit()
 
@@ -273,6 +271,8 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
 
 	# Resetting variables
+	if current_timeline:
+		current_timeline.clean()
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
@@ -305,8 +305,6 @@ func load_full_state(state_info:Dictionary) -> void:
 		get_subsystem('Styles').load_game_state()
 		scene = self.Styles.get_layout_node()
 
-	if current_state_info.get('current_timeline', null):
-		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 
 	var load_subsystems := func() -> void:
 		for subsystem in get_children():
@@ -319,6 +317,9 @@ func load_full_state(state_info:Dictionary) -> void:
 	else:
 		await get_tree().process_frame
 		load_subsystems.call()
+
+	if current_state_info.get('current_timeline', null):
+		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 
 #endregion
 
