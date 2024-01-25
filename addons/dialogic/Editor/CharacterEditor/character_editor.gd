@@ -139,6 +139,9 @@ func _ready() -> void:
 		return
 
 	DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
+	# NOTE: This check is required because up to 4.2 this signal is not exposed.
+	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
+		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
 	$NoCharacterScreen.show()
@@ -608,10 +611,11 @@ func update_preview(force:=false) -> void:
 		current_previewed_scene = null
 
 
-func _on_some_resource_saved(file:Resource) -> void:
-	# TODO, this only works for scripts right, so check again, there might be a
-	# good way to listen to Scene Saves in the future.
-	if file.resource_path == current_previewed_scene.get_meta("path", "") or file == current_previewed_scene.script:
+func _on_some_resource_saved(file:Variant) -> void:
+	if file is Resource and file == current_previewed_scene.script:
+		update_preview(true)
+
+	if typeof(file) == TYPE_STRING and file == current_previewed_scene.get_meta("path", ""):
 		update_preview(true)
 
 
