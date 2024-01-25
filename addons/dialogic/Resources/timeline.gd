@@ -147,3 +147,17 @@ func process() -> void:
 
 	events = processed_events
 	events_processed = true
+
+
+## This method makes sure that all events in a timeline are correctly reset
+func clean() -> void:
+	if not events_processed:
+		return
+
+	for event:DialogicEvent in events:
+		for con_in in event.get_incoming_connections():
+			con_in.signal.disconnect(con_in.callable)
+
+		for sig in event.get_signal_list():
+			for con_out in event.get_signal_connection_list(sig.name):
+				con_out.signal.disconnect(con_out.callable)
