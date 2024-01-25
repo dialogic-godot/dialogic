@@ -59,7 +59,7 @@ func _execute() -> void:
 
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
-			dialogic.Styles.load_style(character.custom_info.style, false)
+			dialogic.Styles.load_style(character.custom_info.style, null, false)
 			await dialogic.get_tree().process_frame
 
 
