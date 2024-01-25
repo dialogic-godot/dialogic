@@ -63,6 +63,7 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+	update_textbox(dialogic.current_state_info.get('text', ''), true)
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character: DialogicCharacter = null
 	if dialogic.current_state_info.get('speaker', ""):
@@ -99,7 +100,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, 
 ## When an event updates the text spoken, this can adjust the state of
 ## the dialog text box.
 ## This method is async.
-func update_text_boxes(text: String, instant := false) -> void:
+func update_textbox(text: String, instant := false) -> void:
 	if text.is_empty():
 		await hide_textbox(instant)
 	else:
@@ -110,7 +111,6 @@ func update_text_boxes(text: String, instant := false) -> void:
 
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
-
 
 
 ## Shows the given text on all visible DialogText nodes.
