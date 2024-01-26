@@ -23,7 +23,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 #region MAIN METHODS
 ####################################################################################################
 
-func load_style(style_name:="", is_base_style:=true) -> Node:
+func load_style(style_name:="", parent:Node = null, is_base_style:=true) -> Node:
 	var style := DialogicUtil.get_style_by_name(style_name)
 
 	var signal_info := {'style':style_name}
@@ -34,7 +34,6 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 		dialogic.current_state_info['base_style'] = style_name
 
 	var previous_layout := get_layout_node()
-
 	if is_instance_valid(previous_layout) and previous_layout.has_meta('style'):
 		signal_info['previous'] = previous_layout.get_meta('style').name
 
@@ -55,11 +54,14 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 			return
 
 		else:
+			parent = previous_layout.get_parent()
+
 			previous_layout.get_parent().remove_child(previous_layout)
 			previous_layout.queue_free()
 
+
 	# if this is another style:
-	var new_layout := create_layout(style)
+	var new_layout := create_layout(style, parent)
 	new_layout.ready.connect(reload_current_info_into_new_style)
 
 	style_changed.emit(signal_info)
@@ -69,7 +71,7 @@ func load_style(style_name:="", is_base_style:=true) -> Node:
 
 ## Method that adds a layout scene with all the necessary layers.
 ## The layout scene will be added to the tree root and returned.
-func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
+func create_layout(style:DialogicStyle, parent:Node = null) -> DialogicLayoutBase:
 
 	# Load base scene
 	var base_scene: DialogicLayoutBase
@@ -104,7 +106,10 @@ func create_layout(style:DialogicStyle) -> DialogicLayoutBase:
 
 	base_scene.set_meta('style', style)
 
-	dialogic.get_parent().call_deferred("add_child", base_scene)
+	if parent == null:
+		parent = dialogic.get_parent()
+	parent.call_deferred("add_child", base_scene)
+
 	dialogic.get_tree().set_meta('dialogic_layout_node', base_scene)
 
 	return base_scene
