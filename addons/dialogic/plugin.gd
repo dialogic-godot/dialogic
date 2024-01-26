@@ -4,7 +4,7 @@ extends EditorPlugin
 ## Preload the main panel scene
 const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
 const PLUGIN_NAME := "Dialogic"
-const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Other/DialogicGameHandler.gd"
+const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
 const PLUGIN_ICON_PATH := "res://addons/dialogic/Editor/Images/plugin-icon.svg"
 
 ## References used by various other scripts to quickly reference these things
@@ -39,6 +39,11 @@ func _enter_tree() -> void:
 	editor_view.hide()
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
+
+	# Auto-update the singleton path for alpha users
+	# TODO remove at some point during beta or later
+	remove_autoload_singleton(PLUGIN_NAME)
+	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 
 
 func _exit_tree() -> void:

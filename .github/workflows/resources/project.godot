@@ -21,4 +21,4 @@ renderer/rendering_method.mobile="gl_compatibility"
 
 [autoload]
 
-Dialogic="*res://addons/dialogic/Other/DialogicGameHandler.gd"
+Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
