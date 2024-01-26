@@ -40,6 +40,11 @@ func _enter_tree() -> void:
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
+	# Auto-update the singleton path for alpha users
+	# TODO remove at some point during beta or later
+	remove_autoload_singleton(PLUGIN_NAME)
+	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
+
 
 func _exit_tree() -> void:
 	if editor_view:
