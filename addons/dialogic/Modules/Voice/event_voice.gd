@@ -22,8 +22,8 @@ var audio_bus: String = "Master"
 func _execute() -> void:
 	# If Auto-Skip is enabled, we may not want to play voice audio.
 	# Instant Auto-Skip will always skip voice audio.
-	if (dialogic.Input.auto_skip.enabled
-	and dialogic.Input.auto_skip.skip_voice):
+	if (dialogic.Inputs.auto_skip.enabled
+	and dialogic.Inputs.auto_skip.skip_voice):
 		finish()
 		return
 
@@ -73,5 +73,5 @@ func build_event_editor():
 			'file_filter'	: "*.mp3, *.ogg, *.wav",
 			'placeholder' 	: "Select file",
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
-	add_body_edit('volume', ValueType.DECIBEL, {'left_text':'Volume:'}, '!file_path.is_empty()')
+	add_body_edit('volume', ValueType.NUMBER, {'left_text':'Volume:', 'mode':2}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')

@@ -7,19 +7,19 @@ signal input_confirmed(input:String)
 signal input_shown(info:Dictionary)
 
 
-####################################################################################################
-##					STATE
+#region STATE
 ####################################################################################################
 
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	hide_text_input()
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
-func show_text_input(text:String = '', default:String = '', placeholder:String = '', allow_empty:bool = false) -> void:
+func show_text_input(text:= "", default:= "", placeholder:= "", allow_empty:= false) -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_text_input'):
 		node.show()
 		if node.has_method('set_allow_empty'): node.set_allow_empty(allow_empty)
@@ -32,3 +32,5 @@ func show_text_input(text:String = '', default:String = '', placeholder:String =
 func hide_text_input() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_text_input'):
 		node.hide()
+
+#endregion

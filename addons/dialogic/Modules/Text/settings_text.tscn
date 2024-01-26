@@ -1,12 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://cf3qks3v18xmr"]
+[gd_scene load_steps=6 format=3 uid="uid://cf3qks3v18xmr"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Text/settings_text.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="3_s7xhj"]
-[ext_resource type="PackedScene" uid="uid://dyp7m2nvab1aj" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn" id="4_0hlwb"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="5_cc70e"]
 
-[sub_resource type="Image" id="Image_h2r4d"]
+[sub_resource type="Image" id="Image_oatpr"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,18 +13,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_4sft0"]
-image = SubResource("Image_h2r4d")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mamwx"]
-
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_u3bqq"]
-script = ExtResource("5_cc70e")
-
-[sub_resource type="FontVariation" id="FontVariation_52y0p"]
-variation_transform = Transform2D(1, 0.29, 0, 1, 0, 0)
+[sub_resource type="ImageTexture" id="ImageTexture_dbvsu"]
+image = SubResource("Image_oatpr")
 
 [node name="DialogText" type="VBoxContainer"]
 anchors_preset = 15
@@ -60,7 +48,7 @@ text = "Default letter speed"
 [node name="HintTooltip2" parent="VBoxContainer/VBox/DefaultSpeedLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "The speed in seconds per character. A speed of 0 will reveal the full text instantly (still taking pauses into consideration)."
 
 [node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/VBox"]
@@ -79,7 +67,7 @@ text = "Input action"
 layout_mode = 2
 tooltip_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "The action that skips text and generally advances to the next event.
 You can modify actions in the Project Settings > Input Map."
 
@@ -100,7 +88,7 @@ layout_mode = 2
 tooltip_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "If enabled the revealing of text can be skipped with the input action. 
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
@@ -130,7 +118,7 @@ text = "Autocolor names"
 [node name="HintTooltip5" parent="VBoxContainer/VBox/ColorNames" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If enabled character names will be colored in the characters color in text events."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "If enabled character names will be colored in the characters color in text events."
 
 [node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/VBox"]
@@ -148,7 +136,7 @@ text = "New lines as new events"
 layout_mode = 2
 tooltip_text = "If enabled dialogic, new lines will be treated as [n] effects, 
 seemingly waiting for input before starting a new text."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "If enabled dialogic, new lines will be treated as [n] effects, 
 seemingly waiting for input before starting a new text."
 
@@ -193,7 +181,7 @@ These add up, so if any of them is true, autoadvance will happen.
 Unless manual advancement is disabled, the autoadvance time can always be skipped by the player.
 
 The autoadvance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "Autoadvance is the concept of automatically progressing to the next event upon completing text display, usually after a certain delay.
 
 You can enabled autoadvance from code using either:
@@ -219,7 +207,7 @@ text = "Base Delay"
 [node name="HintTooltip" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay2" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "This is the base delay for autoadvancment."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "This is the base delay for autoadvancment."
 
 [node name="FixedDelay" type="SpinBox" parent="VBoxContainer/AutoadvanceSettings"]
@@ -242,7 +230,7 @@ layout_mode = 2
 tooltip_text = "An additional delay per character or word can be added. 
 
 Note: When changing values via code, you can actually use both modes simultaniously."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "An additional delay per character or word can be added. 
 
 Note: When changing values via code, you can actually use both modes simultaniously."
@@ -282,7 +270,7 @@ tooltip_text = "An ignored character will add no delay, this is useful to exclud
 
 If disabled, the general line of text length will be used, stripping the BBCode tags first.
 If enabled, the text will be scanned and the matching characters will be skipped."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "An ignored character will add no delay, this is useful to exclude interpunction and whitespaces.
 
 If disabled, the general line of text length will be used, stripping the BBCode tags first.
@@ -310,7 +298,7 @@ layout_mode = 2
 tooltip_text = "While you would usually enable autoadvance via code, 
 if this is true it will be initially enabled. 
 This kind of autoadvance (system) only stops when disabled via code. "
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "While you would usually enable autoadvance via code, 
 if this is true it will be initially enabled. 
 This kind of autoadvance (system) only stops when disabled via code. "
@@ -340,7 +328,7 @@ Dialogic.Input.auto_skip.enabled = true
 By default, Auto-Skip will cancel on user input. 
 You can disable this by calling: 
 Dialogic.Input.auto_skip.disable_on_user_input = false"
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
 You can enable Auto-Skip from code via:
@@ -367,7 +355,7 @@ tooltip_text = "The time until Auto-Skip will execute the next event.
 
 If this is set to 0.1s, each event should finish within that time.
 Custom events must respect this time, built-in events already handle Auto-Skip."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "The time until Auto-Skip will execute the next event.
 
 If this is set to 0.1s, each event should finish within that time.
@@ -398,7 +386,7 @@ tooltip_text = "Adds pauses after certain letters.
 
 Each set can contain multiple letters that will (individually) 
 have a pause of the given length added after them."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "Adds pauses after certain letters. 
 
 Each set can contain multiple letters that will (individually) 
@@ -426,61 +414,12 @@ text = "Absolute auto-pause times"
 [node name="HintTooltip7" parent="VBoxContainer/HBoxContainer3" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "If not enabled autopauses will be multiplied by the speed and user speed. When enabled those will be ignored."
-texture = SubResource("ImageTexture_4sft0")
+texture = SubResource("ImageTexture_dbvsu")
 hint_text = "If not enabled autopauses will be multiplied by the speed and user speed. When enabled those will be ignored."
 
 [node name="AutoPausesAbsolute" type="CheckBox" parent="VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="InformationSection" type="VBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Title" type="Label" parent="InformationSection"]
-layout_mode = 2
-theme_type_variation = &"DialogicSection"
-text = "Tips and tricks:"
-
-[node name="Info" type="RichTextLabel" parent="InformationSection"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
-bbcode_enabled = true
-text = "There are a number of useful commands you can use in text events:"
-fit_content = true
-
-[node name="MultilineText" parent="InformationSection" instance=ExtResource("4_0hlwb")]
-layout_mode = 2
-theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
-text = "Use [speed=x] to change the speed multiplier (affects letter speed and pauses). 1 = no effect, 2 = half speed, 0.5 = double speed, 0 = instant
-Use [lspeed=x] to change the letter speed (affected by the speed) or [lspeed=x!] to change the letter speed absolutely
-Use [br] to add a line break
-Use <Word/Other Word> to insert a random entry
-Use [portrait=sad] to change the portrait of the speaker
-Use [pause=x] to pauses for x seconds (affected by the speed) or [pause=x!] to pause for x seconds (absolute, not affected by speed
-Use [mood=sad] to change the typing sound mood
-Use [signal=arg] to emit the Dialogic.text_signal"
-editable = false
-syntax_highlighter = SubResource("SyntaxHighlighter_u3bqq")
-
-[node name="Info2" type="RichTextLabel" parent="InformationSection"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
-theme_override_fonts/italics_font = SubResource("FontVariation_52y0p")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
-bbcode_enabled = true
-text = "Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://addons/dialogic/Editor/Images/plugin-icon.svg[/img] [/img].
-Learn more about bbcode in the official godot docs."
-fit_content = true
 
 [connection signal="value_changed" from="VBoxContainer/VBox/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBox/InputAction" to="." method="_on_InputAction_value_changed"]

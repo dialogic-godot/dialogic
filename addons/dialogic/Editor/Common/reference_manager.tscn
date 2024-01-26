@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/reference_manager.gd" id="1_3t531"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/broken_reference_manager.gd" id="1_agmg4"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/ReferenceManager_AddReplacementPanel.gd" id="2_tt4jd"]
-[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3_yomsc"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_yomsc"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/unique_identifiers_manager.gd" id="5_wnvbq"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_l6uiy"]

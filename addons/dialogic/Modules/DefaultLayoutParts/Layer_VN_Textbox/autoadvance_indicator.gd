@@ -1,13 +1,13 @@
 extends Range
 
-var enabled := true
+var enabled : bool = true
 
-func _process(delta):
+func _process(_delta : float) -> void:
 	if !enabled:
 		hide()
 		return
-	if DialogicUtil.autoload().Input.auto_advance.get_progress() < 0:
+	if DialogicUtil.autoload().Inputs.auto_advance.get_progress() < 0:
 		hide()
 	else:
 		show()
-		value = DialogicUtil.autoload().Input.auto_advance.get_progress()
+		value = DialogicUtil.autoload().Inputs.auto_advance.get_progress()

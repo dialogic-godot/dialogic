@@ -19,25 +19,49 @@ var fade: float = 0.0
 ## Name of the transition to use.
 var transition: String = ""
 
+## Helpers for visual editor
+enum ArgumentTypes {IMAGE, CUSTOM}
+var _arg_type := ArgumentTypes.IMAGE :
+	get:
+		if argument.begins_with("res://"):
+			return ArgumentTypes.IMAGE
+		else:
+			return _arg_type
+	set(value):
+		if value == ArgumentTypes.CUSTOM:
+			if argument.begins_with("res://"):
+				argument = " "+argument
+		_arg_type = value
 
-################################################################################
-## 						EXECUTION
+enum SceneTypes {DEFAULT, CUSTOM}
+var _scene_type := SceneTypes.DEFAULT :
+	get:
+		if scene.is_empty():
+			return _scene_type
+		else:
+			return SceneTypes.CUSTOM
+	set(value):
+		if value == SceneTypes.DEFAULT:
+			scene = ""
+		_scene_type = value
+
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
 	var final_fade_duration := fade
 
-	if dialogic.Input.auto_skip.enabled:
-		var time_per_event: float = dialogic.Input.auto_skip.time_per_event
+	if dialogic.Inputs.auto_skip.enabled:
+		var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 		final_fade_duration = min(fade, time_per_event)
 
 	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
 
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -46,9 +70,9 @@ func _init() -> void:
 	event_category = "Visuals"
 	event_sorting_index = 0
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+#region SAVE & LOAD
 ################################################################################
 
 func get_shortcode() -> String:
@@ -66,29 +90,60 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#endregion
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('argument', ValueType.FILE,
-			{'left_text' : 'Show',
-			'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
-			'placeholder': "No background",
-			'editor_icon':["Image", "EditorIcons"]},
-			'scene == ""')
+	add_header_edit('_scene_type', ValueType.FIXED_OPTIONS, {
+		'left_text' :'Show',
+		'options': [
+			{
+				'label': 'Background',
+				'value': SceneTypes.DEFAULT,
+				'icon': ["GuiRadioUnchecked", "EditorIcons"]
+			},
+			{
+				'label': 'Custom Scene',
+				'value': SceneTypes.CUSTOM,
+				'icon': ["PackedScene", "EditorIcons"]
+			}
+		]})
+	add_header_label("with image", "_scene_type == SceneTypes.DEFAULT")
 	add_header_edit("scene", ValueType.FILE,
-			{'left_text' :'Scene:',
-			'file_filter':'*.tscn, *.scn; Scene Files',
-			'placeholder': "Default scene",
-			'editor_icon':["PackedScene", "EditorIcons"]})
-	add_body_edit('argument', ValueType.SINGLELINE_TEXT, {'left_text':'Argument:'}, 'scene != ""')
-	add_body_edit("transition", ValueType.COMPLEX_PICKER,
+			{'file_filter':'*.tscn, *.scn; Scene Files',
+			'placeholder': "Custom scene",
+			'editor_icon': ["PackedScene", "EditorIcons"],
+			}, '_scene_type == SceneTypes.CUSTOM')
+	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
+		'left_text' : 'with',
+		'options': [
+			{
+				'label': 'Image',
+				'value': ArgumentTypes.IMAGE,
+				'icon': ["Image", "EditorIcons"]
+			},
+			{
+				'label': 'Custom Argument',
+				'value': ArgumentTypes.CUSTOM,
+				'icon': ["String", "EditorIcons"]
+			}
+		], "symbol_only": true}, "_scene_type == SceneTypes.CUSTOM")
+	add_header_edit('argument', ValueType.FILE,
+			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
+			'placeholder': "No Image",
+			'editor_icon': ["Image", "EditorIcons"],
+			},
+			'_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT')
+	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.CUSTOM')
+
+	add_body_edit("transition", ValueType.DYNAMIC_OPTIONS,
 			{'left_text':'Transition:',
 			'empty_text':'Simple Fade',
 			'suggestions_func':get_transition_suggestions,
 			'editor_icon':["PopupMenu", "EditorIcons"]})
-	add_body_edit("fade", ValueType.FLOAT, {'left_text':'Fade Time:'})
+	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade time:'})
 
 
 func get_transition_suggestions(filter:String="") -> Dictionary:
@@ -97,3 +152,5 @@ func get_transition_suggestions(filter:String="") -> Dictionary:
 	for i in transitions:
 		suggestions[DialogicUtil.pretty_name(i)] = {'value': DialogicUtil.pretty_name(i), 'editor_icon': ["PopupMenu", "EditorIcons"]}
 	return suggestions
+
+#endregion

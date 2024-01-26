@@ -9,11 +9,11 @@ extends Resource
 
 ## Emmited when the event starts.
 ## The signal is emmited with the event resource [code]event_resource[/code]
-signal event_started(event_resource)
+signal event_started(event_resource:DialogicEvent)
 
 ## Emmited when the event finish.
 ## The signal is emmited with the event resource [code]event_resource[/code]
-signal event_finished(event_resource)
+signal event_finished(event_resource:DialogicEvent)
 
 
 ### Main Event Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,34 +84,34 @@ enum Location {HEADER, BODY}
 ## To differentiate the different types of fields for event properties in the visual editor
 enum ValueType {
 	# Strings
-	LABEL, MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION,
+	MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION, FILE,
 	# Booleans
-	BOOL,
-	# Resources
-	COMPLEX_PICKER, FILE,
-	# Array
-	ARRAY,
-	# Integers
-	FIXED_OPTION_SELECTOR, INTEGER, VECTOR2,
-	# Floats
-	FLOAT, DECIBEL,
+	BOOL, BOOL_BUTTON,
+	# Options
+	DYNAMIC_OPTIONS, FIXED_OPTIONS,
+	# Containers,
+	ARRAY, DICTIONARY,
+	# Numbers
+	NUMBER,
+	VECTOR2,
 	# Other
-	CUSTOM, BUTTON, KEY_VALUE_PAIRS
+	CUSTOM, BUTTON, LABEL
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
 ## Singal that notifies the visual editor block to update
 signal ui_update_needed
-signal ui_update_warning(text)
+signal ui_update_warning(text:String)
 
 
 ## Makes this resource printable.
 func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
+#endregion
 
-################################################################################
-## 						EXECUTION
+
+#region EXECUTION
 ################################################################################
 
 ## Executes the event behaviour. In subclasses [_execute] (not this one) should be overriden!
@@ -130,9 +130,10 @@ func finish() -> void:
 func _execute() -> void:
 	finish()
 
+#endregion
 
-################################################################################
-## 						OVERRIDABLES
+
+#region OVERRIDABLES
 ################################################################################
 
 ## to be overridden by sub-classes
@@ -155,9 +156,10 @@ func get_end_branch_control() -> Control:
 func should_execute_this_branch() -> bool:
 	return false
 
+#endregion
 
-################################################################################
-## 					TRANSLATIONS
+
+#region TRANSLATIONS
 ################################################################################
 
 ## Overwrite if this events needs translation.
@@ -199,9 +201,10 @@ func get_property_translated(property_name:String) -> String:
 	else:
 		return _get_property_original_translation(property_name)
 
+#endregion
 
-################################################################################
-## 					SAVE / LOAD (internal, don't override)
+
+#region SAVE / LOAD (internal, don't override)
 ################################################################################
 ### These functions are used by the timeline loader/saver
 ### They mainly use the overridable behaviour below, but enforce the unique_id saving
@@ -243,9 +246,10 @@ func _test_event_string(string:String) -> bool:
 		return is_valid_event(string.get_slice('#id:', 0))
 	return is_valid_event(string.strip_edges())
 
+#endregion
 
-################################################################################
-## 					SAVE / LOAD
+
+#region SAVE / LOAD
 ################################################################################
 ### All of these functions can/should be overridden by the sub classes
 
@@ -262,9 +266,9 @@ func get_shortcode_parameters() -> Dictionary:
 ## returns a readable presentation of the event (This is how it's stored)
 ## by default it uses a shortcode format, but can be overridden
 func to_text() -> String:
-	var result_string : String = "["+self.get_shortcode()
-	var params : Dictionary = get_shortcode_parameters()
-	var custom_defaults :Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
+	var result_string: String = "["+self.get_shortcode()
+	var params: Dictionary = get_shortcode_parameters()
+	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	for parameter in params.keys():
 		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
 		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
@@ -292,13 +296,13 @@ func to_text() -> String:
 ## loads the variables from the string stored above
 ## by default it uses the shortcode format, but can be overridden
 func from_text(string:String) -> void:
-	var data : Dictionary = parse_shortcode_parameters(string)
-	var params : Dictionary = get_shortcode_parameters()
+	var data: Dictionary = parse_shortcode_parameters(string)
+	var params: Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
 		if not parameter in data:
 			continue
 
-		var value :Variant
+		var value: Variant
 		match typeof(get(params[parameter].property)):
 			TYPE_STRING:
 				value = data[parameter].replace('\\=', '=')
@@ -333,20 +337,21 @@ func is_string_full_event(string:String) -> bool:
 
 ## used to get all the shortcode parameters in a string as a dictionary
 func parse_shortcode_parameters(shortcode : String) -> Dictionary:
-	var regex:RegEx = RegEx.new()
+	var regex: RegEx = RegEx.new()
 	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
-	var dict : Dictionary = {}
+	var dict: Dictionary = {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
 	return dict
 
+#endregion
 
-################################################################################
-## 					EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func _get_icon() -> Resource:
-	var _icon_file_name = "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
+	var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
 	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
 		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
 	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
@@ -354,7 +359,7 @@ func _get_icon() -> Resource:
 	return load(_icon_file_name)
 
 
-func set_default_color(value) -> void:
+func set_default_color(value:Variant) -> void:
 	dialogic_color_name = value
 	event_color = DialogicUtil.get_color(value)
 
@@ -363,7 +368,10 @@ func set_default_color(value) -> void:
 func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
 	pass
 
-####################### CODE COMPLETION ########################################
+#endregion
+
+
+#region CODE COMPLETION
 ################################################################################
 
 ## This method can be overwritten to implement code completion for custom syntaxes
@@ -374,15 +382,19 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	pass
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	return dict
 
+#endregion
 
-#################### EVENT FIELDS ##############################################
+
+#region EVENT FIELDS
 ################################################################################
 
 func get_event_editor_info() -> Array:
@@ -411,25 +423,25 @@ func build_event_editor() -> void:
 ## @extra_info: 	Allows passing a lot more info to the field.
 ## 					What info can be passed is differnet for every field
 
-func add_header_label(text:String, condition:String = "") -> void:
+func add_header_label(text:String, condition:= "") -> void:
 	editor_list.append({
 		"name" 			: "something",
 		"type" 			:+ TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
-		"dialogic_type" : ValueType.LABEL,
+		"field_type" : ValueType.LABEL,
 		"display_info"  : {"text":text},
 		"condition" 	: condition
 		})
 
 
-func add_header_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_header_edit(variable:String, editor_type := ValueType.LABEL, extra_info:= {}, condition:= "") -> void:
 	editor_list.append({
 		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : editor_type,
+		"field_type" : editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),
@@ -437,25 +449,25 @@ func add_header_edit(variable:String, editor_type = ValueType.LABEL, extra_info:
 		})
 
 
-func add_header_button(text:String, callable:Callable, tooltip:String, icon: Variant = null, condition:String = "") -> void:
+func add_header_button(text:String, callable:Callable, tooltip:String, icon: Variant = null, condition:= "") -> void:
 	editor_list.append({
 		"name"			: "Button",
 		"type" 			: TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : ValueType.BUTTON,
+		"field_type" : ValueType.BUTTON,
 		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
 		"condition" 	: condition,
 	})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_body_edit(variable:String, editor_type := ValueType.LABEL, extra_info:= {}, condition:= "") -> void:
 	editor_list.append({
 		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.BODY,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : editor_type,
+		"field_type" : editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),
@@ -463,7 +475,7 @@ func add_body_edit(variable:String, editor_type = ValueType.LABEL, extra_info:Di
 		})
 
 
-func add_body_line_break(condition:String = "") -> void:
+func add_body_line_break(condition:= "") -> void:
 	editor_list.append({
 		"name" 		: "linebreak",
 		"type" 		: TYPE_BOOL,
@@ -471,3 +483,5 @@ func add_body_line_break(condition:String = "") -> void:
 		"usage" 	: PROPERTY_USAGE_DEFAULT,
 		"condition" : condition,
 		})
+
+#endregion

@@ -76,8 +76,8 @@ func _execute() -> void:
 
 				var final_animation_length: float = animation_length
 
-				if dialogic.Input.auto_skip.enabled:
-					var max_time: float = dialogic.Input.auto_skip.time_per_event
+				if dialogic.Inputs.auto_skip.enabled:
+					var max_time: float = dialogic.Inputs.auto_skip.time_per_event
 					final_animation_length = min(max_time, animation_length)
 
 				await dialogic.Portraits.join_character(
@@ -88,8 +88,8 @@ func _execute() -> void:
 		Actions.LEAVE:
 			var final_animation_length: float = animation_length
 
-			if dialogic.Input.auto_skip.enabled:
-				var max_time: float = dialogic.Input.auto_skip.time_per_event
+			if dialogic.Inputs.auto_skip.enabled:
+				var max_time: float = dialogic.Inputs.auto_skip.time_per_event
 				final_animation_length = min(max_time, animation_length)
 
 			if character_identifier == '--All--':
@@ -131,8 +131,8 @@ func _execute() -> void:
 			if set_position:
 				var final_position_move_time: float = position_move_time
 
-				if dialogic.Input.auto_skip.enabled:
-					var max_time: float = dialogic.Input.auto_skip.time_per_event
+				if dialogic.Inputs.auto_skip.enabled:
+					var max_time: float = dialogic.Inputs.auto_skip.time_per_event
 					final_position_move_time = min(max_time, position_move_time)
 
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
@@ -141,8 +141,8 @@ func _execute() -> void:
 				var final_animation_length: float = animation_length
 				var final_animation_repitions: int = animation_repeats
 
-				if dialogic.Input.auto_skip.enabled:
-					var time_per_event: float = dialogic.Input.auto_skip.time_per_event
+				if dialogic.Inputs.auto_skip.enabled:
+					var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 					var time_for_repitions: float = time_per_event / animation_repeats
 					final_animation_length = time_for_repitions
 
@@ -335,8 +335,8 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, {
-		'selector_options': [
+	add_header_edit('action', ValueType.FIXED_OPTIONS, {
+		'options': [
 			{
 				'label': 'Join',
 				'value': Actions.JOIN,
@@ -354,51 +354,52 @@ func build_event_editor() -> void:
 			}
 		]
 	})
-	add_header_edit('character_identifier', ValueType.COMPLEX_PICKER,
+	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'Character',
 			'file_extension' 	: '.dch',
+			'mode'				: 2,
 			'suggestions_func' 	: get_character_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
 			'autofocus'			: true})
 #	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and character_identifier != "--All--"')
 
-	add_header_edit('set_portrait', ValueType.BOOL,
+	add_header_edit('set_portrait', ValueType.BOOL_BUTTON,
 			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
 			 'tooltip':'Change Portrait'}, "should_show_portrait_selector() and action == Actions.UPDATE")
-	add_header_edit('portrait', ValueType.COMPLEX_PICKER,
+	add_header_edit('portrait', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'Default',
 			'collapse_when_empty':true,
 			'suggestions_func' 	: get_portrait_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")},
 			'should_show_portrait_selector() and (action != Actions.UPDATE or set_portrait)')
-	add_header_edit('set_position', ValueType.BOOL,
+	add_header_edit('set_position', ValueType.BOOL_BUTTON,
 			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
 	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
-	add_header_edit('position', ValueType.INTEGER, {},
+	add_header_edit('position', ValueType.NUMBER, {'mode':1},
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
 
 	# Body
-	add_body_edit('animation_name', ValueType.COMPLEX_PICKER,
+	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
 			{'left_text'		: 'Animation:',
 			'suggestions_func' 	: get_animation_suggestions,
 			'editor_icon' 			: ["Animation", "EditorIcons"],
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true},
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.FLOAT, {'left_text':'Length:'},
+	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.INTEGER, {'left_text':'Repeat:'},
+	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
-	add_body_edit('position_move_time', ValueType.FLOAT, {'left_text':'Movement duration:'},
+	add_body_edit('position_move_time', ValueType.NUMBER, {'left_text':'Movement duration:'},
 			'action == %s and set_position' %Actions.UPDATE)
-	add_body_edit('set_z_index', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
-	add_body_edit('z_index', ValueType.INTEGER, {'left_text':'Z-index:'},
+	add_body_edit('set_z_index', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z-index:', 'mode':1},
 			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
-	add_body_edit('set_mirrored', ValueType.BOOL, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('set_mirrored', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
 

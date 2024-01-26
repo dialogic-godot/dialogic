@@ -39,7 +39,7 @@ func _execute() -> void:
 		var args := []
 		for arg in arguments:
 			if arg is String and arg.begins_with('@'):
-				args.append(dialogic.Expression.execute_string(arg.trim_prefix('@')))
+				args.append(dialogic.Expressions.execute_string(arg.trim_prefix('@')))
 			else:
 				args.append(arg)
 		dialogic.current_state = dialogic.States.WAITING
@@ -126,11 +126,11 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('autoload_name', ValueType.COMPLEX_PICKER, {'left_text':'On autoload',
+	add_header_edit('autoload_name', ValueType.DYNAMIC_OPTIONS, {'left_text':'On autoload',
 		'empty_text':'Autoload',
 		'suggestions_func':get_autoload_suggestions,
 		'editor_icon':["Node", "EditorIcons"]})
-	add_header_edit('method', ValueType.COMPLEX_PICKER, {'left_text':'call',
+	add_header_edit('method', ValueType.DYNAMIC_OPTIONS, {'left_text':'call',
 		'empty_text':'Method',
 		'suggestions_func':get_method_suggestions,
 		'editor_icon':["Callable", "EditorIcons"]}, 'autoload_name')

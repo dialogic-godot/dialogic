@@ -20,13 +20,13 @@ var hide_text: bool = true
 func _execute() -> void:
 	var final_wait_time := time
 
-	if dialogic.Input.auto_skip.enabled:
-		var time_per_event: float = dialogic.Input.auto_skip.time_per_event
+	if dialogic.Inputs.auto_skip.enabled:
+		var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 		final_wait_time = min(time, time_per_event)
 
 	if hide_text and dialogic.has_subsystem("Text"):
 		dialogic.Text.update_dialog_text('')
-		dialogic.Text.hide_text_boxes()
+		dialogic.Text.hide_textbox()
 	dialogic.current_state = dialogic.States.WAITING
 	await dialogic.get_tree().create_timer(time, true, DialogicUtil.is_physics_timer()).timeout
 	dialogic.current_state = dialogic.States.IDLE
@@ -66,7 +66,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('time', ValueType.FLOAT, {'left_text':'Wait', 'autofocus':true})
+	add_header_edit('time', ValueType.NUMBER, {'left_text':'Wait', 'autofocus':true, 'min':0})
 	add_header_label('seconds', 'time != 1')
 	add_header_label('second', 'time == 1')
 	add_body_edit('hide_text', ValueType.BOOL, {'left_text':'Hide text box:'})

@@ -68,8 +68,9 @@ var enabled_until_user_input := false :
 		enabled_until_user_input = enabled
 		_try_emit_toggled()
 
+
 func _init() -> void:
-	DialogicUtil.autoload().Input.add_child(autoadvance_timer)
+	DialogicUtil.autoload().Inputs.add_child(autoadvance_timer)
 	autoadvance_timer.one_shot = true
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 	toggled.connect(_on_toggled)
@@ -172,7 +173,7 @@ func _on_toggled(is_enabled: bool) -> void:
 	# If auto-advance is disabled and we are auto-advancing,
 	# we want to cancel the auto-advance mode.
 	elif !is_enabled and is_advancing():
-		DialogicUtil.autoload().Input.stop()
+		DialogicUtil.autoload().Inputs.stop_timers()
 #endregion
 
 #region AUTOADVANCE HELPERS

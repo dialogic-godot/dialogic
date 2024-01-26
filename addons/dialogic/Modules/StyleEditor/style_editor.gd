@@ -268,8 +268,8 @@ func _on_duplicate_button_pressed():
 	if !%StyleList.is_anything_selected():
 		return
 	find_parent('EditorView').godot_file_dialog(
-		add_style_undoable.bind(current_style.clone(), current_style),
-		'',
+		add_style_undoable.bind(current_style.clone(), null),
+		'*.tres',
 		EditorFileDialog.FILE_MODE_SAVE_FILE,
 		"Select folder for new style")
 

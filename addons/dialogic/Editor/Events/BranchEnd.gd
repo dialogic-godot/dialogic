@@ -9,7 +9,7 @@ var parent_node : Control = null
 var end_control :Control = null
 
 # Indent
-var indent_size := 15
+var indent_size := 22
 var current_indent_level := 1
 
 func _ready() -> void:
@@ -51,7 +51,7 @@ func update_hidden_events_indicator(hidden_events_count:int = 0) -> void:
 
 ## Called by the visual timeline editor
 func set_indent(indent: int) -> void:
-	$Indent.custom_minimum_size = Vector2(indent_size * indent, 0)
+	$Indent.custom_minimum_size = Vector2(indent_size * indent*DialogicUtil.get_editor_scale(), 0)
 	$Indent.visible = indent != 0
 	current_indent_level = indent
 	queue_redraw()

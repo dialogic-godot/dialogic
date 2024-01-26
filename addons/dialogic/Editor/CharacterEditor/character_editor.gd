@@ -89,7 +89,7 @@ func _open(extra_info:Variant="") -> void:
 		$NoCharacterScreen.show()
 		return
 
-	update_preview()
+	update_preview(true)
 	%PortraitChangeInfo.hide()
 
 
@@ -137,6 +137,11 @@ func new_character(path: String) -> void:
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
+
+	DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
+	# NOTE: This check is required because up to 4.2 this signal is not exposed.
+	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
+		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
 	$NoCharacterScreen.show()
@@ -531,18 +536,14 @@ func report_name_change(item:TreeItem) -> void:
 ########### PREVIEW ############################################################
 
 #region Preview
-func update_preview() -> void:
+func update_preview(force:=false) -> void:
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
-		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror
-		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
-		if current_portrait_data.get('ignore_char_scale', false):
-			scale = current_portrait_data.get('scale', 1)
-		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
-		if current_previewed_scene != null \
+
+		if not force and current_previewed_scene != null \
 			and current_previewed_scene.get_meta('path', '') == current_portrait_data.get('scene') \
 			and current_previewed_scene.has_method('_should_do_portrait_update') \
 			and is_instance_valid(current_previewed_scene.get_script()) \
@@ -551,22 +552,30 @@ func update_preview() -> void:
 		else:
 			for node in %RealPreviewPivot.get_children():
 				node.queue_free()
+
 			current_previewed_scene = null
-			if current_portrait_data.get('scene', '').is_empty():
-				if FileAccess.file_exists(def_portrait_path):
-					current_previewed_scene = load(def_portrait_path).instantiate()
-					current_previewed_scene.set_meta('path', '')
-			else:
-				if FileAccess.file_exists(current_portrait_data.get('scene')):
-					current_previewed_scene = load(current_portrait_data.get('scene')).instantiate()
-					current_previewed_scene.set_meta('path', current_portrait_data.get('scene'))
+
+			var scene_path := def_portrait_path
+			if not current_portrait_data.get('scene', '').is_empty():
+				scene_path = current_portrait_data.get('scene')
+
+			if FileAccess.file_exists(scene_path):
+				current_previewed_scene = load(scene_path).instantiate()
+
 			if current_previewed_scene:
 				%RealPreviewPivot.add_child(current_previewed_scene)
 
 		if current_previewed_scene != null:
-			var scene = current_previewed_scene
+			var scene: Node = current_previewed_scene
+
 			scene.show_behind_parent = true
 			DialogicUtil.apply_scene_export_overrides(scene, current_portrait_data.get('export_overrides', {}))
+
+			var mirror: bool = current_portrait_data.get('mirror', false) != current_resource.mirror
+			var scale: float = current_portrait_data.get('scale', 1) * current_resource.scale
+			if current_portrait_data.get('ignore_char_scale', false):
+				scale = current_portrait_data.get('scale', 1)
+			var offset: Vector2 = current_portrait_data.get('offset', Vector2()) + current_resource.offset
 
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
@@ -576,13 +585,14 @@ func update_preview() -> void:
 					scene._update_portrait(preview_character, %PortraitTree.get_full_item_name(selected_item))
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
+
 			if !%FitPreview_Toggle.button_pressed:
 				scene.position = Vector2() + offset
 				scene.scale = Vector2(1,1)*scale
 			else:
 				if is_instance_valid(scene.get_script()) and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
-					var rect :Rect2= scene._get_covered_rect()
-					var available_rect:Rect2 = %FullPreviewAvailableRect.get_rect()
+					var rect: Rect2= scene._get_covered_rect()
+					var available_rect: Rect2 = %FullPreviewAvailableRect.get_rect()
 					scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
 					%RealPreviewPivot.position = (rect.position)*-1*scene.scale
 					%RealPreviewPivot.position.x = %FullPreviewAvailableRect.size.x/2
@@ -599,6 +609,14 @@ func update_preview() -> void:
 		for node in %RealPreviewPivot.get_children():
 			node.queue_free()
 		current_previewed_scene = null
+
+
+func _on_some_resource_saved(file:Variant) -> void:
+	if file is Resource and file == current_previewed_scene.script:
+		update_preview(true)
+
+	if typeof(file) == TYPE_STRING and file == current_previewed_scene.get_meta("path", ""):
+		update_preview(true)
 
 
 func _on_full_preview_available_rect_resized():

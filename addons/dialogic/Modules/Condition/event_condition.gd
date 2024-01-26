@@ -21,10 +21,10 @@ func _execute() -> void:
 	if condition_type == ConditionTypes.ELSE:
 		finish()
 		return
-	
+
 	if condition.is_empty(): condition = "true"
-	
-	var result :bool= dialogic.Expression.execute_condition(condition)
+
+	var result :bool= dialogic.Expressions.execute_condition(condition)
 	if not result:
 		var idx :int= dialogic.current_event_idx
 		var ignore := 1
@@ -36,7 +36,7 @@ func _execute() -> void:
 				ignore += 1
 			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
 				ignore -= 1
-		
+
 		dialogic.current_event_idx = idx-1
 	finish()
 
@@ -69,7 +69,7 @@ func get_end_branch_control() -> Control:
 
 func to_text() -> String:
 	var result_string := ""
-	
+
 	match condition_type:
 		ConditionTypes.IF:
 			result_string = 'if '+condition+':'
@@ -77,7 +77,7 @@ func to_text() -> String:
 			result_string = 'elif '+condition+':'
 		ConditionTypes.ELSE:
 			result_string = 'else:'
-	
+
 	return result_string
 
 
@@ -104,8 +104,8 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('condition_type', ValueType.FIXED_OPTION_SELECTOR, {
-		'selector_options': [
+	add_header_edit('condition_type', ValueType.FIXED_OPTIONS, {
+		'options': [
 			{
 				'label': 'IF',
 				'value': ConditionTypes.IF,

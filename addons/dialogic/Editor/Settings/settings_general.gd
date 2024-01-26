@@ -233,3 +233,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	force_event_button_list_reload()
 
+
+
+func _on_reload_pressed() -> void:
+	DialogicUtil.update_autoload_subsystem_access()

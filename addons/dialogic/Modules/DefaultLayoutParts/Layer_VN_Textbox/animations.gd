@@ -11,63 +11,76 @@ var animation_in : AnimationsIn
 var animation_out : AnimationsOut
 var animation_new_text : AnimationsNewText
 
-var full_clear := true
+var full_clear : bool = true
 
-func _ready():
-	DialogicUtil.autoload().Text.animation_textbox_hide.connect(_on_textbox_hide)
-	DialogicUtil.autoload().Text.animation_textbox_show.connect(_on_textbox_show)
-	DialogicUtil.autoload().Text.animation_textbox_new_text.connect(_on_textbox_new_text)
-	DialogicUtil.autoload().Text.about_to_show_text.connect(_on_about_to_show_text)
+func get_text_panel() -> PanelContainer:
+	return %DialogTextPanel
 
 
-func _on_textbox_show():
+func get_dialog() -> DialogicNode_DialogText:
+	return %DialogicNode_DialogText
+
+
+func _ready() -> void:
+	var text_system : Node = DialogicUtil.autoload().get(&'Text')
+	var _error : int = 0
+	_error = text_system.connect(&'animation_textbox_hide', _on_textbox_hide)
+	_error = text_system.connect(&'animation_textbox_show', _on_textbox_show)
+	_error = text_system.connect(&'animation_textbox_new_text', _on_textbox_new_text)
+	_error = text_system.connect(&'about_to_show_text', _on_about_to_show_text)
+
+
+func _on_textbox_show() -> void:
 	if animation_in == AnimationsIn.NONE:
 		return
 	play('RESET')
-	DialogicUtil.autoload().Animation.start_animating()
-	%DialogTextPanel.get_parent().get_parent().modulate = Color.TRANSPARENT
-	%DialogicNode_DialogText.text = ""
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animations')
+	animation_system.call(&'start_animating')
+	get_text_panel().get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
+	get_dialog().text = ""
 	match animation_in:
 		AnimationsIn.POP_IN:
 			play("textbox_pop")
 		AnimationsIn.FADE_UP:
 			play("textbox_fade_up")
-	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
-		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+		var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
 
 
-func _on_textbox_hide():
+func _on_textbox_hide() -> void:
 	if animation_out == AnimationsOut.NONE:
 		return
 	play('RESET')
-	DialogicUtil.autoload().Animation.start_animating()
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animations')
+	animation_system.call(&'start_animating')
 	match animation_out:
 		AnimationsOut.POP_OUT:
 			play_backwards("textbox_pop")
 		AnimationsOut.FADE_DOWN:
 			play_backwards("textbox_fade_up")
 
-	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
-		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
+	if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+		var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
 
 
 func _on_about_to_show_text(info:Dictionary) -> void:
 	full_clear = !info.append
 
 
-func _on_textbox_new_text():
-	if DialogicUtil.autoload().Input.auto_skip.enabled:
+func _on_textbox_new_text() -> void:
+	if DialogicUtil.autoload().Inputs.auto_skip.enabled:
 		return
 
 	if animation_new_text == AnimationsNewText.NONE:
 		return
 
-	DialogicUtil.autoload().Animation.start_animating()
+	var animation_system : Node = DialogicUtil.autoload().get(&'Animation')
+	animation_system.call(&'start_animating')
 	if full_clear:
-		%DialogicNode_DialogText.text = ""
+		get_dialog().text = ""
 	match animation_new_text:
 		AnimationsNewText.WIGGLE:
 			play("new_text")
 
-	if not animation_finished.is_connected(DialogicUtil.autoload().Animation.animation_finished):
-		animation_finished.connect(DialogicUtil.autoload().Animation.animation_finished, CONNECT_ONE_SHOT)
+			if not is_connected(&'animation_finished', Callable(animation_system, &'animation_finished')):
+				var _error : int = connect(&'animation_finished', Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)

@@ -8,33 +8,38 @@ signal sound_started(info:Dictionary)
 var base_music_player := AudioStreamPlayer.new()
 var base_sound_player := AudioStreamPlayer.new()
 
-####################################################################################################
-##					STATE
+
+#region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_music()
 	stop_all_sounds()
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
-	var info = dialogic.current_state_info.get('music')
-	if info == null or info.path.is_empty():
+	var info: Dictionary = dialogic.current_state_info.get("music", {})
+	if info.is_empty() or info.path.is_empty():
 		update_music()
 	else:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
+
 
 func pause() -> void:
 	for child in get_children():
 		child.stream_paused = true
 
+
 func resume() -> void:
 	for child in get_children():
 		child.stream_paused = false
 
-####################################################################################################
-##					MAIN METHODS
+#endregion
+
+
+#region MAIN METHODS
 ####################################################################################################
 
 func _ready() -> void:
@@ -46,13 +51,13 @@ func _ready() -> void:
 
 
 ## Updates the background music. Will fade out previous music.
-func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Master", fade_time:float = 0.0, loop:bool = true) -> void:
+func update_music(path := "", volume := 0.0, audio_bus := "Master", fade_time := 0.0, loop := true) -> void:
 	dialogic.current_state_info['music'] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop}
 	music_started.emit(dialogic.current_state_info['music'])
 	var fader: Tween = null
 	if base_music_player.playing or !path.is_empty():
 		fader = create_tween()
-	var prev_node = null
+	var prev_node: Node = null
 	if base_music_player.playing:
 		prev_node = base_music_player.duplicate()
 		add_child(prev_node)
@@ -85,7 +90,7 @@ func has_music() -> bool:
 
 
 ## Plays a given sound file.
-func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", loop :bool= false) -> void:
+func play_sound(path:String, volume := 0.0, audio_bus := "Master", loop := false) -> void:
 	if base_sound_player != null and !path.is_empty():
 		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
 		var new_sound_node := base_sound_player.duplicate()
@@ -112,5 +117,17 @@ func stop_all_sounds() -> void:
 		if "Sound" in node.name:
 			node.queue_free()
 
-func interpolate_volume_linearly(value :float, node:Node) -> void:
+
+func interpolate_volume_linearly(value:float, node:Node) -> void:
 	node.volume_db = linear_to_db(value)
+
+
+## Returns whether the currently playing audio resource is the same as this
+## event's [param resource_path].
+func is_music_playing_resource(resource_path: String) -> bool:
+	var is_playing_resource: bool = (base_music_player.is_playing()
+		and base_music_player.stream.resource_path == resource_path)
+
+	return is_playing_resource
+
+#endregion

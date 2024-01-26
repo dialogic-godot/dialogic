@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyp7m2nvab1aj"]
+
+[ext_resource type="StyleBox" uid="uid://cu8otiwksn8ma" path="res://addons/dialogic/Editor/Events/styles/TextBackground.tres" id="1_xq18n"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="2_ww6ga"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_text_multiline.gd" id="3_q7600"]
+
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_2q5dk"]
+script = ExtResource("2_ww6ga")
+
+[node name="Field_Text_Multiline" type="CodeEdit"]
+offset_right = 413.0
+offset_bottom = 15.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = ExtResource("1_xq18n")
+wrap_mode = 1
+syntax_highlighter = SubResource("SyntaxHighlighter_2q5dk")
+symbol_lookup_on_click = true
+delimiter_strings = Array[String]([])
+code_completion_enabled = true
+code_completion_prefixes = Array[String](["[", "{"])
+indent_automatic_prefixes = Array[String]([":", "{", "[", ")"])
+auto_brace_completion_enabled = true
+auto_brace_completion_pairs = {
+"[": "]",
+"{": "}"
+}
+script = ExtResource("3_q7600")

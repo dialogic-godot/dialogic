@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_general.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
-[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="3_i7rug"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_i7rug"]
 
-[sub_resource type="Image" id="Image_e2a0f"]
+[sub_resource type="Image" id="Image_e1gle"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -13,8 +13,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_wyypx"]
-image = SubResource("Image_e2a0f")
+[sub_resource type="ImageTexture" id="ImageTexture_4wgbv"]
+image = SubResource("Image_e1gle")
 
 [node name="General" type="VBoxContainer"]
 anchors_preset = 15
@@ -35,7 +35,7 @@ text = "Color Palette"
 [node name="HintTooltip" parent="PaletteTitle" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "These colors are used for the events."
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "These colors are used for the events."
 
 [node name="ResetColorsButton" type="Button" parent="PaletteTitle"]
@@ -43,7 +43,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Reset Colors to default"
-icon = SubResource("ImageTexture_wyypx")
+icon = SubResource("ImageTexture_4wgbv")
 flat = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -72,7 +72,7 @@ tooltip_text = "The layout scene configured in the Layout editor is automaticall
 instanced when calling Dialogic.start(). Depending on your game, 
 you might want it to be deleted after the dialogue, be hidden 
 (as reinstancing often is wasting resources) or kept visible. "
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "The layout scene configured in the Layout editor is automatically 
 instanced when calling Dialogic.start(). Depending on your game, 
 you might want it to be deleted after the dialogue, be hidden 
@@ -121,10 +121,15 @@ layout_mode = 2
 tooltip_text = "Configure where dialogic looks for custom modules.
 
 You will have to restart the project to see the change take action."
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "Configure where dialogic looks for custom modules.
 
 You will have to restart the project to see the change take action."
+
+[node name="Reload" type="Button" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5"]
+layout_mode = 2
+text = "Reload"
+flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer6/HBoxContainer4"]
 layout_mode = 2
@@ -139,7 +144,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder = "res://addons/dialogic_additions/Events"
 file_mode = 2
-resource_icon = SubResource("ImageTexture_wyypx")
+resource_icon = SubResource("ImageTexture_4wgbv")
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer6"]
 layout_mode = 2
@@ -164,7 +169,7 @@ text = "Extension Creator "
 [node name="HintTooltip" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "Use the Exension Creator to quickly setup custom modules!"
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "Use the Exension Creator to quickly setup custom modules!"
 
 [node name="CreateExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox"]
@@ -228,7 +233,7 @@ text = "Timer processing"
 [node name="HintTooltip" parent="HBoxContainer7" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
@@ -256,7 +261,7 @@ text = "Section Order"
 [node name="HintTooltip" parent="HBoxContainer" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "You can change the order of the event sections here. "
-texture = SubResource("ImageTexture_wyypx")
+texture = SubResource("ImageTexture_4wgbv")
 hint_text = "You can change the order of the event sections here. "
 
 [node name="SectionList" type="Tree" parent="."]
@@ -272,6 +277,7 @@ hide_root = true
 drop_mode_flags = 1
 
 [connection signal="item_selected" from="HBoxContainer3/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
+[connection signal="pressed" from="HBoxContainer6/HBoxContainer4/HBoxContainer5/Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]
 [connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/SubmitExtensionButton" to="." method="_on_submit_extension_button_pressed"]
 [connection signal="button_clicked" from="SectionList" to="." method="_on_section_list_button_clicked"]
