@@ -106,8 +106,9 @@ func _on_update_manager_downdload_completed(result:int):
 
 
 func _on_resources_reimported(resources:Array) -> void:
-	await get_tree().process_frame
-	get_parent().move_to_foreground()
+	if is_inside_tree():
+		await get_tree().process_frame
+		get_parent().move_to_foreground()
 
 
 func markdown_to_bbcode(text:String) -> String:
