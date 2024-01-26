@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy1y14inwkplb"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.gd" id="1_1i7em"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="1_rxdcc"]
+
+[node name="VN_PortraitLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1i7em")
+
+[node name="Portraits" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DialogicNode_PortraitContainer1" type="Control" parent="Portraits"]
+layout_mode = 1
+anchor_right = 0.231771
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rxdcc")
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits"]
+layout_mode = 1
+anchor_left = 0.190104
+anchor_right = 0.401042
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rxdcc")
+position_index = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits"]
+layout_mode = 1
+anchor_left = 0.371528
+anchor_right = 0.625868
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rxdcc")
+position_index = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits"]
+layout_mode = 1
+anchor_left = 0.592882
+anchor_right = 0.805556
+anchor_bottom = 0.996914
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rxdcc")
+position_index = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits"]
+layout_mode = 1
+anchor_left = 0.776042
+anchor_top = -0.00462963
+anchor_right = 1.00434
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rxdcc")
+position_index = 4
+metadata/_edit_use_anchors_ = true

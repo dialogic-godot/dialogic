@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1k5m0w3r40xf"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.gd" id="1_tu40u"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_ghan2"]
+
+[node name="BackgroundLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tu40u")
+
+[node name="DialogicNode_BackgroundHolder" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_ghan2")

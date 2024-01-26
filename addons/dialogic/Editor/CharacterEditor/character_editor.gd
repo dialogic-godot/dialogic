@@ -50,6 +50,10 @@ func _get_icon() -> Texture:
 
 ## Called when a character is opened somehow
 func _open_resource(resource:Resource) -> void:
+	if resource == null:
+		$NoCharacterScreen.show()
+		return
+
 	## Update resource
 	current_resource = (resource as DialogicCharacter)
 
@@ -68,9 +72,7 @@ func _open_resource(resource:Resource) -> void:
 	loading = false
 	character_loaded.emit(resource.resource_path)
 
-	for character in editors_manager.resource_helper.character_directory.values():
-		if character.resource == resource:
-			%CharacterName.text = character.unique_short_path
+	%CharacterName.text = DialogicResourceUtil.get_unique_identifier(resource.resource_path)
 
 	$NoCharacterScreen.hide()
 	%PortraitChangeInfo.hide()
@@ -82,7 +84,12 @@ func _open(extra_info:Variant="") -> void:
 		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
 	else:
 		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
-	update_preview()
+
+	if current_resource == null:
+		$NoCharacterScreen.show()
+		return
+
+	update_preview(true)
 	%PortraitChangeInfo.hide()
 
 
@@ -106,7 +113,7 @@ func _save() -> void:
 
 	ResourceSaver.save(current_resource, current_resource.resource_path)
 	current_resource_state = ResourceStates.SAVED
-	editors_manager.resource_helper.rebuild_character_directory()
+	DialogicResourceUtil.update_directory('dch')
 
 
 ## Saves a new empty character to the given path
@@ -118,7 +125,7 @@ func new_character(path: String) -> void:
 	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(resource, path)
-	editors_manager.resource_helper.rebuild_character_directory()
+	DialogicResourceUtil.update_directory('dch')
 	editors_manager.edit_resource(resource)
 
 #endregion
@@ -130,6 +137,11 @@ func new_character(path: String) -> void:
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
+
+	DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
+	# NOTE: This check is required because up to 4.2 this signal is not exposed.
+	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
+		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
 	$NoCharacterScreen.show()
@@ -307,9 +319,9 @@ func import_portraits_from_folder(path:String) -> void:
 			var file_lower = file_name.to_lower()
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
-					var final_name: String= path+ "/" + file_name
+					var final_name: String = path.path_join(file_name)
 					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()),
-							{'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+							{'scene':"",'export_overrides':{'image':var_to_str(final_name)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 		file_name = dir.get_next()
 
 	## Handle selection
@@ -322,10 +334,10 @@ func import_portraits_from_folder(path:String) -> void:
 	something_changed()
 
 
-func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
+func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'export_overrides':{'image':''}, 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 	if %PortraitTree.get_selected():
-		if %PortraitTree.get_selected().get_metadata(0).has('group'):
+		if %PortraitTree.get_selected().get_metadata(0) and %PortraitTree.get_selected().get_metadata(0).has('group'):
 			parent = %PortraitTree.get_selected()
 		else:
 			parent = %PortraitTree.get_selected().get_parent()
@@ -453,6 +465,7 @@ func _input(event:InputEvent) -> void:
 			delete_portrait_item(%PortraitTree.get_selected())
 			get_viewport().set_input_as_handled()
 
+
 func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# RENAME BUTTON
 	if id == 0:
@@ -463,6 +476,8 @@ func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 	# DUPLICATE ITEM
 	elif id == 1:
 		duplicate_item(%PortraitTree.get_selected())
+	elif id == 4:
+		get_settings_section_by_name("Portraits").set_default_portrait(%PortraitTree.get_full_item_name(%PortraitTree.get_selected()))
 
 
 # this removes/and adds the DEFAULT star on the portrait list
@@ -512,7 +527,7 @@ func report_name_change(item:TreeItem) -> void:
 		editors_manager.reference_manager.add_portrait_ref_change(
 			item.get_meta('previous_name'),
 			%PortraitTree.get_full_item_name(item),
-			[editors_manager.resource_helper.get_character_short_path(current_resource)])
+			[DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)])
 	item.set_meta('previous_name', %PortraitTree.get_full_item_name(item))
 	%PortraitChangeInfo.show()
 
@@ -521,18 +536,14 @@ func report_name_change(item:TreeItem) -> void:
 ########### PREVIEW ############################################################
 
 #region Preview
-func update_preview() -> void:
+func update_preview(force:=false) -> void:
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
-		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror
-		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
-		if current_portrait_data.get('ignore_char_scale', false):
-			scale = current_portrait_data.get('scale', 1)
-		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
-		if current_previewed_scene != null \
+
+		if not force and current_previewed_scene != null \
 			and current_previewed_scene.get_meta('path', '') == current_portrait_data.get('scene') \
 			and current_previewed_scene.has_method('_should_do_portrait_update') \
 			and is_instance_valid(current_previewed_scene.get_script()) \
@@ -541,22 +552,30 @@ func update_preview() -> void:
 		else:
 			for node in %RealPreviewPivot.get_children():
 				node.queue_free()
+
 			current_previewed_scene = null
-			if current_portrait_data.get('scene', '').is_empty():
-				if FileAccess.file_exists(def_portrait_path):
-					current_previewed_scene = load(def_portrait_path).instantiate()
-					current_previewed_scene.set_meta('path', '')
-			else:
-				if FileAccess.file_exists(current_portrait_data.get('scene')):
-					current_previewed_scene = load(current_portrait_data.get('scene')).instantiate()
-					current_previewed_scene.set_meta('path', current_portrait_data.get('scene'))
+
+			var scene_path := def_portrait_path
+			if not current_portrait_data.get('scene', '').is_empty():
+				scene_path = current_portrait_data.get('scene')
+
+			if FileAccess.file_exists(scene_path):
+				current_previewed_scene = load(scene_path).instantiate()
+
 			if current_previewed_scene:
 				%RealPreviewPivot.add_child(current_previewed_scene)
 
 		if current_previewed_scene != null:
-			var scene = current_previewed_scene
+			var scene: Node = current_previewed_scene
+
 			scene.show_behind_parent = true
 			DialogicUtil.apply_scene_export_overrides(scene, current_portrait_data.get('export_overrides', {}))
+
+			var mirror: bool = current_portrait_data.get('mirror', false) != current_resource.mirror
+			var scale: float = current_portrait_data.get('scale', 1) * current_resource.scale
+			if current_portrait_data.get('ignore_char_scale', false):
+				scale = current_portrait_data.get('scale', 1)
+			var offset: Vector2 = current_portrait_data.get('offset', Vector2()) + current_resource.offset
 
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
@@ -566,13 +585,14 @@ func update_preview() -> void:
 					scene._update_portrait(preview_character, %PortraitTree.get_full_item_name(selected_item))
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
+
 			if !%FitPreview_Toggle.button_pressed:
 				scene.position = Vector2() + offset
 				scene.scale = Vector2(1,1)*scale
 			else:
 				if is_instance_valid(scene.get_script()) and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
-					var rect :Rect2= scene._get_covered_rect()
-					var available_rect:Rect2 = %FullPreviewAvailableRect.get_rect()
+					var rect: Rect2= scene._get_covered_rect()
+					var available_rect: Rect2 = %FullPreviewAvailableRect.get_rect()
 					scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
 					%RealPreviewPivot.position = (rect.position)*-1*scene.scale
 					%RealPreviewPivot.position.x = %FullPreviewAvailableRect.size.x/2
@@ -589,6 +609,14 @@ func update_preview() -> void:
 		for node in %RealPreviewPivot.get_children():
 			node.queue_free()
 		current_previewed_scene = null
+
+
+func _on_some_resource_saved(file:Variant) -> void:
+	if file is Resource and file == current_previewed_scene.script:
+		update_preview(true)
+
+	if typeof(file) == TYPE_STRING and file == current_previewed_scene.get_meta("path", ""):
+		update_preview(true)
 
 
 func _on_full_preview_available_rect_resized():

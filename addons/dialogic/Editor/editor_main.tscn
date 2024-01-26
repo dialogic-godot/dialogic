@@ -6,17 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://cwe3r2tbh2og1" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_lp6hj"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
 [ext_resource type="Texture2D" uid="uid://bbea0efx0ybu7" path="res://addons/dialogic/Editor/Images/Resources/character.svg" id="6_8yp76"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
 [ext_resource type="Texture2D" uid="uid://b5xwnxdb7064n" path="res://addons/dialogic/Modules/Glossary/icon.svg" id="7_45ytg"]
-[ext_resource type="Texture2D" uid="uid://1mccycya6eua" path="res://addons/dialogic/Modules/LayoutEditor/styles_icon.svg" id="8_jj1i6"]
+[ext_resource type="Texture2D" uid="uid://1mccycya6eua" path="res://addons/dialogic/Modules/StyleEditor/styles_icon.svg" id="8_jj1i6"]
 [ext_resource type="Texture2D" uid="uid://ckilxvwc34s84" path="res://addons/dialogic/Modules/Variable/variable.svg" id="9_k4reh"]
-[ext_resource type="PackedScene" uid="uid://c7lmt5cp7bxcm" path="res://addons/dialogic/Editor/Common/broken_reference_manager.tscn" id="10_l1rf8"]
+[ext_resource type="PackedScene" uid="uid://c7lmt5cp7bxcm" path="res://addons/dialogic/Editor/Common/reference_manager.tscn" id="10_l1rf8"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/reference_manager_window.gd" id="10_xbkrt"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/CodeCompletionHelper.gd" id="11_fyce4"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_manager.gd" id="14_l6b1p"]
 [ext_resource type="PackedScene" uid="uid://vv3m5m68fwg7" path="res://addons/dialogic/Editor/Common/update_install_window.tscn" id="15_cu4xj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lxu4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mdik5"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 6.0
@@ -31,7 +30,7 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="Image" id="Image_x5eud"]
+[sub_resource type="Image" id="Image_rog03"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -41,9 +40,19 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_drcn6"]
-image = SubResource("Image_x5eud")
+image = SubResource("Image_rog03")
 
-[node name="EditorView" type="ColorRect"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwjob"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1155, 0.132, 0.1595, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[node name="EditorView" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -51,13 +60,19 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
 script = ExtResource("1_x88ov")
-editor_tab_bg = SubResource("StyleBoxFlat_7lxu4")
+editor_tab_bg = SubResource("StyleBoxFlat_mdik5")
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0588235, 0.0980392, 0.141176, 1)
 
 [node name="Margin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -125,9 +140,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ResourceHelper" type="Node" parent="Margin/EditorsManager"]
-script = ExtResource("7_1xvr0")
-
 [node name="CodeCompletionHelper" type="Node" parent="Margin/EditorsManager"]
 script = ExtResource("11_fyce4")
 
@@ -138,8 +150,8 @@ size = Vector2i(207, 100)
 title = "Dialogic resource renamed!"
 initial_position = 5
 size = Vector2i(494, 135)
-ok_button_text = "Check for broken references"
-dialog_text = "You renamed a dialogic resource. If this resource was referenced in timelines, you should check that no references where broken."
+ok_button_text = "Show Unique Identifiers"
+dialog_text = "You renamed a dialogic resource. This does NOT automatically rename the unique identifier for this resource. Consider checking in the Reference Manager if the identifiers are still the way you want them."
 dialog_autowrap = true
 
 [node name="ReferenceManager" type="Window" parent="."]
@@ -154,6 +166,7 @@ content_scale_aspect = 4
 script = ExtResource("10_xbkrt")
 
 [node name="Manager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_hwjob")
 
 [node name="UpdateManager" type="Node" parent="."]
 script = ExtResource("14_l6b1p")
@@ -172,8 +185,6 @@ timeout = 5.0
 
 [node name="DownloadRequest" type="HTTPRequest" parent="UpdateManager"]
 
-[connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
-[connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]
 [connection signal="close_requested" from="ReferenceManager" to="ReferenceManager" method="_on_close_requested"]
 [connection signal="downdload_completed" from="UpdateManager" to="UpdateManager/Window/UpdateInstallWindow" method="_on_update_manager_downdload_completed"]
 [connection signal="update_check_completed" from="UpdateManager" to="UpdateManager" method="_on_update_check_completed"]

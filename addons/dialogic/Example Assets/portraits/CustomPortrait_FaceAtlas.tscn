@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c5aku2g01k6c6" path="res://addons/dialogic/Example Assets/portraits/Princess/shock.png" id="7_5xil3"]
 [ext_resource type="Texture2D" uid="uid://dsid4ye0q74nl" path="res://addons/dialogic/Example Assets/portraits/Princess/smile.png" id="8_7s6tq"]
 
-[node name="CustomPortraitFaceAtlass" type="Node2D"]
+[node name="CustomPortraitFaceAtlas" type="Node2D"]
 position = Vector2(301, 598)
 script = ExtResource("1_fc12l")
 

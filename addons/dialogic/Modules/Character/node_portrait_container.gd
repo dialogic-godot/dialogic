@@ -2,7 +2,7 @@
 class_name DialogicNode_PortraitContainer
 extends Control
 
-## Node that defines a position for dialogic portraits and how to display portrait at that position. 
+## Node that defines a position for dialogic portraits and how to display portrait at that position.
 
 enum PositionModes {
 	POSITION, ## This container has an index and can be joined/moved to with the Character Event
@@ -17,7 +17,7 @@ enum PositionModes {
 
 
 @export_subgroup('Mode: Speaker')
-## Can be used to use a different portrait. 
+## Can be used to use a different portrait.
 ## E.g. "Faces/" would mean instead of "happy" it will use portrait "Faces/happy"
 @export var portrait_prefix := ''
 
@@ -76,17 +76,17 @@ func _ready():
 			add_to_group('dialogic_portrait_con_position')
 		PositionModes.SPEAKER:
 			add_to_group('dialogic_portrait_con_speaker')
-	
+
 	if Engine.is_editor_hint():
 		resized.connect(_update_debug_origin)
-		
+
 		if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
 			default_portrait_scene = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
-		
+
 		debug_origin = Sprite2D.new()
 		add_child(debug_origin)
 		debug_origin.texture = get_theme_icon("EditorPosition", "EditorIcons")
-		
+
 		_update_debug_origin()
 		_update_debug_portrait_scene()
 	else:
@@ -99,7 +99,7 @@ func _ready():
 
 func update_portrait_transforms():
 	for child in get_children():
-		Dialogic.Portraits._update_portrait_transform(child)
+		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
 
 ## Returns a Rect2 with the position as the position and the scale as the size.
 func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> Rect2:
@@ -109,22 +109,22 @@ func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> 
 	# Mode that ignores the containers size
 	if size_mode == SizeModes.KEEP:
 		transform.size = Vector2(1,1)*character_scale
-	
+
 	# Mode that makes sure neither height nor width go out of container
 	elif size_mode == SizeModes.FIT_IGNORE_SCALE:
 		if size.x/size.y < portrait_rect.size.x/portrait_rect.size.y:
 			transform.size = Vector2(1,1) * size.x/portrait_rect.size.x
 		else:
 			transform.size = Vector2(1,1) * size.y/portrait_rect.size.y
-	
-	# Mode that stretches the portrait to fill the whole container 
+
+	# Mode that stretches the portrait to fill the whole container
 	elif size_mode == SizeModes.FIT_STRETCH:
 		transform.size = size/portrait_rect.size
-	
+
 	# Mode that size the character so 100% size fills the height
 	elif size_mode == SizeModes.FIT_SCALE_HEIGHT:
 		transform.size = Vector2(1,1) * size.y/portrait_rect.size.y*character_scale
-	
+
 	return transform
 
 
@@ -137,7 +137,7 @@ func _get_origin_position() -> Vector2:
 ################################################################################
 
 ## Loads the debug_character with the debug_character_portrait
-## Creates a holder node and applies mirror  
+## Creates a holder node and applies mirror
 func _update_debug_portrait_scene() -> void:
 	if !Engine.is_editor_hint():
 		return
@@ -145,11 +145,11 @@ func _update_debug_portrait_scene() -> void:
 		for child in get_children():
 			if child != debug_origin:
 				child.free()
-	
+
 	var character := _get_debug_character()
 	if not character is DialogicCharacter or character.portraits.is_empty():
 		return
-	
+
 	var debug_portrait := debug_character_portrait
 	if debug_portrait.is_empty(): debug_portrait = character.default_portrait
 	if mode == PositionModes.SPEAKER and !portrait_prefix.is_empty():
@@ -181,7 +181,7 @@ func _update_debug_portrait_size_position() -> void:
 	var transform := get_local_portrait_transform(debug_character_scene_node._get_covered_rect(), character.scale*portrait_info.get('scale', 1))
 	debug_character_holder_node.position = transform.position
 	debug_character_scene_node.position = portrait_info.get('offset', Vector2())+character.offset
-	
+
 	debug_character_holder_node.scale = transform.size
 
 ## Updates the debug origins position. Also calls _update_debug_portrait_size_position()

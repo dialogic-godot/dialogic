@@ -9,7 +9,7 @@ extends DialogicEvent
 
 enum Modes {SET, RESET, RESET_ALL}
 
-## The name of the setting to save to. 
+## The name of the setting to save to.
 var name: String = ""
 var _value_type := 0
 var value: Variant = ""
@@ -64,10 +64,10 @@ func to_text() -> String:
 	var string := "setting "
 	if mode != Modes.SET:
 		string += "reset "
-	
+
 	if !name.is_empty() and mode != Modes.RESET_ALL:
 		string += '"' + name + '"'
-	
+
 	if mode == Modes.SET:
 		string += " = "
 		value = str(value)
@@ -78,7 +78,7 @@ func to_text() -> String:
 				string += str(value)
 			2: # Variable
 				string += '{'+value+'}'
-	
+
 	return string
 
 
@@ -88,15 +88,15 @@ func from_text(string:String) -> void:
 	var result := reg.search(string)
 	if !result:
 		return
-	
+
 	if result.get_string('reset'):
 		mode = Modes.RESET
-	
+
 	name = result.get_string('name').strip_edges()
-	
+
 	if name.is_empty() and mode == Modes.RESET:
 		mode = Modes.RESET_ALL
-	
+
 	if result.get_string('value'):
 		value = result.get_string('value').strip_edges()
 		if value.begins_with('"') and value.ends_with('"') and value.count('"')-value.count('\\"') == 2:
@@ -122,8 +122,8 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('mode', ValueType.FIXED_OPTION_SELECTOR, {
-		'selector_options': [{
+	add_header_edit('mode', ValueType.FIXED_OPTIONS, {
+		'options': [{
 				'label': 'Set',
 				'value': Modes.SET,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
@@ -137,10 +137,10 @@ func build_event_editor():
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
 			},
 			]})
-	
-	add_header_edit('name', ValueType.COMPLEX_PICKER, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
-	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, {'left_text':'to',
-		'selector_options': [
+
+	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
+	add_header_edit('_value_type', ValueType.FIXED_OPTIONS, {'left_text':'to',
+		'options': [
 			{
 				'label': 'String',
 				'icon': ["String", "EditorIcons"],
@@ -158,18 +158,18 @@ func build_event_editor():
 				'icon': ["Variant", "EditorIcons"],
 				'value': 3
 			}],
-		'symbol_only':true}, 
+		'symbol_only':true},
 		'!name.is_empty() and mode == 0')
 	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
-	add_header_edit('value', ValueType.FLOAT, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
-	add_header_edit('value', ValueType.COMPLEX_PICKER, 
-			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
+	add_header_edit('value', ValueType.NUMBER, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
+	add_header_edit('value', ValueType.DYNAMIC_OPTIONS,
+			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'},
 			'!name.is_empty() and _value_type == 2 and mode == 0')
 
 
 func get_settings_suggestions(filter:String) -> Dictionary:
 	var suggestions := {filter:{'value':filter, 'editor_icon':["GDScriptInternal", "EditorIcons"]}}
-	
+
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('dialogic/settings/'):
 			suggestions[prop.name.trim_prefix('dialogic/settings/')] = {'value':prop.name.trim_prefix('dialogic/settings/'), 'editor_icon':["GDScript", "EditorIcons"]}
@@ -178,7 +178,7 @@ func get_settings_suggestions(filter:String) -> Dictionary:
 
 func get_value_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
-	
+
 	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
@@ -193,7 +193,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 	if symbol == " " and !"reset" in line and !'=' in line and !'"' in line:
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset", "reset ", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("RotateLeft", "EditorIcons"))
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "reset all", "reset \n", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), TextNode.get_theme_icon("ToolRotate", "EditorIcons"))
-	
+
 	if (symbol == " " or symbol == '"') and !"=" in line and CodeCompletionHelper.get_line_untill_caret(line).count('"') != 2:
 		for i in get_settings_suggestions(''):
 			if i.is_empty():

@@ -9,11 +9,10 @@ signal voiceline_finished(info:Dictionary)
 signal voiceline_stopped(info:Dictionary)
 
 
-var current_audio_file:String
+var current_audio_file: String
 var voice_player := AudioStreamPlayer.new()
 
-####################################################################################################
-##					STATE
+#region STATE
 ####################################################################################################
 
 func pause() -> void:
@@ -23,9 +22,10 @@ func pause() -> void:
 func resume() -> void:
 	voice_player.stream_paused = false
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 func _ready() -> void:
@@ -40,34 +40,34 @@ func is_voiced(index:int) -> bool:
 	return false
 
 
-func play_voice():
+func play_voice() -> void:
 	voice_player.play()
 	voiceline_started.emit({'file':current_audio_file})
 
 
-func set_file(path:String):
+func set_file(path:String) -> void:
 	if current_audio_file == path:
 		return
 	current_audio_file = path
-	var audio:AudioStream = load(path)
+	var audio: AudioStream = load(path)
 	voice_player.stream = audio
 
 
-func set_volume(value:float):
+func set_volume(value:float) -> void:
 	voice_player.volume_db = value
 
 
-func set_bus(value:String):
+func set_bus(value:String) -> void:
 	voice_player.bus = value
 
 
-func stop_audio():
+func stop_audio() -> void:
 	if voice_player.playing:
 		voiceline_stopped.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
 	voice_player.stop()
 
 
-func _on_voice_finnished():
+func _on_voice_finnished() -> void:
 	voiceline_finished.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
 
 
@@ -79,3 +79,5 @@ func get_remaining_time() -> float:
 
 func is_running() -> bool:
 	return get_remaining_time() > 0.0
+
+#endregion

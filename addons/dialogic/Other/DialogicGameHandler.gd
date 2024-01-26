@@ -1,3 +1,4 @@
+class_name DialogicGameHandler
 extends Node
 
 ## Autoload script that allows interacting with all of Dialogics systems:
@@ -40,7 +41,7 @@ var current_state := States.IDLE:
 		current_state = new_state
 		emit_signal('state_changed', new_state)
 ## Emitted when [current_state] change.
-signal state_changed(new_state)
+signal state_changed(new_state:States)
 
 ## When true, many dialogic process won't continue until it's false again.
 var paused := false:
@@ -48,13 +49,13 @@ var paused := false:
 		paused = value
 		if paused:
 			for subsystem in get_children():
-				if subsystem.has_method('pause'):
-					subsystem.pause()
+				if subsystem is DialogicSubsystem:
+					(subsystem as DialogicSubsystem).pause()
 			dialogic_paused.emit()
 		else:
 			for subsystem in get_children():
-				if subsystem.has_method('resume'):
-					subsystem.resume()
+				if subsystem is DialogicSubsystem:
+					(subsystem as DialogicSubsystem).resume()
 			dialogic_resumed.emit()
 
 ## Emitted when [paused] changes to true.
@@ -63,27 +64,75 @@ signal dialogic_paused
 signal dialogic_resumed
 
 
-signal timeline_ended()
-signal timeline_started()
-signal event_handled(resource)
+signal timeline_ended
+signal timeline_started
+signal event_handled(resource:DialogicEvent)
 
 ## Emitted when the Signal event was reached
-signal signal_event(argument)
+signal signal_event(argument:Variant)
 ## Emitted when [signal] effect was reached in text.
-signal text_signal(argument)
+signal text_signal(argument:String)
 
-## Directory that maps unique character names to each character resource
-var character_directory: Dictionary = {}
-## Directory that maps unique timeline names to each timeline resource.
-var timeline_directory: Dictionary = {}
-## Array holding a reference to each event once.
-var _event_script_cache: Array[DialogicEvent] = []
 
+# Careful, this section is repopulated automatically at certain moments
+#region SUBSYSTEMS
+
+var Audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd").new():
+	get: return get_subsystem("Audio")
+
+var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd").new():
+	get: return get_subsystem("Backgrounds")
+
+var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
+	get: return get_subsystem("Portraits")
+
+var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
+	get: return get_subsystem("Choices")
+
+var Expressions := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd").new():
+	get: return get_subsystem("Expressions")
+
+var Animations := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd").new():
+	get: return get_subsystem("Animations")
+
+var Inputs := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd").new():
+	get: return get_subsystem("Inputs")
+
+var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd").new():
+	get: return get_subsystem("Glossary")
+
+var History := preload("res://addons/dialogic/Modules/History/subsystem_history.gd").new():
+	get: return get_subsystem("History")
+
+var Jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd").new():
+	get: return get_subsystem("Jump")
+
+var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd").new():
+	get: return get_subsystem("Save")
+
+var Settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd").new():
+	get: return get_subsystem("Settings")
+
+var Styles := preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd").new():
+	get: return get_subsystem("Styles")
+
+var Text := preload("res://addons/dialogic/Modules/Text/subsystem_text.gd").new():
+	get: return get_subsystem("Text")
+
+var TextInput := preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd").new():
+	get: return get_subsystem("TextInput")
+
+var VAR := preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd").new():
+	get: return get_subsystem("VAR")
+
+var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd").new():
+	get: return get_subsystem("Voice")
+
+#endregion
 
 ## Autoloads are added first, so this happens REALLY early on game startup.
 func _ready() -> void:
-	rebuild_character_directory()
-	rebuild_timeline_directory()
+	DialogicResourceUtil.update()
 
 	collect_subsystems()
 
@@ -99,57 +148,26 @@ func _ready() -> void:
 ## For argument info, checkout start_timeline()
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
-	var scene :Node= null
-	if !has_active_layout_node():
-		if has_subsystem('Styles'):
-			scene = get_subsystem("Styles").add_layout_style()
-		else:
-			scene = add_layout_node()
+	# If we don't have a style subsystem, default to just start_timeline()
+	if !has_subsystem('Styles'):
+		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
+		clear(ClearFlags.KEEP_VARIABLES)
+		start_timeline(timeline, label)
+		return null
+
+	# Otherwise make sure there is a style active.
+	var scene: Node= null
+	if !self.Styles.has_active_layout_node():
+		scene = self.Styles.load_style()
 	else:
-		scene = get_layout_node()
+		scene = self.Styles.get_layout_node()
+
 	if not scene.is_node_ready():
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
 		scene.ready.connect(start_timeline.bind(timeline, label))
 	else:
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
-	return scene
-
-
-## Method that adds a layout scene unless the same scene is already in use.
-## The layout scene will be added to the tree root and returned.
-##
-## To load a specific style you should instead call
-##  Dialogic.Styles.add_layout_style(style_name)
-## which uses this method internally but also applies style settings.
-func add_layout_node(scene_path := "") -> Node:
-	var scene: Node = get_layout_node()
-
-	if (
-		is_instance_valid(scene)
-		and (
-			scene_path.is_empty()
-			or scene.get_meta('scene_path', scene_path) == scene_path
-		)
-	):
-		# We have an existing valid scene matching the requested path, so
-		# show it.
-		scene.show()
-	else:
-		if is_instance_valid(scene):
-			scene.queue_free()
-		scene = null
-
-		if scene_path.is_empty():
-			scene_path = ProjectSettings.get_setting(
-						'dialogic/layout/layout_scene',
-						DialogicUtil.get_default_layout_scene())
-
-		scene = load(scene_path).instantiate()
-		scene.set_meta('scene_path', scene_path)
-
-		get_parent().call_deferred("add_child", scene)
-		get_tree().set_meta('dialogic_layout_node', scene)
 
 	return scene
 
@@ -161,16 +179,16 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if timeline.contains("res://"):
-			timeline = load(timeline)
+		if (timeline as String).contains("res://"):
+			timeline = load((timeline as String))
 		else:
-			timeline = load(find_timeline(timeline))
+			timeline = DialogicResourceUtil.get_timeline_resource((timeline as String))
 
 	if timeline == null:
 		printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 		return
 
-	await timeline.process()
+	await (timeline as DialogicTimeline).process()
 
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
@@ -179,7 +197,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	if typeof(label_or_idx) == TYPE_STRING:
 		if label_or_idx:
 			if has_subsystem('Jump'):
-				self.Jump.jump_to_label(label_or_idx)
+				Jump.jump_to_label((label_or_idx as String))
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
@@ -193,19 +211,17 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
-		timeline_resource = load(timeline_resource)
+		timeline_resource = load((timeline_resource as String))
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return false
 		else:
-			await timeline_resource.process()
+			await (timeline_resource as DialogicTimeline).process()
 			return timeline_resource
-	return false
+	return null
 
 
 func end_timeline() -> void:
-	current_timeline = null
-	current_timeline_events = []
 	clear(ClearFlags.TIMLEINE_INFO_ONLY)
 	timeline_ended.emit()
 
@@ -218,8 +234,8 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
 
-	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and get_meta('previous_event').event_finished.is_connected(handle_next_event):
-		get_meta('previous_event').event_finished.disconnect(handle_next_event)
+	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and (get_meta('previous_event') as DialogicEvent).event_finished.is_connected(handle_next_event):
+		(get_meta('previous_event') as DialogicEvent).event_finished.disconnect(handle_next_event)
 
 	if paused:
 		await dialogic_resumed
@@ -230,8 +246,8 @@ func handle_event(event_index:int) -> void:
 
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
-	if current_timeline_events[event_index]['event_node_ready'] == false:
-		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['event_node_as_text'])
+	if current_timeline_events[event_index].event_node_ready == false:
+		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index].event_node_as_text)
 
 	current_event_idx = event_index
 
@@ -251,9 +267,12 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
 		for subsystem in get_children():
-			subsystem.clear_game_state(clear_flags)
+			if subsystem is DialogicSubsystem:
+				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
 
 	# Resetting variables
+	if current_timeline:
+		current_timeline.clean()
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
@@ -280,20 +299,27 @@ func get_full_state() -> Dictionary:
 func load_full_state(state_info:Dictionary) -> void:
 	clear()
 	current_state_info = state_info
+	## The Style subsystem needs to run first for others to load correctly.
+	var scene: Node = null
+	if has_subsystem('Styles'):
+		get_subsystem('Styles').load_game_state()
+		scene = self.Styles.get_layout_node()
+
+
+	var load_subsystems := func() -> void:
+		for subsystem in get_children():
+			if subsystem.name == 'Styles':
+				continue
+			(subsystem as DialogicSubsystem).load_game_state()
+
+	if null != scene and not scene.is_node_ready():
+		scene.ready.connect(load_subsystems)
+	else:
+		await get_tree().process_frame
+		load_subsystems.call()
+
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
-
-	## The Style subsystem needs to run first for others to load correctly.
-	if has_subsystem('Style'):
-		get_subsystem('Style').load_full_state()
-
-	await get_tree().process_frame
-
-	for subsystem in get_children():
-		if subsystem.name == 'Style':
-			continue
-
-		subsystem.load_game_state()
 
 #endregion
 
@@ -302,199 +328,33 @@ func load_full_state(state_info:Dictionary) -> void:
 ################################################################################
 
 func collect_subsystems() -> void:
-	# This also builds the event script cache as well
-	_event_script_cache = []
-
 	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
-
-		# build event cache
-		for event in indexer._get_events():
-			if not FileAccess.file_exists(event):
-				continue
-			if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
-				_event_script_cache.append(load(event).new())
-
-		# build the subsystems (only at runtime)
-		if !Engine.is_editor_hint():
-
-			for subsystem in indexer._get_subsystems():
-				var subsystem_node := add_subsystem(subsystem.name, subsystem.script)
-				subsystem_nodes.push_back(subsystem_node)
+		for subsystem in indexer._get_subsystems():
+			var subsystem_node := add_subsystem(str(subsystem.name), str(subsystem.script))
+			subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
 		subsystem.post_install()
-
-	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-	_event_script_cache.push_front(DialogicEndBranchEvent.new())
-	_event_script_cache.push_back(DialogicTextEvent.new())
-	Engine.get_main_loop().set_meta("dialogic_event_cache", _event_script_cache)
 
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
 
 
-func get_subsystem(_name:String) -> Variant:
+func get_subsystem(_name:String) -> DialogicSubsystem:
 	return get_node(_name)
 
 
 func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
-	var node:Node = Node.new()
+	var node: Node = Node.new()
 	node.name = _name
 	node.set_script(load(_script_path))
-	assert(node is DialogicSubsystem)
+	node = node as DialogicSubsystem
 	node.dialogic = self
 	add_child(node)
-	return node as DialogicSubsystem
+	return node
 
-
-func _get(property):
-	if has_subsystem(property):
-		return get_node(str(property))
-
-
-func _set(property, value):
-	if has_subsystem(property):
-		return true
-
-#endregion
-
-
-#region CHARACTER & TIMELINE DIRECTORIES
-################################################################################
-# #TODO initial work on a unified method for character and timeline directories!
-#func build_directory(file_extension:String) -> Dictionary:
-#	var files :Array[String] = DialogicUtil.list_resources_of_type(file_extension)
-#
-#	# First sort by length of path, so shorter paths are first
-#	files.sort_custom(func(a, b): return a.count("/") < b.count("/"))
-#
-#
-#
-#	return {}
-
-func rebuild_character_directory() -> void:
-	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
-
-	# First sort by length of path, so shorter paths are first
-	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-
-	# next we prepare the additional arrays needed for building the depth tree
-	var shortened_paths:Array = []
-	var reverse_array:Array = []
-	var reverse_array_splits:Array = []
-
-	for i in characters.size():
-		characters[i] = characters[i].replace("res:///", "res://")
-		var path = characters[i].replace("res://","").replace(".dch", "")
-		if path[0] == "/":
-			path = path.right(-1)
-		shortened_paths.append(path)
-
-		#split the shortened path up, and reverse it
-		var path_breakdown = path.split("/")
-		path_breakdown.reverse()
-
-		#Add the name of the file at beginning now, and another array saving the reversed split within each element
-		reverse_array.append(path_breakdown[0])
-		reverse_array_splits.append(path_breakdown)
-
-
-	# Now the three arrays are prepped, begin the depth search
-	var clean_search_path:bool = false
-	var depth := 1
-
-	while !clean_search_path:
-		var interim_array:Array = []
-		clean_search_path = true
-
-		for i in shortened_paths.size():
-			if reverse_array.count(reverse_array[i]) > 1:
-				clean_search_path = false
-				if depth < reverse_array_splits[i].size():
-					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
-				else:
-					interim_array.append(reverse_array[i])
-			else:
-				interim_array.append(reverse_array[i])
-		depth += 1
-		reverse_array = interim_array
-
-	# Now finally build the database from those arrays
-	for i in characters.size():
-		var entry:Dictionary = {}
-		var charfile: DialogicCharacter= load(characters[i])
-		entry['resource'] = charfile
-		entry['full_path'] = characters[i]
-		entry['unique_short_path'] = reverse_array[i]
-		character_directory[reverse_array[i]] = entry
-
-	Engine.get_main_loop().set_meta("dialogic_character_directory", character_directory)
-
-
-func rebuild_timeline_directory() -> void:
-	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
-
-	# First sort by length of path, so shorter paths are first
-	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
-
-	# next we prepare the additional arrays needed for building the depth tree
-	var shortened_paths:Array = []
-	var reverse_array:Array = []
-	var reverse_array_splits:Array = []
-
-	for i in characters.size():
-		characters[i] = characters[i].replace("res:///", "res://")
-		var path = characters[i].replace("res://","").replace(".dtl", "")
-		if path[0] == "/":
-			path = path.right(-1)
-		shortened_paths.append(path)
-
-		#split the shortened path up, and reverse it
-		var path_breakdown = path.split("/")
-		path_breakdown.reverse()
-
-		#Add the name of the file at beginning now, and another array saving the reversed split within each element
-		reverse_array.append(path_breakdown[0])
-		reverse_array_splits.append(path_breakdown)
-
-
-	# Now the three arrays are prepped, begin the depth search
-	var clean_search_path:bool = false
-	var depth := 1
-
-	while !clean_search_path:
-		var interim_array:Array = []
-		clean_search_path = true
-
-		for i in shortened_paths.size():
-			if reverse_array.count(reverse_array[i]) > 1:
-				clean_search_path = false
-				if depth < reverse_array_splits[i].size():
-					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
-				else:
-					interim_array.append(reverse_array[i])
-			else:
-				interim_array.append(reverse_array[i])
-		depth += 1
-		reverse_array = interim_array
-
-	# Now finally build the database from those arrays
-	for i in characters.size():
-		timeline_directory[reverse_array[i]] = characters[i]
-	Engine.get_main_loop().set_meta("dialogic_timeline_directory", timeline_directory)
-
-
-func find_timeline(path: String) -> String:
-	if path in timeline_directory.keys():
-		return timeline_directory[path]
-	else:
-		for i in timeline_directory.keys():
-			if timeline_directory[i].contains(path):
-				return timeline_directory[i]
-
-	return ""
 
 #endregion
 
@@ -502,34 +362,13 @@ func find_timeline(path: String) -> String:
 #region HELPERS
 ################################################################################
 
-func has_active_layout_node() -> bool:
-	return (
-		get_tree().has_meta('dialogic_layout_node')
-		and is_instance_valid(get_tree().get_meta('dialogic_layout_node'))
-		and get_tree().get_meta('dialogic_layout_node').visible
-	)
-
-
-func get_layout_node() -> Node:
-	# `null` doesn't really work as a default for `get_meta`, because it'll
-	# still throw an error if the meta entry doesn't exist. Revisit this if
-	# Godot ever gives us a way to explicitly have `null` as a default.
-	# (oddfacade 2023-07)
-	var tree := get_tree()
-	return (
-		tree.get_meta('dialogic_layout_node')
-		if tree.has_meta('dialogic_layout_node') and
-			is_instance_valid(tree.get_meta('dialogic_layout_node'))
-		else null
-	)
-
-
-func _on_timeline_ended():
+func _on_timeline_ended() -> void:
 	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
 			0:
-				get_tree().get_meta('dialogic_layout_node', '').queue_free()
+				(get_tree().get_meta('dialogic_layout_node', '') as Node).queue_free()
 			1:
+				@warning_ignore("unsafe_method_access")
 				get_tree().get_meta('dialogic_layout_node', '').hide()
 
-#endregion Helpers
+#endregion

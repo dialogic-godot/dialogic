@@ -1,7 +1,7 @@
 class_name DialogicNode_TextInput
 extends Control
 
-## Node that will show when a text input field is reached. 
+## Node that will show when a text input field is reached.
 ## Should be connected to a (probably contained) label, a line edit and a button to work.
 
 ## The LineEdit to use.
@@ -21,6 +21,7 @@ func _ready():
 		get_node(confirmation_button).pressed.connect(_on_confirmation_button_pressed)
 	if input_line_edit:
 		get_node(input_line_edit).text_changed.connect(_on_input_text_changed)
+		get_node(input_line_edit).text_submitted.connect(_on_confirmation_button_pressed)
 	visible = false
 
 
@@ -51,7 +52,7 @@ func _on_input_text_changed(text:String) -> void:
 	get_node(confirmation_button).disabled = !_allow_empty and text.is_empty()
 
 
-func _on_confirmation_button_pressed() -> void:
+func _on_confirmation_button_pressed(text:="") -> void:
 	if get_node(input_line_edit) is LineEdit:
 		if !get_node(input_line_edit).text.is_empty() or _allow_empty:
-			Dialogic.TextInput.input_confirmed.emit(get_node(input_line_edit).text)
+			DialogicUtil.autoload().TextInput.input_confirmed.emit(get_node(input_line_edit).text)

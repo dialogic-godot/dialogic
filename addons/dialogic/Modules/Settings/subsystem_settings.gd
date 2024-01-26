@@ -9,15 +9,14 @@ extends DialogicSubsystem
 ## Settings stored there can also be changed with the Settings event.
 
 var settings := {}
-
 var _connections := {}
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	_reload_settings()
 
 
@@ -54,8 +53,10 @@ func _setting_changed(property:StringName, value:Variant) -> void:
 	for i in _connections[property]:
 		i.call(value)
 
-####################################################################################################
-##					HANDY METHODS
+#endregion
+
+
+#region HANDY METHODS
 ####################################################################################################
 
 func get_setting(property:StringName, default:Variant) -> Variant:
@@ -84,3 +85,5 @@ func connect_to_change(setting:StringName, callable:Callable) -> void:
 	if !setting in _connections:
 		_connections[setting] = []
 	_connections[setting].append(callable)
+
+#endregion

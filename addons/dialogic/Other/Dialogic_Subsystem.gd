@@ -1,7 +1,7 @@
-extends Node
 class_name DialogicSubsystem
+extends Node
 
-var dialogic = null
+var dialogic: DialogicGameHandler = null
 
 enum LoadFlags {FULL_LOAD, ONLY_DNODES}
 
@@ -10,10 +10,12 @@ enum LoadFlags {FULL_LOAD, ONLY_DNODES}
 func post_install() -> void:
 	pass
 
+
 # To be overriden by sub-classes
 # Fill in everything that should be cleared (for example before loading a different state)
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
+
 
 # To be overriden by sub-classes
 # Fill in everything that should be loaded using the dialogic_game_handler.current_state_info
@@ -21,9 +23,11 @@ func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	pass
 
+
 # To be overriden by sub-classes
 func pause() -> void:
 	pass
+
 
 # To be overriden by sub-classes
 func resume() -> void:

@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhk6j6eb6e3q"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Choices/vn_choice_layer.gd" id="1_kurgw"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="1_w632k"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/node_button_sound.gd" id="2_mgko6"]
+[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="3_mql8i"]
+[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="4_420fr"]
+
+[sub_resource type="AudioStream" id="AudioStream_pe27w"]
+
+[node name="VN_ChoiceLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_kurgw")
+
+[node name="Choices" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.5
+offset_top = -103.0
+offset_right = 86.5
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="DialogicNode_ChoiceButton1" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton7" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton8" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton9" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton10" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ChoiceButton11" type="Button" parent="Choices"]
+layout_mode = 2
+text = "Some text"
+script = ExtResource("1_w632k")
+
+[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="Choices"]
+unique_name_in_owner = true
+script = ExtResource("2_mgko6")
+sound_pressed = ExtResource("3_mql8i")
+sound_hover = ExtResource("4_420fr")
+sound_focus = SubResource("AudioStream_pe27w")

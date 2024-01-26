@@ -7,9 +7,6 @@ extends DialogicSettingsPage
 func _get_priority() -> int:
 	return 0
 
-func _get_info_section() -> Control:
-	return $InfoSection
-
 
 func _refresh():
 	%Autosave.button_pressed = ProjectSettings.get_setting('dialogic/save/autosave', false)

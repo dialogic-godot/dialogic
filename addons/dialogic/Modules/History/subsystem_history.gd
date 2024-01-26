@@ -2,6 +2,9 @@ extends DialogicSubsystem
 
 ## Subsystem that manages history storing.
 
+signal open_requested
+signal close_requested
+
 
 ## Simple history that stores limited information
 ## Used for the history display
@@ -19,31 +22,33 @@ signal full_event_history_changed
 var already_read_history_enabled := false
 var already_read_history_content := {}
 var _was_last_event_already_read := false
-
 signal already_read_event_reached
 signal not_read_event_reached
 
-####################################################################################################
-##					INITIALIZE
+
+#region INITIALIZE
 ####################################################################################################
 
 func _ready() -> void:
-	Dialogic.event_handled.connect(store_full_event)
-	Dialogic.event_handled.connect(check_already_read)
+	dialogic.event_handled.connect(store_full_event)
+	dialogic.event_handled.connect(check_already_read)
 
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
 	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
 
 
-####################################################################################################
-##					STATE
-####################################################################################################
+func open_history() -> void:
+	open_requested.emit()
 
-# nothing implemented right now
 
-####################################################################################################
-##					SIMPLE HISTORY
+func close_history() -> void:
+	close_requested.emit()
+
+#endregion
+
+
+#region SIMPLE HISTORY
 ####################################################################################################
 
 func store_simple_history_entry(text:String, event_type:String, extra_info := {}) -> void:
@@ -57,28 +62,27 @@ func store_simple_history_entry(text:String, event_type:String, extra_info := {}
 func get_simple_history() -> Array:
 	return simple_history_content
 
+#endregion
 
 
+#region FULL EVENT HISTORY
 ####################################################################################################
-##					FULL EVENT HISTORY
-####################################################################################################
 
-# called on each event
+## Called on each event
 func store_full_event(event:DialogicEvent) -> void:
 	if !full_event_history_enabled: return
 	full_event_history_content.append(event)
 	full_event_history_changed.emit()
 
 
-####################################################################################################
-##					ALREADY READ HISTORY
+#region ALREADY READ HISTORY
 ####################################################################################################
 
 ## Takes the current timeline event and creates a unique key for it.
 ## Uses the timeline resource path as well.
 func _current_event_key() -> String:
-	var resource_path = Dialogic.current_timeline.resource_path
-	var event_idx = str(Dialogic.current_event_idx)
+	var resource_path = dialogic.current_timeline.resource_path
+	var event_idx = str(dialogic.current_event_idx)
 	var event_key = resource_path+event_idx
 
 	return event_key
@@ -90,7 +94,7 @@ func event_was_read(_event: DialogicEvent) -> void:
 
 	var event_key = _current_event_key()
 
-	already_read_history_content[event_key] = Dialogic.current_event_idx
+	already_read_history_content[event_key] = dialogic.current_event_idx
 
 # Called on each event, but we filter for Text events.
 func check_already_read(event: DialogicEvent) -> void:
@@ -114,3 +118,5 @@ func check_already_read(event: DialogicEvent) -> void:
 
 func was_last_event_already_read() -> bool:
 	return _was_last_event_already_read
+
+#endregion

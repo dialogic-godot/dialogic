@@ -1,5 +1,5 @@
 @tool
-extends ColorRect
+extends Control
 
 ## Editor root node. Most editor functionality is handled by EditorsManager node!
 
@@ -18,9 +18,13 @@ func _ready() -> void:
 
 	## REFERENCES
 	editors_manager = $Margin/EditorsManager
+	var button :Button = editors_manager.add_icon_button(get_theme_icon("MakeFloating", "EditorIcons"), 'Make floating')
+	button.pressed.connect(toggle_floating_window)
+
+
 
 	## STYLING
-	color = get_theme_color("base_color", "Editor")
+	$BG.color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.bg_color = get_theme_color("dark_color_2", "Editor")
 	$Margin/EditorsManager.editors_holder.add_theme_stylebox_override('panel', editor_tab_bg)
@@ -153,6 +157,50 @@ func update_theme_additions():
 
 
 	theme.set_icon('Plugin', 'Dialogic', load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
+
+
+## Switches from floating window mode to embedded mode based on current mode
+func toggle_floating_window():
+	if get_parent() is Window:
+		swap_to_embedded_editor()
+	else:
+		swap_to_floating_window()
+
+
+## Removes the main control from it's parent and adds it to a new Window node
+func swap_to_floating_window():
+	if get_parent() is Window:
+		return
+
+	var parent := get_parent()
+	get_parent().remove_child(self)
+	var window := Window.new()
+	parent.add_child(window)
+	window.add_child(self)
+	window.title = "Dialogic"
+	window.close_requested.connect(swap_to_embedded_editor)
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+	window.size = size
+	window.min_size = Vector2(500, 500)
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	window.disable_3d = true
+	window.wrap_controls = true
+	window.popup_centered()
+	plugin_reference.get_editor_interface().set_main_screen_editor('2D')
+
+
+## Removes the main control from the window node and adds it to it's grandparent
+##  which is the original owner.
+func swap_to_embedded_editor():
+	if not get_parent() is Window:
+		return
+
+	var window := get_parent()
+	get_parent().remove_child(self)
+	plugin_reference.get_editor_interface().set_main_screen_editor('Dialogic')
+	window.get_parent().add_child(self)
+	window.queue_free()
 
 
 func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialog.FILE_MODE_OPEN_FILE, window_title := "Save", current_file_name := 'New_File', saving_something := false, extra_message:String = "") -> EditorFileDialog:

@@ -5,6 +5,9 @@ extends Control
 ## Node that is shown when the text is fully revealed.
 ## The default implementation allows to set an icon and animation.
 
+
+@export var enabled := true
+
 ## If true the next indicator will also be shown if the text is a question.
 @export var show_on_questions := false
 ## If true the next indicator will be shown even if dialogic will autocontinue.
@@ -19,6 +22,14 @@ extends Control
 		if has_node('Texture'):
 			get_node('Texture').texture = texture
 
+@export var texture_size := Vector2(32,32):
+	set(_texture_size):
+		texture_size = _texture_size
+		if has_node('Texture'):
+			get_node('Texture').size = _texture_size
+			get_node('Texture').position = -_texture_size
+
+
 var tween: Tween
 
 func _ready():
@@ -29,11 +40,11 @@ func _ready():
 		icon.name = 'Texture'
 		icon.ignore_texture_size = true
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.size = Vector2(32,32)
-		icon.position -= icon.size
+		icon.size = texture_size
+		icon.position = -icon.size
 		add_child(icon)
 		icon.texture = texture
-	
+
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 
@@ -47,7 +58,7 @@ func play_animation(animation: int, time:float) -> void:
 	# clean up previous tween to prevent slipping
 	if tween:
 		tween.stop()
-	
+
 	if animation == 0:
 		tween = (create_tween() as Tween)
 		var distance := 4
@@ -55,7 +66,7 @@ func play_animation(animation: int, time:float) -> void:
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.set_loops()
-		
+
 		tween.tween_property(self, 'position', Vector2(0,distance), time*0.3).as_relative()
 		tween.tween_property(self, 'position', - Vector2(0,distance), time*0.3).as_relative()
 	if animation == 1:
@@ -64,6 +75,6 @@ func play_animation(animation: int, time:float) -> void:
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.set_loops()
-		
+
 		tween.tween_property(self, 'modulate:a', 0, time*0.3)
 		tween.tween_property(self, 'modulate:a', 1, time*0.3)

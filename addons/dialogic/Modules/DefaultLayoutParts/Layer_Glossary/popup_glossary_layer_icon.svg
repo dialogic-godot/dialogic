@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="100" height="100" viewBox="0 0 26.458333 26.458333" version="1.1" id="svg13076" inkscape:export-filename="text_input_layer_icon.svg" inkscape:export-xdpi="96" inkscape:export-ydpi="96" inkscape:version="1.2.2 (732a01da63, 2022-12-09)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview id="namedview13078" pagecolor="#505050" bordercolor="#eeeeee" borderopacity="1" inkscape:showpageshadow="0" inkscape:pageopacity="0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#505050" inkscape:document-units="mm" showgrid="true" inkscape:zoom="4.185" inkscape:cx="70.728793" inkscape:cy="64.755078" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="layer1">
+    <inkscape:grid type="xygrid" id="grid14286" />
+  </sodipodi:namedview>
+  <defs id="defs13073" />
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <path style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 3.9687497,20.505208 v -9.260417 l 9.2604173,2.645834 9.260416,-2.645834 v 9.260417 l -9.260416,2.645833 -9.2604173,-2.645833" id="path35151" sodipodi:nodetypes="ccccccc" />
+    <path style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 13.229167,13.890625 v 9.260416" id="path35153" sodipodi:nodetypes="cc" />
+    <rect style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" id="rect35155" width="10.583333" height="3.96875" x="7.9375" y="3.96875" ry="0.050781649" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 11.90625,7.9374999 c 1.322917,2.6458331 1.322917,2.6458331 1.322917,2.6458331 l 1.322916,-2.6458331 z" id="path35313" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 6.6145829,15.213541 3.9687501,1.322917" id="path35315" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 6.6145829,17.859374 3.9687501,1.322917" id="path35317" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 15.875,16.536458 3.96875,-1.322917" id="path35319" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 15.875,19.182291 3.96875,-1.322916" id="path35321" sodipodi:nodetypes="cc" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 15.875,19.182291 3.96875,-1.322916" id="path35323" sodipodi:nodetypes="cc" />
+  </g>
+</svg>

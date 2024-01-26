@@ -39,7 +39,7 @@ func _refresh() -> void:
 
 	%SectionList.clear()
 	%SectionList.create_item()
-	var cached_events :Array[DialogicEvent] = find_parent('Settings').editors_manager.resource_helper.event_script_cache
+	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
 	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
 	for ev in cached_events:
@@ -233,3 +233,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	force_event_button_list_reload()
 
+
+
+func _on_reload_pressed() -> void:
+	DialogicUtil.update_autoload_subsystem_access()

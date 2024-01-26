@@ -8,6 +8,8 @@ extends Control
 signal resource_saved()
 signal resource_unsaved()
 
+signal opened
+
 var current_resource: Resource
 
 ## State of the current resource
@@ -54,11 +56,11 @@ func _open(extra_info:Variant = null) -> void:
 
 
 ## Overwrite. Called when another editor is opened. (hide() doesn't have to be called)
-func _close():
+func _close() -> void:
 	pass
 
 
 ## Overwrite. Called to clear all current state and resource from the editor.
 ## Although rarely used, sometimes you just want NO timeline to be open.
-func _clear():
+func _clear() -> void:
 	pass

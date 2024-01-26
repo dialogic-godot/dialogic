@@ -49,7 +49,7 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 	var str_line := get_text_edit().get_line(line)
 
 	if shortcode_events.is_empty():
-		for event in Engine.get_main_loop().get_meta('dialogic_event_cache', []):
+		for event in DialogicResourceUtil.get_event_cache():
 			if event.get_shortcode() != 'default_shortcode':
 				shortcode_events[event.get_shortcode()] = event
 			else:

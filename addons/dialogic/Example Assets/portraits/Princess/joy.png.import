@@ -16,9 +16,9 @@ dest_files=["res://.godot/imported/joy.png-a06db3f0763984942582106f69acd2ac.ctex
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

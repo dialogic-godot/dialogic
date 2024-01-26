@@ -1,7 +1,7 @@
 class_name DialogicAnimation
 extends Node
 
-## Class that can be used to animate portraits. Can be extended to create animations. 
+## Class that can be used to animate portraits. Can be extended to create animations.
 
 signal finished_once
 signal finished
@@ -23,7 +23,7 @@ func _ready():
 	connect('finished_once', finished_one_loop)
 
 
-## To be overridden. Do the actual animating/tweening in here. 
+## To be overridden. Do the actual animating/tweening in here.
 ## Use the properties [node], [time], [end_position], [orig_pos].
 func animate():
 	pass
