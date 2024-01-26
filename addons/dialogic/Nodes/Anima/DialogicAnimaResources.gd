@@ -36,8 +36,7 @@ static func get_available_animations() -> Array:
 
 	for file in list:
 		if file.find('.gd.') < 0:
-			filtered.push_back(file.replace('.gdc', '.gd'))
-
+			filtered.push_back(file.replace('.gde', '.gd').replace('.gdc', '.gd'))
 	return filtered #+ _custom_animations
 
 
