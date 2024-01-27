@@ -96,12 +96,21 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 
 		var entry_idx := 0
 
-		for entry: Variant in current_glossary.entries.values():
+		for entry_key: String in current_glossary.entries.keys():
+			var entry: Variant = current_glossary.entries.get(entry_key)
 
 			if entry is String:
 				continue
 
-			%EntryList.add_item(entry.get("name", ""), get_theme_icon("Breakpoint", "EditorIcons"))
+			# Older glossary entries may not have the name property and the
+			# alternatives may not be set up as alias entries.
+			if not entry.has(DialogicGlossary.NAME_PROPERTY):
+				entry[DialogicGlossary.NAME_PROPERTY] = entry_key
+				var alternatives: String = entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, "")
+				_on_entry_alternatives_text_changed(alternatives)
+				ResourceSaver.save(current_glossary)
+
+			%EntryList.add_item(entry.get(DialogicGlossary.NAME_PROPERTY, str(DialogicGlossary.NAME_PROPERTY)), get_theme_icon("Breakpoint", "EditorIcons"))
 			var modulate_color: Color = entry.get('color', %DefaultColor.color)
 			%EntryList.set_item_metadata(entry_idx, entry)
 			%EntryList.set_item_icon_modulate(entry_idx, modulate_color)
