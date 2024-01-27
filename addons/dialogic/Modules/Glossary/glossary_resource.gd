@@ -175,7 +175,6 @@ func _get_word_options(entry_key: String) -> Array:
 	if translation_entry_key_id.is_empty():
 		return []
 
-	print("[GLOSSARY] Translation entry key ID: " + translation_entry_key_id)
 	var translated_entry_key := tr(translation_entry_key_id)
 
 	if not translated_entry_key == translation_entry_key_id:
@@ -215,7 +214,6 @@ func get_set_regex_option(entry_key: String) -> String:
 		return regex_option
 
 	var word_options: Array = _get_word_options(entry_key)
-	print("[GLOSSARY] Word options for: " + entry_key + " are: " + str(word_options))
 	regex_option = "|".join(word_options)
 
 	regex_options[locale_key] = regex_option
@@ -258,7 +256,6 @@ func clear_translation_keys() -> void:
 ##
 ## Time complexity: O(1)
 func get_property_translation_key(entry_key: String, property: String) -> String:
-	print("[GLOSSARY] Getting translation key for: " + entry_key + " and property: " + property)
 	var entry := get_entry(entry_key)
 
 	if entry == null:
