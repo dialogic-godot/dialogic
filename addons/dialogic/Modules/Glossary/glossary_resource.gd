@@ -166,7 +166,7 @@ func _get_word_options(entry_key: String) -> Array:
 		word_options.append(entry_key)
 
 		for alternative: String in get_entry(entry_key).get(ALTERNATIVE_PROPERTY, []):
-			word_options.append(alternative)
+			word_options.append(alternative.strip_edges())
 
 		return word_options
 
@@ -188,7 +188,7 @@ func _get_word_options(entry_key: String) -> Array:
 		var translated_alternatives := translated_alternatives_str.split(",")
 
 		for alternative: String in translated_alternatives:
-			word_options.append(alternative)
+			word_options.append(alternative.strip_edges())
 
 	return word_options
 
