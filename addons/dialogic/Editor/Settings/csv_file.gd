@@ -161,7 +161,6 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 	var glossary_translation_id_prefix := _get_glossary_translation_key_prefix(glossary)
 
 	for glossary_line: PackedStringArray in names:
-		print("[GLOSSARY] glossary_line: " + str(glossary_line))
 
 		if glossary_line.is_empty():
 			continue
@@ -181,11 +180,7 @@ func _add_keys_to_glossary(glossary: DialogicGlossary, names: Array) -> void:
 
 		var new_line_to_add := _process_line_into_array(glossary_line, value_type)
 
-		print("[GLOSSARY] new_line_to_add: " + str(new_line_to_add))
-		print("[GLOSSARY] " + csv_key)
-
 		for name_to_add: String in new_line_to_add:
-			print("[GLOSSARY] name_to_add: " + str(name_to_add))
 			glossary._translation_keys[name_to_add.strip_edges()] = csv_key
 
 
@@ -219,11 +214,11 @@ func _get_glossary_translation_key_prefix(glossary: DialogicGlossary) -> String:
 ## TODO: Allow Dialogic users to define their own order.
 func _sort_glossary_entry_property_keys(property_key_a: String, property_key_b: String) -> bool:
 	const GLOSSARY_CSV_LINE_ORDER := {
-        DialogicGlossary.NAME_PROPERTY: 0,
-        DialogicGlossary.ALTERNATIVE_PROPERTY: 1,
-        DialogicGlossary.TEXT_PROPERTY: 2,
-        DialogicGlossary.EXTRA_PROPERTY: 3,
-    }
+		DialogicGlossary.NAME_PROPERTY: 0,
+		DialogicGlossary.ALTERNATIVE_PROPERTY: 1,
+		DialogicGlossary.TEXT_PROPERTY: 2,
+		DialogicGlossary.EXTRA_PROPERTY: 3,
+	}
 	const UNKNOWN_PROPERTY_ORDER := 100
 
 	var value_a: int = GLOSSARY_CSV_LINE_ORDER.get(property_key_a, UNKNOWN_PROPERTY_ORDER)

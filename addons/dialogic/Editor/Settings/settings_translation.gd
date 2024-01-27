@@ -369,7 +369,7 @@ func update_csv_files() -> void:
 ## that contain the translations for character properties.
 ## This will save each character resource file to disk.
 func _handle_character_names(
-	    csv_data: CsvUpdateData,
+		csv_data: CsvUpdateData,
 		original_locale: String,
 		translation_folder_path: String,
 		add_separator_lines: bool) -> void:
@@ -382,7 +382,6 @@ func _handle_character_names(
 	var all_characters := {}
 
 	for character_path: String in DialogicResourceUtil.list_resources_of_type('.dch'):
-		print(character_path)
 		var character: DialogicCharacter = load(character_path)
 
 		if character._translation_id.is_empty():
