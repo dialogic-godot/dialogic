@@ -11,8 +11,7 @@ var enabled := true
 var color_overrides := {}
 
 
-####################################################################################################
-##					STATE
+#region STATE
 ####################################################################################################
 
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
@@ -21,9 +20,10 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	for path: String in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 		add_glossary(path)
 
+#endregion
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 func parse_glossary(text: String) -> String:

@@ -138,25 +138,25 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 		extra_color = entry_color
 
 	get_pointer().show()
-	get_title().text = info.get(&'title', '')
-	get_text().text = info.get(&'text', '')
+	get_title().text = entry_title
+	get_text().text = entry_text
 	get_text().text = ['', '[center]', '[right]'][text_alignment] + get_text().text
-	get_extra().text = info.get(&'extra', '')
+	get_extra().text = entry_extra
 	get_extra().text = ['', '[center]', '[right]'][extra_alignment] + get_extra().text
 	get_pointer().global_position = get_pointer().get_global_mouse_position()
 
 
 	if title_color_mode == TextColorModes.ENTRY:
-		get_title().add_theme_color_override(&"font_color", info.get(&'color', title_custom_color) as Color)
+		get_title().add_theme_color_override(&"font_color", title_color)
 	if text_color_mode == TextColorModes.ENTRY:
-		get_text().add_theme_color_override(&"default_color", info.get(&'color', text_custom_color) as Color)
+		get_text().add_theme_color_override(&"default_color", text_color)
 	if extra_color_mode == TextColorModes.ENTRY:
-		get_extra().add_theme_color_override(&"default_color", info.get(&'color', extra_custom_color) as Color)
+		get_extra().add_theme_color_override(&"default_color", extra_color)
 
 	match box_modulate_mode:
 		ModulateModes.ENTRY_COLOR_ON_BOX:
-			get_panel().self_modulate = info.get(&'color', Color.WHITE)
-			get_panel_point().self_modulate = info.get(&'color', Color.WHITE)
+			get_panel().self_modulate = title_color
+			get_panel_point().self_modulate = title_color
 
 	DialogicUtil.autoload().Inputs.action_was_consumed = true
 
