@@ -5,6 +5,8 @@ var current_glossary: DialogicGlossary = null
 var current_entry_name := ""
 var current_entry := {}
 
+var INVALID_INPUT_ICON := get_theme_icon("StatusError", "EditorIcons")
+
 ################################################################################
 ##					BASICS
 ################################################################################
@@ -284,6 +286,10 @@ func _update_alias_entries(old_alias_value_key: String, new_alias_value_key: Str
 		current_glossary.entries[entry_key] = new_alias_value_key
 
 
+## Checks if the [param entry_name] is already used as a key for another entry
+## and returns true if it doesn't.
+## The [param entry] will be used to check if found entry uses the same
+## reference in memory.
 func _check_entry_name(entry_name: String, entry: Dictionary) -> bool:
 	var selected_item: int = %EntryList.get_selected_items()[0]
 	var raised_error: bool = false
@@ -309,7 +315,7 @@ func _check_entry_name(entry_name: String, entry: Dictionary) -> bool:
 		%EntryList.set_item_custom_bg_color(selected_item,
 				get_theme_color("warning_color", "Editor").darkened(0.8))
 		%EntryName.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-		%EntryName.right_icon = get_theme_icon("Error", "EditorIcons")
+		%EntryName.right_icon = INVALID_INPUT_ICON
 
 		return false
 
@@ -351,6 +357,8 @@ func _on_entry_case_sensitive_toggled(button_pressed: bool) -> void:
 	ResourceSaver.save(current_glossary)
 
 
+## Checks if the [param new_alternatives] has any alternatives that are already
+## used as a key for another entry and returns true if it doesn't.
 func _can_change_alternative(new_alternatives: String) -> bool:
 	for alternative: String in new_alternatives.split(',', false):
 		var stripped_alternative := alternative.strip_edges()
@@ -371,11 +379,17 @@ func _can_change_alternative(new_alternatives: String) -> bool:
 	return true
 
 
+## Checks if [entry_alternatives] has any alternatives that are already
+## used by any entry and returns true if it doesn't.
+## If false, it will set the alternatives text field to a warning color and
+## set an icon.
+## If true, the alternatives text field will be set to the default color and
+## the icon will be removed.
 func _check_entry_alternatives(entry_alternatives: String) -> bool:
 
 	if not _can_change_alternative(entry_alternatives):
 		%EntryAlternatives.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-		%EntryAlternatives.right_icon = get_theme_icon("Error", "EditorIcons")
+		%EntryAlternatives.right_icon = INVALID_INPUT_ICON
 		return false
 
 	else:
@@ -383,6 +397,7 @@ func _check_entry_alternatives(entry_alternatives: String) -> bool:
 		%EntryAlternatives.right_icon = null
 
 	return true
+
 
 ## The [param new_alternatives] is a passed as a string of comma separated
 ## values form the Dialogic editor.
