@@ -3,6 +3,7 @@ extends DialogicEditor
 
 var current_glossary: DialogicGlossary = null
 var current_entry_name := ""
+var current_entry := {}
 
 ################################################################################
 ##					BASICS
@@ -174,9 +175,11 @@ func _on_delete_glossary_file_pressed() -> void:
 ################################################################################
 ##					ENTRY LIST
 ################################################################################
-func _on_EntryList_item_selected(idx:int) -> void:
+func _on_EntryList_item_selected(idx: int) -> void:
 	current_entry_name = %EntryList.get_item_text(idx)
+
 	var entry_info: Dictionary = current_glossary.get_entry(current_entry_name)
+	current_entry = entry_info
 
 	%EntrySettings.show()
 	%EntryName.text = current_entry_name
@@ -196,7 +199,7 @@ func _on_EntryList_item_selected(idx:int) -> void:
 	%EntryColor.disabled = !entry_info.has('color')
 
 	_check_entry_alternatives(alternatives)
-	_check_entry_name(current_entry_name)
+	_check_entry_name(current_entry_name, current_entry)
 
 func _on_add_glossary_entry_pressed() -> void:
 	if !current_glossary:
@@ -281,7 +284,7 @@ func _update_alias_entries(old_alias_value_key: String, new_alias_value_key: Str
 		current_glossary.entries[entry_key] = new_alias_value_key
 
 
-func _check_entry_name(entry_name: String) -> bool:
+func _check_entry_name(entry_name: String, entry: Dictionary) -> bool:
 	var selected_item: int = %EntryList.get_selected_items()[0]
 	var raised_error: bool = false
 
@@ -296,6 +299,10 @@ func _check_entry_name(entry_name: String) -> bool:
 
 		# Another entry uses the entry name already.
 		if not entry_name_assigned == entry_name:
+			raised_error = true
+
+		# Not the same memory reference.
+		if not entry == entry_assigned:
 			raised_error = true
 
 	if raised_error:
@@ -324,7 +331,7 @@ func _on_entry_name_text_changed(new_name: String) -> void:
 	if current_entry_name != new_name:
 		var selected_item: int = %EntryList.get_selected_items()[0]
 
-		if not _check_entry_name(new_name):
+		if not _check_entry_name(new_name, current_entry):
 			return
 
 		print_rich("[color=green]Renaming entry '" + current_entry_name + "'' to '" + new_name + "'[/color]")
@@ -332,7 +339,6 @@ func _on_entry_name_text_changed(new_name: String) -> void:
 		_update_alias_entries(current_entry_name, new_name)
 
 		current_glossary.replace_entry_key(current_entry_name, new_name)
-
 
 		%EntryList.set_item_text(selected_item, new_name)
 		%EntryList.set_item_metadata(selected_item, new_name)
