@@ -45,6 +45,8 @@ func _ready() -> void:
 
 	%EntryCaseSensitive.icon = get_theme_icon("MatchCase", "EditorIcons")
 
+	%EntryAlternatives.text_changed.connect(_on_entry_alternatives_text_changed)
+
 
 func set_setting(value: Variant, setting: String)  -> void:
 	ProjectSettings.set_setting(setting, value)
@@ -114,6 +116,7 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 			var modulate_color: Color = entry.get('color', %DefaultColor.color)
 			%EntryList.set_item_metadata(entry_idx, entry)
 			%EntryList.set_item_icon_modulate(entry_idx, modulate_color)
+
 			entry_idx += 1
 
 	if %EntryList.item_count != 0:
@@ -192,6 +195,8 @@ func _on_EntryList_item_selected(idx:int) -> void:
 	%EntryCustomColor.button_pressed = entry_info.has('color')
 	%EntryColor.disabled = !entry_info.has('color')
 
+	_check_entry_alternatives(alternatives)
+	_check_entry_name(current_entry_name)
 
 func _on_add_glossary_entry_pressed() -> void:
 	if !current_glossary:
@@ -199,6 +204,10 @@ func _on_add_glossary_entry_pressed() -> void:
 
 	var entry_count := current_glossary.entries.size() + 1
 	var new_name := "New Entry " + str(entry_count)
+
+	if new_name in current_glossary.entries.keys():
+		var random_hex_number := str(randi() % 0xFFFFFF)
+		new_name = new_name + " " + str(random_hex_number)
 
 	var new_glossary := {}
 	new_glossary[DialogicGlossary.NAME_PROPERTY] = new_name
@@ -272,23 +281,51 @@ func _update_alias_entries(old_alias_value_key: String, new_alias_value_key: Str
 		current_glossary.entries[entry_key] = new_alias_value_key
 
 
+func _check_entry_name(entry_name: String) -> bool:
+	var selected_item: int = %EntryList.get_selected_items()[0]
+	var raised_error: bool = false
+
+	var entry_assigned: Variant = current_glossary.entries.get(entry_name, {})
+
+	# Alternative entry uses the entry name already.
+	if entry_assigned is String:
+		raised_error = true
+
+	if entry_assigned is Dictionary and not entry_assigned.is_empty():
+		var entry_name_assigned: String = entry_assigned.get(DialogicGlossary.NAME_PROPERTY, "")
+
+		# Another entry uses the entry name already.
+		if not entry_name_assigned == entry_name:
+			raised_error = true
+
+	if raised_error:
+		%EntryList.set_item_custom_bg_color(selected_item,
+				get_theme_color("warning_color", "Editor").darkened(0.8))
+		%EntryName.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+		%EntryName.right_icon = get_theme_icon("Error", "EditorIcons")
+
+		return false
+
+	else:
+		%EntryName.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
+		%EntryName.add_theme_color_override("caret_color", get_theme_color("font_color", "Editor"))
+		%EntryName.right_icon = null
+		%EntryList.set_item_custom_bg_color(
+			selected_item,
+			Color.TRANSPARENT
+		)
+
+	return true
+
+
 func _on_entry_name_text_changed(new_name: String) -> void:
 	new_name = new_name.strip_edges()
 
 	if current_entry_name != new_name:
 		var selected_item: int = %EntryList.get_selected_items()[0]
 
-		if new_name.is_empty() or new_name in current_glossary.entries.keys():
-			%EntryList.set_item_custom_bg_color(selected_item,
-					get_theme_color("warning_color", "Editor").darkened(0.8))
-			%EntryList.set_item_text(selected_item, new_name + " (invalid name)")
+		if not _check_entry_name(new_name):
 			return
-
-		else:
-			%EntryList.set_item_custom_bg_color(
-				selected_item,
-				Color.TRANSPARENT
-			)
 
 		print_rich("[color=green]Renaming entry '" + current_entry_name + "'' to '" + new_name + "'[/color]")
 
@@ -308,12 +345,48 @@ func _on_entry_case_sensitive_toggled(button_pressed: bool) -> void:
 	ResourceSaver.save(current_glossary)
 
 
+func _can_change_alternative(new_alternatives: String) -> bool:
+	for alternative: String in new_alternatives.split(',', false):
+		var stripped_alternative := alternative.strip_edges()
+
+		var value: Variant = current_glossary.entries.get(stripped_alternative, null)
+
+		if value == null:
+			continue
+
+		if value is String:
+			value = current_glossary.entries.get(value, null)
+
+		var value_name: String = value[DialogicGlossary.NAME_PROPERTY]
+
+		if not current_entry_name == value_name:
+			return false
+
+	return true
+
+
+func _check_entry_alternatives(entry_alternatives: String) -> bool:
+
+	if not _can_change_alternative(entry_alternatives):
+		%EntryAlternatives.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+		%EntryAlternatives.right_icon = get_theme_icon("Error", "EditorIcons")
+		return false
+
+	else:
+		%EntryAlternatives.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
+		%EntryAlternatives.right_icon = null
+
+	return true
+
 ## The [param new_alternatives] is a passed as a string of comma separated
 ## values form the Dialogic editor.
 ##
 ## Saves the glossary resource file.
 func _on_entry_alternatives_text_changed(new_alternatives: String) -> void:
 	var current_alternatives: Array = current_glossary.get_entry(current_entry_name).get(DialogicGlossary.ALTERNATIVE_PROPERTY, [])
+
+	if not _check_entry_alternatives(new_alternatives):
+		return
 
 	for current_alternative: String in current_alternatives:
 		current_glossary.remove_entry_key(current_alternative)
