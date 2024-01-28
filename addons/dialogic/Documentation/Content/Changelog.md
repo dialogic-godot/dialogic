@@ -5,6 +5,7 @@
 * Fixed a bug [#1644](https://github.com/coppolaemilio/dialogic/issues/1644) and [#1343](https://github.com/coppolaemilio/dialogic/issues/1343) where character leaves history logging could not be disabled.
 * Themes can now properly duplicate
 * Commands will no longer show up in the history screen [#1709](https://github.com/coppolaemilio/dialogic/issues/1709)
+* Unused 'random text' will no longer show up in the history screen [#1710](https://github.com/coppolaemilio/dialogic/issues/1710)
 * Goto Anchors (labels) are now uniquely ID'd [#1119](https://github.com/coppolaemilio/dialogic/issues/1119). If you have labels that do not show up in your goto event, just hit the 'regenerate' button ![image](https://github.com/coppolaemilio/dialogic/assets/7741797/4c9c50c4-4a4d-4f56-b4f4-f90e1c4cd19c)
 * Fixed a bug that broke PCK encrypted games using Dialogic. [[TheMeddlingMechanic](https://github.com/TheMeddlingMechanic)]
 
