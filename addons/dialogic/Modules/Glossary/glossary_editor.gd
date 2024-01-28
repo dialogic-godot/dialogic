@@ -5,8 +5,6 @@ var current_glossary: DialogicGlossary = null
 var current_entry_name := ""
 var current_entry := {}
 
-var INVALID_INPUT_ICON := get_theme_icon("StatusError", "EditorIcons")
-
 ################################################################################
 ##					BASICS
 ################################################################################
@@ -315,7 +313,7 @@ func _check_entry_name(entry_name: String, entry: Dictionary) -> bool:
 		%EntryList.set_item_custom_bg_color(selected_item,
 				get_theme_color("warning_color", "Editor").darkened(0.8))
 		%EntryName.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-		%EntryName.right_icon = INVALID_INPUT_ICON
+		%EntryName.right_icon = get_theme_icon("StatusError", "EditorIcons")
 
 		return false
 
@@ -389,7 +387,7 @@ func _check_entry_alternatives(entry_alternatives: String) -> bool:
 
 	if not _can_change_alternative(entry_alternatives):
 		%EntryAlternatives.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-		%EntryAlternatives.right_icon = INVALID_INPUT_ICON
+		%EntryAlternatives.right_icon = get_theme_icon("StatusError", "EditorIcons")
 		return false
 
 	else:
