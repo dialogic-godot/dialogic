@@ -660,7 +660,8 @@ func event_handler(event: Dictionary):
 	
 	current_event = event
 	
-	if record_history:
+	# Text and questions text isn't finalized at this point
+	if record_history and event['event_id'] != 'dialogic_001' and event['event_id'] != 'dialogic_010':
 		HistoryTimeline.add_history_row_event(current_event)
 	
 	match event['event_id']:
@@ -682,7 +683,12 @@ func event_handler(event: Dictionary):
 
 			#voice 
 			handle_voice(event)
-			update_text(event['text'])
+			var finalText = update_text(event['text'])
+			
+			# This handles specific text elements
+			if record_history:
+				current_event['text'] = finalText
+				HistoryTimeline.add_history_row_event(current_event)
 		# Character event
 		'dialogic_002':
 			## PLEASE UPDATE THIS! BUT HOW? 
@@ -801,7 +807,12 @@ func event_handler(event: Dictionary):
 				update_name(character_data)
 			#voice 
 			handle_voice(event)
-			update_text(event['question'])
+			var finalText = update_text(event['question'])
+			
+			# This handles specific text elements
+			if record_history:
+				current_event['question'] = finalText
+				HistoryTimeline.add_history_row_event(current_event)
 		# Choice event
 		'dialogic_011':
 			emit_signal("event_start", "choice", event)
