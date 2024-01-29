@@ -161,14 +161,9 @@ func _draw() -> void:
 						break
 
 				var end_node := $Timeline.get_child(group_end_idx)
-				if end_node.resource is DialogicEndBranchEvent:
-					end_node = end_node.parent_node
-
-				if end_node == block:
-					continue
 
 				var offset := Vector2(-2*line_width, -icon_panel_height/2)
-				var v_length: float = end_node.global_position.y - rect_position.y + icon_panel_height + line_width/2
+				var v_length: float = end_node.global_position.y - rect_position.y + icon_panel_height
 
 				## Draw vertical line
 				draw_rect(Rect2(

@@ -16,7 +16,7 @@ var selected := false
 
 func _ready() -> void:
 	$Icon.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
-	$Spacer.custom_minimum_size.x = 100*DialogicUtil.get_editor_scale()
+	$Spacer.custom_minimum_size.x = 90*DialogicUtil.get_editor_scale()
 	visual_deselect()
 	parent_node_changed()
 
