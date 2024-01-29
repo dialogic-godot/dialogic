@@ -16,6 +16,7 @@ func load_style(data):
 	
 	$BackgroundTexture/CheckBox.pressed = data[4]
 	set_path(data[5])
+	real_file_path = data[5]
 	
 	$TextureModulation/CheckBox.pressed = data[6]
 	$TextureModulation/ColorPickerButton.color = data[7]
