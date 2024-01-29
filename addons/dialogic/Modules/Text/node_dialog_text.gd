@@ -71,7 +71,7 @@ func reveal_text(_text: String, keep_previous:=false) -> void:
 
 	else:
 		base_visible_characters = len(text)
-		visible_characters = len(text)
+		visible_characters = len(get_parsed_text())
 		text = text + _text
 
 		# If Auto-Skip is enabled and we append the text (keep_previous),
