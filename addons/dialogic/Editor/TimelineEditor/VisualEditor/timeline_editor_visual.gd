@@ -881,8 +881,8 @@ func indent_events() -> void:
 			block.set_indent(0)
 		indent += delayed_indent
 
-	%TimelineArea.queue_redraw.call_deferred()
-#endregion
+
+	%TimelineArea.queue_redraw()
 
 
 #region SPECIAL BLOCK OPERATIONS
