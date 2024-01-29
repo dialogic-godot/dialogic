@@ -311,7 +311,6 @@ size_flags_horizontal = 3
 [connection signal="text_changed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/EntrySearch" to="." method="_on_entry_search_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryName" to="." method="_on_entry_name_text_changed"]
 [connection signal="toggled" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryCaseSensitive" to="." method="_on_entry_case_sensitive_toggled"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryAlternatives" to="." method="_on_entry_alternatives_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryTitle" to="." method="_on_entry_title_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryText" to="." method="_on_entry_text_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryExtra" to="." method="_on_entry_extra_text_changed"]

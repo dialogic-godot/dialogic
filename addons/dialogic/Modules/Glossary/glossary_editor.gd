@@ -109,7 +109,7 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 			# alternatives may not be set up as alias entries.
 			if not entry.has(DialogicGlossary.NAME_PROPERTY):
 				entry[DialogicGlossary.NAME_PROPERTY] = entry_key
-				var alternatives: String = entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, "")
+				var alternatives: String = entry.get(DialogicGlossary.ALTERNATIVE_PROPERTY, []).join(',')
 				_on_entry_alternatives_text_changed(alternatives)
 				ResourceSaver.save(current_glossary)
 
