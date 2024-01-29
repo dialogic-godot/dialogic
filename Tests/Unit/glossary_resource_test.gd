@@ -11,8 +11,6 @@ func test_add_entry() -> void:
 	const EXAMPLE_TITLE := "Example Title"
 	const ALTERNATIVE_ENTRIES := ["A", "BE", "VERY LONG ENTRY"]
 
-	const EXPECTED_ENTRY_INDEX := 0
-
 	var new_entry := {
 		DialogicGlossary.TITLE_PROPERTY: EXAMPLE_TITLE,
 		DialogicGlossary.NAME_PROPERTY: NAME_ENTRY,
@@ -22,7 +20,7 @@ func test_add_entry() -> void:
 	glossary.set_entry(NAME_ENTRY, new_entry)
 
 	assert(glossary.entries.size() == 1, "Glossary should have 1 entry")
-	assert(glossary._find_entry_index_by_key(NAME_ENTRY) == EXPECTED_ENTRY_INDEX, "Entry index cannot be found via entry name.")
+	assert(not glossary.get_entry(NAME_ENTRY).is_empty(), "Entry index cannot be found via entry name.")
 
 	const NAME_COUNTER := 1
 	var total_entry_count := ALTERNATIVE_ENTRIES.size() + NAME_COUNTER
@@ -32,7 +30,7 @@ func test_add_entry() -> void:
 
 	for alternative: String in ALTERNATIVE_ENTRIES:
 		var assert_error_message := "Entry index cannot be found via alternative name: " + alternative
-		assert(glossary._find_entry_index_by_key(alternative) == 0, assert_error_message)
+		assert(not glossary.get_entry(alternative).is_empty(), assert_error_message)
 
 
 ## We test whether an entry's key can be replaced and if the resulting action
