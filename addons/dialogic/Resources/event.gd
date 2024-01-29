@@ -35,8 +35,8 @@ var needs_indentation: bool = false
 var can_contain_events: bool = false
 ## If [can_contain_events] is true this is a reference to the end branch event
 var end_branch_event: DialogicEndBranchEvent = null
-## If this is true this event expects a specific parent event.
-var needs_parent_event: bool = false
+## If this is true this event will group with other similar events (like choices do).
+var wants_to_group: bool = false
 
 
 ### Saving/Loading Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,14 +116,14 @@ func _to_string() -> String:
 
 ## Executes the event behaviour. In subclasses [_execute] (not this one) should be overriden!
 func execute(_dialogic_game_handler) -> void:
-	emit_signal("event_started", self)
+	event_started.emit(self)
 	dialogic = _dialogic_game_handler
 	call_deferred("_execute")
 
 
 ## Ends the event behaviour.
 func finish() -> void:
-	emit_signal("event_finished", self)
+	event_finished.emit(self)
 
 
 ## To be overridden by subclasses.
@@ -135,12 +135,6 @@ func _execute() -> void:
 
 #region OVERRIDABLES
 ################################################################################
-
-## to be overridden by sub-classes
-## if needs_parent_event is true, this needs to return true if the event is that event
-func is_expected_parent_event(event:DialogicEvent) -> bool:
-	return false
-
 
 ## to be overridden by sub-classes
 ## only called if can_contain_events is true.
