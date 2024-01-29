@@ -154,12 +154,10 @@ func _on_item_edited() -> void:
 
 					else:
 						if item.get_text(0) != item.get_metadata(0):
-							print("Variable renamed from '", item.get_metadata(0), "' to '", item.get_text(0),"'")
 							item.set_metadata(0, item.get_text(0))
 							report_name_changes(item)
 
 				2:
-					print("Variable default changed.")
 					item.set_metadata(2, get_variable_item_default(item))
 		"FOLDER":
 			report_name_changes(item)
