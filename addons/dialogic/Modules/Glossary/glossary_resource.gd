@@ -53,11 +53,35 @@ func __get_property_list() -> Array:
 	return []
 
 
-## Erases an entry key based the given [param entry_key].
+## Removes an entry and all its aliases (alternative property) from
+## the glossary.
+## [param entry_key] may be an entry name or an alias.
+##
+## Returns true if the entry matching the given [param entry_key] was found.
+func remove_entry(entry_key: String) -> bool:
+	var entry: Dictionary = get_entry(entry_key)
+
+	if entry.is_empty():
+		return false
+
+	var aliases: Array = entry.get(ALTERNATIVE_PROPERTY, [])
+
+	for alias: String in aliases:
+		_remove_entry_alias(alias)
+
+	entries.erase(entry_key)
+
+	return true
+
+
+## This is an internal method.
+## Erases an entry alias key based the given [param entry_key].
 ##
 ## Returns true if [param entry_key] lead to a value and the value
 ## was an alias.
-func remove_entry_key(entry_key: String) -> bool:
+##
+## This method does not update the entry's alternative property.
+func _remove_entry_alias(entry_key: String) -> bool:
 	var value: Variant = entries.get(entry_key, null)
 
 	if value == null or value is Dictionary:
@@ -73,7 +97,11 @@ func remove_entry_key(entry_key: String) -> bool:
 ## The [param new_entry_key] is the new unique name of the entry.
 ##
 ## This method fails if the [param old_entry_key] does not exist.
+
 ## Do not use this to update alternative names.
+## In order to update alternative names, delete all with
+## [method _remove_entry_alias] and then add them again with
+## [method _add_entry_key_alias].
 func replace_entry_key(old_entry_key: String, new_entry_key: String) -> void:
 	var entry := get_entry(old_entry_key)
 
@@ -99,38 +127,12 @@ func get_entry(entry_key: String) -> Dictionary:
 	return entry
 
 
-## Gets the glossary entry name for the given [param entry_key].
-## This key may be an alias, such as a translation ID or an alternative word.
-##
-## Returns an empty string if the entry does not exist.
-func get_entry_name(entry_key: String) -> String:
-	var entry: Dictionary = get_entry(entry_key)
-
-	if entry == null:
-		return ""
-
-	return entry[NAME_PROPERTY]
-
-
-## Erases an entry from this glossary.
-##
-## Returns false if the entry does not exist.
-func erase_entry(entry_key: String) -> bool:
-	var entry_name := get_entry_name(entry_key)
-
-	if entry_name.is_empty():
-		return false
-
-	entries.erase(entry_name)
-
-	return true
-
-
+## This is an internal method.
 ## The [param entry_key] must be valid entry key for an entry.
 ## Adds the [param alias] as a valid entry key for that entry.
 ##
 ## Returns the index of the entry, -1 if the entry does not exist.
-func add_entry_key_alias(entry_key: String, alias: String) -> bool:
+func _add_entry_key_alias(entry_key: String, alias: String) -> bool:
 	var entry := get_entry(entry_key)
 	var alias_entry := get_entry(alias)
 
@@ -141,17 +143,20 @@ func add_entry_key_alias(entry_key: String, alias: String) -> bool:
 	return false
 
 
-## Adds a glossary entry.
-## Sets [param entry_key] as valid entry key and [param entry] as
-## glossary entry.
-##
-## If there are previous values for either of these parameters, they will
-## be overwritten.
-##
-## To update an entry, use [method get_entry] and mutate the returned
-## dictionary.
-func set_entry(entry_key: String, entry: Dictionary) -> void:
+## Adds [param entry] to the glossary if it does not exist.
+## If it does exist, returns false.
+func try_add_entry(entry: Dictionary) -> bool:
+	var entry_key: String = entry[NAME_PROPERTY]
+
+	if entries.has(entry_key):
+		return false
+
 	entries[entry_key] = entry
+
+	for alternative: String in entry.get(ALTERNATIVE_PROPERTY, []):
+		entries[alternative.strip_edges()] = entry_key
+
+	return true
 
 
 ## Returns an array of words that can trigger the glossary popup.

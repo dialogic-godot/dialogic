@@ -215,7 +215,9 @@ func _on_add_glossary_entry_pressed() -> void:
 	var new_glossary := {}
 	new_glossary[DialogicGlossary.NAME_PROPERTY] = new_name
 
-	current_glossary.set_entry(new_name, new_glossary)
+	if not current_glossary.try_add_entry(new_glossary):
+		print_rich("[color=red]Failed adding '" + new_name + "', exists already.[/color]")
+		return
 
 	ResourceSaver.save(current_glossary)
 
@@ -239,7 +241,7 @@ func _on_delete_glossary_entry_pressed() -> void:
 		var selected_item_index: int = selected_items[0]
 
 		if not current_glossary == null:
-			current_glossary.erase_entry(current_entry_name)
+			current_glossary.remove_entry(current_entry_name)
 			ResourceSaver.save(current_glossary)
 
 			%EntryList.remove_item(selected_item_index)
@@ -408,14 +410,14 @@ func _on_entry_alternatives_text_changed(new_alternatives: String) -> void:
 		return
 
 	for current_alternative: String in current_alternatives:
-		current_glossary.remove_entry_key(current_alternative)
+		current_glossary._remove_entry_alias(current_alternative)
 
 	var alternatives := []
 
 	for new_alternative: String in new_alternatives.split(',', false):
 		var stripped_alternative := new_alternative.strip_edges()
 		alternatives.append(stripped_alternative)
-		current_glossary.add_entry_key_alias(current_entry_name, stripped_alternative)
+		current_glossary._add_entry_key_alias(current_entry_name, stripped_alternative)
 
 	current_glossary.get_entry(current_entry_name)[DialogicGlossary.ALTERNATIVE_PROPERTY] = alternatives
 	ResourceSaver.save(current_glossary)
