@@ -45,7 +45,14 @@ func parse_glossary(text: String) -> String:
 				continue
 
 			var entry: Dictionary = entry_value
-			var entry_key: String = entry[DialogicGlossary.NAME_PROPERTY]
+			var entry_key: String = entry.get([DialogicGlossary.NAME_PROPERTY], "")
+
+			# Older versions of the glossary resource do not have a property
+			# for their name, we must skip these.
+			# They can be updated by opening the resource in the glossary
+			# editor.
+			if entry_key.is_empty():
+				continue
 
 			if not entry.get('enabled', true):
 				continue
