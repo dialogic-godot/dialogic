@@ -1,4 +1,7 @@
 [gd_resource type="StyleBoxEmpty" format=3 uid="uid://cl75ikyq2is7c"]
 
 [resource]
-content_margin_left = 7.0
+content_margin_left = 3.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0

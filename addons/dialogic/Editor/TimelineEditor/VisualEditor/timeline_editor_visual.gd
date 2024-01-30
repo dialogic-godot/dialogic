@@ -617,6 +617,7 @@ func visual_update_selection() -> void:
 		item.visual_select()
 		if 'end_node' in item and item.end_node != null:
 			item.end_node.highlight()
+	%TimelineArea.queue_redraw()
 
 
 ## Sorts the selection using 'custom_sort_selection'
@@ -835,7 +836,7 @@ func indent_events() -> void:
 
 	var currently_hidden := false
 	var hidden_count := 0
-	var hidden_until :Control= null
+	var hidden_until: Control = null
 
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
@@ -865,23 +866,13 @@ func indent_events() -> void:
 		if block.resource.can_contain_events:
 			delayed_indent = 1
 
-		if block.resource.needs_parent_event:
-			var current_block_above := get_block_above(block)
-			while current_block_above != null and current_block_above.resource is DialogicEndBranchEvent:
-				if current_block_above.parent_node == block:
-					break
-				current_block_above = get_block_above(current_block_above.parent_node)
-
-			if current_block_above != null and block.resource.is_expected_parent_event(current_block_above.resource):
-				indent += 1
-				block.set_warning()
-			else:
-				block.set_warning('This event needs a specific parent event!')
+		if block.resource.wants_to_group:
+			indent += 1
 
 		elif block.resource is DialogicEndBranchEvent:
 			block.parent_node_changed()
 			delayed_indent -= 1
-			if block.parent_node.resource.needs_parent_event:
+			if block.parent_node.resource.wants_to_group:
 				delayed_indent -= 1
 
 		if indent >= 0:
@@ -890,8 +881,8 @@ func indent_events() -> void:
 			block.set_indent(0)
 		indent += delayed_indent
 
+
 	%TimelineArea.queue_redraw()
-#endregion
 
 
 #region SPECIAL BLOCK OPERATIONS

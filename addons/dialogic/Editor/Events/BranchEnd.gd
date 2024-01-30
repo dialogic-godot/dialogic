@@ -2,19 +2,21 @@
 extends Control
 ## A scene shown at the end of events that contain other events
 
-var resource : DialogicEndBranchEvent
+var resource: DialogicEndBranchEvent
 
 # References
-var parent_node : Control = null
-var end_control :Control = null
+var parent_node: Control = null
+var end_control: Control = null
 
 # Indent
 var indent_size := 22
 var current_indent_level := 1
 
+var selected := false
+
 func _ready() -> void:
 	$Icon.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
-	$Spacer.custom_minimum_size.x = 100*DialogicUtil.get_editor_scale()
+	$Spacer.custom_minimum_size.x = 90*DialogicUtil.get_editor_scale()
 	visual_deselect()
 	parent_node_changed()
 
@@ -22,12 +24,18 @@ func _ready() -> void:
 ## Called by the visual timeline editor
 func visual_select() -> void:
 	modulate = get_theme_color("highlighted_font_color", "Editor")
+	selected = true
 
 
 ## Called by the visual timeline editor
 func visual_deselect() -> void:
 	if !parent_node:return
+	selected = false
 	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.3)
+
+
+func is_selected() -> bool:
+	return selected
 
 
 ## Called by the visual timeline editor

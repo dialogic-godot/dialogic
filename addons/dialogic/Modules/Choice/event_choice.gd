@@ -18,31 +18,22 @@ var else_action: = ElseActions.DEFAULT
 ## If empty [text] will be used for disabled button as well.
 var disabled_text: String = ""
 
+#endregion
 
-################################################################################
-## 						EXECUTION
+
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
-	# This event is mostly a placeholder that's used to indicate a position.
-	# Only the selected choice is reached.
-	# However mainly the Choices Subsystem queries the events
-	#   to find the choices that belong to the question.
-	if !dialogic.Choices.last_question_info.has('choices'):
-		finish()
-		return
-	if dialogic.has_subsystem('History'):
-		var all_choices : Array = dialogic.Choices.last_question_info['choices']
-		if dialogic.has_subsystem('VAR'):
-			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(text), event_name, {'all_choices': all_choices})
-		else:
-			dialogic.History.store_simple_history_entry(text, event_name, {'all_choices': all_choices})
 
-	finish()
+	if dialogic.Choices.is_question(dialogic.current_event_idx):
+		dialogic.Choices.show_current_choices(false)
+		dialogic.current_state = dialogic.States.AWAITING_CHOICE
+
+#endregion
 
 
-################################################################################
-## 						INITIALIZE
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -51,20 +42,16 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 0
 	can_contain_events = true
-	needs_parent_event = true
-
-
-# if needs_parent_event is true, this needs to return true if the event is that event
-func is_expected_parent_event(event:DialogicEvent) -> bool:
-	return event is DialogicTextEvent
+	wants_to_group = true
 
 
 # return a control node that should show on the END BRANCH node
 func get_end_branch_control() -> Control:
 	return load(get_script().resource_path.get_base_dir().path_join('ui_choice_end.tscn')).instantiate()
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text() -> String:
@@ -112,9 +99,9 @@ func is_valid_event(string:String) -> bool:
 		return true
 	return false
 
+#endregion
 
-################################################################################
-## 						TRANSLATIONS
+#region TRANSLATIONS
 ################################################################################
 
 func _get_translatable_properties() -> Array:
@@ -128,10 +115,10 @@ func _get_property_original_translation(property:String) -> String:
 		'disabled_text':
 			return disabled_text
 	return ''
+#endregion
 
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -162,9 +149,10 @@ func allow_alt_text() -> bool:
 		else_action == ElseActions.DISABLE or
 		(else_action == ElseActions.DEFAULT and
 		ProjectSettings.get_setting("dialogic/choices/def_false_behaviour", 0) == 1))
+#endregion
 
 
-####################### CODE COMPLETION ########################################
+#region  CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
@@ -189,9 +177,10 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'default', "default", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'hide', "hide", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'disable', "disable", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
+#endregion
 
 
-#################### SYNTAX HIGHLIGHTING #######################################
+#region  SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
@@ -204,3 +193,5 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict = Highlighter.color_condition(dict, line, from, line.find(']', from))
 		dict = Highlighter.color_shortcode_content(dict, line, line.find(']', from), 0,event_color)
 	return dict
+#endregion
+

@@ -26,7 +26,7 @@ func _ready() -> void:
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 
 
-################### EVENT DRAGGING #############################################
+#region EVENT DRAGGING
 ################################################################################
 
 func start_dragging(type:DragTypes, data:Variant) -> void:
@@ -67,74 +67,127 @@ func finish_dragging():
 		drag_canceled.emit()
 	queue_redraw()
 
+#endregion
 
 
-##################### LINE DRAWING #############################################
+#region LINE DRAWING
 ################################################################################
 
 func _draw() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
 	var line_width := 5 * _scale
 	var horizontal_line_length := 100*_scale
-	var color_multiplier := Color(1,1,1,0.5)
+	var color_multiplier := Color(1,1,1,0.25)
 	var selected_color_multiplier := Color(1,1,1,1)
+
+
+	## Draw Event Lines
 	for idx in range($Timeline.get_child_count()):
-		var event : Control = $Timeline.get_child(idx)
+		var block : Control = $Timeline.get_child(idx)
 
-		if not "resource" in event:
+		if not "resource" in block:
 			continue
 
-		if not event.visible:
+		if not block.visible:
 			continue
 
-		if event.resource is DialogicEndBranchEvent:
+		if block.resource is DialogicEndBranchEvent:
 			continue
 
-		if not (event.has_any_enabled_body_content or event.resource.can_contain_events):
+		if not (block.has_any_enabled_body_content or block.resource.can_contain_events):
 			continue
 
-		var icon_panel_height := 32*_scale
-		var rect_position :Vector2= event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
-		var color :Color= event.resource.event_color
-		if event.is_selected():
+		var icon_panel_height: int = block.get_node('%IconPanel').size.y
+		var rect_position: Vector2 = block.get_node('%IconPanel').global_position+Vector2(0,1)*block.get_node('%IconPanel').size+Vector2(0,-4)
+		var color: Color = block.resource.event_color
+
+		if block.is_selected() or block.end_node and block.end_node.is_selected():
 			color *= selected_color_multiplier
 		else:
 			color *= color_multiplier
 
-		if idx < $Timeline.get_child_count()-1 and event.current_indent_level < $Timeline.get_child(idx+1).current_indent_level:
-			var end_node :Node= event.end_node
-			var sub_idx := idx
+		if block.expanded and not block.resource.can_contain_events:
+			draw_rect(Rect2(rect_position-global_position+Vector2(line_width, 0), Vector2(line_width, block.size.y-block.get_node('%IconPanel').size.y)), color)
 
-			if !end_node: # this doesn't have an end node (e.g. text event with choices in it)
+		## If the indentation has not changed, nothing else happens
+		if idx >= $Timeline.get_child_count()-1 or block.current_indent_level >= $Timeline.get_child(idx+1).current_indent_level:
+			continue
+
+		## Draw connection between opening and end branch events
+		if block.resource.can_contain_events:
+			var end_node: Node = block.end_node
+
+			if end_node != null:
+				var v_length: float = end_node.global_position.y+end_node.size.y/2-rect_position.y
+				#var rect_size := Vector2(line_width, )
+				var offset := Vector2(line_width, 0)
+
+				# Draw vertical line
+				draw_rect(Rect2(rect_position-global_position+offset, Vector2(line_width, v_length)), color)
+				# Draw horizonal line (on END BRANCH event)
+				draw_rect(Rect2(
+							rect_position.x+line_width-global_position.x+offset.x,
+							rect_position.y+v_length-line_width-global_position.y,
+							horizontal_line_length-offset.x,
+							line_width),
+							color)
+
+		if block.resource.wants_to_group:
+			var group_color: Color = block.resource.event_color*color_multiplier
+			var group_starter := true
+			if idx != 0:
+				var block_above := $Timeline.get_child(idx-1)
+				if block_above.resource.event_name == block.resource.event_name:
+					group_starter = false
+				if block_above.resource is DialogicEndBranchEvent and block_above.parent_node.resource.event_name == block.resource.event_name:
+					group_starter = false
+
+			## Draw small horizontal line on any event in group
+			draw_rect(Rect2(
+					rect_position.x-global_position.x-line_width,
+					rect_position.y-global_position.y-icon_panel_height/2,
+					line_width,
+					line_width),
+					group_color)
+
+			if group_starter:
+				## Find the last event in the group (or that events END BRANCH)
+				var sub_idx := idx
+				var group_end_idx := idx
 				while sub_idx < $Timeline.get_child_count()-1:
 					sub_idx += 1
-					if $Timeline.get_child(sub_idx).current_indent_level == event.current_indent_level:
-						end_node = $Timeline.get_child(sub_idx-1)
+					if $Timeline.get_child(sub_idx).current_indent_level == block.current_indent_level-1:
+						group_end_idx = sub_idx-1
 						break
-			var rect_size := Vector2()
-			if end_node != null:
-				rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y-rect_position.y)
-				if end_node.resource is DialogicEndBranchEvent and event.resource.can_contain_events:
-					rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y/2-rect_position.y)
-			else:
-				rect_size = Vector2(line_width, $Timeline.get_child(-1).global_position.y+$Timeline.get_child(-1).size.y-rect_position.y)
 
-			draw_rect(Rect2(rect_position-global_position, rect_size), color)
-			draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)
+				var end_node := $Timeline.get_child(group_end_idx)
 
-		elif event.expanded:
-			draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y+10*_scale)), color.darkened(0.5))
+				var offset := Vector2(-2*line_width, -icon_panel_height/2)
+				var v_length: float = end_node.global_position.y - rect_position.y + icon_panel_height
 
+				## Draw vertical line
+				draw_rect(Rect2(
+							rect_position.x - global_position.x + offset.x,
+							rect_position.y - global_position.y + offset.y,
+							line_width,
+							v_length),
+							group_color)
+
+
+	## Draw line that indicates the dragging position
 	if dragging and get_global_rect().has_point(get_global_mouse_position()):
-		var height :int = 0
+		var height: int = 0
 		if drag_to_position == %Timeline.get_child_count():
 			height = %Timeline.get_child(-1).global_position.y+%Timeline.get_child(-1).size.y-global_position.y-(line_width/2.0)
 		else:
 			height = %Timeline.get_child(drag_to_position).global_position.y-global_position.y-(line_width/2.0)
 
-		draw_line(Vector2(0, height), Vector2(size.x*0.9, height), get_theme_color("accent_color", "Editor"), line_width*0.2)
+		draw_line(Vector2(0, height), Vector2(size.x*0.9, height), get_theme_color("accent_color", "Editor"), line_width*.3)
 
-##################### SPACE BELOW ##############################################
+#endregion
+
+
+#region SPACE BELOW
 ################################################################################
 
 func add_extra_scroll_area_to_timeline(fake_arg:Variant=null) -> void:
@@ -143,3 +196,5 @@ func add_extra_scroll_area_to_timeline(fake_arg:Variant=null) -> void:
 		%Timeline.size.y = 0
 		if %Timeline.size.y + 200 > %TimelineArea.size.y:
 			%Timeline.custom_minimum_size = Vector2(0, %Timeline.size.y + 200)
+
+#endregion

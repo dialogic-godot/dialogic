@@ -142,10 +142,19 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 	if dialogic.paused or not choice_blocker.is_stopped():
 		return
+
 	choice_selected.emit(choice_info)
 	hide_all_choices()
 	dialogic.current_state = dialogic.States.IDLE
-	dialogic.handle_event(event_index)
+	dialogic.handle_event(event_index+1)
+
+	if dialogic.has_subsystem('History'):
+		var all_choices: Array = dialogic.Choices.last_question_info['choices']
+		if dialogic.has_subsystem('VAR'):
+			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(choice_info.text), "Choice", {'all_choices': all_choices})
+		else:
+			dialogic.History.store_simple_history_entry(choice_info.text, "Choice", {'all_choices': all_choices})
+
 
 
 func get_current_choice_indexes() -> Array:
@@ -153,8 +162,6 @@ func get_current_choice_indexes() -> Array:
 	var evt_idx := dialogic.current_event_idx
 	var ignore := 0
 	while true:
-
-		evt_idx += 1
 		if evt_idx >= len(dialogic.current_timeline_events):
 			break
 		if dialogic.current_timeline_events[evt_idx] is DialogicChoiceEvent:
@@ -169,6 +176,7 @@ func get_current_choice_indexes() -> Array:
 
 		if dialogic.current_timeline_events[evt_idx] is DialogicEndBranchEvent:
 			ignore -= 1
+		evt_idx += 1
 	return choices
 
 #endregion
@@ -182,6 +190,15 @@ func is_question(index:int) -> bool:
 		if len(dialogic.current_timeline_events)-1 != index:
 			if dialogic.current_timeline_events[index+1] is DialogicChoiceEvent:
 				return true
+
+	if dialogic.current_timeline_events[index] is DialogicChoiceEvent:
+		if index != 0 and dialogic.current_timeline_events[index-1] is DialogicEndBranchEvent:
+			if dialogic.current_timeline_events[dialogic.current_timeline_events[index-1].find_opening_index()] is DialogicChoiceEvent:
+				return false
+			else:
+				return true
+		else:
+			return true
 	return false
 
 #endregion
