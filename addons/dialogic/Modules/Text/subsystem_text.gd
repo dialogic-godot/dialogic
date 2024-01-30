@@ -139,8 +139,9 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
+	# Reset speed multiplier
+	update_text_speed(-1, false, 1)
 	# Reset Auto-Advance temporarily and the No-Skip setting:
-	update_text_speed(-1, false, 1, -1)
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
 	dialogic.Inputs.set_manualadvance(true, true)
@@ -278,9 +279,9 @@ func update_text_speed(letter_speed: float = -1,
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if absolute:
-			text_node.lspeed = letter_speed
+			text_node.set_speed(letter_speed)
 		else:
-			text_node.lspeed = letter_speed * _speed_multiplier * user_speed
+			text_node.set_speed(letter_speed * _speed_multiplier * user_speed)
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
@@ -491,9 +492,9 @@ func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
-		update_text_speed(-1, false, float(argument), -1)
+		update_text_speed(-1, false, float(argument))
 	else:
-		update_text_speed(-1, false, 1, -1)
+		update_text_speed(-1, false, 1)
 
 
 func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:

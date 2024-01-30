@@ -18,11 +18,10 @@ enum Alignment {LEFT, CENTER, RIGHT}
 var revealing := false
 var base_visible_characters := 0
 
-# Letter speed used per revealed character.
-var lspeed: float = 0.01
 # The used speed per revealed character.
 # May be overwritten when syncing reveal speed to voice.
-var active_speed: float = lspeed
+var active_speed: float = 0.01
+
 var speed_counter: float = 0
 
 func _set(property: StringName, what: Variant) -> bool:
@@ -80,6 +79,12 @@ func reveal_text(_text: String, keep_previous:=false) -> void:
 			visible_characters = 1
 			return
 
+	revealing = true
+	speed_counter = 0
+	started_revealing_text.emit()
+
+
+func set_speed(delay_per_character:float) -> void:
 	if DialogicUtil.autoload().Text.is_text_voice_synced() and DialogicUtil.autoload().Voice.is_running():
 		var total_characters := get_total_character_count() as float
 		var remaining_time: float = DialogicUtil.autoload().Voice.get_remaining_time()
@@ -87,12 +92,7 @@ func reveal_text(_text: String, keep_previous:=false) -> void:
 		active_speed = synced_speed
 
 	else:
-		active_speed = lspeed
-
-
-	revealing = true
-	speed_counter = 0
-	started_revealing_text.emit()
+		active_speed = delay_per_character
 
 
 ## Reveals one additional character.
