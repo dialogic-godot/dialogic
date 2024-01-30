@@ -45,7 +45,7 @@ func parse_glossary(text: String) -> String:
 				continue
 
 			var entry: Dictionary = entry_value
-			var entry_key: String = entry.get([DialogicGlossary.NAME_PROPERTY], "")
+			var entry_key: String = entry.get(DialogicGlossary.NAME_PROPERTY, "")
 
 			# Older versions of the glossary resource do not have a property
 			# for their name, we must skip these.
