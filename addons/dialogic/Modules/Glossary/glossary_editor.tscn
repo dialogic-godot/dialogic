@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Glossary/glossary_editor.gd" id="1_tf3p1"]
 [ext_resource type="Texture2D" uid="uid://cenut3sc5cul0" path="res://addons/dialogic/Modules/Glossary/add-glossary.svg" id="2_0elx7"]
 
-[sub_resource type="Image" id="Image_kueg2"]
+[sub_resource type="Image" id="Image_ib0c1"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -12,8 +12,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ajdpw"]
-image = SubResource("Image_kueg2")
+[sub_resource type="ImageTexture" id="ImageTexture_c8i3m"]
+image = SubResource("Image_ib0c1")
 
 [node name="GlossaryEditor" type="VBoxContainer"]
 anchors_preset = 15
@@ -63,14 +63,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Import Glossary File"
-icon = SubResource("ImageTexture_ajdpw")
+icon = SubResource("ImageTexture_c8i3m")
 
 [node name="DeleteGlossaryFile" type="Button" parent="Entries/Settings/Glossaries/Glossaries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Delete Glossary"
-icon = SubResource("ImageTexture_ajdpw")
+icon = SubResource("ImageTexture_c8i3m")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Entries/Settings/Glossaries/Glossaries"]
 layout_mode = 2
@@ -149,21 +149,21 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "New Glossary Entry"
-icon = SubResource("ImageTexture_ajdpw")
+icon = SubResource("ImageTexture_c8i3m")
 
 [node name="DeleteGlossaryEntry" type="Button" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Delete Glossary Entry"
-icon = SubResource("ImageTexture_ajdpw")
+icon = SubResource("ImageTexture_c8i3m")
 
 [node name="EntrySearch" type="LineEdit" parent="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search"
-right_icon = SubResource("ImageTexture_ajdpw")
+right_icon = SubResource("ImageTexture_c8i3m")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Entries/HSplit/VBoxContainer/Tabs/Entries"]
 layout_mode = 2
@@ -220,7 +220,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../../../../../../VBoxContainer/Tabs/Entries/ScrollContainer/EntryList")
-placeholder_text = "MyEntry"
+theme_override_colors/caret_color = Color(0, 0, 0, 1)
+placeholder_text = "Enter unique name..."
 caret_blink = true
 
 [node name="EntryCaseSensitive" type="Button" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2"]
@@ -228,7 +229,7 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Case sensitive"
 toggle_mode = true
-icon = SubResource("ImageTexture_ajdpw")
+icon = SubResource("ImageTexture_c8i3m")
 flat = true
 
 [node name="Label3" type="Label" parent="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings"]
@@ -305,13 +306,11 @@ size_flags_horizontal = 3
 
 [connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/AddGlossaryFile" to="." method="_on_add_glossary_file_pressed"]
 [connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/LoadGlossaryFile" to="." method="_on_load_glossary_file_pressed"]
-[connection signal="pressed" from="Entries/Settings/Glossaries/Glossaries/HBox/DeleteGlossaryFile" to="." method="_on_delete_glossary_file_pressed"]
 [connection signal="pressed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/AddGlossaryEntry" to="." method="_on_add_glossary_entry_pressed"]
 [connection signal="pressed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/DeleteGlossaryEntry" to="." method="_on_delete_glossary_entry_pressed"]
 [connection signal="text_changed" from="Entries/HSplit/VBoxContainer/Tabs/Entries/HBox/EntrySearch" to="." method="_on_entry_search_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryName" to="." method="_on_entry_name_text_changed"]
 [connection signal="toggled" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/HBox2/EntryCaseSensitive" to="." method="_on_entry_case_sensitive_toggled"]
-[connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryAlternatives" to="." method="_on_entry_alternatives_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryTitle" to="." method="_on_entry_title_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryText" to="." method="_on_entry_text_text_changed"]
 [connection signal="text_changed" from="Entries/HSplit/EntryEditor/VBox/Entry Settings/EntrySettings/EntryExtra" to="." method="_on_entry_extra_text_changed"]

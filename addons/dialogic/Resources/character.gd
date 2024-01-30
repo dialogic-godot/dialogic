@@ -34,12 +34,22 @@ func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":get_character_name(), "id":get_instance_id()})
 
 
-## This is automatically called, no need to use this.
+## Adds a translation ID to the character.
 func add_translation_id() -> String:
 	_translation_id = DialogicUtil.get_next_translation_id()
 	return _translation_id
 
 
+## Returns the character's translation ID.
+## Adds a translation ID to the character if it doesn't have one.
+func get_set_translation_id() -> String:
+	if _translation_id == null or _translation_id.is_empty():
+		return add_translation_id()
+	else:
+		return _translation_id
+
+
+## Removes the translation ID from the character.
 func remove_translation_id() -> void:
 	_translation_id = ""
 
