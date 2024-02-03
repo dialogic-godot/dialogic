@@ -8,13 +8,35 @@ extends DialogicEvent
 ### Settings
 
 enum Modes {SET, RESET, RESET_ALL}
+enum SettingValueType {
+	STRING,
+	NUMBER,
+	VARIABLE,
+	EXPRESSION
+}
 
 ## The name of the setting to save to.
 var name: String = ""
-var _value_type := 0
+var _value_type := 0 :
+	get:
+		return _value_type
+	set(_value):
+		_value_type = _value
+		if not _suppress_default_value: 
+			match _value_type:
+				SettingValueType.STRING, SettingValueType.VARIABLE, SettingValueType.EXPRESSION:
+					value = ""
+				SettingValueType.NUMBER:
+					value = 0
+			ui_update_needed.emit()
+			
 var value: Variant = ""
 
 var mode := Modes.SET
+
+## Used to suppress _value_type from overwriting value with a default value when the type changes
+## This is only used when initializing the event_variable.
+var _suppress_default_value: bool = false
 
 ################################################################################
 ## 						INITIALIZE
@@ -28,14 +50,14 @@ func _execute() -> void:
 			dialogic.Settings.reset_all()
 	else:
 		match _value_type:
-			0:
+			SettingValueType.STRING:
 				dialogic.Settings.set(name, value)
-			1:
+			SettingValueType.NUMBER:
 				dialogic.Settings.set(name, float(value))
-			2:
+			SettingValueType.VARIABLE:
 				if dialogic.has_subsystem('VAR'):
 					dialogic.Settings.set(name, dialogic.VAR.get_variable('{'+value+'}'))
-			3:
+			SettingValueType.EXPRESSION:
 				if dialogic.has_subsystem('VAR'):
 					dialogic.Settings.set(name, dialogic.VAR.get_variable(value))
 	finish()
@@ -72,11 +94,11 @@ func to_text() -> String:
 		string += " = "
 		value = str(value)
 		match _value_type:
-			0: # String
+			SettingValueType.STRING: # String
 				string += '"'+value.replace('"', '\\"')+'"'
-			1,3: # Float or Expression
+			SettingValueType.NUMBER,SettingValueType.EXPRESSION: # Float or Expression
 				string += str(value)
-			2: # Variable
+			SettingValueType.VARIABLE: # Variable
 				string += '{'+value+'}'
 
 	return string
@@ -98,19 +120,21 @@ func from_text(string:String) -> void:
 		mode = Modes.RESET_ALL
 
 	if result.get_string('value'):
+		_suppress_default_value = true
 		value = result.get_string('value').strip_edges()
 		if value.begins_with('"') and value.ends_with('"') and value.count('"')-value.count('\\"') == 2:
 			value = result.get_string('value').strip_edges().replace('"', '')
-			_value_type = 0
+			_value_type = SettingValueType.STRING
 		elif value.begins_with('{') and value.ends_with('}') and value.count('{') == 1:
 			value = result.get_string('value').strip_edges().trim_suffix('}').trim_prefix('{')
-			_value_type = 2
+			_value_type = SettingValueType.VARIABLE
 		else:
 			value = result.get_string('value').strip_edges()
 			if value.is_valid_float():
-				_value_type = 1
+				_value_type = SettingValueType.NUMBER
 			else:
-				_value_type = 3
+				_value_type = SettingValueType.EXPRESSION
+		_suppress_default_value = false
 
 
 func is_valid_event(string:String) -> bool:
@@ -138,33 +162,33 @@ func build_event_editor():
 			},
 			]})
 
-	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != 2')
+	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {'placeholder':'Type setting', 'suggestions_func':get_settings_suggestions}, 'mode != Modes.RESET_ALL')
 	add_header_edit('_value_type', ValueType.FIXED_OPTIONS, {'left_text':'to',
 		'options': [
 			{
 				'label': 'String',
 				'icon': ["String", "EditorIcons"],
-				'value': 0
+				'value': SettingValueType.STRING
 			},{
 				'label': 'Number',
 				'icon': ["float", "EditorIcons"],
-				'value': 1
+				'value': SettingValueType.NUMBER
 			},{
 				'label': 'Variable',
 				'icon': ["ClassList", "EditorIcons"],
-				'value': 2
+				'value': SettingValueType.VARIABLE
 			},{
 				'label': 'Expression',
 				'icon': ["Variant", "EditorIcons"],
-				'value': 3
+				'value': SettingValueType.EXPRESSION
 			}],
 		'symbol_only':true},
-		'!name.is_empty() and mode == 0')
-	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) and mode == 0')
-	add_header_edit('value', ValueType.NUMBER, {}, '!name.is_empty()  and _value_type == 1 and mode == 0')
+		'!name.is_empty() and mode == Modes.SET')
+	add_header_edit('value', ValueType.SINGLELINE_TEXT, {}, '!name.is_empty() and (_value_type == SettingValueType.STRING or _value_type == SettingValueType.EXPRESSION) and mode == Modes.SET')
+	add_header_edit('value', ValueType.NUMBER, {}, '!name.is_empty()  and _value_type == SettingValueType.NUMBER and mode == Modes.SET')
 	add_header_edit('value', ValueType.DYNAMIC_OPTIONS,
 			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'},
-			'!name.is_empty() and _value_type == 2 and mode == 0')
+			'!name.is_empty() and _value_type == SettingValueType.VARIABLE and mode == Modes.SET')
 
 
 func get_settings_suggestions(filter:String) -> Dictionary:
