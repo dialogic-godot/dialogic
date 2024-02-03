@@ -21,5 +21,8 @@ func _on_add_choice_pressed() -> void:
 	if timeline:
 		var resource = DialogicChoiceEvent.new()
 		resource.created_by_button = true
-		timeline.add_event_with_end_branch(resource, get_parent().get_index()+1)
+		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()
+		timeline.something_changed()
+		# Prevent focusing on future redos
+		resource.created_by_button = false

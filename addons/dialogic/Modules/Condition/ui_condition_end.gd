@@ -33,13 +33,15 @@ func add_elif():
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.ELIF
-		timeline.add_event_with_end_branch(resource, get_parent().get_index()+1)
+		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()
+		timeline.something_changed()
 
 func add_else():
 	var timeline = find_parent('VisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.ELSE
-		timeline.add_event_with_end_branch(resource, get_parent().get_index()+1)
+		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()
+		timeline.something_changed()
