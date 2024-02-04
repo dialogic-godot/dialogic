@@ -314,8 +314,7 @@ func recalculate_field_visibility() -> void:
 			if p.location == 1:
 				has_any_enabled_body_content = true
 		else:
-			var visible = _evaluate_visibility_condition(p)
-			if visible:
+			if _evaluate_visibility_condition(p):
 				if p.node != null:
 					p.node.show()
 				if p.location == 1:
