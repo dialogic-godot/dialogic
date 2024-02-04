@@ -2,14 +2,14 @@ extends GdUnitTestSuite
 
 const VALID_SPEAKER_PATH := "res://Tests/Resources/unit_test_character.dch"
 
-## We ensure that no speaker will return the correct value.
-func test_current_speaker() -> void:
+## We ensure that missing a speaker will return null.
+func test_missing_current_speaker() -> void:
     var null_speaker := DialogicUtil.autoload().Text.get_current_speaker()
 
     assert(null_speaker == null, "Current speaker is not null.")
 
 
-## We ensure incorrect speakers return the correct value.
+## We ensure invalid speaker paths return the correct value.
 func test_set_invalid_current_speaker() -> void:
     DialogicUtil.autoload().current_state_info["speaker"] = "Invalid Speaker Path"
     var current_speaker := DialogicUtil.autoload().Text.get_current_speaker()
@@ -17,8 +17,8 @@ func test_set_invalid_current_speaker() -> void:
     assert(current_speaker == null, "Invalid speaker must be invalid, but is valid.")
 
 
-## We ensure that valid speakers return a valid Dialogic Speaker and
-## that the path is set correctly.
+## We ensure valid speaker paths return a valid [class DialogicCharacter] and
+## the path is set correctly.
 func test_set_valid_current_speaker() -> void:
     DialogicUtil.autoload().current_state_info["speaker"] = VALID_SPEAKER_PATH
     var current_speaker := DialogicUtil.autoload().Text.get_current_speaker()
