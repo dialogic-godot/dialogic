@@ -397,8 +397,22 @@ func _ready():
 		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
 
 
+## Returns the [class DialogicCharacter] of the current speaker.
+## If there is no current speaker or the speaker is not found, returns null.
 func get_current_speaker() -> DialogicCharacter:
-	return (load(dialogic.current_state_info.get('speaker', "")) as DialogicCharacter)
+	var speaker_path: String = dialogic.current_state_info.get("speaker", "")
+
+	if speaker_path.is_empty():
+		return null
+
+	var speaker_resource := load(speaker_path)
+
+	if speaker_resource == null:
+		return null
+
+	var speaker_character := speaker_resource as DialogicCharacter
+
+	return speaker_character
 
 
 func _update_user_speed(user_speed:float) -> void:
