@@ -245,15 +245,6 @@ func load_event_buttons() -> void:
 #endregion
 
 
-#region CLEANUP
-################################################################################
-
-func _exit_tree() -> void:
-	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
-	clear_timeline_nodes()
-#endregion
-
-
 #region CONTENT LIST
 ################################################################################
 
