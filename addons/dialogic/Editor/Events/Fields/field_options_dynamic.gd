@@ -119,7 +119,11 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	var idx: int = 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
-			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
+			line_length = max(
+				get_theme_font('font', 'Label').get_string_size(
+					element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')
+					).x + (80 * DialogicUtil.get_editor_scale()),
+				line_length)
 			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
 				%Suggestions.set_item_icon(idx, suggestions[element].icon)
@@ -133,7 +137,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
-		%Suggestions.size.x = max(%Search.size.x, line_length)
+		%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 		%Suggestions.size.y = min(%Suggestions.get_item_count()*35*DialogicUtil.get_editor_scale(), 200*DialogicUtil.get_editor_scale())
 
 	if %Suggestions.get_item_count():
