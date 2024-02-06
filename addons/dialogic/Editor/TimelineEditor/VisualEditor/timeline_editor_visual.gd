@@ -305,14 +305,7 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 		var resource :DialogicEvent = data.duplicate()
 		resource._load_custom_defaults()
 
-		TimelineUndoRedo.create_action("[D] Add "+resource.event_name+" event.")
-		if resource.can_contain_events:
-			TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(resource, index, true, true))
-			TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(index, 2))
-		else:
-			TimelineUndoRedo.add_do_method(add_event_node.bind(resource, index, true, true))
-			TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(index, 1))
-		TimelineUndoRedo.commit_action()
+		add_event_undoable(resource, index)
 
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		if not (len(data) == 1 and data[0].get_index()+1 == index):
@@ -327,7 +320,6 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 
 #region CREATING THE TIMELINE
 ################################################################################
-
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
 	if event_resource is DialogicEndBranchEvent:
@@ -386,6 +378,17 @@ func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = fal
 	var event := add_event_node(resource, at_index, auto_select, indent)
 	create_end_branch_event(at_index+1, event)
 
+
+## Adds an event (either single nodes or with end branches) to the timeline with UndoRedo support
+func add_event_undoable(event_resource: DialogicEvent, at_index: int = -1):
+		TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
+		if event_resource.can_contain_events:
+			TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_resource, at_index, true, true))
+			TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, 2))
+		else:
+			TimelineUndoRedo.add_do_method(add_event_node.bind(event_resource, at_index, true, true))
+			TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, 1))
+		TimelineUndoRedo.commit_action()
 #endregion
 
 
@@ -667,14 +670,7 @@ func _add_event_button_pressed(event_resource:DialogicEvent, force_resource := f
 
 	resource.created_by_button = true
 
-	TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
-	if event_resource.can_contain_events:
-		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(resource, at_index, true, true))
-		TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, 2))
-	else:
-		TimelineUndoRedo.add_do_method(add_event_node.bind(resource, at_index, true, true))
-		TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, 1))
-	TimelineUndoRedo.commit_action()
+	add_event_undoable(resource, at_index)
 
 	resource.created_by_button = false
 
