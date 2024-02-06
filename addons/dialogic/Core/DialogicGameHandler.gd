@@ -272,7 +272,11 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 	# Resetting variables
 	if current_timeline:
+		# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
+		# are disconnected before they can disconnect themselves.
+		await get_tree().process_frame
 		current_timeline.clean()
+
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
