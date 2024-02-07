@@ -17,41 +17,50 @@ extends DialogicLayoutLayer
 @export var box_modulate: Color = Color.WHITE
 @export var box_modulate_by_character_color: bool = false
 @export var box_padding: Vector2 = Vector2(10,10)
-@export_range(0.1, 2) var box_corner_radius: float = 0.3
-@export_range(0.1, 5) var box_wobble_speed: float= 1
+@export_range(1, 999) var box_corner_radius: int = 25
+@export_range(0.1, 5) var box_wobble_speed: float = 1
 @export_range(0, 1) var box_wobbliness: float = 0.2
 
 @export_subgroup('Behaviour')
 @export var behaviour_distance: int = 50
 @export var behaviour_direction: Vector2 = Vector2(1, -1)
 
-@export_group('Name Label & Choices')
+@export_group('Name Label')
 @export_subgroup("Name Label")
 @export var name_label_enabled: bool = true
 @export var name_label_font_size: int = 15
 @export_file('*.ttf') var name_label_font: String = ""
 @export var name_label_use_character_color: bool = true
 @export var name_label_color: Color = Color.BLACK
+@export_subgroup("Name Label Box")
 @export var name_label_box_modulate: Color = Color.WHITE
 @export var name_label_padding: Vector2 = Vector2(5,0)
 @export var name_label_offset: Vector2 = Vector2(0,0)
 
+@export_group('Choices')
 @export_subgroup('Choices Text')
 @export var choices_text_size: int = 15
-@export var choices_text_color: Color = Color.LIGHT_SLATE_GRAY
-@export var choices_text_color_hover: Color = Color.DARK_GRAY
-@export var choices_text_color_focus: Color = Color.BLACK
+@export_file('*.ttf') var choices_text_font: String = ""
+@export var choices_text_color: Color = Color.DARK_SLATE_GRAY
+@export var choices_text_color_hover: Color = Color.DARK_MAGENTA
+@export var choices_text_color_focus: Color = Color.DARK_MAGENTA
+@export var choices_text_color_disabled: Color = Color.DARK_GRAY
+
+@export_subgroup('Choices Layout')
+@export var choices_layout_alignment := FlowContainer.ALIGNMENT_END
+@export var choices_layout_force_lines: bool = false
+@export_file('*.tres', "*.res") var choices_base_theme: String = ""
+
+const TextBubble := preload("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd")
+
+var bubbles: Array[TextBubble] = []
+var fallback_bubble: TextBubble = null
+
+const textbubble_scene: PackedScene = preload("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.tscn")
 
 
-var bubbles: Array[DialogicNode_TextBubble] = []
-var fallback_bubble: DialogicNode_TextBubble = null
-
-@export_group('Private')
-@export var textbubble_scene: PackedScene = null
-
-
-func add_bubble() -> DialogicNode_TextBubble:
-	var new_bubble: DialogicNode_TextBubble = textbubble_scene.instantiate()
+func add_bubble() -> TextBubble:
+	var new_bubble: TextBubble = textbubble_scene.instantiate()
 	add_child(new_bubble)
 	bubble_apply_overrides(new_bubble)
 	bubbles.append(new_bubble)
@@ -61,14 +70,14 @@ func add_bubble() -> DialogicNode_TextBubble:
 
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides() -> void:
-	for bubble: DialogicNode_TextBubble in bubbles:
+	for bubble: TextBubble in bubbles:
 		bubble_apply_overrides(bubble)
 
 	if fallback_bubble:
 		bubble_apply_overrides(fallback_bubble)
 
 
-func bubble_apply_overrides(bubble:DialogicNode_TextBubble) -> void:
+func bubble_apply_overrides(bubble:TextBubble) -> void:
 	## TEXT FONT AND COLOR
 	var rtl: RichTextLabel = bubble.get_dialog_text()
 	rtl.add_theme_font_size_override(&'normal_font', text_size)

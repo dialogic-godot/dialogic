@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dlx7jcvm52tyw"]
+[gd_scene load_steps=13 format=3 uid="uid://dlx7jcvm52tyw"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd" id="1_jdhpk"]
 [ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/speech_bubble.gdshader" id="2_1mhvf"]
@@ -11,13 +11,6 @@
 _data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="Curve" id="Curve_4meji"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.61284, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_q6qf6"]
-curve = SubResource("Curve_4meji")
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lsfnp"]
 noise_type = 0
 fractal_type = 0
@@ -27,27 +20,15 @@ cellular_jitter = 0.15
 seamless = true
 noise = SubResource("FastNoiseLite_lsfnp")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ejxnv"]
-noise_type = 2
-frequency = 0.012
-fractal_type = 0
-cellular_jitter = 0.008
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4la3x"]
-seamless = true
-noise = SubResource("FastNoiseLite_ejxnv")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
 shader = ExtResource("2_1mhvf")
 shader_parameter/radius = 1.39
-shader_parameter/ratio = Vector2(2.251, 1)
-shader_parameter/crease = 0.12
-shader_parameter/speed = 2.53
-shader_parameter/texture_scale = 0.24
-shader_parameter/texture_offset = 172.5
+shader_parameter/box_size = Vector2(100, 100)
+shader_parameter/box_padding = 15.0
+shader_parameter/wobble_amount = 0.2
+shader_parameter/wobble_speed = 1.0
+shader_parameter/wobble_detail = 0.5
 shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
-shader_parameter/spikes_sampler = SubResource("NoiseTexture2D_4la3x")
-shader_parameter/curve_sampler = SubResource("CurveTexture_q6qf6")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
 content_margin_left = 5.0
