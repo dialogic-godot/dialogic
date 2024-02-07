@@ -100,19 +100,24 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 
 
 	## BOX & TAIL COLOR
-	var tail: Line2D = bubble.get_tail()
-	var background: Control = bubble.get_bubble()
-	var bubble_material: ShaderMaterial = background.get(&'material')
-
-	tail.default_color = box_modulate
-	background.set(&'color', box_modulate)
-	bubble_material.set_shader_parameter(&'radius', box_corner_radius)
-	bubble_material.set_shader_parameter(&'crease', box_wobbliness*0.1)
-	bubble_material.set_shader_parameter(&'speed', box_wobble_speed)
+	var tail_and_bg_group := (bubble.get_node("Group") as CanvasGroup)
+	tail_and_bg_group.self_modulate = box_modulate
 	if box_modulate_by_character_color and bubble.character != null:
-		tail.modulate = bubble.character.color
-		background.modulate = bubble.character.color
+		tail_and_bg_group.self_modulate = bubble.character.color
+
+	var background := (bubble.get_node('%Background') as ColorRect)
+	var bg_material: ShaderMaterial = (background.material as ShaderMaterial)
+	bg_material.set_shader_parameter(&'radius', box_corner_radius)
+	bg_material.set_shader_parameter(&'wobble_amount', box_wobbliness*0.1)
+	bg_material.set_shader_parameter(&'wobble_speed', box_wobble_speed)
+
 	bubble.padding = box_padding
+
+
+	## BEHAVIOUR
+	bubble.safe_zone = behaviour_distance
+	bubble.base_direction = behaviour_direction
+
 
 	## NAME LABEL SETTINGS
 	var nl: DialogicNode_NameLabel = bubble.get_name_label()
@@ -131,24 +136,48 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	nlp.get_theme_stylebox(&'panel').content_margin_right = name_label_padding.x
 	nlp.get_theme_stylebox(&'panel').content_margin_top = name_label_padding.y
 	nlp.get_theme_stylebox(&'panel').content_margin_bottom = name_label_padding.y
-	nlp.position += name_label_offset
+	bubble.name_label_offset = name_label_offset
 
 	if !name_label_enabled:
 		nlp.queue_free()
 
 
 	## CHOICE SETTINGS
-	var choice_theme: Theme = Theme.new()
+	if choices_layout_force_lines:
+		bubble.add_choice_container(VBoxContainer.new(), choices_layout_alignment)
+	else:
+		bubble.add_choice_container(HFlowContainer.new(), choices_layout_alignment)
+
+	var choice_theme: Theme = null
+	if choices_base_theme.is_empty() or not ResourceLoader.exists(choices_base_theme):
+		choice_theme = Theme.new()
+		var base_style := StyleBoxFlat.new()
+		base_style.draw_center = false
+		base_style.border_width_bottom = 2
+		base_style.border_color = choices_text_color
+		choice_theme.set_stylebox(&'normal', &'Button', base_style)
+		var focus_style := (base_style.duplicate() as StyleBoxFlat)
+		focus_style.border_color = choices_text_color_focus
+		choice_theme.set_stylebox(&'focus', &'Button', focus_style)
+		var hover_style := (base_style.duplicate() as StyleBoxFlat)
+		hover_style.border_color = choices_text_color_hover
+		choice_theme.set_stylebox(&'hover', &'Button', hover_style)
+		var disabled_style := (base_style.duplicate() as StyleBoxFlat)
+		disabled_style.border_color = choices_text_color_disabled
+		choice_theme.set_stylebox(&'disabled', &'Button', disabled_style)
+		choice_theme.set_stylebox(&'pressed', &'Button', base_style)
+	else:
+		choice_theme = (load(choices_base_theme) as Theme)
+
+	if !choices_text_font.is_empty():
+		choice_theme.default_font = (load(choices_text_font) as Font)
+
 	choice_theme.set_font_size(&'font_size', &'Button', choices_text_size)
 	choice_theme.set_color(&'font_color', &'Button', choices_text_color)
 	choice_theme.set_color(&'font_pressed_color', &'Button', choices_text_color)
 	choice_theme.set_color(&'font_hover_color', &'Button', choices_text_color_hover)
 	choice_theme.set_color(&'font_focus_color', &'Button', choices_text_color_focus)
-
+	choice_theme.set_color(&'font_disabled_color', &'Button', choices_text_color_disabled)
 	bubble.get_choice_container().theme = choice_theme
-
-	## BEHAVIOUR
-	bubble.safe_zone = behaviour_distance
-	bubble.base_direction = behaviour_direction
 
 

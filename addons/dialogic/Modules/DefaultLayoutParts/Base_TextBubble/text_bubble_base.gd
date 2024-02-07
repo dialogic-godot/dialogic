@@ -4,7 +4,7 @@ extends DialogicLayoutBase
 ## This layout won't do anything on it's own
 
 var bubbles: Dictionary = {}
-var fallback_bubble :Control = null
+var fallback_bubble: Control = null
 
 
 func _ready():
@@ -21,7 +21,7 @@ func _ready():
 	fallback_bubble.speaker_node = $Example/ExamplePoint
 
 
-func register_character(character:DialogicCharacter, node:Node2D):
+func register_character(character:DialogicCharacter, node:Node):
 	if not has_node('TextBubbleLayer'):
 		return
 
@@ -30,6 +30,7 @@ func register_character(character:DialogicCharacter, node:Node2D):
 	new_bubble.character = character
 	new_bubble.name = character.resource_path.get_file().trim_suffix("."+character.resource_path.get_extension()) + "Bubble"
 	bubbles[character] = new_bubble
+
 
 func _on_dialogic_text_event(info:Dictionary):
 	var no_bubble_open := true
@@ -47,4 +48,3 @@ func _on_dialogic_text_event(info:Dictionary):
 	else:
 		$Example.hide()
 		fallback_bubble.close()
-
