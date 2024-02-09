@@ -88,6 +88,7 @@ func _ready() -> void:
 	%Suggestions.hide()
 	%Suggestions.item_selected.connect(suggestion_selected)
 	%Suggestions.item_clicked.connect(suggestion_selected)
+	%Suggestions.fixed_icon_size = Vector2i(16, 16) * DialogicUtil.get_editor_scale()
 
 	_line_height = get_theme_font('font', 'Label').get_string_size("a").y
 	_v_separation = %Suggestions.get_theme_constant("v_separation")
@@ -137,11 +138,11 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
-				var icon = suggestions[element].icon as Texture2D
-				%Suggestions.set_item_icon(idx, icon)
-				curr_line_length += icon.get_width() + _icon_margin * 2 + _h_separation
+				%Suggestions.set_item_icon(idx, suggestions[element].icon)
+				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 			elif suggestions[element].has('editor_icon'):
 				%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
+				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 
 			line_length = max(line_length, curr_line_length)
 			
