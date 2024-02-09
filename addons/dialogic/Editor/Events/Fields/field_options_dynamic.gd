@@ -26,7 +26,6 @@ var current_value: String
 var current_selected := 0
 
 ## SUGGESTIONS ITEM LIST
-var _line_height := 0
 var _v_separation := 0
 var _h_separation := 0
 var _icon_margin := 0
@@ -90,7 +89,6 @@ func _ready() -> void:
 	%Suggestions.item_clicked.connect(suggestion_selected)
 	%Suggestions.fixed_icon_size = Vector2i(16, 16) * DialogicUtil.get_editor_scale()
 
-	_line_height = get_theme_font('font', 'Label').get_string_size("a").y
 	_v_separation = %Suggestions.get_theme_constant("v_separation")
 	_h_separation = %Suggestions.get_theme_constant("h_separation")
 	_icon_margin = %Suggestions.get_theme_constant("icon_margin")
@@ -154,12 +152,6 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
 
-	var calc_height =  ((%Suggestions.get_item_count() + 0.3)*(_line_height+_v_separation))*DialogicUtil.get_editor_scale()
-	var max_height = 200*DialogicUtil.get_editor_scale()
-	%Suggestions.size.y = min(calc_height, max_height)
-	if calc_height > max_height:
-		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
-
 	if %Suggestions.get_item_count():
 		%Suggestions.select(0)
 		current_selected = 0
@@ -168,8 +160,18 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	%Search.grab_focus()
 	
-	# Wait a frame in case the panel container changed it's width 
+	# Wait a frame in case the panel container changed it's width, and for the item list to redraw 
 	await get_tree().process_frame
+	
+	var total_height: int = 0
+	for item_idx in %Suggestions.item_count:
+		total_height += %Suggestions.get_item_rect(item_idx).size.y + _v_separation
+	total_height += _v_separation * 2
+
+	var max_height = 200*DialogicUtil.get_editor_scale()
+	%Suggestions.size.y = min(total_height, max_height)
+	if total_height > max_height:
+		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
