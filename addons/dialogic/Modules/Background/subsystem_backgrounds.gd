@@ -40,10 +40,12 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 		background_holder = dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
-	if background_holder == null:
-		return
 
 	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
+	if background_holder == null:
+		background_changed.emit(info)
+		return
+
 
 	var bg_set := false
 
