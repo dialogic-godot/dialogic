@@ -5,10 +5,12 @@ extends Control
 @onready var text: DialogicNode_DialogText = (%DialogText as DialogicNode_DialogText)
 # The choice container is added by the TextBubble layer
 @onready var choice_container: Container = null
-@onready var name_label_box: PanelContainer = ($DialogText/NameLabel as PanelContainer)
+@onready var name_label: Label = (%NameLabel as Label)
+@onready var name_label_box: PanelContainer = (%NameLabelPanel as PanelContainer)
 
-var speaker_node: Node = null
-var character: DialogicCharacter = null
+var node_to_point_at: Node = null
+var current_character: DialogicCharacter = null
+
 var max_width := 300
 
 var bubble_rect: Rect2 = Rect2(0.0, 0.0, 2.0, 2.0)
@@ -18,6 +20,7 @@ var base_direction := Vector2(1.0, -1.0).normalized()
 var safe_zone := 50.0
 var padding := Vector2()
 
+var name_label_alignment := HORIZONTAL_ALIGNMENT_LEFT
 var name_label_offset := Vector2()
 var force_choices_on_separate_lines := false
 
@@ -27,13 +30,19 @@ var bg_padding := 30
 
 
 func _ready() -> void:
+	reset()
+	DialogicUtil.autoload().Choices.choices_shown.connect(_on_choices_shown)
+
+
+func reset() -> void:
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 
+	tail.points = []
+	bubble_rect = Rect2(0,0,2,2)
+
 	base_position = get_speaker_canvas_position()
 	position = base_position
-
-	DialogicUtil.autoload().Choices.choices_shown.connect(_on_choices_shown)
 
 
 func _process(delta:float) -> void:
@@ -61,7 +70,7 @@ func _process(delta:float) -> void:
 	position = position.lerp(p, 5 * delta)
 
 	var point_a: Vector2 = Vector2.ZERO
-	var point_b: Vector2 = (base_position - position) * 0.5
+	var point_b: Vector2 = (base_position - position) * 0.75
 
 	var offset: Vector2 = Vector2.from_angle(point_a.angle_to_point(point_b)) * bubble_rect.size * abs(direction.x) * 0.4
 
@@ -77,6 +86,7 @@ func _process(delta:float) -> void:
 
 
 func open() -> void:
+	set_process(true)
 	show()
 	text.enabled = true
 	var open_tween := create_tween().set_parallel(true)
@@ -91,18 +101,11 @@ func close() -> void:
 	close_tween.tween_property(self, "modulate:a", 0.0, 0.1)
 	await close_tween.finished
 	hide()
+	set_process(false)
 
 
 func _on_dialog_text_started_revealing_text():
-	var content_size := get_base_content_size()
-
-	if text.has_node('NameLabel'):
-		name_label_box.position = Vector2(0, -name_label_box.size.y) + name_label_offset
-
-	if DialogicUtil.autoload().Choices.is_question(DialogicUtil.autoload().current_event_idx):
-		pass
-
-	_resize_bubble(content_size, true)
+	_resize_bubble(get_base_content_size(), true)
 
 
 func _resize_bubble(content_size:Vector2, popup:=false) -> void:
@@ -148,11 +151,14 @@ func get_base_content_size() -> Vector2:
 
 
 func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEGIN) -> void:
-	text.add_child(node)
+	if choice_container:
+		choice_container.queue_free()
+
 	node.name = "ChoiceContainer"
 	choice_container = node
 	node.set_anchors_preset(LayoutPreset.PRESET_BOTTOM_WIDE)
 	node.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	text.add_child(node)
 
 	if node is HFlowContainer:
 		(node as HFlowContainer).alignment = alignment
@@ -181,10 +187,10 @@ func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEG
 
 
 func get_speaker_canvas_position() -> Vector2:
-	if speaker_node:
-		if speaker_node is Node3D:
+	if node_to_point_at:
+		if node_to_point_at is Node3D:
 			base_position = get_viewport().get_camera_3d().unproject_position(
-				(speaker_node as Node3D).global_position)
-		if speaker_node is CanvasItem:
-			base_position = (speaker_node as CanvasItem).get_global_transform_with_canvas().origin
+				(node_to_point_at as Node3D).global_position)
+		if node_to_point_at is CanvasItem:
+			base_position = (node_to_point_at as CanvasItem).get_global_transform_with_canvas().origin
 	return base_position

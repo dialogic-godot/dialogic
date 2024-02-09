@@ -12,7 +12,8 @@ func _ready():
 	if hide_when_empty:
 		name_label_root.visible = false
 	text = ""
-	
+
+
 func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
 		text = what

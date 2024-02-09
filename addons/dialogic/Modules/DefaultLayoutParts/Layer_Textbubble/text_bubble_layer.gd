@@ -18,8 +18,8 @@ extends DialogicLayoutLayer
 @export var box_modulate_by_character_color: bool = false
 @export var box_padding: Vector2 = Vector2(10,10)
 @export_range(1, 999) var box_corner_radius: int = 25
-@export_range(0.1, 5) var box_wobble_speed: float = 1
-@export_range(0, 1) var box_wobbliness: float = 0.2
+@export_range(0.1, 5) var box_wobble_speed: float = 2
+@export_range(0, 1) var box_wobbliness: float = 1
 
 @export_subgroup('Behaviour')
 @export var behaviour_distance: int = 50
@@ -34,6 +34,7 @@ extends DialogicLayoutLayer
 @export var name_label_color: Color = Color.BLACK
 @export_subgroup("Name Label Box")
 @export var name_label_box_modulate: Color = Color.WHITE
+@export var name_label_box_modulate_use_character_color: bool = false
 @export var name_label_padding: Vector2 = Vector2(5,0)
 @export var name_label_offset: Vector2 = Vector2(0,0)
 
@@ -62,24 +63,20 @@ const textbubble_scene: PackedScene = preload("res://addons/dialogic/Modules/Def
 func add_bubble() -> TextBubble:
 	var new_bubble: TextBubble = textbubble_scene.instantiate()
 	add_child(new_bubble)
-	bubble_apply_overrides(new_bubble)
 	bubbles.append(new_bubble)
 	return new_bubble
 
 
-
 ## Called by dialogic whenever export overrides might change
 func _apply_export_overrides() -> void:
-	for bubble: TextBubble in bubbles:
-		bubble_apply_overrides(bubble)
-
-	if fallback_bubble:
-		bubble_apply_overrides(fallback_bubble)
+	pass
 
 
+
+## Called by the base layer before opening the bubble
 func bubble_apply_overrides(bubble:TextBubble) -> void:
 	## TEXT FONT AND COLOR
-	var rtl: RichTextLabel = bubble.get_dialog_text()
+	var rtl: RichTextLabel = bubble.text
 	rtl.add_theme_font_size_override(&'normal_font', text_size)
 	rtl.add_theme_font_size_override(&"normal_font_size", text_size)
 	rtl.add_theme_font_size_override(&"bold_font_size", text_size)
@@ -102,8 +99,8 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	## BOX & TAIL COLOR
 	var tail_and_bg_group := (bubble.get_node("Group") as CanvasGroup)
 	tail_and_bg_group.self_modulate = box_modulate
-	if box_modulate_by_character_color and bubble.character != null:
-		tail_and_bg_group.self_modulate = bubble.character.color
+	if box_modulate_by_character_color and bubble.current_character != null:
+		tail_and_bg_group.self_modulate = bubble.current_character.color
 
 	var background := (bubble.get_node('%Background') as ColorRect)
 	var bg_material: ShaderMaterial = (background.material as ShaderMaterial)
@@ -120,18 +117,22 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 
 
 	## NAME LABEL SETTINGS
-	var nl: DialogicNode_NameLabel = bubble.get_name_label()
+	var nl: DialogicNode_NameLabel = bubble.name_label
 	nl.add_theme_font_size_override(&"font_size", name_label_font_size)
 
 	if !name_label_font.is_empty():
 		nl.add_theme_font_override(&'font', load(name_label_font) as Font)
 
-	nl.use_character_color = name_label_use_character_color
-	if !nl.use_character_color:
+
+	if name_label_use_character_color and bubble.current_character:
+		nl.add_theme_color_override(&"font_color", bubble.current_character.color)
+	else:
 		nl.add_theme_color_override(&"font_color", name_label_color)
 
-	var nlp: PanelContainer = bubble.get_name_label_panel()
+	var nlp: PanelContainer = bubble.name_label_box
 	nlp.self_modulate = name_label_box_modulate
+	if name_label_box_modulate_use_character_color and bubble.current_character:
+		nlp.self_modulate = bubble.current_character.color
 	nlp.get_theme_stylebox(&'panel').content_margin_left = name_label_padding.x
 	nlp.get_theme_stylebox(&'panel').content_margin_right = name_label_padding.x
 	nlp.get_theme_stylebox(&'panel').content_margin_top = name_label_padding.y
@@ -178,6 +179,6 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	choice_theme.set_color(&'font_hover_color', &'Button', choices_text_color_hover)
 	choice_theme.set_color(&'font_focus_color', &'Button', choices_text_color_focus)
 	choice_theme.set_color(&'font_disabled_color', &'Button', choices_text_color_disabled)
-	bubble.get_choice_container().theme = choice_theme
+	bubble.choice_container.theme = choice_theme
 
 

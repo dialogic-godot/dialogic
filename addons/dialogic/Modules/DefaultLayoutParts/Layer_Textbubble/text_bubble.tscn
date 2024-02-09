@@ -20,6 +20,7 @@ seamless = true
 noise = SubResource("FastNoiseLite_lsfnp")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
+resource_local_to_scene = true
 shader = ExtResource("2_1mhvf")
 shader_parameter/radius = 25.0
 shader_parameter/box_size = Vector2(735, 530)
@@ -32,12 +33,12 @@ shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
 content_margin_left = 5.0
 content_margin_right = 5.0
-bg_color = Color(0.901961, 0.901961, 0.901961, 1)
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0.278431)
+shadow_color = Color(0.152941, 0.152941, 0.152941, 0.12549)
 shadow_size = 5
 
 [node name="TextBubble" type="Control"]
@@ -49,17 +50,17 @@ script = ExtResource("1_jdhpk")
 
 [node name="Tail" type="Line2D" parent="Group"]
 unique_name_in_owner = true
-points = PackedVector2Array(-1, 9, -10, 66, -64, 107)
+points = PackedVector2Array(-9, 7, -29, 118, -95, 174, -193, 195)
 width = 96.0
 width_curve = SubResource("Curve_0j8nu")
 
 [node name="Background" type="ColorRect" parent="Group"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_60xbe")
-offset_left = -289.0
-offset_top = -230.0
-offset_right = 446.0
-offset_bottom = 300.0
+offset_left = -186.0
+offset_top = -107.0
+offset_right = 205.0
+offset_bottom = 91.0
 mouse_filter = 2
 
 [node name="DialogText" type="RichTextLabel" parent="." node_paths=PackedStringArray("textbox_root")]
@@ -79,29 +80,32 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 scroll_active = false
-visible_characters_behavior = 1
 script = ExtResource("3_syv35")
 textbox_root = NodePath("..")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogText"]
 script = ExtResource("4_7bm4b")
 
-[node name="NameLabel" type="PanelContainer" parent="DialogText"]
+[node name="NameLabelPositioner" type="HBoxContainer" parent="DialogText"]
 layout_mode = 1
-anchors_preset = -1
-offset_left = -2.0
-offset_top = -35.0
-offset_right = 50.0
-offset_bottom = -9.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = -23.0
+offset_right = 1.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
 
-[node name="NameLabel" type="Label" parent="DialogText/NameLabel" node_paths=PackedStringArray("name_label_root")]
+[node name="NameLabelPanel" type="PanelContainer" parent="DialogText/NameLabelPositioner"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Word"
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
+
+[node name="NameLabel" type="Label" parent="DialogText/NameLabelPositioner/NameLabelPanel" node_paths=PackedStringArray("name_label_root")]
+unique_name_in_owner = true
+layout_mode = 2
 horizontal_alignment = 1
 script = ExtResource("6_5gd03")
 name_label_root = NodePath("..")
+use_character_color = false
 
 [connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]
