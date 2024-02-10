@@ -18,7 +18,7 @@ var latest_thumbnail : Image = null
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	_make_sure_slot_dir_exists()
 
 #endregion
@@ -28,9 +28,11 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 ####################################################################################################
 
 ## Saves the current state to the given slot.
-## If no slot is given the default slot is used (name can be set in the dialogic settings)
-## If you want to change to the current slot use save(Dialogic.Save.get_latest_slot())
-func save(slot_name := "", is_autosave := false, thumbnail_mode:=ThumbnailMode.TAKE_AND_STORE, slot_info := {}):
+## If no slot is given, the default slot is used. You can change this name in
+## the Dialogic editor.
+## If you want to save to the last used slot, you can get its slot name with the
+## [method get_latest_slot()] method.
+func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode.TAKE_AND_STORE, slot_info := {}) -> void:
 	# check if to save (if this is an autosave)
 	if is_autosave and !ProjectSettings.get_setting('dialogic/save/autosave', false):
 		return
@@ -66,7 +68,9 @@ func load(slot_name := "") -> void:
 		printerr("[Dialogic Error] Tried loading from invalid save slot '"+slot_name+"'.")
 		return
 	set_latest_slot(slot_name)
-	dialogic.load_full_state(load_file(slot_name, 'state.txt', {}))
+
+	var state: Dictionary = load_file(slot_name, 'state.txt', {})
+	dialogic.load_full_state(state)
 
 
 ## Saves a variable to a file in the given slot.
@@ -120,13 +124,13 @@ func set_global_info(key:String, value:Variant) -> void:
 	if encryption_password.is_empty():
 		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
 			global_info.set_value('main', key, value)
-			global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+			var _save_result := global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
 		else:
 			printerr("[Dialogic Error]: Couldn't access global saved info file.")
 	else:
 		if global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
 			global_info.set_value('main', key, value)
-			global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
+			var _save_result := global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
 		else:
 			printerr("[Dialogic Error]: Couldn't access global saved info file.")
 
@@ -187,13 +191,18 @@ func get_slot_names() -> Array:
 
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
-		directory.list_dir_begin()
+		var _list_dir := directory.list_dir_begin()
 		var file_name := directory.get_next()
+
 		while file_name != "":
+
 			if directory.current_is_dir() and not file_name.begins_with("."):
 				save_folders.append(file_name)
+
 			file_name = directory.get_next()
+
 		return save_folders
+
 	return []
 
 
@@ -209,20 +218,22 @@ func delete_slot(slot_name:String) -> void:
 
 	if DirAccess.dir_exists_absolute(path):
 		var directory := DirAccess.open(path)
-		directory.list_dir_begin()
+		var _list_dir := directory.list_dir_begin()
 		var file_name := directory.get_next()
+
 		while file_name != "":
-			directory.remove(file_name)
+			var _result := directory.remove(file_name)
 			file_name = directory.get_next()
-		# then delete folder
-		directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
+
+		# Delete the folder.
+		var _remove_result := directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
 
 
 ## this adds a new save folder with the given name
 func add_empty_slot(slot_name: String) -> void:
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
-		directory.make_dir(slot_name)
+		var _make_dir_result := directory.make_dir(slot_name)
 
 
 ## reset the state of the given save folder (or default)
@@ -262,15 +273,19 @@ func set_latest_slot(slot_name:String) -> void:
 
 func _make_sure_slot_dir_exists() -> void:
 	if not DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
-		DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
+		var _make_dir_result := DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
+
 	var global_info_path := SAVE_SLOTS_DIR.path_join('global_info.txt')
+
 	if not FileAccess.file_exists(global_info_path):
 		var config := ConfigFile.new()
 		var password := get_encryption_password()
+
 		if password.is_empty():
-			config.save(global_info_path)
+			var _save_result := config.save(global_info_path)
+
 		else:
-			config.save_encrypted_pass(global_info_path, password)
+			var _save_result := config.save_encrypted_pass(global_info_path, password)
 
 #endregion
 
@@ -301,7 +316,8 @@ func take_thumbnail() -> void:
 ## No need to call from outside. Used to store the latest thumbnail to the given slot.
 func save_slot_thumbnail(slot_name:String) -> void:
 	if latest_thumbnail:
-		latest_thumbnail.save_png(get_slot_path(slot_name).path_join('thumbnail.png'))
+		var path := get_slot_path(slot_name).path_join('thumbnail.png')
+		var _save_result := latest_thumbnail.save_png(path)
 
 
 ## Returns an ImageTexture containing the thumbnail of that slot.
@@ -326,18 +342,20 @@ func _ready() -> void:
 	autosave_timer.one_shot = true
 	DialogicUtil.update_timer_process_callback(autosave_timer)
 	autosave_timer.name = "AutosaveTimer"
-	autosave_timer.timeout.connect(_on_autosave_timer_timeout)
+	var _result := autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
-	dialogic.event_handled.connect(_on_dialogic_event_handled)
-	dialogic.timeline_started.connect(_on_start_or_end_autosave)
-	dialogic.timeline_ended.connect(_on_start_or_end_autosave)
+	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)
+	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
+	_result = dialogic.timeline_ended.connect(_on_start_or_end_autosave)
 	_on_autosave_timer_timeout()
 
 
 func _on_autosave_timer_timeout() -> void:
 	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
 		save('', true)
-	autosave_timer.start(ProjectSettings.get_setting('dialogic/save/autosave_delay', 60))
+
+	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', 60)
+	autosave_timer.start(auto_save_time)
 
 
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
