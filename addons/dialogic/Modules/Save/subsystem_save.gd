@@ -352,7 +352,7 @@ func _ready() -> void:
 
 func _on_autosave_timer_timeout() -> void:
 	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
-		save('', true)
+		perform_autosave()
 
 	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', 60)
 	autosave_timer.start(auto_save_time)
@@ -360,15 +360,23 @@ func _on_autosave_timer_timeout() -> void:
 
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
 	if event is DialogicJumpEvent:
+
 		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 0:
-			save('', true)
+			perform_autosave()
+
 	if event is DialogicTextEvent:
+
 		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 2:
-			save('', true)
+			perform_autosave()
 
 
 func _on_start_or_end_autosave() -> void:
 	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 0:
-		save('', true)
+		perform_autosave()
+
+
+func perform_autosave() -> void:
+	save("", true)
+	save_already_seen_history()
 
 #endregion
