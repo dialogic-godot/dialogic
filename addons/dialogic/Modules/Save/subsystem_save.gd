@@ -18,7 +18,7 @@ var latest_thumbnail : Image = null
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	_make_sure_slot_dir_exists()
 
 #endregion
@@ -116,7 +116,6 @@ func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
 	return default
 
 
-
 func set_global_info(key:String, value:Variant) -> void:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
@@ -172,11 +171,14 @@ func load_already_seen_history() -> void:
 	DialogicUtil.autoload().History.already_read_history_content = get_global_info("already_read_history_content", {})
 
 
-## Resets the already seen history inside Dialogic and inside the global info
-## file.
-func reset_already_seen_history() -> void:
+## Resets the already seen history in the global info file.
+## If [param reset_in_dialogic] is true, it will also reset the already seen
+## history in the Dialogic Autoload.
+func reset_already_seen_history(reset_in_dialogic :=  false) -> void:
 	set_global_info("already_read_history_content", {})
-	DialogicUtil.autoload().History.already_read_history_content = {}
+
+	if reset_in_dialogic:
+		DialogicUtil.autoload().History.already_read_history_content = {}
 
 
 #endregion
