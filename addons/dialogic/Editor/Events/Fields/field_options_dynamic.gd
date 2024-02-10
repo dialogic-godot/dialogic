@@ -29,6 +29,8 @@ var current_selected := 0
 var _v_separation := 0
 var _h_separation := 0
 var _icon_margin := 0
+var _line_height := 24
+var _max_height := 200 * DialogicUtil.get_editor_scale()
 
 
 #region FIELD METHODS
@@ -125,7 +127,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
-	var line_length: int = 0
+	var line_length = 0
 	var idx: int = 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
@@ -147,33 +149,34 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 			idx += 1
-
+	
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
 
-	if %Suggestions.get_item_count():
+	if %Suggestions.item_count:
 		%Suggestions.select(0)
 		current_selected = 0
 	else:
 		current_selected = -1
-
 	%Search.grab_focus()
 	
-	# Wait a frame in case the panel container changed it's width, and for the item list to redraw 
+	var total_height: int = 0
+	for item in %Suggestions.item_count:
+		total_height += _line_height * DialogicUtil.get_editor_scale() + _v_separation
+	total_height += _v_separation * 2
+	if total_height > _max_height:
+		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
+		
+	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
+	%Suggestions.size.y = min(total_height, _max_height)
+	
+	# Defer setting width to give PanelContainer  
+	# time to update it's size
+	await get_tree().process_frame
 	await get_tree().process_frame
 	
-	var total_height: int = 0
-	for item_idx in %Suggestions.item_count:
-		total_height += %Suggestions.get_item_rect(item_idx).size.y + _v_separation
-	total_height += _v_separation * 2
-
-	var max_height = 200*DialogicUtil.get_editor_scale()
-	%Suggestions.size.y = min(total_height, max_height)
-	if total_height > max_height:
-		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
-
 
 
 func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_BUTTON_LEFT) -> void:
