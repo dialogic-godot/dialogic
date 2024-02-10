@@ -9,6 +9,8 @@ signal saved(info:Dictionary)
 ## The directory that will be saved to.
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
 
+const ALREADY_SEEN_NAME := "already_read_history_content"
+
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
 enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
 var latest_thumbnail : Image = null
@@ -162,20 +164,26 @@ func get_encryption_password() -> String:
 ##
 ## Be aware, this won't add any events but completely overwrite the already saved ones.
 func save_already_seen_history() -> void:
-	set_global_info("already_read_history_content", DialogicUtil.autoload().History.already_read_history_content)
+	set_global_info(ALREADY_SEEN_NAME, DialogicUtil.autoload().History.already_read_history_content)
 
 
 ## Loads the seen events from the global info file.
 ## Calling this when a game gets loaded may be useful.
 func load_already_seen_history() -> void:
-	DialogicUtil.autoload().History.already_read_history_content = get_global_info("already_read_history_content", {})
+	DialogicUtil.autoload().History.already_read_history_content = get_global_info(ALREADY_SEEN_NAME, {})
+
+
+## Returns the already seen history from the global info file.
+## If none exist in the global info file, returns an empty dictionary.
+func get_already_seen_history() -> Dictionary:
+	return get_global_info(ALREADY_SEEN_NAME, {})
 
 
 ## Resets the already seen history in the global info file.
 ## If [param reset_in_dialogic] is true, it will also reset the already seen
 ## history in the Dialogic Autoload.
-func reset_already_seen_history(reset_in_dialogic :=  false) -> void:
-	set_global_info("already_read_history_content", {})
+func reset_already_seen_history(reset_in_dialogic: bool) -> void:
+	set_global_info(ALREADY_SEEN_NAME, {})
 
 	if reset_in_dialogic:
 		DialogicUtil.autoload().History.already_read_history_content = {}
