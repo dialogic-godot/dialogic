@@ -151,6 +151,30 @@ func get_encryption_password() -> String:
 		return ""
 	return ProjectSettings.get_setting("dialogic/save/encryption_password", "")
 
+
+## Saves all seen events to the global info file.
+## This can be useful when the player saves the game.
+## In visual novels, callings this at the end of a route can be useful, as the
+## player may not save the game.
+##
+## Be aware, this won't add any events but completely overwrite the already saved ones.
+func save_already_seen_history() -> void:
+	set_global_info("already_read_history_content", DialogicUtil.autoload().History.already_read_history_content)
+
+
+## Loads the seen events from the global info file.
+## Calling this when a game gets loaded may be useful.
+func load_already_seen_history() -> void:
+	DialogicUtil.autoload().History.already_read_history_content = get_global_info("already_read_history_content", {})
+
+
+## Resets the already seen history inside Dialogic and inside the global info
+## file.
+func reset_already_seen_history() -> void:
+	set_global_info("already_read_history_content", {})
+	DialogicUtil.autoload().History.already_read_history_content = {}
+
+
 #endregion
 
 
