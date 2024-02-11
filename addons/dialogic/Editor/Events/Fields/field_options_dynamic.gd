@@ -25,11 +25,18 @@ var resource_icon: Texture = null:
 var current_value: String
 var current_selected := 0
 
+## SUGGESTIONS ITEM LIST
+var _v_separation := 0
+var _h_separation := 0
+var _icon_margin := 0
+var _line_height := 24
+var _max_height := 200 * DialogicUtil.get_editor_scale()
+
 
 #region FIELD METHODS
 ################################################################################
 
-func _set_value(value:Variant, text:String = '') -> void:
+func _set_value(value:Variant) -> void:
 	if value == null or value.is_empty():
 		%Search.text = empty_text
 	else:
@@ -82,6 +89,11 @@ func _ready() -> void:
 	%Suggestions.hide()
 	%Suggestions.item_selected.connect(suggestion_selected)
 	%Suggestions.item_clicked.connect(suggestion_selected)
+	%Suggestions.fixed_icon_size = Vector2i(16, 16) * DialogicUtil.get_editor_scale()
+
+	_v_separation = %Suggestions.get_theme_constant("v_separation")
+	_h_separation = %Suggestions.get_theme_constant("h_separation")
+	_icon_margin = %Suggestions.get_theme_constant("icon_margin")
 
 	if resource_icon == null:
 		self.resource_icon = null
@@ -115,34 +127,56 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
-	var line_length: int = 0
+	var line_length = 0
 	var idx: int = 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
-			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
+			var curr_line_length: int = 0
+			curr_line_length = get_theme_font('font', 'Label').get_string_size(
+				element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')
+			).x
+
 			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
 				%Suggestions.set_item_icon(idx, suggestions[element].icon)
+				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 			elif suggestions[element].has('editor_icon'):
 				%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
+				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 
+			line_length = max(line_length, curr_line_length)
+			
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 			idx += 1
-
+	
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
-		%Suggestions.size.x = max(%Search.size.x, line_length)
-		%Suggestions.size.y = min(%Suggestions.get_item_count()*35*DialogicUtil.get_editor_scale(), 200*DialogicUtil.get_editor_scale())
 
-	if %Suggestions.get_item_count():
+	if %Suggestions.item_count:
 		%Suggestions.select(0)
 		current_selected = 0
 	else:
 		current_selected = -1
-
 	%Search.grab_focus()
+	
+	var total_height: int = 0
+	for item in %Suggestions.item_count:
+		total_height += _line_height * DialogicUtil.get_editor_scale() + _v_separation
+	total_height += _v_separation * 2
+	if total_height > _max_height:
+		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
+		
+	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
+	%Suggestions.size.y = min(total_height, _max_height)
+	
+	# Defer setting width to give PanelContainer  
+	# time to update it's size
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
 func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_BUTTON_LEFT) -> void:
@@ -215,7 +249,7 @@ func _on_search_gui_input(event: InputEvent) -> void:
 
 
 func _on_search_focus_entered() -> void:
-	if %Search.text == "" or current_value == "":
+	if %Search.text == "":
 		_on_Search_text_changed("")
 	%Search.call_deferred('select_all')
 	%Focus.show()
