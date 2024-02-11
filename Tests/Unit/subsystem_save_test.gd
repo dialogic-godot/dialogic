@@ -20,7 +20,7 @@ func test_save_load_already_seen() -> void:
     history.already_read_history_content = EXAMPLE_SEEN_HISTORY
     assert(history.already_read_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
-    save.save_already_seen_history()
+    history.save_already_seen_history()
     var global_data_seen_events: Dictionary = save.get_saved_already_seen_history()
 
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
@@ -33,7 +33,7 @@ func test_deletion_save_already_seen() -> void:
     history.already_read_history_content = EXAMPLE_SEEN_HISTORY
     assert(history.already_read_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
-    save.save_already_seen_history()
+    history.save_already_seen_history()
     var global_data_seen_events: Dictionary = save.get_saved_already_seen_history()
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
 
