@@ -9,12 +9,25 @@ signal saved(info:Dictionary)
 ## The directory that will be saved to.
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
 
+## The key used in the global data info file to store the already-seen history.
 const ALREADY_SEEN_NAME := "already_read_history_content"
 
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
 enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
 var latest_thumbnail : Image = null
 
+
+enum AutoSaveMode {
+	# Includes timeline start, end, and jump events.
+	ON_TIMELINE_JUMPS = 0,
+	# Saves after a certain time interval.
+	ON_TIMER = 1,
+	# Saves after every text event.
+	ON_TEXT_EVENT = 2
+}
+
+const AUTO_SAVE_DEFAULT := AutoSaveMode.ON_TIMELINE_JUMPS
+const AUTO_SAVE_DEFAULT_DELAY := 60
 
 #region STATE
 ####################################################################################################
@@ -186,14 +199,14 @@ func load_already_seen_history() -> void:
 	DialogicUtil.autoload().History.already_read_history_content = get_global_info(ALREADY_SEEN_NAME, {})
 
 
-## Returns the already seen history from the global info file.
+## Returns the already-seen history from the global info file.
 ## If none exist in the global info file, returns an empty dictionary.
 func get_already_seen_history() -> Dictionary:
 	return get_global_info(ALREADY_SEEN_NAME, {})
 
 
-## Resets the already seen history in the global info file.
-## If [param reset_in_dialogic] is true, it will also reset the already seen
+## Resets the already-seen history in the global info file.
+## If [param reset_in_dialogic] is true, it will also reset the already-seen
 ## history in the Dialogic Autoload.
 func reset_already_seen_history(reset_in_dialogic: bool) -> void:
 	set_global_info(ALREADY_SEEN_NAME, {})
@@ -231,7 +244,9 @@ func get_slot_names() -> Array:
 
 ## Returns true if the given slot exists.
 func has_slot(slot_name: String) -> bool:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
+
 	return slot_name in get_slot_names()
 
 
@@ -244,7 +259,7 @@ func delete_slot(slot_name: String) -> void:
 		var _list_dir := directory.list_dir_begin()
 		var file_name := directory.get_next()
 
-		while file_name != "":
+		while not file_name.is_empty():
 			var _result := directory.remove(file_name)
 			file_name = directory.get_next()
 
@@ -261,7 +276,8 @@ func add_empty_slot(slot_name: String) -> void:
 
 ## Reset the state of the given save folder (or default)
 func reset_slot(slot_name := "") -> void:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
 
 	save_file(slot_name, 'state.txt', {})
 
@@ -322,12 +338,16 @@ func _make_sure_slot_dir_exists() -> void:
 ####################################################################################################
 
 func set_slot_info(slot_name:String, info: Dictionary) -> void:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
+
 	save_file(slot_name, 'info.txt', info)
 
 
 func get_slot_info(slot_name := "") -> Dictionary:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
+
 	return load_file(slot_name, 'info.txt', {})
 
 #endregion
@@ -345,19 +365,22 @@ func take_thumbnail() -> void:
 
 ## No need to call from outside.
 ## Used to store the latest thumbnail to the given slot.
-func save_slot_thumbnail(slot_name:String) -> void:
+func save_slot_thumbnail(slot_name: String) -> void:
 	if latest_thumbnail:
 		var path := get_slot_path(slot_name).path_join('thumbnail.png')
 		var _save_result := latest_thumbnail.save_png(path)
 
 
 ## Returns the thumbnail of the given slot.
-func get_slot_thumbnail(slot_name:String) -> ImageTexture:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+func get_slot_thumbnail(slot_name: String) -> ImageTexture:
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
 
 	var path := get_slot_path(slot_name).path_join('thumbnail.png')
+
 	if FileAccess.file_exists(path):
 		return ImageTexture.create_from_image(Image.load_from_file(path))
+
 	return null
 
 #endregion
@@ -375,34 +398,40 @@ func _ready() -> void:
 	autosave_timer.name = "AutosaveTimer"
 	var _result := autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
+
 	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)
 	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
 	_result = dialogic.timeline_ended.connect(_on_start_or_end_autosave)
+
 	_on_autosave_timer_timeout()
 
 
+func _get_auto_save_mode() -> AutoSaveMode:
+	return ProjectSettings.get_setting('dialogic/save/autosave_mode', AUTO_SAVE_DEFAULT)
+
+
 func _on_autosave_timer_timeout() -> void:
-	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 1:
+	if _get_auto_save_mode() == AutoSaveMode.ON_TIMER:
 		perform_autosave()
 
-	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', 60)
+	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', AUTO_SAVE_DEFAULT_DELAY)
 	autosave_timer.start(auto_save_time)
 
 
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
 	if event is DialogicJumpEvent:
 
-		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 0:
+		if _get_auto_save_mode() == AutoSaveMode.ON_TIMELINE_JUMPS:
 			perform_autosave()
 
 	if event is DialogicTextEvent:
 
-		if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 2:
+		if _get_auto_save_mode() == AutoSaveMode.ON_TEXT_EVENT:
 			perform_autosave()
 
 
 func _on_start_or_end_autosave() -> void:
-	if ProjectSettings.get_setting('dialogic/save/autosave_mode', 0) == 0:
+	if _get_auto_save_mode() == AutoSaveMode.ON_TIMELINE_JUMPS:
 		perform_autosave()
 
 
