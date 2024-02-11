@@ -118,34 +118,47 @@ func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
 	return default
 
 
+## Data set in global info can be accessed unrelated to the save slots.
+## Information such as the player name can be saved here.
 func set_global_info(key:String, value:Variant) -> void:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
 
 	if encryption_password.is_empty():
+
 		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
 			global_info.set_value('main', key, value)
 			var _save_result := global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+
 		else:
 			printerr("[Dialogic Error]: Couldn't access global saved info file.")
+
 	else:
+
 		if global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
 			global_info.set_value('main', key, value)
 			var _save_result := global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
+
 		else:
 			printerr("[Dialogic Error]: Couldn't access global saved info file.")
 
 
-func get_global_info(key:String, default:Variant) -> Variant:
+## Access the data unrelated to a save slot.
+## First, the data must have been set with [method set_global_info].
+func get_global_info(key: String, default: Variant) -> Variant:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
 
 	if encryption_password.is_empty():
+
 		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
 			return global_info.get_value('main', key, default)
+
 		printerr("[Dialogic Error]: Couldn't access global saved info file.")
+
 	elif global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
 		return global_info.get_value('main', key, default)
+
 	return default
 
 
@@ -194,8 +207,8 @@ func reset_already_seen_history(reset_in_dialogic: bool) -> void:
 
 #region SLOT HELPERS
 ####################################################################################################
-## Returns a list of all available slots. Usefull for iterating over all slots
-## (for example to build a UI list).
+## Returns a list of all available slots. Useful for iterating over all slots,
+## e.g., when building a UI with all save slots.
 func get_slot_names() -> Array:
 	var save_folders := []
 
@@ -204,7 +217,7 @@ func get_slot_names() -> Array:
 		var _list_dir := directory.list_dir_begin()
 		var file_name := directory.get_next()
 
-		while file_name != "":
+		while not file_name.is_empty():
 
 			if directory.current_is_dir() and not file_name.begins_with("."):
 				save_folders.append(file_name)
@@ -217,13 +230,13 @@ func get_slot_names() -> Array:
 
 
 ## Returns true if the given slot exists.
-func has_slot(slot_name:String) -> bool:
+func has_slot(slot_name: String) -> bool:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 	return slot_name in get_slot_names()
 
 
 ## Removes all the given slot along with all it's info/files.
-func delete_slot(slot_name:String) -> void:
+func delete_slot(slot_name: String) -> void:
 	var path := SAVE_SLOTS_DIR.path_join(slot_name)
 
 	if DirAccess.dir_exists_absolute(path):
@@ -239,14 +252,14 @@ func delete_slot(slot_name:String) -> void:
 		var _remove_result := directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
 
 
-## this adds a new save folder with the given name
+## This adds a new save folder with the given name
 func add_empty_slot(slot_name: String) -> void:
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
 		var _make_dir_result := directory.make_dir(slot_name)
 
 
-## reset the state of the given save folder (or default)
+## Reset the state of the given save folder (or default)
 func reset_slot(slot_name := "") -> void:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
@@ -254,7 +267,7 @@ func reset_slot(slot_name := "") -> void:
 
 
 ## Returns the full path to the given slot folder
-func get_slot_path(slot_name:String) -> String:
+func get_slot_path(slot_name: String) -> String:
 	return SAVE_SLOTS_DIR.path_join(slot_name)
 
 
@@ -266,13 +279,18 @@ func get_default_slot() -> String:
 ## Returns the latest slot or empty if nothing was saved yet
 func get_latest_slot() -> String:
 	var latest_slot: String = ""
+
 	if Engine.get_main_loop().has_meta('dialogic_latest_saved_slot'):
 		latest_slot = Engine.get_main_loop().get_meta('dialogic_latest_saved_slot', '')
+
 	else:
 		latest_slot = get_global_info('latest_save_slot', '')
 		Engine.get_main_loop().set_meta('dialogic_latest_saved_slot', latest_slot)
+
+
 	if !has_slot(latest_slot):
 		return ''
+
 	return latest_slot
 
 
@@ -318,19 +336,22 @@ func get_slot_info(slot_name := "") -> Dictionary:
 #region SLOT IMAGE
 ####################################################################################################
 
-## Can be called manually to create a thumbnail. Then call save() with THUMBNAIL_MODE.STORE_ONLY
+## Can be called manually to create a thumbnail.
+## Then, call [method save] with ThumbnailMode.STORE_ONLY to save the game
+## use the thumbnail prepared with this method.
 func take_thumbnail() -> void:
 	latest_thumbnail = get_viewport().get_texture().get_image()
 
 
-## No need to call from outside. Used to store the latest thumbnail to the given slot.
+## No need to call from outside.
+## Used to store the latest thumbnail to the given slot.
 func save_slot_thumbnail(slot_name:String) -> void:
 	if latest_thumbnail:
 		var path := get_slot_path(slot_name).path_join('thumbnail.png')
 		var _save_result := latest_thumbnail.save_png(path)
 
 
-## Returns an ImageTexture containing the thumbnail of that slot.
+## Returns the thumbnail of the given slot.
 func get_slot_thumbnail(slot_name:String) -> ImageTexture:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
@@ -385,6 +406,8 @@ func _on_start_or_end_autosave() -> void:
 		perform_autosave()
 
 
+## Perform an autosave.
+## This method will be called automatically if the auto-save mode is enabled.
 func perform_autosave() -> void:
 	save("", true)
 	save_already_seen_history()
