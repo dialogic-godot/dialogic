@@ -3,8 +3,9 @@ extends DialogicSubsystem
 ### Subsystem that manages saving and loading data.
 
 
-## Emitted when a save was done. Keys of the info dictionary are "slot_name" and "is_autosave".
-signal saved(info:Dictionary)
+## Emitted when a save was done.
+signal saved(slot_name: String, is_autosave: bool)
+
 
 ## The directory that will be saved to.
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
@@ -65,7 +66,7 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 	if slot_info:
 		set_slot_info(slot_name, slot_info)
 
-	saved.emit({"slot_name":slot_name, "is_autosave": is_autosave})
+	saved.emit(slot_name, is_autosave)
 	print('[Dialogic] Saved to slot "'+slot_name+'".')
 
 
@@ -86,14 +87,22 @@ func load(slot_name := "") -> void:
 
 
 ## Saves a variable to a file in the given slot.
-func save_file(slot_name:String, file_name:String, data:Variant) -> void:
-	if slot_name.is_empty(): slot_name = get_default_slot()
+##
+## Be aware, the [param slot_name] will be used a filesystem folder name.
+## Some operating systems do not support every character in folder names.
+## It is recommended to use only letters, numbers, and underscores.
+func save_file(slot_name: String, file_name: String, data: Variant) -> void:
+	if slot_name.is_empty():
+		slot_name = get_default_slot()
+
 	if not slot_name.is_empty():
+
 		if !has_slot(slot_name):
 			add_empty_slot(slot_name)
 
 		var encryption_password := get_encryption_password()
 		var file: FileAccess
+
 		if encryption_password.is_empty():
 			file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
 		else:
@@ -403,6 +412,6 @@ func _on_start_or_end_autosave() -> void:
 ## This method will be called automatically if the auto-save mode is enabled.
 func perform_autosave() -> void:
 	save("", true)
-	save_already_seen_history()
+	DialogicUtil.autoload().History.save_already_seen_history()
 
 #endregion
