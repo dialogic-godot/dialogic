@@ -1,7 +1,6 @@
 extends GdUnitTestSuite
 
 var history := Dialogic.History
-var save := Dialogic.Save
 
 const EXAMPLE_SEEN_HISTORY: Dictionary = {
     "res://Dialogic/Timelines/start.dtl1": 1,
@@ -14,14 +13,14 @@ const EXAMPLE_SEEN_HISTORY: Dictionary = {
 
 func test_save_load_already_seen() -> void:
     assert(history.already_read_history_content == {}, "Seen events should have be empty.")
-    save.load_already_seen_history()
+    history.load_already_seen_history()
     assert(history.already_read_history_content == {}, "Seen events should have be empty after empty load.")
 
     history.already_read_history_content = EXAMPLE_SEEN_HISTORY
     assert(history.already_read_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
     history.save_already_seen_history()
-    var global_data_seen_events: Dictionary = save.get_saved_already_seen_history()
+    var global_data_seen_events: Dictionary = history.get_saved_already_seen_history()
 
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
 
@@ -34,11 +33,11 @@ func test_deletion_save_already_seen() -> void:
     assert(history.already_read_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
     history.save_already_seen_history()
-    var global_data_seen_events: Dictionary = save.get_saved_already_seen_history()
+    var global_data_seen_events: Dictionary = history.get_saved_already_seen_history()
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
 
     history.reset_already_seen_history(false)
-    var global_data_seen_events_after_reset: Dictionary = save.get_saved_already_seen_history()
+    var global_data_seen_events_after_reset: Dictionary = history.get_saved_already_seen_history()
     assert(history.already_read_history_content == EXAMPLE_SEEN_HISTORY, "Seen events are gone after global data only reset.")
     assert(global_data_seen_events_after_reset == {}, "Global data should be empty after reset.")
 
