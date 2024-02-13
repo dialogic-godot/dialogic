@@ -33,11 +33,19 @@ func _ready() -> void:
 	voice_player.finished.connect(_on_voice_finnished)
 
 
-func is_voiced(index:int) -> bool:
-	if dialogic.current_timeline_events[index] is DialogicTextEvent:
-		if dialogic.current_timeline_events[index-1] is DialogicVoiceEvent:
-			return true
-	return false
+## Checks whether the current event is a text event and the previous event
+## is a voice event.
+func is_voiced(index: int) -> bool:
+	var does_current_event_exist := dialogic.current_timeline_events.has(index)
+	var does_previous_event_exist := dialogic.current_timeline_events.has(index - 1)
+
+	if not (does_current_event_exist and does_previous_event_exist):
+		return false
+
+	var is_current_event_text := dialogic.current_timeline_events[index] is DialogicTextEvent
+	var is_previous_event_voice := dialogic.current_timeline_events[index - 1] is DialogicVoiceEvent
+
+	return is_current_event_text and is_previous_event_voice
 
 
 func play_voice() -> void:
