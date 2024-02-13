@@ -124,8 +124,10 @@ func reload_current_info_into_new_style():
 
 ## Returns the style currently in use
 func get_current_style() -> String:
-	if dialogic.has_active_layout_node():
-		return dialogic.get_layout_node().get_meta('style', '')
+	if has_active_layout_node():
+		var style = get_layout_node().get_meta('style', '')
+		if style and "name" in style:
+			return style.name
 	return ''
 
 
