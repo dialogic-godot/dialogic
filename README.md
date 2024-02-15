@@ -18,9 +18,9 @@
 
 ## Version (Currently in Alpha) 
 
-Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for Godot 4 and requires at least Godot 4.1.
+Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for Godot 4 and requires at least Godot 4.2.
 
-![Godot v4.0](https://img.shields.io/badge/Godot-v4.1-%23478cbf)
+![Godot v4.2](https://img.shields.io/badge/Godot-v4.2-%23478cbf)
 
 [If you are looking for the Godot 3.5 version you can find it here.](https://github.com/dialogic-godot/dialogic/tree/dialogic-1)
 
