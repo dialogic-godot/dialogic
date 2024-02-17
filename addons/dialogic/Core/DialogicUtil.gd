@@ -392,8 +392,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_info.name, property_changed))
 			if value != null:
 				input.value = value
-		TYPE_VECTOR2:
-			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn").instantiate()
+		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
+			var vectorSize = len(value)
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + str(vectorSize) + ".tscn").instantiate()
 			input.set_value(value)
 			input.property_name = property_info['name']
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))

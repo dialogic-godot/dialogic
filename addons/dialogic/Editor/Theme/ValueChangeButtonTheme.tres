@@ -1,0 +1,26 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://krxxw16nf7fv"]
+
+[ext_resource type="StyleBox" uid="uid://cdb6oihqxqbvr" path="res://addons/dialogic/Editor/Events/styles/IncrementButtonStyle.tres" id="1_iiscs"]
+[ext_resource type="StyleBox" uid="uid://b7kueiadtehw8" path="res://addons/dialogic/Editor/Events/styles/DecrementButtonStyle.tres" id="2_8bstj"]
+
+[resource]
+DecrementButton/base_type = &"Button"
+DecrementButton/colors/icon_disabled_color = Color(0.105882, 0, 0, 0.435294)
+DecrementButton/colors/icon_focus_color = Color(0.92, 0.23, 0.23, 0.917647)
+DecrementButton/colors/icon_hover_color = Color(0.92, 0.23, 0.23, 0.917647)
+DecrementButton/colors/icon_normal_color = Color(1, 0.62, 0.62, 0.588235)
+DecrementButton/colors/icon_pressed_color = Color(0.452268, 0.316012, 0.300176, 0.933333)
+DecrementButton/styles/focus = ExtResource("2_8bstj")
+DecrementButton/styles/hover = ExtResource("2_8bstj")
+DecrementButton/styles/normal = ExtResource("2_8bstj")
+DecrementButton/styles/pressed = ExtResource("2_8bstj")
+IncrementButton/base_type = &"Button"
+IncrementButton/colors/icon_disabled_color = Color(0.00550001, 0.11, 0, 0.435294)
+IncrementButton/colors/icon_focus_color = Color(0.368, 0.92, 0.23, 0.917647)
+IncrementButton/colors/icon_hover_color = Color(0.368, 0.92, 0.23, 0.917647)
+IncrementButton/colors/icon_normal_color = Color(0.651667, 1, 0.62, 0.588235)
+IncrementButton/colors/icon_pressed_color = Color(0.297, 0.45, 0.3429, 0.933333)
+IncrementButton/styles/focus = ExtResource("1_iiscs")
+IncrementButton/styles/hover = ExtResource("1_iiscs")
+IncrementButton/styles/normal = ExtResource("1_iiscs")
+IncrementButton/styles/pressed = ExtResource("1_iiscs")
