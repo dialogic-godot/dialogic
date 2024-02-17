@@ -4,10 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="2_a0b6y"]
 
 [node name="Field_Vector2" type="HBoxContainer"]
-custom_minimum_size = Vector2(257.06, 0)
-offset_right = 257.06
-offset_bottom = 31.0
-size_flags_horizontal = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1032.0
+offset_bottom = -617.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = -7
 script = ExtResource("1_v6lp0")
 
