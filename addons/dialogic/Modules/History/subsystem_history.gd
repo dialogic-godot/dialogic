@@ -31,8 +31,32 @@ signal not_read_event_reached
 ## in the global save info file.
 var already_seen_save_key := "already_read_history_content"
 
-var _save_already_seen_history_on_auto_save := false
-var _save_already_seen_history_on_save := false
+## Whether to automatically save the already-seen history on auto-save.
+var save_already_seen_history_on_auto_save := false:
+	set(value):
+		save_already_seen_history_on_auto_save = value
+		_update_saved_connection(value)
+
+
+## Whether to automatically save the already-seen history on manual save.
+var save_already_seen_history_on_save := false:
+	set(value):
+		save_already_seen_history_on_save = value
+		_update_saved_connection(value)
+
+
+## Starts and stops the connection to the Save subsystem's [signal saved] signal.
+func _update_saved_connection(to_connect: bool) -> void:
+	if to_connect:
+
+		if not DialogicUtil.autoload().Save.saved.is_connected(_on_save):
+			var _result := DialogicUtil.autoload().Save.saved.connect(_on_save)
+
+	else:
+
+		if DialogicUtil.autoload().Save.saved.is_connected(_on_save):
+			DialogicUtil.autoload().Save.saved.disconnect(_on_save)
+
 
 #region INITIALIZE
 ####################################################################################################
@@ -44,26 +68,22 @@ func _ready() -> void:
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
 	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
-	_save_already_seen_history_on_auto_save = ProjectSettings.get_setting('dialogic/history/save_on_auto_save', false)
-	_save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', false)
+
 
 
 func _on_save(info: Dictionary) -> void:
 	var is_autosave: bool = info["is_autosave"]
 
-	var save_on_auto_save := _save_already_seen_history_on_auto_save and is_autosave
-	var save_on_save := _save_already_seen_history_on_save and not is_autosave
+	var save_on_auto_save := save_already_seen_history_on_auto_save and is_autosave
+	var save_on_save := save_already_seen_history_on_save and not is_autosave
 
 	if save_on_save or save_on_auto_save:
 		save_already_seen_history()
 
 
 func post_install() -> void:
-	if not _save_already_seen_history_on_auto_save and not _save_already_seen_history_on_save:
-		return
-
-	if not DialogicUtil.autoload().Save.saved.is_connected(_on_save):
-		var _result := DialogicUtil.autoload().Save.saved.connect(_on_save)
+	save_already_seen_history_on_auto_save = ProjectSettings.get_setting('dialogic/history/save_on_auto_save', false)
+	save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', false)
 
 
 func open_history() -> void:
@@ -96,7 +116,7 @@ func get_simple_history() -> Array:
 #region FULL EVENT HISTORY
 ####################################################################################################
 
-## Called on each event
+## Called on each event.
 func store_full_event(event:DialogicEvent) -> void:
 	if !full_event_history_enabled: return
 	full_event_history_content.append(event)
@@ -144,6 +164,7 @@ func check_already_read(event: DialogicEvent) -> void:
 	else:
 		not_read_event_reached.emit()
 		_was_last_event_already_read = false
+
 
 func was_last_event_already_read() -> bool:
 	return _was_last_event_already_read
