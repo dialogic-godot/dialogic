@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://syki6k0e6aac"]
+[gd_scene load_steps=3 format=3 uid="uid://syki6k0e6aac"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_TextBubble/text_bubble_base.gd" id="1_urqwc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70ljh"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.654902)
 
 [node name="TextBubbleHolder" type="CanvasLayer"]
 script = ExtResource("1_urqwc")
@@ -13,25 +20,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ExamplePoint" type="Polygon2D" parent="Example"]
-polygon = PackedVector2Array(0, -24, -22, 0, 0, 28, 24, 0)
-
 [node name="Label" type="RichTextLabel" parent="Example"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = -227.0
-offset_right = 836.0
-offset_bottom = -16.0
+offset_left = 12.0
+offset_top = -235.0
+offset_right = 835.0
+offset_bottom = -14.0
 grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_70ljh")
 bbcode_enabled = true
 text = "This is a fallback bubble, that is not actually connected to any character. In game use the following code to add speech bubbles to a character:
 [color=darkgray]
 var layout = Dialogic.start(timeline_path)
 layout.register_character(character_resource, node)
 [/color]
-[color=lightblue]@character_resource[/color] should be a loaded DialogicCharacter (a .dch file).
-[color=lightblue]@node[/color] should be the 2D node the bubble should point at.
+- [color=lightblue]character_resource[/color] should be a loaded DialogicCharacter (a .dch file).
+- [color=lightblue]node[/color] should be the 2D or 3D node the bubble should point at.
 	-> E.g. [color=darkgray]layout.register_character(load(\"res://path/to/my/character.dch\"), $BubbleMarker)"
+
+[node name="CRT" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 504.0
+offset_top = 290.0
+offset_right = 540.0
+offset_bottom = 324.0
+rotation = 0.785397
+color = Color(1, 0.313726, 1, 1)
+
+[node name="Marker" type="Marker2D" parent="Example/CRT"]
+position = Vector2(10.6066, 9.1924)
