@@ -32,9 +32,9 @@ signal not_read_event_reached
 var already_seen_save_key := "already_read_history_content"
 
 ## Whether to automatically save the already-seen history on auto-save.
-var save_already_seen_history_on_auto_save := false:
+var save_already_seen_history_on_autosave := false:
 	set(value):
-		save_already_seen_history_on_auto_save = value
+		save_already_seen_history_on_autosave = value
 		_update_saved_connection(value)
 
 
@@ -74,15 +74,15 @@ func _ready() -> void:
 func _on_save(info: Dictionary) -> void:
 	var is_autosave: bool = info["is_autosave"]
 
-	var save_on_auto_save := save_already_seen_history_on_auto_save and is_autosave
+	var save_on_autosave := save_already_seen_history_on_autosave and is_autosave
 	var save_on_save := save_already_seen_history_on_save and not is_autosave
 
-	if save_on_save or save_on_auto_save:
+	if save_on_save or save_on_autosave:
 		save_already_seen_history()
 
 
 func post_install() -> void:
-	save_already_seen_history_on_auto_save = ProjectSettings.get_setting('dialogic/history/save_on_auto_save', false)
+	save_already_seen_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', false)
 	save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', false)
 
 

@@ -10,7 +10,7 @@ func _ready() -> void:
 	%SimpleHistoryEnabled.toggled.connect(setting_toggled.bind('dialogic/history/simple_history_enabled'))
 	%FullHistoryEnabled.toggled.connect(setting_toggled.bind('dialogic/history/full_history_enabled'))
 	%AlreadyReadHistoryEnabled.toggled.connect(setting_toggled.bind('dialogic/history/already_read_history_enabled'))
-	%SaveOnAutoSaveToggle.toggled.connect(setting_toggled.bind('dialogic/history/save_on_auto_save'))
+	%SaveOnAutoSaveToggle.toggled.connect(setting_toggled.bind('dialogic/history/save_on_autosave'))
 	%SaveOnSaveToggle.toggled.connect(setting_toggled.bind('dialogic/history/save_on_save'))
 
 

@@ -427,8 +427,8 @@ func _on_autosave_timer_timeout() -> void:
 	if autosave_mode == AutoSaveMode.ON_TIMER:
 		perform_autosave()
 
-	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', AUTO_SAVE_DEFAULT_DELAY)
-	autosave_timer.start(auto_save_time)
+	var autosave_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', AUTO_SAVE_DEFAULT_DELAY)
+	autosave_timer.start(autosave_time)
 
 
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
