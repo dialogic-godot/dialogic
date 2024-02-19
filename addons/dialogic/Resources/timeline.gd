@@ -35,7 +35,7 @@ func as_text() -> String:
 	if events_processed:
 		var indent := 0
 		for idx in range(0, len(events)):
-			var event = events[idx]
+			var event: DialogicEvent = events[idx]
 
 			if event.event_name == 'End Branch':
 				indent -= 1
@@ -92,7 +92,7 @@ func process() -> void:
 			line = lines[idx].event_node_as_text
 
 		## Ignore empty lines, but record them in @empty_lines
-		var line_stripped :String = line.strip_edges(true, false)
+		var line_stripped: String = line.strip_edges(true, false)
 		if line_stripped.is_empty():
 			empty_lines += 1
 			continue
@@ -153,6 +153,10 @@ func process() -> void:
 func clean() -> void:
 	if not events_processed:
 		return
+
+	# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
+	# are disconnected before they can disconnect themselves.
+	await Engine.get_main_loop().process_frame
 
 	for event:DialogicEvent in events:
 		for con_in in event.get_incoming_connections():
