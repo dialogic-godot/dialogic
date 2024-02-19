@@ -4,7 +4,7 @@ extends DialogicEvent
 
 ## Event that allows adding choices. Needs to go after a text event (or another choices EndBranch).
 
-enum ElseActions {HIDE, DISABLE, DEFAULT}
+enum ElseActions {HIDE=0, DISABLE=1, DEFAULT=2}
 
 
 ### Settings
