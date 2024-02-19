@@ -15,10 +15,10 @@ enum LimitedAlignments {LEFT=0, RIGHT=1}
 @export var text_custom_color: Color = Color.WHITE
 @export_subgroup('Fonts')
 @export var use_global_fonts: bool = true
-@export_file('*.ttf') var custom_normal_font: String = ""
-@export_file('*.ttf') var custom_bold_font: String = ""
-@export_file('*.ttf') var custom_italic_font: String = ""
-@export_file('*.ttf') var custom_bold_italic_font: String = ""
+@export_file('*.ttf', '*.tres') var custom_normal_font: String = ""
+@export_file('*.ttf', '*.tres') var custom_bold_font: String = ""
+@export_file('*.ttf', '*.tres') var custom_italic_font: String = ""
+@export_file('*.ttf', '*.tres') var custom_bold_italic_font: String = ""
 
 @export_group('Name Label')
 @export_subgroup("Color")
@@ -32,7 +32,7 @@ enum NameLabelColorModes {GLOBAL_COLOR, CHARACTER_COLOR, CUSTOM_COLOR}
 @export var name_label_use_global_size: bool = true
 @export var name_label_custom_size: int = 15
 @export var name_label_use_global_font: bool = true
-@export_file('*.ttf') var name_label_customfont: String = ""
+@export_file('*.ttf', '*.tres') var name_label_customfont: String = ""
 
 @export_group('Box')
 @export_subgroup("Box")
@@ -79,7 +79,7 @@ func _apply_export_overrides() -> void:
 	if !custom_bold_font.is_empty():
 		dialog_text.add_theme_font_override(&"bold_font", load(custom_bold_font) as Font)
 	if !custom_italic_font.is_empty():
-		dialog_text.add_theme_font_override(&"italitc_font", load(custom_italic_font) as Font)
+		dialog_text.add_theme_font_override(&"italics_font", load(custom_italic_font) as Font)
 	if !custom_bold_italic_font.is_empty():
 		dialog_text.add_theme_font_override(&"bold_italics_font", load(custom_bold_italic_font) as Font)
 

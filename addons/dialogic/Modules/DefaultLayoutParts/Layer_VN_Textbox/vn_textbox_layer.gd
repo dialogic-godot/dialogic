@@ -30,10 +30,10 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 @export_subgroup('Font')
 @export var text_use_global_font: bool = true
-@export_file('*.ttf') var normal_font:String = ""
-@export_file('*.ttf') var bold_font:String = ""
-@export_file('*.ttf') var italic_font:String = ""
-@export_file('*.ttf') var bold_italic_font:String = ""
+@export_file('*.ttf', '*.tres') var normal_font:String = ""
+@export_file('*.ttf', '*.tres') var bold_font:String = ""
+@export_file('*.ttf', '*.tres') var italics_font:String = ""
+@export_file('*.ttf', '*.tres') var bold_italics_font:String = ""
 
 @export_group("Box")
 @export_subgroup("Panel")
@@ -56,7 +56,7 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export var name_label_custom_color: Color = Color.WHITE
 @export_subgroup('Font')
 @export var name_label_use_global_font: bool = true
-@export_file('*.ttf') var name_label_font: String = ""
+@export_file('*.ttf', '*.tres') var name_label_font: String = ""
 @export var name_label_use_global_font_size: bool = true
 @export var name_label_custom_font_size: int = 15
 @export_subgroup('Box')
@@ -119,10 +119,10 @@ func _apply_export_overrides() -> void:
 		dialog_text.add_theme_font_override(&"normal_font", load(normal_font) as Font)
 	if !bold_font.is_empty():
 		dialog_text.add_theme_font_override(&"bold_font", load(bold_font) as Font)
-	if !italic_font.is_empty():
-		dialog_text.add_theme_font_override(&"italitc_font", load(italic_font) as Font)
-	if !bold_italic_font.is_empty():
-		dialog_text.add_theme_font_override(&"bold_italics_font", load(bold_italic_font) as Font)
+	if !italics_font.is_empty():
+		dialog_text.add_theme_font_override(&"italics_font", load(italics_font) as Font)
+	if !bold_italics_font.is_empty():
+		dialog_text.add_theme_font_override(&"bold_italics_font", load(bold_italics_font) as Font)
 
 	## BOX SETTINGS
 	var dialog_text_panel: PanelContainer = %DialogTextPanel

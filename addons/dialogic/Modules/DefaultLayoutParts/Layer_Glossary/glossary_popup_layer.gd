@@ -23,7 +23,7 @@ enum TextColorModes {GLOBAL, ENTRY, CUSTOM}
 
 @export_group("Font")
 @export var font_use_global: bool = true
-@export_file('*.ttf') var font_custom: String = ""
+@export_file('*.ttf', '*.tres') var font_custom: String = ""
 
 @export_subgroup('Sizes')
 @export var font_title_size: int = 18
