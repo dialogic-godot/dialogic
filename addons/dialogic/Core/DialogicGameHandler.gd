@@ -138,8 +138,6 @@ func _ready() -> void:
 
 	clear()
 
-	timeline_ended.connect(_on_timeline_ended)
-
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
@@ -156,7 +154,7 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		return null
 
 	# Otherwise make sure there is a style active.
-	var scene: Node= null
+	var scene: Node = null
 	if !self.Styles.has_active_layout_node():
 		scene = self.Styles.load_style()
 	else:
@@ -223,6 +221,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 
 func end_timeline() -> void:
 	clear(ClearFlags.TIMLEINE_INFO_ONLY)
+	_on_timeline_ended()
 	timeline_ended.emit()
 
 
@@ -272,9 +271,6 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 	# Resetting variables
 	if current_timeline:
-		# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
-		# are disconnected before they can disconnect themselves.
-		await get_tree().process_frame
 		current_timeline.clean()
 
 	current_timeline = null
@@ -367,12 +363,13 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 ################################################################################
 
 func _on_timeline_ended() -> void:
-	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
+	if self.Styles.has_active_layout_node():
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
 			0:
-				(get_tree().get_meta('dialogic_layout_node', '') as Node).queue_free()
+				self.Styles.get_layout_node().get_parent().remove_child(self.Styles.get_layout_node())
+				self.Styles.get_layout_node().queue_free()
 			1:
 				@warning_ignore("unsafe_method_access")
-				get_tree().get_meta('dialogic_layout_node', '').hide()
+				self.Styles.get_layout_node().hide()
 
 #endregion
