@@ -16,6 +16,9 @@ const SAVE_SLOTS_DIR := "user://dialogic/saves/"
 ## The project settings key for the auto-save enabled settings.
 const AUTO_SAVE_SETTINGS := "dialogic/save/autosave"
 
+## The project settings key for the auto-save mode settings.
+const AUTO_SAVE_MODE_SETTINGS := "dialogic/save/autosave_mode"
+
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
 enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
 var latest_thumbnail : Image = null
@@ -49,6 +52,9 @@ var autosave_enabled := false:
 			autosave_timer.start()
 		else:
 			autosave_timer.stop()
+
+
+var autosave_mode := AUTO_SAVE_DEFAULT
 
 #region STATE
 ####################################################################################################
@@ -408,6 +414,7 @@ func _ready() -> void:
 	add_child(autosave_timer)
 
 	autosave_enabled = ProjectSettings.get_setting(AUTO_SAVE_SETTINGS, false)
+	autosave_mode = ProjectSettings.get_setting(AUTO_SAVE_MODE_SETTINGS, AUTO_SAVE_DEFAULT)
 
 	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)
 	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
@@ -416,12 +423,8 @@ func _ready() -> void:
 	_on_autosave_timer_timeout()
 
 
-func _get_auto_save_mode() -> AutoSaveMode:
-	return ProjectSettings.get_setting('dialogic/save/autosave_mode', AUTO_SAVE_DEFAULT)
-
-
 func _on_autosave_timer_timeout() -> void:
-	if _get_auto_save_mode() == AutoSaveMode.ON_TIMER:
+	if autosave_mode == AutoSaveMode.ON_TIMER:
 		perform_autosave()
 
 	var auto_save_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', AUTO_SAVE_DEFAULT_DELAY)
@@ -431,17 +434,17 @@ func _on_autosave_timer_timeout() -> void:
 func _on_dialogic_event_handled(event: DialogicEvent) -> void:
 	if event is DialogicJumpEvent:
 
-		if _get_auto_save_mode() == AutoSaveMode.ON_TIMELINE_JUMPS:
+		if autosave_mode == AutoSaveMode.ON_TIMELINE_JUMPS:
 			perform_autosave()
 
 	if event is DialogicTextEvent:
 
-		if _get_auto_save_mode() == AutoSaveMode.ON_TEXT_EVENT:
+		if autosave_mode == AutoSaveMode.ON_TEXT_EVENT:
 			perform_autosave()
 
 
 func _on_start_or_end_autosave() -> void:
-	if _get_auto_save_mode() == AutoSaveMode.ON_TIMELINE_JUMPS:
+	if autosave_mode == AutoSaveMode.ON_TIMELINE_JUMPS:
 		perform_autosave()
 
 
