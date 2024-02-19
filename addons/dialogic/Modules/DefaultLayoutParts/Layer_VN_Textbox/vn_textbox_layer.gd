@@ -183,7 +183,7 @@ func _apply_export_overrides() -> void:
 	name_label_panel.grow_horizontal = [1, 2, 0][name_label_alignment]
 
 	## NEXT INDICATOR SETTINGS
-	var next_indicator: DNextIndicator = %NextIndicator
+	var next_indicator: DialogicNode_NextIndicator = %NextIndicator
 	next_indicator.enabled = next_indicator_enabled
 
 	if next_indicator_enabled:
