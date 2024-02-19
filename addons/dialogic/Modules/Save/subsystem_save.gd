@@ -4,7 +4,10 @@ extends DialogicSubsystem
 
 
 ## Emitted when a save was done.
-signal saved(slot_name: String, is_autosave: bool)
+## The [param info] contains the following keys:
+## 	- slot_name: The `String` name of the slot that the game state was saved to.
+## 	- is_autosave: `true` if the save was an autosave.
+signal saved(info: Dictionary)
 
 
 ## The directory that will be saved to.

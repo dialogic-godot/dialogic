@@ -48,7 +48,9 @@ func _ready() -> void:
 	_save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', false)
 
 
-func _on_save(_slot_name: String, is_autosave: bool) -> void:
+func _on_save(info: Dictionary) -> void:
+	var is_autosave: bool = info["is_autosave"]
+
 	var save_on_auto_save := _save_already_seen_history_on_auto_save and is_autosave
 	var save_on_save := _save_already_seen_history_on_save and not is_autosave
 
