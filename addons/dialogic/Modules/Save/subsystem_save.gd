@@ -13,11 +13,17 @@ signal saved(info: Dictionary)
 ## The directory that will be saved to.
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
 
+## The project settings key for the auto-save enabled settings.
+const AUTO_SAVE_SETTINGS := "dialogic/save/autosave"
+
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
 enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
 var latest_thumbnail : Image = null
 
 
+## The different types of auto-save triggers.
+## If one of these occurs in the game, an auto-save may happen
+## if [member autosave_enabled] is `true`.
 enum AutoSaveMode {
 	# Includes timeline start, end, and jump events.
 	ON_TIMELINE_JUMPS = 0,
@@ -29,6 +35,20 @@ enum AutoSaveMode {
 
 const AUTO_SAVE_DEFAULT := AutoSaveMode.ON_TIMELINE_JUMPS
 const AUTO_SAVE_DEFAULT_DELAY := 60
+
+## Whether the auto-save feature is enabled.
+## The initial value can be set in the project settings via th Dialogic editor.
+##
+## This can be toggled during the game; an idea is to have a setting in the
+## game's options menu.
+var autosave_enabled := false:
+	set(enabled):
+		autosave_enabled = enabled
+
+		if enabled:
+			autosave_timer.start()
+		else:
+			autosave_timer.stop()
 
 #region STATE
 ####################################################################################################
@@ -50,7 +70,7 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 ## [method get_latest_slot()] method.
 func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode.TAKE_AND_STORE, slot_info := {}) -> void:
 	# check if to save (if this is an autosave)
-	if is_autosave and !ProjectSettings.get_setting('dialogic/save/autosave', false):
+	if is_autosave and !autosave_enabled:
 		return
 
 	if slot_name.is_empty():
@@ -94,6 +114,9 @@ func load(slot_name := "") -> void:
 ## Be aware, the [param slot_name] will be used a filesystem folder name.
 ## Some operating systems do not support every character in folder names.
 ## It is recommended to use only letters, numbers, and underscores.
+##
+## This method allows you to build your own save and load system.
+## You may be looking for the simple [method save] method to save the game state.
 func save_file(slot_name: String, file_name: String, data: Variant) -> void:
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
@@ -118,7 +141,10 @@ func save_file(slot_name: String, file_name: String, data: Variant) -> void:
 
 
 ## Loads a file from a given list and returns the contained info as a variable.
-func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
+##
+## This method allows you to build your own save and load system.
+## You may be looking for the simple [method load] method to load the game state.
+func load_file(slot_name: String, file_name: String, default: Variant) -> Variant:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
 	var path := get_slot_path(slot_name).path_join(file_name)
@@ -142,6 +168,9 @@ func load_file(slot_name:String, file_name:String, default:Variant) -> Variant:
 
 ## Data set in global info can be accessed unrelated to the save slots.
 ## Information such as the player name can be saved here.
+##
+## If you want to save already-seen text, take a look at the History subsystem.
+## It provides a built-in feature to automatically save already-seen text.
 func set_global_info(key:String, value:Variant) -> void:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
@@ -167,6 +196,9 @@ func set_global_info(key:String, value:Variant) -> void:
 
 ## Access the data unrelated to a save slot.
 ## First, the data must have been set with [method set_global_info].
+##
+## If you want to save already-seen text, take a look at the History subsystem.
+## It provides a built-in feature to automatically save already-seen text.
 func get_global_info(key: String, default: Variant) -> Variant:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
@@ -374,6 +406,8 @@ func _ready() -> void:
 	autosave_timer.name = "AutosaveTimer"
 	var _result := autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
+
+	autosave_enabled = ProjectSettings.get_setting(AUTO_SAVE_SETTINGS, false)
 
 	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)
 	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
