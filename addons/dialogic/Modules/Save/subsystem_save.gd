@@ -124,7 +124,7 @@ func load(slot_name := "") -> void:
 
 ## Saves a variable to a file in the given slot.
 ##
-## Be aware, the [param slot_name] will be used a filesystem folder name.
+## Be aware, the [param slot_name] will be used as a filesystem folder name.
 ## Some operating systems do not support every character in folder names.
 ## It is recommended to use only letters, numbers, and underscores.
 ##
