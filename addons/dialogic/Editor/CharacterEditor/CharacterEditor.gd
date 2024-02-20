@@ -340,6 +340,7 @@ func _on_Import_Portrait_Folder_Button_pressed():
 func _on_dir_selected(path, target):
 	var dir = Directory.new()
 	if dir.open(path) == OK:
+		var file_list = []
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
@@ -347,9 +348,13 @@ func _on_dir_selected(path, target):
 				var file_lower = file_name.to_lower()
 				if '.svg' in file_lower or '.png' in file_lower:
 					if not '.import' in file_lower:
-						var final_name = path+ "/" + file_name
-						create_portrait_entry(DialogicResources.get_filename_from_path(file_name), final_name)
+						file_list.append(file_name)
 			file_name = dir.get_next()
+		file_list.sort()
+		for file in file_list:
+			var final_name = path + "/" + file
+			create_portrait_entry(DialogicResources.get_filename_from_path(file), final_name)
+		dir.list_dir_end()
 	else:
 		print("An error occurred when trying to access the path.")
 
