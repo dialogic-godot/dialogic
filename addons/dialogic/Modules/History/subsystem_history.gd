@@ -207,6 +207,6 @@ func reset_already_seen_history(reset_property: bool) -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
 
 	if reset_property:
-		DialogicUtil.autoload().History.already_read_history_content = {}
+		already_read_history_content = {}
 
 #endregion
