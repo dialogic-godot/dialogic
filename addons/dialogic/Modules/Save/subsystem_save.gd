@@ -153,7 +153,7 @@ func save_file(slot_name: String, file_name: String, data: Variant) -> void:
 			push_error(FileAccess.get_open_error())
 
 
-## Loads a file from a given list and returns the contained info as a variable.
+## Loads a file using [param slot_name] and returns the contained info.
 ##
 ## This method allows you to build your own save and load system.
 ## You may be looking for the simple [method load] method to load the game state.
