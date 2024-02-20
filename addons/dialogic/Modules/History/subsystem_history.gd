@@ -187,7 +187,7 @@ func save_already_seen_history() -> void:
 ##
 ## ## Relies on the Save subsystem.
 func load_already_seen_history() -> void:
-	already_read_history_content = DialogicUtil.autoload().Save.get_global_info(already_seen_save_key, {})
+	already_read_history_content = get_saved_already_seen_history()
 
 
 ## Returns the saved already-seen history from the global info save file.
