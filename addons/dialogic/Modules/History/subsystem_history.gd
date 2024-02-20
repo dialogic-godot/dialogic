@@ -65,9 +65,9 @@ func _ready() -> void:
 	var _result := dialogic.event_handled.connect(store_full_event)
 	_result = dialogic.event_handled.connect(check_already_read)
 
-	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
-	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
-	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
+	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', simple_history_enabled )
+	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', full_event_history_enabled)
+	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', already_read_history_enabled)
 
 
 
