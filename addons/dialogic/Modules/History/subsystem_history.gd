@@ -193,7 +193,7 @@ func load_already_seen_history() -> void:
 ## Returns the saved already-seen history from the global info save file.
 ## If none exist in the global info file, returns an empty dictionary.
 ##
-## ## Relies on the Save subsystem.
+## Relies on the Save subsystem.
 func get_saved_already_seen_history() -> Dictionary:
 	return DialogicUtil.autoload().Save.get_global_info(already_seen_save_key, {})
 
@@ -202,7 +202,7 @@ func get_saved_already_seen_history() -> Dictionary:
 ## If [param reset_property] is true, it will also reset the already-seen
 ## history in the Dialogic Autoload.
 ##
-## ## Relies on the Save subsystem.
+## Relies on the Save subsystem.
 func reset_already_seen_history(reset_property: bool) -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
 
