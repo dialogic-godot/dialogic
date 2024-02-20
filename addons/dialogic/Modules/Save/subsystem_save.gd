@@ -372,9 +372,13 @@ func get_slot_info(slot_name := "") -> Dictionary:
 #region SLOT IMAGE
 ####################################################################################################
 
-## Can be called manually to create a thumbnail.
-## Then, call [method save] with ThumbnailMode.STORE_ONLY to save the game
-## use the thumbnail prepared with this method.
+## This method creates a thumbnail of the current game view, it allows to
+## save the game without having the UI on the save slot image.
+## The thumbnail will be stored in [member latest_thumbnail].
+##
+## Call this method before opening your save & load menu.
+## After that, call [method save] with [constant ThumbnailMode.STORE_ONLY].
+## The [method save] will automatically use the stored thumbnail.
 func take_thumbnail() -> void:
 	latest_thumbnail = get_viewport().get_texture().get_image()
 
