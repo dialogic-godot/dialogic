@@ -40,7 +40,7 @@ func _load_display_info(info:Dictionary) -> void:
 		label = info.get('label', label)
 		$Label.text = label
 		
-	if info.has('hide_step_button'):
+	if info.has('hide_value_stepper'):
 		$Spin.hide()
 
 func _set_value(new_value:Variant) -> void:
@@ -78,11 +78,12 @@ func use_decibel_mode(value_step: float = step) -> void:
 
 #region SIGNAL METHODS
 ################################################################################
-func _on_increment_clicked() -> void:
-	_on_value_text_submitted(str(value+step))
-
-func _on_decrement_clicked() -> void:
-	_on_value_text_submitted(str(value-step))
+func _on_spin_gui_input(event:InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.position.y < size.y/2.0:
+			_on_value_text_submitted(str(value+step))
+		else:
+			_on_value_text_submitted(str(value-step))
 
 func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
 	new_text = new_text.trim_suffix(suffix) 

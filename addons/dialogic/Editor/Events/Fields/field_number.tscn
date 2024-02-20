@@ -1,13 +1,26 @@
 [gd_scene load_steps=6 format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
-[ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
-[ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
-[ext_resource type="Theme" uid="uid://krxxw16nf7fv" path="res://addons/dialogic/Editor/Theme/ValueChangeButtonTheme.tres" id="4_ql6rp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8dle1"]
 content_margin_left = 4.0
 content_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_412s4"]
+content_margin_top = 7.0
+content_margin_bottom = 7.0
+
+[sub_resource type="Image" id="Image_pdoi7"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_eaxil"]
+image = SubResource("Image_pdoi7")
 
 [node name="Field_Number" type="HBoxContainer"]
 anchors_preset = 15
@@ -43,38 +56,17 @@ theme_override_constants/minimum_character_width = 0
 text = "0"
 expand_to_text_length = true
 
-[node name="Spin" type="VBoxContainer" parent="."]
+[node name="Spin" type="Button" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="Increment" type="Button" parent="Spin"]
-layout_mode = 2
-size_flags_vertical = 8
-size_flags_stretch_ratio = 0.0
-auto_translate = false
-focus_neighbor_left = NodePath("../../Value")
-focus_neighbor_top = NodePath(".")
-focus_neighbor_bottom = NodePath("../Decrement")
-theme = ExtResource("4_ql6rp")
-theme_type_variation = &"IncrementButton"
-icon = ExtResource("3_v5cne")
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_412s4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_412s4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_412s4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_412s4")
+theme_override_styles/focus = SubResource("StyleBoxFlat_412s4")
+icon = SubResource("ImageTexture_eaxil")
 flat = true
-vertical_icon_alignment = 2
-
-[node name="Decrement" type="Button" parent="Spin"]
-layout_mode = 2
-size_flags_vertical = 8
-size_flags_stretch_ratio = 0.0
-auto_translate = false
-focus_neighbor_left = NodePath("../../Value")
-focus_neighbor_top = NodePath("../Increment")
-focus_neighbor_bottom = NodePath(".")
-theme = ExtResource("4_ql6rp")
-theme_type_variation = &"DecrementButton"
-icon = ExtResource("4_ph52o")
-flat = true
-vertical_icon_alignment = 2
 
 [node name="Spacer" type="Control" parent="."]
 custom_minimum_size = Vector2(6, 0)
@@ -83,5 +75,4 @@ size_flags_horizontal = 0
 
 [connection signal="focus_exited" from="Value" to="." method="_on_value_focus_exited"]
 [connection signal="text_submitted" from="Value" to="." method="_on_value_text_submitted"]
-[connection signal="button_up" from="Spin/Increment" to="." method="_on_increment_clicked"]
-[connection signal="button_up" from="Spin/Decrement" to="." method="_on_decrement_clicked"]
+[connection signal="gui_input" from="Spin" to="." method="_on_spin_gui_input"]
