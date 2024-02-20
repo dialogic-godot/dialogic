@@ -185,7 +185,7 @@ func save_already_seen_history() -> void:
 ## Loads the seen events from the global info save file.
 ## Calling this when a game gets loaded may be useful.
 ##
-## ## Relies on the Save subsystem.
+## Relies on the Save subsystem.
 func load_already_seen_history() -> void:
 	already_read_history_content = get_saved_already_seen_history()
 
