@@ -25,13 +25,13 @@ Dialogic 2.0 is a major rewrite of the plugin including many compatibility-break
 [If you are looking for the Godot 3.5 version you can find it here.](https://github.com/dialogic-godot/dialogic/tree/dialogic-1)
 
 ## Installation
-Follow the installation instructions on our [Getting Started](https://dialogic-docs.coppolaemilio.com/getting-started.html#1-installation--activation) documentation.
+Follow the installation instructions on our [Getting Started](https://docs.dialogic.pro/getting-started.html#1-installation--activation) documentation.
 
 Dialogic comes with an auto-updater so you can install future versions right from within the plugin.
 
 ## Documentation
 As the plugin is still in alpha state, only limited documentation is available. However you can read all the existing documentation here:
-[Dialogic Documentation](https://dialogic-docs.coppolaemilio.com/)
+[Dialogic Documentation](https://docs.dialogic.pro/)
 
 ## Testing
 Dialogic uses [Unit Tests](https://en.wikipedia.org/wiki/Unit_testing) to ensure specific parts function as expected. These tests run on every git push and pull request. The framework to do these tests is called [gdUnit4](https://github.com/MikeSchulze/gdUnit4) and our tests reside in the [addons/dialogic/Tests/Unit](https://github.com/dialogic-godot/dialogic/tree/main/addons/dialogic/Tests/Unit) path. We recommend installing the `gdUnit4` add-on from the `AssetLib`, with this add-on, you can run tests locally.
