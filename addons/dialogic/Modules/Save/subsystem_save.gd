@@ -413,7 +413,7 @@ func _ready() -> void:
 	var _result := autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
 
-	autosave_enabled = ProjectSettings.get_setting(AUTO_SAVE_SETTINGS, false)
+	autosave_enabled = ProjectSettings.get_setting(AUTO_SAVE_SETTINGS, autosave_enabled)
 	autosave_mode = ProjectSettings.get_setting(AUTO_SAVE_MODE_SETTINGS, AUTO_SAVE_DEFAULT)
 
 	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)

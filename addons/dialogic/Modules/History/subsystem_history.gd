@@ -82,8 +82,8 @@ func _on_save(info: Dictionary) -> void:
 
 
 func post_install() -> void:
-	save_already_seen_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', false)
-	save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', false)
+	save_already_seen_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', save_already_seen_history_on_autosave)
+	save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_already_seen_history_on_save)
 
 
 func open_history() -> void:
