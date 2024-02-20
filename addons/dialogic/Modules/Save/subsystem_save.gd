@@ -39,8 +39,8 @@ enum AutoSaveMode {
 ## Whether the auto-save feature is enabled.
 ## The initial value can be set in the project settings via th Dialogic editor.
 ##
-## This can be toggled during the game; this allows to have a setting in the
-## game's options menu.
+## This can be toggled during the game.
+## Allowing to have a setting in the game's options menu.
 var autosave_enabled := false:
 	set(enabled):
 		autosave_enabled = enabled
@@ -102,7 +102,7 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 	if slot_info:
 		set_slot_info(slot_name, slot_info)
 
-	saved.emit(slot_name, is_autosave)
+	saved.emit({"slot_name": slot_name, "is_autosave": is_autosave})
 	print('[Dialogic] Saved to slot "'+slot_name+'".')
 
 
