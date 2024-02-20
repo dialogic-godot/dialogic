@@ -36,9 +36,6 @@ enum AutoSaveMode {
 	ON_TEXT_EVENT = 2
 }
 
-const AUTO_SAVE_DEFAULT := AutoSaveMode.ON_TIMELINE_JUMPS
-const AUTO_SAVE_DEFAULT_DELAY := 60
-
 ## Whether the auto-save feature is enabled.
 ## The initial value can be set in the project settings via th Dialogic editor.
 ##
@@ -54,7 +51,17 @@ var autosave_enabled := false:
 			autosave_timer.stop()
 
 
-var autosave_mode := AUTO_SAVE_DEFAULT
+## Under what conditions the auto-save feature will trigger if
+## [member autosave_enabled] is `true`.
+var autosave_mode := AutoSaveMode.ON_TIMELINE_JUMPS
+
+## After what time interval the auto-save feature will trigger if
+## [member autosave_enabled] is `true` and [member autosave_mode] is
+## `AutoSaveMode.ON_TIMER`.
+var autosave_time := 60:
+	set(timer_time):
+		autosave_timer.wait_time = timer_time
+
 
 #region STATE
 ####################################################################################################
@@ -414,7 +421,7 @@ func _ready() -> void:
 	add_child(autosave_timer)
 
 	autosave_enabled = ProjectSettings.get_setting(AUTO_SAVE_SETTINGS, autosave_enabled)
-	autosave_mode = ProjectSettings.get_setting(AUTO_SAVE_MODE_SETTINGS, AUTO_SAVE_DEFAULT)
+	autosave_mode = ProjectSettings.get_setting(AUTO_SAVE_MODE_SETTINGS, autosave_mode)
 
 	_result = dialogic.event_handled.connect(_on_dialogic_event_handled)
 	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
@@ -427,7 +434,7 @@ func _on_autosave_timer_timeout() -> void:
 	if autosave_mode == AutoSaveMode.ON_TIMER:
 		perform_autosave()
 
-	var autosave_time: float = ProjectSettings.get_setting('dialogic/save/autosave_delay', AUTO_SAVE_DEFAULT_DELAY)
+	autosave_time = ProjectSettings.get_setting('dialogic/save/autosave_delay', autosave_time)
 	autosave_timer.start(autosave_time)
 
 
