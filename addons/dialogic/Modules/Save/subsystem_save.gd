@@ -182,9 +182,6 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 ## Data set in global info can be accessed unrelated to the save slots.
 ## For instance, you may want to store game settings in here, as they
 ## affect the game globally unrelated to the slot used.
-##
-## If you want to save already-seen text, take a look at the History subsystem.
-## It provides a built-in feature to automatically save already-seen text.
 func set_global_info(key: String, value: Variant) -> void:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
@@ -210,9 +207,6 @@ func set_global_info(key: String, value: Variant) -> void:
 
 ## Access the data unrelated to a save slot.
 ## First, the data must have been set with [method set_global_info].
-##
-## If you want to save already-seen text, take a look at the History subsystem.
-## It provides a built-in feature to automatically save already-seen text.
 func get_global_info(key: String, default: Variant) -> Variant:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
