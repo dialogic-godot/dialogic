@@ -39,7 +39,7 @@ enum AutoSaveMode {
 ## Whether the auto-save feature is enabled.
 ## The initial value can be set in the project settings via th Dialogic editor.
 ##
-## This can be toggled during the game; an idea is to have a setting in the
+## This can be toggled during the game; this allows to have a setting in the
 ## game's options menu.
 var autosave_enabled := false:
 	set(enabled):
