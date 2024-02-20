@@ -3,7 +3,7 @@ extends DialogicSubsystem
 ### Subsystem that manages saving and loading data.
 
 
-## Emitted when a save was done.
+## Emitted when a save happened.
 ## The [param info] contains the following keys:
 ## 	- slot_name: The `String` name of the slot that the game state was saved to.
 ## 	- is_autosave: `true` if the save was an autosave.
