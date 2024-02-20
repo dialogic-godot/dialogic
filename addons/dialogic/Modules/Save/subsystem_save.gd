@@ -28,11 +28,11 @@ var latest_thumbnail : Image = null
 ## If one of these occurs in the game, an auto-save may happen
 ## if [member autosave_enabled] is `true`.
 enum AutoSaveMode {
-	# Includes timeline start, end, and jump events.
+	## Includes timeline start, end, and jump events.
 	ON_TIMELINE_JUMPS = 0,
-	# Saves after a certain time interval.
+	## Saves after a certain time interval.
 	ON_TIMER = 1,
-	# Saves after every text event.
+	## Saves after every text event.
 	ON_TEXT_EVENT = 2
 }
 
