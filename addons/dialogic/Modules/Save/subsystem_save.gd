@@ -458,6 +458,5 @@ func _on_start_or_end_autosave() -> void:
 ## This method will be called automatically if the auto-save mode is enabled.
 func perform_autosave() -> void:
 	save("", true)
-	DialogicUtil.autoload().History.save_already_seen_history()
 
 #endregion
