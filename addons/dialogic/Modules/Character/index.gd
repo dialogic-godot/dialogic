@@ -18,4 +18,4 @@ func _get_text_effects() -> Array[Dictionary]:
 
 
 func _get_special_resources() -> Array[Dictionary]:
-	return list_special_resources('DefaultAnimations', 'PortraitAnimation')
+	return list_special_resources('DefaultAnimations', &'PortraitAnimation')

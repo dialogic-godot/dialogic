@@ -113,6 +113,8 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 		_on_transition_finished(background_holder, trans_node)
 	else:
 		trans_node.transition_finished.connect(_on_transition_finished.bind(background_holder, trans_node))
+		# We need to break this connection if the background_holder get's removed during the transition
+		background_holder.tree_exited.connect(trans_node.disconnect.bind("transition_finished", _on_transition_finished))
 		trans_node._fade()
 
 	background_changed.emit(info)

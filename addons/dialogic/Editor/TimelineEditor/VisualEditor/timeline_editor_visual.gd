@@ -868,7 +868,8 @@ func indent_events() -> void:
 			block.set_indent(0)
 		indent += delayed_indent
 
-
+	await get_tree().process_frame
+	await get_tree().process_frame
 	%TimelineArea.queue_redraw()
 
 

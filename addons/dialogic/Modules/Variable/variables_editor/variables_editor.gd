@@ -59,9 +59,5 @@ func _on_reference_manager_pressed():
 #endregion
 
 
-func _on_documentation_pressed() -> void:
-	OS.shell_open("https://dialogic-docs.coppolaemilio.com/variables.html")
-
-
 func _on_search_text_changed(new_text: String) -> void:
 	%Tree.filter(new_text)

@@ -114,6 +114,7 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 0
+	help_page_path = "https://docs.dialogic.pro/variables.html#23-set-variable-event"
 
 
 ################################################################################
