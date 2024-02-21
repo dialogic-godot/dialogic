@@ -203,7 +203,7 @@ func get_saved_already_seen_history() -> Dictionary:
 ## history in the Dialogic Autoload.
 ##
 ## Relies on the Save subsystem.
-func reset_already_seen_history(reset_property: bool) -> void:
+func reset_already_seen_history(reset_property := true) -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
 
 	if reset_property:
