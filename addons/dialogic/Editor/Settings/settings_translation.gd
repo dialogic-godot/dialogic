@@ -19,7 +19,7 @@ const DEFAULT_TIMELINE_CSV_NAME := "dialogic_timeline_translations.csv"
 
 const DEFAULT_GLOSSARY_CSV_NAME := "dialogic_glossary_translations.csv"
 
-const _USED_LOCALES_SETTINGS := "dialogic/translation/locales"
+const _USED_LOCALES_SETTING := "dialogic/translation/locales"
 
 ## Contains translation changes that were made during the last update.
 
