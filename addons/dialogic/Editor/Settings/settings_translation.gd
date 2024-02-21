@@ -19,8 +19,12 @@ const DEFAULT_TIMELINE_CSV_NAME := "dialogic_timeline_translations.csv"
 
 const DEFAULT_GLOSSARY_CSV_NAME := "dialogic_glossary_translations.csv"
 
+const _USED_LOCALES_SETTINGS := "dialogic/translation/locales"
+
 ## Contains translation changes that were made during the last update.
 
+## Unique locales that will be set after updating the CSV files.
+var _unique_locales := []
 
 func _get_icon() -> Texture2D:
 	return get_theme_icon("Translation", "EditorIcons")
@@ -135,8 +139,12 @@ func get_locales(_filter: String) -> Dictionary:
 	var suggestions := {}
 	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
 	suggestions[TranslationServer.get_tool_locale()] = {'value':TranslationServer.get_tool_locale()}
-	for locale in TranslationServer.get_all_languages():
+
+	var used_locales: Array = ProjectSettings.get_setting(_USED_LOCALES_SETTING, TranslationServer.get_all_languages())
+
+	for locale: String in used_locales:
 		suggestions[locale] = {'value':locale, 'tooltip':TranslationServer.get_language_name(locale)}
+
 	return suggestions
 
 
@@ -220,11 +228,13 @@ func _handle_glossary_translation(
 
 			TranslationModes.PER_TIMELINE:
 				glossary_csv.update_csv_file_on_disk()
+				_collect_locales(glossary_csv.locales)
 				glossary_csv = null
 
 	# If a Per-Project glossary is still open, we need to save it.
 	if glossary_csv != null:
 		glossary_csv.update_csv_file_on_disk()
+		_collect_locales(glossary_csv.locales)
 		glossary_csv = null
 
 
@@ -249,6 +259,7 @@ class CsvUpdateData:
 
 
 func update_csv_files() -> void:
+	_unique_locales = []
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
@@ -317,6 +328,7 @@ func update_csv_files() -> void:
 
 		if translation_mode == TranslationModes.PER_TIMELINE:
 			csv_file.update_csv_file_on_disk()
+			_collect_locales(csv_file.locales)
 
 		csv_data.new_events += csv_file.new_rows
 		csv_data.updated_events += csv_file.updated_rows
@@ -338,6 +350,7 @@ func update_csv_files() -> void:
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
+		_collect_locales(csv_per_project.locales)
 
 	_silently_open_timeline(current_timeline)
 
@@ -364,6 +377,8 @@ func update_csv_files() -> void:
 	}
 
 	%StatusMessage.text = status_message.format(status_message_args)
+	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
+	get_locales("")
 
 ## Iterates over all character resource files and creates or updates CSV files
 ## that contain the translations for character properties.
@@ -397,6 +412,7 @@ func _handle_character_names(
 
 	character_name_csv.collect_lines_from_characters(all_characters)
 	character_name_csv.update_csv_file_on_disk()
+	_collect_locales(character_name_csv.locales)
 
 
 func collect_translations() -> void:
@@ -494,6 +510,8 @@ func delete_translations_files(translation_files: Array, csv_name: String) -> in
 func erase_translations() -> void:
 	var files: PackedStringArray = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var translation_files := Array(files)
+	ProjectSettings.set_setting(_USED_LOCALES_SETTING, [])
+	get_locales("")
 
 	var deleted_csv_files := 0
 	var deleted_translation_files := 0
@@ -629,3 +647,14 @@ func _close_active_timeline() -> Resource:
 func _silently_open_timeline(timeline_to_open: Resource) -> void:
 	if timeline_to_open != null:
 		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
+
+
+## Checks [param locales] for unique locales that have not been added
+## to the [_unique_locales] array yet.
+func _collect_locales(locales: Array) -> void:
+
+	for locale: String in locales:
+		if _unique_locales.has(locale):
+			continue
+
+		_unique_locales.append(locale)
