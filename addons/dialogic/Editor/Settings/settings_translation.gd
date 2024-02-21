@@ -143,7 +143,13 @@ func get_locales(_filter: String) -> Dictionary:
 	var used_locales: Array = ProjectSettings.get_setting(_USED_LOCALES_SETTING, TranslationServer.get_all_languages())
 
 	for locale: String in used_locales:
-		suggestions[locale] = {'value':locale, 'tooltip':TranslationServer.get_language_name(locale)}
+		var language_name := TranslationServer.get_language_name(locale)
+
+		# Invalid locales return an empty String.
+		if language_name.is_empty():
+			continue
+
+		suggestions[locale] = { 'value': locale, 'tooltip': language_name }
 
 	return suggestions
 
