@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_dq4j2"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="4_kvsma"]
 
-[sub_resource type="Image" id="Image_6uwds"]
+[sub_resource type="Image" id="Image_g2hic"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -14,8 +14,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_5qvwl"]
-image = SubResource("Image_6uwds")
+[sub_resource type="ImageTexture" id="ImageTexture_xbph7"]
+image = SubResource("Image_g2hic")
 
 [node name="Translations" type="VBoxContainer"]
 anchors_preset = 15
@@ -73,9 +73,11 @@ text = "Testing locale"
 layout_mode = 2
 tooltip_text = "Change this locale to test your game in a different language (only in-editor).
 Equivalent of the testing local project setting. "
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Change this locale to test your game in a different language (only in-editor).
-Equivalent of the testing local project setting. "
+Equivalent of the testing local project setting. 
+
+Update dropdown list via \"Collect Translation\"."
 
 [node name="TestingLocale" parent="HBox/Testing/VBox3" instance=ExtResource("3_dq4j2")]
 unique_name_in_owner = true
@@ -111,7 +113,7 @@ text = "Default locale"
 [node name="HintTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox" instance=ExtResource("2_k2lou")]
 layout_mode = 2
 tooltip_text = "The locale of the language your timelines are written in."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "The locale of the language your timelines are written in."
 
 [node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
@@ -129,7 +131,7 @@ text = "Translation folder"
 layout_mode = 2
 tooltip_text = "Choose a folder to let Dialogic save CSV files in.
 Also used when saving \"Inside Translation Folder\""
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Choose a folder to let Dialogic save CSV files in.
 Also used when saving \"Inside Translation Folder\""
 
@@ -157,7 +159,7 @@ For example, 10 timelines will be combined into 1 CSV file.
 For example, 10 timelines will result in 10 CSV files.
 
 The \"Per File\" option utilises \"Output location\", in contrast, the \"Per Type\" will always use the Translation folder."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Decides how many CSV files will be created.
 
 • \"Per Type\": Uses one CSV file for each type of resource: Timelines, characters, and glossaries.
@@ -195,7 +197,7 @@ tooltip_text = "Decides where to save the generated CSV files.
 
 This button requires the \"Per File\" Output mode.
 A resource type can be: Timelines, characters, and glossaries."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Decides where to save the generated CSV files.
 
 • \"Inside Translation Folder\": Uses the \"Translation folder\".
@@ -232,7 +234,7 @@ layout_mode = 2
 tooltip_text = "Adds an empty line into per-project CSVs to differentiate between sections.
 
 For example, when a new glossary item or timeline starts, an empty line will be added."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Adds an empty line into per-project CSVs to differentiate between sections.
 
 For example, when a new glossary item or timeline starts, an empty line will be added."
@@ -265,7 +267,7 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Update CSV files"
-icon = SubResource("ImageTexture_5qvwl")
+icon = SubResource("ImageTexture_xbph7")
 
 [node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
@@ -274,7 +276,7 @@ tooltip_text = "This button will scan all timelines and generate or update their
 A Dialogic CSV file will be prefixed with \"dialogic_\".
 
 This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "This button will scan all timelines and generate or update their CSV files.
 
 A Dialogic CSV file will be prefixed with \"dialogic_\".
@@ -285,14 +287,14 @@ This action will be disabled if the \"Translation folder\" is missing or has an 
 unique_name_in_owner = true
 layout_mode = 2
 text = "Collect translations"
-icon = SubResource("ImageTexture_5qvwl")
+icon = SubResource("ImageTexture_xbph7")
 
 [node name="HintTooltip6" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
 tooltip_text = "Godot imports CSV files as \".translation\" files.
 This buttons adds them to \"Project Settings -> Localization\".
 "
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Godot imports CSV files as \".translation\" files.
 This buttons adds them to \"Project Settings -> Localization\".
 "
@@ -309,7 +311,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Remove translations"
-icon = SubResource("ImageTexture_5qvwl")
+icon = SubResource("ImageTexture_xbph7")
 
 [node name="HintTooltip7" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
 layout_mode = 2
@@ -319,7 +321,7 @@ It will try to delete any \".csv\" and \".translation\" files that are related t
 CSV and translation files prefixed with \"dialogic_\" are treated as Dialogic-related.
 
 Removes translation IDs (eg. #id:33) from timelines and characters."
-texture = SubResource("ImageTexture_5qvwl")
+texture = SubResource("ImageTexture_xbph7")
 hint_text = "Be very careful with this button!
 
 It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
