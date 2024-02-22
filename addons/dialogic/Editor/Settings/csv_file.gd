@@ -32,9 +32,6 @@ var new_rows: int = 0
 ## a per-project file.
 var add_separator: bool = false
 
-## All locales found after the [method update_csv_file_on_disk] method is called.
-var locales: Array = []
-
 enum PropertyType {
 	String = 0,
 	Array = 1,
@@ -326,21 +323,14 @@ func update_csv_file_on_disk() -> void:
 	# Clear the current CSV file.
 	file = FileAccess.open(used_file_path, FileAccess.WRITE)
 
-	var is_first_line := true
-
 	for line in lines:
 		var row_key := line[0]
-
 
 		# In case there might be translations for this line already,
 		# add them at the end again (orig locale text is replaced).
 		if row_key in old_lines:
 			var old_line: PackedStringArray = old_lines[row_key]
 			var updated_line: PackedStringArray = line + old_line.slice(2)
-
-			if is_first_line:
-				locales = updated_line.slice(1)
-				is_first_line = false
 
 			var line_columns: int = updated_line.size()
 			var line_columns_to_add := column_count - line_columns
@@ -359,10 +349,6 @@ func update_csv_file_on_disk() -> void:
 			# Add trailing commas to match the amount of columns.
 			for _i in range(line_columns_to_add):
 				line.append("")
-
-			if is_first_line:
-				locales = line.slice(1)
-				is_first_line = false
 
 			file.store_csv_line(line)
 			new_rows += 1

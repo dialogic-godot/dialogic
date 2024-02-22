@@ -234,13 +234,11 @@ func _handle_glossary_translation(
 
 			TranslationModes.PER_TIMELINE:
 				glossary_csv.update_csv_file_on_disk()
-				_collect_locales(glossary_csv.locales)
 				glossary_csv = null
 
 	# If a Per-Project glossary is still open, we need to save it.
 	if glossary_csv != null:
 		glossary_csv.update_csv_file_on_disk()
-		_collect_locales(glossary_csv.locales)
 		glossary_csv = null
 
 
@@ -334,7 +332,6 @@ func update_csv_files() -> void:
 
 		if translation_mode == TranslationModes.PER_TIMELINE:
 			csv_file.update_csv_file_on_disk()
-			_collect_locales(csv_file.locales)
 
 		csv_data.new_events += csv_file.new_rows
 		csv_data.updated_events += csv_file.updated_rows
@@ -356,7 +353,6 @@ func update_csv_files() -> void:
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
-		_collect_locales(csv_per_project.locales)
 
 	_silently_open_timeline(current_timeline)
 
@@ -418,7 +414,6 @@ func _handle_character_names(
 
 	character_name_csv.collect_lines_from_characters(all_characters)
 	character_name_csv.update_csv_file_on_disk()
-	_collect_locales(character_name_csv.locales)
 
 
 func collect_translations() -> void:
@@ -465,6 +460,11 @@ func collect_translations() -> void:
 
 		if not file_path in all_translation_files:
 			all_translation_files.append(file_path)
+			var path_without_suffix := file_path.trim_suffix('.translation')
+			var path_parts := path_without_suffix.split(".")
+			var locale_part := path_parts[-1]
+			_collect_locale(locale_part)
+
 
 	var valid_translation_files := PackedStringArray(all_translation_files)
 	ProjectSettings.set_setting('internationalization/locale/translations', valid_translation_files)
@@ -655,12 +655,10 @@ func _silently_open_timeline(timeline_to_open: Resource) -> void:
 		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
 
 
-## Checks [param locales] for unique locales that have not been added
+## Checks [param locale] for unique locales that have not been added
 ## to the [_unique_locales] array yet.
-func _collect_locales(locales: Array) -> void:
+func _collect_locale(locale: String) -> void:
+	if _unique_locales.has(locale):
+		return
 
-	for locale: String in locales:
-		if _unique_locales.has(locale):
-			continue
-
-		_unique_locales.append(locale)
+	_unique_locales.append(locale)
