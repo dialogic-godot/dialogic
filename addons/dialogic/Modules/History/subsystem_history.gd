@@ -45,7 +45,7 @@ var save_already_seen_history_on_save := false:
 		_update_saved_connection(value)
 
 
-## Starts and stops the connection to the Save subsystem's [signal saved] signal.
+## Starts and stops the connection to the [subsystem Save] subsystem's [signal saved] signal.
 func _update_saved_connection(to_connect: bool) -> void:
 	if to_connect:
 
@@ -177,7 +177,7 @@ func was_last_event_already_read() -> bool:
 ##
 ## Be aware, this won't add any events but completely overwrite the already saved ones.
 ##
-## Relies on the Save subsystem.
+## Relies on the [subsystem Save] subsystem.
 func save_already_seen_history() -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, already_read_history_content)
 
@@ -185,7 +185,7 @@ func save_already_seen_history() -> void:
 ## Loads the seen events from the global info save file.
 ## Calling this when a game gets loaded may be useful.
 ##
-## Relies on the Save subsystem.
+## Relies on the [subsystem Save] subsystem.
 func load_already_seen_history() -> void:
 	already_read_history_content = get_saved_already_seen_history()
 
@@ -193,7 +193,7 @@ func load_already_seen_history() -> void:
 ## Returns the saved already-seen history from the global info save file.
 ## If none exist in the global info file, returns an empty dictionary.
 ##
-## Relies on the Save subsystem.
+## Relies on the [subsystem Save] subsystem.
 func get_saved_already_seen_history() -> Dictionary:
 	return DialogicUtil.autoload().Save.get_global_info(already_seen_save_key, {})
 
@@ -202,7 +202,7 @@ func get_saved_already_seen_history() -> Dictionary:
 ## If [param reset_property] is true, it will also reset the already-seen
 ## history in the Dialogic Autoload.
 ##
-## Relies on the Save subsystem.
+## Relies on the [subsystem Save] subsystem.
 func reset_already_seen_history(reset_property := true) -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
 
