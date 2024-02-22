@@ -320,7 +320,8 @@ func load_full_state(state_info:Dictionary) -> void:
 
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
-
+	else:
+		end_timeline.call_deferred()
 #endregion
 
 
@@ -363,7 +364,7 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 ################################################################################
 
 func _on_timeline_ended() -> void:
-	if self.Styles.has_active_layout_node():
+	if self.Styles.has_active_layout_node() and self.Styles.get_layout_node().is_inside_tree():
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
 			0:
 				self.Styles.get_layout_node().get_parent().remove_child(self.Styles.get_layout_node())
