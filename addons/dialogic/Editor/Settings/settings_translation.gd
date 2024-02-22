@@ -19,8 +19,12 @@ const DEFAULT_TIMELINE_CSV_NAME := "dialogic_timeline_translations.csv"
 
 const DEFAULT_GLOSSARY_CSV_NAME := "dialogic_glossary_translations.csv"
 
+const _USED_LOCALES_SETTING := "dialogic/translation/locales"
+
 ## Contains translation changes that were made during the last update.
 
+## Unique locales that will be set after updating the CSV files.
+var _unique_locales := []
 
 func _get_icon() -> Texture2D:
 	return get_theme_icon("Translation", "EditorIcons")
@@ -135,8 +139,18 @@ func get_locales(_filter: String) -> Dictionary:
 	var suggestions := {}
 	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
 	suggestions[TranslationServer.get_tool_locale()] = {'value':TranslationServer.get_tool_locale()}
-	for locale in TranslationServer.get_all_languages():
-		suggestions[locale] = {'value':locale, 'tooltip':TranslationServer.get_language_name(locale)}
+
+	var used_locales: Array = ProjectSettings.get_setting(_USED_LOCALES_SETTING, TranslationServer.get_all_languages())
+
+	for locale: String in used_locales:
+		var language_name := TranslationServer.get_language_name(locale)
+
+		# Invalid locales return an empty String.
+		if language_name.is_empty():
+			continue
+
+		suggestions[locale] = { 'value': locale, 'tooltip': language_name }
+
 	return suggestions
 
 
@@ -249,6 +263,7 @@ class CsvUpdateData:
 
 
 func update_csv_files() -> void:
+	_unique_locales = []
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
@@ -364,6 +379,8 @@ func update_csv_files() -> void:
 	}
 
 	%StatusMessage.text = status_message.format(status_message_args)
+	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
+	get_locales("")
 
 ## Iterates over all character resource files and creates or updates CSV files
 ## that contain the translations for character properties.
@@ -443,6 +460,11 @@ func collect_translations() -> void:
 
 		if not file_path in all_translation_files:
 			all_translation_files.append(file_path)
+			var path_without_suffix := file_path.trim_suffix('.translation')
+			var path_parts := path_without_suffix.split(".")
+			var locale_part := path_parts[-1]
+			_collect_locale(locale_part)
+
 
 	var valid_translation_files := PackedStringArray(all_translation_files)
 	ProjectSettings.set_setting('internationalization/locale/translations', valid_translation_files)
@@ -494,6 +516,8 @@ func delete_translations_files(translation_files: Array, csv_name: String) -> in
 func erase_translations() -> void:
 	var files: PackedStringArray = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var translation_files := Array(files)
+	ProjectSettings.set_setting(_USED_LOCALES_SETTING, [])
+	get_locales("")
 
 	var deleted_csv_files := 0
 	var deleted_translation_files := 0
@@ -629,3 +653,12 @@ func _close_active_timeline() -> Resource:
 func _silently_open_timeline(timeline_to_open: Resource) -> void:
 	if timeline_to_open != null:
 		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
+
+
+## Checks [param locale] for unique locales that have not been added
+## to the [_unique_locales] array yet.
+func _collect_locale(locale: String) -> void:
+	if _unique_locales.has(locale):
+		return
+
+	_unique_locales.append(locale)
