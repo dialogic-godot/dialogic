@@ -96,39 +96,47 @@ func _execute() -> void:
 
 	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', 0)
 
+	var reveal_next_segment := true
+
+	if dialogic.current_state_info['text_sub_idx'] > 0:
+		reveal_next_segment = false
+
 	for section_idx in range(min(dialogic.current_state_info['text_sub_idx'], len(split_text)-1), len(split_text)):
-		dialogic.current_state_info
-		dialogic.Text.hide_next_indicators()
-		state = States.REVEALING
 
-		dialogic.current_state_info['text_sub_idx'] = section_idx
-		var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
-		var is_append: bool = split_text[section_idx][1]
+		if reveal_next_segment:
+			dialogic.Text.hide_next_indicators()
+			state = States.REVEALING
 
-		final_text = segment
-		dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+			dialogic.current_state_info['text_sub_idx'] = section_idx
 
-		await dialogic.Text.update_textbox(final_text, false)
-		_try_play_current_line_voice()
-		final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
+			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
+			var is_append: bool = split_text[section_idx][1]
 
-		_mark_as_read(final_text)
+			final_text = segment
+			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
 
-		# We must skip text animation before we potentially return when there
-		# is a Choice event.
-		if dialogic.Inputs.auto_skip.enabled:
-			dialogic.Text.skip_text_reveal()
-		else:
-			await dialogic.Text.text_finished
+			await dialogic.Text.update_textbox(final_text, false)
+			_try_play_current_line_voice()
+			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-		state = States.IDLE
+			_mark_as_read(final_text)
+
+			# We must skip text animation before we potentially return when there
+			# is a Choice event.
+			if dialogic.Inputs.auto_skip.enabled:
+				dialogic.Text.skip_text_reveal()
+			else:
+				await dialogic.Text.text_finished
+
+			state = States.IDLE
 
 		# Handling potential Choice Events.
 		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
-			end_text_event()
 
+			end_text_event()
 			return
+
 		elif dialogic.Inputs.auto_advance.is_enabled():
 			dialogic.Text.show_next_indicators(false, true)
 			dialogic.Inputs.auto_advance.start()
@@ -149,6 +157,7 @@ func _execute() -> void:
 
 		else:
 			await advance
+
 
 	end_text_event()
 
