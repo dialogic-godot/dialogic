@@ -153,7 +153,7 @@ func process() -> void:
 func clean() -> void:
 	if not events_processed:
 		return
-
+	reference()
 	# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
 	# are disconnected before they can disconnect themselves.
 	await Engine.get_main_loop().process_frame
@@ -165,3 +165,4 @@ func clean() -> void:
 		for sig in event.get_signal_list():
 			for con_out in event.get_signal_connection_list(sig.name):
 				con_out.signal.disconnect(con_out.callable)
+	unreference()

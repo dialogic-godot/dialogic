@@ -94,7 +94,7 @@ func play_sound(path:String, volume := 0.0, audio_bus := "Master", loop := false
 	if base_sound_player != null and !path.is_empty():
 		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
 		var new_sound_node := base_sound_player.duplicate()
-		new_sound_node.name = "Sound"
+		new_sound_node.name += "Sound"
 		new_sound_node.stream = load(path)
 		if "loop" in new_sound_node.stream:
 			new_sound_node.stream.loop = loop

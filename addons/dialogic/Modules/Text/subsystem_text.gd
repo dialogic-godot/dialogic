@@ -121,7 +121,11 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
-	dialogic.current_state_info['text'] = text
+
+	if additional:
+		dialogic.current_state_info['text'] += text
+	else:
+		dialogic.current_state_info['text'] = text
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		connect_meta_signals(text_node)
