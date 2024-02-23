@@ -1,13 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://kdpp3mibml33"]
+[gd_scene load_steps=7 format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
 [ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
 [ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
 [ext_resource type="Theme" uid="uid://krxxw16nf7fv" path="res://addons/dialogic/Editor/Theme/ValueChangeButtonTheme.tres" id="4_ql6rp"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8dle1"]
-content_margin_left = 4.0
-content_margin_right = 2.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sj3oj"]
+content_margin_left = 3.0
+content_margin_right = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_smq50"]
+content_margin_left = 2.0
+content_margin_right = 1.0
 
 [node name="Field_Number" type="HBoxContainer"]
 anchors_preset = 15
@@ -21,12 +25,38 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
 
-[node name="Label" type="RichTextLabel" parent="."]
-clip_contents = false
+[node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 8
-theme_override_styles/focus = SubResource("StyleBoxEmpty_8dle1")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_8dle1")
+
+[node name="Value_BG" type="LineEdit" parent="Value_Panel"]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"DialogicEventEdit"
+theme_override_constants/minimum_character_width = 0
+editable = false
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Layout" type="HBoxContainer" parent="Value_Panel"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="Affix" type="RichTextLabel" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
+clip_contents = false
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+mouse_default_cursor_shape = 1
+theme_override_colors/default_color = Color(0.54099, 0.540991, 0.54099, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sj3oj")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sj3oj")
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
@@ -36,24 +66,58 @@ shortcut_keys_enabled = false
 drag_and_drop_selection_enabled = false
 text_direction = 1
 
-[node name="Value" type="LineEdit" parent="."]
+[node name="Value" type="LineEdit" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"DialogicEventEdit"
 theme_override_constants/minimum_character_width = 0
 text = "0"
+alignment = 1
 expand_to_text_length = true
+virtual_keyboard_type = 3
 
-[node name="Spin" type="VBoxContainer" parent="."]
+[node name="Suffix" type="RichTextLabel" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
+clip_contents = false
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_default_cursor_shape = 1
+theme_override_colors/default_color = Color(0.435192, 0.435192, 0.435192, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_smq50")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_smq50")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+tab_size = 2
+shortcut_keys_enabled = false
+drag_and_drop_selection_enabled = false
+text_direction = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Value_Panel/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer" type="MarginContainer" parent="Value_Panel/Layout/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_right = 1
+
+[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Increment" type="Button" parent="Spin"]
+[node name="Increment" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
 layout_mode = 2
 size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
 auto_translate = false
-focus_neighbor_left = NodePath("../../Value")
+focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath("../Decrement")
 theme = ExtResource("4_ql6rp")
@@ -62,12 +126,12 @@ icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
 
-[node name="Decrement" type="Button" parent="Spin"]
+[node name="Decrement" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
 layout_mode = 2
 size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
 auto_translate = false
-focus_neighbor_left = NodePath("../../Value")
+focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath("../Increment")
 focus_neighbor_bottom = NodePath(".")
 theme = ExtResource("4_ql6rp")
@@ -77,11 +141,16 @@ flat = true
 vertical_icon_alignment = 2
 
 [node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(6, 0)
+custom_minimum_size = Vector2(3, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 
-[connection signal="focus_exited" from="Value" to="." method="_on_value_focus_exited"]
-[connection signal="text_submitted" from="Value" to="." method="_on_value_text_submitted"]
-[connection signal="button_up" from="Spin/Increment" to="." method="_on_increment_clicked"]
-[connection signal="button_up" from="Spin/Decrement" to="." method="_on_decrement_clicked"]
+[connection signal="gui_input" from="Value_Panel/Layout/Affix" to="." method="_on_sublabel_clicked"]
+[connection signal="focus_exited" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_exited"]
+[connection signal="gui_input" from="Value_Panel/Layout/Value" to="." method="_on_gui_input"]
+[connection signal="text_submitted" from="Value_Panel/Layout/Value" to="." method="_on_value_text_submitted"]
+[connection signal="gui_input" from="Value_Panel/Layout/Suffix" to="." method="_on_sublabel_clicked"]
+[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_increment_button_down" binds= [NodePath("%Spin/Increment")]]
+[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_gui_input"]
+[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_decrement_button_down" binds= [NodePath("%Spin/Decrement")]]
+[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_gui_input"]

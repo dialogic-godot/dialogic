@@ -20,7 +20,7 @@ size_flags_horizontal = 1
 step = 0.001
 min = -9999.0
 max = 9999.0
-label = "x:"
+affix = "x:"
 
 [node name="Y" parent="." instance=ExtResource("2_a0b6y")]
 layout_mode = 2
@@ -28,4 +28,4 @@ size_flags_horizontal = 1
 step = 0.001
 min = -9999.0
 max = 9999.0
-label = "y:"
+affix = "y:"

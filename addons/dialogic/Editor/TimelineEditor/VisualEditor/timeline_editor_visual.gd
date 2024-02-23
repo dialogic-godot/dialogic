@@ -997,7 +997,8 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 	## Some shortcuts should be disabled when writing text.
-	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit:
+	var focus_owner : Control = get_viewport().gui_get_focus_owner()
+	if focus_owner is TextEdit || focus_owner is LineEdit || (focus_owner is Button and focus_owner.get_parent_control().name == "Spin"):
 		return
 
 	match event.as_text():
