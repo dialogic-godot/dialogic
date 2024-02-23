@@ -58,9 +58,9 @@ var paused := false:
 					(subsystem as DialogicSubsystem).resume()
 			dialogic_resumed.emit()
 
-## Emitted when [paused] changes to true.
+## Emitted when [member paused] changes to true.
 signal dialogic_paused
-## Emitted when [paused] changes to false.
+## Emitted when [member paused] changes to false.
 signal dialogic_resumed
 
 
@@ -68,9 +68,9 @@ signal timeline_ended
 signal timeline_started
 signal event_handled(resource:DialogicEvent)
 
-## Emitted when the Signal event was reached
+## Emitted when the Signal Event was reached
 signal signal_event(argument:Variant)
-## Emitted when [signal] effect was reached in text.
+## Emitted when signal effect was reached in text.
 signal text_signal(argument:String)
 
 
@@ -143,7 +143,7 @@ func _ready() -> void:
 ################################################################################
 
 ## Method to start a timeline AND ensure that a layout scene is present.
-## For argument info, checkout start_timeline()
+## For argument info, checkout [method start_timeline]
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
