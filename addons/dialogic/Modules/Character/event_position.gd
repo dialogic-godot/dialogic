@@ -32,13 +32,13 @@ func _execute() -> void:
 
 	match action:
 		Actions.SET_RELATIVE:
-			dialogic.Portraits.move_portrait_position(position, vector, true, final_movement_time)
+			dialogic.PortraitContainers.move_portrait_position(position, vector, true, final_movement_time)
 		Actions.SET_ABSOLUTE:
-			dialogic.Portraits.move_portrait_position(position, vector, false, final_movement_time)
+			dialogic.PortraitContainers.move_portrait_position(position, vector, false, final_movement_time)
 		Actions.RESET_ALL:
-			dialogic.Portraits.reset_all_portrait_positions(final_movement_time)
+			dialogic.PortraitContainers.reset_all_portrait_positions(final_movement_time)
 		Actions.RESET:
-			dialogic.Portraits.reset_portrait_position(position, final_movement_time)
+			dialogic.PortraitContainers.reset_portrait_position(position, final_movement_time)
 
 	finish()
 
