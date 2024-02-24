@@ -17,7 +17,7 @@ var character : DialogicCharacter = null
 ## If empty, the default portrait will be used.
 var portrait: String = ""
 ## The index of the position this character should move to
-var position: int = 1
+var position: String = "center"
 ## Name of the animation script (extending DialogicAnimation).
 ## On Join/Leave empty (default) will fallback to the animations set in the settings.
 ## On Update empty will mean no animation.
@@ -60,8 +60,7 @@ var character_identifier: String:
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
 
-# Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
-var regex := RegEx.create_from_string("(?<type>join|update|leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
+var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
 
 ################################################################################
 ## 						EXECUTION
@@ -264,7 +263,7 @@ func from_text(string:String) -> void:
 		set_portrait = true
 
 	if result.get_string('position'):
-		position = int(result.get_string('position'))
+		position = result.get_string('position').strip_edges()
 		set_position = true
 
 	if result.get_string('shortcode'):
@@ -376,7 +375,11 @@ func build_event_editor() -> void:
 			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
 	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
-	add_header_edit('position', ValueType.NUMBER, {'mode':1},
+	add_header_edit('position', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: 'center',
+			'mode'				: 0,
+			'suggestions_func' 	: get_position_suggestions,
+			'icon' 				: load(_this_folder.path_join('event_portrait_position.svg'))},
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
 
 	# Body
@@ -429,7 +432,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	return suggestions
 
 
-func get_portrait_suggestions(search_text:String) -> Dictionary:
+func get_portrait_suggestions(search_text:String='') -> Dictionary:
 	var suggestions := {}
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	if action == Actions.UPDATE:
@@ -442,7 +445,14 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 	return suggestions
 
 
-func get_animation_suggestions(search_text:String) -> Dictionary:
+func get_position_suggestions(search_text:String='') -> Dictionary:
+	var icon := load(_this_folder.path_join('event_portrait_position.svg'))
+	var suggestions := {}
+	for position_id in ["leftmost", "left", "center", "right", "rightmost"]:
+		suggestions[position_id] = {'value':position_id, 'icon':icon}
+	return suggestions
+
+func get_animation_suggestions(search_text:String='') -> Dictionary:
 	var suggestions := {}
 
 	match action:
@@ -467,7 +477,8 @@ func _on_character_edit_pressed() -> void:
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	if symbol == ' ' and line.count(' ') == 1:
+	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
+	if symbol == ' ' and line_until_caret.count(' ') == 1:
 		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
 		if line.begins_with('leave'):
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
@@ -476,7 +487,11 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		var character:= regex.search(line).get_string('name')
 		CodeCompletionHelper.suggest_portraits(TextNode, character)
 
-	if '[' in line and (symbol == "[" or symbol == " "):
+	elif not '[' in line_until_caret and symbol == ' ':
+		for position in get_position_suggestions():
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
+
+	if '[' in line_until_caret and (symbol == "[" or symbol == " "):
 		if !'animation=' in line:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'animation', 'animation="', TextNode.syntax_highlighter.normal_color)
 		if !'length=' in line:
@@ -495,8 +510,8 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'z_index', 'z_index="', TextNode.syntax_highlighter.normal_color)
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'extra_data', 'extra_data="', TextNode.syntax_highlighter.normal_color)
 
-	if '[' in line:
-		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('animation="'):
+	if '[' in line_until_caret:
+		if line_until_caret.ends_with('animation="'):
 			var animations := []
 			if line.begins_with('join'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
@@ -506,7 +521,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
 			for script in animations:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
-		elif CodeCompletionHelper.get_line_untill_caret(line).ends_with('wait="') or CodeCompletionHelper.get_line_untill_caret(line).ends_with('mirrored="'):
+		elif line_until_caret.ends_with('wait="') or line_until_caret.ends_with('mirrored="'):
 			CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
 
 

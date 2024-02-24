@@ -2,18 +2,18 @@
 class_name DialogicNode_PortraitContainer
 extends Control
 
-## Node that defines a position for dialogic portraits and how to display portrait at that position.
+## Node that defines a position for dialogic portraits and how to display portraits at that position.
 
 enum PositionModes {
-	POSITION, ## This container has an index and can be joined/moved to with the Character Event
-	SPEAKER,  ## This container has no index and is joined/left automatically based on the speaker.
+	POSITION, ## This container can be joined/moved to with the Character Event
+	SPEAKER,  ## This container is joined/left automatically based on the speaker.
 	}
 
 @export var mode := PositionModes.POSITION
 
 @export_subgroup('Mode: Position')
 ## The position this node corresponds to.
-@export var position_index := 0
+@export var container_ids: PackedStringArray = ["1"]
 
 
 @export_subgroup('Mode: Speaker')
@@ -101,6 +101,7 @@ func update_portrait_transforms():
 	for child in get_children():
 		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
 
+
 ## Returns a Rect2 with the position as the position and the scale as the size.
 func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> Rect2:
 	var transform := Rect2()
@@ -132,8 +133,11 @@ func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> 
 func _get_origin_position() -> Vector2:
 	return size*Vector2(origin_anchor%3/2.0, floor(origin_anchor/3.0)/2.0) + origin_offset
 
-################################################################################
-##						DEBUG METHODS
+
+func is_container(id:Variant) -> bool:
+	return str(id) in container_ids
+
+#region DEBUG METHODS
 ################################################################################
 
 ## Loads the debug_character with the debug_character_portrait
@@ -196,3 +200,5 @@ func _update_debug_origin() -> void:
 ## Returns the debug character or the default debug character
 func _get_debug_character() -> DialogicCharacter:
 	return debug_character if debug_character != null else default_debug_character
+
+#endregion

@@ -13,7 +13,7 @@ enum Actions {SET_RELATIVE, SET_ABSOLUTE, RESET, RESET_ALL}
 ## The type of action: SetRelative, SetAbsolute, Reset, ResetAll
 var action := Actions.SET_RELATIVE
 ## The position that should be affected
-var position: int = 0
+var position: String = "center"
 ## A vector representing a relative change or an absolute position (for SetRelative and SetAbsolute)
 var vector: Vector2 = Vector2()
 ## The time the tweening will take.
@@ -70,7 +70,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name 	: property_info
 		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE,
 								"suggestions": func(): return {"Set Relative":{'value':0, 'text_alt':['set_relative', 'relative']}, "Set Absolute":{'value':1, 'text_alt':['set_absolute', 'absolute']}, "Reset":{'value':2,'text_alt':['reset'] }, "Reset All":{'value':3,'text_alt':['reset_all']}}},
-		"position"		:  {"property": "position", 		"default": 0},
+		"position"		:  {"property": "position", 		"default": "0"},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
 		"time"			:  {"property": "movement_time", 	"default": 0},
 	}
@@ -101,7 +101,7 @@ func build_event_editor():
 			}
 		]
 		})
-	add_header_edit("position", ValueType.NUMBER, {'left_text':"position", 'mode':1},
+	add_header_edit("position", ValueType.SINGLELINE_TEXT, {'left_text':"position"},
 			'action != Actions.RESET_ALL')
 	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
 	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
