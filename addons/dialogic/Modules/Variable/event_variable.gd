@@ -74,7 +74,7 @@ var _suppress_default_value: bool = false
 func _execute() -> void:
 	if name:
 		var orig :Variant= dialogic.VAR.get_variable(name)
-		if value and orig != null:
+		if (value == false or value) and orig != null:
 			var the_value :Variant
 			match _value_type:
 				VarValueType.STRING: the_value = dialogic.VAR.get_variable('"'+value+'"')
