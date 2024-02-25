@@ -94,7 +94,7 @@ func _holding_button(value_direction: int, button : BaseButton) -> void:
 	button.focus_exited.connect(_stop_button_holding.bind(button))
 	button.mouse_exited.connect(_stop_button_holding.bind(button))
 	
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.6, true, false, true).timeout
 	
 	var change_speed : float = 0.25
 	
@@ -131,7 +131,7 @@ func _on_decrement_button_down(button : NodePath) -> void:
 func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
 	if new_text.is_valid_float():
 		var temp: float = min(max(new_text.to_float(), min), max)
-		if !enforce_step or is_equal_approx(temp/step, round(temp/step)):
+		if !enforce_step:
 			value = temp
 		else:
 			value = snapped(temp, step)

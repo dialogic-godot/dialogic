@@ -1,20 +1,23 @@
 @tool
 extends DialogicVisualEditorFieldVector
 
-## Event block field for a vector.
+## Event block field for a Vector2.
 
 var current_value := Vector2()
 
 func _set_value(value:Variant) -> void:
-	$X.tooltip_text = tooltip_text
-	$Y.tooltip_text = tooltip_text
-	$X.set_value(value.x)
-	$Y.set_value(value.y)
 	current_value = value
+	super(value)
 
 func get_value() -> Vector2:
 	return current_value
 
-func _on_value_changed(property:String, value:float) -> void:
-	current_value = Vector2($X.value, $Y.value)
-	value_changed.emit(property_name, current_value)
+func _on_sub_value_changed(sub_component:String, value:float) -> void:
+	match sub_component:
+		'X': current_value.x = value
+		'Y': current_value.y = value
+	_on_value_changed(current_value)
+
+func _update_sub_component_text(value:Variant) -> void:
+	$X._on_value_text_submitted(str(value.x), true)
+	$Y._on_value_text_submitted(str(value.y), true)
