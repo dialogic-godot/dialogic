@@ -10,24 +10,24 @@ func _ready() -> void:
 		child.value_changed.connect(_on_sub_value_changed)
 
 
-func _load_display_info(info:Dictionary) -> void:
+func _load_display_info(info: Dictionary) -> void:
 	for child in get_children():
 		if child is DialogicVisualEditorFieldNumber:
 			child._load_display_info(info)
 
 
-func _set_value(value:Variant) -> void:
+func _set_value(value: Variant) -> void:
 	_update_sub_component_text(value)
 	_on_value_changed(value)
 
 
-func _on_value_changed(value:Variant) -> void:
+func _on_value_changed(value: Variant) -> void:
 	value_changed.emit(property_name, value)
 
 
-func _on_sub_value_changed(sub_component:String, value:float) -> void:
+func _on_sub_value_changed(sub_component: String, value: float) -> void:
 	pass
 
 
-func _update_sub_component_text(value:Variant) -> void:
+func _update_sub_component_text(value: Variant) -> void:
 	pass

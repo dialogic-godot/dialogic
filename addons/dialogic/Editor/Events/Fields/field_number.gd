@@ -4,14 +4,14 @@ extends DialogicVisualEditorField
 
 ## Event block field for integers and floats. Improved version of the native spinbox.
 
-@export var allow_string :bool = false
-@export var step:float = 0.1
-@export var enforce_step:bool = true
-@export var min:float = 0
-@export var max:float= 999
+@export var allow_string : bool = false
+@export var step: float = 0.1
+@export var enforce_step: bool = true
+@export var min: float = 0
+@export var max: float= 999
 @export var value = 0.0
-@export var affix:String = ""
-@export var suffix:String = ""
+@export var affix: String = ""
+@export var suffix: String = ""
 
 var _is_holding_button : bool = false #For handling incrementing while holding key or click
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 	update_suffix(suffix)
 
 
-func _load_display_info(info:Dictionary) -> void:
+func _load_display_info(info: Dictionary) -> void:
 	match info.get('mode', 0):
 		0: #FLOAT
 			use_float_mode(info.get('step', 0.1))
@@ -46,7 +46,7 @@ func _load_display_info(info:Dictionary) -> void:
 			'hide_step_button': %Spin.hide()
 
 
-func _set_value(new_value:Variant) -> void:
+func _set_value(new_value: Variant) -> void:
 	_on_value_text_submitted(str(new_value), true)
 	%Value.tooltip_text = tooltip_text
 
@@ -80,7 +80,7 @@ func use_decibel_mode(value_step: float = step) -> void:
 
 #region UI FUNCTIONALITY
 ################################################################################
-var _stop_button_holding : Callable = func(button : BaseButton) -> void:
+var _stop_button_holding: Callable = func(button: BaseButton) -> void:
 	_is_holding_button = false
 	if button.button_up.get_connections().find(_stop_button_holding):
 		button.button_up.disconnect(_stop_button_holding)
@@ -90,7 +90,7 @@ var _stop_button_holding : Callable = func(button : BaseButton) -> void:
 		button.mouse_exited.disconnect(_stop_button_holding)
 
 
-func _holding_button(value_direction: int, button : BaseButton) -> void:
+func _holding_button(value_direction: int, button: BaseButton) -> void:
 	if _is_holding_button: 
 		return
 	if _stop_button_holding.get_bound_arguments_count() > 0:
@@ -103,23 +103,32 @@ func _holding_button(value_direction: int, button : BaseButton) -> void:
 	button.focus_exited.connect(_stop_button_holding.bind(button))
 	button.mouse_exited.connect(_stop_button_holding.bind(button))
 	
-	await get_tree().create_timer(0.6, true, false, true).timeout
+	var scene_tree: SceneTree = get_tree()
+	var delay_timer_ms: int = 600
 	
-	var change_speed : float = 0.25
+	#Instead of awaiting for the duration, await per-frame so we can catch any changes in _is_holding_button and exit completely
+	while(delay_timer_ms > 0):
+		if _is_holding_button == false:
+			return
+		var pre_time: int = Time.get_ticks_msec()
+		await scene_tree.process_frame
+		delay_timer_ms -= Time.get_ticks_msec() - pre_time
+	
+	var change_speed: float = 0.25
 	
 	while(_is_holding_button == true):
-		await get_tree().create_timer(change_speed).timeout
+		await scene_tree.create_timer(change_speed).timeout
 		change_speed = maxf(0.05, change_speed - 0.01)
 		_on_value_text_submitted(str(value+(step * value_direction)))
 
 
-func update_affix(to_affix:String) -> void:
+func update_affix(to_affix: String) -> void:
 	affix = to_affix
 	%Affix.visible = to_affix != null and to_affix != ""
 	%Affix.text = affix
 
 
-func update_suffix(to_suffix:String) -> void:
+func update_suffix(to_suffix: String) -> void:
 	suffix = to_suffix
 	%Suffix.visible = to_suffix != null and to_suffix != ""
 	%Suffix.text = suffix
@@ -127,24 +136,24 @@ func update_suffix(to_suffix:String) -> void:
 
 #region SIGNAL METHODS
 ################################################################################
-func _on_gui_input(event : InputEvent) -> void:
+func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action('ui_up') and event.get_action_strength('ui_up') > 0.5:
 		_on_value_text_submitted(str(value+step))
 	elif event.is_action('ui_down') and event.get_action_strength('ui_down') > 0.5:
 		_on_value_text_submitted(str(value-step))
 
 
-func _on_increment_button_down(button : NodePath) -> void:
+func _on_increment_button_down(button: NodePath) -> void:
 	_on_value_text_submitted(str(value+step))
 	_holding_button(1.0, get_node(button) as BaseButton)
 
 
-func _on_decrement_button_down(button : NodePath) -> void:
+func _on_decrement_button_down(button: NodePath) -> void:
 	_on_value_text_submitted(str(value-step))
 	_holding_button(-1.0, get_node(button) as BaseButton)
 
 
-func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
+func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 	if new_text.is_valid_float():
 		var temp: float = min(max(new_text.to_float(), min), max)
 		if !enforce_step:
@@ -162,7 +171,7 @@ func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
 
 
 # If Affix or Suffix clicked, select the actual value box instead and move the Carat to the closest side.
-func _on_sublabel_clicked(event:InputEvent) -> void:
+func _on_sublabel_clicked(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mousePos : Vector2 = get_global_mouse_position()
 		mousePos.x -= get_minimum_size().x / 2
