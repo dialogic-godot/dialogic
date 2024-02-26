@@ -119,19 +119,17 @@ func process() -> void:
 				break
 
 		event.empty_lines_above = empty_lines
-		# add the following lines until the event says it's full, there is an empty line or the indent changes
+		# add the following lines until the event says it's full or there is an empty line
 		while !event.is_string_full_event(event_content):
 			idx += 1
 			if idx == len(lines):
 				break
-			var following_line: String = lines[idx]
-			var following_line_stripped: String = following_line.strip_edges(true, false)
-			var following_line_indent: String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+
+			var following_line_stripped: String = lines[idx].strip_edges(true, false)
+
 			if following_line_stripped.is_empty():
 				break
-			if following_line_indent != indent:
-				idx -= 1
-				break
+
 			event_content += "\n"+following_line_stripped
 
 		event._load_from_string(event_content)
