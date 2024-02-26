@@ -12,33 +12,46 @@ var simple_history_enabled := true
 var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
-## Full event history (can be used for undo)
+## Whether to keep a history of every Dialogic event encountered.
 var full_event_history_enabled := false
+
+## The full history of all Dialogic events encountered.
+## Requires [member full_event_history_enabled] to be true.
 var full_event_history_content := []
+
+## Emitted if a new event has been inserted into the full event history.
 signal full_event_history_changed
 
 ## Read text history
 ## Stores which text events and choices have already been visited
-var already_read_history_enabled := false
-var already_read_history_content := {}
-var _was_last_event_already_read := false
+var visited_event_history_enabled := false
 
-signal already_read_event_reached
-signal not_read_event_reached
+## A history of visited Dialogic events.
+var visited_event_history_content := {}
+var _was_last_event_visited := false
 
-## Used to store [member already_read_history_content] in the global info file.
+## Emitted if an encountered timeline event has been inserted into the visited
+## event history.
+##
+## This will trigger only once per unique event instance.
+signal visited_event_reached
+
+## Emitted if an encountered timeline event has not been visited before.
+signal unvisited_event
+
+## Used to store [member visited_event_history_content] in the global info file.
 ## You can change this to a custom name if you want to use a different key
 ## in the global save info file.
-var already_seen_save_key := "already_read_history_content"
+var already_seen_save_key := "visited_event_history_content"
 
-## Whether to automatically save the already-seen history on auto-save.
+## Whether to automatically save the already-visited history on auto-save.
 var save_already_seen_history_on_autosave := false:
 	set(value):
 		save_already_seen_history_on_autosave = value
 		_update_saved_connection(value)
 
 
-## Whether to automatically save the already-seen history on manual save.
+## Whether to automatically save the already-visited history on manual save.
 var save_already_seen_history_on_save := false:
 	set(value):
 		save_already_seen_history_on_save = value
@@ -63,11 +76,11 @@ func _update_saved_connection(to_connect: bool) -> void:
 
 func _ready() -> void:
 	var _result := dialogic.event_handled.connect(store_full_event)
-	_result = dialogic.event_handled.connect(check_already_read)
+	_result = dialogic.event_handled.connect(_check_seen)
 
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', simple_history_enabled )
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', full_event_history_enabled)
-	already_read_history_enabled = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', already_read_history_enabled)
+	visited_event_history_enabled = ProjectSettings.get_setting('dialogic/history/visited_event_history_enabled', visited_event_history_enabled)
 
 
 
@@ -117,7 +130,7 @@ func get_simple_history() -> Array:
 ####################################################################################################
 
 ## Called on each event.
-func store_full_event(event:DialogicEvent) -> void:
+func store_full_event(event: DialogicEvent) -> void:
 	if !full_event_history_enabled: return
 	full_event_history_content.append(event)
 	full_event_history_changed.emit()
@@ -137,16 +150,16 @@ func _current_event_key() -> String:
 
 # Called if a Text event marks an unread Text event as read.
 func event_was_read(_event: DialogicEvent) -> void:
-	if !already_read_history_enabled:
+	if !visited_event_history_enabled:
 		return
 
 	var event_key := _current_event_key()
 
-	already_read_history_content[event_key] = dialogic.current_event_idx
+	visited_event_history_content[event_key] = dialogic.current_event_idx
 
 # Called on each event, but we filter for Text events.
-func check_already_read(event: DialogicEvent) -> void:
-	if !already_read_history_enabled:
+func _check_seen(event: DialogicEvent) -> void:
+	if !visited_event_history_enabled:
 		return
 
 	# At this point, we only care about Text events.
@@ -157,17 +170,19 @@ func check_already_read(event: DialogicEvent) -> void:
 
 	var event_key := _current_event_key()
 
-	if event_key in already_read_history_content:
-		already_read_event_reached.emit()
-		_was_last_event_already_read = true
+	if event_key in visited_event_history_content:
+		visited_event_reached.emit()
+		_was_last_event_visited = true
 
 	else:
-		not_read_event_reached.emit()
-		_was_last_event_already_read = false
+		unvisited_event.emit()
+		_was_last_event_visited = false
 
 
-func was_last_event_already_read() -> bool:
-	return _was_last_event_already_read
+## Returns whether the last event, when encountered just now, has been
+## part of the [member visited_event_history_content] or not.
+func has_last_event_been_visited_before() -> bool:
+	return _was_last_event_visited
 
 
 ## Saves all seen events to the global info file.
@@ -179,7 +194,7 @@ func was_last_event_already_read() -> bool:
 ##
 ## Relies on the [subsystem Save] subsystem.
 func save_already_seen_history() -> void:
-	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, already_read_history_content)
+	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, visited_event_history_content)
 
 
 ## Loads the seen events from the global info save file.
@@ -187,10 +202,10 @@ func save_already_seen_history() -> void:
 ##
 ## Relies on the [subsystem Save] subsystem.
 func load_already_seen_history() -> void:
-	already_read_history_content = get_saved_already_seen_history()
+	visited_event_history_content = get_saved_already_seen_history()
 
 
-## Returns the saved already-seen history from the global info save file.
+## Returns the saved already-visited history from the global info save file.
 ## If none exist in the global info file, returns an empty dictionary.
 ##
 ## Relies on the [subsystem Save] subsystem.
@@ -198,8 +213,8 @@ func get_saved_already_seen_history() -> Dictionary:
 	return DialogicUtil.autoload().Save.get_global_info(already_seen_save_key, {})
 
 
-## Resets the already-seen history in the global info save file.
-## If [param reset_property] is true, it will also reset the already-seen
+## Resets the already-visited history in the global info save file.
+## If [param reset_property] is true, it will also reset the already-visited
 ## history in the Dialogic Autoload.
 ##
 ## Relies on the [subsystem Save] subsystem.
@@ -207,6 +222,6 @@ func reset_already_seen_history(reset_property := true) -> void:
 	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
 
 	if reset_property:
-		already_read_history_content = {}
+		visited_event_history_content = {}
 
 #endregion
