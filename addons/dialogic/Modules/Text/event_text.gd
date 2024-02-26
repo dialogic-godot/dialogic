@@ -131,7 +131,7 @@ func _execute() -> void:
 			state = States.IDLE
 
 		# Handling potential Choice Events.
-		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+		if section_idx == len(split_text)-1 and dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
 
 			end_text_event()
