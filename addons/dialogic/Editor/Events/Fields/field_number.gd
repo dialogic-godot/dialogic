@@ -1,5 +1,6 @@
 @tool
-class_name DialogicVisualEditorFieldNumber extends DialogicVisualEditorField
+class_name DialogicVisualEditorFieldNumber
+extends DialogicVisualEditorField
 
 ## Event block field for integers and floats. Improved version of the native spinbox.
 
@@ -20,8 +21,9 @@ var _is_holding_button : bool = false #For handling incrementing while holding k
 func _ready() -> void:
 	if %Value.text.is_empty():
 		set_value(value)
-	update_suffix(suffix)
 	update_affix(affix)
+	update_suffix(suffix)
+
 
 func _load_display_info(info:Dictionary) -> void:
 	match info.get('mode', 0):
@@ -43,25 +45,31 @@ func _load_display_info(info:Dictionary) -> void:
 				step = info[option]
 			'hide_step_button': %Spin.hide()
 
+
 func _set_value(new_value:Variant) -> void:
 	_on_value_text_submitted(str(new_value), true)
 	%Value.tooltip_text = tooltip_text
 
+
 func _autofocus():
 	%Value.grab_focus()
 
+
 func get_value() -> float:
 	return value
+
 
 func use_float_mode(value_step: float = 0.1) -> void:
 	step = value_step
 	update_suffix("")
 	enforce_step = false
 
+
 func use_int_mode(value_step: float = 1) -> void:
 	step = value_step
 	update_suffix("")
 	enforce_step = true
+
 
 func use_decibel_mode(value_step: float = step) -> void:
 	max = 6
@@ -80,6 +88,7 @@ var _stop_button_holding : Callable = func(button : BaseButton) -> void:
 		button.focus_exited.disconnect(_stop_button_holding)
 	if button.mouse_exited.get_connections().find(_stop_button_holding):
 		button.mouse_exited.disconnect(_stop_button_holding)
+
 
 func _holding_button(value_direction: int, button : BaseButton) -> void:
 	if _is_holding_button: 
@@ -103,12 +112,16 @@ func _holding_button(value_direction: int, button : BaseButton) -> void:
 		change_speed = maxf(0.05, change_speed - 0.01)
 		_on_value_text_submitted(str(value+(step * value_direction)))
 
+
 func update_affix(to_affix:String) -> void:
 	affix = to_affix
+	%Affix.visible = to_affix != null and to_affix != ""
 	%Affix.text = affix
+
 
 func update_suffix(to_suffix:String) -> void:
 	suffix = to_suffix
+	%Suffix.visible = to_suffix != null and to_suffix != ""
 	%Suffix.text = suffix
 #endregion
 
@@ -120,13 +133,16 @@ func _on_gui_input(event : InputEvent) -> void:
 	elif event.is_action('ui_down') and event.get_action_strength('ui_down') > 0.5:
 		_on_value_text_submitted(str(value-step))
 
+
 func _on_increment_button_down(button : NodePath) -> void:
 	_on_value_text_submitted(str(value+step))
 	_holding_button(1.0, get_node(button) as BaseButton)
 
+
 func _on_decrement_button_down(button : NodePath) -> void:
 	_on_value_text_submitted(str(value-step))
 	_holding_button(-1.0, get_node(button) as BaseButton)
+
 
 func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
 	if new_text.is_valid_float():
@@ -144,16 +160,18 @@ func _on_value_text_submitted(new_text:String, no_signal:= false) -> void:
 	%Spin/Decrement.disabled = value <= min
 	%Spin/Increment.disabled = value >= max
 
+
 # If Affix or Suffix clicked, select the actual value box instead and move the Carat to the closest side.
 func _on_sublabel_clicked(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var mousePos = get_global_mouse_position()
+		var mousePos : Vector2 = get_global_mouse_position()
 		mousePos.x -= get_minimum_size().x / 2
 		if mousePos.x > global_position.x:
 			(%Value as LineEdit).caret_column = (%Value as LineEdit).text.length()
 		else:
 			(%Value as LineEdit).caret_column = 0
 		(%Value as LineEdit).grab_focus()
+
 
 func _on_value_focus_exited() -> void:
 	_on_value_text_submitted(%Value.text)

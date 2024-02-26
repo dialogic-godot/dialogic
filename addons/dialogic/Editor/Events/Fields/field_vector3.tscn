@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="3_k0u0p"]
 
 [node name="Field_Vector3" instance=ExtResource("1_l3y0o")]
+offset_right = -973.0
 script = ExtResource("2_gktf1")
 
 [node name="Z" parent="." index="2" instance=ExtResource("3_k0u0p")]
 layout_mode = 2
-size_flags_horizontal = 1
 step = 0.001
 min = -9999.0
 max = 9999.0

@@ -950,7 +950,6 @@ func duplicate_selected() -> void:
 		TimelineUndoRedo.commit_action()
 
 
-
 func _input(event:InputEvent) -> void:
 	# we protect this with is_visible_in_tree to not
 	# invoke a shortcut by accident
@@ -998,7 +997,7 @@ func _input(event:InputEvent) -> void:
 
 	## Some shortcuts should be disabled when writing text.
 	var focus_owner : Control = get_viewport().gui_get_focus_owner()
-	if focus_owner is TextEdit || focus_owner is LineEdit || (focus_owner is Button and focus_owner.get_parent_control().name == "Spin"):
+	if focus_owner is TextEdit or focus_owner is LineEdit or (focus_owner is Button and focus_owner.get_parent_control().name == "Spin"):
 		return
 
 	match event.as_text():
