@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
 [ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
 [ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
-[ext_resource type="Theme" uid="uid://krxxw16nf7fv" path="res://addons/dialogic/Editor/Theme/ValueChangeButtonTheme.tres" id="4_ql6rp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgg3a"]
 content_margin_left = 0.0
@@ -18,6 +17,22 @@ content_margin_right = 1.0
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_smq50"]
 content_margin_left = 2.0
 content_margin_right = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_increment"]
+content_margin_left = 2.0
+content_margin_top = 6.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.94, 0.94, 0.94, 0)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_decrement"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 6.0
+bg_color = Color(0.94, 0.94, 0.94, 0)
+border_color = Color(0, 0, 0, 0)
 
 [node name="Field_Number" type="HBoxContainer"]
 anchors_preset = 15
@@ -127,8 +142,13 @@ auto_translate = false
 focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath("../Decrement")
-theme = ExtResource("4_ql6rp")
-theme_type_variation = &"IncrementButton"
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_increment")
+theme_override_styles/focus = SubResource("StyleBoxFlat_increment")
+theme_override_styles/hover = SubResource("StyleBoxFlat_increment")
+theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_increment")
 icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
@@ -140,8 +160,13 @@ auto_translate = false
 focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath("../Increment")
 focus_neighbor_bottom = NodePath(".")
-theme = ExtResource("4_ql6rp")
-theme_type_variation = &"DecrementButton"
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/focus = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/hover = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_decrement")
 icon = ExtResource("4_ph52o")
 flat = true
 vertical_icon_alignment = 2
