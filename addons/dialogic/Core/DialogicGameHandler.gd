@@ -1,10 +1,12 @@
 class_name DialogicGameHandler
 extends Node
 
-## Autoload script that allows interacting with all of Dialogics systems:
-## - Holds all important information about the current state of Dialogic.
-## - Gives access to all the subystems.
-## - Has methods to start timelines.
+## Class that is used as the Dialogic autoload.
+
+## Autoload script that allows interacting with all of Dialogics systems:[br]
+## - Holds all important information about the current state of Dialogic.[br]
+## - Gives access to all the subystems.[br]
+## - Has methods to start/end timelines.[br]
 
 
 ## States indicating different phases of dialog.
@@ -16,34 +18,34 @@ enum States {
 	WAITING 			## Dialogic is currently awaiting something.
 	}
 
-## Flags indicating what to clear when calling Dialogic.clear()
+## Flags indicating what to clear when calling [method clear]
 enum ClearFlags {
 	FULL_CLEAR = 0, 		## Clears all subsystems
 	KEEP_VARIABLES = 1, 	## Clears all subsystems and info except for variables
 	TIMLEINE_INFO_ONLY = 2	## Doesn't clear subsystems but current timeline and index
 	}
 
-## Reference to the timeline that is currently being executed
+## Reference to the timeline that is currently being executed.
 var current_timeline: DialogicTimeline = null
-## List of the current timelines events
+## Copy of the [member current_timeline]'s events.
 var current_timeline_events: Array = []
 
 ## Index of the event the timeline handeling is currently at.
 var current_event_idx: int = 0
 ## Contains all information that subsystems consider
-##  relevant for the current situation
+## relevant for the current situation
 var current_state_info: Dictionary = {}
-## Current state (see [States] enum)
+## Current state (see [member States] enum)
 var current_state := States.IDLE:
 	get:
 		return current_state
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
-## Emitted when [current_state] change.
+## Emitted when [member current_state] change.
 signal state_changed(new_state:States)
 
-## When true, many dialogic process won't continue until it's false again.
+## When `true`, many dialogic processes won't continue until it's false again.
 var paused := false:
 	set(value):
 		paused = value
@@ -64,13 +66,16 @@ signal dialogic_paused
 signal dialogic_resumed
 
 
+## Emitted when dialog ends (by a timeline end being reached OR end_timeline() being called).
 signal timeline_ended
+## Emitted when a timeline was started with [method start] or [method start_timeline].
 signal timeline_started
+## Emitted when an event has just been executed (not necessarily when the event finished).
 signal event_handled(resource:DialogicEvent)
 
-## Emitted when the Signal Event was reached
+## Emitted when the `Signal Event` was reached
 signal signal_event(argument:Variant)
-## Emitted when signal effect was reached in text.
+## Emitted when `[signal]` effect was reached in text.
 signal text_signal(argument:String)
 
 
@@ -130,11 +135,12 @@ var Voice := preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd").n
 
 #endregion
 
+
 ## Autoloads are added first, so this happens REALLY early on game startup.
 func _ready() -> void:
 	DialogicResourceUtil.update()
 
-	collect_subsystems()
+	_collect_subsystems()
 
 	clear()
 
@@ -219,16 +225,21 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 	return null
 
 
+## Clears and stops the current timeline.
 func end_timeline() -> void:
 	clear(ClearFlags.TIMLEINE_INFO_ONLY)
 	_on_timeline_ended()
 	timeline_ended.emit()
 
 
+## Handles the next event.
+
 func handle_next_event(ignore_argument:Variant = "") -> void:
 	handle_event(current_event_idx+1)
 
 
+## Handles the event at the given index.
+## You can call this manually, but if another event is still executing, it might have unexpected results.
 func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
@@ -260,7 +271,7 @@ func handle_event(event_index:int) -> void:
 
 
 ## Resets dialogics state fully or partially.
-## By using the clear flags you can specify what info should be kept.
+## By using the clear flags from the [member ClearFlags] enum you can specify what info should be kept.
 ## For example at timeline end usually it doesn't clear node or subsystem info
 func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
@@ -285,6 +296,9 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 #region SAVING & LOADING
 ################################################################################
 
+## Returns a dictionary containing all necessary information to later recreate the same state with load_full_state.
+## The [subsystem Save] subsystem might be more useful for you.
+## However this can be used to integrate the info into your own save system.
 func get_full_state() -> Dictionary:
 	if current_timeline:
 		current_state_info['current_event_idx'] = current_event_idx
@@ -296,6 +310,8 @@ func get_full_state() -> Dictionary:
 	return current_state_info.duplicate(true)
 
 
+## Will try to load the state from the given dictionary.
+## Will automatically start a timeline if one was running when the dictionary was retrieved.
 func load_full_state(state_info:Dictionary) -> void:
 	clear()
 	current_state_info = state_info
@@ -304,7 +320,6 @@ func load_full_state(state_info:Dictionary) -> void:
 	if has_subsystem('Styles'):
 		get_subsystem('Styles').load_game_state()
 		scene = self.Styles.get_layout_node()
-
 
 	var load_subsystems := func() -> void:
 		for subsystem in get_children():
@@ -328,7 +343,7 @@ func load_full_state(state_info:Dictionary) -> void:
 #region SUB-SYTSEMS
 ################################################################################
 
-func collect_subsystems() -> void:
+func _collect_subsystems() -> void:
 	var subsystem_nodes := [] as Array[DialogicSubsystem]
 	for indexer in DialogicUtil.get_indexers():
 		for subsystem in indexer._get_subsystems():
@@ -339,14 +354,17 @@ func collect_subsystems() -> void:
 		subsystem.post_install()
 
 
+## Returns `true` if a subystem with the name exists.
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
 
 
+## Returns the subsystem node of the given name.
 func get_subsystem(_name:String) -> DialogicSubsystem:
 	return get_node(_name)
 
 
+## Adds a subsystem node with the given name and script.
 func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 	var node: Node = Node.new()
 	node.name = _name
@@ -363,6 +381,7 @@ func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
 #region HELPERS
 ################################################################################
 
+## This handles the `Layout End Behaviour` setting that can be changed in the dialogic settings.
 func _on_timeline_ended() -> void:
 	if self.Styles.has_active_layout_node() and self.Styles.get_layout_node().is_inside_tree():
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
