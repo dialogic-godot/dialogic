@@ -64,15 +64,19 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 	dict = color_translation_id(dict, str_line)
 
 	if mode == Modes.FULL_HIGHLIGHTING:
-		if str_line.strip_edges().begins_with("[") and !text_event.text_effects_regex.search(str_line.get_slice(' ', 0)):
-			var result:= shortcode_regex.search(str_line)
+		if line_is_shortcode_event(line):
+			var full_event := get_full_event(line)
+			var result := shortcode_regex.search(full_event)
 			if result:
 				if result.get_string('id') in shortcode_events:
-					dict[result.get_start('id')] = {"color":shortcode_events[result.get_string('id')].event_color.lerp(normal_color, 0.4)}
-					dict[result.get_end('id')] = {"color":normal_color}
+					if full_event.begins_with(str_line):
+						dict[result.get_start('id')] = {"color":shortcode_events[result.get_string('id')].event_color.lerp(normal_color, 0.4)}
+						dict[result.get_end('id')] = {"color":normal_color}
 
-					if result.get_string('args'):
-						color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'), shortcode_events[result.get_string('id')].event_color)
+						if result.get_string('args'):
+							color_shortcode_content(dict, str_line, result.get_start('args'), result.get_end('args'), shortcode_events[result.get_string('id')].event_color)
+					else:
+						color_shortcode_content(dict, str_line, 0, 0, shortcode_events[result.get_string('id')].event_color)
 			return fix_dict(dict)
 
 		else:
@@ -85,6 +89,39 @@ func _get_line_syntax_highlighting(line:int) -> Dictionary:
 		dict = text_event._get_syntax_highlighting(self, dict, str_line)
 	return fix_dict(dict)
 
+
+func line_is_shortcode_event(line_idx:int) -> bool:
+	var str_line := get_text_edit().get_line(line_idx)
+	if text_event.text_effects_regex.search(str_line.get_slice(' ', 0)):
+		return false
+
+	if str_line.strip_edges().begins_with("["):
+		return true
+
+	if line_idx > 0 and get_text_edit().get_line(line_idx-1).ends_with('\\'):
+		return line_is_shortcode_event(line_idx-1)
+
+	return false
+
+
+func get_full_event(line_idx:int) -> String:
+	var str_line := get_text_edit().get_line(line_idx)
+	var offset := 1
+	# Add previous lines
+	while get_text_edit().get_line(line_idx-offset).ends_with('\\'):
+		str_line = get_text_edit().get_line(line_idx-offset).trim_suffix('\\')+"\n"+str_line
+		offset += 1
+
+	# This is commented out, as it is not needed right now.
+	# However without it, this isn't actually the full event.
+	# Might need to be included some day.
+	#offset = 0
+	## Add following lines
+	#while get_text_edit().get_line(line_idx+offset).ends_with('\\'):
+		#str_line = str_line.trim_suffix('\\')+"\n"+get_text_edit().get_line(line_idx+offset)
+		#offset += 1
+
+	return str_line
 
 func fix_dict(dict:Dictionary) -> Dictionary:
 	var d := {}
@@ -151,7 +188,7 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int = 0, base_color:=normal_color) -> Dictionary:
 	if to <= from:
 		to = len(line)-1
-	var args_result:= shortcode_param_regex.search_all(line.substr(from, to-from+2))
+	var args_result := shortcode_param_regex.search_all(line.substr(from, to-from+2))
 	for x in args_result:
 		dict[x.get_start()+from] = {"color":base_color.lerp(normal_color, 0.5)}
 		dict[x.get_start('value')+from-1] = {"color":base_color.lerp(normal_color, 0.7)}

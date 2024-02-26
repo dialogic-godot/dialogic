@@ -3,8 +3,8 @@ extends Node
 
 enum Modes {TEXT_EVENT_ONLY, FULL_HIGHLIGHTING}
 
-var syntax_highlighter :SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
-var text_syntax_highlighter :SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
+var syntax_highlighter: SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
+var text_syntax_highlighter: SyntaxHighlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
 
 
 # These RegEx's are used to deduce information from the current line for auto-completion
@@ -29,8 +29,7 @@ func _ready():
 
 	text_syntax_highlighter.mode = text_syntax_highlighter.Modes.TEXT_EVENT_ONLY
 
-################################################################################
-## 					AUTO COMPLETION
+#region AUTO COMPLETION
 ################################################################################
 
 # Helper that gets the current line with a special character where the caret is
@@ -65,7 +64,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 	# make sure shortcode event references are loaded
 	if mode == Modes.FULL_HIGHLIGHTING:
-		var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+		var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 		if shortcode_events.is_empty():
 			for event in DialogicResourceUtil.get_event_cache():
 				if event.get_shortcode() != 'default_shortcode':
@@ -103,7 +102,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 	# The completion will check if the letter is already present and add it otherwise.
 
 	# Shortcode event suggestions
-	if line.begins_with('[') and !text_event.text_effects_regex.search(line.get_slice(' ', 0)) and mode == Modes.FULL_HIGHLIGHTING:
+	if mode == Modes.FULL_HIGHLIGHTING and syntax_highlighter.line_is_shortcode_event(text.get_caret_line()):
 		if symbol == '[':
 			# suggest shortcodes if a shortcode event has just begun
 			var shortcodes := shortcode_events.keys()
@@ -116,7 +115,8 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 				else:
 					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", shortcode_events[shortcode].event_color.lerp(syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 		else:
-			var current_shortcode := completion_shortcode_getter_regex.search(line)
+			var full_event_text: String = syntax_highlighter.get_full_event(text.get_caret_line())
+			var current_shortcode := completion_shortcode_getter_regex.search(full_event_text)
 			if !current_shortcode:
 				text.update_code_completion_options(false)
 				return
@@ -128,9 +128,9 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 			# suggest parameters
 			if symbol == ' ' and line.count('"')%2 == 0:
-				var parameters :Array = shortcode_events[code].get_shortcode_parameters().keys()
+				var parameters: Array = shortcode_events[code].get_shortcode_parameters().keys()
 				for param in parameters:
-					if !param+'=' in line:
+					if !param+'=' in full_event_text:
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
 
 			# suggest values
@@ -152,7 +152,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					text.update_code_completion_options(true)
 					return
 
-				var suggestions : Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
+				var suggestions: Dictionary= shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
 				for key in suggestions.keys():
 					if suggestions[key].has('text_alt'):
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
@@ -265,8 +265,9 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 			text.set_caret_column(text.get_caret_column()+1)
 
 
-################################################################################
-##					SYMBOL CLICKING
+#endregion
+
+#region SYMBOL CLICKING
 ################################################################################
 
 # Performs an action (like opening a link) when a valid symbol was clicked
@@ -290,3 +291,4 @@ func symbol_validate(symbol:String, text:CodeEdit) -> void:
 	if symbol in DialogicResourceUtil.get_timeline_directory():
 		text.set_symbol_lookup_word_as_valid(true)
 
+#endregion
