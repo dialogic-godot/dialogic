@@ -161,8 +161,8 @@ func _get_event_key(event_index: int, timeline_path: String) -> String:
 	return event_key
 
 
-# Called if a Text event marks an unread Text event as read.
-func event_was_read(_event: DialogicEvent) -> void:
+# Called if a Text event marks an unvisited Text event as visited.
+func mark_event_as_visited(_event: DialogicEvent) -> void:
 	if !visited_event_history_enabled:
 		return
 
