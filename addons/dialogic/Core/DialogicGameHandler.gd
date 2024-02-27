@@ -25,7 +25,7 @@ enum ClearFlags {
 	TIMLEINE_INFO_ONLY = 2	## Doesn't clear subsystems but current timeline and index
 	}
 
-## Reference to the timeline that is currently being executed.
+## Reference to the currently executed timeline.
 var current_timeline: DialogicTimeline = null
 ## Copy of the [member current_timeline]'s events.
 var current_timeline_events: Array = []
