@@ -309,7 +309,7 @@ func get_full_state() -> Dictionary:
 	return current_state_info.duplicate(true)
 
 
-## Will try to load the state from the given dictionary.
+## This method tries to load the state from the given [param state_info].
 ## Will automatically start a timeline if one was running when the dictionary was retrieved.
 func load_full_state(state_info:Dictionary) -> void:
 	clear()
