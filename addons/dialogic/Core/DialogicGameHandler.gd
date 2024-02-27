@@ -297,7 +297,7 @@ func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
 
 ## Returns a dictionary containing all necessary information to later recreate the same state with load_full_state.
 ## The [subsystem Save] subsystem might be more useful for you.
-## However this can be used to integrate the info into your own save system.
+## However, this can be used to integrate the info into your own save system.
 func get_full_state() -> Dictionary:
 	if current_timeline:
 		current_state_info['current_event_idx'] = current_event_idx
