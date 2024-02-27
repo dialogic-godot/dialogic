@@ -55,7 +55,7 @@ func _set_mirror(mirror:bool) -> void:
 
 
 ## Function to accept and use the extra data, if the custom portrait wants to accept it
-func _set_extra_data(data: String) -> void:
+func _set_extra_data(_data: String) -> void:
 	pass
 
 #endregion
