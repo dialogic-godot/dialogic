@@ -142,7 +142,7 @@ static func update_label_cache() -> void:
 #region EVENT CACHE
 ################################################################################
 
-## Dialogic keeps a list that has each event once. This allows retrieving that list.
+##  Dialogic keeps a list that has each event once. This allows retrieval of that list.
 static func get_event_cache() -> Array:
 	if not event_cache.is_empty():
 		return event_cache
