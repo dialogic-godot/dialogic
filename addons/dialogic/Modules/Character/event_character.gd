@@ -119,6 +119,8 @@ func _execute() -> void:
 				finish()
 				return
 
+			dialogic.Portraits.change_character_extradata(character, extra_data)
+
 			if set_portrait:
 				dialogic.Portraits.change_character_portrait(character, portrait, false)
 
@@ -139,7 +141,7 @@ func _execute() -> void:
 
 			if animation_name:
 				var final_animation_length: float = animation_length
-				var final_animation_repitions: int = animation_repeats
+				var final_animation_repetitions: int = animation_repeats
 
 				if dialogic.Inputs.auto_skip.enabled:
 					var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
@@ -150,7 +152,7 @@ func _execute() -> void:
 					character,
 					animation_name,
 					final_animation_length,
-					final_animation_repitions
+					final_animation_repetitions,
 				)
 
 				if animation_wait:
@@ -252,6 +254,7 @@ func from_text(string:String) -> void:
 			action = Actions.UPDATE
 
 	if result.get_string('name').strip_edges():
+
 		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
 			character_identifier = '--All--'
 		else:
@@ -272,12 +275,14 @@ func from_text(string:String) -> void:
 		animation_name = shortcode_params.get('animation', '')
 
 		var animLength = shortcode_params.get('length', '0.5').to_float()
+
 		if typeof(animLength) == TYPE_FLOAT:
 			animation_length = animLength
 		else:
 			animation_length = animLength.to_float()
 
-		animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+		var wait_for_animation: String = shortcode_params.get('wait', 'false')
+		animation_wait = DialogicUtil.str_to_bool(wait_for_animation)
 
 		#repeat is supported on Update, the other two should not be checking this
 		if action == Actions.UPDATE:
