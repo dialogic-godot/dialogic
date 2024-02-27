@@ -13,7 +13,7 @@ extends DialogicVisualEditorField
 @export var prefix: String = ""
 @export var suffix: String = ""
 
-var _is_holding_button : bool = false #For handling incrementing while holding key or click
+var _is_holding_button: bool = false #For handling incrementing while holding key or click
 
 #region MAIN METHODS
 ################################################################################
@@ -173,10 +173,10 @@ func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 	%Spin/Increment.disabled = value >= max
 
 
-# If prefix or Suffix clicked, select the actual value box instead and move the Carat to the closest side.
+# If prefix or suffix was clicked, select the actual value box instead and move the caret to the closest side.
 func _on_sublabel_clicked(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var mousePos : Vector2 = get_global_mouse_position()
+		var mousePos: Vector2 = get_global_mouse_position()
 		mousePos.x -= get_minimum_size().x / 2
 		if mousePos.x > global_position.x:
 			(%Value as LineEdit).caret_column = (%Value as LineEdit).text.length()

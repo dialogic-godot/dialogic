@@ -2,7 +2,7 @@
 extends DialogicVisualEditorFieldVector
 ## Event block field for a Vector4.
 
-var current_value:= Vector4()
+var current_value := Vector4()
 
 
 func _set_value(value: Variant) -> void:

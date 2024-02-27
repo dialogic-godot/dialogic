@@ -358,7 +358,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if value != null:
 				input.color = value
 			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_info.name, property_changed))
-			input.custom_minimum_size.x = DialogicUtil.get_editor_scale()*50
+			input.custom_minimum_size.x = get_editor_scale()*50
 		TYPE_INT:
 			if property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
@@ -393,11 +393,11 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if value != null:
 				input.value = value
 		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
-			var vectorSize : String = type_string(typeof(value))[-1]
+			var vectorSize: String = type_string(typeof(value))[-1]
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
 			input.property_name = property_info['name']
 			input.set_value(value)
-			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_info.name, property_changed))
+			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
@@ -432,7 +432,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input = LineEdit.new()
 			if value != null:
 				input.text = value
-			input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_info.name, property_changed))
+			input.text_submitted.connect(_on_export_input_text_submitted.bind(property_info.name, property_changed))
 	return input
 
 

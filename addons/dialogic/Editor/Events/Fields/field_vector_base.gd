@@ -1,4 +1,4 @@
-class_name DialogicVisualEditorFieldVector 
+class_name DialogicVisualEditorFieldVector
 extends DialogicVisualEditorField
 ## Base type for Vector event blocks
 
@@ -13,7 +13,12 @@ func _ready() -> void:
 func _load_display_info(info: Dictionary) -> void:
 	for child in get_children():
 		if child is DialogicVisualEditorFieldNumber:
-			child._load_display_info(info)
+			if info.get('no_prefix', false):
+				child._load_display_info(info)
+			else:
+				var prefixed_info := info.duplicate()
+				prefixed_info.merge({'prefix':child.name.to_lower()})
+				child._load_display_info(prefixed_info)
 
 
 func _set_value(value: Variant) -> void:
