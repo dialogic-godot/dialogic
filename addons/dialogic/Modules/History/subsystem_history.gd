@@ -28,7 +28,9 @@ var visited_event_history_enabled := false
 
 ## A history of visited Dialogic events.
 var visited_event_history_content := {}
-var _was_last_event_visited := false
+
+## Whether the last event has been encountered for the first time.
+var _visited_last_event := false
 
 ## Emitted if an encountered timeline event has been inserted into the visited
 ## event history.
@@ -143,10 +145,21 @@ func store_full_event(event: DialogicEvent) -> void:
 ## Uses the timeline resource path as well.
 func _current_event_key() -> String:
 	var resource_path := dialogic.current_timeline.resource_path
-	var event_idx := str(dialogic.current_event_idx)
-	var event_key := resource_path + event_idx
+	var event_index := dialogic.current_event_idx
+	var event_key := _get_event_key(event_index, resource_path)
 
 	return event_key
+
+## Composes an event key from the event index and the timeline path.
+## If either of these variables are in an invalid state, the resulting
+## key may be wrong.
+## There are no safety checks in place.
+func _get_event_key(event_index: int, timeline_path: String) -> String:
+	var event_idx := str(event_index)
+	var event_key := timeline_path + event_idx
+
+	return event_key
+
 
 # Called if a Text event marks an unread Text event as read.
 func event_was_read(_event: DialogicEvent) -> void:
@@ -172,17 +185,38 @@ func _check_seen(event: DialogicEvent) -> void:
 
 	if event_key in visited_event_history_content:
 		visited_event.emit()
-		_was_last_event_visited = true
+		_visited_last_event = true
 
 	else:
 		unvisited_event.emit()
-		_was_last_event_visited = false
+		_visited_last_event = false
 
 
-## Returns whether the last event, when encountered just now, has been
-## part of the [member visited_event_history_content] or not.
-func has_last_event_been_visited_before() -> bool:
-	return _was_last_event_visited
+## Whether the last event has been visited for the first time or not.
+## This will return `true` exactly once for each unique timeline event instance.
+func has_last_event_been_visited() -> bool:
+	return _visited_last_event
+
+
+## If called with with no arguments, the method will return whether
+## the last encountered event was visited before.
+##
+## Otherwise, if [param event_index] and [param timeline] are passed,
+## the method will check if the event from that given timeline has been
+## visited yet.
+##
+## If no [param timeline] is passed, the current timeline will be used.
+## If there is no current timeline, `false` will be returned.
+##
+## If no [param event_index] is passed, the current event index will be used.
+func has_event_been_visited(event_index := dialogic.current_event_idx, timeline := dialogic.current_timeline) -> bool:
+	if timeline == null:
+		return false
+
+	var event_key := _get_event_key(event_index, timeline.resource_path)
+	var visited := event_key in visited_event_history_content
+
+	return visited
 
 
 ## Saves all seen events to the global info file.
