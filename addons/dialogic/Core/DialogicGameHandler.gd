@@ -18,7 +18,7 @@ enum States {
 	WAITING 			## Dialogic is currently awaiting something.
 	}
 
-## Flags indicating what to clear when calling [method clear]
+## Flags indicating what to clear when calling [method clear].
 enum ClearFlags {
 	FULL_CLEAR = 0, 		## Clears all subsystems
 	KEEP_VARIABLES = 1, 	## Clears all subsystems and info except for variables
