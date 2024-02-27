@@ -11,41 +11,41 @@ const EXAMPLE_SEEN_HISTORY: Dictionary = {
     "res://Dialogic/Timelines/start.dtl7": 7
 }
 
-func test_save_load_already_seen() -> void:
+func test_save_load_visited() -> void:
     assert(history.visited_event_history_content == {}, "Seen events should have be empty.")
-    history.load_already_seen_history()
+    history.load_visited_history()
     assert(history.visited_event_history_content == {}, "Seen events should have be empty after empty load.")
 
     history.visited_event_history_content = EXAMPLE_SEEN_HISTORY
     assert(history.visited_event_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
-    history.save_already_seen_history()
-    var global_data_seen_events: Dictionary = history.get_saved_already_seen_history()
+    history.save_visited_history()
+    var global_data_seen_events: Dictionary = history.get_saved_visited_history()
 
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
 
-    history.load_already_seen_history()
+    history.load_visited_history()
     assert(history.visited_event_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data after load.")
 
 
-func test_deletion_save_already_seen() -> void:
+func test_deletion_save_visited() -> void:
     history.visited_event_history_content = EXAMPLE_SEEN_HISTORY
     assert(history.visited_event_history_content == EXAMPLE_SEEN_HISTORY, "Seen events should have be identical to test data.")
 
-    history.save_already_seen_history()
-    var global_data_seen_events: Dictionary = history.get_saved_already_seen_history()
+    history.save_visited_history()
+    var global_data_seen_events: Dictionary = history.get_saved_visited_history()
     assert(global_data_seen_events == EXAMPLE_SEEN_HISTORY, "Global data does not have example data.")
 
-    history.reset_already_seen_history(false)
-    var global_data_seen_events_after_reset: Dictionary = history.get_saved_already_seen_history()
+    history.reset_visited_history(false)
+    var global_data_seen_events_after_reset: Dictionary = history.get_saved_visited_history()
     assert(history.visited_event_history_content == EXAMPLE_SEEN_HISTORY, "Seen events are gone after global data only reset.")
     assert(global_data_seen_events_after_reset == {}, "Global data should be empty after reset.")
 
-    history.load_already_seen_history()
+    history.load_visited_history()
     assert(history.visited_event_history_content == {}, "Seen events should have be empty after empty load.")
 
     history.visited_event_history_content = EXAMPLE_SEEN_HISTORY
-    history.reset_already_seen_history(true)
-    var global_data_seen_events_after_full_reset: Dictionary = history.get_saved_already_seen_history()
+    history.reset_visited_history(true)
+    var global_data_seen_events_after_full_reset: Dictionary = history.get_saved_visited_history()
     assert(global_data_seen_events_after_full_reset == {}, "Seen events in global data should have be empty after full data reset.")
     assert(history.visited_event_history_content == {}, "Seen events in history should have be empty after full data reset.")

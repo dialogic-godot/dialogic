@@ -45,16 +45,16 @@ signal unvisited_event
 var visited_event_save_key := "visited_event_history_content"
 
 ## Whether to automatically save the already-visited history on auto-save.
-var save_already_seen_history_on_autosave := false:
+var save_visited_history_on_autosave := false:
 	set(value):
-		save_already_seen_history_on_autosave = value
+		save_visited_history_on_autosave = value
 		_update_saved_connection(value)
 
 
 ## Whether to automatically save the already-visited history on manual save.
-var save_already_seen_history_on_save := false:
+var save_visited_history_on_save := false:
 	set(value):
-		save_already_seen_history_on_save = value
+		save_visited_history_on_save = value
 		_update_saved_connection(value)
 
 
@@ -87,16 +87,16 @@ func _ready() -> void:
 func _on_save(info: Dictionary) -> void:
 	var is_autosave: bool = info["is_autosave"]
 
-	var save_on_autosave := save_already_seen_history_on_autosave and is_autosave
-	var save_on_save := save_already_seen_history_on_save and not is_autosave
+	var save_on_autosave := save_visited_history_on_autosave and is_autosave
+	var save_on_save := save_visited_history_on_save and not is_autosave
 
 	if save_on_save or save_on_autosave:
-		save_already_seen_history()
+		save_visited_history()
 
 
 func post_install() -> void:
-	save_already_seen_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', save_already_seen_history_on_autosave)
-	save_already_seen_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_already_seen_history_on_save)
+	save_visited_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', save_visited_history_on_autosave)
+	save_visited_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_visited_history_on_save)
 
 
 func open_history() -> void:
@@ -193,7 +193,7 @@ func has_last_event_been_visited_before() -> bool:
 ## Be aware, this won't add any events but completely overwrite the already saved ones.
 ##
 ## Relies on the [subsystem Save] subsystem.
-func save_already_seen_history() -> void:
+func save_visited_history() -> void:
 	DialogicUtil.autoload().Save.set_global_info(visited_event_save_key, visited_event_history_content)
 
 
@@ -201,15 +201,15 @@ func save_already_seen_history() -> void:
 ## Calling this when a game gets loaded may be useful.
 ##
 ## Relies on the [subsystem Save] subsystem.
-func load_already_seen_history() -> void:
-	visited_event_history_content = get_saved_already_seen_history()
+func load_visited_history() -> void:
+	visited_event_history_content = get_saved_visited_history()
 
 
 ## Returns the saved already-visited history from the global info save file.
 ## If none exist in the global info file, returns an empty dictionary.
 ##
 ## Relies on the [subsystem Save] subsystem.
-func get_saved_already_seen_history() -> Dictionary:
+func get_saved_visited_history() -> Dictionary:
 	return DialogicUtil.autoload().Save.get_global_info(visited_event_save_key, {})
 
 
@@ -218,7 +218,7 @@ func get_saved_already_seen_history() -> Dictionary:
 ## history in the Dialogic Autoload.
 ##
 ## Relies on the [subsystem Save] subsystem.
-func reset_already_seen_history(reset_property := true) -> void:
+func reset_visited_history(reset_property := true) -> void:
 	DialogicUtil.autoload().Save.set_global_info(visited_event_save_key, {})
 
 	if reset_property:
