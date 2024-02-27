@@ -57,7 +57,6 @@ static func listdir(path: String, files_only:= true, throw_error:= true, full_fi
 	return files
 
 
-
 static func get_module_path(name:String, builtin:=true) -> String:
 	if builtin:
 		return "res://addons/dialogic/Modules".path_join(name)
