@@ -211,18 +211,18 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 
 ## Preloader function, prepares a timeline and returns an object to hold for later
-# TODO: Question: why is this taking a variant and then only allowing a string?
+## [param timeline_resource] can be either a path (string) or a loaded timeline (resource)
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load((timeline_resource as String))
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
-			return false
+			return null
 		else:
 			await (timeline_resource as DialogicTimeline).process()
 			return timeline_resource
-	return null
+	return timeline_resource
 
 
 ## Clears and stops the current timeline.
@@ -237,7 +237,7 @@ func handle_next_event(ignore_argument:Variant = "") -> void:
 	handle_event(current_event_idx+1)
 
 
-## Handles the event at the given index.
+## Handles the event at the given index [param event_index].
 ## You can call this manually, but if another event is still executing, it might have unexpected results.
 func handle_event(event_index:int) -> void:
 	if not current_timeline:
@@ -310,7 +310,8 @@ func get_full_state() -> Dictionary:
 
 
 ## This method tries to load the state from the given [param state_info].
-## Will automatically start a timeline if one was running when the dictionary was retrieved.
+## Will automatically start a timeline and add a layout if a timeline was running when
+## the dictionary was retrieved with [method get_full_state].
 func load_full_state(state_info:Dictionary) -> void:
 	clear()
 	current_state_info = state_info
@@ -353,21 +354,21 @@ func _collect_subsystems() -> void:
 		subsystem.post_install()
 
 
-## Returns `true` if a subystem with the name exists.
-func has_subsystem(_name:String) -> bool:
-	return has_node(_name)
+## Returns `true` if a subystem with the given [param subsystem_name] exists.
+func has_subsystem(subsystem_name:String) -> bool:
+	return has_node(subsystem_name)
 
 
-## Returns the subsystem node of the given name.
-func get_subsystem(_name:String) -> DialogicSubsystem:
-	return get_node(_name)
+## Returns the subsystem node of the given [param subsystem_name] or null if it doesn't exist.
+func get_subsystem(subsystem_name:String) -> DialogicSubsystem:
+	return get_node(subsystem_name)
 
 
-## Adds a subsystem node with the given name and script.
-func add_subsystem(_name:String, _script_path:String) -> DialogicSubsystem:
+## Adds a subsystem node with the given [param subsystem_name] and [param script_path].
+func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsystem:
 	var node: Node = Node.new()
-	node.name = _name
-	node.set_script(load(_script_path))
+	node.name = subsystem_name
+	node.set_script(load(script_path))
 	node = node as DialogicSubsystem
 	node.dialogic = self
 	add_child(node)
