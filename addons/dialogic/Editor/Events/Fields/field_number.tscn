@@ -1,45 +1,173 @@
-[gd_scene load_steps=4 format=3 uid="uid://kdpp3mibml33"]
+[gd_scene load_steps=9 format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
+[ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
+[ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
 
-[sub_resource type="Image" id="Image_6ljqy"]
-data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sj3oj"]
+content_margin_left = 3.0
+content_margin_right = 1.0
 
-[sub_resource type="ImageTexture" id="ImageTexture_eaxil"]
-image = SubResource("Image_6ljqy")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8yqsu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_smq50"]
+content_margin_left = 2.0
+content_margin_right = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_increment"]
+content_margin_left = 2.0
+content_margin_top = 6.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.94, 0.94, 0.94, 0)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_decrement"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 6.0
+bg_color = Color(0.94, 0.94, 0.94, 0)
+border_color = Color(0, 0, 0, 0)
 
 [node name="Field_Number" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1036.0
-offset_bottom = -615.0
+offset_right = -1102.0
+offset_bottom = -617.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
-value = 0.0
+prefix = null
 
-[node name="Value" type="LineEdit" parent="."]
+[node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"DialogicEventEdit"
-theme_override_constants/minimum_character_width = 0
-text = "0"
-expand_to_text_length = true
 
-[node name="Spin" type="Button" parent="."]
+[node name="Layout" type="HBoxContainer" parent="Value_Panel"]
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Prefix" type="RichTextLabel" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
+visible = false
+clip_contents = false
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
-focus_mode = 0
-icon = SubResource("ImageTexture_eaxil")
-flat = true
+mouse_filter = 1
+mouse_default_cursor_shape = 1
+theme_override_colors/default_color = Color(0.54099, 0.540991, 0.54099, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sj3oj")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sj3oj")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+tab_size = 2
+shortcut_keys_enabled = false
+drag_and_drop_selection_enabled = false
+text_direction = 1
 
-[connection signal="focus_exited" from="Value" to="." method="_on_value_focus_exited"]
-[connection signal="text_submitted" from="Value" to="." method="_on_value_text_submitted"]
-[connection signal="gui_input" from="Spin" to="." method="_on_spin_gui_input"]
+[node name="Value" type="LineEdit" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+theme_override_constants/minimum_character_width = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8yqsu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8yqsu")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_8yqsu")
+text = "0"
+alignment = 1
+expand_to_text_length = true
+virtual_keyboard_type = 3
+
+[node name="Suffix" type="RichTextLabel" parent="Value_Panel/Layout"]
+unique_name_in_owner = true
+visible = false
+clip_contents = false
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_default_cursor_shape = 1
+theme_override_colors/default_color = Color(0.435192, 0.435192, 0.435192, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_smq50")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_smq50")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+tab_size = 2
+shortcut_keys_enabled = false
+drag_and_drop_selection_enabled = false
+text_direction = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Value_Panel/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer" type="MarginContainer" parent="Value_Panel/Layout/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_right = 1
+
+[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Increment" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
+layout_mode = 2
+size_flags_vertical = 3
+auto_translate = false
+focus_neighbor_left = NodePath("../../../Value")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath("../Decrement")
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
+theme_override_styles/hover = SubResource("StyleBoxFlat_increment")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_increment")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_increment")
+theme_override_styles/focus = SubResource("StyleBoxFlat_increment")
+icon = ExtResource("3_v5cne")
+flat = true
+vertical_icon_alignment = 2
+
+[node name="Decrement" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
+layout_mode = 2
+size_flags_vertical = 3
+auto_translate = false
+focus_neighbor_left = NodePath("../../../Value")
+focus_neighbor_top = NodePath("../Increment")
+focus_neighbor_bottom = NodePath(".")
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/hover = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/focus = SubResource("StyleBoxFlat_decrement")
+icon = ExtResource("4_ph52o")
+flat = true
+vertical_icon_alignment = 2
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+
+[connection signal="gui_input" from="Value_Panel/Layout/Prefix" to="." method="_on_sublabel_clicked"]
+[connection signal="focus_entered" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_entered"]
+[connection signal="focus_exited" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_exited"]
+[connection signal="gui_input" from="Value_Panel/Layout/Value" to="." method="_on_gui_input"]
+[connection signal="text_submitted" from="Value_Panel/Layout/Value" to="." method="_on_value_text_submitted"]
+[connection signal="gui_input" from="Value_Panel/Layout/Suffix" to="." method="_on_sublabel_clicked"]
+[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_increment_button_down" binds= [NodePath("%Spin/Increment")]]
+[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_gui_input"]
+[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_decrement_button_down" binds= [NodePath("%Spin/Decrement")]]
+[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_gui_input"]

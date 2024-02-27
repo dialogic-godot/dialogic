@@ -4,21 +4,26 @@
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="2_a0b6y"]
 
 [node name="Field_Vector2" type="HBoxContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/separation = -7
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1033.0
+offset_bottom = -617.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
 script = ExtResource("1_v6lp0")
 
 [node name="X" parent="." instance=ExtResource("2_a0b6y")]
 layout_mode = 2
-step = 1.0
+step = 0.001
 min = -9999.0
 max = 9999.0
-suffix = "x"
+prefix = ""
 
 [node name="Y" parent="." instance=ExtResource("2_a0b6y")]
 layout_mode = 2
-step = 1.0
+step = 0.001
 min = -9999.0
 max = 9999.0
-suffix = "y"
+prefix = ""

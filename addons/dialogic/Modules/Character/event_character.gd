@@ -387,7 +387,7 @@ func build_event_editor() -> void:
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true},
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:'},
+	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s'},
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
