@@ -5,7 +5,7 @@ extends Node
 
 ## Autoload script that allows you to interact with all of Dialogic's systems:[br]
 ## - Holds all important information about the current state of Dialogic.[br]
-## - Gives access to all the subystems.[br]
+## - Provides access to all the subsystems.[br]
 ## - Has methods to start/end timelines.[br]
 
 
