@@ -36,13 +36,13 @@ func _on_default_options_item_selected(index: int) -> void:
 	match index:
 		0:
 			if not %ScenePicker.current_value.is_empty():
-				%ScenePicker._set_value("")
+				%ScenePicker.current_value = ""
 
 			%ScenePicker.visible = false
 			%MakeCustomLayeredPortraitButton.hide()
 
 		1:
-			#%ScenePicker._set_value(LAYERED_PORTRAIT_SCENE)
+			%ScenePicker.current_value = LAYERED_PORTRAIT_SCENE
 			%ScenePicker.visible = false
 			%MakeCustomLayeredPortraitButton.show()
 
