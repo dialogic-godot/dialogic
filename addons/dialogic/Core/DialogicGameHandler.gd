@@ -149,7 +149,7 @@ func _ready() -> void:
 ################################################################################
 
 ## Method to start a timeline AND ensure that a layout scene is present.
-## For argument info, checkout [method start_timeline]
+## For argument info, checkout [method start_timeline].
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
