@@ -381,7 +381,7 @@ func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsyst
 #region HELPERS
 ################################################################################
 
-## This handles the `Layout End Behaviour` setting that can be changed in the dialogic settings.
+## This handles the `Layout End Behaviour` setting that can be changed in the Dialogic settings.
 func _on_timeline_ended() -> void:
 	if self.Styles.has_active_layout_node() and self.Styles.get_layout_node().is_inside_tree():
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
