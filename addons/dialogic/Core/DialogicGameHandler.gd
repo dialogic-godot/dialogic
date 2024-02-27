@@ -233,7 +233,6 @@ func end_timeline() -> void:
 
 
 ## Handles the next event.
-
 func handle_next_event(ignore_argument:Variant = "") -> void:
 	handle_event(current_event_idx+1)
 
