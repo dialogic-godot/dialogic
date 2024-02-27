@@ -2,7 +2,7 @@ extends Control
 
 func _ready():
 	if DialogicUtil.autoload().has_subsystem('History'):
-		DialogicUtil.autoload().History.visited_event_reached.connect(_on_visited_event)
+		DialogicUtil.autoload().History.visited_event.connect(_on_visited_event)
 		DialogicUtil.autoload().History.unvisited_event.connect(_on_not_read_event)
 
 func _on_visited_event() -> void:

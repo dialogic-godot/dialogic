@@ -90,11 +90,11 @@ text = "Enabled"
 [node name="HintTooltip" parent="HistoryOptions/HBoxContainer4" instance=ExtResource("2_wefye")]
 layout_mode = 2
 tooltip_text = "Remembers whether events were already met in the timeline.
-When enabled the signals \"Dialogic.History.visited_event_reached\" and \"Dialogic.History.unvisited_event\" are emitted.
+When enabled the signals \"Dialogic.History.visited_event\" and \"Dialogic.History.unvisited_event\" are emitted.
 "
 texture = SubResource("ImageTexture_8li2l")
 hint_text = "Remembers whether events were already met in the timeline.
-When enabled the signals \"Dialogic.History.visited_event_reached\" and \"Dialogic.History.unvisited_event\" are emitted.
+When enabled the signals \"Dialogic.History.visited_event\" and \"Dialogic.History.unvisited_event\" are emitted.
 "
 
 [node name="AlreadyReadHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer4"]

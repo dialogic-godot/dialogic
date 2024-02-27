@@ -34,7 +34,7 @@ var _was_last_event_visited := false
 ## event history.
 ##
 ## This will trigger only once per unique event instance.
-signal visited_event_reached
+signal visited_event
 
 ## Emitted if an encountered timeline event has not been visited before.
 signal unvisited_event
@@ -42,7 +42,7 @@ signal unvisited_event
 ## Used to store [member visited_event_history_content] in the global info file.
 ## You can change this to a custom name if you want to use a different key
 ## in the global save info file.
-var already_seen_save_key := "visited_event_history_content"
+var visited_event_save_key := "visited_event_history_content"
 
 ## Whether to automatically save the already-visited history on auto-save.
 var save_already_seen_history_on_autosave := false:
@@ -171,7 +171,7 @@ func _check_seen(event: DialogicEvent) -> void:
 	var event_key := _current_event_key()
 
 	if event_key in visited_event_history_content:
-		visited_event_reached.emit()
+		visited_event.emit()
 		_was_last_event_visited = true
 
 	else:
@@ -194,7 +194,7 @@ func has_last_event_been_visited_before() -> bool:
 ##
 ## Relies on the [subsystem Save] subsystem.
 func save_already_seen_history() -> void:
-	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, visited_event_history_content)
+	DialogicUtil.autoload().Save.set_global_info(visited_event_save_key, visited_event_history_content)
 
 
 ## Loads the seen events from the global info save file.
@@ -210,7 +210,7 @@ func load_already_seen_history() -> void:
 ##
 ## Relies on the [subsystem Save] subsystem.
 func get_saved_already_seen_history() -> Dictionary:
-	return DialogicUtil.autoload().Save.get_global_info(already_seen_save_key, {})
+	return DialogicUtil.autoload().Save.get_global_info(visited_event_save_key, {})
 
 
 ## Resets the already-visited history in the global info save file.
@@ -219,7 +219,7 @@ func get_saved_already_seen_history() -> Dictionary:
 ##
 ## Relies on the [subsystem Save] subsystem.
 func reset_already_seen_history(reset_property := true) -> void:
-	DialogicUtil.autoload().Save.set_global_info(already_seen_save_key, {})
+	DialogicUtil.autoload().Save.set_global_info(visited_event_save_key, {})
 
 	if reset_property:
 		visited_event_history_content = {}
