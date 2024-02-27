@@ -1,18 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://kdpp3mibml33"]
+[gd_scene load_steps=9 format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
 [ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
 [ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgg3a"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sj3oj"]
 content_margin_left = 3.0
 content_margin_right = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8yqsu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_smq50"]
 content_margin_left = 2.0
@@ -44,29 +40,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
+prefix = null
 
 [node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_hgg3a")
-
-[node name="Value_BG" type="LineEdit" parent="Value_Panel"]
-layout_mode = 2
-focus_mode = 0
-theme_type_variation = &"DialogicEventEdit"
-theme_override_constants/minimum_character_width = 0
-editable = false
-context_menu_enabled = false
-virtual_keyboard_enabled = false
-shortcut_keys_enabled = false
-middle_mouse_paste_enabled = false
-selecting_enabled = false
-drag_and_drop_selection_enabled = false
 
 [node name="Layout" type="HBoxContainer" parent="Value_Panel"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Affix" type="RichTextLabel" parent="Value_Panel/Layout"]
+[node name="Prefix" type="RichTextLabel" parent="Value_Panel/Layout"]
 unique_name_in_owner = true
 visible = false
 clip_contents = false
@@ -92,8 +75,11 @@ text_direction = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"DialogicEventEdit"
+focus_mode = 1
 theme_override_constants/minimum_character_width = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8yqsu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8yqsu")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_8yqsu")
 text = "0"
 alignment = 1
 expand_to_text_length = true
@@ -142,13 +128,13 @@ auto_translate = false
 focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath("../Decrement")
-theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
 theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
+theme_override_styles/hover = SubResource("StyleBoxFlat_increment")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_increment")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_increment")
 theme_override_styles/focus = SubResource("StyleBoxFlat_increment")
-theme_override_styles/hover = SubResource("StyleBoxFlat_increment")
-theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_increment")
 icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
@@ -160,13 +146,13 @@ auto_translate = false
 focus_neighbor_left = NodePath("../../../Value")
 focus_neighbor_top = NodePath("../Increment")
 focus_neighbor_bottom = NodePath(".")
-theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
 theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/hover = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_decrement")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_decrement")
 theme_override_styles/focus = SubResource("StyleBoxFlat_decrement")
-theme_override_styles/hover = SubResource("StyleBoxFlat_decrement")
-theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_decrement")
 icon = ExtResource("4_ph52o")
 flat = true
 vertical_icon_alignment = 2
@@ -175,7 +161,8 @@ vertical_icon_alignment = 2
 custom_minimum_size = Vector2(3, 0)
 layout_mode = 2
 
-[connection signal="gui_input" from="Value_Panel/Layout/Affix" to="." method="_on_sublabel_clicked"]
+[connection signal="gui_input" from="Value_Panel/Layout/Prefix" to="." method="_on_sublabel_clicked"]
+[connection signal="focus_entered" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_entered"]
 [connection signal="focus_exited" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_exited"]
 [connection signal="gui_input" from="Value_Panel/Layout/Value" to="." method="_on_gui_input"]
 [connection signal="text_submitted" from="Value_Panel/Layout/Value" to="." method="_on_value_text_submitted"]

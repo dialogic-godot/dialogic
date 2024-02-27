@@ -10,7 +10,7 @@ extends DialogicVisualEditorField
 @export var min: float = 0
 @export var max: float= 999
 @export var value = 0.0
-@export var affix: String = ""
+@export var prefix: String = ""
 @export var suffix: String = ""
 
 var _is_holding_button : bool = false #For handling incrementing while holding key or click
@@ -21,8 +21,10 @@ var _is_holding_button : bool = false #For handling incrementing while holding k
 func _ready() -> void:
 	if %Value.text.is_empty():
 		set_value(value)
-	update_affix(affix)
+
+	update_prefix(prefix)
 	update_suffix(suffix)
+	$Value_Panel.add_theme_stylebox_override('panel', get_theme_stylebox('panel', 'DialogicEventEdit'))
 
 
 func _load_display_info(info: Dictionary) -> void:
@@ -33,14 +35,14 @@ func _load_display_info(info: Dictionary) -> void:
 			use_int_mode(info.get('step', 1))
 		2: #DECIBLE:
 			use_decibel_mode(info.get('step', step))
-	
+
 	for option in info.keys():
 		match option:
 			'min': min = info[option]
 			'max': max = info[option]
-			'affix': update_affix(info[option])
+			'prefix': update_prefix(info[option])
 			'suffix': update_suffix(info[option])
-			'step': 
+			'step':
 				enforce_step = true
 				step = info[option]
 			'hide_step_button': %Spin.hide()
@@ -91,21 +93,21 @@ var _stop_button_holding: Callable = func(button: BaseButton) -> void:
 
 
 func _holding_button(value_direction: int, button: BaseButton) -> void:
-	if _is_holding_button: 
+	if _is_holding_button:
 		return
 	if _stop_button_holding.get_bound_arguments_count() > 0:
 		_stop_button_holding.unbind(0)
-	
+
 	_is_holding_button = true
-	
+
 	#Ensure removal of our value changing routine when it shouldn't run anymore
 	button.button_up.connect(_stop_button_holding.bind(button))
 	button.focus_exited.connect(_stop_button_holding.bind(button))
 	button.mouse_exited.connect(_stop_button_holding.bind(button))
-	
+
 	var scene_tree: SceneTree = get_tree()
 	var delay_timer_ms: int = 600
-	
+
 	#Instead of awaiting for the duration, await per-frame so we can catch any changes in _is_holding_button and exit completely
 	while(delay_timer_ms > 0):
 		if _is_holding_button == false:
@@ -113,25 +115,26 @@ func _holding_button(value_direction: int, button: BaseButton) -> void:
 		var pre_time: int = Time.get_ticks_msec()
 		await scene_tree.process_frame
 		delay_timer_ms -= Time.get_ticks_msec() - pre_time
-	
+
 	var change_speed: float = 0.25
-	
+
 	while(_is_holding_button == true):
 		await scene_tree.create_timer(change_speed).timeout
 		change_speed = maxf(0.05, change_speed - 0.01)
 		_on_value_text_submitted(str(value+(step * value_direction)))
 
 
-func update_affix(to_affix: String) -> void:
-	affix = to_affix
-	%Affix.visible = to_affix != null and to_affix != ""
-	%Affix.text = affix
+func update_prefix(to_prefix: String) -> void:
+	prefix = to_prefix
+	%Prefix.visible = to_prefix != null and to_prefix != ""
+	%Prefix.text = prefix
 
 
 func update_suffix(to_suffix: String) -> void:
 	suffix = to_suffix
 	%Suffix.visible = to_suffix != null and to_suffix != ""
 	%Suffix.text = suffix
+
 #endregion
 
 #region SIGNAL METHODS
@@ -162,7 +165,7 @@ func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 			value = snapped(temp, step)
 	elif allow_string:
 		value = new_text
-	%Value.text = str(value)
+	%Value.text = str(value).pad_decimals(len(str(float(step)-floorf(step)))-2)
 	if not no_signal:
 		value_changed.emit(property_name, value)
 	# Visually disable Up or Down arrow when limit is reached to better indicate a limit has been hit
@@ -170,7 +173,7 @@ func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 	%Spin/Increment.disabled = value >= max
 
 
-# If Affix or Suffix clicked, select the actual value box instead and move the Carat to the closest side.
+# If prefix or Suffix clicked, select the actual value box instead and move the Carat to the closest side.
 func _on_sublabel_clicked(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mousePos : Vector2 = get_global_mouse_position()
@@ -184,5 +187,12 @@ func _on_sublabel_clicked(event: InputEvent) -> void:
 
 func _on_value_focus_exited() -> void:
 	_on_value_text_submitted(%Value.text)
+	$Value_Panel.add_theme_stylebox_override('panel', get_theme_stylebox('panel', 'DialogicEventEdit'))
+
+
+func _on_value_focus_entered() -> void:
+	$Value_Panel.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'DialogicEventEdit'))
+	%Value.select_all.call_deferred()
 
 #endregion
+

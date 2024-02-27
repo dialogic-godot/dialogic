@@ -144,11 +144,11 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 
 			line_length = max(line_length, curr_line_length)
-			
+
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 			idx += 1
-	
+
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
@@ -159,22 +159,22 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	else:
 		current_selected = -1
 	%Search.grab_focus()
-	
+
 	var total_height: int = 0
 	for item in %Suggestions.item_count:
 		total_height += _line_height * DialogicUtil.get_editor_scale() + _v_separation
 	total_height += _v_separation * 2
 	if total_height > _max_height:
 		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
-		
+
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 	%Suggestions.size.y = min(total_height, _max_height)
-	
-	# Defer setting width to give PanelContainer  
+
+	# Defer setting width to give PanelContainer
 	# time to update it's size
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
+
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
