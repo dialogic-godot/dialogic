@@ -4,7 +4,6 @@
 ## The parent class has a character and portrait variable.
 extends DialogicPortrait
 
-
 const HIDE_COMMAND := "hide"
 const SHOW_COMMAND := "show"
 const SET_COMMAND := "set"
@@ -20,21 +19,20 @@ func _update_portrait(passed_character: DialogicCharacter, passed_portrait: Stri
 	apply_character_and_portrait(passed_character, passed_portrait)
 
 
-
+## Iterates over all children in [param start_node] and its children, looking
+## for [class Sprite2D] nodes with a texture (not `null`).
 func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 	var sprites: Array[Sprite2D] = []
 
 	# Iterate through the children of the current node
 	for child in start_node.get_children():
 
-		if child is Sprite2D and child.texture != null:
+		if child is Sprite2D and child.texture:
 			var sprite := child as Sprite2D
 			sprites.append(sprite)
 			continue
 
-
 		var child_sprites := _find_sprites_recursively(child)
-		# Extend the list of sprites with the sprites found in the child node
 		sprites.append_array(child_sprites)
 
 	return sprites
@@ -42,15 +40,11 @@ func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 
 func _ready() -> void:
 	pass
-	#for sprite: Sprite2D in self._find_sprites_recursively(self):
-	# Get the sprite's height
-	# var sprite_height := sprite.texture.get_height()
-	# Set the offset to half of the sprite's height
-	#sprite.offset.y = -sprite_height
 
 
 ## A _command that will apply an effect to the layered portrait.
 class LayerCommand:
+	# The effect the command will apply.
 	enum CommandType {
 		SHOW_LAYER,
 		HIDE_LAYER,
@@ -65,7 +59,7 @@ class LayerCommand:
 		var target_node := root.get_node(_path)
 
 		if target_node == null:
-			print("Layered Portrait had no node matching the _path: ", _path)
+			print("Layered Portrait had no node matching the node path: ", _path)
 			return
 
 		match _type:
@@ -143,28 +137,31 @@ func _set_extra_data(data: String) -> void:
 		_command._execute(self)
 
 
+func _set_mirror(is_mirrored: bool) -> void:
+	for sprite: Sprite2D in _find_sprites_recursively(self):
+		sprite.flip_h = is_mirrored
+
+
+func _find_largest_coverage_rect() -> Rect2:
+	var coverage_rect := Rect2(0, 0, 0, 0)
+
+	for sprite: Sprite2D in _find_sprites_recursively(self):
+		var sprite_width := sprite.texture.get_width()
+		var sprite_height := sprite.texture.get_height()
+
+		var texture_rect := Rect2(
+			sprite.position.x,
+			sprite.position.y,
+			sprite_width,
+			sprite_height
+		)
+
+		coverage_rect = coverage_rect.merge(texture_rect)
+
+	return coverage_rect
+
+
 func _get_covered_rect() -> Rect2:
-	var lowest_x: float = 0
-	var lowest_y: float = 0
-	var biggest_width: float = 0
-	var biggest_height: float = 0
+	var needed_rect := _find_largest_coverage_rect()
 
-
-	for sprite: Sprite2D in self._find_sprites_recursively(self):
-
-		if sprite.texture != null:
-			var rect: Rect2 = sprite.get_rect()
-
-			if rect.position.x > lowest_x:
-				lowest_x = rect.position.x
-
-			if rect.position.y > lowest_y:
-				lowest_y = rect.position.y
-
-			if rect.size.x > biggest_width:
-				biggest_width = rect.size.x
-
-			if rect.size.y > biggest_height:
-				biggest_height = rect.size.y
-
-	return Rect2(lowest_x, lowest_y, biggest_width, biggest_height)
+	return needed_rect
