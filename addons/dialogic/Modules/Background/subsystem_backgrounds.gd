@@ -2,7 +2,8 @@ extends DialogicSubsystem
 ## Subsystem for managing backgrounds.
 ##
 ## This subsystem has many different helper methods for managing backgrounds.
-## For instance, You can listen to changes via [signal background_changed].
+## For instance, you can listen to background changes via
+## [signal background_changed].
 
 
 ## Whenever a new background is set, this signal is emitted and contains a
