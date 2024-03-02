@@ -7,13 +7,14 @@ extends DialogicSubsystem
 
 
 ## Whenever a new background is set, this signal is emitted and contains a
-## dictionary with the following keys:
-## key | value
-## ------------------------------------
-## `scene` | The scene path of the new background.
-## `argument` | Information given to the background on its update routine.
-## `fade_time` | The time the background may take to transition in.
-## `same_scene` | If the new background uses the same Godot scene.
+## dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `scene`     | [type String] | The scene path of the new background. [br]
+## `argument`  | [type String] | Information given to the background on its update routine. [br]
+## `fade_time` | [type float]  | The time the background may take to transition in. [br]
+## `same_scene`| [type bool]   | If the new background uses the same Godot scene. [br]
 signal background_changed(info: Dictionary)
 
 ## The default background Dialogic will use.

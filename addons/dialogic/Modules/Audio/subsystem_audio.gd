@@ -6,25 +6,27 @@ extends DialogicSubsystem
 ## For instance, you can listen to music changes via [signal music_started].
 
 
-## Whenever a new background is set, this signal is emitted and contains a
-## dictionary with the following keys:
-## key | value
-## ------------------------------------
-## `path` | The path to the audio resource file.
-## `volume` | The volume of the audio resource that will be set to the audio player.
-## `audio_bus` | The audio bus name that the audio player will use.
-## `loop` | Whether the audio resource will loop or not once it finishes playing.
+## Whenever a new background music is started, this signal is emitted and
+## contains a dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `path`      | [type String] | The path to the audio resource file. [br]
+## `volume`    | [type float]  | The volume of the audio resource that will be set to the [member base_music_player]. [br]
+## `audio_bus` | [type String] | The audio bus name that the [member base_music_player] will use. [br]
+## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
 signal music_started(info: Dictionary)
 
 
 ## Whenever a new sound effect is set, this signal is emitted and contains a
-## dictionary with the following keys:
-## key | value
-## ------------------------------------
-## `path` | The path to the audio resource file.
-## `volume` | The volume of the audio resource that will be set to the audio player.
-## `audio_bus` | The audio bus name that the audio player will use.
-## `loop` | Whether the audio resource will loop or not once it finishes playing.
+## dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `path`      | [type String] | The path to the audio resource file. [br]
+## `volume`    | [type float]  | The volume of the audio resource that will be set to [member base_sound_player]. [br]
+## `audio_bus` | [type String] | The audio bus name that the [member base_sound_player] will use. [br]
+## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
 signal sound_started(info: Dictionary)
 
 
