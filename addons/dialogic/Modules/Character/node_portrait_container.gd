@@ -24,7 +24,7 @@ enum PositionModes {
 @export_subgroup('Portrait Placement')
 enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 ## Defines how to affect the scale of the portrait
-@export var size_mode : SizeModes = SizeModes.FIT_SCALE_HEIGHT :
+@export var size_mode: SizeModes = SizeModes.FIT_SCALE_HEIGHT :
 	set(mode):
 		size_mode = mode
 		_update_debug_portrait_size_position()
@@ -39,7 +39,7 @@ enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 @export_group('Origin', 'origin')
 enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_MIDDLE, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT}
 ## The portrait will be placed relative to this point in the container.
-@export var origin_anchor : OriginAnchors = OriginAnchors.BOTTOM_CENTER :
+@export var origin_anchor: OriginAnchors = OriginAnchors.BOTTOM_CENTER :
 	set(anchor):
 		origin_anchor = anchor
 		_update_debug_origin()
@@ -53,19 +53,19 @@ enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_
 
 @export_group('Debug', 'debug')
 ## A character that will be displayed in the editor, useful for getting the right size.
-@export var debug_character : DialogicCharacter = null:
+@export var debug_character: DialogicCharacter = null:
 	set(character):
 		debug_character = character
 		_update_debug_portrait_scene()
-@export var debug_character_portrait :String = "":
+@export var debug_character_portrait: String = "":
 	set(portrait):
 		debug_character_portrait = portrait
 		_update_debug_portrait_scene()
 
-var debug_character_holder_node :Node2D = null
-var debug_character_scene_node : Node = null
-var debug_origin : Sprite2D = null
-var default_portrait_scene :String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
+var debug_character_holder_node: Node2D = null
+var debug_character_scene_node: Node = null
+var debug_origin: Sprite2D = null
+var default_portrait_scene: String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
 # Used if no debug character is specified
 var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
 
@@ -85,7 +85,7 @@ func _ready():
 
 		debug_origin = Sprite2D.new()
 		add_child(debug_origin)
-		debug_origin.texture = get_theme_icon("EditorPosition", "EditorIcons")
+		debug_origin.texture = load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
 
 		_update_debug_origin()
 		_update_debug_portrait_scene()
@@ -130,8 +130,10 @@ func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> 
 
 
 ## Returns the current origin position
-func _get_origin_position() -> Vector2:
-	return size*Vector2(origin_anchor%3/2.0, floor(origin_anchor/3.0)/2.0) + origin_offset
+func _get_origin_position(rect_size = null) -> Vector2:
+	if rect_size == null:
+		rect_size = size
+	return rect_size * Vector2(origin_anchor%3 / 2.0, floor(origin_anchor/3.0) / 2.0) + origin_offset
 
 
 func is_container(id:Variant) -> bool:
@@ -139,6 +141,15 @@ func is_container(id:Variant) -> bool:
 
 #region DEBUG METHODS
 ################################################################################
+
+func _draw():
+	draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
+
+	draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size()) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
+
+
+func _process(delta:float) -> void:
+	queue_redraw()
 
 ## Loads the debug_character with the debug_character_portrait
 ## Creates a holder node and applies mirror

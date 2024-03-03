@@ -185,6 +185,29 @@ static func update_timer_process_callback(timer:Timer) -> void:
 #endregion
 
 
+#region MULTITWEEN
+################################################################################
+static func multitween(tweened_value:Variant, item:Node, property:String, part:String) -> void:
+	var parts: Dictionary = item.get_meta(property+'_parts', {})
+	parts[part] = tweened_value
+
+	if not item.has_meta(property+'_base_value') and not 'base' in parts:
+		item.set_meta(property+'_base_value', item.get(property))
+
+	var final_value: Variant = parts.get('base', item.get_meta(property+'_base_value', item.get(property)))
+
+	for key in parts:
+		if key == 'base':
+			continue
+		else:
+			final_value += parts[key]
+
+	item.set(property, final_value)
+	item.set_meta(property+'_parts', parts)
+
+#endregion
+
+
 #region TRANSLATIONS
 ################################################################################
 

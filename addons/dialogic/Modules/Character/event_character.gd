@@ -378,8 +378,7 @@ func build_event_editor() -> void:
 	add_header_edit('position', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'center',
 			'mode'				: 0,
-			'suggestions_func' 	: get_position_suggestions,
-			'icon' 				: load(_this_folder.path_join('event_portrait_position.svg'))},
+			'suggestions_func' 	: get_position_suggestions},
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
 
 	# Body
@@ -447,10 +446,16 @@ func get_portrait_suggestions(search_text:String='') -> Dictionary:
 
 func get_position_suggestions(search_text:String='') -> Dictionary:
 	var icon := load(_this_folder.path_join('event_portrait_position.svg'))
+	var setting: String = ProjectSettings.get_setting('dialogic/portraits/position_suggestion_names', 'leftmost, left, center, right, rightmost')
 	var suggestions := {}
-	for position_id in ["leftmost", "left", "center", "right", "rightmost"]:
-		suggestions[position_id] = {'value':position_id, 'icon':icon}
+	if not search_text.is_empty():
+		suggestions[search_text] = {'value':search_text.strip_edges(), 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+	for position_id in setting.split(','):
+		suggestions[position_id.strip_edges()] = {'value':position_id.strip_edges(), 'icon':icon}
+		if not search_text.is_empty() and position_id.strip_edges().begins_with(search_text):
+			suggestions.erase(search_text)
 	return suggestions
+
 
 func get_animation_suggestions(search_text:String='') -> Dictionary:
 	var suggestions := {}

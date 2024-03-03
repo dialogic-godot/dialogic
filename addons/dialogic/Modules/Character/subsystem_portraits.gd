@@ -177,11 +177,11 @@ func _update_portrait_transform(character_node:Node2D, time:float = 0.0) -> void
 		portrait_node.position = character.offset + portrait_info.get('offset', Vector2())
 		portrait_node.scale = transform.size
 	else:
-		if !tween:
+		if not tween:
 			tween = character_node.create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 			character_node.set_meta('move_tween', tween)
 			character_node.set_meta('move_time', time)
-		tween.tween_property(character_node, 'position', transform.position, time)
+		tween.tween_method(DialogicUtil.multitween.bind(character_node, "position", "base"), character_node.position, transform.position, time)
 		tween.tween_property(portrait_node, 'position',character.offset + portrait_info.get('offset', Vector2()), time)
 		tween.tween_property(portrait_node, 'scale', transform.size, time)
 
