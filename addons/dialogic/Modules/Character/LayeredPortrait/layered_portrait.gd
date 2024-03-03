@@ -149,6 +149,10 @@ func _find_largest_coverage_rect() -> Rect2:
 		var sprite_width := sprite.texture.get_width()
 		var sprite_height := sprite.texture.get_height()
 
+		sprite.scale = Vector2.ONE
+		sprite.centered = false
+		sprite.position = sprite.get_rect().size * Vector2(-0.5, -1)
+
 		var texture_rect := Rect2(
 			sprite.position.x,
 			sprite.position.y,
