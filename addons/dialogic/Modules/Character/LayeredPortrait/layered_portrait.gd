@@ -18,7 +18,6 @@ static var REGEX := RegEx.create_from_string(REGEX_STRING)
 func _update_portrait(passed_character: DialogicCharacter, passed_portrait: String) -> void:
 	apply_character_and_portrait(passed_character, passed_portrait)
 
-
 ## Iterates over all children in [param start_node] and its children, looking
 ## for [class Sprite2D] nodes with a texture (not `null`).
 func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
@@ -39,7 +38,10 @@ func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 
 
 func _ready() -> void:
-	pass
+	for sprite: Sprite2D in _find_sprites_recursively(self):
+		sprite.scale = Vector2.ONE
+		sprite.centered = false
+		sprite.position = (sprite.get_rect().size * Vector2(-0.5, -1)) + sprite.position
 
 
 ## A _command that will apply an effect to the layered portrait.
@@ -148,10 +150,6 @@ func _find_largest_coverage_rect() -> Rect2:
 	for sprite: Sprite2D in _find_sprites_recursively(self):
 		var sprite_width := sprite.texture.get_width()
 		var sprite_height := sprite.texture.get_height()
-
-		sprite.scale = Vector2.ONE
-		sprite.centered = false
-		sprite.position = sprite.get_rect().size * Vector2(-0.5, -1)
 
 		var texture_rect := Rect2(
 			sprite.position.x,
