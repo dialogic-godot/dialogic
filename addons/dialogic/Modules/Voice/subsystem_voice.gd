@@ -1,5 +1,4 @@
 extends DialogicSubsystem
-
 ## Subsystem that manages setting voice lines for text events.
 ##
 ## It's recommended to use the [class DialogicVoiceEvent] to set the voice lines
