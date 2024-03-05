@@ -84,9 +84,6 @@ func play_voice() -> void:
 ## Set a voice file [param path] to be played, then invoke [method play_voice].
 ##
 ## This method does not check if [param path] is a valid file.
-##
-## This method does not start playing the voice line if [param path] and
-## [member current_audio_file] are the same.
 func set_file(path: String) -> void:
 	if current_audio_file == path:
 		return
