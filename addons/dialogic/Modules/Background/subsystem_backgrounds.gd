@@ -17,7 +17,7 @@ extends DialogicSubsystem
 ## `same_scene`| [type bool]   | If the new background uses the same Godot scene. [br]
 signal background_changed(info: Dictionary)
 
-## The default background Dialogic will use.
+## The default background scene Dialogic will use.
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
 ## The default transition Dialogic will use.
 var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/Defaults/simple_fade.gd")
