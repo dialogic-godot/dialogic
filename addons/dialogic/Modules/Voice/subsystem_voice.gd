@@ -103,7 +103,7 @@ func set_bus(bus_name: String) -> void:
 	voice_player.bus = bus_name
 
 
-## Stops the current voiceline from playing.
+## Stops the current voice line from playing.
 func stop_audio() -> void:
 	if voice_player.playing:
 		voiceline_stopped.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
@@ -111,15 +111,15 @@ func stop_audio() -> void:
 	voice_player.stop()
 
 
-## Called when the voiceline finishes playing.
-## Connected to [signal finished].
+## Called when the voice line finishes playing.
+## Connected to [signal finished] on [member voice_player]
 func _on_voice_finished() -> void:
 	voiceline_finished.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
 
 
-## Returns the remaining time of the current voiceline in seconds.
+## Returns the remaining time of the current voice line in seconds.
 ##
-## If there is no voiceline playing, returns `0`.
+## If there is no voice line playing, returns `0`.
 func get_remaining_time() -> float:
 	if not voice_player or not voice_player.playing:
 		return 0.0
