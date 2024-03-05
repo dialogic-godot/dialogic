@@ -5,7 +5,7 @@ extends DialogicSubsystem
 ## game data to named save slots.
 ##
 ## You can listen to saves via [signal saved]. \
-## If you want to save, you can invoke [method save]. \
+## If you want to save, you can call [method save]. \
 
 
 ## Emitted when a save happened with the following info:
