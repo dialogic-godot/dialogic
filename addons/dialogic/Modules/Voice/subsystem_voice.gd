@@ -31,7 +31,7 @@ signal voiceline_finished(info: Dictionary)
 ## ---------------- | ------------- | ----- [br]
 ## `file`           | [type String] | The path to file played. [br]
 ## `remaining_time` | [type float]  | The remaining time of the voiceline. [br]
-signal voiceline_stopped(info:Dictionary)
+signal voiceline_stopped(info: Dictionary)
 
 
 ## The current audio file being played.
