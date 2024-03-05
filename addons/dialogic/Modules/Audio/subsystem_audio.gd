@@ -30,9 +30,13 @@ signal music_started(info: Dictionary)
 signal sound_started(info: Dictionary)
 
 
-## Audio player used to play background music. Background music is long audio.
+## Audio player base duplicated to play background music.
+##
+## Background music is long audio.
 var base_music_player := AudioStreamPlayer.new()
-## Audio player used to play sound effects. Sound effects are short audio.
+## Audio player base, that will be duplicated to play sound effects.
+##
+## Sound effects are short audio.
 var base_sound_player := AudioStreamPlayer.new()
 
 
