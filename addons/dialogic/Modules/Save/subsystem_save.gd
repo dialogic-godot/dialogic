@@ -1,7 +1,7 @@
 extends DialogicSubsystem
 ## Subsystem to save and load game states.
 ##
-## This subsystem has many different helper methods save Dialogic or custom
+## This subsystem has many different helper methods to save Dialogic or custom
 ## game data to named save slots.
 ##
 ## You can listen to saves via [signal saved]. \
