@@ -43,7 +43,7 @@ var base_sound_player := AudioStreamPlayer.new()
 #region STATE
 ####################################################################################################
 
-## Clears the state on this subsystem and stops the all sounds.
+## Clears the state on this subsystem and stops all sounds.
 ##
 ## If you want to stop audio only, use [method stop_all_sounds].
 func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
