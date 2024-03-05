@@ -5,8 +5,8 @@ extends DialogicSubsystem
 ## for text events and not start playing them directly.
 
 
-## Whenever a new voiceline starts playing.
-## The [param info] contains following keys and values:
+## Emitted whenever a new voiceline starts playing.
+## The [param info] contains the following keys and values:
 ## [br]
 ## Key      |   Value Type  | Value [br]
 ## -------- | ------------- | ----- [br]
@@ -14,8 +14,8 @@ extends DialogicSubsystem
 signal voiceline_started(info: Dictionary)
 
 
-## Whenever a new voiceline finished playing.
-## The [param info] contains following keys and values:
+## Emitted whenever a new voiceline finished playing.
+## The [param info] contains the following keys and values:
 ## [br]
 ## Key              |   Value Type  | Value [br]
 ## ---------------- | ------------- | ----- [br]
@@ -24,8 +24,8 @@ signal voiceline_started(info: Dictionary)
 signal voiceline_finished(info: Dictionary)
 
 
-## Whenever a voiceline gets interrupted and does not finish playing.
-## The [param info] contains following keys and values:
+## Emitted whenever a voiceline gets interrupted and does not finish playing.
+## The [param info] contains the following keys and values:
 ## [br]
 ## Key              |   Value Type  | Value [br]
 ## ---------------- | ------------- | ----- [br]
