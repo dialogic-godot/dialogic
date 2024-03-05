@@ -74,7 +74,7 @@ func is_voiced(index: int) -> bool:
 	return false
 
 
-## Plays the voiceline. This will be invoked by Dialogic.
+## Plays the voice line. This will be invoked by Dialogic.
 ## Requires [method set_file] to be called before or nothing plays.
 func play_voice() -> void:
 	voice_player.play()
@@ -82,11 +82,10 @@ func play_voice() -> void:
 
 
 ## Set a voice file [param path] to be played, then invoke [method play_voice].
-## This method is called by Dialogic and must be not be called.
 ##
 ## This method does not check if [param path] is a valid file.
 ##
-## This method does not start playing the voiceline if [param path] and
+## This method does not start playing the voice line if [param path] and
 ## [member current_audio_file] are the same.
 func set_file(path: String) -> void:
 	if current_audio_file == path:
