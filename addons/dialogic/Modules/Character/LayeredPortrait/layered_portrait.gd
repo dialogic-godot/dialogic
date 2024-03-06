@@ -67,7 +67,7 @@ class LayerCommand:
 			print("Layered Portrait had no node matching the node path: ", _path)
 			return
 
-		if target_node is Sprite2D:
+		if not target_node is Sprite2D:
 			print("Layered Portrait target path '", _path, "', is not a Sprite2D node.")
 			return
 
