@@ -4,42 +4,62 @@
 ## The parent class has a character and portrait variable.
 extends DialogicPortrait
 
-const HIDE_COMMAND := "hide"
-const SHOW_COMMAND := "show"
-const SET_COMMAND := "set"
+## The term used for hiding a layer.
+const _HIDE_COMMAND := "hide"
+## The term used for showing a layer.
+const _SHOW_COMMAND := "show"
+## The term used for setting a layer to be the only visible layer.
+const _SET_COMMAND := "set"
 
-const OPERATORS = [HIDE_COMMAND, SHOW_COMMAND, SET_COMMAND]
-static var OPERATORS_EXPRESSION := "|".join(OPERATORS)
-static var REGEX_STRING := "(" + OPERATORS_EXPRESSION + ") (\\S+)"
-static var REGEX := RegEx.create_from_string(REGEX_STRING)
+## A collection of all possible layer commands.
+const _OPERATORS = [_HIDE_COMMAND, _SHOW_COMMAND, _SET_COMMAND]
+
+static var _OPERATORS_EXPRESSION := "|".join(_OPERATORS)
+static var _REGEX_STRING := "(" + _OPERATORS_EXPRESSION + ") (\\S+)"
+static var _REGEX := RegEx.create_from_string(_REGEX_STRING)
 
 var _initialized := false
 
+
+## Overriding [class DialogicPortrait]'s method.
+##
 ## Load anything related to the given character and portrait
 func _update_portrait(passed_character: DialogicCharacter, passed_portrait: String) -> void:
 
 	if not _initialized:
-		for sprite: Sprite2D in _find_sprites_recursively(self):
-			sprite.scale = Vector2.ONE
-			sprite.centered = false
-			sprite.position = (sprite.get_rect().size * Vector2(-0.5, -1)) + sprite.position
-
+		_apply_layer_adjustments()
 		_initialized = true
 
 	apply_character_and_portrait(passed_character, passed_portrait)
 
 
+## Modifies all layers to fit the portrait preview and appear correctly in
+## portrait containers.
+##
+## This method is not changing the scene itself and is intended for the
+## Dialogic editor preview and in-game rendering only.
+func _apply_layer_adjustments() -> void:
+	for sprite: Sprite2D in _find_sprites_recursively(self):
+		sprite.scale = Vector2.ONE
+		sprite.centered = false
+		sprite.position = (sprite.get_rect().size * Vector2(-0.5, -1)) + sprite.position
+
+
 ## Iterates over all children in [param start_node] and its children, looking
 ## for [class Sprite2D] nodes with a texture (not `null`).
+## All found sprites are returned in an array, eventually returning all
+## sprites in the scene.
 func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 	var sprites: Array[Sprite2D] = []
 
 	# Iterate through the children of the current node
 	for child: Node in start_node.get_children():
 
-		if child is Sprite2D and child.texture:
-			sprites.append(child)
-			continue
+		if child is Sprite2D:
+			var sprite := child as Sprite2D
+
+			if sprite.texture:
+				sprites.append(sprite)
 
 		var child_sprites := _find_sprites_recursively(child)
 		sprites.append_array(child_sprites)
@@ -47,28 +67,32 @@ func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 	return sprites
 
 
-## A _command that will apply an effect to the layered portrait.
+## A command will apply an effect to the layered portrait.
 class LayerCommand:
-	# The effect the command will apply.
+	# The different types of effects.
 	enum CommandType {
+		## Additively Show a specific layer.
 		SHOW_LAYER,
+		## Subtractively hide a specific layer.
 		HIDE_LAYER,
+		## Exclusively show a specific layer, hiding all other sibling layers.
+		## A sibling layer is a layer sharing the same parent node.
 		SET_LAYER,
 	}
 
 	var _path: String
 	var _type: CommandType
 
-	## Executes the _command.
+	## Executes the effect of the layer based on the [enum CommandType].
 	func _execute(root: Node) -> void:
 		var target_node := root.get_node(_path)
 
 		if target_node == null:
-			print("Layered Portrait had no node matching the node path: ", _path)
+			printerr("Layered Portrait had no node matching the node path: '", _path, "'.")
 			return
 
 		if not target_node is Sprite2D:
-			print("Layered Portrait target path '", _path, "', is not a Sprite2D node.")
+			printerr("Layered Portrait target path '", _path, "', is not a Sprite2D node.")
 			return
 
 		var sprite := target_node as Sprite2D
@@ -83,8 +107,11 @@ class LayerCommand:
 			CommandType.SET_LAYER:
 				var target_parent := target_node.get_parent()
 
-				for child in target_parent.get_children():
-					child.hide()
+				for child: Node in target_parent.get_children():
+
+					if child is Sprite2D:
+						var sprite_child := child as Sprite2D
+						sprite_child.hide()
 
 				sprite.show()
 
@@ -92,9 +119,7 @@ class LayerCommand:
 ## Turns the input into a single [class LayerCommand] object.
 ## Returns `null` if the input cannot be parsed into a [class LayerCommand].
 func _parse_layer_command(input: String) -> LayerCommand:
-	var command := LayerCommand.new()
-
-	var regex_match: RegExMatch = REGEX.search(input)
+	var regex_match: RegExMatch = _REGEX.search(input)
 
 	if regex_match == null:
 		print("Layered Portrait had an invalid command: ", input)
@@ -102,6 +127,8 @@ func _parse_layer_command(input: String) -> LayerCommand:
 
 	var _path: String = regex_match.get_string(2)
 	var operator: String = regex_match.get_string(1)
+
+	var command := LayerCommand.new()
 
 	match operator:
 		SET_COMMAND:
@@ -140,6 +167,9 @@ func _parse_input_to_layer_commands(input: String) -> Array[LayerCommand]:
 	return commands
 
 
+
+## Overriding [class DialogicPortrait]'s method.
+##
 ## The extra data will be turned into layer commands and then be executed.
 func _set_extra_data(data: String) -> void:
 	var commands := _parse_input_to_layer_commands(data)
@@ -148,11 +178,16 @@ func _set_extra_data(data: String) -> void:
 		_command._execute(self)
 
 
+## Overriding [class DialogicPortrait]'s method.
+##
+## Handling all layers horizontal flip state.
 func _set_mirror(is_mirrored: bool) -> void:
 	for sprite: Sprite2D in _find_sprites_recursively(self):
 		sprite.flip_h = is_mirrored
 
 
+## Scans all nodes in this scene and finds the largest rectangle that
+## covers encloses every sprite.
 func _find_largest_coverage_rect() -> Rect2:
 	var coverage_rect := Rect2(0, 0, 0, 0)
 
@@ -172,6 +207,10 @@ func _find_largest_coverage_rect() -> Rect2:
 	return coverage_rect
 
 
+## Overriding [class DialogicPortrait]'s method.
+##
+## Called by Dialogic when the portrait is needed to be shown.
+## For instance, in the Dialogic editor or in-game.
 func _get_covered_rect() -> Rect2:
 	var needed_rect := _find_largest_coverage_rect()
 
