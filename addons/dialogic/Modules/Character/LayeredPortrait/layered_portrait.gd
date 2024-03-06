@@ -84,7 +84,7 @@ class LayerCommand:
 				var target_parent := target_node.get_parent()
 
 				for child in target_parent.get_children():
-					sprite.hide()
+					child.hide()
 
 				sprite.show()
 
