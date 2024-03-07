@@ -131,16 +131,16 @@ func _parse_layer_command(input: String) -> LayerCommand:
 	var command := LayerCommand.new()
 
 	match operator:
-		SET_COMMAND:
+		_SET_COMMAND:
 			command._type = LayerCommand.CommandType.SET_LAYER
 
-		SHOW_COMMAND:
+		_SHOW_COMMAND:
 			command._type = LayerCommand.CommandType.SHOW_LAYER
 
-		HIDE_COMMAND:
+		_HIDE_COMMAND:
 			command._type = LayerCommand.CommandType.HIDE_LAYER
 
-		SET_COMMAND:
+		_SET_COMMAND:
 			command._type = LayerCommand.CommandType.SET_LAYER
 
 	## We clean escape symbols and trim the spaces.
