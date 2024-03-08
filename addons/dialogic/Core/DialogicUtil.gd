@@ -64,18 +64,27 @@ static func get_module_path(name:String, builtin:=true) -> String:
 		return ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions').path_join(name)
 
 
-static func update_autoload_subsystem_access() -> void:
+## This is a private and editor-only function.
+##
+## Populates the [class DialogicGameHandler] with new custom subsystems by
+## directly manipulating the file's content and then importing the file.
+static func _update_autoload_subsystem_access() -> void:
+	if not Engine.is_editor_hint():
+		printerr("[Dialogic] This function is only available in the editor.")
+		return
+
 	var script: Script = load("res://addons/dialogic/Core/DialogicGameHandler.gd")
 	var new_subsystem_access_list := "#region SUBSYSTEMS\n"
 
-	for indexer in get_indexers(true, true):
-		for subsystem in indexer._get_subsystems().duplicate(true):
+	for indexer: DialogicIndexer in get_indexers(true, true):
+
+		for subsystem: Dictionary in indexer._get_subsystems().duplicate(true):
 			new_subsystem_access_list += '\nvar {name} := preload("{script}").new():\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
 
 	new_subsystem_access_list += "\n#endregion"
 	script.source_code = RegEx.create_from_string("#region SUBSYSTEMS\\n#*\\n((?!#endregion)(.*\\n))*#endregion").sub(script.source_code, new_subsystem_access_list)
 	ResourceSaver.save(script)
-	EditorInterface.get_resource_filesystem().reimport_files(["res://addons/dialogic/Core/DialogicGameHandler.gd"])
+	Engine.get_singleton("EditorInterface").get_resource_filesystem().reimport_files(["res://addons/dialogic/Core/DialogicGameHandler.gd"])
 
 
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
