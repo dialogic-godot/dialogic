@@ -74,13 +74,20 @@ func _execute() -> void:
 		var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 		final_movement_time = max(tween_time, time_per_event)
 
+	var container: DialogicNode_PortraitContainer = dialogic.PortraitContainers.get_container(position)
 	match action:
 		Actions.RESET_ALL:
-			dialogic.PortraitContainers.reset_all_portrait_positions(final_movement_time)
+			var tween := dialogic.create_tween().set_parallel(true).set_ease(tween_ease).set_trans(tween_trans)
+			dialogic.PortraitContainers.reset_all_containers(final_movement_time, tween)
+			if tween_await and tween.is_running():
+				await tween.finished
 		Actions.RESET:
-			dialogic.PortraitContainers.reset_portrait_position(position, final_movement_time)
+			if container:
+				var tween := dialogic.create_tween().set_parallel(true).set_ease(tween_ease).set_trans(tween_trans)
+				dialogic.PortraitContainers.reset_container(container, final_movement_time, tween)
+				if tween_await and tween.is_running():
+					await tween.finished
 		Actions.CHANGE:
-			var container: DialogicNode_PortraitContainer = dialogic.PortraitContainers.get_container(position)
 			if container == null:
 				container = dialogic.PortraitContainers.add_container(position, translation, rect_size)
 
@@ -125,7 +132,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"action"		: {"property": "action", 		"default": Actions.CHANGE,
-								"suggestions": func(): return {"Change":{'value':0, 'text_alt':['change', 'set']}, "Reset":{'value':2,'text_alt':['reset'] }, "Reset All":{'value':3,'text_alt':['reset_all']}}},
+								"suggestions": func(): return {"Change":{'value':0, 'text_alt':['change', 'set']}, "Reset":{'value':1,'text_alt':['reset'] }, "Reset All":{'value':2,'text_alt':['reset_all']}}},
 		"id" 		: {"property": "position", 			"default": "0"},
 		"pos" 		: {"property": "translation", 		"default": ""},
 		"rot" 		: {"property": "rotation", 		"default": 0},
@@ -163,8 +170,10 @@ func build_event_editor():
 		]
 		})
 	add_header_edit("position", ValueType.DYNAMIC_OPTIONS, {
-			'suggestions_func':get_position_suggestions},
-			'action != Actions.RESET_ALL')
+			'suggestions_func':get_position_suggestions,
+			'placeholder': "Position"},
+			'action != Actions.RESET_ALL',
+			)
 	add_body_edit('set_translation', ValueType.BOOL_BUTTON,
 			{'editor_icon': ["ToolMove", "EditorIcons"], 'tooltip':'Change translation'}, "action == Actions.CHANGE")
 	add_body_edit("translation", ValueType.SINGLELINE_TEXT, {'left_text':'Translate:'},
