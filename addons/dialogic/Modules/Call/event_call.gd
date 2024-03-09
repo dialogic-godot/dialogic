@@ -29,13 +29,25 @@ var _current_method_arg_hints := {'a':null, 'm':null, 'info':{}}
 ################################################################################
 
 func _execute() -> void:
-	var autoload = dialogic.get_node('/root/'+autoload_name)
-	if autoload == null:
+	var object: Object = null
+	var obj_path := autoload_name
+	var autoload: Node = dialogic.get_node('/root/'+obj_path.get_slice('.', 0))
+	obj_path = obj_path.trim_prefix(obj_path.get_slice('.', 0)+'.')
+	object = autoload
+	if object:
+		while obj_path:
+			if obj_path.get_slice(".", 0) in object and object.get(obj_path.get_slice(".", 0)) is Object:
+				object = object.get(obj_path.get_slice(".", 0))
+			else:
+				break
+			obj_path = obj_path.trim_prefix(obj_path.get_slice('.', 0)+'.')
+
+	if object == null:
 		printerr("[Dialogic] Call event failed: Unable to find autoload '",autoload_name,"'")
 		finish()
 		return
 
-	if autoload.has_method(method):
+	if object.has_method(method):
 		var args := []
 		for arg in arguments:
 			if arg is String and arg.begins_with('@'):
@@ -43,7 +55,7 @@ func _execute() -> void:
 			else:
 				args.append(arg)
 		dialogic.current_state = dialogic.States.WAITING
-		await autoload.callv(method, args)
+		await object.callv(method, args)
 		dialogic.current_state = dialogic.States.IDLE
 	else:
 		printerr("[Dialogic] Call event failed: Autoload doesn't have the method '", method,"'.")
@@ -88,7 +100,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var result := RegEx.create_from_string('do (?<autoload>[^\\.]*)(.(?<method>[^.(]*)(\\((?<arguments>.*)\\))?)?').search(string.strip_edges())
+	var result := RegEx.create_from_string(r"do (?<autoload>[^\(]*)\.((?<method>[^.(]*)(\((?<arguments>.*)\))?)?").search(string.strip_edges())
 	if result:
 		autoload_name = result.get_string('autoload')
 		method = result.get_string('method')
