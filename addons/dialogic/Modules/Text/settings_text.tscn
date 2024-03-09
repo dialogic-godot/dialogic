@@ -85,11 +85,11 @@ text = "Text Reveal Skippable"
 
 [node name="HintTooltip4" parent="VBoxContainer/VBox/HBoxContainer" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "If enabled the revealing of text can be skipped with the input action. 
+tooltip_text = "If enabled the revealing of text can be skipped with the input action.
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
 texture = SubResource("ImageTexture_dbvsu")
-hint_text = "If enabled the revealing of text can be skipped with the input action. 
+hint_text = "If enabled the revealing of text can be skipped with the input action.
 If disabled you can only advance to the next event when revealing has finnished.
 To avoid rapid skipping, you can shortly block skipping with a delay."
 
@@ -134,10 +134,10 @@ text = "New lines as new events"
 
 [node name="HintTooltip7" parent="VBoxContainer/VBox/HBoxContainer3" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "If enabled dialogic, new lines will be treated as [n] effects, 
+tooltip_text = "If enabled dialogic, new lines will be treated as [n] effects,
 seemingly waiting for input before starting a new text."
 texture = SubResource("ImageTexture_dbvsu")
-hint_text = "If enabled dialogic, new lines will be treated as [n] effects, 
+hint_text = "If enabled dialogic, new lines will be treated as [n] effects,
 seemingly waiting for input before starting a new text."
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBox"]
@@ -173,25 +173,25 @@ text = "Auto-Advance"
 layout_mode = 2
 tooltip_text = "Autoadvance is the concept of automatically progressing to the next event upon completing text display, usually after a certain delay.
 
-You can enabled autoadvance from code using either:
-- Dialogic.Input.auto_advance.set_autoadvance_until_user_input(true)
-- Dialogic.Input.auto_advance.set_autoadvance_until_next_event(true)
-- Dialogic.Input.auto_advance.set_autoadvance_system(true)
-These add up, so if any of them is true, autoadvance will happen.
-Unless manual advancement is disabled, the autoadvance time can always be skipped by the player.
+You can enabled Auto-Advance from code using either:
+- Dialogic.Inputs.auto_advance.enabled_until_user_input = true
+- Dialogic.Inputs.auto_advance.enabled_until_next_event = true
+- Dialogic.Inputs.auto_advance.enabled_forced = true
+These add up, so if any of them is true, Auto-Advance will happen.
+Unless manual advancement is disabled, the Auto-Advance time can always be skipped by the player.
 
-The autoadvance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
+The Auto-Advance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
 texture = SubResource("ImageTexture_dbvsu")
 hint_text = "Autoadvance is the concept of automatically progressing to the next event upon completing text display, usually after a certain delay.
 
-You can enabled autoadvance from code using either:
-- Dialogic.Input.auto_advance.set_autoadvance_until_user_input(true)
-- Dialogic.Input.auto_advance.set_autoadvance_until_next_event(true)
-- Dialogic.Input.auto_advance.set_autoadvance_system(true)
-These add up, so if any of them is true, autoadvance will happen.
-Unless manual advancement is disabled, the autoadvance time can always be skipped by the player.
+You can enabled Auto-Advance from code using either:
+- Dialogic.Inputs.auto_advance.enabled_until_user_input = true
+- Dialogic.Inputs.auto_advance.enabled_until_next_event = true
+- Dialogic.Inputs.auto_advance.enabled_forced = true
+These add up, so if any of them is true, Auto-Advance will happen.
+Unless manual advancement is disabled, the Auto-Advance time can always be skipped by the player.
 
-The autoadvance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
+The Auto-Advance will wait for Voice audio to finish playing. This behaviour can be disabled via code. "
 
 [node name="AutoadvanceSettings" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -227,11 +227,11 @@ text = "Additional Delay"
 
 [node name="HintTooltip2" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "An additional delay per character or word can be added. 
+tooltip_text = "An additional delay per character or word can be added.
 
 Note: When changing values via code, you can actually use both modes simultaniously."
 texture = SubResource("ImageTexture_dbvsu")
-hint_text = "An additional delay per character or word can be added. 
+hint_text = "An additional delay per character or word can be added.
 
 Note: When changing values via code, you can actually use both modes simultaniously."
 
@@ -295,13 +295,13 @@ text = "Enabled at the start"
 
 [node name="HintTooltip" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "While you would usually enable autoadvance via code, 
-if this is true it will be initially enabled. 
-This kind of autoadvance (system) only stops when disabled via code. "
+tooltip_text = "While you would usually enable Auto-Advance via code,
+if this is true it will be initially enabled.
+This kind of Auto-Advance (system) only stops when disabled via code. "
 texture = SubResource("ImageTexture_dbvsu")
-hint_text = "While you would usually enable autoadvance via code, 
-if this is true it will be initially enabled. 
-This kind of autoadvance (system) only stops when disabled via code. "
+hint_text = "While you would usually enable Auto-Advance via code,
+if this is true it will be initially enabled.
+This kind of Auto-Advance (system) only stops when disabled via code. "
 
 [node name="AutoAdvance" type="CheckBox" parent="VBoxContainer/AutoadvanceSettings"]
 unique_name_in_owner = true
@@ -323,20 +323,20 @@ layout_mode = 2
 tooltip_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
 You can enable Auto-Skip from code via:
-Dialogic.Input.auto_skip.enabled = true
+Dialogic.Inputsauto_skip.enabled = true
 
-By default, Auto-Skip will cancel on user input. 
-You can disable this by calling: 
-Dialogic.Input.auto_skip.disable_on_user_input = false"
+By default, Auto-Skip will cancel on user input.
+You can disable this by calling:
+Dialogic.Inputsauto_skip.disable_on_user_input = false"
 texture = SubResource("ImageTexture_dbvsu")
 hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
 You can enable Auto-Skip from code via:
-Dialogic.Input.auto_skip.enabled = true
+Dialogic.Inputsauto_skip.enabled = true
 
-By default, Auto-Skip will cancel on user input. 
-You can disable this by calling: 
-Dialogic.Input.auto_skip.disable_on_user_input = false"
+By default, Auto-Skip will cancel on user input.
+You can disable this by calling:
+Dialogic.Inputsauto_skip.disable_on_user_input = false"
 
 [node name="AutoskipSettings" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -382,14 +382,14 @@ text = "Auto-Pauses"
 
 [node name="HintTooltip" parent="VBoxContainer/HBoxContainer" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "Adds pauses after certain letters. 
+tooltip_text = "Adds pauses after certain letters.
 
-Each set can contain multiple letters that will (individually) 
+Each set can contain multiple letters that will (individually)
 have a pause of the given length added after them."
 texture = SubResource("ImageTexture_dbvsu")
-hint_text = "Adds pauses after certain letters. 
+hint_text = "Adds pauses after certain letters.
 
-Each set can contain multiple letters that will (individually) 
+Each set can contain multiple letters that will (individually)
 have a pause of the given length added after them."
 
 [node name="Add" type="Button" parent="VBoxContainer/HBoxContainer"]

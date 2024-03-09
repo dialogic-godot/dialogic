@@ -93,7 +93,7 @@ enum ValueType {
 	ARRAY, DICTIONARY,
 	# Numbers
 	NUMBER,
-	VECTOR2,
+	VECTOR2, VECTOR3, VECTOR4,
 	# Other
 	CUSTOM, BUTTON, LABEL
 }

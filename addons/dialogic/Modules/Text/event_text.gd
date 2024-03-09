@@ -131,7 +131,7 @@ func _execute() -> void:
 			state = States.IDLE
 
 		# Handling potential Choice Events.
-		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+		if section_idx == len(split_text)-1 and dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
 
 			end_text_event()
@@ -175,7 +175,7 @@ func _mark_as_read(final_text: String) -> void:
 			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.event_was_read(self)
+		dialogic.History.mark_event_as_visited(self)
 
 
 func _connect_signals() -> void:

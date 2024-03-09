@@ -23,10 +23,10 @@ var disable_on_user_input: bool = true
 ## unread Text event or an event requesting user input.
 var disable_on_unread_text: bool = true
 
-## If `true`, Auto-Skip will be enabled when the timeline advances to a seen
-## Text event.
-## Useful if the player always wants to skip seen Text events.
-var enable_on_seen: bool = true
+## If `true`, Auto-Skip will be enabled when the timeline advances to a
+## previously visited Text event.
+## Useful if the player always wants to skip already-visited Text events.
+var enable_on_visited: bool = true
 
 ## If `true`, Auto-Skip will skip Voice events instead of playing them.
 var skip_voice: bool = true
@@ -37,13 +37,14 @@ var time_per_event: float = 0.1
 
 
 ## Setting up Auto-Skip.
-func _init():
-	enable_on_seen = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', enable_on_seen)
+func _init() -> void:
+	enable_on_visited = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', enable_on_visited)
 	time_per_event = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', time_per_event)
 
 	if DialogicUtil.autoload().has_subsystem('History'):
-		DialogicUtil.autoload().History.already_read_event_reached.connect(_handle_seen_event)
-		DialogicUtil.autoload().History.not_read_event_reached.connect(_handle_unseen_event)
+		DialogicUtil.autoload().History.visited_event.connect(_handle_seen_event)
+		DialogicUtil.autoload().History.unvisited_event.connect(_handle_unseen_event)
+
 
 ## Called when Auto-Skip is enabled or disabled.
 ## Emits [signal autoskip_changed] if the state changed.
@@ -54,11 +55,13 @@ func _set_enabled(is_enabled: bool) -> void:
 	if enabled != previous_enabled:
 		toggled.emit(enabled)
 
-func _handle_seen_event():
+
+func _handle_seen_event() -> void:
 	# If Auto-Skip is disabled but reacts to seen events, we
 	# enable Auto-Skip.
-	if not enabled and enable_on_seen:
+	if not enabled and enable_on_visited:
 		enabled = true
+
 
 func _handle_unseen_event() -> void:
 	if not enabled:

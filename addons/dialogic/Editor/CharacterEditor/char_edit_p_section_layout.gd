@@ -12,6 +12,7 @@ func _load_portrait_data(data:Dictionary) -> void:
 	%IgnoreScale.set_pressed_no_signal(data.get('ignore_char_scale', false))
 	%PortraitScale.value = data.get('scale', 1.0)*100
 	%PortraitOffset.set_value(data.get('offset', Vector2()))
+	%PortraitOffset._load_display_info({'step':1})
 	%PortraitMirror.set_pressed_no_signal(data.get('mirror', false))
 
 
