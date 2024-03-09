@@ -31,6 +31,7 @@ var name: String = "":
 					_value_type = VarValueType.BOOL
 			ui_update_needed.emit()
 		update_editor_warning()
+
 ## The operation to perform.
 var operation: int = Operations.SET:
 	set(value):
@@ -73,8 +74,8 @@ var _suppress_default_value: bool = false
 
 func _execute() -> void:
 	if name:
-		var orig: Variant = dialogic.VAR.get_variable(name)
-		if value != null and orig != null:
+		var orig: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
+		if value != null and (orig != null or (operation == Operations.SET and "[" in name)):
 			var the_value: Variant
 			match _value_type:
 				VarValueType.STRING:
