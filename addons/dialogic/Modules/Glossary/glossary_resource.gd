@@ -239,10 +239,14 @@ func remove_translation_id() -> void:
 
 ## Removes the translation ID of all glossary entries.
 func remove_entry_translation_ids() -> void:
-	for entry: Dictionary in entries:
+	for entry: Variant in entries.values():
+
+		# Ignore aliases.
+		if entry is String:
+			continue
 
 		if entry.has(TRANSLATION_PROPERTY):
-			entry.erase(TRANSLATION_PROPERTY)
+			entry[TRANSLATION_PROPERTY] = ""
 
 
 ## Clears the lookup tables using translation keys.
