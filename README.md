@@ -55,6 +55,18 @@ Dialogic uses [Unit Tests](https://en.wikipedia.org/wiki/Unit_testing) to ensure
 
 To get started, take a look at the existing files in the path and read the documentation to [create your first test](https://mikeschulze.github.io/gdUnit4/first_steps/firstTest/).
 
+## Interacting with the Source Code
+All methods and variables in the Dialogic 2 source **code prefixed with an underscore (`_`)** are considered *private*, for instance: `_remove_character()`.
+
+While you can use them, they may change in their behavior or change their signature, causing breakage in your code while moving between versions.
+Most private methods are used inside public ones; if you need help, check the documentation.
+
+**Public methods and variables can be found in our [Class Reference](https://docs.dialogic.pro/class_index.html).**
+
+During the Alpha and Beta version stages, code may change at any Dialogic Release to allow drafting a better design.
+Changelogs will accommodate for these changes and inform you on how to update your code.
+
+
 ## Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
 
