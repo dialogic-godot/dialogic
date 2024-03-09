@@ -122,7 +122,7 @@ func _execute() -> void:
 			dialogic.Portraits.change_character_extradata(character, extra_data)
 
 			if set_portrait:
-				dialogic.Portraits.change_character_portrait(character, portrait, false)
+				dialogic.Portraits.change_character_portrait(character, portrait)
 
 			if set_mirrored:
 				dialogic.Portraits.change_character_mirror(character, mirrored)
@@ -271,7 +271,7 @@ func from_text(string:String) -> void:
 		set_position = true
 
 	if result.get_string('shortcode'):
-		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
+		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
 		animation_name = shortcode_params.get('animation', '')
 
 		var animLength = shortcode_params.get('length', '0.5').to_float()
