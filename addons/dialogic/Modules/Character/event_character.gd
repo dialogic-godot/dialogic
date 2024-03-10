@@ -139,6 +139,12 @@ func _execute() -> void:
 
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
 
+			if animation_name.is_empty():
+				animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In")
+				animation_length = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_length", 0.5)
+				animation_wait = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_wait", false)
+				print(animation_name, animation_length, animation_wait)
+
 			if animation_name:
 				var final_animation_length: float = animation_length
 				var final_animation_repetitions: int = animation_repeats
@@ -160,22 +166,9 @@ func _execute() -> void:
 					await animation.finished
 					dialogic.current_state = DialogicGameHandler.States.IDLE
 
-			else:
-				_remove_portrait_default_animation(character)
-
 
 	finish()
 
-
-func _remove_portrait_default_animation(target_character: DialogicCharacter) -> void:
-	var character_node: Node = dialogic.current_state_info["portraits"][target_character.resource_path].node
-	var child_count := character_node.get_child_count()
-
-	if child_count > 1:
-		var portrait_node := character_node.get_child(0)
-		portrait_node.z_index = 2
-		# TODO: get default remove animation
-		dialogic.Portraits._remove_portrait_timed(portrait_node, "Fade In", 1.0)
 
 ################################################################################
 ## 						INITIALIZE
