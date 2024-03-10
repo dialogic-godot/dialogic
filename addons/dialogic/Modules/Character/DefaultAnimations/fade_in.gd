@@ -3,12 +3,21 @@ extends DialogicAnimation
 func animate() -> void:
 	var tween := (node.create_tween() as Tween)
 
-	node.modulate.a = 0
+	var start := 0.0
+	var end := 1.0
+
+	if is_reversed:
+		start = 1.0
+		end = 0.0
+
+	var property := get_modulation_property()
+	var original_color: Color = node.get(property)
+	original_color.a = start
+	node.set(property, original_color)
+
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_parallel()
-
-	tween.tween_property(node, 'modulate:a', 1.0, time)
+	tween.tween_property(node, property + ":a", end, time)
 
 	await tween.finished
 	finished_once.emit()
