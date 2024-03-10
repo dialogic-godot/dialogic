@@ -8,15 +8,22 @@ signal finished
 
 ## Set at runtime, will be the node to animate.
 var node: Node
+
 ## Set at runtime, will be the length of the animation.
 var time: float
+
 ## Set at runtime, will be the position at which to end the animation.
 var end_position: Vector2
+
 ## Set at runtime. The position the node started at.
 var orig_pos: Vector2
 
 ## Used to repeate the animation for a number of times.
 var repeats: int
+
+## If `true`, the animation will be reversed.
+## This must be implemented by each animation or it will have no effect.
+var is_reversed: bool = false
 
 
 func _ready() -> void:
@@ -29,6 +36,8 @@ func animate() -> void:
 	pass
 
 
+## This method controls whether to repeat the animation or not.
+## Animations must call this once they finished an animation.
 func finished_one_loop() -> void:
 	repeats -= 1
 
