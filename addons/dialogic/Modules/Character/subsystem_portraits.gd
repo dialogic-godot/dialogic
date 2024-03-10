@@ -8,6 +8,9 @@ signal character_portrait_changed(info:Dictionary)
 signal character_moved(info:Dictionary)
 signal position_changed(info:Dictionary)
 
+## Emitted when a portrait starts animating.
+signal portrait_animating(character_node: Node, portrait_node: Node, animation_name: String, animation_length: float)
+
 
 ## The default portrait scene.
 var default_portrait_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_portrait.tscn'))
