@@ -59,6 +59,20 @@ func _ready() -> void:
 	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
 		default_portrait_scene = load(ProjectSettings.get_setting('dialogic/portraits/default_portrait', ''))
 
+	portrait_animating.connect(_on_portrait_animating)
+
+
+func _on_portrait_animating(character_node: Node, _portrait_node: Node, animation_name: String, animation_length: float) -> void:
+	var child_count := character_node.get_child_count()
+
+	# Start removal of the current portrait.
+	if child_count > 1:
+		# We always delete the previous portrait node.
+		var previous_portrait_index := child_count - 2
+		var previous_portrait_node := character_node.get_child(previous_portrait_index)
+
+		_remove_portrait_timed(previous_portrait_node, animation_name, animation_length)
+
 #endregion
 
 
