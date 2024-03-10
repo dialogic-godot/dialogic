@@ -70,7 +70,7 @@ func _on_portrait_animating(character_node: Node, _portrait_node: Node, animatio
 		# We always delete the previous portrait node.
 		var previous_portrait_index := child_count - 2
 		var previous_portrait_node := character_node.get_child(previous_portrait_index)
-
+		previous_portrait_node.z_index = 2
 		_remove_portrait_timed(previous_portrait_node, animation_name, animation_length)
 
 #endregion
