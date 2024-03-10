@@ -1,9 +1,14 @@
 extends DialogicSubsystem
+## Subsystem that handles input, Auto-Advance, and skipping.
+##
+## This subsystem can be accessed via GDScript: `Dialogic.Inputs`.
 
-## Subsystem that handles input, autoadvance & skipping.
 
 signal dialogic_action_priority
 signal dialogic_action
+
+## Whenever the Auto-Skip timer finishes, this signal is emitted.
+## Configure Auto-Skip settings via [member auto_skip].
 signal autoskip_timer_finished
 
 
@@ -18,7 +23,8 @@ var auto_advance : DialogicAutoAdvance = null
 #region SUBSYSTEM METHODS
 ################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+
+func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	if not is_node_ready():
 		await ready
 
@@ -142,7 +148,7 @@ func _on_autoskip_toggled(enabled: bool) -> void:
 ## Handles fine-grained Auto-Skip logic.
 ## The [method _process] method allows for a more precise timer than the
 ## [Timer] class.
-func _process(delta):
+func _process(delta: float) -> void:
 	if _auto_skip_timer_left > 0:
 		_auto_skip_timer_left -= delta
 

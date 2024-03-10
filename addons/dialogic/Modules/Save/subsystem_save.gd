@@ -1,12 +1,19 @@
 extends DialogicSubsystem
+## Subsystem to save and load game states.
+##
+## This subsystem has many different helper methods to save Dialogic or custom
+## game data to named save slots.
+##
+## You can listen to saves via [signal saved]. \
+## If you want to save, you can call [method save]. \
 
-### Subsystem that manages saving and loading data.
 
-
-## Emitted when a save happened.
-## The [param info] contains the following keys:
-## 	- slot_name: The `String` name of the slot that the game state was saved to.
-## 	- is_autosave: `true` if the save was an autosave.
+## Emitted when a save happened with the following info:
+## [br]
+## Key           |   Value Type  | Value [br]
+## -----------   | ------------- | ----- [br]
+## `slot_name`   | [type String] | The name of the slot that the game state was saved to. [br]
+## `is_autosave` | [type bool]   | `true`, if the save was an autosave. [br]
 signal saved(info: Dictionary)
 
 
