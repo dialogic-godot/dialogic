@@ -103,13 +103,12 @@ func _create_character_node(character:DialogicCharacter, container:DialogicNode_
 ## This allows for cross-fade effects and other animations.
 ##
 ## If [param duration_seconds] is `0.0`, the portrait will be removed instantly.
-func _remove_portrait_timed(portrait_node: Node, duration_seconds: float) -> void:
-
+func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade Out", duration_seconds := 0.0) -> void:
 
 	if duration_seconds > 0:
 		# TODO: Allow setting the animation
-		var animation_name := DialogicResourceUtil.guess_special_resource("PortraitAnimation", "Fade Out", "")
-		var animation := _animate_portrait(portrait_node, animation_name, duration_seconds)
+		var animation_name := DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_path, "")
+		var animation := _animate_portrait(portrait_node, animation_name, duration_seconds, 0, true, true)
 		await animation.finished
 
 	portrait_node.queue_free()
@@ -141,10 +140,6 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 			info['same_scene'] = true
 
 	else:
-		# Start removal of the current portrait.
-		if character_node.get_child_count() > 0:
-			_remove_portrait(character_node.get_child(0), 2.0)
-
 		if ResourceLoader.exists(scene_path):
 			var packed_scene: PackedScene = load(scene_path)
 			if packed_scene:
@@ -202,50 +197,62 @@ func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
 		(character.scale * portrait_info.get('scale', 1))*int(apply_character_scale)+portrait_info.get('scale', 1)*int(!apply_character_scale))
 
 	var tween: Tween
+
 	if character_node.has_meta('move_tween'):
+
 		if character_node.get_meta('move_tween').is_running():
 			time = character_node.get_meta('move_time')-character_node.get_meta('move_tween').get_total_elapsed_time()
 			tween = character_node.get_meta('move_tween')
+
 	if time == 0:
 		character_node.position = transform.position
 		portrait_node.position = character.offset + portrait_info.get('offset', Vector2())
 		portrait_node.scale = transform.size
 	else:
+
 		if !tween:
 			tween = character_node.create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 			character_node.set_meta('move_tween', tween)
 			character_node.set_meta('move_time', time)
+
 		tween.tween_property(character_node, 'position', transform.position, time)
 		tween.tween_property(portrait_node, 'position',character.offset + portrait_info.get('offset', Vector2()), time)
 		tween.tween_property(portrait_node, 'scale', transform.size, time)
 
 
 ## Animates the portrait in the given container with the given animation.
-func _animate_portrait(character_node: Node2D, animation_path: String, length: float, repeats := 1) -> DialogicAnimation:
-	if character_node.has_meta('animation_node') and is_instance_valid(character_node.get_meta('animation_node')):
-		character_node.get_meta('animation_node').queue_free()
+func _animate_portrait(portrait_node: Node, animation_path: String, length: float, repeats := 1, is_reversed := false, is_silent := false) -> DialogicAnimation:
 
-	# Animate the portrait node.
-	character_node = character_node.get_child(-1)
+	if portrait_node.has_meta('animation_node') and is_instance_valid(portrait_node.get_meta('animation_node')):
+		portrait_node.get_meta('animation_node').queue_free()
+
 
 	var anim_script: Script = load(animation_path)
 	var anim_node := Node.new()
 	anim_node.set_script(anim_script)
 	anim_node = (anim_node as DialogicAnimation)
-	anim_node.node = character_node
-	anim_node.orig_pos = character_node.position
-	anim_node.end_position = character_node.position
+	anim_node.node = portrait_node
+	anim_node.orig_pos = portrait_node.position
+	anim_node.end_position = portrait_node.position
 	anim_node.time = length
 	anim_node.repeats = repeats
+	anim_node.is_reversed = is_reversed
+
 	add_child(anim_node)
 	anim_node.animate()
-	character_node.set_meta('animation_node', anim_node)
+
+	portrait_node.set_meta("animation_path", animation_path)
+	portrait_node.set_meta("animation_length", length)
+	portrait_node.set_meta("animation_node", anim_node)
+
+	if not is_silent:
+		portrait_animating.emit(portrait_node.get_parent(), portrait_node, animation_path, length)
 
 	return anim_node
 
 
 ## Moves the given portrait to the given container.
-func _move_portrait(portrait_node: Node2D, portrait_container:DialogicNode_PortraitContainer, time:= 0.0) -> void:
+func _move_portrait(portrait_node: Node2D, portrait_container: DialogicNode_PortraitContainer, time := 0.0) -> void:
 	var global_pos := portrait_node.global_position
 
 	if portrait_node.get_parent():
@@ -259,7 +266,7 @@ func _move_portrait(portrait_node: Node2D, portrait_container:DialogicNode_Portr
 
 
 ## Changes the given portraits z_index.
-func _change_portrait_z_index(character_node:Node2D, z_index:int, update_zindex:= true) -> void:
+func _change_portrait_z_index(character_node: Node, z_index:int, update_zindex:= true) -> void:
 	if update_zindex:
 		character_node.get_parent().set_meta('z_index', z_index)
 
@@ -271,18 +278,16 @@ func _change_portrait_z_index(character_node:Node2D, z_index:int, update_zindex:
 			idx += 1
 
 
-func z_sort_portrait_containers(con1:DialogicNode_PortraitContainer, con2:DialogicNode_PortraitContainer) -> bool:
+func z_sort_portrait_containers(con1: DialogicNode_PortraitContainer, con2: DialogicNode_PortraitContainer) -> bool:
 	if con1.get_meta('z_index', 0) < con2.get_meta('z_index', 0):
 		return true
+
 	return false
 
 
 ## Private method to remove a [param portrait_node].
-##
-## Accepts optional [duration_seconds] to remove the portrait over a span
-## of time.
-func _remove_portrait(portrait_node: Node2D, duration_seconds := 1.0) -> void:
-	_remove_portrait_timed(portrait_node, duration_seconds)
+func _remove_portrait(portrait_node: Node) -> void:
+	_remove_portrait_timed(portrait_node)
 
 
 ## Gets the default animation length for joining characters
@@ -353,7 +358,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
 
 	if animation_name and animation_length > 0:
-		var anim: DialogicAnimation = _animate_portrait(character_node, animation_name, animation_length)
+		var anim: DialogicAnimation = _animate_portrait(character_node.get_child(-1), animation_name, animation_length)
 
 		if animation_wait:
 			dialogic.current_state = DialogicGameHandler.States.ANIMATING
@@ -430,6 +435,7 @@ func change_character_mirror(character:DialogicCharacter, mirrored:= false, forc
 func change_character_z_index(character:DialogicCharacter, z_index:int, update_zindex:= true) -> void:
 	if !is_character_joined(character):
 		return
+
 	_change_portrait_z_index(dialogic.current_state_info.portraits[character.resource_path].node, z_index, update_zindex)
 	if update_zindex:
 		dialogic.current_state_info.portraits[character.resource_path]['z_index'] = z_index
@@ -450,7 +456,10 @@ func animate_character(character: DialogicCharacter, animation_path: String, len
 
 	animation_path = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_path, "")
 
-	return _animate_portrait(dialogic.current_state_info.portraits[character.resource_path].node, animation_path, length, repeats)
+	var character_node: Node = dialogic.current_state_info.portraits[character.resource_path].node
+	var portrait_node: Node = character_node.get_child(-1)
+
+	return _animate_portrait(portrait_node, animation_path, length, repeats)
 
 
 ## Moves the given character to the given position. Only works with joined characters
@@ -489,7 +498,7 @@ func leave_character(character:DialogicCharacter, animation_name:= "", animation
 
 	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
 
-	if !animation_name.is_empty():
+	if not animation_name.is_empty():
 		var anim := animate_character(character, animation_name, animation_length)
 
 		anim.finished.connect(remove_character.bind(character))
@@ -624,7 +633,7 @@ func reset_portrait_position(position_index:int, time:= 0.0) -> void:
 ####################################################################################################
 
 ## Updates all portrait containers set to SPEAKER.
-func change_speaker(speaker: DialogicCharacter = null, portrait := ""):
+func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 	for container: Node in get_tree().get_nodes_in_group('dialogic_portrait_con_speaker'):
 
 		for character_node: Node in container.get_children():
