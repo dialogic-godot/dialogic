@@ -79,8 +79,8 @@ signal dialogic_resumed
 ## Emitted when the timeline ends.
 ## This can be a timeline ending or [method end_timeline] being called.
 signal timeline_ended
-## Emitted when a timeline starts or with either [method start] or
-## [method start_timeline] being invoked.
+## Emitted when a timeline starts by calling either [method start]
+## or [method start_timeline].
 signal timeline_started
 ## Emitted when an event starts being executed.
 ## The event may not have finished executing yet.
