@@ -103,7 +103,7 @@ func _create_character_node(character:DialogicCharacter, container:DialogicNode_
 ## This allows for cross-fade effects and other animations.
 ##
 ## If [param duration_seconds] is `0.0`, the portrait will be removed instantly.
-func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade Out", duration_seconds := 0.0) -> void:
+func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade In", duration_seconds := 0.0) -> void:
 
 	if duration_seconds > 0:
 		# TODO: Allow setting the animation
