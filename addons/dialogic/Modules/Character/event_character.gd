@@ -145,10 +145,10 @@ func _execute() -> void:
 
 				if dialogic.Inputs.auto_skip.enabled:
 					var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
-					var time_for_repitions: float = time_per_event / animation_repeats
-					final_animation_length = time_for_repitions
+					var time_for_repetitions: float = time_per_event / animation_repeats
+					final_animation_length = time_for_repetitions
 
-				var anim: DialogicAnimation = dialogic.Portraits.animate_character(
+				var animation := dialogic.Portraits.animate_character(
 					character,
 					animation_name,
 					final_animation_length,
@@ -157,7 +157,7 @@ func _execute() -> void:
 
 				if animation_wait:
 					dialogic.current_state = DialogicGameHandler.States.ANIMATING
-					await anim.finished
+					await animation.finished
 					dialogic.current_state = DialogicGameHandler.States.IDLE
 
 	finish()
