@@ -47,3 +47,16 @@ func pause() -> void:
 func resume() -> void:
 	if node:
 		node.process_mode = Node.PROCESS_MODE_INHERIT
+
+
+## If the animation wants to change the modulation, this method
+## will return the property to change.
+##
+## The [class CanvasGroup] can use `self_modulate` instead of `modulate`
+## to uniformly change the modulation of all children without additively
+## overlaying the modulations.
+func get_modulation_property() -> String:
+	if node is CanvasGroup:
+		return "self_modulate"
+	else:
+		return "modulate"
