@@ -115,7 +115,7 @@ func _execute() -> void:
 				)
 
 		Actions.UPDATE:
-			if !character or !dialogic.Portraits.is_character_joined(character):
+			if character == null or not dialogic.Portraits.is_character_joined(character):
 				finish()
 				return
 
@@ -160,8 +160,22 @@ func _execute() -> void:
 					await animation.finished
 					dialogic.current_state = DialogicGameHandler.States.IDLE
 
+			else:
+				_remove_portrait_default_animation(character)
+
+
 	finish()
 
+
+func _remove_portrait_default_animation(target_character: DialogicCharacter) -> void:
+	var character_node: Node = dialogic.current_state_info["portraits"][target_character.resource_path].node
+	var child_count := character_node.get_child_count()
+
+	if child_count > 1:
+		var portrait_node := character_node.get_child(0)
+		portrait_node.z_index = 2
+		# TODO: get default remove animation
+		dialogic.Portraits._remove_portrait_timed(portrait_node, "Fade In", 1.0)
 
 ################################################################################
 ## 						INITIALIZE
@@ -192,13 +206,18 @@ func to_text() -> String:
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
 	if character or character_identifier == '--All--':
+
 		if action == Actions.LEAVE and character_identifier == '--All--':
 			result_string += "--All--"
+
 		else:
 			var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
+
 			result_string += name
+
 			if portrait.strip_edges() != default_values.get('portrait', '') and action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
 				result_string+= " ("+portrait+")"
 
@@ -274,12 +293,12 @@ func from_text(string:String) -> void:
 		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
 		animation_name = shortcode_params.get('animation', '')
 
-		var animLength = shortcode_params.get('length', '0.5').to_float()
+		var animLength: float = shortcode_params.get('length', '0.5').to_float()
 
 		if typeof(animLength) == TYPE_FLOAT:
 			animation_length = animLength
 		else:
-			animation_length = animLength.to_float()
+			animation_length = animLength
 
 		var wait_for_animation: String = shortcode_params.get('wait', 'false')
 		animation_wait = DialogicUtil.str_to_bool(wait_for_animation)
@@ -503,12 +522,16 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 	if '[' in line:
 		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('animation="'):
 			var animations := []
+
 			if line.begins_with('join'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+
 			if line.begins_with('update'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+
 			if line.begins_with('leave'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
+
 			for script in animations:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
 		elif CodeCompletionHelper.get_line_untill_caret(line).ends_with('wait="') or CodeCompletionHelper.get_line_untill_caret(line).ends_with('mirrored="'):
