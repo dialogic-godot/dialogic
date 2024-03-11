@@ -178,11 +178,15 @@ static func list_special_resources_of_type(type:String) -> Array:
 static func guess_special_resource(type:String, name:String, default:="") -> String:
 	if special_resources.is_empty():
 		update_special_resources()
+
 	if name.begins_with('res://'):
 		return name
-	for path in list_special_resources_of_type(type):
+
+	for path: String in list_special_resources_of_type(type):
+
 		if DialogicUtil.pretty_name(path).to_lower() == name.to_lower():
 			return path
+
 	return default
 
 
