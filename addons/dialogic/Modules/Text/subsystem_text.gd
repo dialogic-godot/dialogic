@@ -159,9 +159,24 @@ func _on_dialog_text_finished() -> void:
 	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
 
 
+## Parses the character's display_name and returns the text that 
+## should be rendered. Note that characters may have variables in their
+## name, therefore this function should be called to evaluate
+## any potential variables in a character's name. 
+func get_character_name_text(character:DialogicCharacter) -> String:
+	if character:
+		var translated_display_name := character.get_display_name_translated()
+
+		if dialogic.has_subsystem('VAR'):
+			return dialogic.VAR.parse_variables(translated_display_name)
+		else:
+			return translated_display_name
+	return ""
+
+
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
-func update_name_label(character:DialogicCharacter) -> void:
+func update_name_label(character:DialogicCharacter):
 	var character_path := character.resource_path if character else ""
 	var current_character_path: String = dialogic.current_state_info.get("speaker", "")
 
@@ -169,21 +184,14 @@ func update_name_label(character:DialogicCharacter) -> void:
 		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
 
+	var name_label_text = get_character_name_text(character)
+
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-
+		name_label.text = name_label_text
 		if character:
-			var translated_display_name := character.get_display_name_translated()
-
-			if dialogic.has_subsystem('VAR'):
-				name_label.text = dialogic.VAR.parse_variables(translated_display_name)
-			else:
-				name_label.text = translated_display_name
-
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
-
 		else:
-			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
 
 
