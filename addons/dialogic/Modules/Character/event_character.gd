@@ -140,7 +140,7 @@ func _execute() -> void:
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
 
 			if animation_name.is_empty():
-				animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In")
+				animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In Out")
 				animation_length = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_length", 0.5)
 				animation_wait = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_wait", false)
 				print(animation_name, animation_length, animation_wait)
