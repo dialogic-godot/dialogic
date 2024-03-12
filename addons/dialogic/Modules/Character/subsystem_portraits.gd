@@ -325,17 +325,22 @@ func _get_leave_default_length() -> float:
 func join_character(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored:= false, z_index:= 0, extra_data:= "", animation_name:= "", animation_length:= 0.0, animation_wait := false) -> Node:
 	if is_character_joined(character):
 		change_character_portrait(character, portrait)
+
 		if animation_name.is_empty():
 			animation_length = _get_join_default_length()
+
 		if animation_wait:
 			dialogic.current_state = DialogicGameHandler.States.ANIMATING
 			await get_tree().create_timer(animation_length).timeout
 			dialogic.current_state = DialogicGameHandler.States.IDLE
+
 		move_character(character, position_idx, animation_length)
 		change_character_mirror(character, mirrored)
+
 		return
 
 	var character_node := add_character(character, portrait, position_idx)
+
 	if character_node == null:
 		return null
 
@@ -497,30 +502,34 @@ func leave_character(character: DialogicCharacter, animation_name:= "", animatio
 
 	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
 
-
 	if not animation_name.is_empty():
-		var portrait_node := get_character_portrait_node(character)
-		await _remove_portrait_timed(portrait_node.get_child(0), animation_name, animation_length)
+		var character_node := get_character_node(character)
+		var last_portrait := character_node.get_child(-1)
+
+		if animation_wait:
+			dialogic.current_state = DialogicGameHandler.States.ANIMATING
+			await _remove_portrait_timed(last_portrait, animation_name, animation_length)
+			dialogic.current_state = DialogicGameHandler.States.IDLE
+
+		else:
+			await _remove_portrait_timed(last_portrait, animation_name, animation_length)
 
 	remove_character(character)
 
 
 ## Removes all joined characters with a given animation or the default animation.
-func leave_all_characters(animation_name:="", animation_length:=0.0, animation_wait:= false) -> void:
+func leave_all_characters(animation_name:="", animation_length:=0.0, animation_wait := false) -> void:
 	for character in get_joined_characters():
-		leave_character(character, animation_name, animation_length, false)
+		await leave_character(character, animation_name, animation_length, animation_wait)
 
 	if animation_name.is_empty():
 		animation_length = _get_leave_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 
-	if animation_wait:
-		dialogic.current_state = DialogicGameHandler.States.ANIMATING
-		await get_tree().create_timer(animation_length).timeout
-		dialogic.current_state = DialogicGameHandler.States.IDLE
 
-
-func get_character_portrait_node(character: DialogicCharacter) -> Node:
+## Finds the character node for a [param character].
+## Return `null` if the [param character] is not part of the scene.
+func get_character_node(character: DialogicCharacter) -> Node:
 	if is_character_joined(character):
 		return dialogic.current_state_info['portraits'][character.resource_path].node
 
@@ -530,7 +539,7 @@ func get_character_portrait_node(character: DialogicCharacter) -> Node:
 ## Removes the given characters portrait.
 ## Only works with joined characters.
 func remove_character(character: DialogicCharacter) -> void:
-	var character_node := get_character_portrait_node(character)
+	var character_node := get_character_node(character)
 
 	if is_instance_valid(character_node) and character_node is Node:
 		character_node.queue_free()
