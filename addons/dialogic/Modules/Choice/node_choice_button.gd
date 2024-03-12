@@ -1,7 +1,15 @@
-## Dialogic Node that displays choices.
-
 class_name DialogicNode_ChoiceButton
 extends Button
+## The button allows the player to make a choice in the Dialogic system.
+##
+## This class is used in the Choice Layer. [br]
+## You may change the [member text_node] to any [class Node] that has a
+## `text` property. [br]
+## If you don't set the [member text_node], the text will be set on this
+## button instead.
+##
+## Using a different node may allow using rich text effects; they are
+## not supported on buttons at this point.
 
 
 
