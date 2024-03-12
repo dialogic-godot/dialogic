@@ -103,7 +103,7 @@ func _create_character_node(character:DialogicCharacter, container:DialogicNode_
 ## This allows for cross-fade effects and other animations.
 ##
 ## If [param duration_seconds] is `0.0`, the portrait will be removed instantly.
-func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade In", duration_seconds := 0.0) -> void:
+func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade In Out", duration_seconds := 0.0) -> void:
 
 	if duration_seconds > 0:
 		# TODO: Allow setting the animation
@@ -225,7 +225,6 @@ func _animate_portrait(portrait_node: Node, animation_path: String, length: floa
 
 	if portrait_node.has_meta('animation_node') and is_instance_valid(portrait_node.get_meta('animation_node')):
 		portrait_node.get_meta('animation_node').queue_free()
-
 
 	var anim_script: Script = load(animation_path)
 	var anim_node := Node.new()
@@ -450,7 +449,7 @@ func change_character_extradata(character:DialogicCharacter, extra_data:="") -> 
 
 
 ## Starts the given animation on the given character. Only works with joined characters
-func animate_character(character: DialogicCharacter, animation_path: String, length: float, repeats := 1) -> DialogicAnimation:
+func animate_character(character: DialogicCharacter, animation_path: String, length: float, repeats := 1, is_reversed := false) -> DialogicAnimation:
 	if not is_character_joined(character):
 		return null
 
@@ -459,7 +458,7 @@ func animate_character(character: DialogicCharacter, animation_path: String, len
 	var character_node: Node = dialogic.current_state_info.portraits[character.resource_path].node
 	var portrait_node: Node = character_node.get_child(-1)
 
-	return _animate_portrait(portrait_node, animation_path, length, repeats)
+	return _animate_portrait(portrait_node, animation_path, length, repeats, is_reversed)
 
 
 ## Moves the given character to the given position. Only works with joined characters
@@ -486,8 +485,8 @@ func move_character(character: DialogicCharacter, position_idx: int, time := 0.0
 
 
 ## Removes a character with a given animation or the default animation.
-func leave_character(character:DialogicCharacter, animation_name:= "", animation_length:= 0.0, animation_wait := false) -> void:
-	if !is_character_joined(character):
+func leave_character(character: DialogicCharacter, animation_name:= "", animation_length:= 0.0, animation_wait := false) -> void:
+	if not is_character_joined(character):
 		return
 
 	if animation_name.is_empty():
@@ -498,17 +497,12 @@ func leave_character(character:DialogicCharacter, animation_name:= "", animation
 
 	animation_name = DialogicResourceUtil.guess_special_resource("PortraitAnimation", animation_name, "")
 
+
 	if not animation_name.is_empty():
-		var anim := animate_character(character, animation_name, animation_length)
+		var portrait_node := get_character_portrait_node(character)
+		await _remove_portrait_timed(portrait_node.get_child(0), animation_name, animation_length)
 
-		anim.finished.connect(remove_character.bind(character))
-
-		if animation_wait:
-			dialogic.current_state = DialogicGameHandler.States.ANIMATING
-			await anim.finished
-			dialogic.current_state = DialogicGameHandler.States.IDLE
-	else:
-		remove_character(character)
+	remove_character(character)
 
 
 ## Removes all joined characters with a given animation or the default animation.
@@ -526,32 +520,40 @@ func leave_all_characters(animation_name:="", animation_length:=0.0, animation_w
 		dialogic.current_state = DialogicGameHandler.States.IDLE
 
 
-## Removes the given characters portrait. Only works with joined characters
-func remove_character(character:DialogicCharacter) -> void:
-	if !is_character_joined(character):
-		return
-	if is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node) and \
-			dialogic.current_state_info['portraits'][character.resource_path].node is Node:
-		_remove_portrait(dialogic.current_state_info['portraits'][character.resource_path].node)
-		character_left.emit({'character':character})
+func get_character_portrait_node(character: DialogicCharacter) -> Node:
+	if is_character_joined(character):
+		return dialogic.current_state_info['portraits'][character.resource_path].node
+
+	return null
+
+
+## Removes the given characters portrait.
+## Only works with joined characters.
+func remove_character(character: DialogicCharacter) -> void:
+	var character_node := get_character_portrait_node(character)
+
+	if is_instance_valid(character_node) and character_node is Node:
+		character_node.queue_free()
+		character_left.emit({'character': character})
+
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
 
 
 ## Returns true if the given character is currently joined.
-func is_character_joined(character:DialogicCharacter) -> bool:
-	if not character or !character.resource_path in dialogic.current_state_info['portraits']:
+func is_character_joined(character: DialogicCharacter) -> bool:
+	if character == null or not character.resource_path in dialogic.current_state_info['portraits']:
 		return false
-	if dialogic.current_state_info['portraits'][character.resource_path].get('node', null) != null and \
-			is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node):
-		return true
-	return false
+
+	return true
 
 
 ## Returns a list of the joined charcters (as resources)
 func get_joined_characters() -> Array[DialogicCharacter]:
-	var chars: Array[DialogicCharacter]= []
-	for char_path in dialogic.current_state_info.get('portraits', {}).keys():
+	var chars: Array[DialogicCharacter] = []
+
+	for char_path: String in dialogic.current_state_info.get('portraits', {}).keys():
 		chars.append(load(char_path))
+
 	return chars
 
 

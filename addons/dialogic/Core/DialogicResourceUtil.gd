@@ -175,7 +175,7 @@ static func list_special_resources_of_type(type:String) -> Array:
 	return special_resources.filter(func(x:Dictionary): return type == x.get('type','')).map(func(x:Dictionary): return x.get('path', ''))
 
 
-static func guess_special_resource(type:String, name:String, default:="") -> String:
+static func guess_special_resource(type: String, name: String, default := "") -> String:
 	if special_resources.is_empty():
 		update_special_resources()
 
