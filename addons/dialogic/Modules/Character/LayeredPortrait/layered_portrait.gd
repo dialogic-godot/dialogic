@@ -39,10 +39,11 @@ func _update_portrait(passed_character: DialogicCharacter, passed_portrait: Stri
 ## This method is not changing the scene itself and is intended for the
 ## Dialogic editor preview and in-game rendering only.
 func _apply_layer_adjustments() -> void:
+	var coverage := _find_largest_coverage_rect()
+
 	for sprite: Sprite2D in _find_sprites_recursively(self):
-		sprite.scale = Vector2.ONE
 		sprite.centered = false
-		sprite.position = (sprite.get_rect().size * Vector2(-0.5, -1)) + sprite.position
+		sprite.position = (coverage.size * Vector2(-0.5, -1)) + sprite.position
 
 
 ## Iterates over all children in [param start_node] and its children, looking
@@ -192,12 +193,15 @@ func _find_largest_coverage_rect() -> Rect2:
 	var coverage_rect := Rect2(0, 0, 0, 0)
 
 	for sprite: Sprite2D in _find_sprites_recursively(self):
-		var sprite_width := sprite.texture.get_width()
-		var sprite_height := sprite.texture.get_height()
+		var sprite_size := sprite.get_rect().size
+		var sprite_position := sprite.position
+
+		var sprite_width := sprite_size.x * sprite.scale.x
+		var sprite_height := sprite_size.y * sprite.scale.y
 
 		var texture_rect := Rect2(
-			sprite.position.x,
-			sprite.position.y,
+			sprite_position.x,
+			sprite_position.y,
 			sprite_width,
 			sprite_height
 		)
