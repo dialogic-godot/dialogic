@@ -41,9 +41,13 @@ func _update_portrait(passed_character: DialogicCharacter, passed_portrait: Stri
 func _apply_layer_adjustments() -> void:
 	var coverage := _find_largest_coverage_rect()
 
-	for sprite: Sprite2D in _find_sprites_recursively(self):
-		sprite.centered = false
-		sprite.position = (coverage.size * Vector2(-0.5, -1)) + sprite.position
+	for node: Node in get_children():
+
+		if node is Sprite2D:
+			var sprite := node as Sprite2D
+			sprite.centered = false
+
+		node.position = (coverage.size * Vector2(-0.5, -1)) + node.position
 
 
 ## Iterates over all children in [param start_node] and its children, looking
@@ -62,8 +66,7 @@ func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 			if sprite.texture:
 				sprites.append(sprite)
 
-		var child_sprites := _find_sprites_recursively(child)
-		sprites.append_array(child_sprites)
+		sprites.append_array(sprites)
 
 	return sprites
 
