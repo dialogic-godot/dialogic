@@ -183,9 +183,23 @@ static func guess_special_resource(type: String, name: String, default := "") ->
 		return name
 
 	for path: String in list_special_resources_of_type(type):
+		var pretty_path := DialogicUtil.pretty_name(path).to_lower()
+		var pretty_name := name.to_lower()
 
-		if DialogicUtil.pretty_name(path).to_lower() == name.to_lower():
+		if pretty_path == pretty_name:
 			return path
+
+		elif pretty_name.ends_with(" in"):
+			pretty_name = pretty_name + " out"
+
+			if pretty_path == pretty_name:
+				return path
+
+		elif pretty_name.ends_with(" out"):
+			pretty_name = pretty_name.replace("out", "in out")
+
+			if pretty_path == pretty_name:
+				return path
 
 	return default
 
