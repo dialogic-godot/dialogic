@@ -55,7 +55,7 @@ func _execute() -> void:
 			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
 			await dialogic.get_tree().process_frame
 
-	var character_name_text = dialogic.Text.get_character_name_text(character)
+	var character_name_text := dialogic.Text.get_character_name_text(character)
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.load_style(character.custom_info.style, null, false)
