@@ -72,7 +72,7 @@ func _execute() -> void:
 		Actions.JOIN:
 			if character:
 				if dialogic.has_subsystem('History') and !dialogic.Portraits.is_character_joined(character):
-					var character_name_text := dialogic.Text.get_character_name_text(character)
+					var character_name_text := dialogic.Text.get_character_name_parsed(character)
 					dialogic.History.store_simple_history_entry(character_name_text + " joined", event_name, {'character': character_name_text, 'mode':'Join'})
 
 				var final_animation_length: float = animation_length
@@ -106,7 +106,7 @@ func _execute() -> void:
 
 			elif character:
 				if dialogic.has_subsystem('History') and dialogic.Portraits.is_character_joined(character):
-					var character_name_text := dialogic.Text.get_character_name_text(character)
+					var character_name_text := dialogic.Text.get_character_name_parsed(character)
 					dialogic.History.store_simple_history_entry(character_name_text+" left", event_name, {'character': character_name_text, 'mode':'Leave'})
 
 				await dialogic.Portraits.leave_character(

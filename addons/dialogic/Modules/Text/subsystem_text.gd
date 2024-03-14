@@ -169,7 +169,7 @@ func update_name_label(character:DialogicCharacter):
 		dialogic.current_state_info['speaker'] = character_path
 		speaker_updated.emit(character)
 
-	var name_label_text := get_character_name_text(character)
+	var name_label_text := get_character_name_parsed(character)
 
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = name_label_text
@@ -398,7 +398,7 @@ func _ready():
 ## should be rendered. Note that characters may have variables in their
 ## name, therefore this function should be called to evaluate
 ## any potential variables in a character's name.
-func get_character_name_text(character:DialogicCharacter) -> String:
+func get_character_name_parsed(character:DialogicCharacter) -> String:
 	if character:
 		var translated_display_name := character.get_display_name_translated()
 		if dialogic.has_subsystem('VAR'):
