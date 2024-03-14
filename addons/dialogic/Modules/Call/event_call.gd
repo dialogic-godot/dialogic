@@ -157,27 +157,31 @@ func get_autoload_suggestions(filter:String="") -> Dictionary:
 		if prop.name.begins_with('autoload/'):
 			var autoload: String = prop.name.trim_prefix('autoload/')
 			suggestions[autoload] = {'value': autoload, 'tooltip':autoload, 'editor_icon': ["Node", "EditorIcons"]}
+			if filter.begins_with(autoload):
+				suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
 
 func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dictionary:
 	var suggestions := {}
 
-	var script : Script
+	var script: Script
 	if temp_autoload:
 		script = load(ProjectSettings.get_setting('autoload/'+temp_autoload).trim_prefix('*'))
-	elif autoload_name:
+	elif autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
 		script = load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
 	if script:
 		for method in script.get_script_method_list():
 			if method.name.begins_with('@') or method.name.begins_with('_'):
 				continue
 			suggestions[method.name] = {'value': method.name, 'tooltip':method.name, 'editor_icon': ["Callable", "EditorIcons"]}
+	if !filter.is_empty():
+		suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
 
 func update_argument_info() -> void:
-	if autoload_name and method and not (_current_method_arg_hints.a == autoload_name and _current_method_arg_hints.m == method):
+	if autoload_name and method and not _current_method_arg_hints.is_empty() and (_current_method_arg_hints.a == autoload_name and _current_method_arg_hints.m == method):
 		if !ResourceLoader.exists(ProjectSettings.get_setting('autoload/'+autoload_name, '').trim_prefix('*')):
 			_current_method_arg_hints = {}
 			return
@@ -189,7 +193,7 @@ func update_argument_info() -> void:
 
 
 func check_arguments_and_update_warning():
-	if _current_method_arg_hints.info.is_empty():
+	if not _current_method_arg_hints.has("info") or _current_method_arg_hints.info.is_empty():
 		ui_update_warning.emit()
 		return
 

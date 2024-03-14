@@ -128,7 +128,7 @@ func _init() -> void:
 func to_text() -> String:
 	var string := "set "
 	if name:
-		string += "{" + name + "}"
+		string += "{" + name.trim_prefix('{').trim_suffix('}') + "}"
 		match operation:
 			Operations.SET:
 				string+= " = "
