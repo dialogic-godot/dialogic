@@ -1,18 +1,22 @@
 @tool
 extends DialogicLayoutLayer
-
-## A layer that contains
+## This layer's scene file contains following nodes:
 ## - a dialog_text node
 ## - a name_label node
 ## - a next_indicator node
 ## - a type_sound node
 ##
-## As well as custom
+## As well as custom:
 ## - animations
 ## - auto-advance progress indicator
 ##
-## If you want to customize this layer, you can disable each of the
-## settings apply checkboxes on each tab page.
+## If you want to customize this layer, here is a little rundown of this layer:
+## The Layer Settings are divided into the `@export_group`s below.
+## They get applied in [method _apply_export_overrides].
+## Each `@export_group` has its own method to apply the settings to the scene.
+## If you want to change a specific part inside the scene, you can simply
+## remove or add # (commenting) to the method line.
+
 
 
 enum Alignments {LEFT, CENTER, RIGHT}
@@ -22,7 +26,6 @@ enum AnimationsOut {NONE, POP_OUT, FADE_DOWN}
 enum AnimationsNewText {NONE, WIGGLE}
 
 @export_group("Text")
-@export var apply_text_settings: bool = true
 
 @export_subgroup("Alignment & Size")
 @export var text_alignment: Alignments= Alignments.LEFT
@@ -42,7 +45,6 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 
 @export_group("Box")
-@export var apply_box_settings: bool = true
 
 @export_subgroup("Panel")
 @export_file("*.tres") var box_panel: String = this_folder.path_join("vn_textbox_default_panel.tres")
@@ -56,14 +58,12 @@ enum AnimationsNewText {NONE, WIGGLE}
 @export var box_margin_bottom: int = 15
 
 @export_subgroup("Animation")
-@export var apply_box_animations: bool = true
 @export var box_animation_in: AnimationsIn = AnimationsIn.FADE_UP
 @export var box_animation_out: AnimationsOut = AnimationsOut.FADE_DOWN
 @export var box_animation_new_text: AnimationsNewText = AnimationsNewText.NONE
 
 
 @export_group("Name Label")
-@export var apply_name_label_settings: bool = true
 
 @export_subgroup('Color')
 @export var name_label_use_global_color: bool= true
@@ -87,7 +87,6 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 
 @export_group("Indicators")
-@export var apply_indicator_settings: bool = true
 
 @export_subgroup("Next Indicator")
 @export var next_indicator_enabled: bool = true
@@ -102,7 +101,6 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 
 @export_group('Sounds')
-@export var apply_sounds_settings: bool = true
 
 @export_subgroup('Typing Sounds')
 @export var typing_sounds_enabled: bool = true
@@ -122,25 +120,20 @@ func _apply_export_overrides() -> void:
 		await ready
 
 	## FONT SETTINGS
-	if apply_text_settings:
-		_apply_text_settings()
+	_apply_text_settings()
 
 
 	## BOX SETTINGS
-	if apply_box_settings:
-		_apply_box_settings()
+	_apply_box_settings()
 
 	## BOX ANIMATIONS
-	if apply_box_animations:
-		_apply_box_animations_settings()
+	_apply_box_animations_settings()
 
 	## NAME LABEL SETTINGS
-	if apply_name_label_settings:
-		_apply_name_label_settings()
+	_apply_name_label_settings()
 
 	## NEXT INDICATOR SETTINGS
-	if apply_indicator_settings:
-		_apply_indicator_settings()
+	_apply_indicator_settings()
 
 	## OTHER
 	var progress_bar: ProgressBar = %AutoAdvanceProgressbar
@@ -149,8 +142,7 @@ func _apply_export_overrides() -> void:
 	#### SOUNDS
 
 	## TYPING SOUNDS
-	if apply_sounds_settings:
-		_apply_sounds_settings()
+	_apply_sounds_settings()
 
 
 ## Applies all text box settings to the scene.
