@@ -20,6 +20,9 @@ static var _REGEX := RegEx.create_from_string(_REGEX_STRING)
 
 var _initialized := false
 
+var _is_coverage_rect_cached := false
+var _cached_coverage_rect := Rect2(0, 0, 0, 0)
+
 
 ## Overriding [class DialogicPortrait]'s method.
 ##
@@ -47,7 +50,15 @@ func _apply_layer_adjustments() -> void:
 			var sprite := node as Sprite2D
 			sprite.centered = false
 
-		node.position = (coverage.size * Vector2(-0.5, -1)) + node.position
+		var node_position: Vector2 = node.position
+		node.position = _reposition_with_rect(coverage, node_position)
+
+
+## Returns a position based on [param rect]'s size where Dialogic expects the
+## scene part to be positioned at. [br]
+## If the node has an offset or extra position, pass it as [param node_offset].
+func _reposition_with_rect(rect: Rect2, node_offset := Vector2(0.0, 0.0)) -> Vector2:
+	return rect.size  * Vector2(-0.5, -1.0) + node_offset
 
 
 ## Iterates over all children in [param start_node] and its children, looking
@@ -66,7 +77,9 @@ func _find_sprites_recursively(start_node: Node) -> Array[Sprite2D]:
 			if sprite.texture:
 				sprites.append(sprite)
 
-		sprites.append_array(sprites)
+
+		var sub := _find_sprites_recursively(child)
+		sprites.append_array(sub)
 
 	return sprites
 
@@ -193,6 +206,9 @@ func _set_mirror(is_mirrored: bool) -> void:
 ## Scans all nodes in this scene and finds the largest rectangle that
 ## covers encloses every sprite.
 func _find_largest_coverage_rect() -> Rect2:
+	if _is_coverage_rect_cached:
+		return _cached_coverage_rect
+
 	var coverage_rect := Rect2(0, 0, 0, 0)
 
 	for sprite: Sprite2D in _find_sprites_recursively(self):
@@ -208,8 +224,13 @@ func _find_largest_coverage_rect() -> Rect2:
 			sprite_width,
 			sprite_height
 		)
-
 		coverage_rect = coverage_rect.merge(texture_rect)
+
+
+	coverage_rect.position = _reposition_with_rect(coverage_rect)
+
+	_is_coverage_rect_cached = true
+	_cached_coverage_rect = coverage_rect
 
 	return coverage_rect
 
