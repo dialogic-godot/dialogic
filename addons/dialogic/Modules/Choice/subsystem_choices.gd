@@ -2,27 +2,56 @@ extends DialogicSubsystem
 
 ## Subsystem that manages showing and activating of choices.
 
+## Emitted when a choice button was pressed. Info includes the keys 'button_index', 'text', 'event_index'.
 signal choice_selected(info:Dictionary)
+## Emitted when a set of choices is reached and shown.
+## Info includes the keys 'choices' (an array of dictionaries with infos on all the choices).
 signal choices_shown(info:Dictionary)
 
-
-## Used to block choices from being clicked for a couple of seconds (if delay is set in settings).
-var choice_blocker := Timer.new()
-
+## Contains information on the latest question.
 var last_question_info := {}
 
+## The delay between the text finishing revealing and the choices appearing
+var reveal_delay: float = 0.0
+## If true the player has to click to reveal choices when they are reached
+var reveal_by_input: bool = false
+## The delay between the choices becoming visible and being clickable. Can prevent accidental selection.
+var block_delay: float = 0.2
+## If true, the first (top-most) choice will be focused
+var autofocus_first_choice: bool = true
+
+enum FalseBehaviour {HIDE=0, DISABLE=1}
+## The behaviour of choices with a false condition and else_action set to DEFAULT.
+var default_false_behaviour := FalseBehaviour.HIDE
+
+enum HotkeyBehaviour {NONE, NUMBERS}
+## Will add some hotkeys to the choices if different then HotkeyBehaviour.NONE.
+var hotkey_behaviour := HotkeyBehaviour.NONE
+
+
+### INTERNALS
+
+## Used to block choices from being clicked for a couple of seconds (if delay is set in settings).
+var _choice_blocker := Timer.new()
 
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	hide_all_choices()
 
 
-func _ready():
-	choice_blocker.one_shot = true
-	DialogicUtil.update_timer_process_callback(choice_blocker)
-	add_child(choice_blocker)
+func _ready() -> void:
+	_choice_blocker.one_shot = true
+	DialogicUtil.update_timer_process_callback(_choice_blocker)
+	add_child(_choice_blocker)
+
+	reveal_delay = float(ProjectSettings.get_setting('dialogic/choices/reveal_delay', reveal_delay))
+	reveal_by_input = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', reveal_by_input)
+	block_delay = ProjectSettings.get_setting('dialogic/choices/delay', block_delay)
+	autofocus_first_choice = ProjectSettings.get_setting('dialogic/choices/autofocus_first', autofocus_first_choice)
+	hotkey_behaviour = ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', hotkey_behaviour)
+	default_false_behaviour = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', default_false_behaviour)
 
 #endregion
 
@@ -41,21 +70,18 @@ func hide_all_choices() -> void:
 ## Lists all current choices and shows buttons.
 func show_current_choices(instant:=true) -> void:
 	hide_all_choices()
-	choice_blocker.stop()
-
-	var reveal_delay := float(ProjectSettings.get_setting('dialogic/choices/reveal_delay', 0.0))
-	var reveal_by_input: bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
+	_choice_blocker.stop()
 
 	if !instant and (reveal_delay != 0 or reveal_by_input):
 		if reveal_delay != 0:
-			choice_blocker.start(reveal_delay)
-			choice_blocker.timeout.connect(show_current_choices)
+			_choice_blocker.start(reveal_delay)
+			_choice_blocker.timeout.connect(show_current_choices)
 		if reveal_by_input:
 			dialogic.Inputs.dialogic_action.connect(show_current_choices)
 		return
 
-	if choice_blocker.timeout.is_connected(show_current_choices):
-		choice_blocker.timeout.disconnect(show_current_choices)
+	if _choice_blocker.timeout.is_connected(show_current_choices):
+		_choice_blocker.timeout.disconnect(show_current_choices)
 	if dialogic.Inputs.dialogic_action.is_connected(show_current_choices):
 		dialogic.Inputs.dialogic_action.disconnect(show_current_choices)
 
@@ -67,7 +93,7 @@ func show_current_choices(instant:=true) -> void:
 		# check if condition is false
 		if not choice_event.condition.is_empty() and not dialogic.Expressions.execute_condition(choice_event.condition):
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT:
-				choice_event.else_action = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0)
+				choice_event.else_action = default_false_behaviour
 
 			# check what to do in this case
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DISABLE:
@@ -84,43 +110,43 @@ func show_current_choices(instant:=true) -> void:
 			last_question_info['choices'].append(choice_event.get_property_translated('text'))
 			button_idx += 1
 	choices_shown.emit(last_question_info)
-	choice_blocker.start(float(ProjectSettings.get_setting('dialogic/choices/delay', 0.2)))
+	_choice_blocker.start(block_delay)
 
 
 ## Adds a button with the given text that leads to the given event.
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx := 1
 	var shown_at_all := false
-	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
-		# FIXME: Godot 4.2 can replace this with a typed for loop.
-		var choice_button := node as DialogicNode_ChoiceButton
-
+	for node: DialogicNode_ChoiceButton in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		if !node.get_parent().is_visible_in_tree():
 			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
-			if dialogic.has_subsystem('Text'):
-				node.text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
-			else:
-				node.text = text
 
-			if idx == 1 and ProjectSettings.get_setting('dialogic/choices/autofocus_first', true):
+
+			if dialogic.has_subsystem('Text'):
+				text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
+
+			node._set_text_changed(text)
+
+			if idx == 1 and autofocus_first_choice:
 				node.grab_focus()
 
 			## Add 1 to 9 as shortcuts if it's enabled
-			if ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0):
-				if idx > 0 and idx < 10:
-					var shortcut: Shortcut
-					if node.shortcut != null:
-						shortcut = node.shortcut
-					else:
-						shortcut = Shortcut.new()
+			match hotkey_behaviour:
+				HotkeyBehaviour.NUMBERS:
+					if idx > 0 or idx < 10:
+						var shortcut: Shortcut
+						if node.shortcut != null:
+							shortcut = node.shortcut
+						else:
+							shortcut = Shortcut.new()
 
-					var shortcut_events: Array[InputEventKey] = []
-					var input_key := InputEventKey.new()
-					input_key.keycode = OS.find_keycode_from_string(str(idx))
-					shortcut.events.append(input_key)
-					node.shortcut = shortcut
+						var shortcut_events: Array[InputEventKey] = []
+						var input_key := InputEventKey.new()
+						input_key.keycode = OS.find_keycode_from_string(str(idx))
+						shortcut.events.append(input_key)
+						node.shortcut = shortcut
 
 			node.disabled = not enabled
 
@@ -140,7 +166,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 
 
 func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
-	if dialogic.paused or not choice_blocker.is_stopped():
+	if dialogic.paused or not _choice_blocker.is_stopped():
 		return
 
 	choice_selected.emit(choice_info)

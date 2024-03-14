@@ -8,6 +8,12 @@ var reference_changes :Array[Dictionary] = []:
 		reference_changes = changes
 		update_indicator()
 
+var search_regexes: Array[Array]
+var finder_thread: Thread
+var progress_mutex: Mutex
+var progress_percent: float = 0.0
+var progress_message: String = ""
+
 
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
@@ -24,7 +30,7 @@ func _ready() -> void:
 	%Replace.icon = get_theme_icon("ArrowRight", "EditorIcons")
 
 	%State.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
-
+	visibility_changed.connect(func(): if !visible: close())
 	await get_parent().ready
 
 	var tab_button: Control = %TabA
@@ -46,6 +52,7 @@ func open() -> void:
 	%ChangeTree.create_item()
 	%ChangeTree.set_column_expand(0, false)
 	%ChangeTree.set_column_expand(2, false)
+	%ChangeTree.set_column_custom_minimum_width(2, 50)
 	var categories := {null:%ChangeTree.get_root()}
 	for i in reference_changes:
 		var parent : TreeItem = null
@@ -83,6 +90,7 @@ func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_but
 
 	%ReplacementSection.hide()
 
+
 func _on_change_tree_item_edited() -> void:
 	if !%ChangeTree.get_selected():
 		return
@@ -109,28 +117,104 @@ func _on_check_button_pressed() -> void:
 
 func open_finder(replacements:Array[Dictionary]) -> void:
 	%ReplacementSection.show()
-	var regexes : Array[Array] = []
+	%Progress.show()
+	%ReferenceTree.hide()
 
+	search_regexes = []
 	for i in replacements:
 		if i.has('character_names') and !i.character_names.is_empty():
 			i['character_regex'] = RegEx.create_from_string("(?m)^(join|update|leave)?\\s*("+str(i.character_names).replace('"', '').replace(', ', '|').trim_suffix(']').trim_prefix('[').replace('/', '\\/')+")(?(1).*|.*:)")
 
 		for regex_string in i.regex:
 			var regex := RegEx.create_from_string(regex_string)
-			regexes.append([regex, i])
+			search_regexes.append([regex, i])
 
-	var finds : Array[Dictionary] = []
+	finder_thread = Thread.new()
+	progress_mutex = Mutex.new()
+	finder_thread.start(search_timelines.bind(search_regexes))
 
-	for timeline_path in DialogicResourceUtil.list_resources_of_type('.dtl'):
-		%State.text = "Loading '"+timeline_path+"'"
+
+func _process(delta: float) -> void:
+	if finder_thread and finder_thread.is_started():
+		if finder_thread.is_alive():
+			progress_mutex.lock()
+			%State.text = progress_message
+			%Progress.value = progress_percent
+			progress_mutex.unlock()
+		else:
+			var finds := finder_thread.wait_to_finish()
+			display_search_results(finds)
+
+
+
+func display_search_results(finds:Array[Dictionary]) -> void:
+	%Progress.hide()
+	%ReferenceTree.show()
+	for regex_info in search_regexes:
+		regex_info[1]['item'].set_text(2, str(regex_info[1]['count']))
+
+	update_count_coloring()
+	%State.text = str(len(finds))+ " occurrences found"
+
+	%ReferenceTree.clear()
+	%ReferenceTree.set_column_expand(0, false)
+	%ReferenceTree.create_item()
+
+	var timelines := {}
+	var height := 0
+	for i in finds:
+		var parent: TreeItem = null
+		if !i.timeline in timelines:
+			parent = %ReferenceTree.create_item()
+			parent.set_text(1, i.timeline)
+			parent.set_custom_color(1, get_theme_color("disabled_font_color", "Editor"))
+			timelines[i.timeline] = parent
+			height += %ReferenceTree.get_item_area_rect(parent).size.y+10
+		else:
+			parent = timelines[i.timeline]
+
+		var item: TreeItem = %ReferenceTree.create_item(parent)
+		item.set_text(1, 'Line '+str(i.line_number)+': '+i.line)
+		item.set_tooltip_text(1, i.info.what+' -> '+i.info.forwhat)
+		item.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
+		item.set_checked(0, true)
+		item.set_editable(0, true)
+		item.set_metadata(0, i)
+		height += %ReferenceTree.get_item_area_rect(item).size.y+10
+		var change_item: TreeItem = i.info.item
+		change_item.set_meta('found_items', change_item.get_meta('found_items', [])+[item])
+
+	%ReferenceTree.custom_minimum_size.y = min(height, 200)
+
+	%ReferenceTree.visible = !finds.is_empty()
+	%Replace.disabled = finds.is_empty()
+	if finds.is_empty():
+		%State.text = "Nothing found"
+	else:
+		%Replace.grab_focus()
+
+
+func search_timelines(regexes:Array[Array]) -> Array[Dictionary]:
+	var finds: Array[Dictionary] = []
+
+	var timeline_paths := DialogicResourceUtil.list_resources_of_type('.dtl')
+
+	var progress := 0
+	var progress_max: float = len(timeline_paths)*len(regexes)
+
+	for timeline_path:String in timeline_paths:
 
 		var timeline_file := FileAccess.open(timeline_path, FileAccess.READ)
-		var timeline_text :String = timeline_file.get_as_text()
-		var timeline_events : PackedStringArray = timeline_text.split('\n')
+		var timeline_text: String = timeline_file.get_as_text()
+		var timeline_event: PackedStringArray = timeline_text.split('\n')
 		timeline_file.close()
 
 		for regex_info in regexes:
-			%State.text = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
+			progress += 1
+			progress_mutex.lock()
+			progress_percent = 1/progress_max*progress
+			progress_message = "Searching '"+timeline_path+"' for "+regex_info[1].what+' -> '+regex_info[1].forwhat
+			progress_mutex.unlock()
 			for i in regex_info[0].search_all(timeline_text):
 				if regex_info[1].has('character_regex'):
 					if regex_info[1].character_regex.search(get_line(timeline_text, i.get_start()+1)) == null:
@@ -147,52 +231,13 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 				'line_start': timeline_text.rfind('\n', i.get_start())
 				})
 				regex_info[1]['count'] += 1
+	return finds
 
 
-	for regex_info in regexes:
-		regex_info[1]['item'].set_text(2, str(regex_info[1]['count']))
-	update_count_coloring()
-
-	%State.text = str(len(finds))+ " occurrences found"
-
-	%ReferenceTree.clear()
-	%ReferenceTree.set_column_expand(0, false)
-	%ReferenceTree.create_item()
-
-	var timelines := {}
-	var height := 0
-	for i in finds:
-		var parent : TreeItem = null
-		if !i.timeline in timelines:
-			parent = %ReferenceTree.create_item()
-			parent.set_text(1, i.timeline)
-			parent.set_custom_color(1, get_theme_color("disabled_font_color", "Editor"))
-			timelines[i.timeline] = parent
-			height += %ReferenceTree.get_item_area_rect(parent).size.y+10
-		else:
-			parent = timelines[i.timeline]
-
-		var item :TreeItem = %ReferenceTree.create_item(parent)
-		item.set_text(1, 'Line '+str(i.line_number)+': '+i.line)
-		item.set_tooltip_text(1, i.info.what+' -> '+i.info.forwhat)
-		item.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
-		item.set_checked(0, true)
-		item.set_editable(0, true)
-		item.set_metadata(0, i)
-		height += %ReferenceTree.get_item_area_rect(item).size.y+10
-		var change_item :TreeItem = i.info.item
-		change_item.set_meta('found_items', change_item.get_meta('found_items', [])+[item])
-
-
-
-	%ReferenceTree.custom_minimum_size.y = min(height, 200)
-
-	%ReferenceTree.visible = !finds.is_empty()
-	%Replace.disabled = finds.is_empty()
-	if finds.is_empty():
-		%State.text = "Nothing found"
-	else:
-		%Replace.grab_focus()
+func _exit_tree() -> void:
+	# Shutting of
+	if finder_thread.is_alive():
+		finder_thread.wait_to_finish()
 
 
 func get_line(string:String, at_index:int) -> String:

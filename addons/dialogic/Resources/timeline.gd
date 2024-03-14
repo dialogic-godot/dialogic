@@ -35,7 +35,7 @@ func as_text() -> String:
 	if events_processed:
 		var indent := 0
 		for idx in range(0, len(events)):
-			var event = events[idx]
+			var event: DialogicEvent = events[idx]
 
 			if event.event_name == 'End Branch':
 				indent -= 1
@@ -92,7 +92,7 @@ func process() -> void:
 			line = lines[idx].event_node_as_text
 
 		## Ignore empty lines, but record them in @empty_lines
-		var line_stripped :String = line.strip_edges(true, false)
+		var line_stripped: String = line.strip_edges(true, false)
 		if line_stripped.is_empty():
 			empty_lines += 1
 			continue
@@ -119,19 +119,17 @@ func process() -> void:
 				break
 
 		event.empty_lines_above = empty_lines
-		# add the following lines until the event says it's full, there is an empty line or the indent changes
+		# add the following lines until the event says it's full or there is an empty line
 		while !event.is_string_full_event(event_content):
 			idx += 1
 			if idx == len(lines):
 				break
-			var following_line: String = lines[idx]
-			var following_line_stripped: String = following_line.strip_edges(true, false)
-			var following_line_indent: String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+
+			var following_line_stripped: String = lines[idx].strip_edges(true, false)
+
 			if following_line_stripped.is_empty():
 				break
-			if following_line_indent != indent:
-				idx -= 1
-				break
+
 			event_content += "\n"+following_line_stripped
 
 		event._load_from_string(event_content)
@@ -153,6 +151,10 @@ func process() -> void:
 func clean() -> void:
 	if not events_processed:
 		return
+	reference()
+	# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
+	# are disconnected before they can disconnect themselves.
+	await Engine.get_main_loop().process_frame
 
 	for event:DialogicEvent in events:
 		for con_in in event.get_incoming_connections():
@@ -161,3 +163,4 @@ func clean() -> void:
 		for sig in event.get_signal_list():
 			for con_out in event.get_signal_connection_list(sig.name):
 				con_out.signal.disconnect(con_out.callable)
+	unreference()

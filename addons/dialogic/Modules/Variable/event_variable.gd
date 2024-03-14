@@ -31,6 +31,7 @@ var name: String = "":
 					_value_type = VarValueType.BOOL
 			ui_update_needed.emit()
 		update_editor_warning()
+
 ## The operation to perform.
 var operation: int = Operations.SET:
 	set(value):
@@ -42,7 +43,7 @@ var operation: int = Operations.SET:
 
 ## The value that is used. Can be a variable as well.
 var value: Variant = ""
-var _value_type := 0 :# helper for the ui 0 = string, 1= float, 2= variable 3=bool, 4= expression, 5= random int (a special expression)
+var _value_type := 0 :
 	set(_value):
 		_value_type = _value
 		if not _suppress_default_value:
@@ -73,13 +74,16 @@ var _suppress_default_value: bool = false
 
 func _execute() -> void:
 	if name:
-		var orig :Variant= dialogic.VAR.get_variable(name)
-		if value and orig != null:
-			var the_value :Variant
+		var orig: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
+		if value != null and (orig != null or (operation == Operations.SET and "[" in name)):
+			var the_value: Variant
 			match _value_type:
-				VarValueType.STRING: the_value = dialogic.VAR.get_variable('"'+value+'"')
-				VarValueType.VARIABLE: the_value = dialogic.VAR.get_variable('{'+value+'}')
-				VarValueType.NUMBER,VarValueType.BOOL,VarValueType.EXPRESSION,VarValueType.RANDOM_NUMBER: the_value = dialogic.VAR.get_variable(str(value))
+				VarValueType.STRING:
+					the_value = dialogic.VAR.get_variable('"'+value+'"')
+				VarValueType.VARIABLE:
+					the_value = dialogic.VAR.get_variable('{'+value+'}')
+				VarValueType.NUMBER,VarValueType.BOOL,VarValueType.EXPRESSION,VarValueType.RANDOM_NUMBER:
+					the_value = dialogic.VAR.get_variable(str(value))
 
 			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
 				orig = float(orig)
@@ -114,6 +118,7 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 0
+	help_page_path = "https://docs.dialogic.pro/variables.html#23-set-variable-event"
 
 
 ################################################################################
@@ -123,7 +128,7 @@ func _init() -> void:
 func to_text() -> String:
 	var string := "set "
 	if name:
-		string += "{" + name + "}"
+		string += "{" + name.trim_prefix('{').trim_suffix('}') + "}"
 		match operation:
 			Operations.SET:
 				string+= " = "
@@ -169,9 +174,9 @@ func from_text(string:String) -> void:
 		'/=':
 			operation = Operations.DIVIDE
 
-	if result.get_string('value'):
-		_suppress_default_value = true
-		value = result.get_string('value').strip_edges()
+	_suppress_default_value = true
+	value = result.get_string('value').strip_edges()
+	if not value.is_empty():
 		if value.begins_with('"') and value.ends_with('"') and value.count('"')-value.count('\\"') == 2:
 			value = result.get_string('value').strip_edges().replace('"', '')
 			_value_type = VarValueType.STRING
@@ -192,8 +197,9 @@ func from_text(string:String) -> void:
 				_value_type = VarValueType.NUMBER
 			else:
 				_value_type = VarValueType.EXPRESSION
-		_suppress_default_value = false
-
+	else:
+		value = null
+	_suppress_default_value = false
 
 
 func is_valid_event(string:String) -> bool:

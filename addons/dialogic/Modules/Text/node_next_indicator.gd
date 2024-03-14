@@ -1,5 +1,5 @@
 @icon("node_next_indicator_icon.svg")
-class_name DNextIndicator
+class_name DialogicNode_NextIndicator
 extends Control
 
 ## Node that is shown when the text is fully revealed.
@@ -37,7 +37,7 @@ var tween: Tween
 
 func _ready():
 	add_to_group('dialogic_next_indicator')
-	
+
 	# Creating TextureRect if missing
 	if not texture_rect:
 		var icon := TextureRect.new()
@@ -48,9 +48,9 @@ func _ready():
 		icon.position = -icon.size
 		add_child(icon)
 		texture_rect = icon
-	
+
 	texture_rect.texture = texture
-	
+
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 

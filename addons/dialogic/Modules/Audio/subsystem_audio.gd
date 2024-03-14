@@ -1,22 +1,57 @@
 extends DialogicSubsystem
+## Subsystem for managing background music and one-shot sound effects.
+##
+## This subsystem has many different helper methods for managing audio
+## in your timeline.
+## For instance, you can listen to music changes via [signal music_started].
 
-## Subsystem that manages music and sounds.
 
-signal music_started(info:Dictionary)
-signal sound_started(info:Dictionary)
+## Whenever a new background music is started, this signal is emitted and
+## contains a dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `path`      | [type String] | The path to the audio resource file. [br]
+## `volume`    | [type float]  | The volume of the audio resource that will be set to the [member base_music_player]. [br]
+## `audio_bus` | [type String] | The audio bus name that the [member base_music_player] will use. [br]
+## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
+signal music_started(info: Dictionary)
 
+
+## Whenever a new sound effect is set, this signal is emitted and contains a
+## dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `path`      | [type String] | The path to the audio resource file. [br]
+## `volume`    | [type float]  | The volume of the audio resource that will be set to [member base_sound_player]. [br]
+## `audio_bus` | [type String] | The audio bus name that the [member base_sound_player] will use. [br]
+## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
+signal sound_started(info: Dictionary)
+
+
+## Audio player base duplicated to play background music.
+##
+## Background music is long audio.
 var base_music_player := AudioStreamPlayer.new()
+## Audio player base, that will be duplicated to play sound effects.
+##
+## Sound effects are short audio.
 var base_sound_player := AudioStreamPlayer.new()
 
 
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+## Clears the state on this subsystem and stops all audio.
+##
+## If you want to stop sounds only, use [method stop_all_sounds].
+func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_music()
 	stop_all_sounds()
 
 
+## Loads the state on this subsystem from the current state info.
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
@@ -27,11 +62,13 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
 
 
+## Pauses playing audio.
 func pause() -> void:
 	for child in get_children():
 		child.stream_paused = true
 
 
+## Resumes playing audio.
 func resume() -> void:
 	for child in get_children():
 		child.stream_paused = false
@@ -85,16 +122,17 @@ func update_music(path := "", volume := 0.0, audio_bus := "Master", fade_time :=
 		fader.tween_callback(prev_node.queue_free)
 
 
+## Whether music is playing.
 func has_music() -> bool:
 	return !dialogic.current_state_info.get('music', {}).get('path', '').is_empty()
 
 
 ## Plays a given sound file.
-func play_sound(path:String, volume := 0.0, audio_bus := "Master", loop := false) -> void:
+func play_sound(path: String, volume := 0.0, audio_bus := "Master", loop := false) -> void:
 	if base_sound_player != null and !path.is_empty():
 		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
 		var new_sound_node := base_sound_player.duplicate()
-		new_sound_node.name = "Sound"
+		new_sound_node.name += "Sound"
 		new_sound_node.stream = load(path)
 		if "loop" in new_sound_node.stream:
 			new_sound_node.stream.loop = loop
@@ -110,6 +148,7 @@ func play_sound(path:String, volume := 0.0, audio_bus := "Master", loop := false
 		new_sound_node.finished.connect(new_sound_node.queue_free)
 
 
+## Stops all audio.
 func stop_all_sounds() -> void:
 	for node in get_children():
 		if node == base_sound_player:
@@ -118,7 +157,9 @@ func stop_all_sounds() -> void:
 			node.queue_free()
 
 
-func interpolate_volume_linearly(value:float, node:Node) -> void:
+## Converts a linear loudness value to decibel and sets that volume to
+## the given [param node].
+func interpolate_volume_linearly(value: float, node: Node) -> void:
 	node.volume_db = linear_to_db(value)
 
 

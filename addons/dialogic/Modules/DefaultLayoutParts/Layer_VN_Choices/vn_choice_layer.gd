@@ -7,7 +7,7 @@ extends DialogicLayoutLayer
 @export_group("Text")
 @export_subgroup('Font')
 @export var font_use_global: bool = true
-@export_file('*.ttf') var font_custom: String = ""
+@export_file('*.ttf', '*.tres') var font_custom: String = ""
 @export_subgroup('Size')
 @export var font_size_use_global: bool = true
 @export var font_size_custom: int = 16

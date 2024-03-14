@@ -15,8 +15,8 @@ func _get_settings_pages() -> Array:
 
 
 func _get_character_editor_sections() -> Array:
-	return [this_folder.path_join('character_settings/character_moods_settings.tscn'), 
-		this_folder.path_join('character_settings/character_portrait_mood_settings.tscn'), 
+	return [this_folder.path_join('character_settings/character_moods_settings.tscn'),
+		this_folder.path_join('character_settings/character_portrait_mood_settings.tscn'),
 	]
 
 

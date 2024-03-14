@@ -41,6 +41,8 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 8
+	help_page_path = "https://docs.dialogic.pro/dialogic-signals.html#1-signal-event"
+
 
 
 ################################################################################

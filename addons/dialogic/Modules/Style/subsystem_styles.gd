@@ -8,11 +8,11 @@ signal style_changed(info:Dictionary)
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
 	load_style(dialogic.current_state_info.get('style', ''))
@@ -117,15 +117,17 @@ func create_layout(style:DialogicStyle, parent:Node = null) -> DialogicLayoutBas
 
 ## When changing to a different layout scene,
 ## we have to load all the info from the current_state_info (basically
-func reload_current_info_into_new_style():
+func reload_current_info_into_new_style() -> void:
 	for subsystem in dialogic.get_children():
 		subsystem.load_game_state(LoadFlags.ONLY_DNODES)
 
 
 ## Returns the style currently in use
 func get_current_style() -> String:
-	if dialogic.has_active_layout_node():
-		return dialogic.get_layout_node().get_meta('style', '')
+	if has_active_layout_node():
+		var style: DialogicStyle = get_layout_node().get_meta('style', null)
+		if style:
+			return style.name
 	return ''
 
 
@@ -133,20 +135,18 @@ func has_active_layout_node() -> bool:
 	return (
 		get_tree().has_meta('dialogic_layout_node')
 		and is_instance_valid(get_tree().get_meta('dialogic_layout_node'))
-		and get_tree().get_meta('dialogic_layout_node').visible
+		and not get_tree().get_meta('dialogic_layout_node').is_queued_for_deletion()
 	)
 
 
 func get_layout_node() -> Node:
-	var tree := get_tree()
-	if tree.has_meta('dialogic_layout_node') and is_instance_valid(tree.get_meta('dialogic_layout_node')):
-		return tree.get_meta('dialogic_layout_node')
-
+	if has_active_layout_node():
+		return get_tree().get_meta('dialogic_layout_node')
 	return null
 
 
 ## Similar to get_tree().get_first_node_in_group('group_name') but filtered to the active layout node subtree
-func get_first_node_in_layout(group_name : String):
+func get_first_node_in_layout(group_name : String) -> Node:
 	var layout_node := get_layout_node()
 	if null == layout_node:
 		return null

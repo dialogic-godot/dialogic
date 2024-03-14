@@ -167,12 +167,19 @@ func _can_drop_data(at_position:Vector2, data:Variant) -> bool:
 		return true
 	return false
 
+
 # Allows dragging files into the editor
 func _drop_data(at_position:Vector2, data:Variant) -> void:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
 		set_caret_column(get_line_column_at_pos(at_position).x)
 		set_caret_line(get_line_column_at_pos(at_position).y)
-		insert_text_at_caret('"'+data.files[0]+'"')
+		var result: String = data.files[0]
+		if get_line(get_caret_line())[get_caret_column()-1] != '"':
+			result = '"'+result
+		if get_line(get_caret_line())[get_caret_column()] != '"':
+			result = result+'"'
+
+		insert_text_at_caret(result)
 
 
 func _on_update_timer_timeout():

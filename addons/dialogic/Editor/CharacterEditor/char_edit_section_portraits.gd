@@ -13,6 +13,7 @@ func _ready() -> void:
 	# Connecting all necessary signals
 	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
 	%MainScale.value_changed.connect(main_portrait_settings_update)
+	%MainOffset._load_display_info({'step':1})
 	%MainOffset.value_changed.connect(main_portrait_settings_update)
 	%MainMirror.toggled.connect(main_portrait_settings_update)
 

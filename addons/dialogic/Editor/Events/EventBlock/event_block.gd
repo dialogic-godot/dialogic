@@ -160,6 +160,8 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.FIXED_OPTIONS	: 	"res://addons/dialogic/Editor/Events/Fields/field_options_fixed.tscn",
 	DialogicEvent.ValueType.NUMBER: 			"res://addons/dialogic/Editor/Events/Fields/field_number.tscn",
 	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn",
+	DialogicEvent.ValueType.VECTOR3: 			"res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn",
+	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn"
 	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
@@ -252,7 +254,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			# Only set the value if the field is visible
 			#
 			# This prevents events with varied value types (event_setting, event_variable)
-			# from injecting incorrect types into hidden fields, which then throw errors 
+			# from injecting incorrect types into hidden fields, which then throw errors
 			# in the console.
 			if p.has('condition') and not p.condition.is_empty():
 				if _evaluate_visibility_condition(p):
@@ -351,7 +353,7 @@ func _on_resource_ui_update_needed() -> void:
 			# Only set the value if the field is visible
 			#
 			# This prevents events with varied value types (event_setting, event_variable)
-			# from injecting incorrect types into hidden fields, which then throw errors 
+			# from injecting incorrect types into hidden fields, which then throw errors
 			# in the console.
 			if node_info.has('condition') and not node_info.condition.is_empty():
 				if _evaluate_visibility_condition(node_info):
