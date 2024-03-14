@@ -1,9 +1,14 @@
 extends DialogicSubsystem
+## Subsystem that handles input, Auto-Advance, and skipping.
+##
+## This subsystem can be accessed via GDScript: `Dialogic.Inputs`.
 
-## Subsystem that handles input, autoadvance & skipping.
 
 signal dialogic_action_priority
 signal dialogic_action
+
+## Whenever the Auto-Skip timer finishes, this signal is emitted.
+## Configure Auto-Skip settings via [member auto_skip].
 signal autoskip_timer_finished
 
 

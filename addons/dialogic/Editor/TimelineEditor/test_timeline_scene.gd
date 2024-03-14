@@ -19,13 +19,13 @@ func _ready() -> void:
 		get_tree().quit()
 	DialogicUtil.autoload().start(current_timeline)
 	DialogicUtil.autoload().timeline_ended.connect(get_tree().quit)
-	DialogicUtil.autoload().signal_event.connect(recieve_event_signal)
-	DialogicUtil.autoload().text_signal.connect(recieve_text_signal)
+	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
+	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
 
-func recieve_event_signal(argument:String) -> void:
+func receive_event_signal(argument:String) -> void:
 	print("[Dialogic] Encountered a signal event: ", argument)
 
-func recieve_text_signal(argument:String) -> void:
+func receive_text_signal(argument:String) -> void:
 	print("[Dialogic] Encountered a signal in text: ", argument)
 
 func _input(event:InputEvent) -> void:

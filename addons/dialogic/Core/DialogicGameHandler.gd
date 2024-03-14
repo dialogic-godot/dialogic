@@ -22,7 +22,7 @@ enum States {
 enum ClearFlags {
 	FULL_CLEAR = 0, 		## Clears all subsystems
 	KEEP_VARIABLES = 1, 	## Clears all subsystems and info except for variables
-	TIMLEINE_INFO_ONLY = 2	## Doesn't clear subsystems but current timeline and index
+	TIMELINE_INFO_ONLY = 2	## Doesn't clear subsystems but current timeline and index
 	}
 
 ## Reference to the currently executed timeline.
@@ -30,56 +30,69 @@ var current_timeline: DialogicTimeline = null
 ## Copy of the [member current_timeline]'s events.
 var current_timeline_events: Array = []
 
-## Index of the event the timeline handeling is currently at.
+## Index of the event the timeline handling is currently at.
 var current_event_idx: int = 0
-## Contains all information that subsystems consider
-## relevant for the current situation
+## Contains all information that subsystems consider relevant for
+## the current situation
 var current_state_info: Dictionary = {}
-## Current state (see [member States] enum)
+
+## Current state (see [member States] enum).
 var current_state := States.IDLE:
 	get:
 		return current_state
+
 	set(new_state):
 		current_state = new_state
-		emit_signal('state_changed', new_state)
+		state_changed.emit(new_state)
+
 ## Emitted when [member current_state] change.
 signal state_changed(new_state:States)
 
-## When `true`, many dialogic processes won't continue until it's false again.
+## When `true`, many dialogic processes won't continue until it's `false` again.
 var paused := false:
 	set(value):
 		paused = value
+
 		if paused:
+
 			for subsystem in get_children():
+
 				if subsystem is DialogicSubsystem:
 					(subsystem as DialogicSubsystem).pause()
+
 			dialogic_paused.emit()
+
 		else:
 			for subsystem in get_children():
+
 				if subsystem is DialogicSubsystem:
 					(subsystem as DialogicSubsystem).resume()
+
 			dialogic_resumed.emit()
 
-## Emitted when [member paused] changes to true.
+## Emitted when [member paused] changes to `true`.
 signal dialogic_paused
-## Emitted when [member paused] changes to false.
+## Emitted when [member paused] changes to `false`.
 signal dialogic_resumed
 
 
-## Emitted when dialog ends (by a timeline end being reached OR end_timeline() being called).
+## Emitted when the timeline ends.
+## This can be a timeline ending or [method end_timeline] being called.
 signal timeline_ended
-## Emitted when a timeline was started with [method start] or [method start_timeline].
+## Emitted when a timeline starts by calling either [method start]
+## or [method start_timeline].
 signal timeline_started
-## Emitted when an event has just been executed (not necessarily when the event finished).
-signal event_handled(resource:DialogicEvent)
+## Emitted when an event starts being executed.
+## The event may not have finished executing yet.
+signal event_handled(resource: DialogicEvent)
 
-## Emitted when the `Signal Event` was reached
-signal signal_event(argument:Variant)
-## Emitted when `[signal]` effect was reached in text.
-signal text_signal(argument:String)
+## Emitted when a [class SignalEvent] event was reached.
+signal signal_event(argument: Variant)
+## Emitted when a signal event gets fired from a [class TextEvent] event.
+signal text_signal(argument: String)
 
 
-# Careful, this section is repopulated automatically at certain moments
+# Careful, this section is repopulated automatically at certain moments.
 #region SUBSYSTEMS
 
 var Audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd").new():
@@ -227,13 +240,13 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 
 ## Clears and stops the current timeline.
 func end_timeline() -> void:
-	clear(ClearFlags.TIMLEINE_INFO_ONLY)
+	clear(ClearFlags.TIMELINE_INFO_ONLY)
 	_on_timeline_ended()
 	timeline_ended.emit()
 
 
 ## Handles the next event.
-func handle_next_event(ignore_argument:Variant = "") -> void:
+func handle_next_event(_ignore_argument: Variant = "") -> void:
 	handle_event(current_event_idx+1)
 
 
@@ -269,12 +282,13 @@ func handle_event(event_index:int) -> void:
 	event_handled.emit(current_timeline_events[event_index])
 
 
-## Resets dialogics state fully or partially.
-## By using the clear flags from the [member ClearFlags] enum you can specify what info should be kept.
-## For example at timeline end usually it doesn't clear node or subsystem info
-func clear(clear_flags:=ClearFlags.FULL_CLEAR) -> bool:
+## Resets Dialogic's state fully or partially.
+## By using the clear flags from the [member ClearFlags] enum you can specify
+## what info should be kept.
+## For example, at timeline end usually it doesn't clear node or subsystem info.
+func clear(clear_flags := ClearFlags.FULL_CLEAR) -> bool:
 
-	if !clear_flags & ClearFlags.TIMLEINE_INFO_ONLY:
+	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
 				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)

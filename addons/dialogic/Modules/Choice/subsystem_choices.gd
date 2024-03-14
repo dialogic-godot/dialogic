@@ -117,15 +117,17 @@ func show_current_choices(instant:=true) -> void:
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx := 1
 	var shown_at_all := false
-	for node:DialogicNode_ChoiceButton in get_tree().get_nodes_in_group('dialogic_choice_button'):
+	for node: DialogicNode_ChoiceButton in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		if !node.get_parent().is_visible_in_tree():
 			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
+
+
 			if dialogic.has_subsystem('Text'):
-				node.text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
-			else:
-				node.text = text
+				text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
+
+			node._set_text_changed(text)
 
 			if idx == 1 and autofocus_first_choice:
 				node.grab_focus()

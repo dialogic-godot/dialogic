@@ -11,6 +11,8 @@ var customization_editor_info := {}
 ## -1 is the base scene, 0 to n are the layers
 var current_layer_idx := -1
 
+var _minimum_tree_item_height: int
+
 
 
 func _ready() -> void:
@@ -25,6 +27,8 @@ func _ready() -> void:
 	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
 	%MakeCustomButton.get_popup().index_pressed.connect(_on_make_custom_menu_pressed)
 	%LayerTree.item_selected.connect(_on_layer_selected)
+	_minimum_tree_item_height = int(DialogicUtil.get_editor_scale() * 32)
+	%LayerTree.add_theme_constant_override("icon_max_width", _minimum_tree_item_height)
 
 
 func load_style(style:DialogicStyle) -> void:
@@ -49,6 +53,7 @@ func load_style_layer_list() -> void:
 	tree.clear()
 
 	var root := tree.create_item()
+	root.custom_minimum_height = _minimum_tree_item_height
 	var base_scene := current_style.get_inheritance_root().get_base_scene().resource_path
 	if %StyleBrowser.is_premade_style_part(base_scene):
 		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[base_scene].get('icon', '')):
@@ -62,6 +67,7 @@ func load_style_layer_list() -> void:
 
 	for layer_scene in current_style.get_layer_list():
 		var layer_item := tree.create_item(root)
+		layer_item.custom_minimum_height = _minimum_tree_item_height
 		if %StyleBrowser.is_premade_style_part(layer_scene):
 			if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[layer_scene].get('icon', '')):
 				layer_item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[layer_scene].get('icon')))
