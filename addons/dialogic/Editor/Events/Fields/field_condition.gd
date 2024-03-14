@@ -192,13 +192,14 @@ func is_too_complex(condition:String) -> bool:
 	if condition.strip_edges().is_empty():
 		return false
 
-	var comparison_count :int = 0
+	var comparison_count: int = 0
 	for i in ['==', '!=', '<=', '<', '>', '>=']:
 		comparison_count += condition.count(i)
 	if comparison_count == 1:
 		return false
 
 	return true
+
 
 ## Combines the info from the simple editor fields into a string condition
 func get_simple_condition() -> String:
