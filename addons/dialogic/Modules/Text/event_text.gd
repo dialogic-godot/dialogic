@@ -219,7 +219,7 @@ func _on_dialogic_input_action() -> void:
 				dialogic.Inputs.stop_timers()
 				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
-			if dialogic.Inputs.is_manualadvance_enabled():
+			if dialogic.Inputs.manual_advance.is_enabled():
 				advance.emit()
 				dialogic.Inputs.stop_timers()
 				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
