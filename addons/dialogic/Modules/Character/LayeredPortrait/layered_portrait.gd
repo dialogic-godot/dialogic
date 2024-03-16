@@ -45,11 +45,6 @@ func _apply_layer_adjustments() -> void:
 	var coverage := _find_largest_coverage_rect()
 
 	for node: Node in get_children():
-
-		if node is Sprite2D:
-			var sprite := node as Sprite2D
-			sprite.centered = false
-
 		var node_position: Vector2 = node.position
 		node.position = _reposition_with_rect(coverage, node_position)
 
@@ -199,8 +194,11 @@ func _set_extra_data(data: String) -> void:
 ##
 ## Handling all layers horizontal flip state.
 func _set_mirror(is_mirrored: bool) -> void:
-	for sprite: Sprite2D in _find_sprites_recursively(self):
-		sprite.flip_h = is_mirrored
+	for child: Node in get_children():
+
+		if is_mirrored:
+			child.position.x = child.position.x * -1
+			child.scale.x = -child.scale.x
 
 
 ## Scans all nodes in this scene and finds the largest rectangle that
@@ -228,6 +226,9 @@ func _find_largest_coverage_rect() -> Rect2:
 
 
 	coverage_rect.position = _reposition_with_rect(coverage_rect)
+
+	#var origin := get("position")
+	#coverage_rect.expand(origin)
 
 	_is_coverage_rect_cached = true
 	_cached_coverage_rect = coverage_rect
