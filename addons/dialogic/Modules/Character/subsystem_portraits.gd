@@ -126,17 +126,22 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 		print_debug('[Dialogic] Change to not-existing portrait will be ignored!')
 		return info
 
-	# path to the scene to use
+	# Path to the scene to use.
 	var scene_path: String = character.portraits[portrait].get('scene', '')
 
 	var portrait_node: Node = null
+	var latest_portrait: Node = null
 
-	# check if the scene is the same as the currently loaded scene
-	if (character_node.get_child_count() and
-		character_node.get_child(0).get_meta('scene', '') == scene_path and
-		# also check if the scene supports changing to the given portrait
-		(!character_node.get_child(0).has_method('_should_do_portrait_update') or character_node.get_child(0)._should_do_portrait_update(character, portrait))):
-			portrait_node = character_node.get_child(0)
+	if character_node.get_child_count() > 0:
+		latest_portrait = character_node.get_child(-1)
+
+	# Check if the scene is the same as the currently loaded scene.
+	if (not latest_portrait == null and
+		latest_portrait.get_meta('scene', '') == scene_path and
+		# Also check if the scene supports changing to the given portrait.
+		(not latest_portrait.has_method('_should_do_portrait_update')
+		or latest_portrait._should_do_portrait_update(character, portrait))):
+			portrait_node = latest_portrait
 			info['same_scene'] = true
 
 	else:
@@ -172,16 +177,20 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 ## Changes the mirroring of the given portrait.
 ## Unless @force is false, this will take into consideration the character mirror,
 ## portrait mirror and portrait position mirror settings.
-func _change_portrait_mirror(character_node:Node2D, mirrored:=false, force:=false) -> void:
-	if character_node.get_child(0).has_method('_set_mirror'):
+func _change_portrait_mirror(character_node: Node2D, mirrored := false, force := false) -> void:
+	var latest_portrait := character_node.get_child(-1)
+
+	if latest_portrait.has_method('_set_mirror'):
 		var character: DialogicCharacter= character_node.get_meta('character')
 		var current_portrait_info := character.get_portrait_info(character_node.get_meta('portrait'))
-		character_node.get_child(0)._set_mirror(force or (mirrored != character.mirror != character_node.get_parent().mirrored != current_portrait_info.get('mirror', false)))
+		latest_portrait._set_mirror(force or (mirrored != character.mirror != character_node.get_parent().mirrored != current_portrait_info.get('mirror', false)))
 
 
 func _change_portrait_extradata(character_node:Node2D, extra_data:="") -> void:
-	if character_node.get_child(0).has_method('_set_extra_data'):
-		character_node.get_child(0)._set_extra_data(extra_data)
+	var latest_portrait := character_node.get_child(-1)
+
+	if latest_portrait.has_method('_set_extra_data'):
+		latest_portrait._set_extra_data(extra_data)
 
 
 func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
@@ -665,28 +674,28 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 		if portrait.is_empty(): portrait = speaker.default_portrait
 
 		if container.portrait_prefix+portrait in speaker.portraits:
-			_change_portrait(container.get_child(0), container.portrait_prefix+portrait)
+			_change_portrait(container.get_child(-1), container.portrait_prefix+portrait)
 		else:
-			_change_portrait(container.get_child(0), portrait)
+			_change_portrait(container.get_child(-1), portrait)
 
 		# if the character has no portraits _change_portrait won't actually add a child node
-		if container.get_child(0).get_child_count() == 0:
+		if container.get_child(-1).get_child_count() == 0:
 			continue
 
-		_change_portrait_mirror(container.get_child(0))
+		_change_portrait_mirror(container.get_child(-1))
 
 	if speaker:
 
 		if speaker.resource_path != dialogic.current_state_info['speaker']:
 
 			if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
-				dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
+				dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(-1)._unhighlight()
 
 			if speaker and is_character_joined(speaker):
-				dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(0)._highlight()
+				dialogic.current_state_info['portraits'][speaker.resource_path].node.get_child(-1)._highlight()
 
 	elif dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
-		dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(0)._unhighlight()
+		dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(-1)._unhighlight()
 
 #endregion
 
