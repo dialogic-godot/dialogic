@@ -35,4 +35,3 @@ func animate() -> void:
 
 	await tween.finished
 	finished_once.emit()
-
