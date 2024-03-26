@@ -115,7 +115,7 @@ func _to_string() -> String:
 ################################################################################
 
 ## Executes the event behaviour. In subclasses [_execute] (not this one) should be overriden!
-func execute(_dialogic_game_handler) -> void:
+func execute(_dialogic_game_handler: DialogicGameHandler) -> void:
 	event_started.emit(self)
 	dialogic = _dialogic_game_handler
 	call_deferred("_execute")
@@ -228,7 +228,7 @@ func _load_from_string(string:String) -> void:
 
 
 ## Assigns the custom defaults
-func _load_custom_defaults():
+func _load_custom_defaults() -> void:
 	for default_prop in DialogicUtil.get_custom_event_defaults(event_name):
 		if default_prop in self:
 			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])
@@ -263,24 +263,33 @@ func to_text() -> String:
 	var result_string: String = "["+self.get_shortcode()
 	var params: Dictionary = get_shortcode_parameters()
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
-	for parameter in params.keys():
+
+	for parameter: String in params.keys():
+
 		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
 		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
+
 			if typeof(get(params[parameter].property)) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter].property).resource_path)+'"'
+
 			elif typeof(get(params[parameter].property)) == TYPE_STRING:
 				result_string += " "+parameter+'="'+get(params[parameter].property).replace('=', "\\=")+'"'
 			# if this is an enum with values provided, try to use a text alternative
 			elif typeof(get(params[parameter].property)) == TYPE_INT and params[parameter].has('suggestions'):
+
 				for option in params[parameter].suggestions.call().values():
+
 					if option.value == get(params[parameter].property):
+
 						if option.has('text_alt'):
 							result_string += " "+parameter+'="'+option.text_alt[0]+'"'
 						else:
 							result_string += " "+parameter+'="'+var_to_str(option.value).replace('=', "\\=")+'"'
 						break
+
 			elif typeof(get(params[parameter].property)) == TYPE_DICTIONARY:
 				result_string += " "+parameter+'="'+ JSON.stringify(get(params[parameter].property)).replace('=', "\\=")+'"'
+
 			else:
 				result_string += " "+parameter+'="'+var_to_str(get(params[parameter].property)).replace('=', "\\=")+'"'
 	result_string += "]"
@@ -292,7 +301,8 @@ func to_text() -> String:
 func from_text(string:String) -> void:
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
-	for parameter in params.keys():
+
+	for parameter: String in params.keys():
 		if not parameter in data:
 			continue
 
