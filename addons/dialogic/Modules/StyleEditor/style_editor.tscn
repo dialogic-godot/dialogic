@@ -84,16 +84,16 @@ text = "Styles"
 
 [node name="HintTooltip" parent="Panel/VBox/Title" instance=ExtResource("2_g4mnt")]
 layout_mode = 2
-tooltip_text = "Each style consist of a list of layers and settings for each layer. 
+tooltip_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
 When one style is selected as default dialogic will use that style when calling Dialogic.start() otherwise a fallback is used.
-You can change the style with the Change Style event, by setting a style on a character or by calling 
+You can change the style with the Change Style event, by setting a style on a character or by calling
 Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
 texture = SubResource("ImageTexture_rfmv2")
-hint_text = "Each style consist of a list of layers and settings for each layer. 
+hint_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
 When one style is selected as default dialogic will use that style when calling Dialogic.start() otherwise a fallback is used.
-You can change the style with the Change Style event, by setting a style on a character or by calling 
+You can change the style with the Change Style event, by setting a style on a character or by calling
 Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
 
 [node name="StyleButtons" type="HBoxContainer" parent="Panel/VBox"]
@@ -405,7 +405,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="NoStyleView"]
 layout_mode = 2
-text = "You have not setup any style. Dialogic will use a fallback style."
+text = "You have not set up any styles yet. Dialogic will use a fallback style."
 horizontal_alignment = 1
 autowrap_mode = 3
 
