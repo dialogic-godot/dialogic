@@ -159,14 +159,14 @@ func _ready() -> void:
 
 	batch_loaded.connect(_on_batch_loaded)
 
-	#await find_parent('EditorView').ready
-	#timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
+	await find_parent('EditorView').ready
+	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 	%Timeline.child_order_changed.connect(update_content_list)
 
 	var editor_scale := DialogicUtil.get_editor_scale()
-	%RightSidebar.size.x = ProjectSettings.get_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
-	$View.split_offset = -ProjectSettings.get_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
-	sidebar_collapsed = ProjectSettings.get_setting("dialogic/editor/right_sidebar_collapsed", false)
+	%RightSidebar.size.x = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
+	$View.split_offset = -DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
+	sidebar_collapsed = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_collapsed", false)
 
 	load_event_buttons()
 	_on_right_sidebar_resized()
@@ -174,7 +174,7 @@ func _ready() -> void:
 
 
 func load_event_buttons() -> void:
-	sidebar_collapsed = ProjectSettings.get_setting("dialogic/editor/right_sidebar_collapsed", false)
+	sidebar_collapsed = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_collapsed", false)
 
 	# Clear previous event buttons
 	for child in %RightSidebar.get_child(0).get_children():
@@ -970,9 +970,9 @@ func _on_right_sidebar_resized() -> void:
 						button.toggle_name(true)
 
 	if _initialised:
-		ProjectSettings.set_setting("dialogic/editor/right_sidebar_width", %RightSidebar.size.x)
-		ProjectSettings.set_setting("dialogic/editor/right_sidebar_collapsed", sidebar_collapsed)
-		ProjectSettings.save()
+		DialogicUtil.set_editor_setting("dialogic/editor/right_sidebar_width", %RightSidebar.size.x)
+		DialogicUtil.set_editor_setting("dialogic/editor/right_sidebar_collapsed", sidebar_collapsed)
+
 #endregion
 
 
