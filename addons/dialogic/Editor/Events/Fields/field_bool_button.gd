@@ -17,6 +17,8 @@ func _ready() -> void:
 
 func _load_display_info(info:Dictionary) -> void:
 	if info.has('editor_icon'):
+		if not is_inside_tree():
+			await ready
 		self.icon = callv('get_theme_icon', info.editor_icon)
 	else:
 		self.icon = info.get('icon', null)
