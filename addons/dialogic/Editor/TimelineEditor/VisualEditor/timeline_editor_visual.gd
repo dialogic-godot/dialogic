@@ -23,7 +23,7 @@ signal timeline_loaded
 var _batches := []
 var _building_timeline := false
 var _timeline_changed_while_loading := false
-var _initialised := false
+var _initialized := false
 
 ################## TIMELINE EVENT MANAGEMENT ###################################
 ################################################################################
@@ -170,7 +170,7 @@ func _ready() -> void:
 
 	load_event_buttons()
 	_on_right_sidebar_resized()
-	_initialised = true
+	_initialized = true
 
 
 func load_event_buttons() -> void:
