@@ -240,7 +240,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 
 ## Clears and stops the current timeline.
 func end_timeline() -> void:
-	clear(ClearFlags.TIMELINE_INFO_ONLY)
+	await clear(ClearFlags.TIMELINE_INFO_ONLY)
 	_on_timeline_ended()
 	timeline_ended.emit()
 
@@ -295,7 +295,7 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> bool:
 
 	# Resetting variables
 	if current_timeline:
-		current_timeline.clean()
+		await current_timeline.clean()
 
 	current_timeline = null
 	current_event_idx = -1
