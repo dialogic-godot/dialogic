@@ -4,6 +4,8 @@ extends DialogicVisualEditorFieldVector
 
 var current_value := Vector4()
 
+@export var step: float = 0.1
+@export var enforce_step: bool = true
 
 func _set_value(value: Variant) -> void:
 
@@ -28,6 +30,25 @@ func _set_value(value: Variant) -> void:
 
 func get_value() -> Vector4:
 	return current_value
+
+
+func _load_display_info(info: Dictionary) -> void:
+	for option: String in info.keys():
+		match option:
+			#'min': min = info[option]
+			#'max': max = info[option]
+			#'prefix': update_prefix(info[option])
+			#'suffix': update_suffix(info[option])
+			'step':
+				enforce_step = true
+				step = info[option]
+			#'hide_step_button': %Spin.hide()
+
+	if enforce_step:
+		$X.step = step
+		$Y.step = step
+		$Z.step = step
+		$W.step = step
 
 
 func _on_sub_value_changed(sub_component: String, value: float) -> void:

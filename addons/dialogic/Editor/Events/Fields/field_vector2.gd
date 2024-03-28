@@ -8,13 +8,8 @@ extends DialogicVisualEditorFieldVector
 var current_value := Vector2()
 
 
-func _ready() -> void:
-	if enforce_step:
-		$X.step = step
-		$Y.step = step
-
-
 func _set_value(value: Variant) -> void:
+	print("Setting value to: ", value)
 
 	if value is float or value is int:
 		var number := value as float
@@ -50,6 +45,10 @@ func _load_display_info(info: Dictionary) -> void:
 				enforce_step = true
 				step = info[option]
 			#'hide_step_button': %Spin.hide()
+
+	if enforce_step:
+		$X.step = step
+		$Y.step = step
 
 
 func _on_sub_value_changed(sub_component: String, value: float) -> void:
