@@ -9,7 +9,6 @@ var current_value := Vector2()
 
 
 func _set_value(value: Variant) -> void:
-	print("Setting value to: ", value)
 
 	if value is float or value is int:
 		var number := value as float
