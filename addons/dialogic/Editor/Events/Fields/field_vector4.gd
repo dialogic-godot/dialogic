@@ -6,7 +6,23 @@ var current_value := Vector4()
 
 
 func _set_value(value: Variant) -> void:
+
+	if value is float or value is int:
+		var number: float = value.as_float()
+		value = Vector4(number, number, number, number)
+
+	elif value is Vector2:
+		value = DialogicUtil.vector2_to_vector4(value as Vector2)
+
+	elif value is Vector3:
+		value = DialogicUtil.vector3_to_vector4(value as Vector3)
+
+	elif not value is Vector4:
+		value = Vector4()
+
 	current_value = value
+
+	value_changed.emit(property_name, value)
 	super(value)
 
 

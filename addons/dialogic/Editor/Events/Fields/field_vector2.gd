@@ -15,7 +15,22 @@ func _ready() -> void:
 
 
 func _set_value(value: Variant) -> void:
+
+	if value is float or value is int:
+		var number := value as float
+		value = Vector2(number, number)
+
+	elif value is Vector4:
+		value = DialogicUtil.vector4_to_vector2(value as Vector4)
+
+	elif value is Vector3:
+		value = DialogicUtil.vector3_to_vector2(value as Vector3)
+
+	elif not value is Vector2:
+		value = Vector2()
+
 	current_value = value
+
 	value_changed.emit(property_name, value)
 	super(value)
 
@@ -25,7 +40,7 @@ func get_value() -> Vector2:
 
 
 func _load_display_info(info: Dictionary) -> void:
-	for option in info.keys():
+	for option: String in info.keys():
 		match option:
 			#'min': min = info[option]
 			#'max': max = info[option]
