@@ -7,8 +7,10 @@ extends DialogicVisualEditorField
 @export var allow_string : bool = false
 @export var step: float = 0.1
 @export var enforce_step: bool = true
-@export var min: float = 0
-@export var max: float= 999
+@export var limit_value: bool = false
+@export var min: float = 0.0
+@export var max: float = 999.0
+@export var only_positive: bool = false
 @export var value = 0.0
 @export var prefix: String = ""
 @export var suffix: String = ""
@@ -33,11 +35,13 @@ func _load_display_info(info: Dictionary) -> void:
 			use_float_mode(info.get('step', 0.1))
 		1: #INT
 			use_int_mode(info.get('step', 1))
-		2: #DECIBLE:
+		2: #DECIBEL:
 			use_decibel_mode(info.get('step', step))
 
-	for option in info.keys():
+
+	for option: String in info.keys():
 		match option:
+			'limit_value': limit_value = info[option]
 			'min': min = info[option]
 			'max': max = info[option]
 			'prefix': update_prefix(info[option])
@@ -53,7 +57,7 @@ func _set_value(new_value: Variant) -> void:
 	%Value.tooltip_text = tooltip_text
 
 
-func _autofocus():
+func _autofocus() -> void:
 	%Value.grab_focus()
 
 
@@ -73,7 +77,7 @@ func use_int_mode(value_step: float = 1) -> void:
 	enforce_step = true
 
 
-func use_decibel_mode(value_step: float = step) -> void:
+func use_decibel_mode(_value_step: float = step) -> void:
 	max = 6
 	update_suffix("dB")
 	min = -80
@@ -158,19 +162,36 @@ func _on_decrement_button_down(button: NodePath) -> void:
 
 func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 	if new_text.is_valid_float():
-		var temp: float = min(max(new_text.to_float(), min), max)
+		var final_value := new_text.to_float()
+
+		if limit_value:
+			final_value = min(max(final_value, min), max)
+
+		elif only_positive:
+			final_value = max(0, final_value)
+
 		if !enforce_step:
-			value = temp
+			value = final_value
 		else:
-			value = snapped(temp, step)
+			value = snapped(final_value, step)
+
 	elif allow_string:
 		value = new_text
+
 	%Value.text = str(value).pad_decimals(len(str(float(step)-floorf(step)))-2)
+
 	if not no_signal:
 		value_changed.emit(property_name, value)
-	# Visually disable Up or Down arrow when limit is reached to better indicate a limit has been hit
-	%Spin/Decrement.disabled = value <= min
-	%Spin/Increment.disabled = value >= max
+
+	if limit_value:
+		# Visually disable Up or Down arrow when limit is reached to better
+		## indicate a limit has been hit.
+		%Spin/Decrement.disabled = value <= min
+		%Spin/Increment.disabled = value >= max
+
+	else:
+		%Spin/Decrement.disabled = false
+		%Spin/Increment.disabled = false
 
 
 # If prefix or suffix was clicked, select the actual value box instead and move the caret to the closest side.

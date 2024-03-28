@@ -504,6 +504,30 @@ static func logical_convert(value:Variant) -> Variant:
 	return value
 
 
+static func vector2_to_vector3(vector: Vector2) -> Vector3:
+	return Vector3(vector.x, vector.y, 0)
+
+
+static func vector3_to_vector2(vector: Vector3) -> Vector2:
+	return Vector2(vector.x, vector.y)
+
+
+static func vector4_to_vector2(vector: Vector4) -> Vector2:
+	return Vector2(vector.x, vector.y)
+
+
+static func vector2_to_vector4(vector: Vector2) -> Vector4:
+	return Vector4(vector.x, vector.y, 0, 0)
+
+
+static func vector3_to_vector4(vector:Vector3) -> Vector4:
+	return Vector4(vector.x, vector.y, vector.z, 0)
+
+
+static func vector4_to_vector3(vector: Vector4) -> Vector3:
+	return Vector3(vector.x, vector.y, vector.z)
+
+
 ## Takes [param source] and builds a dictionary of keys only.
 ## The values are `null`.
 static func str_to_hash_set(source: String) -> Dictionary:
