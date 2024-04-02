@@ -33,11 +33,34 @@ var _property := "" :
 			var variable_value: Variant  = ColorRect.new().get(_property)
 			variant_type = typeof(variable_value) as Variant.Type
 
+		elif _target == TweenTarget.PORTRAIT:
+			var variable_value: Variant  = DialogicCharacter.new().get(_property)
+			variant_type = typeof(variable_value) as Variant.Type
+
 		elif _target == TweenTarget.NODE_PATH:
 			variant_type = typeof(_value) as Variant.Type
 
 		var new_value_type := variant_to_value_type(variant_type)
+		print(new_value_type)
 		_value_type = new_value_type
+
+
+## The character that will join/leave/update.
+var character : DialogicCharacter = null
+## Used to set the character resource from the unique name identifier and vice versa
+var _character_identifier: String:
+	get:
+		if character:
+			var identifier := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+
+			if not identifier.is_empty():
+				return identifier
+
+		return _character_identifier
+
+	set(value):
+		_character_identifier = value
+		character = DialogicResourceUtil.get_character_resource(value)
 
 var _sub_property := ""
 var _target := TweenTarget.BACKGROUND
@@ -61,7 +84,12 @@ func _execute() -> void:
 
 	match _target:
 		TweenTarget.PORTRAIT:
-			target_node = null
+			if character == null or not dialogic.Portraits.is_character_joined(character):
+				printerr("[Dialogic] Character '" + _character_identifier + "' not part of the scene, aborting Tween Event.")
+				finish()
+				return
+
+			target_node = dialogic.current_state_info.portraits[character.resource_path].node.get_child(-1)
 
 		TweenTarget.BACKGROUND:
 			target_node = dialogic.Backgrounds.get_current_background_node()
@@ -120,10 +148,13 @@ func to_text() -> String:
 	match _target:
 		TweenTarget.PORTRAIT: result_string += "portrait "
 		TweenTarget.BACKGROUND: result_string += "background "
-		TweenTarget.NODE_PATH: result_string += "unique "
+		TweenTarget.NODE_PATH: result_string += "path "
 
 	if not _node_path.is_empty():
 		result_string += " path=\"" + _node_path + "\""
+
+	if not _character_identifier.is_empty():
+		result_string += " character=\"" + _character_identifier + "\""
 
 	if not _property.is_empty():
 		result_string += " property=\"" + _property
@@ -299,8 +330,11 @@ func from_text(string: String) -> void:
 			"background":
 				_target = TweenTarget.BACKGROUND
 
-			"unique":
+			"path":
 				_target = TweenTarget.NODE_PATH
+
+			"character":
+				_character_identifier = value
 
 			"path":
 				_node_path = value
@@ -362,6 +396,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"property" 		: {"property": "_property", "default": _property},
+		"character"		: {"property": "_character", "default": _character_identifier},
 		"path"			: {"property": "_node_path", "default": _node_path},
 		"value"			: {"property": "_value", "default": _value},
 		"target"		: {"property": "_target", "default": _target},
@@ -375,6 +410,61 @@ func get_shortcode_parameters() -> Dictionary:
 
 # You can alternatively overwrite these 3 functions: to_text(), from_text(), is_valid_event()
 #endregion
+
+
+
+
+
+func get_all_character_properties(search_string: String) -> Dictionary:
+	const VALID_TYPE := [TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I]
+	const IGNORE_WORDS := ["process_"]
+
+	var color_rect := DialogicCharacter.new()
+	var suggestions := {}
+	var fallback_icon := ["Variant", "EditorIcons"]
+
+	for property_info: Dictionary in color_rect.get_property_list():
+		var property_name: String = property_info.get("name")
+
+		if not search_string.is_empty() and not property_name.contains(search_string):
+			continue
+
+		var ignore_property: bool = false
+		for ignore_term: String in IGNORE_WORDS:
+
+			if property_name.begins_with(ignore_term):
+				ignore_property = true
+				break
+
+		if ignore_property:
+			continue
+
+		var property_type: Variant.Type = property_info.get("type")
+
+		if not VALID_TYPE.has(property_type):
+			continue
+
+		var icon: Variant = fallback_icon
+
+		match property_type:
+			Variant.Type.TYPE_INT:
+				icon = ["Number", "EditorIcons"]
+			Variant.Type.TYPE_FLOAT:
+				icon = ["Float", "EditorIcons"]
+			Variant.Type.TYPE_STRING:
+				icon = ["String", "EditorIcons"]
+			_:
+				icon = ["Variant", "EditorIcons"]
+
+
+		suggestions[property_name] = {
+			"label": "[b]"+ property_name + "[/b]",
+			"value": property_name,
+			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
+		}
+
+
+	return suggestions
 
 
 func get_all_properties(search_string: String) -> Dictionary:
@@ -429,6 +519,21 @@ func get_all_properties(search_string: String) -> Dictionary:
 	return suggestions
 
 
+func get_character_suggestions(search_text: String) -> Dictionary:
+	var suggestions := {}
+	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
+
+	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	var character_directory = DialogicResourceUtil.get_character_directory()
+
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
+	return suggestions
+
+
+
 #region EDITOR REPRESENTATION
 ################################################################################
 
@@ -464,6 +569,17 @@ func build_event_editor() -> void:
 		"_target == TweenTarget.NODE_PATH"
 	)
 
+	add_header_edit('_character_identifier', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: 'Character',
+			'file_extension' 	: '.dch',
+			'mode'				: 2,
+			'suggestions_func' 	: get_character_suggestions,
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			'autofocus'			: false,
+		},
+		"_target == TweenTarget.PORTRAIT"
+	)
+
 
 	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
 		{
@@ -477,6 +593,17 @@ func build_event_editor() -> void:
 		"_target == TweenTarget.BACKGROUND"
 	)
 
+	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
+		{
+			"placeholder"		: "",
+			"mode"				: 1,
+			"suggestions_func" 	: get_all_character_properties,
+			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			"autofocus"			: false,
+			"left_text":		" property ",
+		},
+		"_target == TweenTarget.PORTRAIT"
+	)
 
 	add_header_edit("_property", ValueType.SINGLELINE_TEXT,
 		{
