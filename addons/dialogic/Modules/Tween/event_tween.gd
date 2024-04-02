@@ -5,6 +5,7 @@ class_name DialogicTweenEvent
 enum TweenTarget {
 	PORTRAIT,
 	BACKGROUND,
+	NODE_PATH,
 }
 
 const TIME_DEFAULT := 0.0
@@ -26,14 +27,21 @@ var _property := "" :
 			_property = value
 			_sub_property = ""
 
-		var variable_value: Variant  = ColorRect.new().get(_property)
-		var variant_type: Variant.Type = typeof(variable_value) as Variant.Type
+		var variant_type: Variant.Type = Variant.Type.TYPE_NIL
+
+		if _target == TweenTarget.BACKGROUND:
+			var variable_value: Variant  = ColorRect.new().get(_property)
+			variant_type = typeof(variable_value) as Variant.Type
+
+		elif _target == TweenTarget.NODE_PATH:
+			variant_type = typeof(_value) as Variant.Type
 
 		var new_value_type := variant_to_value_type(variant_type)
 		_value_type = new_value_type
 
 var _sub_property := ""
 var _target := TweenTarget.BACKGROUND
+var _node_path := ""
 var _time: float = TIME_DEFAULT
 var _is_relative: bool = IS_RELATIVE_DEFAULT
 var _await: bool = AWAIT_DEFAULT
@@ -44,7 +52,9 @@ var _value_type: ValueType = ValueType.NUMBER
 var _value: Variant = null :
 	set(value):
 		_value = value
-		print(value)
+var _revert_value := false
+var _revert_after := 0.0
+var _revert_time := 0.0
 
 func _execute() -> void:
 	var target_node: Node = null
@@ -55,6 +65,14 @@ func _execute() -> void:
 
 		TweenTarget.BACKGROUND:
 			target_node = dialogic.Backgrounds.get_current_background_node()
+
+		TweenTarget.NODE_PATH:
+			target_node = dialogic.get_tree().get_root().get_node(_node_path)
+
+			if target_node == null:
+				printerr("[Dialogic] Node path '" + _node_path + "' not found, aborting Tween Event.")
+				finish()
+				return
 
 	var tween := dialogic.create_tween()
 	tween.set_ease(_ease)
@@ -102,7 +120,10 @@ func to_text() -> String:
 	match _target:
 		TweenTarget.PORTRAIT: result_string += "portrait "
 		TweenTarget.BACKGROUND: result_string += "background "
+		TweenTarget.NODE_PATH: result_string += "unique "
 
+	if not _node_path.is_empty():
+		result_string += " path=\"" + _node_path + "\""
 
 	if not _property.is_empty():
 		result_string += " property=\"" + _property
@@ -114,7 +135,6 @@ func to_text() -> String:
 
 	if not _value == null:
 		result_string += " value=\"" + str(_value) + "\""
-
 
 	if not _time == TIME_DEFAULT:
 		result_string += " time=\"" + str(_time) + "\""
@@ -279,6 +299,12 @@ func from_text(string: String) -> void:
 			"background":
 				_target = TweenTarget.BACKGROUND
 
+			"unique":
+				_target = TweenTarget.NODE_PATH
+
+			"path":
+				_node_path = value
+
 			"property":
 				_property = value
 
@@ -315,6 +341,15 @@ func string_to_value_type(value: String) -> Variant:
 		var y_value := values[1].strip_edges().to_float()
 		return Vector2(x_value, y_value)
 
+	if value == "true":
+		return true
+
+	elif value == "false":
+		return false
+
+	if value.begins_with('"') and value.ends_with('"'):
+		return value.strip_edges()
+
 	return null
 
 
@@ -327,6 +362,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"property" 		: {"property": "_property", "default": _property},
+		"path"			: {"property": "_node_path", "default": _node_path},
 		"value"			: {"property": "_value", "default": _value},
 		"target"		: {"property": "_target", "default": _target},
 		"time"			: {"property": "_time", "default": _time},
@@ -412,18 +448,43 @@ func build_event_editor() -> void:
 				"value": TweenTarget.BACKGROUND,
 				"icon": load("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg")
 			},
+			{
+				"label": "Node Path",
+				"value": TweenTarget.NODE_PATH,
+				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+			},
 		]
 	})
 
+	add_header_edit("_node_path", ValueType.SINGLELINE_TEXT,
+		{
+			"left_text": " of ",
+			"mode": 1,
+		},
+		"_target == TweenTarget.NODE_PATH"
+	)
+
 
 	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
-		{"placeholder"		: "",
-		"mode"				: 1,
-		"suggestions_func" 	: get_all_properties,
-		#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
-		"autofocus"			: false,
-		"left_text":		" property "
-	})
+		{
+			"placeholder"		: "",
+			"mode"				: 1,
+			"suggestions_func" 	: get_all_properties,
+			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			"autofocus"			: false,
+			"left_text":		" property ",
+		},
+		"_target == TweenTarget.BACKGROUND"
+	)
+
+
+	add_header_edit("_property", ValueType.SINGLELINE_TEXT,
+		{
+			"left_text": " property ",
+			"mode": 1,
+		},
+		"_target == TweenTarget.NODE_PATH"
+	)
 
 
 	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS, {
@@ -453,14 +514,13 @@ func build_event_editor() -> void:
 	)
 
 
-
 	#region VALUE FIELDS
 	add_header_edit("_value", ValueType.NUMBER,
 		{
 			"left_text": " to ",
 			"mode": 1,
 		},
-		"not _property.is_empty() and _value_type == ValueType.NUMBER"
+		"not _property.is_empty() and _value_type == ValueType.NUMBER and not _target == TweenTarget.NODE_PATH"
 	)
 
 	add_header_edit("_value", ValueType.VECTOR2,
@@ -468,7 +528,7 @@ func build_event_editor() -> void:
 			"left_text": " to ",
 			"mode": 1,
 		},
-		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && _sub_property.is_empty()"
+		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
 	)
 
 	add_header_edit("_value", ValueType.NUMBER,
@@ -476,10 +536,18 @@ func build_event_editor() -> void:
 			"left_text": " to ",
 			"mode": 1,
 		},
-		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && not _sub_property.is_empty()"
+		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && not _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
+	)
+
+
+	add_header_edit("_value", ValueType.SINGLELINE_TEXT,
+		{
+			"left_text": " to ",
+			"mode": 1,
+		},
+		"_target == TweenTarget.NODE_PATH"
 	)
 	#endregion
-
 
 
 	add_header_edit("_time", ValueType.NUMBER,
@@ -490,7 +558,6 @@ func build_event_editor() -> void:
 		}
 	 )
 
-
 	add_header_edit("_is_relative", ValueType.BOOL,
 		{"left_text":"Relative:"}, "_time > 0.0"
 	)
@@ -499,7 +566,7 @@ func build_event_editor() -> void:
 		{"left_text": "Await:"}, "_time > 0.0"
 	)
 
-	# Body Optioms
+	# Body Options
 	add_body_edit("_ease", ValueType.FIXED_OPTIONS, {
 		"left_text":	"Ease:",
 		"autofocus"			: false,
@@ -602,6 +669,7 @@ func build_event_editor() -> void:
 	},
 	"_time > 0.0"
 	)
+
 
 func variant_to_value_type(value: Variant.Type) -> ValueType:
 	match value:
