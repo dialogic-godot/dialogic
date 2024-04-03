@@ -529,68 +529,115 @@ func get_all_properties(search_string: String) -> Dictionary:
 	return suggestions
 
 
+
 func get_character_suggestions(search_text: String) -> Dictionary:
 	var suggestions := {}
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	var character_directory = DialogicResourceUtil.get_character_directory()
+	var character_directory := DialogicResourceUtil.get_character_directory()
 
-	for resource in character_directory.keys():
+	for resource: String in character_directory.keys():
 		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
 	return suggestions
 
 
-
-#region EDITOR REPRESENTATION
-################################################################################
-
-func build_event_editor() -> void:
-	#var background_node := DialogicUtil.autoload().get_tree().get_first_node_in_group("dialogic_background_holders").get_child(0)
-
-	add_header_edit("_target", ValueType.FIXED_OPTIONS, {
-		"left_text":	"Tween ",
-		"options": [
-			{
-				"label": "Portrait",
-				"value": TweenTarget.PORTRAIT,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Background",
-				"value": TweenTarget.BACKGROUND,
-				"icon": load("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg")
-			},
-			{
-				"label": "Node Path",
-				"value": TweenTarget.NODE_PATH,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-		]
-	})
-
-	add_header_edit("_node_path", ValueType.SINGLELINE_TEXT,
+# Add a sub property field for all supported vector types.
+func _add_sub_property_fields() -> void:
+	var options := [
 		{
-			"left_text": " of ",
+			"label": "All",
+			"value": "",
+		},
+		{
+			"label": "X",
+			"value": "x",
+		},
+		{
+			"label": "Y",
+			"value": "y",
+		},
+		{
+			"label": "Z",
+			"value": "z",
+		},
+		{
+			"label": "W",
+			"value": "w",
+		},
+	]
+
+	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
+		{
+			"autofocus"			: false,
+			"placeholder"		: "All",
+			"mode"				: 1,
+			"options": options.slice(0, 2)
+		},
+		"_value_type == ValueType.VECTOR2"
+	)
+
+	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
+		{
+			"autofocus"			: false,
+			"placeholder"		: "All",
+			"mode"				: 1,
+			"options": options.slice(0, 3),
+		},
+		"_value_type == ValueType.VECTOR3"
+	)
+
+	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
+		{
+			"autofocus"			: false,
+			"placeholder"		: "All",
+			"mode"				: 1,
+			"options": options.slice(0, 4),
+		},
+		"_value_type == ValueType.VECTOR4"
+	)
+
+
+## Adds all possible fields to set the target value the tween shall reach.
+func _add_value_fields() -> void:
+	add_header_edit("_value", ValueType.NUMBER,
+		{
+			"left_text": " to ",
+			"mode": 1,
+		},
+		"not _property.is_empty() and _value_type == ValueType.NUMBER and not _target == TweenTarget.NODE_PATH"
+	)
+
+	add_header_edit("_value", ValueType.VECTOR2,
+		{
+			"left_text": " to ",
+			"mode": 1,
+		},
+		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
+	)
+
+	add_header_edit("_value", ValueType.NUMBER,
+		{
+			"left_text": " to ",
+			"mode": 1,
+		},
+		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && not _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
+	)
+
+
+	add_header_edit("_value", ValueType.SINGLELINE_TEXT,
+		{
+			"left_text": " to ",
 			"mode": 1,
 		},
 		"_target == TweenTarget.NODE_PATH"
 	)
 
-	add_header_edit('_character_identifier', ValueType.DYNAMIC_OPTIONS,
-			{'placeholder'		: 'Character',
-			'file_extension' 	: '.dch',
-			'mode'				: 2,
-			'suggestions_func' 	: get_character_suggestions,
-			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
-			'autofocus'			: false,
-		},
-		"_target == TweenTarget.PORTRAIT"
-	)
 
-
+## Adds all possible fields to set the property the tween shall act on.
+func _add_property_fields() -> void:
 	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
 		{
 			"placeholder"		: "",
@@ -624,69 +671,9 @@ func build_event_editor() -> void:
 	)
 
 
-	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS, {
-		#"left_text":	"Point:",
-		"autofocus"			: false,
-		"placeholder"		: "All",
-		"mode"				: 1,
-		"options": [
-			{
-				"label": "All",
-				"value": "",
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "x",
-				"value": "x",
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "y",
-				"value": "y",
-				"icon": load("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg")
-			},
-		]
-	},
-	"_value_type == ValueType.VECTOR2"
-	)
-
-
-	#region VALUE FIELDS
-	add_header_edit("_value", ValueType.NUMBER,
-		{
-			"left_text": " to ",
-			"mode": 1,
-		},
-		"not _property.is_empty() and _value_type == ValueType.NUMBER and not _target == TweenTarget.NODE_PATH"
-	)
-
-	add_header_edit("_value", ValueType.VECTOR2,
-		{
-			"left_text": " to ",
-			"mode": 1,
-		},
-		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
-	)
-
-	add_header_edit("_value", ValueType.NUMBER,
-		{
-			"left_text": " to ",
-			"mode": 1,
-		},
-		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && not _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
-	)
-
-
-	add_header_edit("_value", ValueType.SINGLELINE_TEXT,
-		{
-			"left_text": " to ",
-			"mode": 1,
-		},
-		"_target == TweenTarget.NODE_PATH"
-	)
-	#endregion
-
-
+## Adds fields that may appear if time is not zero.
+## Also adds the time field.
+func _add_time_properties() -> void:
 	add_header_edit("_time", ValueType.NUMBER,
 		{
 			"left_text":" over ",
@@ -804,11 +791,73 @@ func build_event_editor() -> void:
 			},
 		]
 	},
-	"_time > 0.0"
+		"_time > 0.0"
 	)
 
 
-func variant_to_value_type(value: Variant.Type) -> ValueType:
+## Adds all possible fields for the target of the tween.
+## This helps to find the node to tween.
+func _add_target_fields() -> void:
+	add_header_edit("_target", ValueType.FIXED_OPTIONS, {
+		"left_text":	"Tween ",
+		"options": [
+			{
+				"label": "Portrait",
+				"value": TweenTarget.PORTRAIT,
+				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+			},
+			{
+				"label": "Background",
+				"value": TweenTarget.BACKGROUND,
+				"icon": load("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg")
+			},
+			{
+				"label": "Node Path",
+				"value": TweenTarget.NODE_PATH,
+				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+			},
+		]
+	})
+
+	add_header_edit("_node_path", ValueType.SINGLELINE_TEXT,
+		{
+			"left_text": " of ",
+			"mode": 1,
+		},
+		"_target == TweenTarget.NODE_PATH"
+	)
+
+	add_header_edit('_character_identifier', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: 'Character',
+			'file_extension' 	: '.dch',
+			'mode'				: 2,
+			'suggestions_func' 	: get_character_suggestions,
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			'autofocus'			: false,
+		},
+		"_target == TweenTarget.PORTRAIT"
+	)
+
+
+
+#region EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor() -> void:
+	# Decides what node to tween.
+	_add_target_fields()
+	# Decides what property to tween.
+	_add_property_fields()
+	# Decides what, if any, sub-property to target.
+	_add_sub_property_fields()
+	# Decides what value to tween to.
+	_add_value_fields()
+	# Extra values if time is not zero.
+	_add_time_properties()
+
+
+
+static func variant_to_value_type(value: Variant.Type) -> ValueType:
 	match value:
 		Variant.Type.TYPE_STRING:
 			return ValueType.SINGLELINE_TEXT
