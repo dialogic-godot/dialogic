@@ -115,7 +115,17 @@ func _execute() -> void:
 		full_property_path += ":" + _sub_property
 
 
+	if target_node == null:
+		printerr("[Dialogic] Tween Event failed to find target node, aborting.")
+		finish()
+		return
+
 	var tweener := tween.tween_property(target_node, full_property_path, _value, _time)
+
+	if tweener == null:
+		printerr("[Dialogic] Tween Event failed to create Tween, aborting.")
+		finish()
+		return
 
 	if _is_relative:
 		tweener.as_relative()
