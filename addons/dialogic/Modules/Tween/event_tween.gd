@@ -15,10 +15,8 @@ const PARALLEL_DEFAULT := false
 const EASE_DEFAULT := Tween.EASE_IN
 const TRANSITION_DEFAULT := Tween.TRANS_LINEAR
 
-
-var _property := "" :
+var _property := "":
 	set(value):
-
 		if value.contains(":"):
 			var split_property := value.split(":")
 			_property = split_property[0]
@@ -30,11 +28,11 @@ var _property := "" :
 		var variant_type: Variant.Type = Variant.Type.TYPE_NIL
 
 		if _target == TweenTarget.BACKGROUND:
-			var variable_value: Variant  = ColorRect.new().get(_property)
+			var variable_value: Variant = ColorRect.new().get(_property)
 			variant_type = typeof(variable_value) as Variant.Type
 
 		elif _target == TweenTarget.PORTRAIT:
-			var variable_value: Variant  = DialogicCharacter.new().get(_property)
+			var variable_value: Variant = DialogicCharacter.new().get(_property)
 			variant_type = typeof(variable_value) as Variant.Type
 
 		elif _target == TweenTarget.NODE_PATH:
@@ -44,9 +42,8 @@ var _property := "" :
 		print(new_value_type)
 		_value_type = new_value_type
 
-
 ## The character that will join/leave/update.
-var character : DialogicCharacter = null
+var character: DialogicCharacter = null
 ## Used to set the character resource from the unique name identifier and vice versa
 var _character_identifier: String:
 	get:
@@ -72,12 +69,13 @@ var _parallel := PARALLEL_DEFAULT
 var _ease := EASE_DEFAULT
 var _transition := TRANSITION_DEFAULT
 var _value_type: ValueType = ValueType.NUMBER
-var _value: Variant = null :
+var _value: Variant = null:
 	set(value):
 		_value = value
 var _revert_value := false
 var _revert_after := 0.0
 var _revert_time := 0.0
+
 
 func _execute() -> void:
 	var target_node: Node = null
@@ -85,11 +83,19 @@ func _execute() -> void:
 	match _target:
 		TweenTarget.PORTRAIT:
 			if character == null or not dialogic.Portraits.is_character_joined(character):
-				printerr("[Dialogic] Character '" + _character_identifier + "' not part of the scene, aborting Tween Event.")
+				printerr(
+					(
+						"[Dialogic] Character '"
+						+ _character_identifier
+						+ "' not part of the scene, aborting Tween Event."
+					)
+				)
 				finish()
 				return
 
-			target_node = dialogic.current_state_info.portraits[character.resource_path].node.get_child(-1)
+			target_node = (
+				dialogic.current_state_info.portraits[character.resource_path].node.get_child(-1)
+			)
 
 		TweenTarget.BACKGROUND:
 			target_node = dialogic.Backgrounds.get_current_background_node()
@@ -98,7 +104,9 @@ func _execute() -> void:
 			target_node = dialogic.get_tree().get_root().get_node(_node_path)
 
 			if target_node == null:
-				printerr("[Dialogic] Node path '" + _node_path + "' not found, aborting Tween Event.")
+				printerr(
+					"[Dialogic] Node path '" + _node_path + "' not found, aborting Tween Event."
+				)
 				finish()
 				return
 
@@ -113,7 +121,6 @@ func _execute() -> void:
 
 	if not _sub_property.is_empty():
 		full_property_path += ":" + _sub_property
-
 
 	if target_node == null:
 		printerr("[Dialogic] Tween Event failed to find target node, aborting.")
@@ -146,53 +153,54 @@ func _init() -> void:
 	event_sorting_index = 3
 
 
-
 #endregion
 
 #region SAVING/LOADING
 ################################################################################
 
+
 func to_text() -> String:
 	var result_string := "[tween "
 
 	match _target:
-		TweenTarget.PORTRAIT: result_string += "portrait "
-		TweenTarget.BACKGROUND: result_string += "background "
-		TweenTarget.NODE_PATH: result_string += "path "
+		TweenTarget.PORTRAIT:
+			result_string += "portrait "
+		TweenTarget.BACKGROUND:
+			result_string += "background "
+		TweenTarget.NODE_PATH:
+			result_string += "path "
 
 	if not _node_path.is_empty():
-		result_string += " path=\"" + _node_path + "\""
+		result_string += ' path="' + _node_path + '"'
 
 	if not _character_identifier.is_empty():
-		result_string += " character=\"" + _character_identifier + "\""
+		result_string += ' character="' + _character_identifier + '"'
 
 	if not _property.is_empty():
-		result_string += " property=\"" + _property
+		result_string += ' property="' + _property
 
 		if not _sub_property.is_empty():
 			result_string += ":" + _sub_property
 
-		result_string += "\""
+		result_string += '"'
 
 	if not _value == null:
-		result_string += " value=\"" + str(_value) + "\""
+		result_string += ' value="' + str(_value) + '"'
 
 	if not _time == TIME_DEFAULT:
-		result_string += " time=\"" + str(_time) + "\""
+		result_string += ' time="' + str(_time) + '"'
 
 	if not _is_relative == IS_RELATIVE_DEFAULT:
-		result_string += " is_relative=\"" + str(_is_relative) + "\""
+		result_string += ' is_relative="' + str(_is_relative) + '"'
 
 	if not _await == AWAIT_DEFAULT:
-		result_string += " await=\"" + str(_await) + "\""
+		result_string += ' await="' + str(_await) + '"'
 
 	if not _ease == EASE_DEFAULT:
-		result_string += " ease=\"" + _tween_ease_to_text(_ease) + "\""
+		result_string += ' ease="' + _tween_ease_to_text(_ease) + '"'
 
 	if not _transition == TRANSITION_DEFAULT:
-		result_string += " transition=\"" + _transition_to_text(_transition) + "\""
-
-
+		result_string += ' transition="' + _transition_to_text(_transition) + '"'
 
 	return result_string + "]"
 
@@ -325,7 +333,6 @@ func from_text(string: String) -> void:
 	regex.compile(regex_str)
 
 	for regex_match in regex.search_all(string):
-
 		var key := regex_match.get_string(1)
 
 		if key.is_empty():
@@ -371,7 +378,6 @@ func from_text(string: String) -> void:
 				_transition = _text_to_transition(value) as Tween.TransitionType
 
 
-
 func string_to_value_type(value: String) -> Variant:
 	if value.is_valid_int():
 		return value.to_int()
@@ -397,7 +403,6 @@ func string_to_value_type(value: String) -> Variant:
 	return null
 
 
-
 func get_shortcode() -> String:
 	return "tween"
 
@@ -405,16 +410,16 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"property" 		: {"property": "_property", "default": _property},
-		"character"		: {"property": "_character", "default": _character_identifier},
-		"path"			: {"property": "_node_path", "default": _node_path},
-		"value"			: {"property": "_value", "default": _value},
-		"target"		: {"property": "_target", "default": _target},
-		"time"			: {"property": "_time", "default": _time},
-		"is_relative"	: {"property": "_is_relative", "default": _is_relative},
-		"await"			: {"property": "_await", "default": _await},
-		"sub_property"	: {"property": "_sub_property", "default": _sub_property},
-		"ease"			: {"property": "_ease", "default": _ease},
+		"property": {"property": "_property", "default": _property},
+		"character": {"property": "_character", "default": _character_identifier},
+		"path": {"property": "_node_path", "default": _node_path},
+		"value": {"property": "_value", "default": _value},
+		"target": {"property": "_target", "default": _target},
+		"time": {"property": "_time", "default": _time},
+		"is_relative": {"property": "_is_relative", "default": _is_relative},
+		"await": {"property": "_await", "default": _await},
+		"sub_property": {"property": "_sub_property", "default": _sub_property},
+		"ease": {"property": "_ease", "default": _ease},
 	}
 
 
@@ -422,11 +427,10 @@ func get_shortcode_parameters() -> Dictionary:
 #endregion
 
 
-
-
-
 func get_all_character_properties(search_string: String) -> Dictionary:
-	const VALID_TYPE := [TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I]
+	const VALID_TYPE := [
+		TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I
+	]
 	const IGNORE_WORDS := ["process_"]
 
 	var color_rect := DialogicCharacter.new()
@@ -441,7 +445,6 @@ func get_all_character_properties(search_string: String) -> Dictionary:
 
 		var ignore_property: bool = false
 		for ignore_term: String in IGNORE_WORDS:
-
 			if property_name.begins_with(ignore_term):
 				ignore_property = true
 				break
@@ -466,19 +469,19 @@ func get_all_character_properties(search_string: String) -> Dictionary:
 			_:
 				icon = ["Variant", "EditorIcons"]
 
-
 		suggestions[property_name] = {
-			"label": "[b]"+ property_name + "[/b]",
+			"label": "[b]" + property_name + "[/b]",
 			"value": property_name,
 			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
 		}
-
 
 	return suggestions
 
 
 func get_all_properties(search_string: String) -> Dictionary:
-	const VALID_TYPE := [TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I]
+	const VALID_TYPE := [
+		TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I
+	]
 	const IGNORE_WORDS := ["process_"]
 
 	var color_rect := ColorRect.new()
@@ -493,7 +496,6 @@ func get_all_properties(search_string: String) -> Dictionary:
 
 		var ignore_property: bool = false
 		for ignore_term: String in IGNORE_WORDS:
-
 			if property_name.begins_with(ignore_term):
 				ignore_property = true
 				break
@@ -518,16 +520,13 @@ func get_all_properties(search_string: String) -> Dictionary:
 			_:
 				icon = ["Variant", "EditorIcons"]
 
-
 		suggestions[property_name] = {
-			"label": "[b]"+ property_name + "[/b]",
+			"label": "[b]" + property_name + "[/b]",
 			"value": property_name,
 			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
 		}
 
-
 	return suggestions
-
 
 
 func get_character_suggestions(search_text: String) -> Dictionary:
@@ -536,11 +535,13 @@ func get_character_suggestions(search_text: String) -> Dictionary:
 
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
-	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	suggestions["(No one)"] = {"value": "", "editor_icon": ["GuiRadioUnchecked", "EditorIcons"]}
 	var character_directory := DialogicResourceUtil.get_character_directory()
 
 	for resource: String in character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
+		suggestions[resource] = {
+			"value": resource, "tooltip": character_directory[resource], "icon": icon.duplicate()
+		}
 	return suggestions
 
 
@@ -569,31 +570,32 @@ func _add_sub_property_fields() -> void:
 		},
 	]
 
-	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
-		{
-			"autofocus"			: false,
-			"placeholder"		: "All",
-			"mode"				: 1,
-			"options": options.slice(0, 2)
-		},
+	add_header_edit(
+		"_sub_property",
+		ValueType.FIXED_OPTIONS,
+		{"autofocus": false, "placeholder": "All", "mode": 1, "options": options.slice(0, 2)},
 		"_value_type == ValueType.VECTOR2"
 	)
 
-	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
+	add_header_edit(
+		"_sub_property",
+		ValueType.FIXED_OPTIONS,
 		{
-			"autofocus"			: false,
-			"placeholder"		: "All",
-			"mode"				: 1,
+			"autofocus": false,
+			"placeholder": "All",
+			"mode": 1,
 			"options": options.slice(0, 3),
 		},
 		"_value_type == ValueType.VECTOR3"
 	)
 
-	add_header_edit("_sub_property", ValueType.FIXED_OPTIONS,
+	add_header_edit(
+		"_sub_property",
+		ValueType.FIXED_OPTIONS,
 		{
-			"autofocus"			: false,
-			"placeholder"		: "All",
-			"mode"				: 1,
+			"autofocus": false,
+			"placeholder": "All",
+			"mode": 1,
 			"options": options.slice(0, 4),
 		},
 		"_value_type == ValueType.VECTOR4"
@@ -602,7 +604,9 @@ func _add_sub_property_fields() -> void:
 
 ## Adds all possible fields to set the target value the tween shall reach.
 func _add_value_fields() -> void:
-	add_header_edit("_value", ValueType.NUMBER,
+	add_header_edit(
+		"_value",
+		ValueType.NUMBER,
 		{
 			"left_text": " to ",
 			"mode": 1,
@@ -610,7 +614,9 @@ func _add_value_fields() -> void:
 		"not _property.is_empty() and _value_type == ValueType.NUMBER and not _target == TweenTarget.NODE_PATH"
 	)
 
-	add_header_edit("_value", ValueType.VECTOR2,
+	add_header_edit(
+		"_value",
+		ValueType.VECTOR2,
 		{
 			"left_text": " to ",
 			"mode": 1,
@@ -618,7 +624,9 @@ func _add_value_fields() -> void:
 		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
 	)
 
-	add_header_edit("_value", ValueType.NUMBER,
+	add_header_edit(
+		"_value",
+		ValueType.NUMBER,
 		{
 			"left_text": " to ",
 			"mode": 1,
@@ -626,8 +634,9 @@ func _add_value_fields() -> void:
 		"not _property.is_empty() && _value_type == ValueType.VECTOR2 && not _sub_property.is_empty() and not _target == TweenTarget.NODE_PATH"
 	)
 
-
-	add_header_edit("_value", ValueType.SINGLELINE_TEXT,
+	add_header_edit(
+		"_value",
+		ValueType.SINGLELINE_TEXT,
 		{
 			"left_text": " to ",
 			"mode": 1,
@@ -638,31 +647,37 @@ func _add_value_fields() -> void:
 
 ## Adds all possible fields to set the property the tween shall act on.
 func _add_property_fields() -> void:
-	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
+	add_header_edit(
+		"_property",
+		ValueType.DYNAMIC_OPTIONS,
 		{
-			"placeholder"		: "",
-			"mode"				: 1,
-			"suggestions_func" 	: get_all_properties,
+			"placeholder": "",
+			"mode": 1,
+			"suggestions_func": get_all_properties,
 			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
-			"autofocus"			: false,
-			"left_text":		" property ",
+			"autofocus": false,
+			"left_text": " property ",
 		},
 		"_target == TweenTarget.BACKGROUND"
 	)
 
-	add_header_edit("_property", ValueType.DYNAMIC_OPTIONS,
+	add_header_edit(
+		"_property",
+		ValueType.DYNAMIC_OPTIONS,
 		{
-			"placeholder"		: "",
-			"mode"				: 1,
-			"suggestions_func" 	: get_all_character_properties,
+			"placeholder": "",
+			"mode": 1,
+			"suggestions_func": get_all_character_properties,
 			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
-			"autofocus"			: false,
-			"left_text":		" property ",
+			"autofocus": false,
+			"left_text": " property ",
 		},
 		"_target == TweenTarget.PORTRAIT"
 	)
 
-	add_header_edit("_property", ValueType.SINGLELINE_TEXT,
+	add_header_edit(
+		"_property",
+		ValueType.SINGLELINE_TEXT,
 		{
 			"left_text": " property ",
 			"mode": 1,
@@ -674,123 +689,128 @@ func _add_property_fields() -> void:
 ## Adds fields that may appear if time is not zero.
 ## Also adds the time field.
 func _add_time_properties() -> void:
-	add_header_edit("_time", ValueType.NUMBER,
+	add_header_edit(
+		"_time",
+		ValueType.NUMBER,
 		{
-			"left_text":" over ",
+			"left_text": " over ",
 			"right_text": " seconds. ",
 			"only_positive": true,
 		}
-	 )
-
-	add_header_edit("_is_relative", ValueType.BOOL,
-		{"left_text":"Relative:"}, "_time > 0.0"
 	)
 
-	add_header_edit("_await", ValueType.BOOL,
-		{"left_text": "Await:"}, "_time > 0.0"
-	)
+	add_header_edit("_is_relative", ValueType.BOOL, {"left_text": "Relative:"}, "_time > 0.0")
+
+	add_header_edit("_await", ValueType.BOOL, {"left_text": "Await:"}, "_time > 0.0")
 
 	# Body Options
-	add_body_edit("_ease", ValueType.FIXED_OPTIONS, {
-		"left_text":	"Ease:",
-		"autofocus"			: false,
-		"mode"				: 2,
-		"placeholder": "Ease In",
-		"options": [
-			{
-				"label": "Ease In",
-				"value": Tween.EASE_IN,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Ease Out",
-				"value": Tween.EASE_OUT,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Ease In Out",
-				"value": Tween.EASE_IN_OUT,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Ease Out In",
-				"value": Tween.EASE_OUT_IN,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-		]
-	},
-	"_time > 0.0"
+	add_body_edit(
+		"_ease",
+		ValueType.FIXED_OPTIONS,
+		{
+			"left_text": "Ease:",
+			"autofocus": false,
+			"mode": 2,
+			"placeholder": "Ease In",
+			"options":
+			[
+				{
+					"label": "Ease In",
+					"value": Tween.EASE_IN,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Ease Out",
+					"value": Tween.EASE_OUT,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Ease In Out",
+					"value": Tween.EASE_IN_OUT,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Ease Out In",
+					"value": Tween.EASE_OUT_IN,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+			]
+		},
+		"_time > 0.0"
 	)
 
-
-	add_body_edit("_transition", ValueType.FIXED_OPTIONS, {
-	"left_text":	"Transition:",
-	"autofocus"			: false,
-	"mode"				: 1,
-	"placeholder": "Linear",
-	"options": [
-			{
-				"label": "Linear",
-				"value": Tween.TRANS_LINEAR,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Sine",
-				"value": Tween.TRANS_SINE,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Quint",
-				"value": Tween.TRANS_QUINT,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Quart",
-				"value": Tween.TRANS_QUART,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Quad",
-				"value": Tween.TRANS_QUAD,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Expo",
-				"value": Tween.TRANS_EXPO,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Elastic",
-				"value": Tween.TRANS_ELASTIC,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Ease Out In",
-				"value": Tween.TRANS_CUBIC,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Circ",
-				"value": Tween.TRANS_CIRC,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Bounce",
-				"value": Tween.TRANS_BOUNCE,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Back",
-				"value": Tween.TRANS_BACK,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Spring",
-				"value": Tween.TRANS_SPRING,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-		]
-	},
+	add_body_edit(
+		"_transition",
+		ValueType.FIXED_OPTIONS,
+		{
+			"left_text": "Transition:",
+			"autofocus": false,
+			"mode": 1,
+			"placeholder": "Linear",
+			"options":
+			[
+				{
+					"label": "Linear",
+					"value": Tween.TRANS_LINEAR,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Sine",
+					"value": Tween.TRANS_SINE,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Quint",
+					"value": Tween.TRANS_QUINT,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Quart",
+					"value": Tween.TRANS_QUART,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Quad",
+					"value": Tween.TRANS_QUAD,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Expo",
+					"value": Tween.TRANS_EXPO,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Elastic",
+					"value": Tween.TRANS_ELASTIC,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Ease Out In",
+					"value": Tween.TRANS_CUBIC,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Circ",
+					"value": Tween.TRANS_CIRC,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Bounce",
+					"value": Tween.TRANS_BOUNCE,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Back",
+					"value": Tween.TRANS_BACK,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Spring",
+					"value": Tween.TRANS_SPRING,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+			]
+		},
 		"_time > 0.0"
 	)
 
@@ -798,28 +818,38 @@ func _add_time_properties() -> void:
 ## Adds all possible fields for the target of the tween.
 ## This helps to find the node to tween.
 func _add_target_fields() -> void:
-	add_header_edit("_target", ValueType.FIXED_OPTIONS, {
-		"left_text":	"Tween ",
-		"options": [
-			{
-				"label": "Portrait",
-				"value": TweenTarget.PORTRAIT,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-			{
-				"label": "Background",
-				"value": TweenTarget.BACKGROUND,
-				"icon": load("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg")
-			},
-			{
-				"label": "Node Path",
-				"value": TweenTarget.NODE_PATH,
-				"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-			},
-		]
-	})
+	add_header_edit(
+		"_target",
+		ValueType.FIXED_OPTIONS,
+		{
+			"left_text": "Tween ",
+			"options":
+			[
+				{
+					"label": "Portrait",
+					"value": TweenTarget.PORTRAIT,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+				{
+					"label": "Background",
+					"value": TweenTarget.BACKGROUND,
+					"icon":
+					load(
+						"res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/background_layer_icon.svg"
+					)
+				},
+				{
+					"label": "Node Path",
+					"value": TweenTarget.NODE_PATH,
+					"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+				},
+			]
+		}
+	)
 
-	add_header_edit("_node_path", ValueType.SINGLELINE_TEXT,
+	add_header_edit(
+		"_node_path",
+		ValueType.SINGLELINE_TEXT,
 		{
 			"left_text": " of ",
 			"mode": 1,
@@ -827,21 +857,24 @@ func _add_target_fields() -> void:
 		"_target == TweenTarget.NODE_PATH"
 	)
 
-	add_header_edit('_character_identifier', ValueType.DYNAMIC_OPTIONS,
-			{'placeholder'		: 'Character',
-			'file_extension' 	: '.dch',
-			'mode'				: 2,
-			'suggestions_func' 	: get_character_suggestions,
-			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
-			'autofocus'			: false,
+	add_header_edit(
+		"_character_identifier",
+		ValueType.DYNAMIC_OPTIONS,
+		{
+			"placeholder": "Character",
+			"file_extension": ".dch",
+			"mode": 2,
+			"suggestions_func": get_character_suggestions,
+			"icon": load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			"autofocus": false,
 		},
 		"_target == TweenTarget.PORTRAIT"
 	)
 
 
-
 #region EDITOR REPRESENTATION
 ################################################################################
+
 
 func build_event_editor() -> void:
 	# Decides what node to tween.
@@ -854,7 +887,6 @@ func build_event_editor() -> void:
 	_add_value_fields()
 	# Extra values if time is not zero.
 	_add_time_properties()
-
 
 
 static func variant_to_value_type(value: Variant.Type) -> ValueType:
