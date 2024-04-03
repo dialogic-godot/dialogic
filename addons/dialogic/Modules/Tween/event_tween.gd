@@ -15,6 +15,9 @@ const PARALLEL_DEFAULT := false
 const EASE_DEFAULT := Tween.EASE_IN
 const TRANSITION_DEFAULT := Tween.TRANS_LINEAR
 
+const _REGEX_STRING := r'(\w+)\s*=\s*"([^"]*)"|(\w+)'
+static var _REGEX_TEXT_TO_VISUAL := RegEx.create_from_string(_REGEX_STRING)
+
 var _property := "":
 	set(value):
 		if value.contains(":"):
@@ -205,90 +208,6 @@ func to_text() -> String:
 	return result_string + "]"
 
 
-func _transition_to_text(transition_kind: int) -> String:
-	match transition_kind:
-		Tween.TRANS_LINEAR:
-			return "Linear"
-
-		Tween.TRANS_SINE:
-			return "Sine"
-
-		Tween.TRANS_QUINT:
-			return "Quint"
-
-		Tween.TRANS_QUART:
-			return "Quart"
-
-		Tween.TRANS_QUAD:
-			return "Quad"
-
-		Tween.TRANS_EXPO:
-			return "Expo"
-
-		Tween.TRANS_ELASTIC:
-			return "Elastic"
-
-		Tween.TRANS_CUBIC:
-			return "Cubic"
-
-		Tween.TRANS_CIRC:
-			return "Circ"
-
-		Tween.TRANS_BOUNCE:
-			return "Bounce"
-
-		Tween.TRANS_BACK:
-			return "Back"
-
-		Tween.TRANS_SPRING:
-			return "Spring"
-
-	return "Linear"
-
-
-func _text_to_transition(transition_text: String) -> int:
-	var transition_lowercase := transition_text.to_lower().trim_prefix("trans").strip_edges()
-
-	match transition_lowercase:
-		"linear":
-			return Tween.TRANS_LINEAR
-
-		"sine":
-			return Tween.TRANS_SINE
-
-		"quint":
-			return Tween.TRANS_QUINT
-
-		"quart":
-			return Tween.TRANS_QUART
-
-		"quad":
-			return Tween.TRANS_QUAD
-
-		"expo":
-			return Tween.TRANS_EXPO
-
-		"elastic":
-			return Tween.TRANS_ELASTIC
-
-		"cubic":
-			return Tween.TRANS_CUBIC
-
-		"circ":
-			return Tween.TRANS_CIRC
-
-		"bounce":
-			return Tween.TRANS_BOUNCE
-
-		"back":
-			return Tween.TRANS_BACK
-
-		"spring":
-			return Tween.TRANS_SPRING
-
-	return Tween.TRANS_LINEAR
-
-
 ## The [param ease_kind] is an integer representing the ease approach
 ## the [class Tween] will use.
 func _tween_ease_to_text(ease_kind: int) -> String:
@@ -328,11 +247,7 @@ func _text_to_tween_ease(ease_text: String) -> int:
 
 
 func from_text(string: String) -> void:
-	var regex_str := r'(\w+)\s*=\s*"([^"]*)"|(\w+)'
-	var regex := RegEx.new()
-	regex.compile(regex_str)
-
-	for regex_match in regex.search_all(string):
+	for regex_match in _REGEX_TEXT_TO_VISUAL.search_all(string):
 		var key := regex_match.get_string(1)
 
 		if key.is_empty():
@@ -378,38 +293,12 @@ func from_text(string: String) -> void:
 				_transition = _text_to_transition(value) as Tween.TransitionType
 
 
-func string_to_value_type(value: String) -> Variant:
-	if value.is_valid_int():
-		return value.to_int()
-
-	if value.is_valid_float():
-		return value.to_float()
-
-	if value.begins_with("("):
-		var values := value.replace("(", "").replace(")", "").split(",")
-		var x_value := values[0].strip_edges().to_float()
-		var y_value := values[1].strip_edges().to_float()
-		return Vector2(x_value, y_value)
-
-	if value == "true":
-		return true
-
-	elif value == "false":
-		return false
-
-	if value.begins_with('"') and value.ends_with('"'):
-		return value.strip_edges()
-
-	return null
-
-
 func get_shortcode() -> String:
 	return "tween"
 
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		#param_name 	: property_info
 		"property": {"property": "_property", "default": _property},
 		"character": {"property": "_character", "default": _character_identifier},
 		"path": {"property": "_node_path", "default": _node_path},
@@ -423,126 +312,12 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 
-# You can alternatively overwrite these 3 functions: to_text(), from_text(), is_valid_event()
-#endregion
+func _get_all_character_properties(search_string: String) -> Dictionary:
+	return _get_all_properties(search_string, TweenTarget.PORTRAIT)
 
 
-func get_all_character_properties(search_string: String) -> Dictionary:
-	const VALID_TYPE := [
-		TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I
-	]
-	const IGNORE_WORDS := ["process_"]
-
-	var color_rect := DialogicCharacter.new()
-	var suggestions := {}
-	var fallback_icon := ["Variant", "EditorIcons"]
-
-	for property_info: Dictionary in color_rect.get_property_list():
-		var property_name: String = property_info.get("name")
-
-		if not search_string.is_empty() and not property_name.contains(search_string):
-			continue
-
-		var ignore_property: bool = false
-		for ignore_term: String in IGNORE_WORDS:
-			if property_name.begins_with(ignore_term):
-				ignore_property = true
-				break
-
-		if ignore_property:
-			continue
-
-		var property_type: Variant.Type = property_info.get("type")
-
-		if not VALID_TYPE.has(property_type):
-			continue
-
-		var icon: Variant = fallback_icon
-
-		match property_type:
-			Variant.Type.TYPE_INT:
-				icon = ["Number", "EditorIcons"]
-			Variant.Type.TYPE_FLOAT:
-				icon = ["Float", "EditorIcons"]
-			Variant.Type.TYPE_STRING:
-				icon = ["String", "EditorIcons"]
-			_:
-				icon = ["Variant", "EditorIcons"]
-
-		suggestions[property_name] = {
-			"label": "[b]" + property_name + "[/b]",
-			"value": property_name,
-			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
-		}
-
-	return suggestions
-
-
-func get_all_properties(search_string: String) -> Dictionary:
-	const VALID_TYPE := [
-		TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I
-	]
-	const IGNORE_WORDS := ["process_"]
-
-	var color_rect := ColorRect.new()
-	var suggestions := {}
-	var fallback_icon := ["Variant", "EditorIcons"]
-
-	for property_info: Dictionary in color_rect.get_property_list():
-		var property_name: String = property_info.get("name")
-
-		if not search_string.is_empty() and not property_name.contains(search_string):
-			continue
-
-		var ignore_property: bool = false
-		for ignore_term: String in IGNORE_WORDS:
-			if property_name.begins_with(ignore_term):
-				ignore_property = true
-				break
-
-		if ignore_property:
-			continue
-
-		var property_type: Variant.Type = property_info.get("type")
-
-		if not VALID_TYPE.has(property_type):
-			continue
-
-		var icon: Variant = fallback_icon
-
-		match property_type:
-			Variant.Type.TYPE_INT:
-				icon = ["Number", "EditorIcons"]
-			Variant.Type.TYPE_FLOAT:
-				icon = ["Float", "EditorIcons"]
-			Variant.Type.TYPE_STRING:
-				icon = ["String", "EditorIcons"]
-			_:
-				icon = ["Variant", "EditorIcons"]
-
-		suggestions[property_name] = {
-			"label": "[b]" + property_name + "[/b]",
-			"value": property_name,
-			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
-		}
-
-	return suggestions
-
-
-func get_character_suggestions(search_text: String) -> Dictionary:
-	var suggestions := {}
-	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
-
-	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-
-	suggestions["(No one)"] = {"value": "", "editor_icon": ["GuiRadioUnchecked", "EditorIcons"]}
-	var character_directory := DialogicResourceUtil.get_character_directory()
-
-	for resource: String in character_directory.keys():
-		suggestions[resource] = {
-			"value": resource, "tooltip": character_directory[resource], "icon": icon.duplicate()
-		}
-	return suggestions
+func _get_all_background_properties(search_string: String) -> Dictionary:
+	return _get_all_properties(search_string, TweenTarget.BACKGROUND)
 
 
 # Add a sub property field for all supported vector types.
@@ -653,7 +428,7 @@ func _add_property_fields() -> void:
 		{
 			"placeholder": "",
 			"mode": 1,
-			"suggestions_func": get_all_properties,
+			"suggestions_func": _get_all_background_properties,
 			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
 			"autofocus": false,
 			"left_text": " property ",
@@ -667,7 +442,7 @@ func _add_property_fields() -> void:
 		{
 			"placeholder": "",
 			"mode": 1,
-			"suggestions_func": get_all_character_properties,
+			"suggestions_func": _get_all_character_properties,
 			#"icon" 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
 			"autofocus": false,
 			"left_text": " property ",
@@ -873,7 +648,6 @@ func _add_target_fields() -> void:
 
 
 #region EDITOR REPRESENTATION
-################################################################################
 
 
 func build_event_editor() -> void:
@@ -889,7 +663,111 @@ func build_event_editor() -> void:
 	_add_time_properties()
 
 
-static func variant_to_value_type(value: Variant.Type) -> ValueType:
+#endregion
+
+
+#region UTILITY
+func get_character_suggestions(_search_text: String) -> Dictionary:
+	var suggestions := {}
+	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
+
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+	suggestions["(No one)"] = {"value": "", "editor_icon": ["GuiRadioUnchecked", "EditorIcons"]}
+	var character_directory := DialogicResourceUtil.get_character_directory()
+
+	for resource: String in character_directory.keys():
+		suggestions[resource] = {
+			"value": resource, "tooltip": character_directory[resource], "icon": icon.duplicate()
+		}
+	return suggestions
+
+
+func _transition_to_text(transition_kind: int) -> String:
+	match transition_kind:
+		Tween.TRANS_LINEAR:
+			return "Linear"
+
+		Tween.TRANS_SINE:
+			return "Sine"
+
+		Tween.TRANS_QUINT:
+			return "Quint"
+
+		Tween.TRANS_QUART:
+			return "Quart"
+
+		Tween.TRANS_QUAD:
+			return "Quad"
+
+		Tween.TRANS_EXPO:
+			return "Expo"
+
+		Tween.TRANS_ELASTIC:
+			return "Elastic"
+
+		Tween.TRANS_CUBIC:
+			return "Cubic"
+
+		Tween.TRANS_CIRC:
+			return "Circ"
+
+		Tween.TRANS_BOUNCE:
+			return "Bounce"
+
+		Tween.TRANS_BACK:
+			return "Back"
+
+		Tween.TRANS_SPRING:
+			return "Spring"
+
+	return "Linear"
+
+
+func _text_to_transition(transition_text: String) -> int:
+	var transition_lowercase := transition_text.to_lower().trim_prefix("trans").strip_edges()
+
+	match transition_lowercase:
+		"linear":
+			return Tween.TRANS_LINEAR
+
+		"sine":
+			return Tween.TRANS_SINE
+
+		"quint":
+			return Tween.TRANS_QUINT
+
+		"quart":
+			return Tween.TRANS_QUART
+
+		"quad":
+			return Tween.TRANS_QUAD
+
+		"expo":
+			return Tween.TRANS_EXPO
+
+		"elastic":
+			return Tween.TRANS_ELASTIC
+
+		"cubic":
+			return Tween.TRANS_CUBIC
+
+		"circ":
+			return Tween.TRANS_CIRC
+
+		"bounce":
+			return Tween.TRANS_BOUNCE
+
+		"back":
+			return Tween.TRANS_BACK
+
+		"spring":
+			return Tween.TRANS_SPRING
+
+	return Tween.TRANS_LINEAR
+
+
+func variant_to_value_type(value: Variant.Type) -> ValueType:
 	match value:
 		Variant.Type.TYPE_STRING:
 			return ValueType.SINGLELINE_TEXT
@@ -914,5 +792,105 @@ static func variant_to_value_type(value: Variant.Type) -> ValueType:
 
 		_:
 			return ValueType.CUSTOM
+
+
+## Fetches all properties of a common type for the [param target] type.
+func _get_all_properties(search_string: String, target: TweenTarget) -> Dictionary:
+	const VALID_TYPE := [
+		TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_RECT2, TYPE_RECT2I
+	]
+	const IGNORE_WORDS := ["process_"]
+
+	var property_target: Variant = null
+
+	match target:
+		TweenTarget.PORTRAIT:
+			property_target = DialogicCharacter.new()
+		TweenTarget.BACKGROUND:
+			property_target = ColorRect.new()
+		TweenTarget.NODE_PATH:
+			property_target = Node.new()
+
+	var suggestions := {}
+	var fallback_icon := ["Variant", "EditorIcons"]
+
+	for property_info: Dictionary in property_target.get_property_list():
+		var property_name: String = property_info.get("name")
+
+		if not search_string.is_empty() and not property_name.contains(search_string):
+			continue
+
+		var ignore_property: bool = false
+		for ignore_term: String in IGNORE_WORDS:
+			if property_name.begins_with(ignore_term):
+				ignore_property = true
+				break
+
+		if ignore_property:
+			continue
+
+		var property_type: Variant.Type = property_info.get("type")
+
+		if not VALID_TYPE.has(property_type):
+			continue
+
+		var icon: Variant = fallback_icon
+
+		match property_type:
+			Variant.Type.TYPE_INT:
+				icon = ["Number", "EditorIcons"]
+			Variant.Type.TYPE_FLOAT:
+				icon = ["Float", "EditorIcons"]
+			Variant.Type.TYPE_STRING:
+				icon = ["String", "EditorIcons"]
+			_:
+				icon = ["Variant", "EditorIcons"]
+
+		suggestions[property_name] = {
+			"label": "[b]" + property_name + "[/b]",
+			"value": property_name,
+			"icon": load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")
+		}
+
+	return suggestions
+
+
+## Tries to transform a `String` to a valid primitive type.
+##
+## This can be used to convert from Timeline Text Mode back to Visual Mode.
+## It allows the user to type in values in Text Mode and make them work.
+func string_to_value_type(value: String) -> Variant:
+	if value.is_valid_int():
+		return value.to_int()
+
+	if value.is_valid_float():
+		return value.to_float()
+
+	if value.begins_with("("):
+		var values := value.replace("(", "").replace(")", "").split(",", 4)
+		var x_value := values[0].strip_edges().to_float()
+		var y_value := values[1].strip_edges().to_float()
+
+		if values.size() == 3:
+			var z_value := values[2].strip_edges().to_float()
+			return Vector3(x_value, y_value, z_value)
+
+		elif values.size() == 4:
+			var z_value := values[2].strip_edges().to_float()
+			var w_value := values[3].strip_edges().to_float()
+			return Vector4(x_value, y_value, z_value, w_value)
+
+		return Vector2(x_value, y_value)
+
+	if value == "true":
+		return true
+
+	elif value == "false":
+		return false
+
+	if value.begins_with('"') and value.ends_with('"'):
+		return value.strip_edges()
+
+	return null
 
 #endregion
