@@ -177,7 +177,7 @@ func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dict
 			script = packed_scene.instantiate().get_script()
 
 		else:
-			script = autoload_load
+			script = loaded_autoload
 
 	if script:
 		for method in script.get_script_method_list():
