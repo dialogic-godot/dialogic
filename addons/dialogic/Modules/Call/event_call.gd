@@ -168,8 +168,17 @@ func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dict
 	var script: Script
 	if temp_autoload:
 		script = load(ProjectSettings.get_setting('autoload/'+temp_autoload).trim_prefix('*'))
+
 	elif autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
-		script = load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+		var loaded_autoload := load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+
+		if loaded_autoload is PackedScene:
+			var packed_scene: PackedScene = loaded_autoload
+			script = packed_scene.instantiate().get_script()
+
+		else:
+			script = loaded_autoload
+
 	if script:
 		for method in script.get_script_method_list():
 			if method.name.begins_with('@') or method.name.begins_with('_'):
