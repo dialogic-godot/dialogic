@@ -245,4 +245,4 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 
 func _on_reload_pressed() -> void:
-	DialogicUtil.update_autoload_subsystem_access()
+	DialogicUtil._update_autoload_subsystem_access()

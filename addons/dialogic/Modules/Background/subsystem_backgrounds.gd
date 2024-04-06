@@ -1,22 +1,37 @@
 extends DialogicSubsystem
-
 ## Subsystem for managing backgrounds.
+##
+## This subsystem has many different helper methods for managing backgrounds.
+## For instance, you can listen to background changes via
+## [signal background_changed].
 
-signal background_changed(info:Dictionary)
 
+## Whenever a new background is set, this signal is emitted and contains a
+## dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `scene`     | [type String] | The scene path of the new background. [br]
+## `argument`  | [type String] | Information given to the background on its update routine. [br]
+## `fade_time` | [type float]  | The time the background may take to transition in. [br]
+## `same_scene`| [type bool]   | If the new background uses the same Godot scene. [br]
+signal background_changed(info: Dictionary)
 
+## The default background scene Dialogic will use.
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
+## The default transition Dialogic will use.
 var default_transition: String = get_script().resource_path.get_base_dir().path_join("Transitions/Defaults/simple_fade.gd")
 
 
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+## Empties the current background state.
+func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_background()
 
-
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+## Loads the background state from the current state info.
+func load_game_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''), 0.0, default_transition, true)
 
 #endregion
@@ -128,7 +143,8 @@ func _on_transition_finished(background_node:DialogicNode_BackgroundHolder, tran
 	background_node.color = Color.TRANSPARENT
 	transition_node.queue_free()
 
-
+## Adds sub-viewport with the given background scene as child to
+## Dialogic scene.
 func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
 	var v_con := SubViewportContainer.new()
 	var viewport := SubViewport.new()
@@ -160,7 +176,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 	return v_con
 
-
+## Whether a background is set.
 func has_background() -> bool:
 	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
 

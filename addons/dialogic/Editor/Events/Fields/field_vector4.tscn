@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dykss037r2rsc"]
+
+[ext_resource type="PackedScene" uid="uid://cklkpfrcvopgw" path="res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn" id="1_20tvl"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_vector4.gd" id="2_yksrc"]
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="3_1jogk"]
+
+[node name="Field_Vector4" instance=ExtResource("1_20tvl")]
+offset_right = -908.0
+script = ExtResource("2_yksrc")
+
+[node name="W" parent="." index="3" instance=ExtResource("3_1jogk")]
+layout_mode = 2
+step = 0.001
+min = -9999.0
+max = 9999.0
+affix = "w:"

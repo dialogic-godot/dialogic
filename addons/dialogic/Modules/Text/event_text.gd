@@ -55,6 +55,7 @@ func _execute() -> void:
 			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
 			await dialogic.get_tree().process_frame
 
+	var character_name_text := dialogic.Text.get_character_name_parsed(character)
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.load_style(character.custom_info.style, null, false)
@@ -119,7 +120,7 @@ func _execute() -> void:
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-			_mark_as_read(final_text)
+			_mark_as_read(character_name_text, final_text)
 
 			# We must skip text animation before we potentially return when there
 			# is a Choice event.
@@ -131,7 +132,7 @@ func _execute() -> void:
 			state = States.IDLE
 
 		# Handling potential Choice Events.
-		if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+		if section_idx == len(split_text)-1 and dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 			dialogic.Text.show_next_indicators(true)
 
 			end_text_event()
@@ -169,13 +170,13 @@ func end_text_event() -> void:
 	finish()
 
 
-func _mark_as_read(final_text: String) -> void:
+func _mark_as_read(character_name_text: String, final_text: String) -> void:
 	if dialogic.has_subsystem('History'):
 		if character:
-			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character_name_text, 'character_color':character.color})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.event_was_read(self)
+		dialogic.History.mark_event_as_visited(self)
 
 
 func _connect_signals() -> void:
@@ -219,7 +220,7 @@ func _on_dialogic_input_action() -> void:
 				dialogic.Inputs.stop_timers()
 				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
-			if dialogic.Inputs.is_manualadvance_enabled():
+			if dialogic.Inputs.manual_advance.is_enabled():
 				advance.emit()
 				dialogic.Inputs.stop_timers()
 				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))

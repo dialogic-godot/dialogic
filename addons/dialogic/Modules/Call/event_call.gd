@@ -29,13 +29,25 @@ var _current_method_arg_hints := {'a':null, 'm':null, 'info':{}}
 ################################################################################
 
 func _execute() -> void:
-	var autoload = dialogic.get_node('/root/'+autoload_name)
-	if autoload == null:
+	var object: Object = null
+	var obj_path := autoload_name
+	var autoload: Node = dialogic.get_node('/root/'+obj_path.get_slice('.', 0))
+	obj_path = obj_path.trim_prefix(obj_path.get_slice('.', 0)+'.')
+	object = autoload
+	if object:
+		while obj_path:
+			if obj_path.get_slice(".", 0) in object and object.get(obj_path.get_slice(".", 0)) is Object:
+				object = object.get(obj_path.get_slice(".", 0))
+			else:
+				break
+			obj_path = obj_path.trim_prefix(obj_path.get_slice('.', 0)+'.')
+
+	if object == null:
 		printerr("[Dialogic] Call event failed: Unable to find autoload '",autoload_name,"'")
 		finish()
 		return
 
-	if autoload.has_method(method):
+	if object.has_method(method):
 		var args := []
 		for arg in arguments:
 			if arg is String and arg.begins_with('@'):
@@ -43,7 +55,7 @@ func _execute() -> void:
 			else:
 				args.append(arg)
 		dialogic.current_state = dialogic.States.WAITING
-		await autoload.callv(method, args)
+		await object.callv(method, args)
 		dialogic.current_state = dialogic.States.IDLE
 	else:
 		printerr("[Dialogic] Call event failed: Autoload doesn't have the method '", method,"'.")
@@ -88,7 +100,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var result := RegEx.create_from_string('do (?<autoload>[^\\.]*)(.(?<method>[^.(]*)(\\((?<arguments>.*)\\))?)?').search(string.strip_edges())
+	var result := RegEx.create_from_string(r"do (?<autoload>[^\(]*)\.((?<method>[^.(]*)(\((?<arguments>.*)\))?)?").search(string.strip_edges())
 	if result:
 		autoload_name = result.get_string('autoload')
 		method = result.get_string('method')
@@ -145,27 +157,40 @@ func get_autoload_suggestions(filter:String="") -> Dictionary:
 		if prop.name.begins_with('autoload/'):
 			var autoload: String = prop.name.trim_prefix('autoload/')
 			suggestions[autoload] = {'value': autoload, 'tooltip':autoload, 'editor_icon': ["Node", "EditorIcons"]}
+			if filter.begins_with(autoload):
+				suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
 
 func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dictionary:
 	var suggestions := {}
 
-	var script : Script
+	var script: Script
 	if temp_autoload:
 		script = load(ProjectSettings.get_setting('autoload/'+temp_autoload).trim_prefix('*'))
-	elif autoload_name:
-		script = load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+
+	elif autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
+		var loaded_autoload := load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+
+		if loaded_autoload is PackedScene:
+			var packed_scene: PackedScene = loaded_autoload
+			script = packed_scene.instantiate().get_script()
+
+		else:
+			script = loaded_autoload
+
 	if script:
 		for method in script.get_script_method_list():
 			if method.name.begins_with('@') or method.name.begins_with('_'):
 				continue
 			suggestions[method.name] = {'value': method.name, 'tooltip':method.name, 'editor_icon': ["Callable", "EditorIcons"]}
+	if !filter.is_empty():
+		suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
 
 func update_argument_info() -> void:
-	if autoload_name and method and not (_current_method_arg_hints.a == autoload_name and _current_method_arg_hints.m == method):
+	if autoload_name and method and not _current_method_arg_hints.is_empty() and (_current_method_arg_hints.a == autoload_name and _current_method_arg_hints.m == method):
 		if !ResourceLoader.exists(ProjectSettings.get_setting('autoload/'+autoload_name, '').trim_prefix('*')):
 			_current_method_arg_hints = {}
 			return
@@ -177,7 +202,7 @@ func update_argument_info() -> void:
 
 
 func check_arguments_and_update_warning():
-	if _current_method_arg_hints.info.is_empty():
+	if not _current_method_arg_hints.has("info") or _current_method_arg_hints.info.is_empty():
 		ui_update_warning.emit()
 		return
 

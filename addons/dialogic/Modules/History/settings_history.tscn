@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5yq6xh412ilm"]
+[gd_scene load_steps=5 format=3 uid="uid://b5yq6xh412ilm"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/History/settings_history.gd" id="1_hbhst"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_wefye"]
+
+[sub_resource type="Image" id="Image_3h4fk"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_8li2l"]
+image = SubResource("Image_3h4fk")
 
 [node name="History" type="PanelContainer"]
 anchors_preset = 15
@@ -28,16 +41,17 @@ layout_mode = 2
 layout_mode = 2
 text = "Enabled"
 
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer" instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "When enabled, some events (Text, Join, Leave, Choice) will store a log.
+Also, the default layout will feature the log panel option."
+texture = SubResource("ImageTexture_8li2l")
+hint_text = "When enabled, some events (Text, Join, Leave, Choice) will store a log.
+Also, the default layout will feature the log panel option."
+
 [node name="SimpleHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="FullHistoryInfo2" type="Label" parent="HistoryOptions"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"DialogicHintText2"
-text = "When enabled some events (Text, Join, Leave, Choice) will store a log that can easily be displayed. The default layout will have a history panel if this is enabled. "
-autowrap_mode = 3
 
 [node name="Title" type="Label" parent="HistoryOptions"]
 layout_mode = 2
@@ -51,36 +65,78 @@ layout_mode = 2
 layout_mode = 2
 text = "Enabled"
 
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer5" instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "When enabled, stores a copy of each event."
+texture = SubResource("ImageTexture_8li2l")
+hint_text = "When enabled, stores a copy of each event."
+
 [node name="FullHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FullHistoryInfo" type="Label" parent="HistoryOptions"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"DialogicHintText2"
-text = "When enabled a copy of each event that is played is stored. This can be used to implement some undo logic or other complitacted things. "
-autowrap_mode = 3
-
 [node name="Title2" type="Label" parent="HistoryOptions"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
-text = "Already read History"
+text = "Seen Events History"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="HistoryOptions"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HistoryOptions/HBoxContainer4"]
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainer4"]
 layout_mode = 2
 text = "Enabled"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer4" instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "Remembers whether events were already met in the timeline.
+When enabled the signals \"Dialogic.History.visited_event\" and \"Dialogic.History.unvisited_event\" are emitted.
+"
+texture = SubResource("ImageTexture_8li2l")
+hint_text = "Remembers whether events were already met in the timeline.
+When enabled the signals \"Dialogic.History.visited_event\" and \"Dialogic.History.unvisited_event\" are emitted.
+"
 
 [node name="AlreadyReadHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AlreadReadInfo" type="Label" parent="HistoryOptions"]
+[node name="HBoxContainerSaveOnAutoSave" type="HBoxContainer" parent="HistoryOptions"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"DialogicHintText2"
-text = "When enabled the signals [Dialogic.History.already_read_event_reached] and [Dialogic.History.not_read_event_reached] are emmited. This could be used to auto-skip already read text or show an indicator."
-autowrap_mode = 3
+
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainerSaveOnAutoSave"]
+layout_mode = 2
+text = "Save on Auto-Save signal"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainerSaveOnAutoSave" instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "Stores the already-visited history in a global save file when an Auto-Save occurs.
+The Auto-Save is part of the Save settings."
+texture = SubResource("ImageTexture_8li2l")
+hint_text = "Stores the already-visited history in a global save file when an Auto-Save occurs.
+The Auto-Save is part of the Save settings."
+
+[node name="SaveOnAutoSaveToggle" type="CheckBox" parent="HistoryOptions/HBoxContainerSaveOnAutoSave"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainerSaveOnSave" type="HBoxContainer" parent="HistoryOptions"]
+layout_mode = 2
+
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainerSaveOnSave"]
+layout_mode = 2
+text = "Save on Save signal"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainerSaveOnSave" instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "Stores the already-visited history in a global save file when a normal Save occurs.
+This can be done via the Dialogic.Save.save method.
+This setting ignores Auto-Saves."
+texture = SubResource("ImageTexture_8li2l")
+hint_text = "Stores the already-visited history in a global save file when a normal Save occurs.
+This can be done via the Dialogic.Save.save method.
+This setting ignores Auto-Saves."
+
+[node name="SaveOnSaveToggle" type="CheckBox" parent="HistoryOptions/HBoxContainerSaveOnSave"]
+unique_name_in_owner = true
+layout_mode = 2

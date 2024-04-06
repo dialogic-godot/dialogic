@@ -8,6 +8,7 @@ extends DialogicVisualEditorField
 var previous_width := 0
 var height_recalculation_queued := false
 
+var line_count := 0
 
 #region MAIN METHODS
 ################################################################################
@@ -66,10 +67,14 @@ func queue_height_recalculation():
 ## TODO Remove again once https://github.com/godotengine/godot/issues/80546 is fixed.
 func recalculate_height() -> void:
 	height_recalculation_queued = false
-	var font :Font = get_theme_font("font")
-	var text_size = font.get_multiline_string_size(self.text+' ', HORIZONTAL_ALIGNMENT_LEFT, size.x, get_theme_font_size("font_size"))
-	custom_minimum_size.y = text_size.y+20+4*(floor(text_size.y/get_theme_font_size("font_size")))
+	var font: Font = get_theme_font("font")
+	var text_size = font.get_multiline_string_size(self.text+' ', HORIZONTAL_ALIGNMENT_LEFT, size.x-14, get_theme_font_size("font_size"))
+	custom_minimum_size.y = text_size.y+20+4*(ceil(text_size.y/get_theme_font_size("font_size")))
 	self.scroll_vertical = 0
+	if get_parent().get_child(get_index()).get_visible_line_count() != line_count:
+		if find_parent("VisualEditor"):
+			find_parent("VisualEditor").indent_events()
+	line_count = get_parent().get_child(get_index()).get_visible_line_count()
 
 #endregion
 

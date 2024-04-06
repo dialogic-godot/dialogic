@@ -1,6 +1,5 @@
 @tool
 extends DialogicVisualEditorField
-
 ## Event block field for strings. Options are determined by a function.
 
 
