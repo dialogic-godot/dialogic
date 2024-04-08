@@ -103,18 +103,16 @@ class LayerCommand:
 			printerr("Layered Portrait had no node matching the node path: '", _path, "'.")
 			return
 
-		if not target_node is Sprite2D:
-			printerr("Layered Portrait target path '", _path, "', is not a Sprite2D node.")
+		if not target_node is Node2D and not target_node is Sprite2D:
+			printerr("Layered Portrait target path '", _path, "', is not a Sprite2D or Node2D type.")
 			return
-
-		var sprite := target_node as Sprite2D
 
 		match _type:
 			CommandType.SHOW_LAYER:
-				sprite.show()
+				target_node.show()
 
 			CommandType.HIDE_LAYER:
-				sprite.hide()
+				target_node.hide()
 
 			CommandType.SET_LAYER:
 				var target_parent := target_node.get_parent()
@@ -125,7 +123,7 @@ class LayerCommand:
 						var sprite_child := child as Sprite2D
 						sprite_child.hide()
 
-				sprite.show()
+				target_node.show()
 
 
 ## Turns the input into a single [class LayerCommand] object.
