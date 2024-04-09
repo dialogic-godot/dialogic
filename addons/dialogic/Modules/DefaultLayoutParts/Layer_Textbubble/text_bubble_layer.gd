@@ -18,8 +18,9 @@ extends DialogicLayoutLayer
 @export var box_modulate_by_character_color: bool = false
 @export var box_padding: Vector2 = Vector2(10,10)
 @export_range(1, 999) var box_corner_radius: int = 25
-@export_range(0.1, 5) var box_wobble_speed: float = 2
-@export_range(0, 1) var box_wobbliness: float = 1
+@export_range(0.1, 5) var box_wobble_speed: float = 1
+@export_range(0, 1) var box_wobble_amount: float = 0.5
+@export_range(0, 1) var box_wobble_detail: float = 0.2
 
 @export_subgroup('Behaviour')
 @export var behaviour_distance: int = 50
@@ -37,6 +38,8 @@ extends DialogicLayoutLayer
 @export var name_label_box_modulate_use_character_color: bool = false
 @export var name_label_padding: Vector2 = Vector2(5,0)
 @export var name_label_offset: Vector2 = Vector2(0,0)
+@export var name_label_alignment := HBoxContainer.ALIGNMENT_BEGIN
+
 
 @export_group('Choices')
 @export_subgroup('Choices Text')
@@ -105,8 +108,9 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	var background := (bubble.get_node('%Background') as ColorRect)
 	var bg_material: ShaderMaterial = (background.material as ShaderMaterial)
 	bg_material.set_shader_parameter(&'radius', box_corner_radius)
-	bg_material.set_shader_parameter(&'wobble_amount', box_wobbliness*0.1)
+	bg_material.set_shader_parameter(&'wobble_amount', box_wobble_amount)
 	bg_material.set_shader_parameter(&'wobble_speed', box_wobble_speed)
+	bg_material.set_shader_parameter(&'wobble_detail', box_wobble_detail)
 
 	bubble.padding = box_padding
 
@@ -138,6 +142,7 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	nlp.get_theme_stylebox(&'panel').content_margin_top = name_label_padding.y
 	nlp.get_theme_stylebox(&'panel').content_margin_bottom = name_label_padding.y
 	bubble.name_label_offset = name_label_offset
+	bubble.name_label_alignment = name_label_alignment
 
 	if !name_label_enabled:
 		nlp.queue_free()

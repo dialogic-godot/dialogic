@@ -52,7 +52,6 @@ func _on_dialogic_text_event(info:Dictionary):
 	if bubble_to_use == null:
 		bubble_to_use = bubbles[0]
 
-
 	var node_to_point_at: Node
 	if info.character in registered_characters:
 		node_to_point_at = registered_characters[info.character]

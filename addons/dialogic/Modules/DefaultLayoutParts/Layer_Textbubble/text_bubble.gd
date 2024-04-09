@@ -7,6 +7,7 @@ extends Control
 @onready var choice_container: Container = null
 @onready var name_label: Label = (%NameLabel as Label)
 @onready var name_label_box: PanelContainer = (%NameLabelPanel as PanelContainer)
+@onready var name_label_holder: HBoxContainer = $DialogText/NameLabelPositioner
 
 var node_to_point_at: Node = null
 var current_character: DialogicCharacter = null
@@ -20,7 +21,7 @@ var base_direction := Vector2(1.0, -1.0).normalized()
 var safe_zone := 50.0
 var padding := Vector2()
 
-var name_label_alignment := HORIZONTAL_ALIGNMENT_LEFT
+var name_label_alignment := HBoxContainer.ALIGNMENT_BEGIN
 var name_label_offset := Vector2()
 var force_choices_on_separate_lines := false
 
@@ -97,8 +98,8 @@ func open() -> void:
 func close() -> void:
 	text.enabled = false
 	var close_tween := create_tween().set_parallel(true)
-	close_tween.tween_property(self, "scale", Vector2.ONE * 0.8, 0.1)
-	close_tween.tween_property(self, "modulate:a", 0.0, 0.1)
+	close_tween.tween_property(self, "scale", Vector2.ONE * 0.8, 0.2)
+	close_tween.tween_property(self, "modulate:a", 0.0, 0.2)
 	await close_tween.finished
 	hide()
 	set_process(false)
@@ -126,7 +127,10 @@ func _resize_bubble(content_size:Vector2, popup:=false) -> void:
 		bubble.scale = Vector2.ONE
 
 	bubble.material.set(&"shader_parameter/box_size", bubble_size)
-
+	name_label_holder.position = Vector2(0, bubble.position.y - text.position.y - name_label_holder.size.y/2.0)
+	name_label_holder.position += name_label_offset
+	name_label_holder.alignment = name_label_alignment
+	name_label_holder.size.x = text.size.x
 
 func _on_choices_shown(info:Dictionary) -> void:
 	if !visible:

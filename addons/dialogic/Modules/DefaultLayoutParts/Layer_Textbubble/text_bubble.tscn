@@ -22,12 +22,12 @@ noise = SubResource("FastNoiseLite_lsfnp")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
 resource_local_to_scene = true
 shader = ExtResource("2_1mhvf")
-shader_parameter/radius = 25.0
-shader_parameter/box_size = Vector2(735, 530)
-shader_parameter/box_padding = 30.0
-shader_parameter/wobble_amount = 0.2
-shader_parameter/wobble_speed = 1.0
-shader_parameter/wobble_detail = 0.5
+shader_parameter/radius = 200.0
+shader_parameter/box_size = Vector2(100, 100)
+shader_parameter/box_padding = 10.0
+shader_parameter/wobble_amount = 0.75
+shader_parameter/wobble_speed = 10.0
+shader_parameter/wobble_detail = 0.51
 shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
@@ -57,10 +57,10 @@ width_curve = SubResource("Curve_0j8nu")
 [node name="Background" type="ColorRect" parent="Group"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_60xbe")
-offset_left = -186.0
-offset_top = -107.0
-offset_right = 205.0
-offset_bottom = 91.0
+offset_left = -115.0
+offset_top = -69.0
+offset_right = 108.0
+offset_bottom = 83.0
 mouse_filter = 2
 
 [node name="DialogText" type="RichTextLabel" parent="." node_paths=PackedStringArray("textbox_root")]
@@ -80,6 +80,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 scroll_active = false
+visible_characters_behavior = 1
 script = ExtResource("3_syv35")
 textbox_root = NodePath("..")
 
@@ -90,10 +91,9 @@ script = ExtResource("4_7bm4b")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 1.0
-offset_top = -23.0
-offset_right = 1.0
+offset_bottom = 23.0
 grow_horizontal = 2
+alignment = 1
 
 [node name="NameLabelPanel" type="PanelContainer" parent="DialogText/NameLabelPositioner"]
 unique_name_in_owner = true
