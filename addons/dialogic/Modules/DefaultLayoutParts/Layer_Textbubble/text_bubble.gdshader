@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform sampler2D deformation_sampler : filter_linear, repeat_enable;
-uniform float radius :hint_range(1.0, 200, 0.01)= 25;
+uniform float radius : hint_range(1.0, 200, 0.01) = 25;
 uniform vec2 box_size = vec2(100, 100);
 uniform float box_padding = 15;
 uniform float wobble_amount : hint_range(0.0, 1.0, 0.01) = 0.2;
