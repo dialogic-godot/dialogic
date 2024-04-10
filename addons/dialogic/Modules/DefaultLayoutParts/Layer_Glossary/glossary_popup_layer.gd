@@ -112,7 +112,7 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 			return
 
 		var variable_system := dialogic.VAR
-		entry_title =  variable_system.parse_variables(entry.get("title", ""))
+		entry_title = variable_system.parse_variables(entry.get("title", ""))
 		entry_text = variable_system.parse_variables(entry.get("text", ""))
 		entry_extra = variable_system.parse_variables(entry.get("extra", ""))
 		entry_color = entry.get("color")
