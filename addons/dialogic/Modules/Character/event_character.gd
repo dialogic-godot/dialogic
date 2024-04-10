@@ -148,6 +148,7 @@ func _execute() -> void:
 
 
 			if animation_name:
+				var animation_name_lowercase := animation_name.to_lower()
 
 				# TODO: Streamline the process to identify whether an animation
 				# is an action or transition (in/out) animation.
@@ -155,7 +156,7 @@ func _execute() -> void:
 				# If this is a transition animation, we want to check if its
 				# targeting the same portrait scene, then discard the
 				# animation.
-				if animation_name.contains(" in") or animation_name.contains(" out"):
+				if animation_name_lowercase.ends_with(" in out"):
 					var current_portrait: DialogicPortrait = dialogic.Portraits.get_character_portrait(character)
 					var current_portrait_name := current_portrait.portrait
 					var is_same_portrait := current_portrait_name == portrait
