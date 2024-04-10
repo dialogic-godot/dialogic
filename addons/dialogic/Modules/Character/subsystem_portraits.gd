@@ -157,6 +157,7 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 
 		portrait_node.set_meta('scene', scene_path)
 
+
 	if portrait_node:
 		character_node.set_meta('portrait', portrait)
 
@@ -284,6 +285,22 @@ func _change_portrait_z_index(character_node: Node, z_index:int, update_zindex:=
 		for con in sorted_children:
 			con.get_parent().move_child(con, idx)
 			idx += 1
+
+
+## Checks if [para, character] has joined the scene, if so, returns its
+## active [DialogicPortrait] node.
+##
+## The difference between an active and inactive nodes is whether the node is
+## the latest node. [br]
+## If a portrait is fading/animating from portrait A and B, both will exist
+## in the scene, but only the new portrait is active, even if it is not
+## fully visible yet.
+func get_character_portrait(character: DialogicCharacter) -> DialogicPortrait:
+	if is_character_joined(character):
+		var portrait_node: DialogicPortrait = dialogic.current_state_info['portraits'][character.resource_path].node
+		return portrait_node
+
+	return null
 
 
 func z_sort_portrait_containers(con1: DialogicNode_PortraitContainer, con2: DialogicNode_PortraitContainer) -> bool:
@@ -555,6 +572,13 @@ func remove_character(character: DialogicCharacter) -> void:
 		character_left.emit({'character': character})
 
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
+
+
+func get_current_character() -> DialogicCharacter:
+	if dialogic.current_state_info.get('speaker', null):
+		return load(dialogic.current_state_info.speaker)
+	return null
+
 
 
 ## Returns true if the given character is currently joined.

@@ -141,13 +141,25 @@ func _execute() -> void:
 
 				dialogic.Portraits.move_character(character, position, final_position_move_time)
 
-			if animation_name.is_empty():
+			if animation_name.is_empty() and not portrait.is_empty():
 				animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In Out")
 				animation_length = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_length", 0.5)
 				animation_wait = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_wait", false)
-				print(animation_name, animation_length, animation_wait)
+
 
 			if animation_name:
+
+				# TODO: Streamline the process to identify whether an animation
+				# is an action or transition (in/out) animation.
+				if animation_name.contains(" in") or animation_name.contains(" out"):
+					var current_portrait: DialogicPortrait = dialogic.Portraits.get_character_portrait(character)
+					var current_portrait_name := current_portrait.portrait
+					var is_same_portrait := current_portrait_name == portrait
+
+					if is_same_portrait:
+						finish()
+						return
+
 				var final_animation_length: float = animation_length
 				var final_animation_repetitions: int = animation_repeats
 
