@@ -88,7 +88,8 @@ func _try_translate(tr_base: String, property: StringName, fallback_entry: Dicti
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
-	var glossary: DialogicGlossary = DialogicUtil.autoload().Glossary.find_glossary(meta)
+	var dialogic := DialogicUtil.autoload()
+	var glossary: DialogicGlossary = dialogic.Glossary.find_glossary(meta)
 
 	var entry_title := ""
 	var entry_text := ""
@@ -110,9 +111,10 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 		if entry.is_empty():
 			return
 
-		entry_title = entry.get("title", "")
-		entry_text = entry.get("text", "")
-		entry_extra = entry.get("extra", "")
+		var variable_system := dialogic.VAR
+		entry_title = variable_system.parse_variables(entry.get("title", ""))
+		entry_text = variable_system.parse_variables(entry.get("text", ""))
+		entry_extra = variable_system.parse_variables(entry.get("extra", ""))
 		entry_color = entry.get("color")
 
 	else:
