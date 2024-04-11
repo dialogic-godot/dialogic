@@ -197,7 +197,6 @@ func _on_EntryList_item_selected(idx: int) -> void:
 
 	%EntryColor.color = entry_info.get('color', %DefaultColor.color)
 	%EntryCustomColor.button_pressed = entry_info.has('color')
-	%EntryColor.disabled = !entry_info.has('color')
 
 	_check_entry_alternatives(alternatives)
 	_check_entry_name(current_entry_name, current_entry)
