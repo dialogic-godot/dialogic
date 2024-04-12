@@ -95,14 +95,14 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 
 	for file in listdir(DialogicUtil.get_module_path(''), false):
 		var possible_script: String = DialogicUtil.get_module_path(file).path_join("index.gd")
-		if FileAccess.file_exists(possible_script):
+		if ResourceLoader.exists(possible_script):
 			indexers.append(load(possible_script).new())
 
 	if include_custom:
 		var extensions_folder: String = ProjectSettings.get_setting('dialogic/extensions_folder', "res://addons/dialogic_additions/")
 		for file in listdir(extensions_folder, false, false):
 			var possible_script: String = extensions_folder.path_join(file + "/index.gd")
-			if FileAccess.file_exists(possible_script):
+			if ResourceLoader.exists(possible_script):
 				indexers.append(load(possible_script).new())
 
 	Engine.get_main_loop().set_meta('dialogic_indexers', indexers)

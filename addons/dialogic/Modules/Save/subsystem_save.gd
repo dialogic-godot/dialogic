@@ -98,7 +98,7 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 	set_latest_slot(slot_name)
 
 	var save_error := save_file(slot_name, 'state.txt', dialogic.get_full_state())
-	
+
 	if save_error:
 		return save_error
 
@@ -126,14 +126,14 @@ func load(slot_name := "") -> Error:
 	if !has_slot(slot_name):
 		printerr("[Dialogic Error] Tried loading from invalid save slot '"+slot_name+"'.")
 		return ERR_FILE_NOT_FOUND
-	
+
 	var set_latest_error := set_latest_slot(slot_name)
 	if set_latest_error:
 		push_error("[Dialogic Error]: Failed to store latest slot to global info. Error %d '%s'" % [set_latest_error, error_string(set_latest_error)])
 
 	var state: Dictionary = load_file(slot_name, 'state.txt', {})
 	dialogic.load_full_state(state)
-	
+
 	if state.is_empty():
 		return FAILED
 	else:
@@ -151,7 +151,7 @@ func load(slot_name := "") -> Error:
 func save_file(slot_name: String, file_name: String, data: Variant) -> Error:
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
-	
+
 	if slot_name.is_empty():
 		push_error("[Dialogic Error]: No fallback slot name set.")
 		return ERR_FILE_NOT_FOUND
@@ -185,7 +185,7 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 
 	var path := get_slot_path(slot_name).path_join(file_name)
 
-	if FileAccess.file_exists(path):
+	if ResourceLoader.exists(path):
 		var encryption_password := get_encryption_password()
 		var file: FileAccess
 
@@ -310,7 +310,7 @@ func delete_slot(slot_name: String) -> Error:
 
 		# Delete the folder.
 		return directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
-	
+
 	push_warning("[Dialogic Warning]: Save slot '%s' has already been deleted." % path)
 	return OK
 
@@ -322,7 +322,7 @@ func add_empty_slot(slot_name: String) -> Error:
 		if directory:
 			return directory.make_dir(slot_name)
 		return DirAccess.get_open_error()
-	
+
 	push_error("[Dialogic Error]: Path to '%s' does not exist." % SAVE_SLOTS_DIR)
 	return ERR_FILE_BAD_PATH
 
@@ -376,7 +376,7 @@ func _make_sure_slot_dir_exists() -> Error:
 
 	var global_info_path := SAVE_SLOTS_DIR.path_join('global_info.txt')
 
-	if not FileAccess.file_exists(global_info_path):
+	if not ResourceLoader.exists(global_info_path):
 		var config := ConfigFile.new()
 		var password := get_encryption_password()
 
@@ -385,7 +385,7 @@ func _make_sure_slot_dir_exists() -> Error:
 
 		else:
 			return config.save_encrypted_pass(global_info_path, password)
-		
+
 	return OK
 
 #endregion
@@ -430,7 +430,7 @@ func save_slot_thumbnail(slot_name: String) -> Error:
 	if latest_thumbnail:
 		var path := get_slot_path(slot_name).path_join('thumbnail.png')
 		return latest_thumbnail.save_png(path)
-	
+
 	push_warning("[Dialogic Warning]: No thumbnail has been set yet.")
 	return OK
 
@@ -442,7 +442,7 @@ func get_slot_thumbnail(slot_name: String) -> ImageTexture:
 
 	var path := get_slot_path(slot_name).path_join('thumbnail.png')
 
-	if FileAccess.file_exists(path):
+	if ResourceLoader.exists(path):
 		return ImageTexture.create_from_image(Image.load_from_file(path))
 
 	return null

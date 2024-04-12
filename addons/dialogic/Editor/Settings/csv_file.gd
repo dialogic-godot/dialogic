@@ -55,7 +55,7 @@ func _init(file_path: String, original_locale: String, separator_enabled: bool) 
 	var locale_array_line := PackedStringArray(["keys", original_locale])
 	lines.append(locale_array_line)
 
-	if not FileAccess.file_exists(file_path):
+	if not ResourceLoader.exists(file_path):
 		is_new_file = true
 
 		# The "keys" and original locale are the only columns in a new file.

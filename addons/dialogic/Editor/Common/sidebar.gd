@@ -52,7 +52,7 @@ func _on_editors_editor_changed(previous:DialogicEditor, current:DialogicEditor)
 
 
 func clean_resource_list(resources_list:Array = []) -> PackedStringArray:
-	return PackedStringArray(resources_list.filter(func(x): return FileAccess.file_exists(x)))
+	return PackedStringArray(resources_list.filter(func(x): return ResourceLoader.exists(x)))
 
 
 func update_resource_list(resources_list:PackedStringArray = []) -> void:

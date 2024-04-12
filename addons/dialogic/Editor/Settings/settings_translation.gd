@@ -452,7 +452,7 @@ func collect_translations() -> void:
 
 	for file_path: String in translation_files:
 		# If the file path is not valid, we must clean it up.
-		if FileAccess.file_exists(file_path):
+		if ResourceLoader.exists(file_path):
 			found_file_paths.append(file_path)
 		else:
 			removed_translation_files += 1
