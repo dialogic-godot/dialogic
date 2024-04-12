@@ -184,16 +184,17 @@ func load_event_buttons() -> void:
 			for button in child.get_children():
 				button.queue_free()
 
-	var scripts := DialogicResourceUtil.get_event_cache()
+
+	for child in %RightSidebar.get_child(0).get_children():
+		child.get_parent().remove_child(child)
+		child.queue_free()
 
 	# Event buttons
 	var button_scene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
 
+	var scripts := DialogicResourceUtil.get_event_cache()
 	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var sections := {}
-
-	for child in %RightSidebar.get_child(0).get_children():
-		child.queue_free()
 
 	for event_script in scripts:
 		var event_resource: Variant
@@ -236,8 +237,7 @@ func load_event_buttons() -> void:
 			section.add_child(button_container)
 
 			sections[event_resource.event_category] = button_container
-			%RightSidebar.get_child(0).add_child(section)
-
+			%RightSidebar.get_child(0).add_child(section, true)
 
 		sections[event_resource.event_category].add_child(button)
 		button.toggle_name(!sidebar_collapsed)
@@ -246,13 +246,14 @@ func load_event_buttons() -> void:
 		while event_resource.event_sorting_index < sections[event_resource.event_category].get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			sections[event_resource.event_category].move_child(button, button.get_index()-1)
 
-	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order',
-			['Main', 'Flow', 'Logic', 'Audio', 'Godot','Other', 'Helper'])
-
 	# Sort event sections
-	for section in sections_order:
-		if %RightSidebar.get_child(0).has_node(section):
-			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section), sections_order.find(section))
+	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order',
+			['Main', 'Flow', 'Logic', 'Audio', 'Visual','Other', 'Helper'])
+
+	sections_order.reverse()
+	for section_name in sections_order:
+		if %RightSidebar.get_child(0).has_node(section_name):
+			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section_name), 0)
 
 	# Resize RightSidebar
 	var _scale := DialogicUtil.get_editor_scale()
@@ -278,7 +279,10 @@ func _on_content_item_clicked(label:String) -> void:
 
 
 func update_content_list() -> void:
-	var labels :PackedStringArray = []
+	if not is_inside_tree():
+		return
+
+	var labels: PackedStringArray = []
 
 	for event in %Timeline.get_children():
 
