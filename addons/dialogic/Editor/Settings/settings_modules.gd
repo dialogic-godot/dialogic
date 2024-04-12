@@ -110,7 +110,7 @@ func load_modules_tree() -> void:
 
 		# Events
 		for ev in i._get_events():
-			if not FileAccess.file_exists(ev):
+			if not ResourceLoader.exists(ev):
 				continue
 			var event_item : TreeItem = %Tree.create_item(module_item)
 			event_item.set_icon(0, get_theme_icon("Favorites", "EditorIcons"))

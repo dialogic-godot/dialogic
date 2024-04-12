@@ -559,7 +559,7 @@ func update_preview(force:=false) -> void:
 			if not current_portrait_data.get('scene', '').is_empty():
 				scene_path = current_portrait_data.get('scene')
 
-			if FileAccess.file_exists(scene_path):
+			if ResourceLoader.exists(scene_path):
 				current_previewed_scene = load(scene_path).instantiate()
 
 			if current_previewed_scene:

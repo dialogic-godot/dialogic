@@ -13,7 +13,7 @@ var this_folder : String = get_script().resource_path.get_base_dir()
 ## Return an array with all the paths to the event scripts.[br]
 ## You can use the [property this_folder].path_join('my_event.gd')
 func _get_events() -> Array:
-	if FileAccess.file_exists(this_folder.path_join('event.gd')):
+	if ResourceLoader.exists(this_folder.path_join('event.gd')):
 		return [this_folder.path_join('event.gd')]
 	return []
 

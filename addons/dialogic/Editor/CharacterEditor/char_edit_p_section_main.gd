@@ -31,6 +31,6 @@ func _on_scene_picker_value_changed(prop_name:String, value:String) -> void:
 
 
 func _on_open_scene_button_pressed():
-	if !%ScenePicker.current_value.is_empty() and FileAccess.file_exists(%ScenePicker.current_value):
+	if !%ScenePicker.current_value.is_empty() and ResourceLoader.exists(%ScenePicker.current_value):
 		DialogicUtil.get_dialogic_plugin().get_editor_interface().open_scene_from_path(%ScenePicker.current_value)
 		EditorInterface.set_main_screen_editor("2D")

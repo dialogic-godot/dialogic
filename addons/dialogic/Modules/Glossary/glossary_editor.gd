@@ -62,7 +62,7 @@ func _open(_argument: Variant = null) -> void:
 	var idx := 0
 	for file: String in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 
-		if FileAccess.file_exists(file):
+		if ResourceLoader.exists(file):
 			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
 		else:
 			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileDead', 'EditorIcons'))
@@ -86,7 +86,7 @@ func _on_GlossaryList_item_selected(idx: int) -> void:
 	%EntryList.clear()
 	var tooltip_item: String = %GlossaryList.get_item_tooltip(idx)
 
-	if FileAccess.file_exists(tooltip_item):
+	if ResourceLoader.exists(tooltip_item):
 		var glossary_item := load(tooltip_item)
 
 		if not glossary_item is DialogicGlossary:

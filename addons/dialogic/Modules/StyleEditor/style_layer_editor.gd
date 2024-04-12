@@ -357,7 +357,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		child.queue_free()
 
 	var scene: Node = null
-	if !custom_scene_path.is_empty() and FileAccess.file_exists(custom_scene_path):
+	if !custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
 		var pck_scn := load(custom_scene_path)
 		if pck_scn:
 			scene = pck_scn.instantiate()
