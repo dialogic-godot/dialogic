@@ -41,7 +41,7 @@ func _refresh() -> void:
 	%SectionList.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
-	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
 	for ev in cached_events:
 		if !ev.event_category in sections:
 			sections.append(ev.event_category)

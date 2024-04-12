@@ -236,7 +236,7 @@ func search_timelines(regexes:Array[Array]) -> Array[Dictionary]:
 
 func _exit_tree() -> void:
 	# Shutting of
-	if finder_thread.is_alive():
+	if finder_thread and finder_thread.is_alive():
 		finder_thread.wait_to_finish()
 
 
