@@ -233,9 +233,9 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return null
-		else:
-			await (timeline_resource as DialogicTimeline).process()
-			return timeline_resource
+
+	await (timeline_resource as DialogicTimeline).process()
+
 	return timeline_resource
 
 
