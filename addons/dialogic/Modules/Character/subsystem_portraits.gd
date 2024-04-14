@@ -23,6 +23,9 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+	if not "portraits" in dialogic.current_state_info:
+		dialogic.current_state_info["portraits"] = {}
+
 	var portraits_info: Dictionary = dialogic.current_state_info.portraits.duplicate()
 	dialogic.current_state_info.portraits = {}
 	for character_path in portraits_info:

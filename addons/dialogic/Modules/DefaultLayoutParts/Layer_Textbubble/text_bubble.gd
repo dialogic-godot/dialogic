@@ -132,8 +132,9 @@ func _resize_bubble(content_size:Vector2, popup:=false) -> void:
 	name_label_holder.alignment = name_label_alignment
 	name_label_holder.size.x = text.size.x
 
+
 func _on_choices_shown(info:Dictionary) -> void:
-	if !visible:
+	if !is_visible_in_tree():
 		return
 
 	await get_tree().process_frame
@@ -156,6 +157,7 @@ func get_base_content_size() -> Vector2:
 
 func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEGIN) -> void:
 	if choice_container:
+		choice_container.get_parent().remove_child(choice_container)
 		choice_container.queue_free()
 
 	node.name = "ChoiceContainer"

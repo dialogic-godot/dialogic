@@ -189,6 +189,8 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 func show_textbox(instant:=false) -> void:
 	var emitted := instant
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if not text_node.enabled:
+			continue
 		if !text_node.textbox_root.visible and !emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
