@@ -148,7 +148,7 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 	# Reset Auto-Advance temporarily and the No-Skip setting:
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.manual_advance.enabled_until_next_event = false
+	dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
 	set_text_reveal_skippable(true, true)
 
