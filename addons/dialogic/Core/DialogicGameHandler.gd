@@ -178,6 +178,7 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		scene = self.Styles.load_style()
 	else:
 		scene = self.Styles.get_layout_node()
+		scene.show()
 
 	if not scene.is_node_ready():
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
@@ -232,9 +233,9 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return null
-		else:
-			await (timeline_resource as DialogicTimeline).process()
-			return timeline_resource
+
+	await (timeline_resource as DialogicTimeline).process()
+
 	return timeline_resource
 
 

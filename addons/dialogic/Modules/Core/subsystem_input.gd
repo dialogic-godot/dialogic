@@ -28,8 +28,8 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	if not is_node_ready():
 		await ready
 
-	manual_advance.enabled_until_next_event = false
-	manual_advance.enabled_forced = true
+	manual_advance.disabled_until_next_event = false
+	manual_advance.system_enabled = true
 
 
 func pause() -> void:
@@ -180,7 +180,7 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	dialogic.Text.set_text_reveal_skippable(false, true)
-	manual_advance.enabled_until_next_event = true
+	manual_advance.disabled_until_next_event = true
 	effect_autoadvance(text_node, skipped, argument)
 
 

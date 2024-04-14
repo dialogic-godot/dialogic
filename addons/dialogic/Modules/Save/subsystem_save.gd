@@ -184,8 +184,8 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
 	var path := get_slot_path(slot_name).path_join(file_name)
-
-	if ResourceLoader.exists(path):
+	print("trying to load ", path)
+	if FileAccess.file_exists(path):
 		var encryption_password := get_encryption_password()
 		var file: FileAccess
 
@@ -198,7 +198,7 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 			return file.get_var()
 		else:
 			push_error(FileAccess.get_open_error())
-
+	print("Does not exist!")
 	return default
 
 
@@ -264,7 +264,7 @@ func get_encryption_password() -> String:
 ## Returns a list of all available slots. Useful for iterating over all slots,
 ## e.g., when building a UI with all save slots.
 func get_slot_names() -> Array[String]:
-	var save_folders := []
+	var save_folders: Array[String] = []
 
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
@@ -376,7 +376,7 @@ func _make_sure_slot_dir_exists() -> Error:
 
 	var global_info_path := SAVE_SLOTS_DIR.path_join('global_info.txt')
 
-	if not ResourceLoader.exists(global_info_path):
+	if not FileAccess.file_exists(global_info_path):
 		var config := ConfigFile.new()
 		var password := get_encryption_password()
 
@@ -442,7 +442,7 @@ func get_slot_thumbnail(slot_name: String) -> ImageTexture:
 
 	var path := get_slot_path(slot_name).path_join('thumbnail.png')
 
-	if ResourceLoader.exists(path):
+	if FileAccess.file_exists(path):
 		return ImageTexture.create_from_image(Image.load_from_file(path))
 
 	return null

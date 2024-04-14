@@ -148,7 +148,7 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 	# Reset Auto-Advance temporarily and the No-Skip setting:
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.manual_advance.enabled_until_next_event = false
+	dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
 	set_text_reveal_skippable(true, true)
 
@@ -189,6 +189,8 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 func show_textbox(instant:=false) -> void:
 	var emitted := instant
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if not text_node.enabled:
+			continue
 		if !text_node.textbox_root.visible and !emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
