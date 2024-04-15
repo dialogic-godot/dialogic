@@ -20,6 +20,8 @@ var auto_skip: DialogicAutoSkip = null
 var auto_advance : DialogicAutoAdvance = null
 var manual_advance: DialogicManualAdvance = null
 
+var _current_state: Dialogic.States
+var _previous_state: Dialogic.States
 
 #region SUBSYSTEM METHODS
 ################################################################################
@@ -28,8 +30,8 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	if not is_node_ready():
 		await ready
 
-	manual_advance.disabled_until_next_event = false
-	manual_advance.system_enabled = true
+	manual_advance.enabled_until_next_event = false
+	manual_advance.enabled_forced = true
 
 
 func pause() -> void:
@@ -57,6 +59,21 @@ func post_install() -> void:
 
 #region MAIN METHODS
 ################################################################################
+
+func _on_timeline_started() -> void:
+	block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+
+
+func _on_timeline_ended() -> void:
+	input_block_timer.stop()
+
+
+func _on_state_changed(new_state: Dialogic.States) -> void:
+	_previous_state = _current_state
+	_current_state = new_state
+	if _previous_state == Dialogic.States.AWAITING_CHOICE:
+		_on_timeline_started()
+
 
 func handle_input() -> void:
 	if dialogic.paused or is_input_blocked():
@@ -97,11 +114,9 @@ func _unhandled_input(event:InputEvent) -> void:
 ## Input is used for all mouse based inputs.
 ## If any DialogicInputNode is present this won't do anything (because that node handles MouseInput then).
 func _input(event:InputEvent) -> void:
-	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
-
+	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if not event is InputEventMouse or get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
 			return
-
 		handle_input()
 
 
@@ -116,6 +131,9 @@ func block_input(time:=0.1) -> void:
 
 
 func _ready() -> void:
+	dialogic.timeline_started.connect(_on_timeline_started)
+	dialogic.timeline_ended.connect(_on_timeline_ended)
+	dialogic.state_changed.connect(_on_state_changed)
 	auto_skip = DialogicAutoSkip.new()
 	auto_advance = DialogicAutoAdvance.new()
 	manual_advance = DialogicManualAdvance.new()
@@ -165,6 +183,7 @@ func _process(delta: float) -> void:
 
 #endregion
 
+
 #region TEXT EFFECTS
 ################################################################################
 
@@ -180,7 +199,7 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	dialogic.Text.set_text_reveal_skippable(false, true)
-	manual_advance.disabled_until_next_event = true
+	manual_advance.enabled_until_next_event = true
 	effect_autoadvance(text_node, skipped, argument)
 
 

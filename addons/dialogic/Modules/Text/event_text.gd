@@ -6,6 +6,7 @@ extends DialogicEvent
 ## Should be shown by a DialogicNode_DialogText.
 
 
+
 ### Settings
 
 ## This is the content of the text event.
@@ -159,7 +160,6 @@ func _execute() -> void:
 		else:
 			await advance
 
-
 	end_text_event()
 
 
@@ -218,12 +218,14 @@ func _on_dialogic_input_action() -> void:
 			if dialogic.Text.is_text_reveal_skippable():
 				dialogic.Text.skip_text_reveal()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				# add a small input block to prevent accidental skipping.
+				dialogic.Inputs.block_input(0.3)
 		_:
 			if dialogic.Inputs.manual_advance.is_enabled():
 				advance.emit()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+				# add a small input block to prevent accidental skipping.
+				dialogic.Inputs.block_input(0.3)
 
 
 func _on_dialogic_input_autoadvance() -> void:
