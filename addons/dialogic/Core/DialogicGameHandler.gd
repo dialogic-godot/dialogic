@@ -287,22 +287,22 @@ func handle_event(event_index:int) -> void:
 ## By using the clear flags from the [member ClearFlags] enum you can specify
 ## what info should be kept.
 ## For example, at timeline end usually it doesn't clear node or subsystem info.
-func clear(clear_flags := ClearFlags.FULL_CLEAR) -> bool:
-
+func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
 				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
 
-	# Resetting variables
-	if current_timeline:
-		await current_timeline.clean()
+	var timeline := current_timeline
 
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
 	current_state = States.IDLE
-	return true
+
+	# Resetting variables
+	if timeline:
+		await timeline.clean()
 
 #endregion
 
