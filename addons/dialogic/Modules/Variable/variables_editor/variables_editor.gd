@@ -49,6 +49,7 @@ func variable_renamed(old_name:String, new_name:String):
 
 func _on_reference_manager_pressed():
 	editors_manager.reference_manager.open()
+	%ReferenceInfo.hide()
 
 #endregion
 
