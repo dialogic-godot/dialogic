@@ -21,14 +21,14 @@ script = ExtResource("2_3b8ue")
 scene = ExtResource("4_q1t5h")
 overrides = {}
 
-[sub_resource type="Resource" id="Resource_adxfb"]
-script = ExtResource("2_3b8ue")
-scene = ExtResource("5_o6sv8")
-overrides = {}
-
 [sub_resource type="Resource" id="Resource_eqyxb"]
 script = ExtResource("2_3b8ue")
 scene = ExtResource("6_j6olx")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_adxfb"]
+script = ExtResource("2_3b8ue")
+scene = ExtResource("5_o6sv8")
 overrides = {}
 
 [sub_resource type="Resource" id="Resource_nmutb"]
@@ -55,4 +55,4 @@ overrides = {}
 script = ExtResource("1_mvpc0")
 name = "Visual Novel Style"
 base_overrides = {}
-layers = Array[ExtResource("2_3b8ue")]([SubResource("Resource_x8thn"), SubResource("Resource_g5yti"), SubResource("Resource_adxfb"), SubResource("Resource_eqyxb"), SubResource("Resource_nmutb"), SubResource("Resource_dwo52"), SubResource("Resource_by0l6"), SubResource("Resource_fd6co")])
+layers = Array[ExtResource("2_3b8ue")]([SubResource("Resource_x8thn"), SubResource("Resource_g5yti"), SubResource("Resource_eqyxb"), SubResource("Resource_adxfb"), SubResource("Resource_nmutb"), SubResource("Resource_dwo52"), SubResource("Resource_by0l6"), SubResource("Resource_fd6co")])
