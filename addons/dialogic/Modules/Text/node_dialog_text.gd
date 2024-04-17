@@ -41,7 +41,10 @@ func _set(property: StringName, what: Variant) -> bool:
 func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
-
+	meta_hover_ended.connect(_on_meta_hover_ended)
+	meta_hover_started.connect(_on_meta_hover_started)
+	meta_clicked.connect(_on_meta_clicked)
+	gui_input.connect(on_gui_input)
 	bbcode_enabled = true
 	if textbox_root == null:
 		textbox_root = self
@@ -139,3 +142,20 @@ func _process(delta: float) -> void:
 	while speed_counter > active_speed and revealing and !DialogicUtil.autoload().paused:
 		speed_counter -= active_speed
 		continue_reveal()
+
+
+
+func _on_meta_hover_started(_meta:Variant) -> void:
+	DialogicUtil.autoload().Inputs.action_was_consumed = true
+
+func _on_meta_hover_ended(_meta:Variant) -> void:
+	DialogicUtil.autoload().Inputs.action_was_consumed = false
+
+func _on_meta_clicked(_meta:Variant) -> void:
+	DialogicUtil.autoload().Inputs.action_was_consumed = true
+
+
+## Handle mouse input
+func on_gui_input(event:InputEvent) -> void:
+	DialogicUtil.autoload().Inputs.handle_node_gui_input(event)
+

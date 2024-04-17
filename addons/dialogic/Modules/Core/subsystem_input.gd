@@ -105,6 +105,13 @@ func _input(event:InputEvent) -> void:
 		handle_input()
 
 
+## This is called from the gui_input of the InputCatcher and DialogText nodes
+func handle_node_gui_input(event:InputEvent) -> void:
+	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+		if event is InputEventMouseButton and event.pressed:
+			DialogicUtil.autoload().Inputs.handle_input()
+
+
 func is_input_blocked() -> bool:
 	return input_block_timer.time_left > 0.0
 
