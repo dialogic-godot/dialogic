@@ -28,6 +28,7 @@ var _initialized := false
 ################## TIMELINE EVENT MANAGEMENT ###################################
 ################################################################################
 var selected_items : Array = []
+var drag_allowed := false
 
 
 #region CREATE/SAVE/LOAD
@@ -299,7 +300,7 @@ func update_content_list() -> void:
 #################################################################################
 
 # SIGNAL handles input on the events mainly for selection and moving events
-func _on_event_block_gui_input(event, item: Node) -> void:
+func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			if len(selected_items) > 1 and item in selected_items and !Input.is_key_pressed(KEY_CTRL):
@@ -309,9 +310,11 @@ func _on_event_block_gui_input(event, item: Node) -> void:
 			elif len(selected_items) > 1 or Input.is_key_pressed(KEY_CTRL):
 				select_item(item)
 
+			drag_allowed = true
+
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging():
+			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging() and drag_allowed:
 				sort_selection()
 				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, selected_items)
 
@@ -835,8 +838,8 @@ func offset_blocks_by_index(blocks:Array, offset:int):
 
 func scroll_to_piece(piece_index:int) -> void:
 	await get_tree().process_frame
-	var height :float = %Timeline.get_child(min(piece_index, %Timeline.get_child_count()-1)).position.y
-	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
+	var height: float = %Timeline.get_child(min(piece_index, %Timeline.get_child_count()-1)).position.y
+	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y:
 		%TimelineArea.scroll_vertical = height
 
 
@@ -996,14 +999,19 @@ func duplicate_selected() -> void:
 
 
 func _input(event:InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed == false:
+		drag_allowed = false
+
 	# we protect this with is_visible_in_tree to not
 	# invoke a shortcut by accident
 	if !((event is InputEventKey or !event is InputEventWithModifiers) and is_visible_in_tree()):
 		return
 
+
 	if "pressed" in event:
 		if !event.pressed:
 			return
+
 
 	## Some shortcuts should always work
 	match event.as_text():
