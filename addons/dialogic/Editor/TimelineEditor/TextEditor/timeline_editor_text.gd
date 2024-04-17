@@ -13,6 +13,7 @@ func _ready():
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
+
 func _on_text_editor_text_changed():
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
@@ -40,7 +41,7 @@ func save_timeline():
 	if !timeline_editor.current_resource:
 		return
 
-	var text_array:Array = text_timeline_to_array(text)
+	var text_array: Array = text_timeline_to_array(text)
 
 	timeline_editor.current_resource.events = text_array
 	timeline_editor.current_resource.events_processed = false

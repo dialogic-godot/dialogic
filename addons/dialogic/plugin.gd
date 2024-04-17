@@ -94,6 +94,12 @@ func _save_external_data() -> void:
 		editor_view.editors_manager.save_current_resource()
 
 
+func _get_unsaved_status(for_scene:String) -> String:
+	if for_scene.is_empty():
+		_save_external_data()
+	return ""
+
+
 func _handles(object) -> bool:
 	if _editor_view_and_manager_exist() and object is Resource:
 		return editor_view.editors_manager.can_edit_resource(object)

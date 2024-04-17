@@ -486,6 +486,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	selected_items = events
 	visual_update_selection()
 	indent_events()
+	something_changed()
 
 
 ## Deletes events based on an indexed dictionary
@@ -504,8 +505,8 @@ func delete_events_indexed(indexed_events:Dictionary) -> void:
 			%Timeline.get_child(idx-idx_shift).get_parent().remove_child(%Timeline.get_child(idx-idx_shift))
 			idx_shift += 1
 
-	something_changed()
 	indent_events()
+	something_changed()
 
 
 func delete_selected_events() -> void:
@@ -530,7 +531,6 @@ func cut_events_indexed(indexed_events:Dictionary) -> void:
 	select_events_indexed(indexed_events)
 	copy_selected_events()
 	delete_events_indexed(indexed_events)
-	indent_events()
 
 
 func copy_selected_events() -> void:
@@ -931,7 +931,6 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 		TimelineUndoRedo.commit_action()
 		indent_events()
-		something_changed()
 
 
 func _on_right_sidebar_resized() -> void:
@@ -989,9 +988,7 @@ func duplicate_selected() -> void:
 		var at_index: int = selected_items[-1].get_index()+1
 		TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
 		TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
-		TimelineUndoRedo.add_do_method(something_changed)
 		TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, len(events)))
-		TimelineUndoRedo.add_undo_method(something_changed)
 		TimelineUndoRedo.commit_action()
 
 
@@ -1110,6 +1107,7 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(paste_position+1, len(events_list)))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
+
 
 		"Ctrl+X":
 			var events_indexed := get_events_indexed(selected_items)
