@@ -74,7 +74,6 @@ func _ready() -> void:
 	_error = text_system.connect(&'animation_textbox_hide', get_pointer().hide)
 	_error = text_system.connect(&'meta_hover_started', _on_dialogic_display_dialog_text_meta_hover_started)
 	_error = text_system.connect(&'meta_hover_ended', _on_dialogic_display_dialog_text_meta_hover_ended)
-	_error = text_system.connect(&'meta_clicked', _on_dialogic_display_dialog_text_meta_clicked)
 
 
 func _try_translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
@@ -159,8 +158,6 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 			get_panel().self_modulate = title_color
 			get_panel_point().self_modulate = title_color
 
-	DialogicUtil.autoload().Inputs.action_was_consumed = true
-
 
 ## Method that keeps the bubble at mouse position when visible
 func _process(_delta: float) -> void:
@@ -175,11 +172,7 @@ func _process(_delta: float) -> void:
 ## Method that hides the bubble
 func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
 	get_pointer().hide()
-	DialogicUtil.autoload().Inputs.action_was_consumed = false
 
-
-func _on_dialogic_display_dialog_text_meta_clicked(_meta:String) -> void:
-	DialogicUtil.autoload().Inputs.action_was_consumed = true
 
 
 func _apply_export_overrides() -> void:
