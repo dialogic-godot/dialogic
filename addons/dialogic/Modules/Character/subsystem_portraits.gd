@@ -349,6 +349,7 @@ func _get_leave_default_length() -> float:
 ## Adds a character at a position and sets it's portrait.
 ## If the character is already joined it will only update, portrait, position, etc.
 func join_character(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored:= false, z_index:= 0, extra_data:= "", animation_name:= "", animation_length:= 0.0, animation_wait := false) -> Node:
+
 	if is_character_joined(character):
 		change_character_portrait(character, portrait)
 
@@ -381,7 +382,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_idx:
 	character_joined.emit(info)
 
 	if animation_name.is_empty():
-		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
+		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade Up In")
 		animation_length = _get_join_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/join_default_wait', true)
 
