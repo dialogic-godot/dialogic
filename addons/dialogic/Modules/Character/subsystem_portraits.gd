@@ -523,7 +523,7 @@ func leave_character(character: DialogicCharacter, animation_name:= "", animatio
 
 	if animation_name.is_empty():
 		animation_name = ProjectSettings.get_setting('dialogic/animations/leave_default',
-				get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
+				get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_down_in_out.gd'))
 		animation_length = _get_leave_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 
