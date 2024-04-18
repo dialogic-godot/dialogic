@@ -103,6 +103,7 @@ func _execute() -> void:
 		reveal_next_segment = false
 
 	for section_idx in range(min(dialogic.current_state_info['text_sub_idx'], len(split_text)-1), len(split_text)):
+		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
@@ -218,12 +219,10 @@ func _on_dialogic_input_action() -> void:
 			if dialogic.Text.is_text_reveal_skippable():
 				dialogic.Text.skip_text_reveal()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
 			if dialogic.Inputs.manual_advance.is_enabled():
 				advance.emit()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 
 func _on_dialogic_input_autoadvance() -> void:
