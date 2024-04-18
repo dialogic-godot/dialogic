@@ -88,7 +88,7 @@ func handle_input() -> void:
 
 ## Unhandled Input is used for all NON-Mouse based inputs.
 func _unhandled_input(event:InputEvent) -> void:
-	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if event is InputEventMouse:
 			return
 		handle_input()
@@ -97,7 +97,7 @@ func _unhandled_input(event:InputEvent) -> void:
 ## Input is used for all mouse based inputs.
 ## If any DialogicInputNode is present this won't do anything (because that node handles MouseInput then).
 func _input(event:InputEvent) -> void:
-	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 
 		if not event is InputEventMouse or get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
 			return
