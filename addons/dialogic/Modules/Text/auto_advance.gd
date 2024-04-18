@@ -91,10 +91,10 @@ func start() -> void:
 	var parsed_text: String = DialogicUtil.autoload().current_state_info['text_parsed']
 	var delay := _calculate_autoadvance_delay(parsed_text)
 
+	await DialogicUtil.autoload().get_tree().process_frame
 	if delay == 0:
 		_on_autoadvance_timer_timeout()
 	else:
-		await DialogicUtil.autoload().get_tree().process_frame
 		autoadvance_timer.start(delay)
 
 
