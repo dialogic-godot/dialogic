@@ -14,7 +14,7 @@ func _get_title() -> String:
 func _refresh() -> void:
 	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/letter_speed', 0.01)
 	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true)
-	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/skippable_delay', 0.1)
+	%SkippableDelay.value = ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1)
 
 	%AutoAdvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance_enabled', false)
 	%FixedDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_fixed_delay', 1)
