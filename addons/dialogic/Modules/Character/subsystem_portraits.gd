@@ -117,6 +117,7 @@ func _remove_portrait_timed(portrait_node: Node, animation_path := "Fade In Out"
 # Changes the portrait of a specific [character node].
 func _change_portrait(character_node: Node2D, portrait: String, update_transform := true) -> Dictionary:
 	var character: DialogicCharacter = character_node.get_meta('character')
+
 	if portrait.is_empty():
 		portrait = character.default_portrait
 
@@ -131,22 +132,24 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 
 	var portrait_node: Node = null
 	var latest_portrait: Node = null
+	var portrait_count := character_node.get_child_count()
 
-	if character_node.get_child_count() > 0:
+	if portrait_count > 0:
 		latest_portrait = character_node.get_child(-1)
 
 	# Check if the scene is the same as the currently loaded scene.
 	if (not latest_portrait == null and
 		latest_portrait.get_meta('scene', '') == scene_path and
 		# Also check if the scene supports changing to the given portrait.
-		(not latest_portrait.has_method('_should_do_portrait_update')
-		or latest_portrait._should_do_portrait_update(character, portrait))):
+		latest_portrait._should_do_portrait_update(character, portrait)):
 			portrait_node = latest_portrait
 			info['same_scene'] = true
 
 	else:
+
 		if ResourceLoader.exists(scene_path):
 			var packed_scene: PackedScene = load(scene_path)
+
 			if packed_scene:
 				portrait_node = packed_scene.instantiate()
 			else:
@@ -166,7 +169,11 @@ func _change_portrait(character_node: Node2D, portrait: String, update_transform
 		if portrait_node.has_method('_update_portrait'):
 			portrait_node._update_portrait(character, portrait)
 
-		if !portrait_node.is_inside_tree():
+		if not portrait_node.is_inside_tree():
+
+			if portrait_count > 1:
+				_remove_portrait(character_node.get_child(0))
+
 			character_node.add_child(portrait_node)
 
 		if update_transform:
@@ -182,7 +189,7 @@ func _change_portrait_mirror(character_node: Node2D, mirrored := false, force :=
 	var latest_portrait := character_node.get_child(-1)
 
 	if latest_portrait.has_method('_set_mirror'):
-		var character: DialogicCharacter= character_node.get_meta('character')
+		var character: DialogicCharacter = character_node.get_meta('character')
 		var current_portrait_info := character.get_portrait_info(character_node.get_meta('portrait'))
 		latest_portrait._set_mirror(force or (mirrored != character.mirror != character_node.get_parent().mirrored != current_portrait_info.get('mirror', false)))
 
