@@ -187,7 +187,7 @@ func _change_portrait_mirror(character_node: Node2D, mirrored := false, force :=
 		latest_portrait._set_mirror(force or (mirrored != character.mirror != character_node.get_parent().mirrored != current_portrait_info.get('mirror', false)))
 
 
-func _change_portrait_extradata(character_node:Node2D, extra_data:="") -> void:
+func _change_portrait_extradata(character_node: Node2D, extra_data := "") -> void:
 	var latest_portrait := character_node.get_child(-1)
 
 	if latest_portrait.has_method('_set_extra_data'):
@@ -297,7 +297,7 @@ func _change_portrait_z_index(character_node: Node, z_index:int, update_zindex:=
 ## fully visible yet.
 func get_character_portrait(character: DialogicCharacter) -> DialogicPortrait:
 	if is_character_joined(character):
-		var portrait_node: DialogicPortrait = dialogic.current_state_info['portraits'][character.resource_path].node
+		var portrait_node: DialogicPortrait = dialogic.current_state_info['portraits'][character.resource_path].node.get_child(-1)
 		return portrait_node
 
 	return null
