@@ -192,13 +192,18 @@ func to_text() -> String:
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
 	if character or character_identifier == '--All--':
+
 		if action == Actions.LEAVE and character_identifier == '--All--':
 			result_string += "--All--"
+
 		else:
 			var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
+
 			result_string += name
+
 			if portrait.strip_edges() != default_values.get('portrait', '') and action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
 				result_string+= " ("+portrait+")"
 
@@ -254,6 +259,7 @@ func from_text(string:String) -> void:
 			action = Actions.UPDATE
 
 	if result.get_string('name').strip_edges():
+
 		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
 			character_identifier = '--All--'
 		else:
@@ -270,16 +276,18 @@ func from_text(string:String) -> void:
 		set_position = true
 
 	if result.get_string('shortcode'):
-		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
+		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
 		animation_name = shortcode_params.get('animation', '')
 
-		var animLength = shortcode_params.get('length', '0.5').to_float()
+		var animLength: float = shortcode_params.get('length', '0.5').to_float()
+
 		if typeof(animLength) == TYPE_FLOAT:
 			animation_length = animLength
 		else:
-			animation_length = animLength.to_float()
+			animation_length = animLength
 
-		animation_wait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+		var wait_for_animation: String = shortcode_params.get('wait', 'false')
+		animation_wait = DialogicUtil.str_to_bool(wait_for_animation)
 
 		#repeat is supported on Update, the other two should not be checking this
 		if action == Actions.UPDATE:
@@ -500,14 +508,19 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 	if '[' in line:
 		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('animation="'):
 			var animations := []
+
 			if line.begins_with('join'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+
 			if line.begins_with('update'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+
 			if line.begins_with('leave'):
 				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
-			for script in animations:
+
+			for script: String  in animations:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
+
 		elif CodeCompletionHelper.get_line_untill_caret(line).ends_with('wait="') or CodeCompletionHelper.get_line_untill_caret(line).ends_with('mirrored="'):
 			CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
 

@@ -110,7 +110,7 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 
 
 enum AnimationType {ALL, IN, OUT, ACTION}
-static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
+static func get_portrait_animation_scripts(type := AnimationType.ALL, include_custom := true) -> Array:
 	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
 
 	return animations.filter(
@@ -121,10 +121,12 @@ static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_cust
 			if type == AnimationType.ACTION: return not ('_in' in script or '_out' in script))
 
 
-static func pretty_name(script:String) -> String:
-	var _name := script.get_file().trim_suffix("."+script.get_extension())
+## Turns a [param file_path] from `some_file.png` to `Some File`.
+static func pretty_name(file_path: String) -> String:
+	var _name := file_path.get_file().trim_suffix("." + file_path.get_extension())
 	_name = _name.replace('_', ' ')
 	_name = _name.capitalize()
+
 	return _name
 
 
