@@ -341,7 +341,7 @@ func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary=
 			parent = %PortraitTree.get_selected()
 		else:
 			parent = %PortraitTree.get_selected().get_parent()
-	var item :TreeItem = %PortraitTree.add_portrait_item(portrait_name, portrait_data, parent)
+	var item: TreeItem = %PortraitTree.add_portrait_item(portrait_name, portrait_data, parent)
 	item.set_meta('new', true)
 	item.set_editable(0, true)
 	item.select(0)
@@ -350,7 +350,7 @@ func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary=
 
 
 func add_portrait_group() -> void:
-	var parent_item :TreeItem = %PortraitTree.get_root()
+	var parent_item: TreeItem = %PortraitTree.get_root()
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent_item = %PortraitTree.get_selected()
 	var item :TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
@@ -362,7 +362,7 @@ func add_portrait_group() -> void:
 
 func load_portrait_tree() -> void:
 	%PortraitTree.clear_tree()
-	var root:TreeItem = %PortraitTree.create_item()
+	var root: TreeItem = %PortraitTree.create_item()
 
 	for portrait in current_resource.portraits.keys():
 		var portrait_label = portrait
@@ -384,11 +384,11 @@ func load_portrait_tree() -> void:
 		load_selected_portrait()
 
 
-func filter_portrait_list(filter_term:String = '') -> void:
+func filter_portrait_list(filter_term := "") -> void:
 	filter_branch(%PortraitTree.get_root(), filter_term)
 
 
-func filter_branch(parent:TreeItem, filter_term:String) -> bool:
+func filter_branch(parent: TreeItem, filter_term: String) -> bool:
 	var anything_visible := false
 	for item in parent.get_children():
 		if item.get_metadata(0).has('group'):
@@ -402,12 +402,12 @@ func filter_branch(parent:TreeItem, filter_term:String) -> bool:
 	return anything_visible
 
 
-# this is used to save the portrait data
+## This is used to save the portrait data
 func get_updated_portrait_dict() -> Dictionary:
 	return list_portraits(%PortraitTree.get_root().get_children())
 
 
-func list_portraits(tree_items:Array[TreeItem], dict:Dictionary = {}, path_prefix = "") -> Dictionary:
+func list_portraits(tree_items: Array[TreeItem], dict := {}, path_prefix := "") -> Dictionary:
 	for item in tree_items:
 		if item.get_metadata(0).has('group'):
 			dict = list_portraits(item.get_children(), dict, path_prefix+item.get_text(0)+"/")
@@ -416,7 +416,7 @@ func list_portraits(tree_items:Array[TreeItem], dict:Dictionary = {}, path_prefi
 	return dict
 
 
-func load_selected_portrait():
+func load_selected_portrait() -> void:
 	if selected_item and is_instance_valid(selected_item):
 		selected_item.set_editable(0, false)
 
@@ -439,7 +439,7 @@ func load_selected_portrait():
 		update_preview()
 
 
-func delete_portrait_item(item:TreeItem) -> void:
+func delete_portrait_item(item: TreeItem) -> void:
 	if item.get_next_visible(true) and item.get_next_visible(true) != item:
 		item.get_next_visible(true).select(0)
 	else:
@@ -449,11 +449,13 @@ func delete_portrait_item(item:TreeItem) -> void:
 	something_changed()
 
 
-func duplicate_item(item:TreeItem) -> void:
-	%PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0).duplicate(true), item.get_parent()).select(0)
+func duplicate_item(item: TreeItem) -> void:
+	var new_item: TreeItem = %PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0).duplicate(true), item.get_parent())
+	new_item.set_meta('new', true)
+	new_item.select(0)
 
 
-func _input(event:InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if !is_visible_in_tree() or (get_viewport().gui_get_focus_owner()!= null and !name+'/' in str(get_viewport().gui_get_focus_owner().get_path())):
 		return
 	if event is InputEventKey and event.pressed:
@@ -466,7 +468,7 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
-func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
+func _on_portrait_right_click_menu_index_pressed(id: int) -> void:
 	# RENAME BUTTON
 	if id == 0:
 		_on_item_activated()
@@ -480,22 +482,22 @@ func _on_portrait_right_click_menu_index_pressed(id:int) -> void:
 		get_settings_section_by_name("Portraits").set_default_portrait(%PortraitTree.get_full_item_name(%PortraitTree.get_selected()))
 
 
-# this removes/and adds the DEFAULT star on the portrait list
-func update_default_portrait_star(default_portrait_name:String) -> void:
-	var item_list : Array = %PortraitTree.get_root().get_children()
+## This removes/and adds the DEFAULT star on the portrait list
+func update_default_portrait_star(default_portrait_name: String) -> void:
+	var item_list: Array = %PortraitTree.get_root().get_children()
 	if item_list.is_empty() == false:
 		while true:
-			var item = item_list.pop_back()
+			var item := item_list.pop_back()
 			if item.get_button_by_id(0, 2) != -1:
 				item.erase_button(0, item.get_button_by_id(0, 2))
 			if %PortraitTree.get_full_item_name(item) == default_portrait_name:
-				item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
+				item.add_button(0, get_theme_icon("Favorites", "EditorIcons"), 2, true, "Default")
 			item_list.append_array(item.get_children())
 			if item_list.is_empty():
 				break
 
 
-func _on_item_edited():
+func _on_item_edited() -> void:
 	selected_item = %PortraitTree.get_selected()
 	something_changed()
 	if selected_item:
@@ -509,14 +511,14 @@ func _on_item_edited():
 	update_preview()
 
 
-func _on_item_activated():
+func _on_item_activated() -> void:
 	if %PortraitTree.get_selected() == null:
 		return
 	%PortraitTree.get_selected().set_editable(0, true)
 	%PortraitTree.edit_selected()
 
 
-func report_name_change(item:TreeItem) -> void:
+func report_name_change(item: TreeItem) -> void:
 	if item.get_metadata(0).has('group'):
 		for s_item in item.get_children():
 			if s_item.get_metadata(0).has('group') or !s_item.has_meta('new'):
@@ -536,7 +538,7 @@ func report_name_change(item:TreeItem) -> void:
 ########### PREVIEW ############################################################
 
 #region Preview
-func update_preview(force:=false) -> void:
+func update_preview(force := false) -> void:
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
@@ -652,4 +654,5 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 ## Open the reference manager
 func _on_reference_manger_button_pressed():
 	editors_manager.reference_manager.open()
+	%PortraitChangeInfo.hide()
 
