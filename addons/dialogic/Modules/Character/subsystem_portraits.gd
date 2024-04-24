@@ -268,6 +268,29 @@ func _get_leave_default_length() -> float:
 
 	return default_time
 
+
+## Checks multiple cases to return a valid portrait to use.
+func get_valid_portrait(character:DialogicCharacter, portrait:String) -> String:
+	if character == null:
+		printerr('[Dialogic] Tried to use portrait "', portrait, '" on <null> character.')
+		dialogic.print_debug_moment()
+		return ""
+
+	if "{" in portrait and dialogic.has_subsystem("Expressions"):
+		var test := dialogic.Expressions.execute_string(portrait)
+		if test:
+			portrait = str(test)
+
+	if not portrait in character.portraits:
+		portrait = character.default_portrait
+		printerr('[Dialogic] Tried to use nonexistant portrait "', portrait, '" on character "', DialogicResourceUtil.get_unique_identifier(character.resource_path), '". Using default portrait instead.')
+		dialogic.print_debug_moment()
+
+	if portrait.is_empty():
+		portrait = character.default_portrait
+
+	return portrait
+
 #endregion
 
 
@@ -330,19 +353,14 @@ func add_character(character:DialogicCharacter, portrait:String,  position_idx:i
 		printerr('[DialogicError] Cannot add a already joined character. If this is intended call _create_character_node manually.')
 		return null
 
+	portrait = get_valid_portrait(character, portrait)
+
 	if portrait.is_empty():
-		portrait = character.default_portrait
+		return null
 
 	if not character:
 		printerr('[DialogicError] Cannot call add_portrait() with null character.')
 		return null
-
-	if not portrait in character.portraits:
-		printerr("[DialogicError] Tried joining ",character.display_name, " with not-existing portrait '", portrait, "'. Will use default portrait instead.")
-		portrait = character.default_portrait
-		if portrait.is_empty():
-			printerr("[DialogicError] Character ",character.display_name, " has no default portrait to use.")
-			return null
 
 	var character_node: Node = null
 
@@ -366,6 +384,8 @@ func add_character(character:DialogicCharacter, portrait:String,  position_idx:i
 func change_character_portrait(character:DialogicCharacter, portrait:String, update_transform:=true) -> void:
 	if !is_character_joined(character):
 		return
+
+	portrait = get_valid_portrait(character, portrait)
 
 	if dialogic.current_state_info.portraits[character.resource_path].portrait == portrait:
 		return

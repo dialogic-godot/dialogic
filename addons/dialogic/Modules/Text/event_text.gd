@@ -399,8 +399,10 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 
 func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 	if character != null:
 		for portrait in character.portraits:
 			suggestions[portrait] = {'value':portrait, 'icon':icon}

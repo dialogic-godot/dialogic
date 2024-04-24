@@ -438,6 +438,8 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 		suggestions["Don't Change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if action == Actions.JOIN:
 		suggestions["Default portrait"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 	if character != null:
 		for portrait in character.portraits:
 			suggestions[portrait] = {'value':portrait, 'icon':icon.duplicate()}
