@@ -380,7 +380,7 @@ func update_csv_files() -> void:
 
 	%StatusMessage.text = status_message.format(status_message_args)
 	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
-	get_locales("")
+
 
 ## Iterates over all character resource files and creates or updates CSV files
 ## that contain the translations for character properties.
@@ -460,10 +460,10 @@ func collect_translations() -> void:
 
 		if not file_path in all_translation_files:
 			all_translation_files.append(file_path)
-			var path_without_suffix := file_path.trim_suffix('.translation')
-			var path_parts := path_without_suffix.split(".")
-			var locale_part := path_parts[-1]
-			_collect_locale(locale_part)
+
+		var path_without_suffix := file_path.trim_suffix('.translation')
+		var locale_part := path_without_suffix.split(".")[-1]
+		_collect_locale(locale_part)
 
 
 	var valid_translation_files := PackedStringArray(all_translation_files)
@@ -517,7 +517,6 @@ func erase_translations() -> void:
 	var files: PackedStringArray = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var translation_files := Array(files)
 	ProjectSettings.set_setting(_USED_LOCALES_SETTING, [])
-	get_locales("")
 
 	var deleted_csv_files := 0
 	var deleted_translation_files := 0

@@ -37,7 +37,6 @@ const REGEX_OPTION_PROPERTY := "regex_options"
 ## Ignored when entries are translated.
 const PRIVATE_PROPERTY_PREFIX := "_"
 
-const _MISSING_ENTRY_INDEX := -1
 
 ## Private ID assigned when this glossary is translated.
 @export var _translation_id: String = ""
