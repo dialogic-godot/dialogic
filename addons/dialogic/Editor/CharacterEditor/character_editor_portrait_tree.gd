@@ -3,7 +3,7 @@ extends Tree
 
 ## Tree that displays the portrait list as a hirarchy
 
-var editor = find_parent('Character Editor')
+var editor := find_parent('Character Editor')
 var current_group_nodes := {}
 
 
@@ -19,8 +19,8 @@ func clear_tree() -> void:
 	current_group_nodes = {}
 
 
-func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_item:TreeItem, previous_name:String = "") -> TreeItem:
-	var item :TreeItem = %PortraitTree.create_item(parent_item)
+func add_portrait_item(portrait_name: String, portrait_data: Dictionary, parent_item: TreeItem, previous_name := "") -> TreeItem:
+	var item: TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_text(0, portrait_name)
 	item.set_metadata(0, portrait_data)
 	if previous_name.is_empty():
@@ -32,8 +32,8 @@ func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_it
 	return item
 
 
-func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root(), previous_name:String = "") -> TreeItem:
-	var item :TreeItem = %PortraitTree.create_item(parent_item)
+func add_portrait_group(goup_name := "Group", parent_item: TreeItem = get_root(), previous_name := "") -> TreeItem:
+	var item: TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 	item.set_text(0, goup_name)
 	item.set_metadata(0, {'group':true})
@@ -44,7 +44,7 @@ func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_r
 	return item
 
 
-func get_full_item_name(item:TreeItem) -> String:
+func get_full_item_name(item: TreeItem) -> String:
 	var item_name := item.get_text(0)
 	while item.get_parent() != get_root() and item != get_root():
 		item_name = item.get_parent().get_text(0)+"/"+item_name
@@ -52,9 +52,9 @@ func get_full_item_name(item:TreeItem) -> String:
 	return item_name
 
 
-# Will create all not yet existing folders in the given path.
-# Returns the last folder (the parent of the portrait item of this path).
-func create_necessary_group_items(path:String) -> TreeItem:
+## Will create all not yet existing folders in the given path.
+## Returns the last folder (the parent of the portrait item of this path).
+func create_necessary_group_items(path: String) -> TreeItem:
 	var last_item := get_root()
 	var item_path := ""
 
@@ -70,7 +70,7 @@ func create_necessary_group_items(path:String) -> TreeItem:
 	return last_item
 
 
-func _on_item_mouse_selected(pos:Vector2, mouse_button_index:int) -> void:
+func _on_item_mouse_selected(pos: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		$PortraitRightClickMenu.set_item_disabled(1, get_selected().get_metadata(0).has('group'))
 		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
@@ -80,7 +80,7 @@ func _on_item_mouse_selected(pos:Vector2, mouse_button_index:int) -> void:
 ##					DRAG AND DROP
 ################################################################################
 
-func _get_drag_data(position:Vector2) -> Variant:
+func _get_drag_data(position: Vector2) -> Variant:
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+get_selected().get_text(0)
@@ -90,11 +90,11 @@ func _get_drag_data(position:Vector2) -> Variant:
 	return get_selected()
 
 
-func _can_drop_data(position:Vector2, data:Variant) -> bool:
+func _can_drop_data(position: Vector2, data: Variant) -> bool:
 	return data is TreeItem
 
 
-func _drop_data(position:Vector2, item:Variant) -> void:
+func _drop_data(position: Vector2, item: Variant) -> void:
 	var to_item := get_item_at_position(position)
 	if to_item:
 		var test_item:= to_item
@@ -126,8 +126,8 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 	item.free()
 
 
-func copy_branch_or_item(item:TreeItem, new_parent:TreeItem) -> TreeItem:
-	var new_item :TreeItem = null
+func copy_branch_or_item(item: TreeItem, new_parent: TreeItem) -> TreeItem:
+	var new_item: TreeItem = null
 	if item.get_metadata(0).has('group'):
 		new_item = add_portrait_group(item.get_text(0), new_parent, item.get_meta('previous_name'))
 	else:
@@ -136,4 +136,3 @@ func copy_branch_or_item(item:TreeItem, new_parent:TreeItem) -> TreeItem:
 	for child in item.get_children():
 		copy_branch_or_item(child, new_item)
 	return new_item
-
