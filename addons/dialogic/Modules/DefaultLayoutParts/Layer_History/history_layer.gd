@@ -53,8 +53,8 @@ func get_history_log() -> VBoxContainer:
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	Dialogic.History.open_requested.connect(_on_show_history_pressed)
-	Dialogic.History.close_requested.connect(_on_hide_history_pressed)
+	DialogicUtil.autoload().History.open_requested.connect(_on_show_history_pressed)
+	DialogicUtil.autoload().History.close_requested.connect(_on_hide_history_pressed)
 
 
 func _apply_export_overrides() -> void:
