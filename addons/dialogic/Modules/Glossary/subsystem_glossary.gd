@@ -100,10 +100,6 @@ func add_glossary(path:String) -> void:
 ## Iterates over all glossaries and returns the first one that matches the
 ## [param entry_key].
 ##
-## Returns null if none of the glossaries has an entry with that key.
-## If translation is enabled, uses the [param entry_key] as well to check
-## [member _translation_keys].
-##
 ## Runtime complexity:
 ## O(n), where n is the number of glossaries.
 func find_glossary(entry_key: String) -> DialogicGlossary:
@@ -150,9 +146,9 @@ func get_entry(entry_key: String) -> Dictionary:
 
 		var tr_base := translation_key.substr(0, last_slash)
 
-		result.title = _try_translate(tr_base, "title", entry)
-		result.text = _try_translate(tr_base, "text", entry)
-		result.extra = _try_translate(tr_base, "extra", entry)
+		result.title = translate(tr_base, "title", entry)
+		result.text = translate(tr_base, "text", entry)
+		result.extra = translate(tr_base, "extra", entry)
 	else:
 		result.title = entry.get("title", "")
 		result.text = entry.get("text", "")
@@ -166,7 +162,9 @@ func get_entry(entry_key: String) -> Dictionary:
 	return result
 
 
-func _try_translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
+
+## Tries to translate the property with the given
+func translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
 	var tr_key := tr_base.path_join(property)
 	var tr_value := tr(tr_key)
 
