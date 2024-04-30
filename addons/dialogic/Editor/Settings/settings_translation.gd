@@ -185,7 +185,6 @@ func _handle_glossary_translation(
 	translation_mode: TranslationModes,
 	translation_folder_path: String,
 	orig_locale: String) -> void:
-	var glossary_csv_path := ""
 
 	var glossary_csv: DialogicCsvFile = null
 	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
@@ -207,6 +206,7 @@ func _handle_glossary_translation(
 					var file_name := path_parts[-1]
 					csv_name = "dialogic_" + file_name + '_translation.csv'
 
+			var glossary_csv_path := ""
 			# Get glossary CSV file path.
 			match save_location_mode:
 				SaveLocationModes.INSIDE_TRANSLATION_FOLDER:
@@ -228,13 +228,10 @@ func _handle_glossary_translation(
 		glossary_csv.add_translation_keys_to_glossary(glossary)
 		ResourceSaver.save(glossary)
 
-		match translation_mode:
-			TranslationModes.PER_PROJECT:
-				pass
-
-			TranslationModes.PER_TIMELINE:
-				glossary_csv.update_csv_file_on_disk()
-				glossary_csv = null
+		#If per-file mode is used, save this csv and begin a new one
+		if translation_mode == TranslationModes.PER_TIMELINE:
+			glossary_csv.update_csv_file_on_disk()
+			glossary_csv = null
 
 	# If a Per-Project glossary is still open, we need to save it.
 	if glossary_csv != null:
@@ -380,7 +377,7 @@ func update_csv_files() -> void:
 
 	%StatusMessage.text = status_message.format(status_message_args)
 	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
-	get_locales("")
+
 
 ## Iterates over all character resource files and creates or updates CSV files
 ## that contain the translations for character properties.
@@ -460,10 +457,10 @@ func collect_translations() -> void:
 
 		if not file_path in all_translation_files:
 			all_translation_files.append(file_path)
-			var path_without_suffix := file_path.trim_suffix('.translation')
-			var path_parts := path_without_suffix.split(".")
-			var locale_part := path_parts[-1]
-			_collect_locale(locale_part)
+
+		var path_without_suffix := file_path.trim_suffix('.translation')
+		var locale_part := path_without_suffix.split(".")[-1]
+		_collect_locale(locale_part)
 
 
 	var valid_translation_files := PackedStringArray(all_translation_files)
@@ -517,7 +514,6 @@ func erase_translations() -> void:
 	var files: PackedStringArray = ProjectSettings.get_setting('internationalization/locale/translations', [])
 	var translation_files := Array(files)
 	ProjectSettings.set_setting(_USED_LOCALES_SETTING, [])
-	get_locales("")
 
 	var deleted_csv_files := 0
 	var deleted_translation_files := 0
