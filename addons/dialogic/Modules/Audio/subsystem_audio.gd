@@ -96,11 +96,11 @@ func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, 
 	music_started.emit(dialogic.current_state_info['music'])
 
 	var fader: Tween = null
-	if current_music_player and current_music_player.playing or !path.is_empty():
+	if is_instance_valid(current_music_player) and current_music_player.playing or !path.is_empty():
 		fader = create_tween()
 
 	var prev_node: Node = null
-	if current_music_player and current_music_player.playing:
+	if is_instance_valid(current_music_player) and current_music_player.playing:
 		prev_node = current_music_player.duplicate()
 		add_child(prev_node)
 		prev_node.play(current_music_player.get_playback_position())
@@ -125,7 +125,7 @@ func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, 
 		current_music_player.play(0)
 		fader.parallel().tween_method(interpolate_volume_linearly.bind(current_music_player), 0.0, db_to_linear(volume),fade_time)
 	else:
-		if current_music_player:
+		if is_instance_valid(current_music_player):
 			current_music_player.stop()
 			current_music_player.queue_free()
 
