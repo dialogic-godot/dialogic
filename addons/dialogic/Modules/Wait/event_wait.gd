@@ -28,7 +28,7 @@ func _execute() -> void:
 		dialogic.Text.update_dialog_text('')
 		dialogic.Text.hide_textbox()
 	dialogic.current_state = dialogic.States.WAITING
-	await dialogic.get_tree().create_timer(time, true, DialogicUtil.is_physics_timer()).timeout
+	await dialogic.get_tree().create_timer(time, false, DialogicUtil.is_physics_timer()).timeout
 	dialogic.current_state = dialogic.States.IDLE
 
 	finish()
