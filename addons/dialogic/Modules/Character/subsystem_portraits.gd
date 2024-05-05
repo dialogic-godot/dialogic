@@ -282,9 +282,10 @@ func get_valid_portrait(character:DialogicCharacter, portrait:String) -> String:
 			portrait = str(test)
 
 	if not portrait in character.portraits:
+		if not portrait.is_empty():
+			printerr('[Dialogic] Tried to use invalid portrait "', portrait, '" on character "', DialogicResourceUtil.get_unique_identifier(character.resource_path), '". Using default portrait instead.')
+			dialogic.print_debug_moment()
 		portrait = character.default_portrait
-		printerr('[Dialogic] Tried to use nonexistant portrait "', portrait, '" on character "', DialogicResourceUtil.get_unique_identifier(character.resource_path), '". Using default portrait instead.')
-		dialogic.print_debug_moment()
 
 	if portrait.is_empty():
 		portrait = character.default_portrait
