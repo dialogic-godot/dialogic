@@ -34,6 +34,8 @@ signal sound_started(info: Dictionary)
 ##
 ## Background music is long audio.
 var base_music_player := AudioStreamPlayer.new()
+## Reference to the last used music player.
+var current_music_player: AudioStreamPlayer
 ## Audio player base, that will be duplicated to play sound effects.
 ##
 ## Sound effects are short audio.
@@ -88,36 +90,45 @@ func _ready() -> void:
 
 
 ## Updates the background music. Will fade out previous music.
-func update_music(path := "", volume := 0.0, audio_bus := "Master", fade_time := 0.0, loop := true) -> void:
+func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, loop := true) -> void:
+
 	dialogic.current_state_info['music'] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop}
 	music_started.emit(dialogic.current_state_info['music'])
-	var fader: Tween = null
-	if base_music_player.playing or !path.is_empty():
-		fader = create_tween()
-	var prev_node: Node = null
-	if base_music_player.playing:
-		prev_node = base_music_player.duplicate()
-		add_child(prev_node)
-		prev_node.play(base_music_player.get_playback_position())
-		prev_node.remove_from_group('dialogic_music_player')
-		fader.tween_method(interpolate_volume_linearly.bind(prev_node), db_to_linear(prev_node.volume_db),0.0,fade_time)
-	if path:
-		base_music_player.stream = load(path)
-		base_music_player.volume_db = volume
-		base_music_player.bus = audio_bus
-		if not base_music_player.stream is AudioStreamWAV:
-			if "loop" in base_music_player.stream:
-				base_music_player.stream.loop = loop
-			elif "loop_mode" in base_music_player.stream:
-				if loop:
-					base_music_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-				else:
-					base_music_player.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
 
-		base_music_player.play(0)
-		fader.parallel().tween_method(interpolate_volume_linearly.bind(base_music_player), 0.0, db_to_linear(volume),fade_time)
+	var fader: Tween = null
+	if is_instance_valid(current_music_player) and current_music_player.playing or !path.is_empty():
+		fader = create_tween()
+
+	var prev_node: Node = null
+	if is_instance_valid(current_music_player) and current_music_player.playing:
+		prev_node = current_music_player.duplicate()
+		add_child(prev_node)
+		prev_node.play(current_music_player.get_playback_position())
+		fader.tween_method(interpolate_volume_linearly.bind(prev_node), db_to_linear(prev_node.volume_db),0.0,fade_time)
+
+	if path:
+		current_music_player = base_music_player.duplicate()
+		add_child(current_music_player)
+		current_music_player.stream = load(path)
+		current_music_player.volume_db = volume
+		if audio_bus:
+			current_music_player.bus = audio_bus
+		if not current_music_player.stream is AudioStreamWAV:
+			if "loop" in current_music_player.stream:
+				current_music_player.stream.loop = loop
+			elif "loop_mode" in current_music_player.stream:
+				if loop:
+					current_music_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+				else:
+					current_music_player.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
+
+		current_music_player.play(0)
+		fader.parallel().tween_method(interpolate_volume_linearly.bind(current_music_player), 0.0, db_to_linear(volume),fade_time)
 	else:
-		base_music_player.stop()
+		if is_instance_valid(current_music_player):
+			current_music_player.stop()
+			current_music_player.queue_free()
+
 	if prev_node:
 		fader.tween_callback(prev_node.queue_free)
 
@@ -128,12 +139,14 @@ func has_music() -> bool:
 
 
 ## Plays a given sound file.
-func play_sound(path: String, volume := 0.0, audio_bus := "Master", loop := false) -> void:
+func play_sound(path: String, volume := 0.0, audio_bus := "", loop := false) -> void:
 	if base_sound_player != null and !path.is_empty():
 		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
+
 		var new_sound_node := base_sound_player.duplicate()
 		new_sound_node.name += "Sound"
 		new_sound_node.stream = load(path)
+
 		if "loop" in new_sound_node.stream:
 			new_sound_node.stream.loop = loop
 		elif "loop_mode" in new_sound_node.stream:
@@ -141,8 +154,11 @@ func play_sound(path: String, volume := 0.0, audio_bus := "Master", loop := fals
 				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 			else:
 				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
+
 		new_sound_node.volume_db = volume
-		new_sound_node.bus = audio_bus
+		if audio_bus:
+			new_sound_node.bus = audio_bus
+
 		add_child(new_sound_node)
 		new_sound_node.play()
 		new_sound_node.finished.connect(new_sound_node.queue_free)

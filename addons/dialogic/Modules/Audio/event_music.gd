@@ -14,7 +14,7 @@ var fade_length: float = 0
 ## The volume the music will be played at.
 var volume: float = 0
 ## The audio bus the music will be played at.
-var audio_bus: String = "Master"
+var audio_bus: String = ""
 ## If true, the audio will loop, otherwise only play once.
 var loop: bool = true
 
@@ -57,7 +57,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"path"		: {"property": "file_path", 	"default": ""},
 		"fade"		: {"property": "fade_length", 	"default": 0},
 		"volume"	: {"property": "volume", 		"default": 0},
-		"bus"		: {"property": "audio_bus", 	"default": "Master",
+		"bus"		: {"property": "audio_bus", 	"default": "",
 						"suggestions": get_bus_suggestions},
 		"loop"		: {"property": "loop", 			"default": true},
 	}
