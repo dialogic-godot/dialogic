@@ -77,8 +77,8 @@ func _update_saved_connection(to_connect: bool) -> void:
 ####################################################################################################
 
 func _ready() -> void:
-	var _result := dialogic.event_handled.connect(store_full_event)
-	_result = dialogic.event_handled.connect(_check_seen)
+	dialogic.event_handled.connect(store_full_event)
+	dialogic.event_handled.connect(_check_seen)
 
 	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', simple_history_enabled )
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', full_event_history_enabled)
