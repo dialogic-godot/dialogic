@@ -44,7 +44,6 @@ static func inline(style:Dictionary) -> StyleBoxFlat:
 	return s
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:
-	var scale:float = EditorInterface.get_editor_scale()
 	var s:StyleBoxFlat = inline(style)
 	
 	node.set('theme_override_styles/normal', s)

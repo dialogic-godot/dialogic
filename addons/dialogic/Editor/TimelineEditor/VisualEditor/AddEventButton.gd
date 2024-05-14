@@ -25,12 +25,11 @@ func _ready() -> void:
 
 
 func apply_base_button_style() -> void:
-	var scale := EditorInterface.get_editor_scale()
 	var nstyle :StyleBoxFlat= get_parent().get_theme_stylebox('normal', 'Button').duplicate()
-	nstyle.border_width_left = 5 *scale
+	nstyle.border_width_left = 5 * EditorInterface.get_editor_scale()
 	add_theme_stylebox_override('normal', nstyle)
 	var hstyle :StyleBoxFlat= get_parent().get_theme_stylebox('hover', 'Button').duplicate()
-	hstyle.border_width_left = 5 *scale
+	hstyle.border_width_left = 5 * EditorInterface.get_editor_scale()
 	add_theme_stylebox_override('hover', hstyle)
 	set_color(resource.event_color)
 
