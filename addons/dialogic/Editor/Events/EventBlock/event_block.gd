@@ -53,7 +53,7 @@ func _ready():
 
 
 func initialize_ui() -> void:
-	var _scale := DialogicUtil.get_editor_scale()
+	var _scale := EditorInterface.get_editor_scale()
 
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 
@@ -138,7 +138,7 @@ func set_warning(text:String= "") -> void:
 
 
 func set_indent(indent: int) -> void:
-	add_theme_constant_override("margin_left", indent_size*indent*DialogicUtil.get_editor_scale())
+	add_theme_constant_override("margin_left", indent_size * indent * EditorInterface.get_editor_scale())
 	current_indent_level = indent
 
 #endregion
@@ -218,7 +218,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			else:
 				editor_node.icon = p.display_info.icon
 			editor_node.flat = true
-			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
+			editor_node.custom_minimum_size.x = 30 * EditorInterface.get_editor_scale()
 			editor_node.pressed.connect(p.display_info.callable)
 
 		## CUSTOM

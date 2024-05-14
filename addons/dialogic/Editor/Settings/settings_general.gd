@@ -86,7 +86,7 @@ func update_color_palette() -> void:
 	# Color Palette
 	for child in %Colors.get_children():
 		child.queue_free()
-	var _scale := DialogicUtil.get_editor_scale()
+	var _scale := EditorInterface.get_editor_scale()
 	for color in DialogicUtil.get_color_palette():
 		var button := ColorPickerButton.new()
 		button.custom_minimum_size = Vector2(50 ,50)*scale
