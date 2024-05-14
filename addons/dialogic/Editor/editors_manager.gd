@@ -7,6 +7,7 @@ signal resource_opened(resource)
 signal editor_changed(previous, current)
 
 ### References
+@onready var hsplit = $HSplit
 @onready var sidebar = $HSplit/Sidebar
 @onready var editors_holder = $HSplit/VBox/Editors
 @onready var toolbar = $HSplit/VBox/Toolbar
@@ -64,6 +65,8 @@ func _ready() -> void:
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
+	
+	hsplit.set("theme_override_constants/separation", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
 
 func _add_editor(path:String) -> void:
