@@ -22,10 +22,10 @@ func _ready():
 
 	%ContentList.item_selected.connect(func (idx:int): content_item_activated.emit(%ContentList.get_item_text(idx)))
 
-	var editor_scale := DialogicUtil.get_editor_scale()
+	var editor_scale := EditorInterface.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
-	%Logo.custom_minimum_size.y = 30*editor_scale
+	%Logo.custom_minimum_size.y = 30 * editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 
 	%CurrentResource.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
@@ -34,8 +34,8 @@ func _ready():
 	%ContentList.add_theme_color_override("font_selected_color", get_theme_color("property_color_z", "Editor"))
 
 	## MARGINS
-	$VBox/Margin.set("theme_override_constants/margin_left", 4 * editor_scale)
-	$VBox/Margin.set("theme_override_constants/margin_bottom", 4 * editor_scale)
+	$VBox/Margin.set("theme_override_constants/margin_left", get_theme_constant("base_margin", "Editor") * editor_scale)
+	$VBox/Margin.set("theme_override_constants/margin_bottom", get_theme_constant("base_margin", "Editor") * editor_scale)
 
 	## RIGHT CLICK MENU
 	%RightClickMenu.clear()
