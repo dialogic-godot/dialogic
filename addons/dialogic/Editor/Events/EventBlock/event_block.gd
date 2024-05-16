@@ -334,6 +334,18 @@ func set_property(property_name:String, value:Variant) -> void:
 		end_node.parent_node_changed()
 
 
+func rebuild_editor(build_header:bool = true, build_body:bool = false) -> void:
+	body_was_build = false
+
+	for child in %HeaderContent.get_children():
+		child.queue_free()
+
+	for child in %BodyContent.get_children():
+		child.queue_free()
+
+	build_editor(build_header, build_body)
+
+
 func _evaluate_visibility_condition(p: Dictionary) -> bool:
 	var expr := Expression.new()
 	expr.parse(p.condition)

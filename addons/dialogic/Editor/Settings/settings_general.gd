@@ -245,3 +245,14 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 func _on_reload_pressed() -> void:
 	DialogicUtil._update_autoload_subsystem_access()
+
+
+func _on_reload_events_pressed():
+	var scripts := DialogicResourceUtil.update_event_cache()
+
+	var visual_editor = find_parent('EditorsManager').editors['Timeline'].node.get_node('%VisualEditor')
+
+	visual_editor.load_event_buttons()
+	for child in visual_editor.get_node("%Timeline").get_children():
+		if "rebuild_editor" in child:
+			child.rebuild_editor()
