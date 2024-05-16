@@ -6,6 +6,12 @@ class_name DialogicUtil
 
 #region EDITOR
 
+# This method should be used instead of EditorInterface.get_editor_scale(), because if you use that
+# it will run perfectly fine from the editor, but crash when the game is exported.
+static func get_editor_scale() -> float:
+	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
+
+
 ## Although this does in fact always return a EditorPlugin node,
 ##  that class is apparently not present in export and referencing it here creates a crash.
 static func get_dialogic_plugin() -> Node:
@@ -361,7 +367,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if value != null:
 				input.color = value
 			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_info.name, property_changed))
-			input.custom_minimum_size.x = EditorInterface.get_editor_scale() * 50
+			input.custom_minimum_size.x = get_editor_scale() * 50
 		TYPE_INT:
 			if property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()

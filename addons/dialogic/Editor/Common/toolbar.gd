@@ -9,7 +9,7 @@ extends HBoxContainer
 func _ready():
 	if owner.get_parent() is SubViewport:
 		return
-	%CustomButtons.custom_minimum_size.y = 33 * EditorInterface.get_editor_scale()
+	%CustomButtons.custom_minimum_size.y = 33 * DialogicUtil.get_editor_scale()
 	
 	for child in get_children():
 		if child is Button:

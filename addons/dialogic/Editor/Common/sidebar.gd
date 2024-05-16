@@ -22,7 +22,7 @@ func _ready():
 
 	%ContentList.item_selected.connect(func (idx:int): content_item_activated.emit(%ContentList.get_item_text(idx)))
 
-	var editor_scale := EditorInterface.get_editor_scale()
+	var editor_scale := DialogicUtil.get_editor_scale()
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Logo.custom_minimum_size.y = 30 * editor_scale

@@ -66,7 +66,7 @@ func _ready() -> void:
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
 	
-	hsplit.set("theme_override_constants/separation", get_theme_constant("base_margin", "Editor") * EditorInterface.get_editor_scale())
+	hsplit.set("theme_override_constants/separation", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
 
 func _add_editor(path:String) -> void:

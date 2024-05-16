@@ -27,7 +27,7 @@ func _ready() -> void:
 	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
 	%MakeCustomButton.get_popup().index_pressed.connect(_on_make_custom_menu_pressed)
 	%LayerTree.item_selected.connect(_on_layer_selected)
-	_minimum_tree_item_height = int(EditorInterface.get_editor_scale() * 32)
+	_minimum_tree_item_height = int(DialogicUtil.get_editor_scale() * 32)
 	%LayerTree.add_theme_constant_override("icon_max_width", _minimum_tree_item_height)
 
 

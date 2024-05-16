@@ -164,7 +164,7 @@ func _ready() -> void:
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 	%Timeline.child_order_changed.connect(update_content_list)
 
-	var editor_scale := EditorInterface.get_editor_scale()
+	var editor_scale := DialogicUtil.get_editor_scale()
 	%RightSidebar.size.x = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
 	$View.split_offset = -DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
 	sidebar_collapsed = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_collapsed", false)
@@ -257,7 +257,7 @@ func load_event_buttons() -> void:
 			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section_name), 0)
 
 	# Resize RightSidebar
-	%RightSidebar.custom_minimum_size.x = 50 * EditorInterface.get_editor_scale()
+	%RightSidebar.custom_minimum_size.x = 50 * DialogicUtil.get_editor_scale()
 
 	_on_right_sidebar_resized()
 #endregion
@@ -936,7 +936,7 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 
 
 func _on_right_sidebar_resized() -> void:
-	var _scale := EditorInterface.get_editor_scale()
+	var _scale := DialogicUtil.get_editor_scale()
 
 	if %RightSidebar.size.x < 160 * _scale and (not sidebar_collapsed or not _initialized):
 		sidebar_collapsed = true

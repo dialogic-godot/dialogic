@@ -2,7 +2,7 @@
 class_name DCSS
 	
 static func inline(style:Dictionary) -> StyleBoxFlat:
-	var scale:float = EditorInterface.get_editor_scale()
+	var scale:float = DialogicUtil.get_editor_scale()
 	var s := StyleBoxFlat.new()
 	for property in style.keys():
 		match property:

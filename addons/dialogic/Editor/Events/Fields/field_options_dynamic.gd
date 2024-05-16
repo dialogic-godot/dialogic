@@ -29,7 +29,7 @@ var _v_separation := 0
 var _h_separation := 0
 var _icon_margin := 0
 var _line_height := 24
-var _max_height := 200 * EditorInterface.get_editor_scale()
+var _max_height := 200 * DialogicUtil.get_editor_scale()
 
 
 #region FIELD METHODS
@@ -88,7 +88,7 @@ func _ready() -> void:
 	%Suggestions.hide()
 	%Suggestions.item_selected.connect(suggestion_selected)
 	%Suggestions.item_clicked.connect(suggestion_selected)
-	%Suggestions.fixed_icon_size = Vector2i(16, 16) * EditorInterface.get_editor_scale()
+	%Suggestions.fixed_icon_size = Vector2i(16, 16) * DialogicUtil.get_editor_scale()
 
 	_v_separation = %Suggestions.get_theme_constant("v_separation")
 	_h_separation = %Suggestions.get_theme_constant("h_separation")
@@ -162,7 +162,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var total_height: int = 0
 	for item in %Suggestions.item_count:
-		total_height += _line_height * EditorInterface.get_editor_scale() + _v_separation
+		total_height += _line_height * DialogicUtil.get_editor_scale() + _v_separation
 	total_height += _v_separation * 2
 	if total_height > _max_height:
 		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
