@@ -27,12 +27,15 @@ func _handles_type(typename: StringName) -> bool:
 # parse the file and return a resource
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
 #	print('[Dialogic] Reimporting character "' , path, '"')
-	if ResourceLoader.exists(path):
-		var file = FileAccess.open(path, FileAccess.READ)
-		return dict_to_inst(str_to_var(file.get_as_text()))
-	else:
-		push_error("File does not exists")
-		return false
+	var file := FileAccess.open(path, FileAccess.READ)
+	
+	if not file:
+		# For now, just let editor know that for some reason you can't
+		# read the file.
+		print("[Dialogic] Error opening file:", FileAccess.get_open_error())
+		return FileAccess.get_open_error()
+	
+	return dict_to_inst(str_to_var(file.get_as_text()))
 
 
 func _get_dependencies(path:String, add_type:bool):
