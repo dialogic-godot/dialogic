@@ -175,7 +175,7 @@ func _init() -> void:
 
 
 func _get_icon() -> Resource:
-	return load(self.get_script().get_path().get_base_dir().path_join('icon_character.png'))
+	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
 ################################################################################
 ## 						SAVING/LOADING
