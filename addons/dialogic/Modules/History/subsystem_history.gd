@@ -8,7 +8,7 @@ signal close_requested
 
 ## Simple history that stores limited information
 ## Used for the history display
-var simple_history_enabled := true
+var simple_history_enabled := false
 var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
