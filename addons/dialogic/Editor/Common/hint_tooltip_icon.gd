@@ -5,5 +5,5 @@ extends TextureRect
 
 func _ready():
 	texture = get_theme_icon("NodeInfo", "EditorIcons")
-	modulate = get_theme_color("readonly_color", "Editor")
+	modulate = get_theme_color("icon_normal_color", "Editor")
 	tooltip_text = hint_text
