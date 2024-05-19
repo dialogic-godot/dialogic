@@ -64,9 +64,9 @@ func initialize_ui() -> void:
 
 	# Expand Button
 	%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
-	%ToggleBodyVisibilityButton.modulate = get_theme_color("icon_normal_color", "Editor")
-	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_normal_color", get_theme_color("icon_normal_color", "Editor"))
-	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_pressed_color", get_theme_color("icon_normal_color", "Editor"))
+	%ToggleBodyVisibilityButton.modulate = get_theme_color("contrast_color_1", "Editor")
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_normal_color", get_theme_color("contrast_color_1", "Editor"))
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_pressed_color", get_theme_color("contrast_color_1", "Editor"))
 
 	# Icon Panel
 	%IconPanel.tooltip_text = resource.event_name
