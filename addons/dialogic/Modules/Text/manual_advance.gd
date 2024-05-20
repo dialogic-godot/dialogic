@@ -41,8 +41,8 @@ func _init() -> void:
 		var state_info := DialogicUtil.autoload().current_state_info
 		var manual_advance: Dictionary = state_info[STATE_INFO_KEY]
 
-		disabled_until_next_event = manual_advance[DISABLED_UNTIL_NEXT_EVENT_STATE_KEY]
-		system_enabled = manual_advance[ENABLED_STATE_KEY]
+		disabled_until_next_event = manual_advance.get(DISABLED_UNTIL_NEXT_EVENT_STATE_KEY, disabled_until_next_event)
+		system_enabled = manual_advance.get(ENABLED_STATE_KEY, system_enabled)
 
 	else:
 		DialogicUtil.autoload().current_state_info[STATE_INFO_KEY] = {
