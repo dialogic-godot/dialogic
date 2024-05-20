@@ -111,7 +111,7 @@ func _execute() -> void:
 					Operations.DIVIDE:
 						result = original_value / interpreted_value
 
-			dialogic.VAR.set_variable(name, interpreted_value)
+			dialogic.VAR.set_variable(name, result)
 			dialogic.VAR.variable_was_set.emit(
 				{
 					'variable' : name,
