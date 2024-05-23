@@ -277,7 +277,7 @@ func get_valid_portrait(character:DialogicCharacter, portrait:String) -> String:
 		return ""
 
 	if "{" in portrait and dialogic.has_subsystem("Expressions"):
-		var test := dialogic.Expressions.execute_string(portrait)
+		var test: Variant = dialogic.Expressions.execute_string(portrait)
 		if test:
 			portrait = str(test)
 

@@ -51,8 +51,8 @@ func _process(delta:float) -> void:
 
 	var center := get_viewport_rect().size / 2.0
 
-	var dist_x := abs(base_position.x - center.x)
-	var dist_y := abs(base_position.y - center.y)
+	var dist_x := absf(base_position.x - center.x)
+	var dist_y := absf(base_position.y - center.y)
 	var x_e := center.x - bubble_rect.size.x
 	var y_e := center.y - bubble_rect.size.y
 	var influence_x := remap(clamp(dist_x, x_e, center.x), x_e, center.x * 0.8, 0.0, 1.0)
