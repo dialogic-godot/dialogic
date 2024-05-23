@@ -75,7 +75,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 func post_install():
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
-	
+
 	collect_character_names()
 	collect_text_effects()
 	collect_text_modifiers()
