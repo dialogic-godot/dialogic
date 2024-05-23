@@ -161,16 +161,17 @@ func _get_event_key(event_index: int, timeline_path: String) -> String:
 	return event_key
 
 
-# Called if a Text event marks an unvisited Text event as visited.
-func mark_event_as_visited(_event: DialogicEvent) -> void:
+## Called if an event is marked as visited.
+func mark_event_as_visited(event_index := dialogic.current_event_idx, timeline := dialogic.current_timeline) -> void:
 	if !visited_event_history_enabled:
 		return
 
-	var event_key := _current_event_key()
+	var event_key := _get_event_key(event_index, timeline.resource_path)
 
-	visited_event_history_content[event_key] = dialogic.current_event_idx
+	visited_event_history_content[event_key] = event_index
 
-# Called on each event, but we filter for Text events.
+
+## Called on each event, but we filter for Text events.
 func _check_seen(event: DialogicEvent) -> void:
 	if !visited_event_history_enabled:
 		return
