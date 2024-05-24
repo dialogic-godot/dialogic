@@ -361,20 +361,20 @@ layout_mode = 2
 tooltip_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
 You can enable Auto-Skip from code via:
-Dialogic.Inputsauto_skip.enabled = true
+Dialogic.Inputs.auto_skip.enabled = true
 
 By default, Auto-Skip will cancel on user input.
 You can disable this by calling:
-Dialogic.Inputsauto_skip.disable_on_user_input = false"
+Dialogic.Inputs.auto_skip.disable_on_user_input = false"
 texture = SubResource("ImageTexture_3xcp4")
 hint_text = "Auto-Skip is the concept of automatically skipping Timeline Events to the next unread Text Event or Event demanding user inputs (e.g. Choice, Wait Input, and Text Input).
 
 You can enable Auto-Skip from code via:
-Dialogic.Inputsauto_skip.enabled = true
+Dialogic.Inputs.auto_skip.enabled = true
 
 By default, Auto-Skip will cancel on user input.
 You can disable this by calling:
-Dialogic.Inputsauto_skip.disable_on_user_input = false"
+Dialogic.Inputs.auto_skip.disable_on_user_input = false"
 
 [node name="AutoskipSettings" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
