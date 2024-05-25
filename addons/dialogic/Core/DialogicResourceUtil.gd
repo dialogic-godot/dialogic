@@ -184,14 +184,32 @@ static func list_special_resources_of_type(type:String) -> Array:
 	return special_resources.filter(func(x:Dictionary): return type == x.get('type','')).map(func(x:Dictionary): return x.get('path', ''))
 
 
-static func guess_special_resource(type:String, name:String, default:="") -> String:
+static func guess_special_resource(type: String, name: String, default := "") -> String:
 	if special_resources.is_empty():
 		update_special_resources()
+
 	if name.begins_with('res://'):
 		return name
-	for path in list_special_resources_of_type(type):
-		if DialogicUtil.pretty_name(path).to_lower() == name.to_lower():
+
+	for path: String in list_special_resources_of_type(type):
+		var pretty_path := DialogicUtil.pretty_name(path).to_lower()
+		var pretty_name := name.to_lower()
+
+		if pretty_path == pretty_name:
 			return path
+
+		elif pretty_name.ends_with(" in"):
+			pretty_name = pretty_name + " out"
+
+			if pretty_path == pretty_name:
+				return path
+
+		elif pretty_name.ends_with(" out"):
+			pretty_name = pretty_name.replace("out", "in out")
+
+			if pretty_path == pretty_name:
+				return path
+
 	return default
 
 #endregion

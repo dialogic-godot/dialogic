@@ -9,7 +9,8 @@ signal portrait_selected()
 
 # Current state
 var loading := false
-var current_previewed_scene = null
+var current_previewed_scene: Variant = null
+var current_scene_path: String = ""
 
 # References
 var selected_item: TreeItem
@@ -540,22 +541,26 @@ func report_name_change(item: TreeItem) -> void:
 #region Preview
 func update_preview(force := false) -> void:
 	%ScenePreviewWarning.hide()
+
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
 
 		if not force and current_previewed_scene != null \
-			and current_previewed_scene.get_meta('path', '') == current_portrait_data.get('scene') \
+			and scene_file_path == current_portrait_data.get('scene') \
 			and current_previewed_scene.has_method('_should_do_portrait_update') \
 			and is_instance_valid(current_previewed_scene.get_script()) \
 			and current_previewed_scene._should_do_portrait_update(current_resource, selected_item.get_text(0)):
-			pass # we keep the same scene
+			# We keep the same scene.
+			pass
 		else:
+
 			for node in %RealPreviewPivot.get_children():
 				node.queue_free()
 
 			current_previewed_scene = null
+			current_scene_path = ""
 
 			var scene_path := def_portrait_path
 			if not current_portrait_data.get('scene', '').is_empty():
@@ -563,11 +568,12 @@ func update_preview(force := false) -> void:
 
 			if ResourceLoader.exists(scene_path):
 				current_previewed_scene = load(scene_path).instantiate()
+				current_scene_path = scene_path
 
-			if current_previewed_scene:
+			if not current_previewed_scene == null:
 				%RealPreviewPivot.add_child(current_previewed_scene)
 
-		if current_previewed_scene != null:
+		if not current_previewed_scene == null:
 			var scene: Node = current_previewed_scene
 
 			scene.show_behind_parent = true
@@ -575,16 +581,20 @@ func update_preview(force := false) -> void:
 
 			var mirror: bool = current_portrait_data.get('mirror', false) != current_resource.mirror
 			var scale: float = current_portrait_data.get('scale', 1) * current_resource.scale
+
 			if current_portrait_data.get('ignore_char_scale', false):
 				scale = current_portrait_data.get('scale', 1)
+
 			var offset: Vector2 = current_portrait_data.get('offset', Vector2()) + current_resource.offset
 
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
+
 				if scene.has_method('_update_portrait'):
 					## Create a fake duplicate resource that has all the portrait changes applied already
 					var preview_character := current_resource.duplicate()
 					preview_character.portraits = get_updated_portrait_dict()
 					scene._update_portrait(preview_character, %PortraitTree.get_full_item_name(selected_item))
+
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
 
@@ -592,25 +602,33 @@ func update_preview(force := false) -> void:
 				scene.position = Vector2() + offset
 				scene.scale = Vector2(1,1)*scale
 			else:
-				if is_instance_valid(scene.get_script()) and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
-					var rect: Rect2= scene._get_covered_rect()
+
+				if not scene.get_script() == null and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
+					var rect: Rect2 = scene._get_covered_rect()
 					var available_rect: Rect2 = %FullPreviewAvailableRect.get_rect()
 					scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
 					%RealPreviewPivot.position = (rect.position)*-1*scene.scale
 					%RealPreviewPivot.position.x = %FullPreviewAvailableRect.size.x/2
 					scene.position = Vector2()
+
 				else:
 					%ScenePreviewWarning.show()
 		else:
 			%PreviewLabel.text = 'Nothing to preview'
+
 		for child in %PortraitSettingsSection.get_children():
+
 			if child is DialogicCharacterEditorPortraitSection:
 				child._recheck(current_portrait_data)
+
 	else:
 		%PreviewLabel.text = 'No portrait to preview.'
+
 		for node in %RealPreviewPivot.get_children():
 			node.queue_free()
+
 		current_previewed_scene = null
+		current_scene_path = ""
 
 
 func _on_some_resource_saved(file:Variant) -> void:

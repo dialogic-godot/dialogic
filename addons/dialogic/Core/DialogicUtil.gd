@@ -112,21 +112,44 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 
 
 enum AnimationType {ALL, IN, OUT, ACTION}
-static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
+
+
+
+static func get_portrait_animation_scripts(type := AnimationType.ALL, include_custom := true) -> Array:
 	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
+	const CROSS_ANIMATION := "_in_out"
+	const OUT_ANIMATION := "_out"
+	const IN_ANIMATION := "_in"
 
 	return animations.filter(
-		func(script):
-			if type == AnimationType.ALL: return true;
-			if type == AnimationType.IN: return '_in' in script;
-			if type == AnimationType.OUT: return '_out' in script;
-			if type == AnimationType.ACTION: return not ('_in' in script or '_out' in script))
+		func(script: String) -> bool:
+			match (type):
+				AnimationType.ALL:
+					return true
+
+				AnimationType.IN:
+					return IN_ANIMATION in script or CROSS_ANIMATION in script
+
+				AnimationType.OUT:
+					return OUT_ANIMATION in script or CROSS_ANIMATION in script
+
+				# All animations that are not IN or OUT.
+				# Extra check for CROSS animations to prevent parsing parts
+				# of the name as an IN or OUT animation.
+				AnimationType.ACTION:
+					return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
+
+				_:
+					return false
+	)
 
 
-static func pretty_name(script:String) -> String:
-	var _name := script.get_file().trim_suffix("."+script.get_extension())
+## Turns a [param file_path] from `some_file.png` to `Some File`.
+static func pretty_name(file_path: String) -> String:
+	var _name := file_path.get_file().trim_suffix("." + file_path.get_extension())
 	_name = _name.replace('_', ' ')
 	_name = _name.capitalize()
+
 	return _name
 
 

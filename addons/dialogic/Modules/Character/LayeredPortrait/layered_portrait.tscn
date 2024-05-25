@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://jac4eurttev1"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/LayeredPortrait/layered_portrait.gd" id="1_7l060"]
+[ext_resource type="Texture2D" uid="uid://djqit26f4be4f" path="res://addons/dialogic/Example Assets/portraits/Princess/princess_blank.png" id="2_yttk1"]
+[ext_resource type="Texture2D" uid="uid://c5aku2g01k6c6" path="res://addons/dialogic/Example Assets/portraits/Princess/shock.png" id="3_mexya"]
+[ext_resource type="Texture2D" uid="uid://dsid4ye0q74nl" path="res://addons/dialogic/Example Assets/portraits/Princess/smile.png" id="4_wvcco"]
+
+[node name="LayeredPortrait" type="Node2D"]
+script = ExtResource("1_7l060")
+
+[node name="Layer1" type="Sprite2D" parent="."]
+position = Vector2(0, -1547)
+texture = ExtResource("2_yttk1")
+centered = false
+
+[node name="Group1" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Layer1" type="Sprite2D" parent="Group1"]
+position = Vector2(508, -1446)
+texture = ExtResource("3_mexya")
+centered = false
+
+[node name="Layer2" type="Sprite2D" parent="Group1"]
+position = Vector2(508, -1446)
+texture = ExtResource("4_wvcco")
+centered = false
+
+[node name="Layer3" type="Sprite2D" parent="Group1"]
+centered = false
+
+[node name="Layer2" type="Sprite2D" parent="."]
+centered = false
