@@ -310,7 +310,7 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 ################################################################################
 
 func report_name_changes(item:TreeItem) -> void:
-	
+
 	match item.get_meta('type'):
 		"VARIABLE":
 			if item.get_meta("new", false):

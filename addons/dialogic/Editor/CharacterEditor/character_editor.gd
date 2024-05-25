@@ -487,7 +487,7 @@ func update_default_portrait_star(default_portrait_name: String) -> void:
 	var item_list: Array = %PortraitTree.get_root().get_children()
 	if item_list.is_empty() == false:
 		while true:
-			var item := item_list.pop_back()
+			var item: TreeItem = item_list.pop_back()
 			if item.get_button_by_id(0, 2) != -1:
 				item.erase_button(0, item.get_button_by_id(0, 2))
 			if %PortraitTree.get_full_item_name(item) == default_portrait_name:
