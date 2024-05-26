@@ -23,17 +23,18 @@ signal timeline_loaded
 var _batches := []
 var _building_timeline := false
 var _timeline_changed_while_loading := false
-
+var _initialized := false
 
 ################## TIMELINE EVENT MANAGEMENT ###################################
 ################################################################################
 var selected_items : Array = []
+var drag_allowed := false
 
 
 #region CREATE/SAVE/LOAD
 ################################################################################
 
-func something_changed():
+func something_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 
 
@@ -58,7 +59,8 @@ func save_timeline() -> void:
 
 	timeline_editor.current_resource.events = new_events
 	timeline_editor.current_resource.events_processed = true
-	var error :int = ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
+	var error: int = ResourceSaver.save(timeline_editor.current_resource, timeline_editor.current_resource.resource_path)
+
 	if error != OK:
 		print('[Dialogic] Saving error: ', error)
 
@@ -102,7 +104,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	%TimelineArea.scroll_vertical = 0
 
 
-func batch_events(array, size, batch_number):
+func batch_events(array: Array, size: int, batch_number: int) -> Array:
 	return array.slice((batch_number - 1) * size, batch_number * size)
 
 
@@ -121,7 +123,8 @@ func load_batch(data:Array) -> void:
 					opener_events_stack.push_back(piece)
 	batch_loaded.emit()
 
-func _on_batch_loaded():
+
+func _on_batch_loaded() -> void:
 	if _timeline_changed_while_loading:
 		return
 	if _batches.size() > 0:
@@ -131,15 +134,17 @@ func _on_batch_loaded():
 		return
 
 	if opener_events_stack:
+
 		for ev in opener_events_stack:
 			create_end_branch_event(%Timeline.get_child_count(), ev)
+
 	opener_events_stack = []
 	indent_events()
 	update_content_list()
 	_building_timeline = false
 
 
-func clear_timeline_nodes():
+func clear_timeline_nodes() -> void:
 	deselect_all_items()
 	for event in %Timeline.get_children():
 		event.free()
@@ -149,7 +154,7 @@ func clear_timeline_nodes():
 #region SETUP
 ################################################################################
 
-func _ready():
+func _ready() -> void:
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
@@ -159,24 +164,38 @@ func _ready():
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 	%Timeline.child_order_changed.connect(update_content_list)
 
+	var editor_scale := DialogicUtil.get_editor_scale()
+	%RightSidebar.size.x = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
+	$View.split_offset = -DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_width", 200 * editor_scale)
+	sidebar_collapsed = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_collapsed", false)
+
+	load_event_buttons()
+	_on_right_sidebar_resized()
+	_initialized = true
+
 
 func load_event_buttons() -> void:
+	sidebar_collapsed = DialogicUtil.get_editor_setting("dialogic/editor/right_sidebar_collapsed", false)
+
 	# Clear previous event buttons
 	for child in %RightSidebar.get_child(0).get_children():
+
 		if child is FlowContainer:
+
 			for button in child.get_children():
 				button.queue_free()
 
-	var scripts := DialogicResourceUtil.get_event_cache()
-
-	# Event buttons
-	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
-
-	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
-	var sections := {}
 
 	for child in %RightSidebar.get_child(0).get_children():
+		child.get_parent().remove_child(child)
 		child.queue_free()
+
+	# Event buttons
+	var button_scene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
+
+	var scripts := DialogicResourceUtil.get_event_cache()
+	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var sections := {}
 
 	for event_script in scripts:
 		var event_resource: Variant
@@ -192,7 +211,7 @@ func load_event_buttons() -> void:
 		if event_resource.event_name in hidden_buttons:
 			continue
 
-		var button :Button = buttonScene.instantiate()
+		var button: Button = button_scene.instantiate()
 		button.resource = event_resource
 		button.visible_name = event_resource.event_name
 		button.event_icon = event_resource._get_icon()
@@ -219,28 +238,27 @@ func load_event_buttons() -> void:
 			section.add_child(button_container)
 
 			sections[event_resource.event_category] = button_container
-			%RightSidebar.get_child(0).add_child(section)
-
+			%RightSidebar.get_child(0).add_child(section, true)
 
 		sections[event_resource.event_category].add_child(button)
+		button.toggle_name(!sidebar_collapsed)
 
 		# Sort event button
 		while event_resource.event_sorting_index < sections[event_resource.event_category].get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			sections[event_resource.event_category].move_child(button, button.get_index()-1)
 
-	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order',
-			['Main', 'Flow', 'Logic', 'Audio', 'Godot','Other', 'Helper'])
-
 	# Sort event sections
-	for section in sections_order:
-		if %RightSidebar.get_child(0).has_node(section):
-			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section), sections_order.find(section))
+	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order',
+			['Main', 'Flow', 'Logic', 'Audio', 'Visual','Other', 'Helper'])
+
+	sections_order.reverse()
+	for section_name in sections_order:
+		if %RightSidebar.get_child(0).has_node(section_name):
+			%RightSidebar.get_child(0).move_child(%RightSidebar.get_child(0).get_node(section_name), 0)
 
 	# Resize RightSidebar
-	var _scale := DialogicUtil.get_editor_scale()
-	%RightSidebar.custom_minimum_size.x = 50 * _scale
+	%RightSidebar.custom_minimum_size.x = 50 * DialogicUtil.get_editor_scale()
 
-	$View.split_offset = -200*_scale
 	_on_right_sidebar_resized()
 #endregion
 
@@ -260,12 +278,20 @@ func _on_content_item_clicked(label:String) -> void:
 				return
 
 
-func update_content_list():
-	var labels :PackedStringArray = []
+func update_content_list() -> void:
+	if not is_inside_tree():
+		return
+
+	var labels: PackedStringArray = []
+
 	for event in %Timeline.get_children():
+
 		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
 			labels.append(event.resource.name)
+
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+
+
 #endregion
 
 
@@ -273,7 +299,7 @@ func update_content_list():
 #################################################################################
 
 # SIGNAL handles input on the events mainly for selection and moving events
-func _on_event_block_gui_input(event, item: Node):
+func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			if len(selected_items) > 1 and item in selected_items and !Input.is_key_pressed(KEY_CTRL):
@@ -283,9 +309,11 @@ func _on_event_block_gui_input(event, item: Node):
 			elif len(selected_items) > 1 or Input.is_key_pressed(KEY_CTRL):
 				select_item(item)
 
+			drag_allowed = true
+
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging():
+			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging() and drag_allowed:
 				sort_selection()
 				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, selected_items)
 
@@ -365,13 +393,13 @@ func create_end_branch_event(at_index:int, parent_node:Node) -> Node:
 
 
 # combination of the above that establishes the correct connection between the event and it's end branch
-func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false):
+func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false) -> void:
 	var event := add_event_node(resource, at_index, auto_select, indent)
 	create_end_branch_event(at_index+1, event)
 
 
 ## Adds an event (either single nodes or with end branches) to the timeline with UndoRedo support
-func add_event_undoable(event_resource: DialogicEvent, at_index: int = -1):
+func add_event_undoable(event_resource: DialogicEvent, at_index: int = -1) -> void:
 		TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
 		if event_resource.can_contain_events:
 			TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_resource, at_index, true, true))
@@ -460,6 +488,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	selected_items = events
 	visual_update_selection()
 	indent_events()
+	something_changed()
 
 
 ## Deletes events based on an indexed dictionary
@@ -478,8 +507,8 @@ func delete_events_indexed(indexed_events:Dictionary) -> void:
 			%Timeline.get_child(idx-idx_shift).get_parent().remove_child(%Timeline.get_child(idx-idx_shift))
 			idx_shift += 1
 
-	something_changed()
 	indent_events()
+	something_changed()
 
 
 func delete_selected_events() -> void:
@@ -504,7 +533,6 @@ func cut_events_indexed(indexed_events:Dictionary) -> void:
 	select_events_indexed(indexed_events)
 	copy_selected_events()
 	delete_events_indexed(indexed_events)
-	indent_events()
 
 
 func copy_selected_events() -> void:
@@ -809,8 +837,8 @@ func offset_blocks_by_index(blocks:Array, offset:int):
 
 func scroll_to_piece(piece_index:int) -> void:
 	await get_tree().process_frame
-	var height :float = %Timeline.get_child(min(piece_index, %Timeline.get_child_count()-1)).position.y
-	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
+	var height: float = %Timeline.get_child(min(piece_index, %Timeline.get_child_count()-1)).position.y
+	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y:
 		%TimelineArea.scroll_vertical = height
 
 
@@ -905,34 +933,51 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 		TimelineUndoRedo.commit_action()
 		indent_events()
-		something_changed()
 
 
-func _on_right_sidebar_resized():
+func _on_right_sidebar_resized() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
-	if %RightSidebar.size.x < 160*_scale and !sidebar_collapsed:
+
+	if %RightSidebar.size.x < 160 * _scale and (not sidebar_collapsed or not _initialized):
 		sidebar_collapsed = true
+
 		for section in %RightSidebar.get_node('EventContainer').get_children():
+
 			for con in section.get_children():
+
 				if con.get_child_count() == 0:
 					continue
+
 				if con.get_child(0) is Label:
 					con.get_child(0).hide()
+
 				elif con.get_child(0) is Button:
+
 					for button in con.get_children():
 						button.toggle_name(false)
 
-	elif %RightSidebar.size.x > 160*_scale and sidebar_collapsed:
+
+	elif %RightSidebar.size.x > 160 * _scale and (sidebar_collapsed or not _initialized):
 		sidebar_collapsed = false
+
 		for section in %RightSidebar.get_node('EventContainer').get_children():
+
 			for con in section.get_children():
+
 				if con.get_child_count() == 0:
 					continue
+
 				if con.get_child(0) is Label:
 					con.get_child(0).show()
+
 				elif con.get_child(0) is Button:
 					for button in con.get_children():
 						button.toggle_name(true)
+
+	if _initialized:
+		DialogicUtil.set_editor_setting("dialogic/editor/right_sidebar_width", %RightSidebar.size.x)
+		DialogicUtil.set_editor_setting("dialogic/editor/right_sidebar_collapsed", sidebar_collapsed)
+
 #endregion
 
 
@@ -945,21 +990,24 @@ func duplicate_selected() -> void:
 		var at_index: int = selected_items[-1].get_index()+1
 		TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
 		TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
-		TimelineUndoRedo.add_do_method(something_changed)
 		TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(at_index, len(events)))
-		TimelineUndoRedo.add_undo_method(something_changed)
 		TimelineUndoRedo.commit_action()
 
 
 func _input(event:InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed == false:
+		drag_allowed = false
+
 	# we protect this with is_visible_in_tree to not
 	# invoke a shortcut by accident
 	if !((event is InputEventKey or !event is InputEventWithModifiers) and is_visible_in_tree()):
 		return
 
+
 	if "pressed" in event:
 		if !event.pressed:
 			return
+
 
 	## Some shortcuts should always work
 	match event.as_text():
@@ -1066,6 +1114,7 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(paste_position+1, len(events_list)))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
+
 
 		"Ctrl+X":
 			var events_indexed := get_events_indexed(selected_items)

@@ -28,6 +28,8 @@ func _ready() -> void:
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.bg_color = get_theme_color("dark_color_2", "Editor")
 	$Margin/EditorsManager.editors_holder.add_theme_stylebox_override('panel', editor_tab_bg)
+	$Margin.set("theme_override_constants/margin_right", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
+	$Margin.set("theme_override_constants/margin_bottom", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()

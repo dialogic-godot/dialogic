@@ -37,24 +37,19 @@ func _close():
 func _ready() -> void:
 	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+
 #region RENAMING
 
 func variable_renamed(old_name:String, new_name:String):
+	if old_name == new_name:
+		return
 	editors_manager.reference_manager.add_variable_ref_change(old_name, new_name)
-	%ReferenceInfo.show()
-
-
-func group_renamed(old_name:String, new_name:String, group_data:Dictionary):
-	for i in group_data:
-		if group_data[i] is Dictionary:
-			group_renamed(old_name+'.'+i, new_name+'.'+i, group_data[i])
-		else:
-			editors_manager.reference_manager.add_variable_ref_change(old_name+'.'+i, new_name+'.'+i)
 	%ReferenceInfo.show()
 
 
 func _on_reference_manager_pressed():
 	editors_manager.reference_manager.open()
+	%ReferenceInfo.hide()
 
 #endregion
 

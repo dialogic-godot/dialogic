@@ -42,8 +42,9 @@ func _enter_tree() -> void:
 
 	# Auto-update the singleton path for alpha users
 	# TODO remove at some point during beta or later
-	remove_autoload_singleton(PLUGIN_NAME)
-	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
+	if not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, null):
+		remove_autoload_singleton(PLUGIN_NAME)
+		add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 
 
 func _exit_tree() -> void:
@@ -92,6 +93,12 @@ func _make_visible(visible:bool) -> void:
 func _save_external_data() -> void:
 	if _editor_view_and_manager_exist():
 		editor_view.editors_manager.save_current_resource()
+
+
+func _get_unsaved_status(for_scene:String) -> String:
+	if for_scene.is_empty():
+		_save_external_data()
+	return ""
 
 
 func _handles(object) -> bool:

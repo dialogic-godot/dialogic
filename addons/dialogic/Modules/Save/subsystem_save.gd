@@ -1,12 +1,19 @@
 extends DialogicSubsystem
+## Subsystem to save and load game states.
+##
+## This subsystem has many different helper methods to save Dialogic or custom
+## game data to named save slots.
+##
+## You can listen to saves via [signal saved]. \
+## If you want to save, you can call [method save]. \
 
-### Subsystem that manages saving and loading data.
 
-
-## Emitted when a save happened.
-## The [param info] contains the following keys:
-## 	- slot_name: The `String` name of the slot that the game state was saved to.
-## 	- is_autosave: `true` if the save was an autosave.
+## Emitted when a save happened with the following info:
+## [br]
+## Key           |   Value Type  | Value [br]
+## -----------   | ------------- | ----- [br]
+## `slot_name`   | [type String] | The name of the slot that the game state was saved to. [br]
+## `is_autosave` | [type bool]   | `true`, if the save was an autosave. [br]
 signal saved(info: Dictionary)
 
 
@@ -80,17 +87,20 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 ## the Dialogic editor.
 ## If you want to save to the last used slot, you can get its slot name with the
 ## [method get_latest_slot()] method.
-func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode.TAKE_AND_STORE, slot_info := {}) -> void:
+func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode.TAKE_AND_STORE, slot_info := {}) -> Error:
 	# check if to save (if this is an autosave)
 	if is_autosave and !autosave_enabled:
-		return
+		return OK
 
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
 
 	set_latest_slot(slot_name)
 
-	save_file(slot_name, 'state.txt', dialogic.get_full_state())
+	var save_error := save_file(slot_name, 'state.txt', dialogic.get_full_state())
+
+	if save_error:
+		return save_error
 
 	if thumbnail_mode == ThumbnailMode.TAKE_AND_STORE:
 		take_thumbnail()
@@ -103,22 +113,31 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 
 	saved.emit({"slot_name": slot_name, "is_autosave": is_autosave})
 	print('[Dialogic] Saved to slot "'+slot_name+'".')
+	return OK
 
 
 ## Loads all info from the given slot in the DialogicGameHandler (Dialogic Autoload).
 ## If no slot is given, the default slot is used.
 ## To check if something is saved in that slot use has_slot().
 ## If the slot does not exist, this method will fail.
-func load(slot_name := "") -> void:
+func load(slot_name := "") -> Error:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
 	if !has_slot(slot_name):
 		printerr("[Dialogic Error] Tried loading from invalid save slot '"+slot_name+"'.")
-		return
-	set_latest_slot(slot_name)
+		return ERR_FILE_NOT_FOUND
+
+	var set_latest_error := set_latest_slot(slot_name)
+	if set_latest_error:
+		push_error("[Dialogic Error]: Failed to store latest slot to global info. Error %d '%s'" % [set_latest_error, error_string(set_latest_error)])
 
 	var state: Dictionary = load_file(slot_name, 'state.txt', {})
 	dialogic.load_full_state(state)
+
+	if state.is_empty():
+		return FAILED
+	else:
+		return OK
 
 
 ## Saves a variable to a file in the given slot.
@@ -129,27 +148,32 @@ func load(slot_name := "") -> void:
 ##
 ## This method allows you to build your own save and load system.
 ## You may be looking for the simple [method save] method to save the game state.
-func save_file(slot_name: String, file_name: String, data: Variant) -> void:
+func save_file(slot_name: String, file_name: String, data: Variant) -> Error:
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
 
-	if not slot_name.is_empty():
+	if slot_name.is_empty():
+		push_error("[Dialogic Error]: No fallback slot name set.")
+		return ERR_FILE_NOT_FOUND
 
-		if !has_slot(slot_name):
-			add_empty_slot(slot_name)
+	if !has_slot(slot_name):
+		add_empty_slot(slot_name)
 
-		var encryption_password := get_encryption_password()
-		var file: FileAccess
+	var encryption_password := get_encryption_password()
+	var file: FileAccess
 
-		if encryption_password.is_empty():
-			file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
-		else:
-			file = FileAccess.open_encrypted_with_pass(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE, encryption_password)
+	if encryption_password.is_empty():
+		file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
+	else:
+		file = FileAccess.open_encrypted_with_pass(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE, encryption_password)
 
-		if file:
-			file.store_var(data)
-		else:
-			push_error(FileAccess.get_open_error())
+	if file:
+		file.store_var(data)
+		return OK
+	else:
+		var error := FileAccess.get_open_error()
+		push_error("[Dialogic Error]: Could not save slot to file. Error: %d '%s'" % [error, error_string(error)])
+		return error
 
 
 ## Loads a file using [param slot_name] and returns the contained info.
@@ -160,7 +184,7 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
 	var path := get_slot_path(slot_name).path_join(file_name)
-
+	print("trying to load ", path)
 	if FileAccess.file_exists(path):
 		var encryption_password := get_encryption_password()
 		var file: FileAccess
@@ -174,34 +198,36 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 			return file.get_var()
 		else:
 			push_error(FileAccess.get_open_error())
-
+	print("Does not exist!")
 	return default
 
 
 ## Data set in global info can be accessed unrelated to the save slots.
 ## For instance, you may want to store game settings in here, as they
 ## affect the game globally unrelated to the slot used.
-func set_global_info(key: String, value: Variant) -> void:
+func set_global_info(key: String, value: Variant) -> Error:
 	var global_info := ConfigFile.new()
 	var encryption_password := get_encryption_password()
 
 	if encryption_password.is_empty():
-
-		if global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt')) == OK:
-			global_info.set_value('main', key, value)
-			var _save_result := global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+		var load_error := global_info.load(SAVE_SLOTS_DIR.path_join('global_info.txt'))
+		if load_error:
+			printerr("[Dialogic Error]: Couldn't access global saved info file.")
+			return load_error
 
 		else:
-			printerr("[Dialogic Error]: Couldn't access global saved info file.")
+			global_info.set_value('main', key, value)
+			return global_info.save(SAVE_SLOTS_DIR.path_join('global_info.txt'))
 
 	else:
-
-		if global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password) == OK:
-			global_info.set_value('main', key, value)
-			var _save_result := global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
+		var load_error := global_info.load_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
+		if load_error:
+			printerr("[Dialogic Error]: Couldn't access global saved info file.")
+			return load_error
 
 		else:
-			printerr("[Dialogic Error]: Couldn't access global saved info file.")
+			global_info.set_value('main', key, value)
+			return global_info.save_encrypted_pass(SAVE_SLOTS_DIR.path_join('global_info.txt'), encryption_password)
 
 
 ## Access the data unrelated to a save slot.
@@ -237,8 +263,8 @@ func get_encryption_password() -> String:
 ####################################################################################################
 ## Returns a list of all available slots. Useful for iterating over all slots,
 ## e.g., when building a UI with all save slots.
-func get_slot_names() -> Array:
-	var save_folders := []
+func get_slot_names() -> Array[String]:
+	var save_folders: Array[String] = []
 
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
@@ -266,35 +292,47 @@ func has_slot(slot_name: String) -> bool:
 
 
 ## Removes all the given slot along with all it's info/files.
-func delete_slot(slot_name: String) -> void:
+func delete_slot(slot_name: String) -> Error:
 	var path := SAVE_SLOTS_DIR.path_join(slot_name)
 
 	if DirAccess.dir_exists_absolute(path):
 		var directory := DirAccess.open(path)
+		if not directory:
+			return DirAccess.get_open_error()
 		var _list_dir := directory.list_dir_begin()
 		var file_name := directory.get_next()
 
 		while not file_name.is_empty():
-			var _result := directory.remove(file_name)
+			var remove_error := directory.remove(file_name)
+			if remove_error:
+				push_warning("[Dialogic Error]: Encountered error while removing '%s': %d\t%s" % [path.path_join(file_name), remove_error, error_string(remove_error)])
 			file_name = directory.get_next()
 
 		# Delete the folder.
-		var _remove_result := directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
+		return directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
+
+	push_warning("[Dialogic Warning]: Save slot '%s' has already been deleted." % path)
+	return OK
 
 
 ## This adds a new save folder with the given name
-func add_empty_slot(slot_name: String) -> void:
+func add_empty_slot(slot_name: String) -> Error:
 	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
 		var directory := DirAccess.open(SAVE_SLOTS_DIR)
-		var _make_dir_result := directory.make_dir(slot_name)
+		if directory:
+			return directory.make_dir(slot_name)
+		return DirAccess.get_open_error()
+
+	push_error("[Dialogic Error]: Path to '%s' does not exist." % SAVE_SLOTS_DIR)
+	return ERR_FILE_BAD_PATH
 
 
 ## Reset the state of the given save folder (or default)
-func reset_slot(slot_name := "") -> void:
+func reset_slot(slot_name := "") -> Error:
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
 
-	save_file(slot_name, 'state.txt', {})
+	return save_file(slot_name, 'state.txt', {})
 
 
 ## Returns the full path to the given slot folder
@@ -325,14 +363,16 @@ func get_latest_slot() -> String:
 	return latest_slot
 
 
-func set_latest_slot(slot_name:String) -> void:
+func set_latest_slot(slot_name:String) -> Error:
 	Engine.get_main_loop().set_meta('dialogic_latest_saved_slot', slot_name)
-	set_global_info('latest_save_slot', slot_name)
+	return set_global_info('latest_save_slot', slot_name)
 
 
-func _make_sure_slot_dir_exists() -> void:
+func _make_sure_slot_dir_exists() -> Error:
 	if not DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
-		var _make_dir_result := DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
+		var make_dir_result := DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
+		if make_dir_result:
+			return make_dir_result
 
 	var global_info_path := SAVE_SLOTS_DIR.path_join('global_info.txt')
 
@@ -341,10 +381,12 @@ func _make_sure_slot_dir_exists() -> void:
 		var password := get_encryption_password()
 
 		if password.is_empty():
-			var _save_result := config.save(global_info_path)
+			return config.save(global_info_path)
 
 		else:
-			var _save_result := config.save_encrypted_pass(global_info_path, password)
+			return config.save_encrypted_pass(global_info_path, password)
+
+	return OK
 
 #endregion
 
@@ -352,11 +394,11 @@ func _make_sure_slot_dir_exists() -> void:
 #region SLOT INFO
 ####################################################################################################
 
-func set_slot_info(slot_name:String, info: Dictionary) -> void:
+func set_slot_info(slot_name:String, info: Dictionary) -> Error:
 	if slot_name.is_empty():
 		slot_name = get_default_slot()
 
-	save_file(slot_name, 'info.txt', info)
+	return save_file(slot_name, 'info.txt', info)
 
 
 func get_slot_info(slot_name := "") -> Dictionary:
@@ -384,10 +426,13 @@ func take_thumbnail() -> void:
 
 ## No need to call from outside.
 ## Used to store the latest thumbnail to the given slot.
-func save_slot_thumbnail(slot_name: String) -> void:
+func save_slot_thumbnail(slot_name: String) -> Error:
 	if latest_thumbnail:
 		var path := get_slot_path(slot_name).path_join('thumbnail.png')
-		var _save_result := latest_thumbnail.save_png(path)
+		return latest_thumbnail.save_png(path)
+
+	push_warning("[Dialogic Warning]: No thumbnail has been set yet.")
+	return OK
 
 
 ## Returns the thumbnail of the given slot.
@@ -455,7 +500,7 @@ func _on_start_or_end_autosave() -> void:
 
 ## Perform an autosave.
 ## This method will be called automatically if the auto-save mode is enabled.
-func perform_autosave() -> void:
-	save("", true)
+func perform_autosave() -> Error:
+	return save("", true)
 
 #endregion

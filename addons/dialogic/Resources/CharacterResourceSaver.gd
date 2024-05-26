@@ -21,6 +21,14 @@ func _recognize(resource: Resource) -> bool:
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0):
 	var file := FileAccess.open(path, FileAccess.WRITE)
+	
+	if not file:
+		# For now, just let editor know that for some reason you can't
+		# read the file.
+		print("[Dialogic] Error opening file:", FileAccess.get_open_error())
+		return FileAccess.get_open_error()
+		
 	var result := var_to_str(inst_to_dict(resource))
 	file.store_string(result)
 #	print('[Dialogic] Saved character "' , path, '"')
+	return OK

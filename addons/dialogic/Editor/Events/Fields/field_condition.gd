@@ -189,16 +189,16 @@ func something_changed(fake_arg1=null, fake_arg2 = null):
 
 
 func is_too_complex(condition:String) -> bool:
-	return !(condition.is_empty()
-			or ' and ' in condition
-			or ' or ' in condition
-			or ' not ' in condition
-			or condition.count('==') != 1
-			or condition.count('>') != 1
-			or condition.count('<') != 1
-			or condition.count('<=') != 1
-			or condition.count('>=') != 1
-			or condition.count('!=') != 1)
+	if condition.strip_edges().is_empty():
+		return false
+
+	var comparison_count: int = 0
+	for i in ['==', '!=', '<=', '<', '>', '>=']:
+		comparison_count += condition.count(i)
+	if comparison_count == 1:
+		return false
+
+	return true
 
 
 ## Combines the info from the simple editor fields into a string condition

@@ -16,7 +16,7 @@ var selected := false
 
 func _ready() -> void:
 	$Icon.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
-	$Spacer.custom_minimum_size.x = 90*DialogicUtil.get_editor_scale()
+	$Spacer.custom_minimum_size.x = 90 * DialogicUtil.get_editor_scale()
 	visual_deselect()
 	parent_node_changed()
 
@@ -59,7 +59,7 @@ func update_hidden_events_indicator(hidden_events_count:int = 0) -> void:
 
 ## Called by the visual timeline editor
 func set_indent(indent: int) -> void:
-	$Indent.custom_minimum_size = Vector2(indent_size * indent*DialogicUtil.get_editor_scale(), 0)
+	$Indent.custom_minimum_size = Vector2(indent_size * indent * DialogicUtil.get_editor_scale(), 0)
 	$Indent.visible = indent != 0
 	current_indent_level = indent
 	queue_redraw()

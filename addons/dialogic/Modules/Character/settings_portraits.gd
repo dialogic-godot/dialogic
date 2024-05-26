@@ -19,9 +19,14 @@ func _ready():
 	%JoinDefault.mode = 1
 	%LeaveDefault.get_suggestions_func = get_leave_animation_suggestions
 	%LeaveDefault.mode = 1
+	%CrossFadeDefault.get_suggestions_func = get_join_animation_suggestions
+	%CrossFadeDefault.mode = 1
 
 	%PositionSuggestions.text_submitted.connect(save_setting.bind(POSITION_SUGGESTION_KEY))
 	%CustomPortraitScene.value_changed.connect(save_setting_with_name.bind(DEFAULT_PORTRAIT_SCENE_KEY))
+	%CrossFadeDefaultLength.value_changed.connect(_on_CrossFadeDefaultLength_value_changed)
+	%CrossFadeDefaultWait.toggled.connect(_on_CrossFadeDefaultWait_toggled)
+	%CrossFadeDefault.value_changed.connect(_on_CrossFadeDefault_value_changed)
 
 	%JoinDefault.value_changed.connect(
 		save_setting_with_name.bind(ANIMATION_JOIN_DEFAULT_KEY))
@@ -37,9 +42,14 @@ func _ready():
 		save_setting.bind(ANIMATION_LEAVE_DEFAULT_WAIT_KEY))
 
 
+	%CrossFadeDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 
 func _refresh():
 	%PositionSuggestions.text = ProjectSettings.get_setting(POSITION_SUGGESTION_KEY, 'leftmost, left, center, right, rightmost')
+	%CrossFadeDefault.set_value(ProjectSettings.get_setting('dialogic/animations/cross_fade_default',
+		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in.gd')))
+	%CrossFadeDefaultLength.set_value(ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5))
+	%CrossFadeDefaultWait.button_pressed = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_wait', true)
 
 	%CustomPortraitScene.resource_icon = get_theme_icon(&"PackedScene", &"EditorIcons")
 	%CustomPortraitScene.set_value(ProjectSettings.get_setting(DEFAULT_PORTRAIT_SCENE_KEY, ''))
@@ -86,5 +96,6 @@ func get_leave_animation_suggestions(search_text:String) -> Dictionary:
 func list_animations() -> Array:
 	var list := DialogicUtil.listdir(get_script().resource_path.get_base_dir().path_join('DefaultAnimations'), true, false, true)
 	list.append_array(DialogicUtil.listdir(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
+
 	return list
 

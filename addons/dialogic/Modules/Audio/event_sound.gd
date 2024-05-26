@@ -12,7 +12,7 @@ var file_path: String = ""
 ## The volume to play the sound at.
 var volume: float = 0
 ## The bus to play the sound on.
-var audio_bus: String = "Master"
+var audio_bus: String = ""
 ## If true, the sound will loop infinitely. Not recommended (as there is no way to stop it).
 var loop: bool = false
 
@@ -54,7 +54,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_name
 		"path"		: {"property": "file_path", 	"default": "",},
 		"volume"	: {"property": "volume", 		"default": 0},
-		"bus"		: {"property": "audio_bus", 	"default": "Master",
+		"bus"		: {"property": "audio_bus", 	"default": "",
 							"suggestions": get_bus_suggestions},
 		"loop"		: {"property": "loop", 			"default": false},
 	}
@@ -64,7 +64,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('file_path', ValueType.FILE,
 			{'left_text'	: 'Play',
 			'file_filter' 	: '*.mp3, *.ogg, *.wav; Supported Audio Files',
@@ -72,6 +72,7 @@ func build_event_editor():
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
 	add_body_edit('volume', ValueType.NUMBER, {'left_text':'Volume:', 'mode':2}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')
+
 
 func get_bus_suggestions() -> Dictionary:
 	var bus_name_list := {}

@@ -10,7 +10,7 @@ func _ready() -> void:
 
 	for tab in $Tabs/Tabs.get_children():
 		tab.add_theme_color_override("font_selected_color", get_theme_color("accent_color", "Editor"))
-		tab.add_theme_font_override("font", get_theme_font("main_button_font", "EditorFonts"))
+		tab.add_theme_font_override("font", get_theme_font("main", "EditorFonts"))
 		tab.toggled.connect(tab_changed.bind(tab.get_index()+1))
 
 

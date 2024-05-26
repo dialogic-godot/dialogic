@@ -10,6 +10,8 @@ var enabled := true
 ## Any key in this dictionary will overwrite the color for any item with that name.
 var color_overrides := {}
 
+const SETTING_DEFAULT_COLOR := 'dialogic/glossary/default_color'
+
 
 #region STATE
 ####################################################################################################
@@ -31,7 +33,7 @@ func parse_glossary(text: String) -> String:
 		return text
 
 	var def_case_sensitive: bool = ProjectSettings.get_setting('dialogic/glossary/default_case_sensitive', true)
-	var def_color: Color = ProjectSettings.get_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
+	var def_color: Color = ProjectSettings.get_setting(SETTING_DEFAULT_COLOR, Color.POWDER_BLUE)
 	var regex := RegEx.new()
 
 	for glossary: DialogicGlossary in glossaries:
@@ -98,10 +100,6 @@ func add_glossary(path:String) -> void:
 ## Iterates over all glossaries and returns the first one that matches the
 ## [param entry_key].
 ##
-## Returns null if none of the glossaries has an entry with that key.
-## If translation is enabled, uses the [param entry_key] as well to check
-## [member _translation_keys].
-##
 ## Runtime complexity:
 ## O(n), where n is the number of glossaries.
 func find_glossary(entry_key: String) -> DialogicGlossary:
@@ -110,7 +108,67 @@ func find_glossary(entry_key: String) -> DialogicGlossary:
 		if glossary.entries.has(entry_key):
 			return glossary
 
-		if glossary.entries.has(entry_key):
-			return glossary
-
 	return null
+
+
+## Returns the first match for a given entry key.
+## If translation is available and enabled, it will be translated
+func get_entry(entry_key: String) -> Dictionary:
+	var glossary: DialogicGlossary = dialogic.Glossary.find_glossary(entry_key)
+
+	var result := {
+		"title": "",
+		"text": "",
+		"extra": "",
+		"color": Color.WHITE,
+		}
+
+	if glossary == null:
+		return {}
+
+	var is_translation_enabled: bool = ProjectSettings.get_setting('dialogic/translation/enabled', false)
+
+	var entry := glossary.get_entry(entry_key)
+
+	if entry.is_empty():
+		return {}
+
+	result.color = entry.get("color")
+	if result.color == null:
+		result.color = ProjectSettings.get_setting(SETTING_DEFAULT_COLOR, Color.POWDER_BLUE)
+
+	if is_translation_enabled and not glossary._translation_id.is_empty():
+		var translation_key: String = glossary._translation_keys.get(entry_key)
+		var last_slash := translation_key.rfind('/')
+
+		if last_slash == -1:
+			return {}
+
+		var tr_base := translation_key.substr(0, last_slash)
+
+		result.title = translate(tr_base, "title", entry)
+		result.text = translate(tr_base, "text", entry)
+		result.extra = translate(tr_base, "extra", entry)
+	else:
+		result.title = entry.get("title", "")
+		result.text = entry.get("text", "")
+		result.extra = entry.get("extra", "")
+
+	## PARSE TEXTS FOR VARIABLES
+	result.title = dialogic.VAR.parse_variables(result.title)
+	result.text = dialogic.VAR.parse_variables(result.text)
+	result.extra = dialogic.VAR.parse_variables(result.extra)
+
+	return result
+
+
+
+## Tries to translate the property with the given
+func translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
+	var tr_key := tr_base.path_join(property)
+	var tr_value := tr(tr_key)
+
+	if tr_key == tr_value:
+		tr_value = fallback_entry.get(property, "")
+
+	return tr_value

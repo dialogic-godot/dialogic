@@ -178,7 +178,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
-func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_BUTTON_LEFT) -> void:
+func suggestion_selected(index: int, position := Vector2(), button_index := MOUSE_BUTTON_LEFT) -> void:
 	if button_index != MOUSE_BUTTON_LEFT:
 		return
 	if %Suggestions.is_item_disabled(index):

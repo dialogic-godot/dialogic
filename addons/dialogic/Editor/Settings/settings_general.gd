@@ -41,7 +41,7 @@ func _refresh() -> void:
 	%SectionList.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
-	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Timeline', 'Audio', 'Godot','Other', 'Helper'])
+	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
 	for ev in cached_events:
 		if !ev.event_category in sections:
 			sections.append(ev.event_category)
@@ -86,10 +86,9 @@ func update_color_palette() -> void:
 	# Color Palette
 	for child in %Colors.get_children():
 		child.queue_free()
-	var _scale := DialogicUtil.get_editor_scale()
 	for color in DialogicUtil.get_color_palette():
 		var button := ColorPickerButton.new()
-		button.custom_minimum_size = Vector2(50 ,50)*scale
+		button.custom_minimum_size = Vector2(50 ,50) * DialogicUtil.get_editor_scale()
 		%Colors.add_child(button)
 		button.color = DialogicUtil.get_color(color)
 		button.color_changed.connect(_on_color_change)

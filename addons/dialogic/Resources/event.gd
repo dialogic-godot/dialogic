@@ -57,8 +57,6 @@ var event_color: Color = Color("FBB13C")
 var dialogic_color_name: String = ''
 ## To sort the buttons shown in the editor. Lower index is placed at the top of a category
 var event_sorting_index: int = 0
-## If false the name is not displayed on the event.
-var display_name: bool = true
 ## If true the event will not have a button in the visual editor sidebar
 var disable_editor_button: bool = false
 ## If false the event will hide it's body by default. Recommended for most events
@@ -95,7 +93,7 @@ enum ValueType {
 	NUMBER,
 	VECTOR2, VECTOR3, VECTOR4,
 	# Other
-	CUSTOM, BUTTON, LABEL
+	CUSTOM, BUTTON, LABEL, COLOR
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
@@ -379,10 +377,11 @@ func parse_shortcode_parameters(shortcode: String) -> Dictionary:
 
 func _get_icon() -> Resource:
 	var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
-	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
-		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
-	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
+	# Check for both svg and png, but prefer svg if available
+	if ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
 		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
+	elif ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
 	return load(_icon_file_name)
 
 

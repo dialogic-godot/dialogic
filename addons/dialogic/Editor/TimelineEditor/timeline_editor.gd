@@ -152,8 +152,7 @@ func _ready():
 	%SwitchEditorMode.text = "Text editor"
 	%SwitchEditorMode.icon = get_theme_icon("ArrowRight", "EditorIcons")
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
-	var _scale := DialogicUtil.get_editor_scale()
-	%SwitchEditorMode.custom_minimum_size.x = 200 * _scale
+	%SwitchEditorMode.custom_minimum_size.x = 200 * DialogicUtil.get_editor_scale()
 
 
 

@@ -55,6 +55,7 @@ func _execute() -> void:
 			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
 			await dialogic.get_tree().process_frame
 
+	var character_name_text := dialogic.Text.get_character_name_parsed(character)
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.load_style(character.custom_info.style, null, false)
@@ -102,6 +103,7 @@ func _execute() -> void:
 		reveal_next_segment = false
 
 	for section_idx in range(min(dialogic.current_state_info['text_sub_idx'], len(split_text)-1), len(split_text)):
+		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
@@ -119,7 +121,7 @@ func _execute() -> void:
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-			_mark_as_read(final_text)
+			_mark_as_read(character_name_text, final_text)
 
 			# We must skip text animation before we potentially return when there
 			# is a Choice event.
@@ -169,10 +171,10 @@ func end_text_event() -> void:
 	finish()
 
 
-func _mark_as_read(final_text: String) -> void:
+func _mark_as_read(character_name_text: String, final_text: String) -> void:
 	if dialogic.has_subsystem('History'):
 		if character:
-			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character_name_text, 'character_color':character.color})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
 		dialogic.History.mark_event_as_visited(self)
@@ -217,12 +219,10 @@ func _on_dialogic_input_action() -> void:
 			if dialogic.Text.is_text_reveal_skippable():
 				dialogic.Text.skip_text_reveal()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 		_:
-			if dialogic.Inputs.is_manualadvance_enabled():
+			if dialogic.Inputs.manual_advance.is_enabled():
 				advance.emit()
 				dialogic.Inputs.stop_timers()
-				dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 
 func _on_dialogic_input_autoadvance() -> void:
@@ -399,8 +399,10 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 
 func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 	if character != null:
 		for portrait in character.portraits:
 			suggestions[portrait] = {'value':portrait, 'icon':icon}

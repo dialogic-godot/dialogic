@@ -7,7 +7,7 @@ extends DialogicSubsystem
 #region MAIN METHODS
 ####################################################################################################
 
-func execute_string(string:String, default: Variant = null) -> Variant:
+func execute_string(string:String, default: Variant = null, no_warning := false) -> Variant:
 	# Some methods are not supported by the expression class, but very useful.
 	# Thus they are recreated below and secretly added.
 	string = string.replace('range(', 'd_range(')
@@ -30,12 +30,18 @@ func execute_string(string:String, default: Variant = null) -> Variant:
 		autoload_names.append(c.name)
 
 	if expr.parse(string, autoload_names) != OK:
-		printerr('Dialogic: Expression failed to parse: ', expr.get_error_text())
+		if not no_warning:
+			printerr('[Dialogic] Expression "', string, '" failed to parse.')
+			printerr('           ', expr.get_error_text())
+			dialogic.print_debug_moment()
 		return default
 
 	var result: Variant = expr.execute(autoloads, self)
 	if expr.has_execute_failed():
-		printerr('Dialogic: Expression failed to execute: ', expr.get_error_text())
+		if not no_warning:
+			printerr('[Dialogic] Expression "', string, '" failed to parse.')
+			printerr('           ', expr.get_error_text())
+			dialogic.print_debug_moment()
 		return default
 	return result
 

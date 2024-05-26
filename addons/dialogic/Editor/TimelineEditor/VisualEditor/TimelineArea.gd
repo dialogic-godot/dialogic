@@ -74,9 +74,8 @@ func finish_dragging():
 ################################################################################
 
 func _draw() -> void:
-	var _scale := DialogicUtil.get_editor_scale()
-	var line_width := 5 * _scale
-	var horizontal_line_length := 100*_scale
+	var line_width := 5 * DialogicUtil.get_editor_scale()
+	var horizontal_line_length := 100 * DialogicUtil.get_editor_scale()
 	var color_multiplier := Color(1,1,1,0.25)
 	var selected_color_multiplier := Color(1,1,1,1)
 

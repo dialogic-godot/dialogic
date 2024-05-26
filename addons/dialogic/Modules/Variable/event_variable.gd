@@ -31,6 +31,7 @@ var name: String = "":
 					_value_type = VarValueType.BOOL
 			ui_update_needed.emit()
 		update_editor_warning()
+
 ## The operation to perform.
 var operation: int = Operations.SET:
 	set(value):
@@ -73,37 +74,55 @@ var _suppress_default_value: bool = false
 
 func _execute() -> void:
 	if name:
-		var orig: Variant = dialogic.VAR.get_variable(name)
-		if value != null and orig != null:
-			var the_value: Variant
+		var original_value: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
+
+		if value != null and (original_value != null or (operation == Operations.SET and "[" in name)):
+
+			var interpreted_value: Variant
+			var result: Variant
+
 			match _value_type:
 				VarValueType.STRING:
-					the_value = dialogic.VAR.get_variable('"'+value+'"')
+					interpreted_value = dialogic.VAR.get_variable('"' + value + '"')
 				VarValueType.VARIABLE:
-					the_value = dialogic.VAR.get_variable('{'+value+'}')
-				VarValueType.NUMBER,VarValueType.BOOL,VarValueType.EXPRESSION,VarValueType.RANDOM_NUMBER:
-					the_value = dialogic.VAR.get_variable(str(value))
+					interpreted_value = dialogic.VAR.get_variable('{' + value + '}')
+				VarValueType.NUMBER, VarValueType.BOOL, VarValueType.EXPRESSION, VarValueType.RANDOM_NUMBER:
+					interpreted_value = dialogic.VAR.get_variable(str(value))
 
-			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
-				orig = float(orig)
-				the_value = float(the_value)
+			if operation != Operations.SET and (not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float()):
+				printerr("[Dialogic] Set Variable event failed because one value wasn't a float! [", original_value, ", ",interpreted_value,"]")
+				finish()
+				return
+
+			if operation == Operations.SET:
+				result = interpreted_value
+
+			else:
+				original_value = float(original_value)
+				interpreted_value = float(interpreted_value)
+
 				match operation:
 					Operations.ADD:
-						dialogic.VAR.set_variable(name, orig+the_value)
+						result = original_value + interpreted_value
 					Operations.SUBSTRACT:
-						dialogic.VAR.set_variable(name, orig-the_value)
+						result = original_value - interpreted_value
 					Operations.MULTIPLY:
-						dialogic.VAR.set_variable(name, orig*the_value)
+						result = original_value * interpreted_value
 					Operations.DIVIDE:
-						dialogic.VAR.set_variable(name, orig/the_value)
-				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			elif operation == Operations.SET:
-				dialogic.VAR.set_variable(name, the_value)
-				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			else:
-				printerr("Dialogic: Set Variable event failed because one value wasn't a float! [", orig, ", ",the_value,"]")
+						result = original_value / interpreted_value
+
+			dialogic.VAR.set_variable(name, result)
+			dialogic.VAR.variable_was_set.emit(
+				{
+					'variable' : name,
+					'value' : interpreted_value,
+					'value_str' : value,
+					'orig_value' : original_value,
+					'new_value' : result,
+				})
+
 		else:
-			printerr("Dialogic: Set Variable event failed because one value wasn't set!")
+			printerr("[Dialogic] Set Variable event failed because one value wasn't set!")
 
 	finish()
 
@@ -127,7 +146,7 @@ func _init() -> void:
 func to_text() -> String:
 	var string := "set "
 	if name:
-		string += "{" + name + "}"
+		string += "{" + name.trim_prefix('{').trim_suffix('}') + "}"
 		match operation:
 			Operations.SET:
 				string+= " = "

@@ -14,7 +14,7 @@ func _ready() -> void:
 		return
 
 	%Name.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
-	custom_minimum_size = base_size*Vector2(200, 150)*DialogicUtil.get_editor_scale()
+	custom_minimum_size = base_size*Vector2(200, 150) * DialogicUtil.get_editor_scale()
 	%CurrentIcon.texture = get_theme_icon("Favorites", "EditorIcons")
 	if %Image.texture == null:
 		%Image.texture = get_theme_icon("ImportFail", "EditorIcons")
