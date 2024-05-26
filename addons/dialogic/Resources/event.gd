@@ -267,8 +267,8 @@ func to_text() -> String:
 	var result_string: String = "["+self.get_shortcode()
 
 	for parameter in params.keys():
-		var value := get(params[parameter].property)
-		var default_value := custom_defaults.get(params[parameter].property, params[parameter].default)
+		var value: Variant = get(params[parameter].property)
+		var default_value: Variant = custom_defaults.get(params[parameter].property, params[parameter].default)
 
 		if (typeof(value)) != typeof(default_value) or (value != default_value):
 			if "set_"+params[parameter].property in self and not get("set_"+params[parameter].property):
