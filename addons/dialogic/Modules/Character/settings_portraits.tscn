@@ -24,8 +24,8 @@ text = "Position Suggestions
 
 [node name="HintTooltip" parent="PositionsTitle" instance=ExtResource("2_dce78")]
 layout_mode = 2
-tooltip_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
-texture = SubResource("ImageTexture_ue0a8")
+tooltip_text = "You can change the position names that will be suggested in the timeline editor here."
+texture = null
 hint_text = "You can change the position names that will be suggested in the timeline editor here."
 
 [node name="PositionSuggestions" type="LineEdit" parent="."]
@@ -46,6 +46,7 @@ text = "Default Portrait Scene
 [node name="HintTooltip" parent="DefaultSceneTitle" instance=ExtResource("2_dce78")]
 layout_mode = 2
 tooltip_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
+texture = null
 hint_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
 
 [node name="DefaultScene" type="HBoxContainer" parent="."]
@@ -78,6 +79,7 @@ tooltip_text = "These settings are used for Leave and Join events if no animatio
 
 The Cross-Fade will play if the portrait of a character changes and 
 no animation is set."
+texture = null
 hint_text = "These settings are used for Leave and Join events if no animation is selected.
 
 The Cross-Fade will play if the portrait of a character changes and 
@@ -153,7 +155,6 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Wait:"
 
-[connection signal="value_changed" from="HBoxContainer/CustomPortraitScene" to="." method="_on_custom_portrait_scene_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefault" to="." method="_on_JoinDefault_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefaultLength" to="." method="_on_JoinDefaultLength_value_changed"]
 [connection signal="toggled" from="GridContainer/DefaultIn/JoinDefaultWait" to="." method="_on_JoinDefaultWait_toggled"]

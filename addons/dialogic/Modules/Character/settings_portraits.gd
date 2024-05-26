@@ -12,6 +12,9 @@ const ANIMATION_JOIN_DEFAULT_WAIT_KEY 		:= 'dialogic/animations/join_default_wai
 const ANIMATION_LEAVE_DEFAULT_KEY 			:= 'dialogic/animations/leave_default'
 const ANIMATION_LEAVE_DEFAULT_LENGTH_KEY 	:= 'dialogic/animations/leave_default_length'
 const ANIMATION_LEAVE_DEFAULT_WAIT_KEY 		:= 'dialogic/animations/leave_default_wait'
+const ANIMATION_CROSSFADE_DEFAULT_KEY 		:= 'dialogic/animations/cross_fade_default'
+const ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY:= 'dialogic/animations/cross_fade_default_length'
+const ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY 	:= 'dialogic/animations/cross_fade_default_wait'
 
 
 func _ready():
@@ -24,9 +27,6 @@ func _ready():
 
 	%PositionSuggestions.text_submitted.connect(save_setting.bind(POSITION_SUGGESTION_KEY))
 	%CustomPortraitScene.value_changed.connect(save_setting_with_name.bind(DEFAULT_PORTRAIT_SCENE_KEY))
-	%CrossFadeDefaultLength.value_changed.connect(_on_CrossFadeDefaultLength_value_changed)
-	%CrossFadeDefaultWait.toggled.connect(_on_CrossFadeDefaultWait_toggled)
-	%CrossFadeDefault.value_changed.connect(_on_CrossFadeDefault_value_changed)
 
 	%JoinDefault.value_changed.connect(
 		save_setting_with_name.bind(ANIMATION_JOIN_DEFAULT_KEY))
@@ -34,6 +34,7 @@ func _ready():
 		save_setting.bind(ANIMATION_JOIN_DEFAULT_LENGTH_KEY))
 	%JoinDefaultWait.toggled.connect(
 		save_setting.bind(ANIMATION_JOIN_DEFAULT_WAIT_KEY))
+
 	%LeaveDefault.value_changed.connect(
 		save_setting_with_name.bind(ANIMATION_LEAVE_DEFAULT_KEY))
 	%LeaveDefaultLength.value_changed.connect(
@@ -41,19 +42,21 @@ func _ready():
 	%LeaveDefaultWait.toggled.connect(
 		save_setting.bind(ANIMATION_LEAVE_DEFAULT_WAIT_KEY))
 
+	%CrossFadeDefault.value_changed.connect(
+		save_setting_with_name.bind(ANIMATION_CROSSFADE_DEFAULT_KEY))
+	%CrossFadeDefaultLength.value_changed.connect(
+		save_setting.bind(ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY))
+	%CrossFadeDefaultWait.toggled.connect(
+		save_setting.bind(ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY))
 
-	%CrossFadeDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
 
 func _refresh():
 	%PositionSuggestions.text = ProjectSettings.get_setting(POSITION_SUGGESTION_KEY, 'leftmost, left, center, right, rightmost')
-	%CrossFadeDefault.set_value(ProjectSettings.get_setting('dialogic/animations/cross_fade_default',
-		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in.gd')))
-	%CrossFadeDefaultLength.set_value(ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5))
-	%CrossFadeDefaultWait.button_pressed = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_wait', true)
 
 	%CustomPortraitScene.resource_icon = get_theme_icon(&"PackedScene", &"EditorIcons")
 	%CustomPortraitScene.set_value(ProjectSettings.get_setting(DEFAULT_PORTRAIT_SCENE_KEY, ''))
 
+	# JOIN
 	%JoinDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
 	%JoinDefault.set_value(DialogicUtil.pretty_name(
 		ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_KEY,
@@ -61,12 +64,21 @@ func _refresh():
 	%JoinDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_LENGTH_KEY, 0.5))
 	%JoinDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_WAIT_KEY, true)
 
+	# LEAVE
 	%LeaveDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
 	%LeaveDefault.set_value(
 		ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_KEY,
 		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd')))
 	%LeaveDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_LENGTH_KEY, 0.5))
 	%LeaveDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_WAIT_KEY, true)
+
+	# CROSS FADE
+	%CrossFadeDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
+	%CrossFadeDefault.set_value(
+		ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_KEY,
+		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in.gd')))
+	%CrossFadeDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY, 0.5))
+	%CrossFadeDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY, true)
 
 
 func save_setting_with_name(property_name:String, value:Variant, settings_key:String) -> void:
@@ -85,6 +97,7 @@ func get_join_animation_suggestions(search_text:String) -> Dictionary:
 			suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
 	return suggestions
 
+
 func get_leave_animation_suggestions(search_text:String) -> Dictionary:
 	var suggestions := {}
 	for anim in list_animations():
@@ -98,4 +111,3 @@ func list_animations() -> Array:
 	list.append_array(DialogicUtil.listdir(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 
 	return list
-
