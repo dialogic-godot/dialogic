@@ -370,43 +370,20 @@ func build_event_editor():
 			{'suggestions_func' : get_portrait_suggestions,
 			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
-			'collapse_when_empty':true,},
-			'character != null and !has_no_portraits()')
+			'collapse_when_empty': true,},
+			'character and character.portraits.is_empty()')
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
 func do_any_characters_exist() -> bool:
-	return !DialogicResourceUtil.get_character_directory().is_empty()
-
-func has_no_portraits() -> bool:
-	return character and character.portraits.is_empty()
+	return not DialogicResourceUtil.get_character_directory().is_empty()
 
 
 func get_character_suggestions(search_text:String) -> Dictionary:
-	var suggestions := {}
-
-
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-
-	var character_directory := DialogicResourceUtil.get_character_directory()
-	for resource in character_directory.keys():
-		suggestions[resource] = {
-				'value' 	: resource,
-				'tooltip' 	: character_directory[resource],
-				'icon' 		: icon.duplicate()}
-	return suggestions
+	return DialogicUtil.get_character_suggestions(search_text, true)
 
 
 func get_portrait_suggestions(search_text:String) -> Dictionary:
-	var suggestions := {}
-	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	if "{" in search_text:
-		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
-	if character != null:
-		for portrait in character.portraits:
-			suggestions[portrait] = {'value':portrait, 'icon':icon}
-	return suggestions
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
 
 #endregion
 

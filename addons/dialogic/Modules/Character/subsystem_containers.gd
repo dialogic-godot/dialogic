@@ -46,9 +46,9 @@ func get_containers(position_id: String) -> Array[DialogicNode_PortraitContainer
 
 
 func get_container_container() -> CanvasItem:
-	var any_portrait := get_tree().get_first_node_in_group(&'dialogic_portrait_con_position')
-	if any_portrait:
-		return any_portrait.get_parent()
+	var any_portrait_container := get_tree().get_first_node_in_group(&'dialogic_portrait_con_position')
+	if any_portrait_container:
+		return any_portrait_container.get_parent()
 	return null
 
 
@@ -86,6 +86,7 @@ func translate_container(container:DialogicNode_PortraitContainer, translation:S
 	else:
 		container.position = final_translation
 	position_changed.emit({&'change':'moved', &'container_node':container})
+
 
 func rotate_container(container:DialogicNode_PortraitContainer, rotation:float, relative := false, tween:Tween=null, time:float=1.0) -> void:
 	if !container.has_meta(&'default_rotation'):

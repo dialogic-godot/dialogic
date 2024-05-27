@@ -563,3 +563,70 @@ static func str_to_hash_set(source: String) -> Dictionary:
 	return dictionary
 
 #endregion
+
+
+static func get_character_suggestions(search_text:String, allow_none := true, allow_all:= false) -> Dictionary:
+	var suggestions := {}
+
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+	if allow_none:
+		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	if allow_all:
+		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
+
+	var character_directory := DialogicResourceUtil.get_character_directory()
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon}
+
+	return suggestions
+
+
+static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change") -> Dictionary:
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	var suggestions := {}
+
+	if allow_empty:
+		suggestions[empty_text] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
+
+	if character != null:
+		for portrait in character.portraits:
+			suggestions[portrait] = {'value':portrait, 'icon':icon}
+
+	return suggestions
+
+
+static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
+	var icon := load(DialogicUtil.get_module_path("Character").path_join('event_portrait_position.svg'))
+
+	var setting: String = ProjectSettings.get_setting('dialogic/portraits/position_suggestion_names', 'leftmost, left, center, right, rightmost')
+
+	var suggestions := {}
+
+	if not search_text.is_empty():
+		suggestions[search_text] = {'value':search_text.strip_edges(), 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+
+	for position_id in setting.split(','):
+		suggestions[position_id.strip_edges()] = {'value':position_id.strip_edges(), 'icon':icon}
+		if not search_text.is_empty() and position_id.strip_edges().begins_with(search_text):
+			suggestions.erase(search_text)
+
+	return suggestions
+
+
+static func get_portrait_animation_suggestions(search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
+	var suggestions := {}
+
+	suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	for anim in DialogicUtil.get_portrait_animation_scripts(action):
+		suggestions[DialogicUtil.pretty_name(anim)] = {
+			'value'			: DialogicUtil.pretty_name(anim),
+			'editor_icon'	: ["Animation", "EditorIcons"]
+			}
+
+	return suggestions
