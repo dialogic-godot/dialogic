@@ -452,7 +452,7 @@ func get_animation_suggestions(search_text:String='') -> Dictionary:
 	if action == Actions.UPDATE:
 		empty_text = "None"
 
-	return DialogicUtil.get_portrait_animation_suggestions(search_text, empty_text, action)
+	return DialogicUtil.get_portrait_animation_suggestions(search_text, empty_text, action+1)
 
 
 ####################### CODE COMPLETION ########################################

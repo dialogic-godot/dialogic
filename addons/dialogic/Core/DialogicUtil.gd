@@ -137,7 +137,8 @@ static func get_portrait_animation_scripts(type := AnimationType.ALL, include_cu
 				# Extra check for CROSS animations to prevent parsing parts
 				# of the name as an IN or OUT animation.
 				AnimationType.ACTION:
-					return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
+					#return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
+					return not IN_ANIMATION in script and not OUT_ANIMATION in script
 
 				_:
 					return false
