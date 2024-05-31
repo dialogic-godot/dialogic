@@ -61,8 +61,7 @@ func add_container(position_id: String, position := "", size := "") -> DialogicN
 		var new_position := DialogicNode_PortraitContainer.new()
 		example_position.get_parent().add_child(new_position)
 		new_position.size = str_to_vector(size)
-		new_position.size_mode = example_position.size_mode
-		new_position.origin_anchor = example_position.origin_anchor
+		copy_container_setup(example_position, new_position)
 		new_position.container_ids = [position_id]
 		new_position.position = str_to_vector(position)-new_position._get_origin_position()
 		position_changed.emit({&'change':'added', &'container_node':new_position, &'position_id':position_id})
@@ -70,11 +69,62 @@ func add_container(position_id: String, position := "", size := "") -> DialogicN
 	return null
 
 
-func translate_container(container:DialogicNode_PortraitContainer, translation:String, relative := false, tween:Tween=null, time:float=1.0) -> void:
+## Moves the [container] to the [destionation] (using [tween] and [time]).
+## The destination can be a position_id (e.g. "center") or translation, roataion and scale.
+## When moving to a preset container, then some more will be "copied" (e.g. anchors, etc.)
+func move_container(container:DialogicNode_PortraitContainer, destination:String, tween:Tween = null, time:float=1.0) -> void:
+	var target_position: Vector2
+	var target_rotation: float
+	var target_size: Vector2
+
+	var destination_container := get_container(destination)
+	if destination_container:
+		container.set_meta("target_container", destination_container)
+		target_position = destination_container.position + destination_container._get_origin_position()
+		target_rotation = destination_container.rotation_degrees
+		target_size = destination_container.size
+
+	translate_container(container, target_position, false, tween, time)
+	rotate_container(container, target_rotation, false, tween, time)
+	resize_container(container, target_size, false, tween, time)
+
+	if time:
+		tween.finished.connect(func():
+			if container.has_meta("target_container"):
+				if container.get_meta("target_container") == destination_container:
+					copy_container_setup(destination_container, container)
+			)
+	else:
+		copy_container_setup(destination_container, container)
+
+
+func copy_container_setup(from:DialogicNode_PortraitContainer, to:DialogicNode_PortraitContainer) -> void:
+	to.ignore_resize = true
+	to.layout_mode = from.layout_mode
+	to.anchors_preset = from.anchors_preset
+	to.anchor_bottom = from.anchor_bottom
+	to.anchor_left = from.anchor_left
+	to.anchor_right = from.anchor_right
+	to.anchor_top = from.anchor_top
+	to.offset_bottom = from.offset_bottom
+	to.offset_top = from.offset_top
+	to.offset_right = from.offset_right
+	to.offset_left = from.offset_left
+	to.size_mode = from.size_mode
+	to.origin_anchor = from.origin_anchor
+	to.ignore_resize = false
+	to.update_portrait_transforms()
+
+
+func translate_container(container:DialogicNode_PortraitContainer, translation:Variant, relative := false, tween:Tween=null, time:float=1.0) -> void:
 	if !container.has_meta(&'default_translation'):
 		container.set_meta(&'default_translation', container.position+container._get_origin_position())
 
-	var final_translation := str_to_vector(translation, container.position+container._get_origin_position())
+	var final_translation: Vector2
+	if typeof(translation) == TYPE_STRING:
+		final_translation = str_to_vector(translation, container.position+container._get_origin_position())
+	elif typeof(translation) == TYPE_VECTOR2:
+		final_translation = translation
 
 	if relative:
 		final_translation += container.position
@@ -106,11 +156,16 @@ func rotate_container(container:DialogicNode_PortraitContainer, rotation:float, 
 
 	position_changed.emit({&'change':'rotated', &'container_node':container})
 
-func resize_container(container: DialogicNode_PortraitContainer, rect_size: String, relative := false, tween:Tween=null, time:float=1.0) -> void:
+
+func resize_container(container: DialogicNode_PortraitContainer, rect_size: Variant, relative := false, tween:Tween=null, time:float=1.0) -> void:
 	if !container.has_meta(&'default_size'):
 		container.set_meta(&'default_size', container.size)
 
-	var final_rect_resize := str_to_vector(rect_size, container.size)
+	var final_rect_resize: Vector2
+	if typeof(rect_size) == TYPE_STRING:
+		final_rect_resize = str_to_vector(rect_size, container.size)
+	elif typeof(rect_size) == TYPE_VECTOR2:
+		final_rect_resize = rect_size
 
 	if relative:
 		final_rect_resize += container.rect_size
@@ -127,7 +182,7 @@ func resize_container(container: DialogicNode_PortraitContainer, rect_size: Stri
 	position_changed.emit({&'change':'resized', &'container_node':container})
 
 
-func str_to_vector(input: String, base_vector := Vector2()) -> Vector2:
+func str_to_vector(input: String, base_vector:=Vector2()) -> Vector2:
 	var vector_regex := RegEx.create_from_string(r"(?<part>x|y)\s*(?<number>(-|\+)?(\d|\.|)*)(\s*(?<type>%|px))?")
 	var vec := base_vector
 	for i in vector_regex.search_all(input):

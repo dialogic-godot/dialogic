@@ -70,7 +70,7 @@ var extra_data: String = ""
 
 ## Indicators for whether something should be updated (UPDATE mode only)
 var set_portrait := false
-var set_position := false
+var set_transform := false
 var set_z_index := false
 var set_mirrored := false
 ## Used to set the character resource from the unique name identifier and vice versa
@@ -87,7 +87,7 @@ var character_identifier: String:
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
 
-var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
+var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<transform>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
 
 ################################################################################
 ## 						EXECUTION
@@ -106,6 +106,8 @@ func _execute() -> void:
 		final_animation_length = min(max_time, animation_length)
 		final_position_move_time = min(max_time, transform_time)
 
+
+	# JOIN -------------------------------------
 	if action == Actions.JOIN:
 		if dialogic.has_subsystem('History') and !dialogic.Portraits.is_character_joined(character):
 			var character_name_text := dialogic.Text.get_character_name_parsed(character)
@@ -116,9 +118,9 @@ func _execute() -> void:
 			mirrored, z_index, extra_data,
 			animation_name, final_animation_length, animation_wait)
 
+	# LEAVE -------------------------------------
 	elif action == Actions.LEAVE:
 		if character_identifier == '--All--':
-
 			if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
 				dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
 
@@ -140,6 +142,7 @@ func _execute() -> void:
 				animation_wait
 			)
 
+	# UPDATE -------------------------------------
 	elif action == Actions.UPDATE:
 		if not character or not dialogic.Portraits.is_character_joined(character):
 			finish()
@@ -156,8 +159,8 @@ func _execute() -> void:
 		if set_z_index:
 			dialogic.Portraits.change_character_z_index(character, z_index)
 
-		if set_position:
-			dialogic.Portraits.move_character(character, transform, final_position_move_time)
+		if set_transform:
+			dialogic.Portraits.move_character(character, transform, final_position_move_time, transform_ease, transform_trans)
 
 		if animation_name.is_empty() and not portrait.is_empty():
 			animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In Out")
@@ -206,9 +209,8 @@ func _execute() -> void:
 	finish()
 
 
-################################################################################
-## 						INITIALIZE
-################################################################################
+#region INITIALIZE
+###############################################################################
 
 func _init() -> void:
 	event_name = "Character"
@@ -220,13 +222,15 @@ func _init() -> void:
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
-################################################################################
-## 						SAVING/LOADING
+#endregion
+
+#region SAVING, LOADING, DEFAULTS
 ################################################################################
 
 func to_text() -> String:
 	var result_string := ""
 
+	# ACTIONS
 	match action:
 		Actions.JOIN: result_string += "join "
 		Actions.LEAVE: result_string += "leave "
@@ -234,149 +238,99 @@ func to_text() -> String:
 
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
-	if character or character_identifier == '--All--':
+	# CHARACTER IDENTIFIER
+	if action == Actions.LEAVE and character_identifier == '--All--':
+		result_string += "--All--"
+	elif character:
+		var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
 
-		if action == Actions.LEAVE and character_identifier == '--All--':
-			result_string += "--All--"
+		if name.count(" ") > 0:
+			name = '"' + name + '"'
 
-		else:
-			var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+		result_string += name
 
-			if name.count(" ") > 0:
-				name = '"' + name + '"'
+		# PORTRAIT
+		if portrait.strip_edges() != default_values.get('portrait', ''):
+			if action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
+				result_string += " (" + portrait + ")"
 
-			result_string += name
+	# TRANSFORM
+	if action == Actions.JOIN or (action == Actions.UPDATE and set_transform):
+		result_string += " " + str(transform)
 
-			if portrait.strip_edges() != default_values.get('portrait', '') and action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
-				result_string+= " ("+portrait+")"
+	var shortcode := store_to_shortcode_parameters()
 
-	if action != Actions.LEAVE and (action != Actions.UPDATE or set_position):
-		result_string += " "+str(transform)
+	if shortcode != "":
+		result_string += " [" + shortcode + "]"
 
-	var shortcode := "["
-	if animation_name:
-		shortcode += 'animation="'+animation_name+'"'
-
-		if animation_length != default_values.get('animation_length', 0.5):
-			shortcode += ' length="'+str(animation_length)+'"'
-
-		if animation_wait != default_values.get('animation_wait', false):
-			shortcode += ' wait="'+str(animation_wait)+'"'
-
-		if animation_repeats != default_values.get('animation_repeats', 1) and action == Actions.UPDATE:
-			shortcode += ' repeat="'+str(animation_repeats)+'"'
-
-	if z_index != default_values.get('z_index', 0) or (action == Actions.UPDATE and set_z_index):
-		shortcode += ' z_index="' + str(z_index) + '"'
-
-	if mirrored != default_values.get('mirrored', false) or (action == Actions.UPDATE and set_mirrored):
-		shortcode += ' mirrored="' + str(mirrored) + '"'
-
-	if transform_time != default_values.get('position_move_time', 0) and action == Actions.UPDATE and set_position:
-		shortcode += ' move_time="' + str(transform_time) + '"'
-
-	if extra_data != "":
-		shortcode += ' extra_data="' + extra_data + '"'
-
-	shortcode += "]"
-
-	if shortcode != "[]":
-		result_string += " "+shortcode
 	return result_string
 
 
 func from_text(string:String) -> void:
-	var character_directory := DialogicResourceUtil.get_character_directory()
-
-	# load default character
+	# Load default character
 	character = DialogicResourceUtil.get_character_resource(character_identifier)
 
 	var result := regex.search(string)
 
+	# ACTION
 	match result.get_string('type'):
-		"join":
-			action = Actions.JOIN
-		"leave":
-			action = Actions.LEAVE
-		"update":
-			action = Actions.UPDATE
+		"join": action = Actions.JOIN
+		"leave": action = Actions.LEAVE
+		"update": action = Actions.UPDATE
 
-	if result.get_string('name').strip_edges():
+	# CHARACTER
+	var given_name := result.get_string('name').strip_edges()
+	var given_portrait := result.get_string('portrait').strip_edges()
+	var given_transform := result.get_string('transform').strip_edges()
 
-		if action == Actions.LEAVE and result.get_string('name').strip_edges() == "--All--":
+	if given_name:
+		if action == Actions.LEAVE and given_name == "--All--":
 			character_identifier = '--All--'
 		else:
-			var name := result.get_string('name').strip_edges()
-			character = DialogicResourceUtil.get_character_resource(name)
+			character = DialogicResourceUtil.get_character_resource(given_name)
 
-
-	if !result.get_string('portrait').is_empty():
-		portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
+	# PORTRAIT
+	if given_portrait:
+		portrait = given_portrait.trim_prefix('(').trim_suffix(')')
 		set_portrait = true
 
-	if result.get_string('position'):
-		transform = result.get_string('position').strip_edges()
-		set_position = true
+	# TRANSFORM
+	if given_transform:
+		transform = given_transform
+		set_transform = true
 
-	if result.get_string('shortcode'):
-		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
-		animation_name = shortcode_params.get('animation', '')
+	# SHORTCODE
+	if not result.get_string('shortcode'):
+		return
 
-		var animLength: float = shortcode_params.get('length', '0.5').to_float()
-
-		if typeof(animLength) == TYPE_FLOAT:
-			animation_length = animLength
-		else:
-			animation_length = animLength
-
-		var wait_for_animation: String = shortcode_params.get('wait', 'false')
-		animation_wait = DialogicUtil.str_to_bool(wait_for_animation)
-
-		#repeat is supported on Update, the other two should not be checking this
-		if action == Actions.UPDATE:
-			animation_repeats = int(shortcode_params.get('repeat', animation_repeats))
-
-		#move time is only supported on Update, but it isnt part of the animations so its separate
-		if action == Actions.UPDATE:
-			transform_time = float(shortcode_params.get('move_time', transform_time))
-
-		z_index = int(shortcode_params.get('z_index', z_index))
-		set_z_index = shortcode_params.has('z_index')
-
-		mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', str(mirrored)))
-		set_mirrored = shortcode_params.has('mirrored')
-		extra_data = shortcode_params.get('extra_data', "")
+	load_from_shortcode_parameters(result.get_string('shortcode'))
 
 
-## this is only here to provide a list of default values
-## this way the module manager can add custom default overrides to this event.
-## this is also why some properties are commented out,
-## because it's not recommended to overwrite them this way
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action" 		: {"property": "action", 					"default": 0,
+		"action" 		: {"property": "action", 					"default": 0, "custom_stored":true,
 							"suggestions": func(): return {'Join':
 										{'value':Actions.JOIN},
 										'Leave':{'value':Actions.LEAVE},
 										'Update':{'value':Actions.UPDATE}}},
-		"character" 	: {"property": "character_identifier", 	"default": ""},
-		"portrait" 		: {"property": "portrait", 						"default": ""},
-		"tranform" 		: {"property": "tranform", 						"default": 1},
+		"character" 	: {"property": "character_identifier",	"default": "", "custom_stored":true,},
+		"portrait" 		: {"property": "portrait", 				"default": "", "custom_stored":true,},
+		"tranform" 		: {"property": "tranform", 				"default": 1, "custom_stored":true,},
 
-#		"animation_name"	: {"property": "animation_name", 			"default": ""},
-		"animation_length"	: {"property": "animation_length", 			"default": 0.5},
-		"animation_wait" 	: {"property": "animation_wait", 			"default": false},
-		"animation_repeats"	: {"property": "animation_repeats", 		"default": 1},
+		"animation"		: {"property": "animation_name", 			"default": ""},
+		"length"		: {"property": "animation_length", 			"default": 0.5},
+		"wait" 			: {"property": "animation_wait", 			"default": false},
+		"repeat"		: {"property": "animation_repeats", 		"default": 1},
 
 		"z_index" 		: {"property": "z_index", 						"default": 0},
-		"tranform_time"	: {"property": "tranform_time", 				"default": 0.0},
 		"mirrored"		: {"property": "mirrored", 						"default": false},
-		"extra_data"	: {"property": "extra_data", 					"default": ""},
-		"ease" 			: {"property": "tween_ease", 	"default": Tween.EaseType.EASE_IN_OUT,
+		"time"			: {"property": "transform_time", 				"default": 0.0},
+		"ease" 			: {"property": "transform_ease", 	"default": Tween.EaseType.EASE_IN_OUT,
 								"suggestions": func(): return list_to_suggestions(ease_options)},
-		"trans"			: {"property": "tween_trans", 	"default": Tween.TransitionType.TRANS_SINE,
+		"trans"			: {"property": "transform_trans", 	"default": Tween.TransitionType.TRANS_SINE,
 								"suggestions": func(): return list_to_suggestions(trans_options)},
+		"extra_data"	: {"property": "extra_data", 					"default": ""},
 	}
 
 
@@ -385,6 +339,7 @@ func is_valid_event(string:String) -> bool:
 		return true
 	return false
 
+#endregion
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
@@ -427,15 +382,15 @@ func build_event_editor() -> void:
 			'suggestions_func' 	: get_portrait_suggestions,
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")},
 			'should_show_portrait_selector() and (action != Actions.UPDATE or set_portrait)')
-	add_header_edit('set_position', ValueType.BOOL_BUTTON,
+	add_header_edit('set_transform', ValueType.BOOL_BUTTON,
 			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'Change Position'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
 	add_header_label('at position', 'character != null and !has_no_portraits() and action == Actions.JOIN')
-	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_position')
+	add_header_label('to position', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_transform')
 	add_header_edit('transform', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'center',
 			'mode'				: 0,
 			'suggestions_func' 	: get_position_suggestions},
-			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_position)' %Actions.LEAVE)
+			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_transform)' %Actions.LEAVE)
 
 	# Body
 	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
@@ -453,7 +408,7 @@ func build_event_editor() -> void:
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
 	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:'},
-			'action == %s and set_position' %Actions.UPDATE)
+			'action == %s and set_transform' %Actions.UPDATE)
 	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:"}, 'transform_time > 0')
 	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:"}, 'transform_time > 0')
 
@@ -463,6 +418,7 @@ func build_event_editor() -> void:
 	add_body_edit('set_mirrored', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
+	add_body_edit('extra_data', ValueType.SINGLELINE_TEXT, {'left_text':'Extra Data:'}, 'action != Actions.LEAVE')
 
 
 func should_show_animation_options() -> bool:

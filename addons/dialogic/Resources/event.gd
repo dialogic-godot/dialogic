@@ -261,76 +261,92 @@ func get_shortcode_parameters() -> Dictionary:
 ## Returns a readable presentation of the event (This is how it's stored).
 ## By default it uses a shortcode format, but can be overridden.
 func to_text() -> String:
-	var params: Dictionary = get_shortcode_parameters()
-	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
-
-	var result_string: String = "["+self.get_shortcode()
-
-	for parameter in params.keys():
-		var value: Variant = get(params[parameter].property)
-		var default_value: Variant = custom_defaults.get(params[parameter].property, params[parameter].default)
-
-		if (typeof(value)) != typeof(default_value) or (value != default_value):
-			if "set_"+params[parameter].property in self and not get("set_"+params[parameter].property):
-				continue
-
-			var value_as_string := ""
-			match typeof(value):
-				TYPE_OBJECT:
-					value_as_string = str(value.resource_path)
-
-				TYPE_STRING:
-					value_as_string = value
-
-				TYPE_INT when params[parameter].has('suggestions'):
-					# HANDLE TEXT ALTERNATIVES FOR ENUMS
-					for option in params[parameter].suggestions.call().values():
-						if option.value != value:
-							continue
-
-						if option.has('text_alt'):
-							value_as_string = option.text_alt[0]
-						else:
-							value_as_string = var_to_str(option.value)
-
-						break
-
-				TYPE_DICTIONARY:
-					value_as_string = JSON.stringify(value)
-
-				_:
-					value_as_string = var_to_str(value)
-
-			result_string += " " + parameter + '="' + value_as_string.replace('"', '\\"') + '"'
-
-	result_string += "]"
-	return result_string
+	return "["+self.get_shortcode() + store_to_shortcode_parameters()+ "]"
 
 
 ## Loads the variables from the string stored by [method to_text].
 ## By default it uses the shortcode format, but can be overridden.
 func from_text(string: String) -> void:
+	load_from_shortcode_parameters(string)
+
+
+## Returns a string with all the shortcode parameters.
+func store_to_shortcode_parameters() -> String:
+	var params: Dictionary = get_shortcode_parameters()
+	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
+	var result_string := ""
+	for parameter in params.keys():
+		var parameter_info: Dictionary = params[parameter]
+		var value: Variant = get(parameter_info.property)
+		var default_value: Variant = custom_defaults.get(parameter_info.property, parameter_info.default)
+
+		if parameter_info.get('custom_stored', false):
+			continue
+
+		if "set_" + parameter_info.property in self and not get("set_" + parameter_info.property):
+			continue
+
+		if typeof(value) == typeof(default_value) and value == default_value:
+			if not "set_" + parameter_info.property in self or not get("set_" + parameter_info.property):
+				continue
+
+		var value_as_string := ""
+		match typeof(value):
+			TYPE_OBJECT:
+				value_as_string = str(value.resource_path)
+
+			TYPE_STRING:
+				value_as_string = value
+
+			TYPE_INT when parameter_info.has('suggestions'):
+				# HANDLE TEXT ALTERNATIVES FOR ENUMS
+				for option in parameter_info.suggestions.call().values():
+					if option.value != value:
+						continue
+
+					if option.has('text_alt'):
+						value_as_string = option.text_alt[0]
+					else:
+						value_as_string = var_to_str(option.value)
+
+					break
+
+			TYPE_DICTIONARY:
+				value_as_string = JSON.stringify(value)
+
+			_:
+				value_as_string = var_to_str(value)
+
+		result_string += " " + parameter + '="' + value_as_string.replace('"', '\\"') + '"'
+	return result_string.strip_edges()
+
+
+func load_from_shortcode_parameters(string:String) -> void:
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
-		if not parameter in data:
-			if "set_"+params[parameter].property in self:
-				set("set_"+params[parameter].property, false)
+		var parameter_info: Dictionary = params[parameter]
+		if parameter_info.get('custom_stored', false):
 			continue
 
-		if "set_"+params[parameter].property in self:
-			set("set_"+params[parameter].property, true)
+		if not parameter in data:
+			if "set_" + parameter_info.property in self:
+				set("set_" + parameter_info.property, false)
+			continue
+
+		if "set_" + parameter_info.property in self:
+			set("set_" + parameter_info.property, true)
 
 		var param_value: String = data[parameter].replace('\\"', '"')
 		var value: Variant
-		match typeof(get(params[parameter].property)):
+		match typeof(get(parameter_info.property)):
 			TYPE_STRING:
 				value = param_value
 
 			TYPE_INT:
 				# If a string is given
-				if params[parameter].has('suggestions'):
-					for option in params[parameter].suggestions.call().values():
+				if parameter_info.has('suggestions'):
+					for option in parameter_info.suggestions.call().values():
 						if option.has('text_alt') and param_value in option.text_alt:
 							value = option.value
 							break
@@ -341,8 +357,7 @@ func from_text(string: String) -> void:
 			_:
 				value = str_to_var(param_value)
 
-		set(params[parameter].property, value)
-
+		set(parameter_info.property, value)
 
 ## Has to return `true`, if the given string can be interpreted as this event.
 ## By default it uses the shortcode formta, but can be overridden.

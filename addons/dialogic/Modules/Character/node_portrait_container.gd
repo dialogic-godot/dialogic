@@ -69,6 +69,7 @@ var default_portrait_scene: String = DialogicUtil.get_module_path('Character').p
 # Used if no debug character is specified
 var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
 
+var ignore_resize := false
 
 func _ready():
 	match mode:
@@ -98,8 +99,11 @@ func _ready():
 ################################################################################
 
 func update_portrait_transforms():
+	if ignore_resize:
+		return
+
 	for child in get_children():
-		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
+		DialogicUtil.autoload().Portraits._update_character_transform(child)
 
 
 ## Returns a Rect2 with the position as the position and the scale as the size.
