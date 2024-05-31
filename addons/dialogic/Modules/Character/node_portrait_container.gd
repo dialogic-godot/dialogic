@@ -102,6 +102,8 @@ func update_portrait_transforms():
 	if ignore_resize:
 		return
 
+	pivot_offset = _get_origin_position()
+
 	for child in get_children():
 		DialogicUtil.autoload().Portraits._update_character_transform(child)
 

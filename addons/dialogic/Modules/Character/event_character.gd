@@ -474,41 +474,45 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
 
 	if '[' in line_until_caret and (symbol == "[" or symbol == " "):
-		if !'animation=' in line:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'animation', 'animation="', TextNode.syntax_highlighter.normal_color)
-		if !'length=' in line:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'length', 'length="', TextNode.syntax_highlighter.normal_color)
-		if !'wait=' in line:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'wait', 'wait="', TextNode.syntax_highlighter.normal_color)
-		if line.begins_with('update'):
-			if !'repeat=' in line:
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'repeat', 'repeat="', TextNode.syntax_highlighter.normal_color)
-			if !'move_time=' in line:
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'move_time', 'move_time="', TextNode.syntax_highlighter.normal_color)
-		if !line.begins_with('leave'):
-			if !'mirrored=' in line:
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'mirrored', 'mirrored="', TextNode.syntax_highlighter.normal_color)
-			if !'z_index=' in line:
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'z_index', 'z_index="', TextNode.syntax_highlighter.normal_color)
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'extra_data', 'extra_data="', TextNode.syntax_highlighter.normal_color)
+		suggest_parameter("animation", line, TextNode)
 
-	if '[' in line_until_caret:
-		if line_until_caret.ends_with('animation="'):
-			var animations := []
-
-			if line.begins_with('join'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
-
+		if "animation=" in line:
+			for param in ["length", "wait"]:
+				suggest_parameter(param, line, TextNode)
 			if line.begins_with('update'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+				suggest_parameter("repeat", line, TextNode)
+		if line.begins_with("update"):
+			for param in ["time", "trans", "ease"]:
+				suggest_parameter(param, line, TextNode)
+		if not line.begins_with('leave'):
+			for param in ["mirrored", "z_index", "extra_data"]:
+				suggest_parameter(param, line, TextNode)
 
-			if line.begins_with('leave'):
-				animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
+	if line_until_caret.ends_with('animation="'):
+		var animations := []
 
-			for script: String  in animations:
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
-		elif line_until_caret.ends_with('wait="') or line_until_caret.ends_with('mirrored="'):
-			CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
+		if line.begins_with('join'):
+			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+
+		if line.begins_with('update'):
+			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+
+		if line.begins_with('leave'):
+			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
+
+		for script: String  in animations:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
+	elif line_until_caret.ends_with('wait="') or line_until_caret.ends_with('mirrored="'):
+		CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
+	elif line_until_caret.ends_with('trans="'):
+		CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(trans_options), TextNode, TextNode.syntax_highlighter.normal_color)
+	elif line_until_caret.ends_with('ease="'):
+		CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(ease_options), TextNode, TextNode.syntax_highlighter.normal_color)
+
+
+func suggest_parameter(parameter:String, line:String, TextNode:TextEdit) -> void:
+	if not parameter + "=" in line:
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, parameter, parameter + '="', TextNode.syntax_highlighter.normal_color)
 
 
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:

@@ -4,6 +4,9 @@ extends DialogicSubsystem
 
 signal position_changed(info: Dictionary)
 
+
+var transform_regex := r"(?<part>position|pos|size|siz|rotation|rot)\W*=(?<value>((?!(pos|siz|rot)).)*)"
+
 #region STATE
 ####################################################################################################
 
@@ -73,9 +76,9 @@ func add_container(position_id: String, position := "", size := "") -> DialogicN
 ## The destination can be a position_id (e.g. "center") or translation, roataion and scale.
 ## When moving to a preset container, then some more will be "copied" (e.g. anchors, etc.)
 func move_container(container:DialogicNode_PortraitContainer, destination:String, tween:Tween = null, time:float=1.0) -> void:
-	var target_position: Vector2
-	var target_rotation: float
-	var target_size: Vector2
+	var target_position: Vector2 = container.position + container._get_origin_position()
+	var target_rotation: float = container.rotation
+	var target_size: Vector2 = container.size
 
 	var destination_container := get_container(destination)
 	if destination_container:
@@ -83,19 +86,29 @@ func move_container(container:DialogicNode_PortraitContainer, destination:String
 		target_position = destination_container.position + destination_container._get_origin_position()
 		target_rotation = destination_container.rotation_degrees
 		target_size = destination_container.size
-
+	else:
+		var regex := RegEx.create_from_string(transform_regex)
+		for found in regex.search_all(destination):
+			match found.get_string('part'):
+				'pos', 'position':
+					target_position = str_to_vector(found.get_string("value"), target_position)
+				'rot', 'rotation':
+					target_rotation = float(found.get_string("value"))
+				'siz', 'size':
+					target_size = str_to_vector(found.get_string("value"), target_size)
 	translate_container(container, target_position, false, tween, time)
 	rotate_container(container, target_rotation, false, tween, time)
 	resize_container(container, target_size, false, tween, time)
 
-	if time:
-		tween.finished.connect(func():
-			if container.has_meta("target_container"):
-				if container.get_meta("target_container") == destination_container:
-					copy_container_setup(destination_container, container)
-			)
-	else:
-		copy_container_setup(destination_container, container)
+	if destination_container:
+		if time:
+			tween.finished.connect(func():
+				if container.has_meta("target_container"):
+					if container.get_meta("target_container") == destination_container:
+						copy_container_setup(destination_container, container)
+				)
+		else:
+			copy_container_setup(destination_container, container)
 
 
 func copy_container_setup(from:DialogicNode_PortraitContainer, to:DialogicNode_PortraitContainer) -> void:

@@ -96,7 +96,7 @@ func _on_file_dialog_selected(path:String) -> void:
 
 func clear_path() -> void:
 	_set_value("")
-	value_changed.emit(property_name)
+	value_changed.emit(property_name, "")
 
 #endregion
 
