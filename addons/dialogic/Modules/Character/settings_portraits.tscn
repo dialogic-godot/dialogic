@@ -150,11 +150,6 @@ unique_name_in_owner = true
 layout_mode = 2
 step = 0.1
 
-[node name="CrossFadeDefaultWait" type="CheckButton" parent="GridContainer/DefaultCrossFade"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Wait:"
-
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefault" to="." method="_on_JoinDefault_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefaultLength" to="." method="_on_JoinDefaultLength_value_changed"]
 [connection signal="toggled" from="GridContainer/DefaultIn/JoinDefaultWait" to="." method="_on_JoinDefaultWait_toggled"]
@@ -163,4 +158,3 @@ text = "Wait:"
 [connection signal="toggled" from="GridContainer/DefaultOut/LeaveDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]
 [connection signal="value_changed" from="GridContainer/DefaultCrossFade/CrossFadeDefault" to="." method="_on_LeaveDefault_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultCrossFade/CrossFadeDefaultLength" to="." method="_on_LeaveDefaultLength_value_changed"]
-[connection signal="toggled" from="GridContainer/DefaultCrossFade/CrossFadeDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]

@@ -27,12 +27,15 @@ var animation_length: float = 0.5
 ## How often the animation is repeated. Only for Update events.
 var animation_repeats: int = 1
 ## If true, the events waits for the animation to finish before the next event starts.
-var animation_wait: bool = false
+var animation_wait := false
+
+## The fade animation to use. If left empty, the default cross-fade animation AND time will be used.
+var fade_animation := ""
+var fade_length := 0.5
 
 ## For Update only. If bigger then 0, the portrait will tween to the
 ## new position (if changed) in this time (in seconds).
 var transform_time: float = 0.0
-
 var transform_ease := Tween.EaseType.EASE_IN_OUT
 var transform_trans := Tween.TransitionType.TRANS_SINE
 
@@ -94,7 +97,7 @@ var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name
 ################################################################################
 
 func _execute() -> void:
-	if not character:
+	if not character and not character_identifier == "--All--":
 		finish()
 		return
 
@@ -151,7 +154,7 @@ func _execute() -> void:
 		dialogic.Portraits.change_character_extradata(character, extra_data)
 
 		if set_portrait:
-			dialogic.Portraits.change_character_portrait(character, portrait)
+			dialogic.Portraits.change_character_portrait(character, portrait, fade_animation, fade_length)
 
 		if set_mirrored:
 			dialogic.Portraits.change_character_mirror(character, mirrored)
@@ -162,29 +165,8 @@ func _execute() -> void:
 		if set_transform:
 			dialogic.Portraits.move_character(character, transform, final_position_move_time, transform_ease, transform_trans)
 
-		if animation_name.is_empty() and not portrait.is_empty():
-			animation_name = ProjectSettings.get_setting("dialogic/animations/cross_fade_default", "Fade In Out")
-			animation_length = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_length", 0.5)
-			animation_wait = ProjectSettings.get_setting("dialogic/animations/cross_fade_default_wait", false)
-
-
 		if animation_name:
 			var animation_name_lowercase := animation_name.to_lower()
-
-			# TODO: Streamline the process to identify whether an animation
-			# is an action or transition (in/out) animation.
-			#
-			# If this is a transition animation, we want to check if its
-			# targeting the same portrait scene, then discard the
-			# animation.
-			if animation_name_lowercase.ends_with(" in out"):
-				var current_portrait: DialogicPortrait = dialogic.Portraits.get_character_portrait(character)
-				var current_portrait_name := current_portrait.portrait
-				var is_same_portrait := current_portrait_name == portrait
-
-				if is_same_portrait:
-					finish()
-					return
 
 			var final_animation_repetitions: int = animation_repeats
 
@@ -325,10 +307,12 @@ func get_shortcode_parameters() -> Dictionary:
 
 		"z_index" 		: {"property": "z_index", 						"default": 0},
 		"mirrored"		: {"property": "mirrored", 						"default": false},
-		"time"			: {"property": "transform_time", 				"default": 0.0},
-		"ease" 			: {"property": "transform_ease", 	"default": Tween.EaseType.EASE_IN_OUT,
+		"fade"			: {"property": "fade_animation", 				"default":""},
+		"fade_length"	: {"property": "fade_length", 					"default":0.5},
+		"move_time"		: {"property": "transform_time", 				"default": 0.0},
+		"move_ease" 	: {"property": "transform_ease", 	"default": Tween.EaseType.EASE_IN_OUT,
 								"suggestions": func(): return list_to_suggestions(ease_options)},
-		"trans"			: {"property": "transform_trans", 	"default": Tween.TransitionType.TRANS_SINE,
+		"move_trans"	: {"property": "transform_trans", 	"default": Tween.TransitionType.TRANS_SINE,
 								"suggestions": func(): return list_to_suggestions(trans_options)},
 		"extra_data"	: {"property": "extra_data", 					"default": ""},
 	}
@@ -393,6 +377,16 @@ func build_event_editor() -> void:
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_transform)' %Actions.LEAVE)
 
 	# Body
+	add_body_edit('fade_animation', ValueType.DYNAMIC_OPTIONS,
+			{'left_text'		: 'Fade:',
+			'suggestions_func' 	: get_fade_suggestions,
+			'editor_icon' 			: ["Animation", "EditorIcons"],
+			'placeholder' 			: 'Default',
+			'enable_pretty_name' 	: true},
+			'should_show_fade_options()')
+	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s'},
+			'should_show_fade_options() and !fade_animation.is_empty()')
+	add_body_line_break("should_show_fade_options()")
 	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
 			{'left_text'		: 'Animation:',
 			'suggestions_func' 	: get_animation_suggestions,
@@ -424,6 +418,9 @@ func build_event_editor() -> void:
 func should_show_animation_options() -> bool:
 	return (character != null and !character.portraits.is_empty()) or character_identifier == '--All--'
 
+func should_show_fade_options() -> bool:
+	return action == Actions.UPDATE and set_portrait and character != null and not character.portraits.is_empty()
+
 func should_show_portrait_selector() -> bool:
 	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
 
@@ -451,8 +448,10 @@ func get_animation_suggestions(search_text:String='') -> Dictionary:
 	var empty_text := "Default"
 	if action == Actions.UPDATE:
 		empty_text = "None"
-
 	return DialogicUtil.get_portrait_animation_suggestions(search_text, empty_text, action+1)
+
+func get_fade_suggestions(search_text:String='') -> Dictionary:
+	return DialogicUtil.get_portrait_animation_suggestions(search_text, "Default", 1)
 
 
 ####################### CODE COMPLETION ########################################

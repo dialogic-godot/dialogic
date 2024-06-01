@@ -14,7 +14,6 @@ const ANIMATION_LEAVE_DEFAULT_LENGTH_KEY 	:= 'dialogic/animations/leave_default_
 const ANIMATION_LEAVE_DEFAULT_WAIT_KEY 		:= 'dialogic/animations/leave_default_wait'
 const ANIMATION_CROSSFADE_DEFAULT_KEY 		:= 'dialogic/animations/cross_fade_default'
 const ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY:= 'dialogic/animations/cross_fade_default_length'
-const ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY 	:= 'dialogic/animations/cross_fade_default_wait'
 
 
 func _ready():
@@ -46,8 +45,6 @@ func _ready():
 		save_setting_with_name.bind(ANIMATION_CROSSFADE_DEFAULT_KEY))
 	%CrossFadeDefaultLength.value_changed.connect(
 		save_setting.bind(ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY))
-	%CrossFadeDefaultWait.toggled.connect(
-		save_setting.bind(ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY))
 
 
 func _refresh():
@@ -78,7 +75,6 @@ func _refresh():
 		ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_KEY,
 		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in.gd')))
 	%CrossFadeDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY, 0.5))
-	%CrossFadeDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_WAIT_KEY, true)
 
 
 func save_setting_with_name(property_name:String, value:Variant, settings_key:String) -> void:
