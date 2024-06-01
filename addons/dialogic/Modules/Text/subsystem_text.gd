@@ -485,9 +485,15 @@ func collect_character_names() -> void:
 
 	if dialogic.has_subsystem('Glossary'):
 		dialogic.Glossary.color_overrides.merge(character_colors, true)
+	var sorted_keys := character_colors.keys()
+	sorted_keys.sort_custom(sort_by_length)
+	color_regex.compile('(?<=\\W|^)(?<name>'+str(sorted_keys).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
-	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
+func sort_by_length(a:String, b:String) -> bool:
+	if a.length() > b.length():
+		return true
+	return false
 #endregion
 
 
