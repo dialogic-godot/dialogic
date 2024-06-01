@@ -402,9 +402,9 @@ func build_event_editor() -> void:
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
 	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:'},
-			'action == %s and set_transform' %Actions.UPDATE)
-	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:"}, 'transform_time > 0')
-	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:"}, 'transform_time > 0')
+			"should_show_transform_options()")
+	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:"}, 'should_show_transform_options() and transform_time > 0')
+	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:"}, 'should_show_transform_options() and transform_time > 0')
 
 	add_body_edit('set_z_index', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
 	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z-index:', 'mode':1},
@@ -414,6 +414,9 @@ func build_event_editor() -> void:
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
 	add_body_edit('extra_data', ValueType.SINGLELINE_TEXT, {'left_text':'Extra Data:'}, 'action != Actions.LEAVE')
 
+
+func should_show_transform_options() -> bool:
+	return action == Actions.UPDATE and set_transform
 
 func should_show_animation_options() -> bool:
 	return (character != null and !character.portraits.is_empty()) or character_identifier == '--All--'

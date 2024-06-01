@@ -133,6 +133,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 
 
 	if portrait_node:
+		portrait_node.set_meta('portrait', portrait)
 		character_node.set_meta('portrait', portrait)
 
 		DialogicUtil.apply_scene_export_overrides(portrait_node, character.portraits[portrait].get('export_overrides', {}))
@@ -185,7 +186,7 @@ func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
 	var character_node: Node = portrait_node.get_parent()
 
 	var character: DialogicCharacter = character_node.get_meta('character')
-	var portrait_info: Dictionary = character.portraits.get(character_node.get_meta('portrait'), {})
+	var portrait_info: Dictionary = character.portraits.get(portrait_node.get_meta('portrait'), {})
 
 	# ignore the character scale on custom portraits that have 'ignore_char_scale' set to true
 	var apply_character_scale: bool= !portrait_info.get('ignore_char_scale', false)
