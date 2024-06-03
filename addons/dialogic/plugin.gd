@@ -11,10 +11,6 @@ const PLUGIN_ICON_PATH := "res://addons/dialogic/Editor/Images/plugin-icon.svg"
 var editor_view: Control  # the root of the dialogic editor
 
 
-## Signal emitted if godot wants us to save
-signal dialogic_save
-
-
 ## Initialization
 func _init() -> void:
 	self.name = "DialogicPlugin"
