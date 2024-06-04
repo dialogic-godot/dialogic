@@ -1,5 +1,5 @@
 @tool
-class_name DialogiClearEvent
+class_name DialogicClearEvent
 extends DialogicEvent
 
 ## Event that clears audio & visuals (not variables).
