@@ -17,7 +17,7 @@ func _ready() -> void:
 		return
 
 	## REFERENCES
-	editors_manager = $Margin/EditorsManager
+	editors_manager = $Scroll/Margin/EditorsManager
 	var button :Button = editors_manager.add_icon_button(get_theme_icon("MakeFloating", "EditorIcons"), 'Make floating')
 	button.pressed.connect(toggle_floating_window)
 
@@ -27,9 +27,9 @@ func _ready() -> void:
 	$BG.color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.bg_color = get_theme_color("dark_color_2", "Editor")
-	$Margin/EditorsManager.editors_holder.add_theme_stylebox_override('panel', editor_tab_bg)
-	$Margin.set("theme_override_constants/margin_right", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
-	$Margin.set("theme_override_constants/margin_bottom", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
+	$Scroll/Margin/EditorsManager.editors_holder.add_theme_stylebox_override('panel', editor_tab_bg)
+	$Scroll/Margin.set("theme_override_constants/margin_right", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
+	$Scroll/Margin.set("theme_override_constants/margin_bottom", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()
