@@ -30,7 +30,7 @@ var RNG := RandomNumberGenerator.new()
 
 var current_overwrite_data := {}
 
-func _ready():
+func _ready() -> void:
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
 
@@ -129,7 +129,7 @@ static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 
 ############# USER INTERFACE ###################################################
 
-func _get_configuration_warnings():
+func _get_configuration_warnings() -> PackedStringArray:
 	if not get_parent() is DialogicNode_DialogText:
 		return ["This should be the child of a DialogText node!"]
 	return []

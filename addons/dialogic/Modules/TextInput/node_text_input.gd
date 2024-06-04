@@ -15,7 +15,7 @@ extends Control
 var _allow_empty : bool = false
 
 
-func _ready():
+func _ready() -> void:
 	add_to_group('dialogic_text_input')
 	if confirmation_button:
 		get_node(confirmation_button).pressed.connect(_on_confirmation_button_pressed)

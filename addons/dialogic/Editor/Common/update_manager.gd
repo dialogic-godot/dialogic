@@ -162,7 +162,7 @@ func _on_DownloadRequest_completed(result:int, response_code:int, headers:Packed
 ######################	SOME UI MANAGEMENT #####################################
 ################################################################################
 
-func setup_version_indicator():
+func setup_version_indicator() -> void:
 	version_indicator = %Sidebar.get_node('%CurrentVersion')
 	version_indicator.pressed.connect($Window/UpdateInstallWindow.open)
 	version_indicator.text = get_current_version()

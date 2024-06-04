@@ -11,7 +11,7 @@ func _get_icon() -> Texture:
 	return load("res://addons/dialogic/Editor/Images/plugin-icon.svg")
 
 
-func _ready():
+func _ready() -> void:
 	self_modulate = get_theme_color("font_color", "Editor")
 	self_modulate.a = 0.2
 
@@ -30,7 +30,7 @@ func _ready():
 
 
 
-func _register():
+func _register() -> void:
 	editors_manager.register_simple_editor(self)
 
 	self.alternative_text = "Welcome to dialogic!"

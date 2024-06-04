@@ -40,7 +40,7 @@ var current_indent_level := 1
 #region UI AND LOGIC INITIALIZATION
 ################################################################################
 
-func _ready():
+func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 

@@ -226,7 +226,7 @@ func _load_from_string(string:String) -> void:
 
 
 ## Assigns the custom defaults
-func _load_custom_defaults():
+func _load_custom_defaults() -> void:
 	for default_prop in DialogicUtil.get_custom_event_defaults(event_name):
 		if default_prop in self:
 			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])

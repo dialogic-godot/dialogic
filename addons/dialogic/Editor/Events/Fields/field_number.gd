@@ -53,7 +53,7 @@ func _set_value(new_value: Variant) -> void:
 	%Value.tooltip_text = tooltip_text
 
 
-func _autofocus():
+func _autofocus() -> void:
 	%Value.grab_focus()
 
 

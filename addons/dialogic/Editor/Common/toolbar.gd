@@ -6,7 +6,7 @@ extends HBoxContainer
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
 ################################################################################
-func _ready():
+func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
 	%CustomButtons.custom_minimum_size.y = 33 * DialogicUtil.get_editor_scale()

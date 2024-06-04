@@ -73,7 +73,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 		update_name_label(character)
 
 
-func post_install():
+func post_install() -> void:
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
 	collect_character_names()
@@ -391,7 +391,7 @@ func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String
 #region HELPERS & OTHER STUFF
 ####################################################################################################
 
-func _ready():
+func _ready() -> void:
 	dialogic.event_handled.connect(hide_next_indicators)
 
 	_autopauses = {}

@@ -8,19 +8,19 @@ extends CodeEdit
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
-func _ready():
+func _ready() -> void:
 	await find_parent('EditorView').ready
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
 
-func _on_text_editor_text_changed():
+func _on_text_editor_text_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
 	$UpdateTimer.start()
 
 
-func clear_timeline():
+func clear_timeline() -> void:
 	text = ''
 	update_content_list()
 
@@ -37,7 +37,7 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 	update_content_list()
 
 
-func save_timeline():
+func save_timeline() -> void:
 	if !timeline_editor.current_resource:
 		return
 
@@ -183,11 +183,11 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		insert_text_at_caret(result)
 
 
-func _on_update_timer_timeout():
+func _on_update_timer_timeout() -> void:
 	update_content_list()
 
 
-func update_content_list():
+func update_content_list() -> void:
 	var labels :PackedStringArray = []
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))

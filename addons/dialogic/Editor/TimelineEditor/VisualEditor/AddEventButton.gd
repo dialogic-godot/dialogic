@@ -59,5 +59,5 @@ func toggle_name(on:= false) -> void:
 		apply_base_button_style()
 
 
-func _on_button_down():
+func _on_button_down() -> void:
 	find_parent('VisualEditor').get_node('%TimelineArea').start_dragging(1, resource)

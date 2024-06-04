@@ -66,7 +66,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('file_path', ValueType.FILE, {
 			'left_text'		: 'Set',
 			'right_text'	: 'as the next voice audio',

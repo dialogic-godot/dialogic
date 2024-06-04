@@ -137,7 +137,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('autoload_name', ValueType.DYNAMIC_OPTIONS, {'left_text':'On autoload',
 		'empty_text':'Autoload',
 		'suggestions_func':get_autoload_suggestions,
@@ -201,7 +201,7 @@ func update_argument_info() -> void:
 				break
 
 
-func check_arguments_and_update_warning():
+func check_arguments_and_update_warning() -> void:
 	if not _current_method_arg_hints.has("info") or _current_method_arg_hints.info.is_empty():
 		ui_update_warning.emit()
 		return

@@ -228,7 +228,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {
 			'left_text'		: 'Set',
 			'suggestions_func' 	: get_var_suggestions,
@@ -318,7 +318,7 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func _on_variable_editor_pressed():
+func _on_variable_editor_pressed() -> void:
 	var editor_manager := _editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.open_editor(editor_manager.editors['VariablesEditor']['node'], true)

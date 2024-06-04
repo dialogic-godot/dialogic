@@ -145,7 +145,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('mode', ValueType.FIXED_OPTIONS, {
 		'options': [{
 				'label': 'Set',

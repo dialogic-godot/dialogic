@@ -1,6 +1,6 @@
 extends DialogicAnimation
 
-func animate():
+func animate() -> void:
 	var tween := (node.create_tween() as Tween)
 	tween.set_ease(Tween.EASE_OUT)
 

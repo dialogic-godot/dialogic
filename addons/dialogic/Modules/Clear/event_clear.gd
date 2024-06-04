@@ -93,7 +93,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_label('Clear')
 
 	add_body_edit('time', ValueType.NUMBER, {'left_text':'Time:'})
