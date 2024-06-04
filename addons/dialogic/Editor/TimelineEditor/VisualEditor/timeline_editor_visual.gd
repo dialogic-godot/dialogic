@@ -913,8 +913,8 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
 	elif index == 3:
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
-		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
+		EditorInterface.set_main_screen_editor('Script')
+		EditorInterface.edit_script(item.resource.get_script(), 1, 1)
 	elif index == 5 or index == 6:
 		if index == 5:
 			offset_blocks_by_index(selected_items, -1)

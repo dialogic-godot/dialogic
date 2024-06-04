@@ -33,7 +33,7 @@ func _enter_tree() -> void:
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
 	editor_view.hide()
-	get_editor_interface().get_editor_main_screen().add_child(editor_view)
+	EditorInterface.get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
 	# Auto-update the singleton path for alpha users
@@ -79,7 +79,7 @@ func _make_visible(visible:bool) -> void:
 
 	if editor_view.get_parent() is Window:
 		if visible:
-			get_editor_interface().set_main_screen_editor("Script")
+			EditorInterface.set_main_screen_editor("Script")
 			editor_view.show()
 			editor_view.get_parent().grab_focus()
 	else:

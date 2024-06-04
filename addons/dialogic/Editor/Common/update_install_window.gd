@@ -13,7 +13,7 @@ func _ready():
 	%LoadingIcon.texture = editor_view.get_theme_icon("KeyTrackScale", "EditorIcons")
 	%InstallWarning.modulate = editor_view.get_theme_color("warning_color", "Editor")
 
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
+	EditorInterface.get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
 
 
 func open():
@@ -173,4 +173,4 @@ func _on_install_mouse_exited():
 
 
 func _on_restart_pressed():
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().restart_editor(true)
+	EditorInterface.restart_editor(true)

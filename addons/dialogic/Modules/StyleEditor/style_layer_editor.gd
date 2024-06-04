@@ -293,7 +293,7 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 	else:
 		%LayerTree.get_root().get_child(%LayerTree.get_selected().get_index()).select(0)
 
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 
 func make_layout_custom(target_folder:String) -> void:
@@ -340,7 +340,7 @@ func make_layout_custom(target_folder:String) -> void:
 	load_style_layer_list()
 
 	%LayerTree.get_root().select(0)
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 
 
@@ -555,8 +555,8 @@ func _on_layer_tree_layer_moved(from: int, to: int) -> void:
 
 func _on_layer_tree_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
 	if ResourceLoader.exists(item.get_meta('scene')):
-		find_parent('EditorView').plugin_reference.get_editor_interface().open_scene_from_path(item.get_meta('scene'))
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor("2D")
+		EditorInterface.open_scene_from_path(item.get_meta('scene'))
+		EditorInterface.set_main_screen_editor("2D")
 
 
 #region Helpers

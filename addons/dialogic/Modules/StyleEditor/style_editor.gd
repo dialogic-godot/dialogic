@@ -323,7 +323,7 @@ func _on_test_style_button_pressed():
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_test_style', current_style.name)
 
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
+	EditorInterface.play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 	await get_tree().create_timer(3).timeout
 	DialogicUtil.set_editor_setting('current_test_style', '')
 

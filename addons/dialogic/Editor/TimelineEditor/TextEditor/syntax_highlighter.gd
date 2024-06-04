@@ -33,7 +33,7 @@ var text_event :DialogicTextEvent = null
 func _init():
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():
-		var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
+		var editor_settings = EditorInterface.get_editor_settings()
 		normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 		translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 
