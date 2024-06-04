@@ -21,7 +21,7 @@ func load_info(text:String, character:String = "", character_color: Color =Color
 		name_label.show()
 	else:
 		name_label.hide()
-	
+
 	var icon_node : TextureRect = get_icon()
 	if icon == null:
 		icon_node.hide()

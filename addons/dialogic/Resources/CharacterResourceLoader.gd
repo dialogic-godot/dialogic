@@ -28,13 +28,13 @@ func _handles_type(typename: StringName) -> bool:
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
 #	print('[Dialogic] Reimporting character "' , path, '"')
 	var file := FileAccess.open(path, FileAccess.READ)
-	
+
 	if not file:
 		# For now, just let editor know that for some reason you can't
 		# read the file.
 		print("[Dialogic] Error opening file:", FileAccess.get_open_error())
 		return FileAccess.get_open_error()
-	
+
 	return dict_to_inst(str_to_var(file.get_as_text()))
 
 
