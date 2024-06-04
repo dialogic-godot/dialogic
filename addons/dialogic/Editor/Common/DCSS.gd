@@ -1,6 +1,6 @@
 @tool
 class_name DCSS
-	
+
 static func inline(style:Dictionary) -> StyleBoxFlat:
 	var scale:float = DialogicUtil.get_editor_scale()
 	var s := StyleBoxFlat.new()
@@ -45,7 +45,7 @@ static func inline(style:Dictionary) -> StyleBoxFlat:
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:
 	var s:StyleBoxFlat = inline(style)
-	
+
 	node.set('theme_override_styles/normal', s)
 	node.set('theme_override_styles/focus', s)
 	node.set('theme_override_styles/read_only', s)
