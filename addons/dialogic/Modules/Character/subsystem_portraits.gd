@@ -28,16 +28,19 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if not "portraits" in dialogic.current_state_info:
 		dialogic.current_state_info["portraits"] = {}
 
+	# Load Position Portraits
 	var portraits_info: Dictionary = dialogic.current_state_info.portraits.duplicate()
 	dialogic.current_state_info.portraits = {}
 	for character_path in portraits_info:
 		var character_info: Dictionary = portraits_info[character_path]
-		await join_character(load(character_path), character_info.portrait,
-						character_info.position_id,
-						character_info.get('custom_mirror', false),
-						character_info.get('z_index', 0),
-						character_info.get('extra_data', ""),
-						"InstantInOrOut", 0, false)
+		var character: DialogicCharacter = load(character_path)
+		dialogic.PortraitContainers.load_position_container(character.get_character_name())
+		add_character(character, character_info.portrait, character_info.position_id)
+		change_character_mirror(character, character_info.get('custom_mirror', false))
+		change_character_z_index(character, character_info.get('z_index', 0))
+		change_character_extradata(character, character_info.get('extra_data', ""))
+
+	# Load Speaker Portrait
 	var speaker: Variant = dialogic.current_state_info.get('speaker', "")
 	if speaker:
 		dialogic.current_state_info['speaker'] = ""
@@ -416,7 +419,6 @@ func add_character(character:DialogicCharacter, portrait:String,  position_id:St
 	if not character:
 		printerr('[DialogicError] Cannot call add_portrait() with null character.')
 		return null
-
 
 	var container := dialogic.PortraitContainers.add_container(character.get_character_name())
 	var character_node := _create_character_node(character, container)

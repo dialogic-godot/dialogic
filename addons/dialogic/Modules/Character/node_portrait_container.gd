@@ -50,6 +50,12 @@ enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_
 		origin_offset = offset
 		_update_debug_origin()
 
+enum PivotModes {AT_ORIGIN, PERCENTAGE, PIXELS}
+## Usually you want to rotate or scale around the portrait origin.
+## For the moments where that is not the case, set the mode to PERCENTAGE or PIXELS and use [member pivot_value].
+@export var pivot_mode: PivotModes = PivotModes.AT_ORIGIN
+## Only has an effect when [member pivot_mode] is not AT_ORIGIN. Meaning depends on whether [member pivot_mode] is PERCENTAGE or PIXELS.
+@export var pivot_value := Vector2()
 
 @export_group('Debug', 'debug')
 ## A character that will be displayed in the editor, useful for getting the right size.
@@ -102,7 +108,13 @@ func update_portrait_transforms():
 	if ignore_resize:
 		return
 
-	pivot_offset = _get_origin_position()
+	match pivot_mode:
+		PivotModes.AT_ORIGIN:
+			pivot_offset = _get_origin_position()
+		PivotModes.PERCENTAGE:
+			pivot_offset = size*pivot_value
+		PivotModes.PIXELS:
+			pivot_offset = pivot_value
 
 	for child in get_children():
 		DialogicUtil.autoload().Portraits._update_character_transform(child)

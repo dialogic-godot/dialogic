@@ -146,8 +146,10 @@ func translate_container(container:DialogicNode_PortraitContainer, translation:V
 
 	if tween:
 		tween.tween_method(DialogicUtil.multitween.bind(container, "position", "base"), container.position, final_translation, time)
+		tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.position = final_translation
+		save_position_container(container)
 	position_changed.emit({&'change':'moved', &'container_node':container})
 
 
@@ -164,8 +166,10 @@ func rotate_container(container:DialogicNode_PortraitContainer, rotation:float, 
 
 	if tween:
 		tween.tween_property(container, 'rotation_degrees', final_rotation, time)
+		tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.rotation_degrees = final_rotation
+		save_position_container(container)
 
 	position_changed.emit({&'change':'rotated', &'container_node':container})
 
@@ -188,11 +192,72 @@ func resize_container(container: DialogicNode_PortraitContainer, rect_size: Vari
 	if tween:
 		tween.tween_method(DialogicUtil.multitween.bind(container, "position", "resize_move"), Vector2(), relative_position_change, time)
 		tween.tween_property(container, 'size', final_rect_resize, time)
+		tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.position = container.position + relative_position_change
 		container.size = final_rect_resize
+		save_position_container(container)
 
 	position_changed.emit({&'change':'resized', &'container_node':container})
+
+
+func save_position_container(container: DialogicNode_PortraitContainer) -> void:
+	if not dialogic.current_state_info.has('portrait_containers'):
+		dialogic.current_state_info['portrait_containers'] = {}
+
+	var info := {
+		"container_ids" : container.container_ids,
+		"position" : container.position,
+		"rotation" : container.rotation_degrees,
+		"size" : container.size,
+		"pivot_mode" : container.pivot_mode,
+		"pivot_value" : container.pivot_value,
+		"origin_anchor" : container.origin_anchor,
+		"anchor_left" : container.anchor_left,
+		"anchor_right" : container.anchor_right,
+		"anchor_top" : container.anchor_top,
+		"anchor_bottom" : container.anchor_bottom,
+		"offset_left" : container.offset_left,
+		"offset_right" : container.offset_right,
+		"offset_top" : container.offset_top,
+		"offset_bottom" : container.offset_bottom,
+	}
+
+	dialogic.current_state_info.portrait_containers[container.container_ids[0]] = info
+
+
+func load_position_container(position_id: String) -> DialogicNode_PortraitContainer:
+	# First check whether the container already exists:
+	var container := get_container(position_id)
+	if container:
+		return container
+
+	if not dialogic.current_state_info.has('portrait_containers') or not dialogic.current_state_info.portrait_containers.has(position_id):
+		return null
+
+	var info: Dictionary = dialogic.current_state_info.portrait_containers[position_id]
+	container = add_container(position_id)
+
+	if not container:
+		return null
+
+	container.container_ids = info.container_ids
+	container.position = info.position
+	container.rotation = info.rotation
+	container.size = info.size
+	container.pivot_mode = info.pivot_mode
+	container.pivot_value = info.pivot_value
+	container.origin_anchor = info.origin_anchor
+	container.anchor_left = info.anchor_left
+	container.anchor_right = info.anchor_right
+	container.anchor_top = info.anchor_top
+	container.anchor_bottom = info.anchor_bottom
+	container.offset_left = info.offset_left
+	container.offset_right = info.offset_right
+	container.offset_top = info.offset_top
+	container.offset_bottom = info.offset_bottom
+
+	return container
 
 
 func str_to_vector(input: String, base_vector:=Vector2()) -> Vector2:
