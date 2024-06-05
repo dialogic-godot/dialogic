@@ -184,7 +184,6 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
 	var path := get_slot_path(slot_name).path_join(file_name)
-	print("trying to load ", path)
 	if FileAccess.file_exists(path):
 		var encryption_password := get_encryption_password()
 		var file: FileAccess
@@ -198,7 +197,6 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 			return file.get_var()
 		else:
 			push_error(FileAccess.get_open_error())
-	print("Does not exist!")
 	return default
 
 

@@ -418,14 +418,18 @@ func build_event_editor() -> void:
 func should_show_transform_options() -> bool:
 	return action == Actions.UPDATE and set_transform
 
+
 func should_show_animation_options() -> bool:
-	return (character != null and !character.portraits.is_empty()) or character_identifier == '--All--'
+	return (character and !character.portraits.is_empty()) or character_identifier == '--All--'
+
 
 func should_show_fade_options() -> bool:
-	return action == Actions.UPDATE and set_portrait and character != null and not character.portraits.is_empty()
+	return action == Actions.UPDATE and set_portrait and character and not character.portraits.is_empty()
+
 
 func should_show_portrait_selector() -> bool:
-	return character != null and len(character.portraits) > 1 and action != Actions.LEAVE
+	return character and len(character.portraits) > 1 and action != Actions.LEAVE
+
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()

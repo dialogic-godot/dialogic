@@ -371,8 +371,13 @@ func build_event_editor():
 			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
 			'collapse_when_empty': true,},
-			'character and character.portraits.is_empty()')
+			'should_show_portrait_selector()')
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
+
+
+func should_show_portrait_selector() -> bool:
+	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+
 
 func do_any_characters_exist() -> bool:
 	return not DialogicResourceUtil.get_character_directory().is_empty()
