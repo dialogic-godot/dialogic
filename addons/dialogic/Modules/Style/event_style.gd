@@ -51,7 +51,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('style_name', ValueType.DYNAMIC_OPTIONS, {
 			'left_text'			:'Use style',
 			'placeholder'		: 'Default',

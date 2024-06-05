@@ -6,7 +6,7 @@ extends DialogicCharacterEditorPortraitSection
 func _get_title() -> String:
 	return "Scene"
 
-func _init():
+func _init() -> void:
 	hint_text = "You can use a custom scene for this portrait."
 
 func _ready() -> void:
@@ -30,7 +30,7 @@ func _on_scene_picker_value_changed(prop_name:String, value:String) -> void:
 	%OpenSceneButton.visible = !data.get('scene', '').is_empty()
 
 
-func _on_open_scene_button_pressed():
+func _on_open_scene_button_pressed() -> void:
 	if !%ScenePicker.current_value.is_empty() and ResourceLoader.exists(%ScenePicker.current_value):
 		DialogicUtil.get_dialogic_plugin().get_editor_interface().open_scene_from_path(%ScenePicker.current_value)
 		EditorInterface.set_main_screen_editor("2D")

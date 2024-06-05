@@ -29,7 +29,7 @@ func tab_changed(enabled:bool, index:int) -> void:
 		child.set_pressed_no_signal(index-1 == child.get_index())
 
 
-func open():
+func open() -> void:
 	show()
 	$Tabs/BrokenReferences.update_indicator()
 

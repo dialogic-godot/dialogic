@@ -359,7 +359,7 @@ func _enter_visual_editor(editor:DialogicEditor):
 	editor.opened.connect(func(): ui_update_needed.emit())
 
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'file_extension' 	: '.dch',
 			'mode'				: 2,
@@ -464,7 +464,7 @@ func suggest_bbcode(text:CodeEdit):
 
 var text_effects := ""
 var text_effects_regex := RegEx.new()
-func load_text_effects():
+func load_text_effects() -> void:
 	if text_effects.is_empty():
 		for idx in DialogicUtil.get_indexers():
 			for effect in idx._get_text_effects():

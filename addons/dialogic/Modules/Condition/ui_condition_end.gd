@@ -3,11 +3,11 @@ extends HBoxContainer
 
 var parent_resource = null
 
-func _ready():
+func _ready() -> void:
 	$AddElif.button_up.connect(add_elif)
 	$AddElse.button_up.connect(add_else)
 
-func refresh():
+func refresh() -> void:
 	if parent_resource is DialogicConditionEvent:
 		# hide add elif and add else button on ELSE event
 		$AddElif.visible = parent_resource.condition_type != DialogicConditionEvent.ConditionTypes.ELSE
@@ -28,7 +28,7 @@ func refresh():
 	else:
 		hide()
 
-func add_elif():
+func add_elif() -> void:
 	var timeline = find_parent('VisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
@@ -37,7 +37,7 @@ func add_elif():
 		timeline.indent_events()
 		timeline.something_changed()
 
-func add_else():
+func add_else() -> void:
 	var timeline = find_parent('VisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()

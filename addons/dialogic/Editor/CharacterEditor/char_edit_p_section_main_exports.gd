@@ -13,7 +13,7 @@ func _load_portrait_data(data:Dictionary) -> void:
 	current_portrait_data = data
 	load_portrait_scene_export_variables()
 
-func load_portrait_scene_export_variables():
+func load_portrait_scene_export_variables() -> void:
 	for child in $Grid.get_children():
 		child.queue_free()
 

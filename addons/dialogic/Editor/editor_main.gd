@@ -46,7 +46,7 @@ func _ready() -> void:
 	update_theme_additions()
 
 
-func update_theme_additions():
+func update_theme_additions() -> void:
 	if theme == null:
 		theme = Theme.new()
 	theme.clear()
@@ -162,7 +162,7 @@ func update_theme_additions():
 
 
 ## Switches from floating window mode to embedded mode based on current mode
-func toggle_floating_window():
+func toggle_floating_window() -> void:
 	if get_parent() is Window:
 		swap_to_embedded_editor()
 	else:
@@ -170,7 +170,7 @@ func toggle_floating_window():
 
 
 ## Removes the main control from it's parent and adds it to a new Window node
-func swap_to_floating_window():
+func swap_to_floating_window() -> void:
 	if get_parent() is Window:
 		return
 
@@ -194,7 +194,7 @@ func swap_to_floating_window():
 
 ## Removes the main control from the window node and adds it to it's grandparent
 ##  which is the original owner.
-func swap_to_embedded_editor():
+func swap_to_embedded_editor() -> void:
 	if not get_parent() is Window:
 		return
 

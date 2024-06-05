@@ -70,7 +70,7 @@ var default_portrait_scene :String = DialogicUtil.get_module_path('Character').p
 var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
 
 
-func _ready():
+func _ready() -> void:
 	match mode:
 		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
@@ -97,7 +97,7 @@ func _ready():
 ##						MAIN METHODS
 ################################################################################
 
-func update_portrait_transforms():
+func update_portrait_transforms() -> void:
 	for child in get_children():
 		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
 

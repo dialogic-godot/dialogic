@@ -20,12 +20,12 @@ func _init() -> void:
 ################################################################################
 
 ## Activation & Editor Setup
-func _enable_plugin():
+func _enable_plugin() -> void:
 	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 	add_dialogic_default_action()
 
 
-func _disable_plugin():
+func _disable_plugin() -> void:
 	remove_autoload_singleton(PLUGIN_NAME)
 
 
@@ -63,7 +63,7 @@ func _get_plugin_name() -> String:
 	return PLUGIN_NAME
 
 
-func _get_plugin_icon():
+func _get_plugin_icon() -> Texture2D:
 	return load(PLUGIN_ICON_PATH)
 
 #endregion

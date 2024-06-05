@@ -59,7 +59,7 @@ func _process(delta:float) -> void:
 				queue_redraw()
 
 
-func finish_dragging():
+func finish_dragging() -> void:
 	dragging = false
 	if get_global_rect().has_point(get_global_mouse_position()):
 		drag_completed.emit(drag_type, drag_to_position, drag_data)

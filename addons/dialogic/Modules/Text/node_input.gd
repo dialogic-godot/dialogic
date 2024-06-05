@@ -5,7 +5,7 @@ extends Control
 ## specific region and avoiding conflicts with other UI elements.
 ## If no Input node is used, the input subsystem will handle mouse input instead.
 
-func _ready():
+func _ready() -> void:
 	add_to_group('dialogic_input')
 	gui_input.connect(_on_gui_input)
 

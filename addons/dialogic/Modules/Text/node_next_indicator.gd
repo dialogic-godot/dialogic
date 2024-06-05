@@ -35,7 +35,7 @@ var texture_rect : TextureRect
 
 var tween: Tween
 
-func _ready():
+func _ready() -> void:
 	add_to_group('dialogic_next_indicator')
 
 	# Creating TextureRect if missing
@@ -55,7 +55,7 @@ func _ready():
 	visibility_changed.connect(_on_visibility_changed)
 
 
-func _on_visibility_changed():
+func _on_visibility_changed() -> void:
 	if visible:
 		play_animation(animation, 1.0)
 

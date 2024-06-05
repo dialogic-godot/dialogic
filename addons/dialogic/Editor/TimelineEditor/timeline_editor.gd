@@ -93,7 +93,7 @@ func _input(event: InputEvent) -> void:
 
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
-func play_timeline():
+func play_timeline() -> void:
 	_save()
 
 	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
@@ -105,7 +105,7 @@ func play_timeline():
 
 
 ## Method to switch from visual to text editor (and vice versa). Connected to the button in the sidebar.
-func toggle_editor_mode():
+func toggle_editor_mode() -> void:
 	match current_editor_mode:
 		0:
 			current_editor_mode = 1
@@ -125,12 +125,12 @@ func toggle_editor_mode():
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
-func _on_resource_unsaved():
+func _on_resource_unsaved() -> void:
 	if current_resource:
 		current_resource.set_meta("timeline_not_saved", true)
 
 
-func _on_resource_saved():
+func _on_resource_saved() -> void:
 	if current_resource:
 		current_resource.set_meta("timeline_not_saved", false)
 
@@ -145,7 +145,7 @@ func new_timeline(path:String) -> void:
 	editors_manager.edit_resource(new_timeline)
 
 
-func _ready():
+func _ready() -> void:
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 
 	# switch editor mode button
@@ -158,7 +158,7 @@ func _ready():
 
 
 
-func _on_create_timeline_button_pressed():
+func _on_create_timeline_button_pressed() -> void:
 	editors_manager.show_add_resource_dialog(
 			new_timeline,
 			'*.dtl; DialogicTimeline',
@@ -167,7 +167,7 @@ func _on_create_timeline_button_pressed():
 			)
 
 
-func _clear():
+func _clear() -> void:
 	current_resource = null
 	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:

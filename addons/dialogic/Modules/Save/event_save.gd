@@ -61,5 +61,5 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('slot_name', ValueType.SINGLELINE_TEXT, {'left_text':'Save to slot'})

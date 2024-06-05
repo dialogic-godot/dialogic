@@ -10,7 +10,7 @@ signal content_item_activated(item_name)
 @onready var editors_manager = get_parent().get_parent()
 
 
-func _ready():
+func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
 

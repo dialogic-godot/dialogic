@@ -642,12 +642,12 @@ func _on_some_resource_saved(file:Variant) -> void:
 		update_preview(true)
 
 
-func _on_full_preview_available_rect_resized():
+func _on_full_preview_available_rect_resized() -> void:
 	if %FitPreview_Toggle.button_pressed:
 		update_preview()
 
 
-func _on_create_character_button_pressed():
+func _on_create_character_button_pressed() -> void:
 	editors_manager.show_add_resource_dialog(
 			new_character,
 			'*.dch; DialogicCharacter',
@@ -670,7 +670,7 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 #endregion
 
 ## Open the reference manager
-func _on_reference_manger_button_pressed():
+func _on_reference_manger_button_pressed() -> void:
 	editors_manager.reference_manager.open()
 	%PortraitChangeInfo.hide()
 
