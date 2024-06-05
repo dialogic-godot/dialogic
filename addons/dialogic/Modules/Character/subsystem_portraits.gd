@@ -78,6 +78,8 @@ func _ready() -> void:
 
 ## Creates a new [character node] for the given [character], and add it to the given [portrait container].
 func _create_character_node(character:DialogicCharacter, container:DialogicNode_PortraitContainer) -> Node:
+	if container == null:
+		return null
 	var character_node := Node2D.new()
 	character_node.name = character.get_character_name()
 	character_node.set_meta('character', character)
