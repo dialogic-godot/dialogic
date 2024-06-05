@@ -21,7 +21,7 @@ var shortcode_events := {}
 var custom_syntax_events := []
 var text_event :DialogicTextEvent = null
 
-func _ready():
+func _ready() -> void:
 	# Compile RegEx's
 	completion_word_regex.compile("(?<s>(\\W)|^)(?<word>\\w*)\\x{FFFF}")
 	completion_shortcode_getter_regex.compile("\\[(?<code>\\w*)")

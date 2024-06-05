@@ -95,7 +95,7 @@ func get_shortcode_parameters() -> Dictionary:
 #region EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('_scene_type', ValueType.FIXED_OPTIONS, {
 		'left_text' :'Show',
 		'options': [

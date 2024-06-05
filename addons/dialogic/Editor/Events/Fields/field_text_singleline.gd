@@ -25,7 +25,7 @@ func _set_value(value:Variant) -> void:
 	self.text = str(value)
 
 
-func _autofocus():
+func _autofocus() -> void:
 	grab_focus()
 
 #endregion

@@ -93,7 +93,7 @@ func _get_property_original_translation(property_name:String) -> String:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('name', ValueType.SINGLELINE_TEXT, {'left_text':'Label', 'autofocus':true})
 	add_body_edit('display_name', ValueType.SINGLELINE_TEXT, {'left_text':'Display Name:'})
 

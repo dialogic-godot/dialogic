@@ -16,9 +16,9 @@ extends Button
 
 func _ready() -> void:
 	tooltip_text = visible_name
-	
+
 	custom_minimum_size = Vector2(get_theme_font("font", 'Label').get_string_size(text).x+35,30) * DialogicUtil.get_editor_scale()
-	
+
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
 	apply_base_button_style()
@@ -59,5 +59,5 @@ func toggle_name(on:= false) -> void:
 		apply_base_button_style()
 
 
-func _on_button_down():
+func _on_button_down() -> void:
 	find_parent('VisualEditor').get_node('%TimelineArea').start_dragging(1, resource)

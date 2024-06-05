@@ -280,5 +280,5 @@ func get_current_editor() -> DialogicEditor:
 	return current_editor
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	DialogicUtil.set_editor_setting('last_resources', used_resources_cache)

@@ -298,6 +298,11 @@ layout_mode = 2
 text = "You've renamed some identifier(s)! Use the \"Broken References\" tab to check if you have used this identifier (and fix it if so)."
 autowrap_mode = 3
 
+[node name="Close" type="Button" parent="Tabs"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Close"
+
 [node name="HelpButton" type="LinkButton" parent="."]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -317,3 +322,4 @@ uri = "https://docs.dialogic.pro/reference-manager.html"
 [connection signal="text_changed" from="Tabs/UniqueIdentifiers/VBox/Tools/Search" to="Tabs/UniqueIdentifiers" method="_on_search_text_changed"]
 [connection signal="button_clicked" from="Tabs/UniqueIdentifiers/VBox/IdentifierTable" to="Tabs/UniqueIdentifiers" method="_on_identifier_table_button_clicked"]
 [connection signal="item_edited" from="Tabs/UniqueIdentifiers/VBox/IdentifierTable" to="Tabs/UniqueIdentifiers" method="_on_identifier_table_item_edited"]
+[connection signal="pressed" from="Tabs/Close" to="." method="_on_close_pressed"]

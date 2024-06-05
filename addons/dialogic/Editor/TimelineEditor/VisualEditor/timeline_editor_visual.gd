@@ -155,7 +155,6 @@ func clear_timeline_nodes() -> void:
 ################################################################################
 
 func _ready() -> void:
-	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
 	batch_loaded.connect(_on_batch_loaded)

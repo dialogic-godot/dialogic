@@ -99,7 +99,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	return suggestions
 
 
-func save():
+func save() -> void:
 	if %Old.text.is_empty() or %New.text.is_empty():
 		return
 	if %Where.selected == 1 and %Character.current_value == null:

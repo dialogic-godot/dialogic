@@ -77,7 +77,7 @@ var default_debug_character := load(DialogicUtil.get_module_path('Character').pa
 
 var ignore_resize := false
 
-func _ready():
+func _ready() -> void:
 	match mode:
 		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
@@ -104,15 +104,15 @@ func _ready():
 ##						MAIN METHODS
 ################################################################################
 
-func update_portrait_transforms():
+func update_portrait_transforms() -> void:
 	if ignore_resize:
 		return
 
 	match pivot_mode:
-		PivotModes.AT_ORIGIN:
 			pivot_offset = _get_origin_position()
-		PivotModes.PERCENTAGE:
+		PivotModes.AT_ORIGIN:
 			pivot_offset = size*pivot_value
+		PivotModes.PERCENTAGE:
 		PivotModes.PIXELS:
 			pivot_offset = pivot_value
 

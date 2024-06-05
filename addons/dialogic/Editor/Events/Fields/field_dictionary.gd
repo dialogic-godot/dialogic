@@ -5,7 +5,7 @@ extends DialogicVisualEditorField
 
 const PairValue = "res://addons/dialogic/Editor/Events/Fields/dictionary_part.tscn"
 
-func _ready():
+func _ready() -> void:
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 
 

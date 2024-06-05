@@ -3,7 +3,7 @@ extends TextureRect
 
 @export_multiline var hint_text = ""
 
-func _ready():
+func _ready() -> void:
 	if owner and owner.get_parent() is SubViewport:
 		texture = null
 		return

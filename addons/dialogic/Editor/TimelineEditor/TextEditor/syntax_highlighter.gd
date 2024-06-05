@@ -30,7 +30,7 @@ var custom_syntax_events := []
 var text_event :DialogicTextEvent = null
 
 
-func _init():
+func _init() -> void:
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():
 		var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()

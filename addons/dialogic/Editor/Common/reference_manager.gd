@@ -7,6 +7,7 @@ func _ready() -> void:
 		return
 
 	add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
+	$Tabs/Close.icon = get_theme_icon("Close", "EditorIcons")
 
 	for tab in $Tabs/Tabs.get_children():
 		tab.add_theme_color_override("font_selected_color", get_theme_color("accent_color", "Editor"))
@@ -28,6 +29,10 @@ func tab_changed(enabled:bool, index:int) -> void:
 		child.set_pressed_no_signal(index-1 == child.get_index())
 
 
-func open():
+func open() -> void:
 	show()
 	$Tabs/BrokenReferences.update_indicator()
+
+
+func _on_close_pressed() -> void:
+	get_parent()._on_close_requested()

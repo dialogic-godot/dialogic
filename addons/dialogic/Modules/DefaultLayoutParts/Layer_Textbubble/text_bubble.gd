@@ -105,7 +105,7 @@ func close() -> void:
 	set_process(false)
 
 
-func _on_dialog_text_started_revealing_text():
+func _on_dialog_text_started_revealing_text() -> void:
 	_resize_bubble(get_base_content_size(), true)
 
 
