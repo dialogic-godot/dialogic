@@ -30,6 +30,8 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 		dialogic.current_state_info["portraits"] = {}
 
 	var portraits_info: Dictionary = dialogic.current_state_info.portraits.duplicate()
+	if load_flag != LoadFlags.ONLY_DNODES:
+		leave_all_characters("InstantInOrOut", 0.0, false)
 	dialogic.current_state_info.portraits = {}
 	for character_path in portraits_info:
 		var character_info: Dictionary = portraits_info[character_path]
