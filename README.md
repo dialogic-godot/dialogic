@@ -66,7 +66,7 @@ Changelogs will accommodate for these changes and inform you on how to update yo
 
 
 ## Credits
-Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
+Made by [Jowan-Spooner](https://github.com/Jowan-Spooner) and [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors: [CakeVR](https://github.com/CakeVR), [Exelia](https://github.com/exelia-antonov), [zaknafean](https://github.com/zaknafean), [and more!](https://github.com/dialogic-godot/dialogic/graphs/contributors).
 
