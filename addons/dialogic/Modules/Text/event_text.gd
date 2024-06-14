@@ -177,7 +177,7 @@ func _mark_as_read(character_name_text: String, final_text: String) -> void:
 			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character_name_text, 'character_color':character.color})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.mark_event_as_visited(self)
+		dialogic.History.mark_event_as_visited()
 
 
 func _connect_signals() -> void:

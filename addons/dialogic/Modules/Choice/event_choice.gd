@@ -28,7 +28,7 @@ var regex := RegEx.create_from_string(r'- (?<text>(?(?=\[if)|.)*)(\[if (?<condit
 func _execute() -> void:
 
 	if dialogic.Choices.is_question(dialogic.current_event_idx):
-		dialogic.Choices.show_current_choices(false)
+		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
 
 #endregion
