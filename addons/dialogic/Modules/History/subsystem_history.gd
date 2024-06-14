@@ -63,12 +63,10 @@ var save_visited_history_on_save := false:
 ## Starts and stops the connection to the [subsystem Save] subsystem's [signal saved] signal.
 func _update_saved_connection(to_connect: bool) -> void:
 	if to_connect:
-
 		if not DialogicUtil.autoload().Save.saved.is_connected(_on_save):
-			var _result:int = DialogicUtil.autoload().Save.saved.connect(_on_save)
+			DialogicUtil.autoload().Save.saved.connect(_on_save)
 
 	else:
-
 		if DialogicUtil.autoload().Save.saved.is_connected(_on_save):
 			DialogicUtil.autoload().Save.saved.disconnect(_on_save)
 
