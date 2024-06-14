@@ -109,10 +109,10 @@ func update_portrait_transforms() -> void:
 		return
 
 	match pivot_mode:
-			pivot_offset = _get_origin_position()
 		PivotModes.AT_ORIGIN:
-			pivot_offset = size*pivot_value
+			pivot_offset = _get_origin_position()
 		PivotModes.PERCENTAGE:
+			pivot_offset = size*pivot_value
 		PivotModes.PIXELS:
 			pivot_offset = pivot_value
 

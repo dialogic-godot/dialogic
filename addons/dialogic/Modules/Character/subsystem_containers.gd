@@ -146,7 +146,8 @@ func translate_container(container:DialogicNode_PortraitContainer, translation:V
 
 	if tween:
 		tween.tween_method(DialogicUtil.multitween.bind(container, "position", "base"), container.position, final_translation, time)
-		tween.finished.connect(save_position_container.bind(container))
+		if not tween.finished.is_connected(save_position_container):
+			tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.position = final_translation
 		save_position_container(container)
@@ -166,7 +167,8 @@ func rotate_container(container:DialogicNode_PortraitContainer, rotation:float, 
 
 	if tween:
 		tween.tween_property(container, 'rotation_degrees', final_rotation, time)
-		tween.finished.connect(save_position_container.bind(container))
+		if not tween.finished.is_connected(save_position_container):
+			tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.rotation_degrees = final_rotation
 		save_position_container(container)
@@ -192,7 +194,8 @@ func resize_container(container: DialogicNode_PortraitContainer, rect_size: Vari
 	if tween:
 		tween.tween_method(DialogicUtil.multitween.bind(container, "position", "resize_move"), Vector2(), relative_position_change, time)
 		tween.tween_property(container, 'size', final_rect_resize, time)
-		tween.finished.connect(save_position_container.bind(container))
+		if not tween.finished.is_connected(save_position_container):
+			tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.position = container.position + relative_position_change
 		container.size = final_rect_resize
