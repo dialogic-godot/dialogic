@@ -60,7 +60,7 @@ func build_event_editor() -> void:
 			'autofocus'			: true})
 
 
-func get_style_suggestions(filter:String="") -> Dictionary:
+func get_style_suggestions(_filter := "") -> Dictionary:
 	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
 
 	var suggestions := {}

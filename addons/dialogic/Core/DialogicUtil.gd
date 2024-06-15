@@ -34,7 +34,7 @@ static func autoload() -> DialogicGameHandler:
 
 #region FILE SYSTEM
 ################################################################################
-static func listdir(path: String, files_only:= true, throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
+static func listdir(path: String, files_only:= true, _throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
 	var files: Array = []
 	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
@@ -115,7 +115,7 @@ enum AnimationType {ALL, IN, OUT, ACTION}
 
 
 
-static func get_portrait_animation_scripts(type := AnimationType.ALL, include_custom := true) -> Array:
+static func get_portrait_animation_scripts(type := AnimationType.ALL) -> Array:
 	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
 	const CROSS_ANIMATION := "_in_out"
 	const OUT_ANIMATION := "_out"
@@ -250,7 +250,7 @@ static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> A
 	return array
 
 
-static func get_variable_value_type(value:Variant) -> int:
+static func get_variable_value_type(value:Variant) -> VarTypes:
 	match typeof(value):
 		TYPE_STRING:
 			return VarTypes.STRING

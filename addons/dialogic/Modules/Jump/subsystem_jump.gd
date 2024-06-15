@@ -11,12 +11,12 @@ signal passed_label(info:Dictionary)
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	dialogic.current_state_info['jump_stack'] = []
 	dialogic.current_state_info.erase("last_label")
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if not 'jump_stack' in dialogic.current_state_info:
 		dialogic.current_state_info['jump_stack'] = []
 

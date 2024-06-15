@@ -146,7 +146,7 @@ func build_event_editor() -> void:
 	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade time:'})
 
 
-func get_transition_suggestions(filter:String="") -> Dictionary:
+func get_transition_suggestions(_filter:String="") -> Dictionary:
 	var transitions := DialogicResourceUtil.list_special_resources_of_type("BackgroundTransition")
 	var suggestions := {}
 	for i in transitions:

@@ -147,7 +147,7 @@ func _on_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index
 
 func _on_type_pressed(pressed:bool, type:int) -> void:
 	%ChangeTypePopup.hide()
-	var item := %ChangeTypePopup.get_meta('item')
+	var item: Variant = %ChangeTypePopup.get_meta('item')
 	adjust_variable_type(item, type, item.get_metadata(2))
 
 

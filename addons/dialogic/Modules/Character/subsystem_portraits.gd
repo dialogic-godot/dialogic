@@ -19,13 +19,13 @@ var default_portrait_scene: PackedScene = load(get_script().resource_path.get_ba
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_character(load(character))
 	dialogic.current_state_info['portraits'] = {}
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if not "portraits" in dialogic.current_state_info:
 		dialogic.current_state_info["portraits"] = {}
 
@@ -759,7 +759,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 ####################################################################################################
 
 ## Called from the [portrait=something] text effect.
-func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
+func text_effect_portrait(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument:
 		if dialogic.current_state_info.get('speaker', null):
 			change_character_portrait(load(dialogic.current_state_info.speaker), argument)

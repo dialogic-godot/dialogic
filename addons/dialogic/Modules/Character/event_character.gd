@@ -269,8 +269,6 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var character_directory := DialogicResourceUtil.get_character_directory()
-
 	# load default character
 	character = DialogicResourceUtil.get_character_resource(character_identifier)
 
@@ -450,7 +448,7 @@ func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
 
 
-func get_character_suggestions(search_text:String) -> Dictionary:
+func get_character_suggestions(_search_text:String) -> Dictionary:
 	var suggestions := {}
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 
@@ -475,12 +473,12 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 	if "{" in search_text:
 		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 	if character != null:
-		for portrait in character.portraits:
-			suggestions[portrait] = {'value':portrait, 'icon':icon.duplicate()}
+		for character_portrait in character.portraits:
+			suggestions[character_portrait] = {'value':character_portrait, 'icon':icon.duplicate()}
 	return suggestions
 
 
-func get_animation_suggestions(search_text:String) -> Dictionary:
+func get_animation_suggestions(_search_text:String) -> Dictionary:
 	var suggestions := {}
 
 	match action:
@@ -496,7 +494,7 @@ func get_animation_suggestions(search_text:String) -> Dictionary:
 
 
 func _on_character_edit_pressed() -> void:
-	var editor_manager := _editor_node.find_parent('EditorsManager')
+	var editor_manager := editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.edit_resource(character)
 
@@ -504,15 +502,15 @@ func _on_character_edit_pressed() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if symbol == ' ' and line.count(' ') == 1:
 		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
 		if line.begins_with('leave'):
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
 
 	if symbol == '(':
-		var character:= regex.search(line).get_string('name')
-		CodeCompletionHelper.suggest_portraits(TextNode, character)
+		var completion_character := regex.search(line).get_string('name')
+		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
 
 	if '[' in line and (symbol == "[" or symbol == " "):
 		if !'animation=' in line:
@@ -553,7 +551,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'join', 'join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'leave', 'leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'update', 'update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))

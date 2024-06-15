@@ -48,7 +48,7 @@ var _autopauses := {}
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['speaker'] = ""
@@ -62,7 +62,7 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 			text_node.textbox_root.hide()
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_textbox(dialogic.current_state_info.get('text', ''), true)
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character: DialogicCharacter = null
@@ -95,7 +95,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, 
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
-		text = color_names(text)
+		text = color_character_names(text)
 	if glossary and dialogic.has_subsystem('Glossary'):
 		text = dialogic.Glossary.parse_glossary(text)
 	return text
@@ -260,7 +260,7 @@ func is_text_voice_synced() -> bool:
 
 ## Sets how fast text will be revealed.
 ## [br][br]
-## [param letter_speed] is the speed a single text character takes to appear 
+## [param letter_speed] is the speed a single text character takes to appear
 ## on the textbox.
 ## [br][br]
 ## [param absolute] will force text to display at the given speed, regardless
@@ -432,7 +432,7 @@ func get_current_speaker() -> DialogicCharacter:
 	return speaker_character
 
 
-func _update_user_speed(user_speed:float) -> void:
+func _update_user_speed(_user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
@@ -455,7 +455,7 @@ func emit_meta_signal(meta:Variant, sig:String) -> void:
 #region AUTOCOLOR NAMES
 ################################################################################
 
-func color_names(text:String) -> String:
+func color_character_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
 
@@ -503,7 +503,7 @@ func sort_by_length(a:String, b:String) -> bool:
 #region DEFAULT TEXT EFFECTS & MODIFIERS
 ################################################################################
 
-func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_pause(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 
@@ -514,18 +514,17 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
-
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
 
-		elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-			await get_tree().create_timer(float(argument) * _speed_multiplier * dialogic.Settings.get_setting('text_speed', 1)).timeout
+		elif _speed_multiplier != 0 and text_speed != 0:
+			await get_tree().create_timer(float(argument) * _speed_multiplier * text_speed).timeout
 
-	elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-		await get_tree().create_timer(0.5 * _speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+	elif _speed_multiplier != 0 and text_speed != 0:
+		await get_tree().create_timer(0.5 * _speed_multiplier * text_speed).timeout
 
 
-func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_speed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
@@ -534,7 +533,7 @@ func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 		update_text_speed(-1, false, 1)
 
 
-func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_lspeed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
@@ -546,11 +545,11 @@ func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
 		update_text_speed()
 
 
-func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_signal(_text_node:Control, _skipped:bool, argument:String) -> void:
 	dialogic.text_signal.emit(argument)
 
 
-func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
 	if dialogic.current_state_info.get('speaker', ""):
 		update_typing_sound_mood(

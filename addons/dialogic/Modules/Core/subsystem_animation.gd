@@ -19,8 +19,8 @@ func start_animating() -> void:
 	dialogic.current_state = dialogic.States.ANIMATING
 
 
-func animation_finished(arg := "") -> void:
-	dialogic.current_state = prev_state
+func animation_finished(_arg := "") -> void:
+	dialogic.current_state = prev_state as DialogicGameHandler.States
 	finished.emit()
 
 #endregion
