@@ -15,6 +15,7 @@ var current_info := {}
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+	%CloseButton.icon = get_theme_icon("Close", "EditorIcons")
 	collect_style_parts()
 
 
@@ -106,3 +107,7 @@ func _on_search_text_changed(new_text: String) -> void:
 			continue
 
 		item.hide()
+
+
+func _on_close_button_pressed() -> void:
+	get_parent().hide()

@@ -290,9 +290,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 
+[node name="Close" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/Close"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/Refresh" to="." method="_on_refresh_pressed"]
 [connection signal="meta_clicked" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Content" to="." method="_on_content_meta_clicked"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Restart" to="." method="_on_restart_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_entered"]
 [connection signal="mouse_exited" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_exited"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_pressed"]
+[connection signal="pressed" from="VBoxContainer/Close/CloseButton" to="." method="_on_close_button_pressed"]
