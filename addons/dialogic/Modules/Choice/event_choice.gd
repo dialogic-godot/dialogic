@@ -154,7 +154,7 @@ func allow_alt_text() -> bool:
 #region  CODE COMPLETION
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	line = CodeCompletionHelper.get_line_untill_caret(line)
 
 	if !'[if' in line:

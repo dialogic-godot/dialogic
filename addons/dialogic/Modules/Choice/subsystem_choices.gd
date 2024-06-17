@@ -38,7 +38,7 @@ var _choice_blocker := Timer.new()
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	hide_all_choices()
 
 
@@ -171,7 +171,6 @@ func show_current_question(instant:=true) -> void:
 					else:
 						shortcut = Shortcut.new()
 
-					var shortcut_events: Array[InputEventKey] = []
 					var input_key := InputEventKey.new()
 					input_key.keycode = OS.find_keycode_from_string(str(choice.button_index))
 					shortcut.events.append(input_key)

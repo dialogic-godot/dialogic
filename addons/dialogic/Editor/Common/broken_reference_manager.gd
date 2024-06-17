@@ -142,7 +142,7 @@ func _process(delta: float) -> void:
 			%Progress.value = progress_percent
 			progress_mutex.unlock()
 		else:
-			var finds := finder_thread.wait_to_finish()
+			var finds: Variant = finder_thread.wait_to_finish()
 			display_search_results(finds)
 
 

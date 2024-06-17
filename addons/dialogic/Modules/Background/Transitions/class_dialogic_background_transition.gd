@@ -42,7 +42,7 @@ func set_shader(path_to_shader:String=DialogicUtil.get_module_path('Background')
 	return null
 
 
-func tween_shader_progress(progress_parameter:="progress") -> PropertyTweener:
+func tween_shader_progress(_progress_parameter:="progress") -> PropertyTweener:
 	if !bg_holder:
 		return
 

@@ -68,7 +68,7 @@ var created_by_button: bool = false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
-var _editor_node: Control = null
+var editor_node: Control = null
 
 ## The categories and which one to put it in (in the visual editor sidebar)
 var event_category: String = "Other"
@@ -160,7 +160,7 @@ func _get_translatable_properties() -> Array:
 
 
 ## Overwrite if this events needs translation.
-func _get_property_original_translation(property_name:String) -> String:
+func _get_property_original_translation(_property_name:String) -> String:
 	return ''
 
 
@@ -358,7 +358,7 @@ func set_default_color(value:Variant) -> void:
 
 
 ## Called when the resource is assigned to a event block in the visual editor
-func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
+func _enter_visual_editor(_timeline_editor:DialogicEditor) -> void:
 	pass
 
 #endregion
@@ -368,11 +368,11 @@ func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
 ################################################################################
 
 ## This method can be overwritten to implement code completion for custom syntaxes
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(_CodeCompletionHelper:Node, _TextNode:TextEdit, _line:String, _word:String, _symbol:String) -> void:
 	pass
 
 ## This method can be overwritten to add starting suggestions for this event
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, _TextNode:TextEdit) -> void:
 	pass
 
 #endregion
@@ -381,7 +381,7 @@ func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) ->
 #region SYNTAX HIGHLIGHTING
 ################################################################################
 
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+func _get_syntax_highlighting(_Highlighter:SyntaxHighlighter, dict:Dictionary, _line:String) -> Dictionary:
 	return dict
 
 #endregion

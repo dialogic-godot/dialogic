@@ -112,7 +112,7 @@ func _on_finished_revealing_text() -> void:
 func load_overwrite(dictionary:Dictionary) -> void:
 	current_overwrite_data = dictionary
 	if dictionary.has('sound_path'):
-		current_overwrite_data['sounds'] = load_sounds_from_path(dictionary.sound_path)
+		current_overwrite_data['sounds'] = DialogicNode_TypeSounds.load_sounds_from_path(dictionary.sound_path)
 
 
 static func load_sounds_from_path(path:String) -> Array[AudioStream]:
