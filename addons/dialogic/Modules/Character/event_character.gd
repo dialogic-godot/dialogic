@@ -465,6 +465,8 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 		var character_events := timeline.events.filter(func (event): return event is DialogicCharacterEvent)
 		var characters_in_timeline := character_events.map(func (event): return event.character)
 		for character in characters_in_timeline:
+			if not character:
+				continue
 			suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
 		if suggestions.has(resource):
