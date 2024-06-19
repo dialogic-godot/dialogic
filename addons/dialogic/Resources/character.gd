@@ -123,11 +123,14 @@ func get_display_name_translated() -> String:
 	return _get_property_translated(TranslatedProperties.NAME)
 
 
-## Returns the name of the file (without the extension).
+## Returns the best name for this character.
 func get_character_name() -> String:
-	if !resource_path.is_empty():
+	var unique_identifier := DialogicResourceUtil.get_unique_identifier(resource_path)
+	if not unique_identifier.is_empty():
+		return unique_identifier
+	if not resource_path.is_empty():
 		return resource_path.get_file().trim_suffix('.dch')
-	elif !display_name.is_empty():
+	elif not display_name.is_empty():
 		return display_name.validate_node_name()
 	else:
 		return "UnnamedCharacter"
