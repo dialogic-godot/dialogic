@@ -405,12 +405,12 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 		if closest_character_event_idx != -1:
 			var character_event := character_events[closest_character_event_idx] as DialogicCharacterEvent
 			var event_character := character_event.character
-			suggestions[character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
+			suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
 		for _character in character_events.values():
-			var event_character = _character.event_character
+			var event_character = _character.character
 			if suggestions.has(event_character.get_character_name()):
 				continue
-			suggestions[character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
+			suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
 		if suggestions.has(resource):
 			continue
