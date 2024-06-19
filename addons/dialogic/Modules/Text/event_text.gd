@@ -386,9 +386,34 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-
 	var character_directory := DialogicResourceUtil.get_character_directory()
+	# Get characters in the current timeline and place them at the top of suggestions.
+	var timeline_node = editor_node.get_parent().find_parent("Timeline") as DialogicEditor
+	if timeline_node.current_resource is DialogicTimeline:
+		var timeline := timeline_node.current_resource as DialogicTimeline
+		var this_event_idx := timeline.events.find(self)
+		var character_events := {}
+		for i in range(0, timeline.events.size()):
+			if timeline.events[i] is DialogicCharacterEvent:
+				character_events[i] = timeline.events[i]
+		# Find the closest character event before this text event, and place it at the top of suggestions.
+		var closest_character_event_idx := -1
+		for i in range(this_event_idx, -1, -1):
+			if character_events.has(i):
+				closest_character_event_idx = i
+				break
+		if closest_character_event_idx != -1:
+			var character_event := character_events[closest_character_event_idx] as DialogicCharacterEvent
+			var event_character := character_event.character
+			suggestions[character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
+		for _character in character_events.values():
+			var event_character = _character.event_character
+			if suggestions.has(event_character.get_character_name()):
+				continue
+			suggestions[character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
+		if suggestions.has(resource):
+			continue
 		suggestions[resource] = {
 				'value' 	: resource,
 				'tooltip' 	: character_directory[resource],

@@ -458,7 +458,17 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 	var character_directory = DialogicResourceUtil.get_character_directory()
 	if action == Actions.LEAVE:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
+	# Get characters in the current timeline and place them at the top of suggestions.
+	var timeline_node = editor_node.get_parent().find_parent("Timeline") as DialogicEditor
+	if timeline_node.current_resource is DialogicTimeline:
+		var timeline := timeline_node.current_resource as DialogicTimeline
+		var character_events := timeline.events.filter(func (event): return event is DialogicCharacterEvent)
+		var characters_in_timeline := character_events.map(func (event): return event.character)
+		for character in characters_in_timeline:
+			suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
+		if suggestions.has(resource):
+			continue
 		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon.duplicate()}
 	return suggestions
 
