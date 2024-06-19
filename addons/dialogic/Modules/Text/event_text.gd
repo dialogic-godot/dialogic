@@ -389,28 +389,16 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 	var character_directory := DialogicResourceUtil.get_character_directory()
 	# Get characters in the current timeline and place them at the top of suggestions.
 	var timeline_node = editor_node.get_parent().find_parent("Timeline") as DialogicEditor
-	if timeline_node.current_resource is DialogicTimeline:
-		var timeline := timeline_node.current_resource as DialogicTimeline
-		var this_event_idx := timeline.events.find(self)
-		var character_events := {}
-		for i in range(0, timeline.events.size()):
-			if timeline.events[i] is DialogicCharacterEvent:
-				character_events[i] = timeline.events[i]
-		# Find the closest character event before this text event, and place it at the top of suggestions.
-		var closest_character_event_idx := -1
-		for i in range(this_event_idx, -1, -1):
-			if character_events.has(i):
-				closest_character_event_idx = i
-				break
-		if closest_character_event_idx != -1:
-			var character_event := character_events[closest_character_event_idx] as DialogicCharacterEvent
-			var event_character := character_event.character
-			suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
-		for _character in character_events.values():
-			var event_character = _character.character
-			if suggestions.has(event_character.get_character_name()):
-				continue
-			suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
+	var event_nodes = timeline_node.find_child("Timeline").get_children()
+	event_nodes.reverse()
+	var this_event_idx := event_nodes.find(editor_node)
+	event_nodes = event_nodes.slice(this_event_idx, event_nodes.size())
+	for event_node in event_nodes:
+		var event = event_node.resource
+		if event is DialogicCharacterEvent or event is DialogicTextEvent:
+			var event_character = event.character
+			if event_character:
+				suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
 		if suggestions.has(resource):
 			continue

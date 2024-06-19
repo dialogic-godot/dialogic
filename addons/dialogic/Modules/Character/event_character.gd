@@ -460,12 +460,16 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
 	# Get characters in the current timeline and place them at the top of suggestions.
 	var timeline_node = editor_node.get_parent().find_parent("Timeline") as DialogicEditor
-	if timeline_node.current_resource is DialogicTimeline:
-		var timeline := timeline_node.current_resource as DialogicTimeline
-		var character_events := timeline.events.filter(func (event): return event is DialogicCharacterEvent)
-		var characters_in_timeline := character_events.map(func (event): return event.character)
-		for character in characters_in_timeline:
-			suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
+	var event_nodes =	timeline_node.find_child("Timeline").get_children()
+	event_nodes.reverse()
+	var this_event_idx := event_nodes.find(editor_node)
+	event_nodes = event_nodes.slice(this_event_idx, event_nodes.size())
+	for event_node in event_nodes:
+		var event = event_node.resource
+		if event is  DialogicCharacterEvent:
+			var event_character = event.character
+			if event_character:
+				suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
 	for resource in character_directory.keys():
 		if suggestions.has(resource):
 			continue
