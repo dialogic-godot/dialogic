@@ -566,7 +566,7 @@ static func str_to_hash_set(source: String) -> Dictionary:
 #endregion
 
 
-static func get_character_suggestions(search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
+static func get_character_suggestions(_search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
 	var suggestions := {}
 
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
@@ -634,7 +634,7 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 	return suggestions
 
 
-static func get_portrait_animation_suggestions(search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
+static func get_portrait_animation_suggestions(_search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
 	var suggestions := {}
 
 	suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
