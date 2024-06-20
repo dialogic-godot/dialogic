@@ -10,24 +10,6 @@ var transform_regex := r"(?<part>position|pos|size|siz|rotation|rot)\W*=(?<value
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	pass
-
-
-func load_game_state(load_flag := LoadFlags.FULL_LOAD) -> void:
-	pass
-
-
-func pause() -> void:
-	pass
-
-
-func resume() -> void:
-	pass
-
-
-func _ready() -> void:
-	pass
 
 #endregion
 
@@ -67,6 +49,7 @@ func add_container(position_id: String, position := "", size := "") -> DialogicN
 		copy_container_setup(example_position, new_position)
 		new_position.container_ids = [position_id]
 		new_position.position = str_to_vector(position)-new_position._get_origin_position()
+		new_position.name = "Portrait_"+position_id.validate_node_name()
 		position_changed.emit({&'change':'added', &'container_node':new_position, &'position_id':position_id})
 		return new_position
 	return null

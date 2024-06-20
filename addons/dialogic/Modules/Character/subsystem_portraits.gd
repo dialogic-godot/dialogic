@@ -34,8 +34,8 @@ func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	for character_path in portraits_info:
 		var character_info: Dictionary = portraits_info[character_path]
 		var character: DialogicCharacter = load(character_path)
-		dialogic.PortraitContainers.load_position_container(character.get_character_name())
-		add_character(character, character_info.portrait, character_info.position_id)
+		var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
+		add_character(character, container, character_info.portrait, character_info.position_id)
 		change_character_mirror(character, character_info.get('custom_mirror', false))
 		change_character_z_index(character, character_info.get('z_index', 0))
 		change_character_extradata(character, character_info.get('extra_data', ""))
@@ -375,7 +375,8 @@ func join_character(character:DialogicCharacter, portrait:String,  position_id:S
 		change_character_mirror(character, mirrored)
 		return
 
-	var character_node := add_character(character, portrait, position_id)
+	var container := dialogic.PortraitContainers.add_container(character.get_character_name())
+	var character_node := add_character(character, container, portrait, position_id)
 	if character_node == null:
 		return null
 
@@ -406,7 +407,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_id:S
 	return character_node
 
 
-func add_character(character:DialogicCharacter, portrait:String,  position_id:String) -> Node:
+func add_character(character:DialogicCharacter, container: DialogicNode_PortraitContainer, portrait:String,  position_id:String) -> Node:
 	if is_character_joined(character):
 		printerr('[DialogicError] Cannot add a already joined character. If this is intended call _create_character_node manually.')
 		return null
@@ -420,7 +421,6 @@ func add_character(character:DialogicCharacter, portrait:String,  position_id:St
 		printerr('[DialogicError] Cannot call add_portrait() with null character.')
 		return null
 
-	var container := dialogic.PortraitContainers.add_container(character.get_character_name())
 	var character_node := _create_character_node(character, container)
 
 	if character_node == null:

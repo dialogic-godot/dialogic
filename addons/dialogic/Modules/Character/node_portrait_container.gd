@@ -159,15 +159,14 @@ func is_container(id:Variant) -> bool:
 
 #region DEBUG METHODS
 ################################################################################
+# USE THIS TO DEBUG THE POSITIONS
+#func _draw():
+	#draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
+	#draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size()) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
+#
+#func _process(delta:float) -> void:
+	#queue_redraw()
 
-func _draw():
-	draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
-
-	draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size()) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
-
-
-func _process(delta:float) -> void:
-	queue_redraw()
 
 ## Loads the debug_character with the debug_character_portrait
 ## Creates a holder node and applies mirror
