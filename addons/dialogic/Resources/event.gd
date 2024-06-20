@@ -261,7 +261,11 @@ func get_shortcode_parameters() -> Dictionary:
 ## Returns a readable presentation of the event (This is how it's stored).
 ## By default it uses a shortcode format, but can be overridden.
 func to_text() -> String:
-	return "["+self.get_shortcode() + store_to_shortcode_parameters()+ "]"
+	var shortcode := store_to_shortcode_parameters()
+	if shortcode:
+		return "[" + self.get_shortcode() + " " + store_to_shortcode_parameters() + "]"
+	else:
+		return "[" + self.get_shortcode() + "]"
 
 
 ## Loads the variables from the string stored by [method to_text].
