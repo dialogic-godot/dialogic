@@ -7,8 +7,7 @@ func _get_events() -> Array:
 
 
 func _get_subsystems() -> Array:
-	return [{'name':'Portraits', 'script':this_folder.path_join('subsystem_portraits.gd')}]
-
+	return [{'name':'Portraits', 'script':this_folder.path_join('subsystem_portraits.gd')}, {'name':'PortraitContainers', 'script':this_folder.path_join('subsystem_containers.gd')}]
 
 func _get_settings_pages() -> Array:
 	return [this_folder.path_join('settings_portraits.tscn')]

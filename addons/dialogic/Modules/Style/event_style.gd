@@ -16,7 +16,7 @@ var style_name: String = ""
 ################################################################################
 
 func _execute() -> void:
-	dialogic.Styles.load_style(style_name)
+	dialogic.Styles.change_style(style_name)
 	# we need to wait till the new layout is ready before continuing
 	await dialogic.get_tree().process_frame
 	finish()

@@ -48,10 +48,10 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
-		dialogic.Styles.load_style()
+		dialogic.Styles.change_style()
 
 	if clear_portrait_positions and dialogic.has_subsystem('Portraits'):
-		dialogic.Portraits.reset_all_portrait_positions()
+		dialogic.PortraitContainers.reset_all_containers()
 
 	finish()
 

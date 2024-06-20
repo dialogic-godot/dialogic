@@ -97,6 +97,9 @@ enum ValueType {
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
+
+var _this_folder: String = get_script().resource_path.get_base_dir()
+
 ## Singal that notifies the visual editor block to update
 signal ui_update_needed
 signal ui_update_warning(text:String)
@@ -245,75 +248,124 @@ func _test_event_string(string:String) -> bool:
 ################################################################################
 ### All of these functions can/should be overridden by the sub classes
 
-## if this uses the short-code format, return the shortcode
+## If this uses the short-code format, return the shortcode.
 func get_shortcode() -> String:
 	return 'default_shortcode'
 
 
-## if this uses the short-code format, return the parameters and corresponding property names
+## If this uses the short-code format, return the parameters and corresponding property names.
 func get_shortcode_parameters() -> Dictionary:
 	return {}
 
 
-## returns a readable presentation of the event (This is how it's stored)
-## by default it uses a shortcode format, but can be overridden
+## Returns a readable presentation of the event (This is how it's stored).
+## By default it uses a shortcode format, but can be overridden.
 func to_text() -> String:
-	var result_string: String = "["+self.get_shortcode()
+	var shortcode := store_to_shortcode_parameters()
+	if shortcode:
+		return "[" + self.get_shortcode() + " " + store_to_shortcode_parameters() + "]"
+	else:
+		return "[" + self.get_shortcode() + "]"
+
+
+## Loads the variables from the string stored by [method to_text].
+## By default it uses the shortcode format, but can be overridden.
+func from_text(string: String) -> void:
+	load_from_shortcode_parameters(string)
+
+
+## Returns a string with all the shortcode parameters.
+func store_to_shortcode_parameters() -> String:
 	var params: Dictionary = get_shortcode_parameters()
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
+	var result_string := ""
 	for parameter in params.keys():
-		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
-		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
-			if typeof(get(params[parameter].property)) == TYPE_OBJECT:
-				result_string += " "+parameter+'="'+str(get(params[parameter].property).resource_path)+'"'
-			elif typeof(get(params[parameter].property)) == TYPE_STRING:
-				result_string += " "+parameter+'="'+get(params[parameter].property).replace('=', "\\=")+'"'
-			# if this is an enum with values provided, try to use a text alternative
-			elif typeof(get(params[parameter].property)) == TYPE_INT and params[parameter].has('suggestions'):
-				for option in params[parameter].suggestions.call().values():
-					if option.value == get(params[parameter].property):
-						if option.has('text_alt'):
-							result_string += " "+parameter+'="'+option.text_alt[0]+'"'
-						else:
-							result_string += " "+parameter+'="'+var_to_str(option.value).replace('=', "\\=")+'"'
-						break
-			elif typeof(get(params[parameter].property)) == TYPE_DICTIONARY:
-				result_string += " "+parameter+'="'+ JSON.stringify(get(params[parameter].property)).replace('=', "\\=")+'"'
-			else:
-				result_string += " "+parameter+'="'+var_to_str(get(params[parameter].property)).replace('=', "\\=")+'"'
-	result_string += "]"
-	return result_string
+		var parameter_info: Dictionary = params[parameter]
+		var value: Variant = get(parameter_info.property)
+		var default_value: Variant = custom_defaults.get(parameter_info.property, parameter_info.default)
+
+		if parameter_info.get('custom_stored', false):
+			continue
+
+		if "set_" + parameter_info.property in self and not get("set_" + parameter_info.property):
+			continue
+
+		if typeof(value) == typeof(default_value) and value == default_value:
+			if not "set_" + parameter_info.property in self or not get("set_" + parameter_info.property):
+				continue
+
+		var value_as_string := ""
+		match typeof(value):
+			TYPE_OBJECT:
+				value_as_string = str(value.resource_path)
+
+			TYPE_STRING:
+				value_as_string = value
+
+			TYPE_INT when parameter_info.has('suggestions'):
+				# HANDLE TEXT ALTERNATIVES FOR ENUMS
+				for option in parameter_info.suggestions.call().values():
+					if option.value != value:
+						continue
+
+					if option.has('text_alt'):
+						value_as_string = option.text_alt[0]
+					else:
+						value_as_string = var_to_str(option.value)
+
+					break
+
+			TYPE_DICTIONARY:
+				value_as_string = JSON.stringify(value)
+
+			_:
+				value_as_string = var_to_str(value)
+
+		result_string += " " + parameter + '="' + value_as_string.replace('"', '\\"') + '"'
+	return result_string.strip_edges()
 
 
-## loads the variables from the string stored above
-## by default it uses the shortcode format, but can be overridden
-func from_text(string:String) -> void:
+func load_from_shortcode_parameters(string:String) -> void:
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
-		if not parameter in data:
+		var parameter_info: Dictionary = params[parameter]
+		if parameter_info.get('custom_stored', false):
 			continue
 
+		if not parameter in data:
+			if "set_" + parameter_info.property in self:
+				set("set_" + parameter_info.property, false)
+			continue
+
+		if "set_" + parameter_info.property in self:
+			set("set_" + parameter_info.property, true)
+
+		var param_value: String = data[parameter].replace('\\"', '"')
 		var value: Variant
-		match typeof(get(params[parameter].property)):
+		match typeof(get(parameter_info.property)):
 			TYPE_STRING:
-				value = data[parameter].replace('\\=', '=')
+				value = param_value
+
 			TYPE_INT:
-				if params[parameter].has('suggestions'):
-					for option in params[parameter].suggestions.call().values():
-						if option.has('text_alt') and data[parameter] in option.text_alt:
+				# If a string is given
+				if parameter_info.has('suggestions'):
+					for option in parameter_info.suggestions.call().values():
+						if option.has('text_alt') and param_value in option.text_alt:
 							value = option.value
 							break
-				if !value:
-					value = float(data[parameter].replace('\\=', '='))
+
+				if not value:
+					value = float(param_value)
+
 			_:
-				value = str_to_var(data[parameter].replace('\\=', '='))
-		set(params[parameter].property, value)
+				value = str_to_var(param_value)
 
+		set(parameter_info.property, value)
 
-## has to return true, if the given string can be interpreted as this event
-## by default it uses the shortcode formta, but can be overridden
-func is_valid_event(string:String) -> bool:
+## Has to return `true`, if the given string can be interpreted as this event.
+## By default it uses the shortcode formta, but can be overridden.
+func is_valid_event(string: String) -> bool:
 	if string.strip_edges().begins_with('['+get_shortcode()+' ') or string.strip_edges().begins_with('['+get_shortcode()+']'):
 		return true
 	return false
@@ -322,15 +374,15 @@ func is_valid_event(string:String) -> bool:
 ## has to return true if this string seems to be a full event of this kind
 ## (only tested if is_valid_event() returned true)
 ## if a shortcode it used it will default to true if the string ends with ']'
-func is_string_full_event(string:String) -> bool:
+func is_string_full_event(string: String) -> bool:
 	if get_shortcode() != 'default_shortcode': return string.strip_edges().ends_with(']')
 	return true
 
 
-## used to get all the shortcode parameters in a string as a dictionary
-func parse_shortcode_parameters(shortcode : String) -> Dictionary:
+## Used to get all the shortcode parameters in a string as a dictionary.
+func parse_shortcode_parameters(shortcode: String) -> Dictionary:
 	var regex: RegEx = RegEx.new()
-	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
+	regex.compile(r'((?<parameter>[^\s=]*)\s*=\s*"(?<value>([^"]|\\")*)(?<!\\)")')
 	var dict: Dictionary = {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')

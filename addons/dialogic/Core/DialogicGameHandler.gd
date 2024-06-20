@@ -104,6 +104,9 @@ var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_b
 var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
 	get: return get_subsystem("Portraits")
 
+var PortraitContainers := preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd").new():
+	get: return get_subsystem("PortraitContainers")
+
 var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
 	get: return get_subsystem("Choices")
 

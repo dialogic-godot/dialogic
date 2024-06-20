@@ -153,12 +153,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					return
 
 				var suggestions: Dictionary = shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
-				for key in suggestions.keys():
-					if suggestions[key].has('text_alt'):
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
-					else:
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), suggestions[key].get('icon', null), '" ')
-
+				suggest_custom_suggestions(suggestions, text, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3))
 
 		# Force update and showing of the popup
 		text.update_code_completion_options(true)
@@ -225,6 +220,14 @@ func suggest_variables(text:CodeEdit):
 func suggest_bool(text:CodeEdit, color:Color):
 	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'true', 'true', color, text.get_theme_icon("GuiChecked", "EditorIcons"), '" ')
 	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'false', 'false', color, text.get_theme_icon("GuiUnchecked", "EditorIcons"), '" ')
+
+
+func suggest_custom_suggestions(suggestions:Dictionary, text:CodeEdit, color:Color) -> void:
+	for key in suggestions.keys():
+		if suggestions[key].has('text_alt'):
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], color, suggestions[key].get('icon', null), '" ')
+		else:
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), color, suggestions[key].get('icon', null), '" ')
 
 
 # Filters the list of all possible options, depending on what was typed
