@@ -166,8 +166,6 @@ func _execute() -> void:
 			dialogic.Portraits.move_character(character, transform, final_position_move_time, transform_ease, transform_trans)
 
 		if animation_name:
-			var animation_name_lowercase := animation_name.to_lower()
-
 			var final_animation_repetitions: int = animation_repeats
 
 			if dialogic.Inputs.auto_skip.enabled:

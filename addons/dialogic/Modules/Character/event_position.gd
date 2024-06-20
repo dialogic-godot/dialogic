@@ -203,7 +203,7 @@ func list_to_suggestions(list:Array) -> Dictionary:
 
 
 func get_position_suggestions(search_text:String='') -> Dictionary:
-	var icon := load(_this_folder.path_join('event_portrait_position.svg'))
+	var icon := load(this_folder.path_join('event_portrait_position.svg'))
 	var setting: String = ProjectSettings.get_setting('dialogic/portraits/position_suggestion_names', 'leftmost, left, center, right, rightmost')
 
 	var suggestions := {}

@@ -155,7 +155,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 		if previous_portrait and previous_portrait != portrait_node:
 			if not fade_animation.is_empty() and fade_length > 0:
 				var fade_out := _animate_node(previous_portrait, fade_animation, fade_length, 1, true)
-				var fade_in := _animate_node(portrait_node, fade_animation, fade_length, 1, false)
+				var _fade_in := _animate_node(portrait_node, fade_animation, fade_length, 1, false)
 				fade_out.finished.connect(previous_portrait.queue_free)
 			else:
 				previous_portrait.queue_free()
@@ -184,7 +184,7 @@ func _change_portrait_extradata(character_node: Node2D, extra_data := "") -> voi
 
 func _update_character_transform(character_node:Node, time := 0.0) -> void:
 	for child in character_node.get_children():
-		_update_portrait_transform(child)
+		_update_portrait_transform(child, time)
 
 
 func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
@@ -252,8 +252,8 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 
 
 ## Moves the given portrait to the given container.
-func _move_character(character_node: Node2D, transform:="", time := 0.0, ease:= Tween.EASE_IN_OUT, trans:= Tween.TRANS_SINE) -> void:
-	var tween := character_node.create_tween().set_ease(ease).set_trans(trans).set_parallel()
+func _move_character(character_node: Node2D, transform:="", time := 0.0, easing:= Tween.EASE_IN_OUT, trans:= Tween.TRANS_SINE) -> void:
+	var tween := character_node.create_tween().set_ease(easing).set_trans(trans).set_parallel()
 	var container: DialogicNode_PortraitContainer = character_node.get_parent()
 	dialogic.PortraitContainers.move_container(container, transform, tween, time)
 
@@ -502,14 +502,14 @@ func animate_character(character: DialogicCharacter, animation_path: String, len
 
 
 ## Moves the given character to the given position. Only works with joined characters
-func move_character(character:DialogicCharacter, position_id:String, time:= 0.0, ease:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE) -> void:
+func move_character(character:DialogicCharacter, position_id:String, time:= 0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE) -> void:
 	if !is_character_joined(character):
 		return
 
 	if dialogic.current_state_info.portraits[character.resource_path].position_id == position_id:
 		return
 
-	_move_character(dialogic.current_state_info.portraits[character.resource_path].node, position_id, time, ease, trans)
+	_move_character(dialogic.current_state_info.portraits[character.resource_path].node, position_id, time, easing, trans)
 	dialogic.current_state_info.portraits[character.resource_path].position_id = position_id
 	character_moved.emit({'character':character, 'position_id':position_id, 'time':time})
 
@@ -528,7 +528,6 @@ func leave_character(character: DialogicCharacter, animation_name:= "", animatio
 
 	if not animation_name.is_empty():
 		var character_node := get_character_node(character)
-		var last_portrait := character_node.get_child(-1)
 
 		var animation := _animate_node(character_node, animation_name, animation_length, 1, true)
 		if animation_length > 0:
