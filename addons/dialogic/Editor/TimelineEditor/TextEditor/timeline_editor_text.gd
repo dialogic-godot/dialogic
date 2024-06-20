@@ -240,7 +240,7 @@ func search_navigate(navigate_up := false) -> void:
 					search_from_line = get_line_count()
 				else:
 					search_from_line -= 1
-				search_from_column = get_line(search_from_line).length()-1
+				search_from_column = max(get_line(search_from_line).length()-1,0)
 		else:
 			search_from_line = get_selection_to_line()
 			search_from_column = get_selection_to_column()

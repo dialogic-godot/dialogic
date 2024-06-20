@@ -1249,7 +1249,7 @@ func search_navigate(navigate_up := false) -> void:
 			event = search_results.keys()[wrapi(index+(-1 if navigate_up else 1), 0, search_results.size())]
 
 		if counter > 5:
-			print("FAIL")
+			print("[Dialogic] Search failed.")
 			break
 
 
@@ -1262,6 +1262,8 @@ func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -
 			search_from_column = field.get_selection_from_column()-1
 			if search_from_column == -1:
 				search_from_line -= 1
+				if search_from_line == -1:
+					return Vector2i(-1, -1)
 				search_from_column = field.get_line(search_from_line).length()-1
 		else:
 			search_from_line = field.get_selection_to_line()
@@ -1270,6 +1272,7 @@ func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -
 		if navigate_up:
 			search_from_line = field.get_line_count()-1
 			search_from_column = field.get_line(search_from_line).length()-1
+
 	var search := field.search(search_text, 4 if navigate_up else 0, search_from_line, search_from_column)
 	return search
 

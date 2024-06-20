@@ -127,7 +127,7 @@ func toggle_editor_mode() -> void:
 			%VisualEditor.load_timeline(current_resource)
 			%VisualEditor.show()
 			%SwitchEditorMode.text = "Text Editor"
-
+	_on_search_text_changed(%Search.text)
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
@@ -206,6 +206,7 @@ func search_timeline() -> void:
 
 func _on_close_search_pressed() -> void:
 	%SearchSection.hide()
+	%Search.text = ""
 	_on_search_text_changed('')
 
 
@@ -214,9 +215,11 @@ func _on_search_text_changed(new_text: String) -> void:
 	var anything_found: bool = get_current_editor()._search_timeline(new_text)
 	if anything_found or new_text.is_empty():
 		%SearchLabel.hide()
+		%Search.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	else:
 		%SearchLabel.show()
 		%SearchLabel.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+		%Search.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
 		%SearchLabel.text = "No Match"
 
 
