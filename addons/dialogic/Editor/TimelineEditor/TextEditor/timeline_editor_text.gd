@@ -250,6 +250,8 @@ func search_navigate(navigate_up := false) -> void:
 
 	pos = search(get_meta("current_search"), 4 if navigate_up else 0, search_from_line, search_from_column)
 	select(pos.y, pos.x, pos.y, pos.x+len(get_meta("current_search")))
+	set_caret_line(pos.y)
+	center_viewport_to_caret()
 	queue_redraw()
 
 
