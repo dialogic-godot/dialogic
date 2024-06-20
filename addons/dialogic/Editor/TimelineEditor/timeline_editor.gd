@@ -187,6 +187,11 @@ func _clear() -> void:
 	play_timeline_button.disabled = true
 
 
+func get_current_editor() -> Node:
+	if current_editor_mode == 1:
+		return %TextEditor
+	return %VisualEditor
+
 #region SEARCH
 
 func search_timeline() -> void:
@@ -206,29 +211,21 @@ func _on_close_search_pressed() -> void:
 
 func _on_search_text_changed(new_text: String) -> void:
 	var editor: Node = null
-	match current_editor_mode:
-		0:
-			editor = %VisualEditor
-		1:
-			editor = %TextEditor
-	editor._search_timeline(new_text)
-	%SearchLabel.text = editor._get_search_text()
-
+	var anything_found: bool = get_current_editor()._search_timeline(new_text)
+	if anything_found or new_text.is_empty():
+		%SearchLabel.hide()
+	else:
+		%SearchLabel.show()
+		%SearchLabel.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+		%SearchLabel.text = "No Match"
 
 
 func _on_search_down_pressed() -> void:
-	match current_editor_mode:
-		0:
-			%VisualEditor._search_navigate_down()
-		1:
-			%TextEditor._search_navigate_down()
+	get_current_editor()._search_navigate_down()
+
 
 func _on_search_up_pressed() -> void:
-	match current_editor_mode:
-		0:
-			%VisualEditor._search_navigate_up()
-		1:
-			%TextEditor._search_navigate_up()
+	get_current_editor()._search_navigate_up()
 
 #endregion
 

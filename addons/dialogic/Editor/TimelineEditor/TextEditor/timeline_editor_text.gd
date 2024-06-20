@@ -209,20 +209,21 @@ func _on_content_item_clicked(label:String) -> void:
 			return
 
 
-func _search_timeline(search_text:String) -> void:
+func _search_timeline(search_text:String) -> bool:
 	set_search_text(search_text)
 	queue_redraw()
 	set_meta("current_search", search_text)
 
+	return search(search_text, 0, 0, 0).y != -1
 
-func _get_search_text() -> String:
-	return ""
 
 func _search_navigate_down() -> void:
 	search_navigate(false)
 
+
 func _search_navigate_up() -> void:
 	search_navigate(true)
+
 
 func search_navigate(navigate_up := false) -> void:
 	if not has_meta("current_search"):
