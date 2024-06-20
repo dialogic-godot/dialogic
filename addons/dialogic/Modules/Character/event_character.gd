@@ -373,7 +373,8 @@ func build_event_editor() -> void:
 	add_header_edit('transform', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'center',
 			'mode'				: 0,
-			'suggestions_func' 	: get_position_suggestions},
+			'suggestions_func' 	: get_position_suggestions,
+			'tooltip'		: "You can use a predefined position or a custom transform like 'pos=x0.5y1 size=x0.5y1 rot=10'.\nLearn more about this in the documentation."},
 			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_transform)' %Actions.LEAVE)
 
 	# Body
