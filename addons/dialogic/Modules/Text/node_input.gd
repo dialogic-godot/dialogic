@@ -10,7 +10,7 @@ func _ready() -> void:
 	gui_input.connect(_on_gui_input)
 
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		mouse_filter = Control.MOUSE_FILTER_STOP
 	else:

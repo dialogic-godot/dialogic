@@ -177,7 +177,7 @@ func _mark_as_read(character_name_text: String, final_text: String) -> void:
 			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character_name_text, 'character_color':character.color})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
-		dialogic.History.mark_event_as_visited(self)
+		dialogic.History.mark_event_as_visited()
 
 
 func _connect_signals() -> void:
@@ -316,7 +316,7 @@ func from_text(string:String) -> void:
 			text = ""
 
 
-func is_valid_event(string:String) -> bool:
+func is_valid_event(_string:String) -> bool:
 	return true
 
 
@@ -398,7 +398,7 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 
 var completion_text_character_getter_regex := RegEx.new()
 var completion_text_effects := {}
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if completion_text_character_getter_regex.get_pattern().is_empty():
 		completion_text_character_getter_regex.compile("(\"[^\"]*\"|[^\\s:]*)")
 
@@ -408,9 +408,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				completion_text_effects[effect['command']] = effect
 
 	if not ':' in line.substr(0, TextNode.get_caret_column()) and symbol == '(':
-		var character := completion_text_character_getter_regex.search(line).get_string().trim_prefix('"').trim_suffix('"')
+		var completion_character := completion_text_character_getter_regex.search(line).get_string().trim_prefix('"').trim_suffix('"')
+		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
 
-		CodeCompletionHelper.suggest_portraits(TextNode, character)
 	if symbol == '[':
 		suggest_bbcode(TextNode)
 		for effect in completion_text_effects.values():
@@ -418,25 +418,26 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command+'=', TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"))
 			else:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command, TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+
 	if symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 	if symbol == '=':
 		if CodeCompletionHelper.get_line_untill_caret(line).ends_with('[portrait='):
-			var character := completion_text_character_getter_regex.search(line).get_string('name')
-			CodeCompletionHelper.suggest_portraits(TextNode, character, ']')
+			var completion_character := completion_text_character_getter_regex.search(line).get_string('name')
+			CodeCompletionHelper.suggest_portraits(TextNode, completion_character, ']')
 
 
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_CLASS, true)
 
 
-func suggest_bbcode(text:CodeEdit):
+func suggest_bbcode(TextNode:CodeEdit):
 	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"),)
-		text.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"),)
+		TextNode.add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 	for i in [['new event', 'n'],['new event (same box)', 'n+']]:
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  text.syntax_highlighter.normal_color, text.get_theme_icon("ArrowRight", "EditorIcons"),)
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("ArrowRight", "EditorIcons"),)
 
 #endregion
 

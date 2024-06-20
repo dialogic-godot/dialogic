@@ -1,3 +1,4 @@
+@icon("node_name_label_icon.svg")
 extends Label
 
 class_name DialogicNode_NameLabel

@@ -39,7 +39,7 @@ func to_text() -> String:
 	return "return"
 
 
-func from_text(string:String) -> void:
+func from_text(_string:String) -> void:
 	pass
 
 
@@ -60,7 +60,7 @@ func build_event_editor() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
 

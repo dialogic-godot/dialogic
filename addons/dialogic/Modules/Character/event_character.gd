@@ -464,7 +464,7 @@ func get_fade_suggestions(search_text:String='') -> Dictionary:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
 	if symbol == ' ' and line_until_caret.count(' ') == 1:
 		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
@@ -472,8 +472,8 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
 
 	if symbol == '(':
-		var character:= regex.search(line).get_string('name')
-		CodeCompletionHelper.suggest_portraits(TextNode, character)
+		var completion_character := regex.search(line).get_string('name')
+		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
 
 	elif not '[' in line_until_caret and symbol == ' ':
 		for position in get_position_suggestions():
@@ -521,7 +521,7 @@ func suggest_parameter(parameter:String, line:String, TextNode:TextEdit) -> void
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, parameter, parameter + '="', TextNode.syntax_highlighter.normal_color)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'join', 'join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'leave', 'leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'update', 'update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))

@@ -15,7 +15,7 @@ signal editor_changed(previous, current)
 
 var reference_manager: Node:
 	get:
-		return get_node("../../ReferenceManager")
+		return get_node("../ReferenceManager")
 
 ## Information on supported resource extensions and registered editors
 var current_editor: DialogicEditor = null
@@ -56,7 +56,7 @@ func _ready() -> void:
 
 	DialogicResourceUtil.update()
 
-	await get_parent().get_parent().ready
+	await get_parent().ready
 	await get_tree().process_frame
 
 	load_saved_state()

@@ -121,12 +121,11 @@ func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
 
 
 func _apply_export_overrides() -> void:
-	var font_setting: String = get_global_setting("font", "")
-
 	# Apply fonts
 	var font: FontFile
-	if font_use_global and ResourceLoader.exists(get_global_setting(&'font', '') as String):
-		font = load(get_global_setting(&'font', '') as String)
+	var global_font_setting: String = get_global_setting(&"font", '')
+	if font_use_global and ResourceLoader.exists(global_font_setting):
+		font = load(global_font_setting)
 	elif ResourceLoader.exists(font_custom):
 		font = load(font_custom)
 

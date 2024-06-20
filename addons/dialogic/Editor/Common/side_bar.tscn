@@ -46,14 +46,13 @@ layout_mode = 2
 expand_mode = 3
 stretch_mode = 4
 
-[node name="CurrentResource" type="Label" parent="VBox/Margin/VSplitContainer/VBox"]
+[node name="CurrentResource" type="LineEdit" parent="VBox/Margin/VSplitContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "No resource"
-horizontal_alignment = 1
-vertical_alignment = 1
-text_overrun_behavior = 1
+alignment = 1
+editable = false
 
 [node name="Search" type="LineEdit" parent="VBox/Margin/VSplitContainer/VBox"]
 unique_name_in_owner = true

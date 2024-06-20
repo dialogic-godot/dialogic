@@ -63,12 +63,10 @@ var save_visited_history_on_save := false:
 ## Starts and stops the connection to the [subsystem Save] subsystem's [signal saved] signal.
 func _update_saved_connection(to_connect: bool) -> void:
 	if to_connect:
-
 		if not DialogicUtil.autoload().Save.saved.is_connected(_on_save):
-			var _result := DialogicUtil.autoload().Save.saved.connect(_on_save)
+			DialogicUtil.autoload().Save.saved.connect(_on_save)
 
 	else:
-
 		if DialogicUtil.autoload().Save.saved.is_connected(_on_save):
 			DialogicUtil.autoload().Save.saved.disconnect(_on_save)
 
@@ -161,16 +159,17 @@ func _get_event_key(event_index: int, timeline_path: String) -> String:
 	return event_key
 
 
-# Called if a Text event marks an unvisited Text event as visited.
-func mark_event_as_visited(_event: DialogicEvent) -> void:
+## Called if an event is marked as visited.
+func mark_event_as_visited(event_index := dialogic.current_event_idx, timeline := dialogic.current_timeline) -> void:
 	if !visited_event_history_enabled:
 		return
 
-	var event_key := _current_event_key()
+	var event_key := _get_event_key(event_index, timeline.resource_path)
 
-	visited_event_history_content[event_key] = dialogic.current_event_idx
+	visited_event_history_content[event_key] = event_index
 
-# Called on each event, but we filter for Text events.
+
+## Called on each event, but we filter for Text events.
 func _check_seen(event: DialogicEvent) -> void:
 	if !visited_event_history_enabled:
 		return
