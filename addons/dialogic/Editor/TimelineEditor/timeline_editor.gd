@@ -84,12 +84,18 @@ func _save() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	var keycode := KEY_F5
-	if OS.get_name() == "macOS":
-		keycode = KEY_B
-	if event is InputEventKey and event.keycode == keycode and event.pressed:
-		if Input.is_key_pressed(KEY_CTRL):
-			play_timeline()
+	if event is InputEventKey:
+		var keycode := KEY_F5
+		if OS.get_name() == "macOS":
+			keycode = KEY_B
+		if event.keycode == keycode and event.pressed:
+			if Input.is_key_pressed(KEY_CTRL):
+				play_timeline()
+
+		if event.keycode == KEY_F and event.pressed:
+			if Input.is_key_pressed(KEY_CTRL):
+				if is_ancestor_of(get_viewport().gui_get_focus_owner()):
+					search_timeline()
 
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
@@ -154,7 +160,9 @@ func _ready() -> void:
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
 	%SwitchEditorMode.custom_minimum_size.x = 200 * DialogicUtil.get_editor_scale()
 
-
+	%SearchClose.icon = get_theme_icon("Close", "EditorIcons")
+	%SearchUp.icon = get_theme_icon("MoveUp", "EditorIcons")
+	%SearchDown.icon = get_theme_icon("MoveDown", "EditorIcons")
 
 
 
@@ -177,3 +185,51 @@ func _clear() -> void:
 			%TextEditor.clear_timeline()
 	$NoTimelineScreen.show()
 	play_timeline_button.disabled = true
+
+
+#region SEARCH
+
+func search_timeline() -> void:
+	%SearchSection.show()
+	if get_viewport().gui_get_focus_owner() is TextEdit:
+		%Search.text = get_viewport().gui_get_focus_owner().get_selected_text()
+		_on_search_text_changed(%Search.text)
+	else:
+		%Search.text = ""
+	%Search.grab_focus()
+
+
+func _on_close_search_pressed() -> void:
+	%SearchSection.hide()
+	_on_search_text_changed('')
+
+
+func _on_search_text_changed(new_text: String) -> void:
+	var editor: Node = null
+	match current_editor_mode:
+		0:
+			editor = %VisualEditor
+		1:
+			editor = %TextEditor
+	editor._search_timeline(new_text)
+	%SearchLabel.text = editor._get_search_text()
+
+
+
+func _on_search_down_pressed() -> void:
+	match current_editor_mode:
+		0:
+			%VisualEditor._search_navigate_down()
+		1:
+			%TextEditor._search_navigate_down()
+
+func _on_search_up_pressed() -> void:
+	match current_editor_mode:
+		0:
+			%VisualEditor._search_navigate_up()
+		1:
+			%TextEditor._search_navigate_up()
+
+#endregion
+
+

@@ -1171,3 +1171,20 @@ func get_previous_character(double_previous := false) -> DialogicCharacter:
 	return character
 
 #endregion
+
+var search_results := []
+func _search_timeline(search_text:String) -> void:
+	search_results.clear()
+
+	for block in %Timeline.get_children():
+		if block.resource is DialogicTextEvent:
+			pass
+
+func _get_search_text() -> String:
+	return ""
+
+func _search_navigate_down() -> void:
+	pass
+
+func _search_navigate_up() -> void:
+	pass

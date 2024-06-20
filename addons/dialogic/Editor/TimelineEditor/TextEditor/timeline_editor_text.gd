@@ -209,6 +209,49 @@ func _on_content_item_clicked(label:String) -> void:
 			return
 
 
+func _search_timeline(search_text:String) -> void:
+	set_search_text(search_text)
+	queue_redraw()
+	set_meta("current_search", search_text)
+
+
+func _get_search_text() -> String:
+	return ""
+
+func _search_navigate_down() -> void:
+	search_navigate(false)
+
+func _search_navigate_up() -> void:
+	search_navigate(true)
+
+func search_navigate(navigate_up := false) -> void:
+	if not has_meta("current_search"):
+		return
+	var pos: Vector2i
+	var search_from_line := 0
+	var search_from_column := 0
+	if has_selection():
+		if navigate_up:
+			search_from_line = get_selection_from_line()
+			search_from_column = get_selection_from_column()-1
+			if search_from_column == -1:
+				if search_from_line == 0:
+					search_from_line = get_line_count()
+				else:
+					search_from_line -= 1
+				search_from_column = get_line(search_from_line).length()-1
+		else:
+			search_from_line = get_selection_to_line()
+			search_from_column = get_selection_to_column()
+	else:
+		search_from_line = get_caret_line()
+		search_from_column = get_caret_column()
+
+	pos = search(get_meta("current_search"), 4 if navigate_up else 0, search_from_line, search_from_column)
+	select(pos.y, pos.x, pos.y, pos.x+len(get_meta("current_search")))
+	queue_redraw()
+
+
 ################################################################################
 ## 					AUTO COMPLETION
 ################################################################################
