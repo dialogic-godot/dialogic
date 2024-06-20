@@ -131,11 +131,11 @@ text = "Advance Delay:"
 
 [node name="HintTooltip4" parent="VBoxContainer/VBox/Skippable/HBoxContainer3" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
-tooltip_text = "Delay before you can advance (if the text finishes revealing on it's own). 
+tooltip_text = "Delay before you can advance (if the text finishes revealing on its own). 
 
 This is used to prevent players from advancing when they actually wanted to skip the revealing, but did so very shortly after the text was already fully revealed."
 texture = SubResource("ImageTexture_3xcp4")
-hint_text = "Delay before you can advance (only if the text finishes revealing on it's own). 
+hint_text = "Delay before you can advance (only if the text finishes revealing on its own). 
 
 This is used to prevent players from advancing when they actually wanted to skip the revealing, but did so very shortly after the text was already fully revealed."
 
