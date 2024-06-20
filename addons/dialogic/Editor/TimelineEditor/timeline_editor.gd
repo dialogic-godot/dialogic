@@ -84,12 +84,18 @@ func _save() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	var keycode := KEY_F5
-	if OS.get_name() == "macOS":
-		keycode = KEY_B
-	if event is InputEventKey and event.keycode == keycode and event.pressed:
-		if Input.is_key_pressed(KEY_CTRL):
-			play_timeline()
+	if event is InputEventKey:
+		var keycode := KEY_F5
+		if OS.get_name() == "macOS":
+			keycode = KEY_B
+		if event.keycode == keycode and event.pressed:
+			if Input.is_key_pressed(KEY_CTRL):
+				play_timeline()
+
+		if event.keycode == KEY_F and event.pressed:
+			if Input.is_key_pressed(KEY_CTRL):
+				if is_ancestor_of(get_viewport().gui_get_focus_owner()):
+					search_timeline()
 
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
@@ -121,7 +127,7 @@ func toggle_editor_mode() -> void:
 			%VisualEditor.load_timeline(current_resource)
 			%VisualEditor.show()
 			%SwitchEditorMode.text = "Text Editor"
-
+	_on_search_text_changed(%Search.text)
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
@@ -154,7 +160,9 @@ func _ready() -> void:
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
 	%SwitchEditorMode.custom_minimum_size.x = 200 * DialogicUtil.get_editor_scale()
 
-
+	%SearchClose.icon = get_theme_icon("Close", "EditorIcons")
+	%SearchUp.icon = get_theme_icon("MoveUp", "EditorIcons")
+	%SearchDown.icon = get_theme_icon("MoveDown", "EditorIcons")
 
 
 
@@ -177,3 +185,51 @@ func _clear() -> void:
 			%TextEditor.clear_timeline()
 	$NoTimelineScreen.show()
 	play_timeline_button.disabled = true
+
+
+func get_current_editor() -> Node:
+	if current_editor_mode == 1:
+		return %TextEditor
+	return %VisualEditor
+
+#region SEARCH
+
+func search_timeline() -> void:
+	%SearchSection.show()
+	if get_viewport().gui_get_focus_owner() is TextEdit:
+		%Search.text = get_viewport().gui_get_focus_owner().get_selected_text()
+		_on_search_text_changed(%Search.text)
+	else:
+		%Search.text = ""
+	%Search.grab_focus()
+
+
+func _on_close_search_pressed() -> void:
+	%SearchSection.hide()
+	%Search.text = ""
+	_on_search_text_changed('')
+
+
+func _on_search_text_changed(new_text: String) -> void:
+	var editor: Node = null
+	var anything_found: bool = get_current_editor()._search_timeline(new_text)
+	if anything_found or new_text.is_empty():
+		%SearchLabel.hide()
+		%Search.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
+	else:
+		%SearchLabel.show()
+		%SearchLabel.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+		%Search.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+		%SearchLabel.text = "No Match"
+
+
+func _on_search_down_pressed() -> void:
+	get_current_editor()._search_navigate_down()
+
+
+func _on_search_up_pressed() -> void:
+	get_current_editor()._search_navigate_up()
+
+#endregion
+
+

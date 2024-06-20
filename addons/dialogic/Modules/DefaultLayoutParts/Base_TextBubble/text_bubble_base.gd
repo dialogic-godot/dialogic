@@ -1,7 +1,7 @@
 @tool
 extends DialogicLayoutBase
 
-## This layout won't do anything on it's own
+## This layout won't do anything on its own
 
 var bubbles: Array = []
 var registered_characters: Dictionary = {}

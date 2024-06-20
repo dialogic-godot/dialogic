@@ -1,7 +1,7 @@
 @tool
 extends DialogicLayoutLayer
 
-## This layout won't do anything on it's own
+## This layout won't do anything on its own
 
 @export_group("Main")
 @export_subgroup("Text")
