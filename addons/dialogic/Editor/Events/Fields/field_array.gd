@@ -7,7 +7,7 @@ extends DialogicVisualEditorField
 const ArrayValue := "res://addons/dialogic/Editor/Events/Fields/array_part.tscn"
 
 
-func _ready():
+func _ready() -> void:
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 	%Add.pressed.connect(_on_AddButton_pressed)
 

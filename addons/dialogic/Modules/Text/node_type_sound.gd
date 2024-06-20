@@ -30,7 +30,7 @@ var RNG := RandomNumberGenerator.new()
 
 var current_overwrite_data := {}
 
-func _ready():
+func _ready() -> void:
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
 
@@ -112,7 +112,7 @@ func _on_finished_revealing_text() -> void:
 func load_overwrite(dictionary:Dictionary) -> void:
 	current_overwrite_data = dictionary
 	if dictionary.has('sound_path'):
-		current_overwrite_data['sounds'] = load_sounds_from_path(dictionary.sound_path)
+		current_overwrite_data['sounds'] = DialogicNode_TypeSounds.load_sounds_from_path(dictionary.sound_path)
 
 
 static func load_sounds_from_path(path:String) -> Array[AudioStream]:
@@ -129,7 +129,7 @@ static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 
 ############# USER INTERFACE ###################################################
 
-func _get_configuration_warnings():
+func _get_configuration_warnings() -> PackedStringArray:
 	if not get_parent() is DialogicNode_DialogText:
 		return ["This should be the child of a DialogText node!"]
 	return []

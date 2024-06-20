@@ -2,18 +2,18 @@
 class_name DialogicNode_PortraitContainer
 extends Control
 
-## Node that defines a position for dialogic portraits and how to display portrait at that position.
+## Node that defines a position for dialogic portraits and how to display portraits at that position.
 
 enum PositionModes {
-	POSITION, ## This container has an index and can be joined/moved to with the Character Event
-	SPEAKER,  ## This container has no index and is joined/left automatically based on the speaker.
+	POSITION, ## This container can be joined/moved to with the Character Event
+	SPEAKER,  ## This container is joined/left automatically based on the speaker.
 	}
 
 @export var mode := PositionModes.POSITION
 
 @export_subgroup('Mode: Position')
 ## The position this node corresponds to.
-@export var position_index := 0
+@export var container_ids: PackedStringArray = ["1"]
 
 
 @export_subgroup('Mode: Speaker')
@@ -24,7 +24,7 @@ enum PositionModes {
 @export_subgroup('Portrait Placement')
 enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 ## Defines how to affect the scale of the portrait
-@export var size_mode : SizeModes = SizeModes.FIT_SCALE_HEIGHT :
+@export var size_mode: SizeModes = SizeModes.FIT_SCALE_HEIGHT :
 	set(mode):
 		size_mode = mode
 		_update_debug_portrait_size_position()
@@ -39,7 +39,7 @@ enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
 @export_group('Origin', 'origin')
 enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_MIDDLE, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT}
 ## The portrait will be placed relative to this point in the container.
-@export var origin_anchor : OriginAnchors = OriginAnchors.BOTTOM_CENTER :
+@export var origin_anchor: OriginAnchors = OriginAnchors.BOTTOM_CENTER :
 	set(anchor):
 		origin_anchor = anchor
 		_update_debug_origin()
@@ -50,27 +50,34 @@ enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_
 		origin_offset = offset
 		_update_debug_origin()
 
+enum PivotModes {AT_ORIGIN, PERCENTAGE, PIXELS}
+## Usually you want to rotate or scale around the portrait origin.
+## For the moments where that is not the case, set the mode to PERCENTAGE or PIXELS and use [member pivot_value].
+@export var pivot_mode: PivotModes = PivotModes.AT_ORIGIN
+## Only has an effect when [member pivot_mode] is not AT_ORIGIN. Meaning depends on whether [member pivot_mode] is PERCENTAGE or PIXELS.
+@export var pivot_value := Vector2()
 
 @export_group('Debug', 'debug')
 ## A character that will be displayed in the editor, useful for getting the right size.
-@export var debug_character : DialogicCharacter = null:
+@export var debug_character: DialogicCharacter = null:
 	set(character):
 		debug_character = character
 		_update_debug_portrait_scene()
-@export var debug_character_portrait :String = "":
+@export var debug_character_portrait: String = "":
 	set(portrait):
 		debug_character_portrait = portrait
 		_update_debug_portrait_scene()
 
-var debug_character_holder_node :Node2D = null
-var debug_character_scene_node : Node = null
-var debug_origin : Sprite2D = null
-var default_portrait_scene :String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
+var debug_character_holder_node: Node2D = null
+var debug_character_scene_node: Node = null
+var debug_origin: Sprite2D = null
+var default_portrait_scene: String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
 # Used if no debug character is specified
 var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
 
+var ignore_resize := false
 
-func _ready():
+func _ready() -> void:
 	match mode:
 		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
@@ -85,7 +92,7 @@ func _ready():
 
 		debug_origin = Sprite2D.new()
 		add_child(debug_origin)
-		debug_origin.texture = get_theme_icon("EditorPosition", "EditorIcons")
+		debug_origin.texture = load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
 
 		_update_debug_origin()
 		_update_debug_portrait_scene()
@@ -97,9 +104,21 @@ func _ready():
 ##						MAIN METHODS
 ################################################################################
 
-func update_portrait_transforms():
+func update_portrait_transforms() -> void:
+	if ignore_resize:
+		return
+
+	match pivot_mode:
+		PivotModes.AT_ORIGIN:
+			pivot_offset = _get_origin_position()
+		PivotModes.PERCENTAGE:
+			pivot_offset = size*pivot_value
+		PivotModes.PIXELS:
+			pivot_offset = pivot_value
+
 	for child in get_children():
-		DialogicUtil.autoload().Portraits._update_portrait_transform(child)
+		DialogicUtil.autoload().Portraits._update_character_transform(child)
+
 
 ## Returns a Rect2 with the position as the position and the scale as the size.
 func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> Rect2:
@@ -129,12 +148,25 @@ func get_local_portrait_transform(portrait_rect:Rect2, character_scale:=1.0) -> 
 
 
 ## Returns the current origin position
-func _get_origin_position() -> Vector2:
-	return size*Vector2(origin_anchor%3/2.0, floor(origin_anchor/3.0)/2.0) + origin_offset
+func _get_origin_position(rect_size = null) -> Vector2:
+	if rect_size == null:
+		rect_size = size
+	return rect_size * Vector2(origin_anchor%3 / 2.0, floor(origin_anchor/3.0) / 2.0) + origin_offset
 
+
+func is_container(id:Variant) -> bool:
+	return str(id) in container_ids
+
+#region DEBUG METHODS
 ################################################################################
-##						DEBUG METHODS
-################################################################################
+# USE THIS TO DEBUG THE POSITIONS
+#func _draw():
+	#draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
+	#draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size()) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
+#
+#func _process(delta:float) -> void:
+	#queue_redraw()
+
 
 ## Loads the debug_character with the debug_character_portrait
 ## Creates a holder node and applies mirror
@@ -196,3 +228,5 @@ func _update_debug_origin() -> void:
 ## Returns the debug character or the default debug character
 func _get_debug_character() -> DialogicCharacter:
 	return debug_character if debug_character != null else default_debug_character
+
+#endregion

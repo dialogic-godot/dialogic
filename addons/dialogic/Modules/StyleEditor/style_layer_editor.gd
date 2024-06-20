@@ -136,7 +136,7 @@ func add_layer(scene_path:="", overrides:= {}):
 	%LayerTree.get_root().get_child(-1).select(0)
 
 
-func delete_layer():
+func delete_layer() -> void:
 	if current_layer_idx == -1:
 		return
 	current_style.delete_layer(current_layer_idx)

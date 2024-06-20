@@ -1,3 +1,4 @@
+@icon("node_name_label_icon.svg")
 extends Label
 
 class_name DialogicNode_NameLabel
@@ -7,7 +8,7 @@ class_name DialogicNode_NameLabel
 @export var name_label_root :Node = self
 @export var use_character_color := true
 
-func _ready():
+func _ready() -> void:
 	add_to_group('dialogic_name_label')
 	if hide_when_empty:
 		name_label_root.visible = false

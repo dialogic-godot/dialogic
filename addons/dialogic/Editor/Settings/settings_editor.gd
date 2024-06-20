@@ -15,12 +15,12 @@ func _get_icon() -> Texture:
 	return get_theme_icon("PluginScript", "EditorIcons")
 
 
-func _register():
+func _register() -> void:
 	editors_manager.register_simple_editor(self)
 	self.alternative_text = "Customize dialogic and it's behaviour"
 
 
-func _ready():
+func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 
@@ -156,13 +156,13 @@ func _open(extra_information:Variant = null) -> void:
 			open_tab(%SettingsContent.get_node(extra_information))
 
 
-func _close():
+func _close() -> void:
 	for child in %SettingsContent.get_children():
 		if child.get_meta('section').has_method('_about_to_close'):
 			child.get_meta('section')._about_to_close()
 
 
-func refresh():
+func refresh() -> void:
 	for child in %SettingsContent.get_children():
 		if child.get_meta('section').has_method('_refresh'):
 			child.get_meta('section')._refresh()

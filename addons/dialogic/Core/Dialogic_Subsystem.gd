@@ -13,14 +13,14 @@ func post_install() -> void:
 
 # To be overriden by sub-classes
 # Fill in everything that should be cleared (for example before loading a different state)
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
 
 
 # To be overriden by sub-classes
 # Fill in everything that should be loaded using the dialogic_game_handler.current_state_info
 # This is called when a save is loaded
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	pass
 
 

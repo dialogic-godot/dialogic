@@ -264,7 +264,7 @@ func add_style_undoable(file_path:String, style:DialogicStyle, inherits:Dialogic
 	DialogicUtil.set_editor_setting('latest_layout_style', style.name)
 
 
-func _on_duplicate_button_pressed():
+func _on_duplicate_button_pressed() -> void:
 	if !%StyleList.is_anything_selected():
 		return
 	find_parent('EditorView').godot_file_dialog(
@@ -274,7 +274,7 @@ func _on_duplicate_button_pressed():
 		"Select folder for new style")
 
 
-func _on_remove_button_pressed():
+func _on_remove_button_pressed() -> void:
 	if !%StyleList.is_anything_selected():
 		return
 
@@ -286,7 +286,7 @@ func _on_remove_button_pressed():
 	load_style_list()
 
 
-func _on_edit_name_button_pressed():
+func _on_edit_name_button_pressed() -> void:
 	%LayoutStyleName.grab_focus()
 	%LayoutStyleName.select_all()
 
@@ -295,7 +295,7 @@ func _on_layout_style_name_text_submitted(new_text:String) -> void:
 	_on_layout_style_name_focus_exited()
 
 
-func _on_layout_style_name_focus_exited():
+func _on_layout_style_name_focus_exited() -> void:
 	var new_name :String= %LayoutStyleName.text.strip_edges()
 	if new_name == current_style.name:
 		return
@@ -310,14 +310,14 @@ func _on_layout_style_name_focus_exited():
 	load_style_list()
 
 
-func _on_make_default_button_pressed():
+func _on_make_default_button_pressed() -> void:
 	default_style = current_style.resource_path
 	save_style_list()
 	load_style_list()
 
 
 
-func _on_test_style_button_pressed():
+func _on_test_style_button_pressed() -> void:
 	var dialogic_plugin := DialogicUtil.get_dialogic_plugin()
 
 	# Save the current opened timeline

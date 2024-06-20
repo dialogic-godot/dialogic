@@ -5,7 +5,7 @@ var current_info : Dictionary = {}
 @onready var editor_view := find_parent('EditorView')
 
 
-func _ready():
+func _ready() -> void:
 	await editor_view.ready
 	theme = editor_view.theme
 
@@ -13,10 +13,11 @@ func _ready():
 	%LoadingIcon.texture = editor_view.get_theme_icon("KeyTrackScale", "EditorIcons")
 	%InstallWarning.modulate = editor_view.get_theme_color("warning_color", "Editor")
 
+  %CloseButton.icon = editor_view.get_theme_icon("Close", "EditorIcons")
 	EditorInterface.get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
 
 
-func open():
+func open() -> void:
 	get_parent().popup_centered_ratio(0.5)
 	get_parent().mode = Window.MODE_WINDOWED
 	get_parent().move_to_foreground()
@@ -76,11 +77,11 @@ func load_info(info:Dictionary, update_type:int) -> void:
 	else:
 		%Reactions.hide()
 
-func _on_window_close_requested():
+func _on_window_close_requested() -> void:
 	get_parent().visible = false
 
 
-func _on_install_pressed():
+func _on_install_pressed() -> void:
 	find_parent('UpdateManager').request_update_download()
 
 	%InfoLabel.text = "Downloading. This can take a moment."
@@ -88,7 +89,7 @@ func _on_install_pressed():
 	%LoadingIcon.create_tween().set_loops().tween_property(%LoadingIcon, 'rotation', 2*PI, 1).from(0)
 
 
-func _on_refresh_pressed():
+func _on_refresh_pressed() -> void:
 	find_parent('UpdateManager').request_update_check()
 
 
@@ -163,14 +164,18 @@ func _on_content_meta_clicked(meta:Variant) -> void:
 	OS.shell_open(str(meta))
 
 
-func _on_install_mouse_entered():
+func _on_install_mouse_entered() -> void:
 	if not %Install.disabled:
 		%InstallWarning.show()
 
 
-func _on_install_mouse_exited():
+func _on_install_mouse_exited() -> void:
 	%InstallWarning.hide()
 
 
 func _on_restart_pressed():
 	EditorInterface.restart_editor(true)
+
+func _on_close_button_pressed() -> void:
+	get_parent().hide()
+

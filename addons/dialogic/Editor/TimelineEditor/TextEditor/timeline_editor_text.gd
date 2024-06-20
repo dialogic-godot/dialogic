@@ -8,19 +8,19 @@ extends CodeEdit
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
-func _ready():
+func _ready() -> void:
 	await find_parent('EditorView').ready
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
 
-func _on_text_editor_text_changed():
+func _on_text_editor_text_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
 	$UpdateTimer.start()
 
 
-func clear_timeline():
+func clear_timeline() -> void:
 	text = ''
 	update_content_list()
 
@@ -37,7 +37,7 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 	update_content_list()
 
 
-func save_timeline():
+func save_timeline() -> void:
 	if !timeline_editor.current_resource:
 		return
 
@@ -183,11 +183,11 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		insert_text_at_caret(result)
 
 
-func _on_update_timer_timeout():
+func _on_update_timer_timeout() -> void:
 	update_content_list()
 
 
-func update_content_list():
+func update_content_list() -> void:
 	var labels :PackedStringArray = []
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
@@ -207,6 +207,52 @@ func _on_content_item_clicked(label:String) -> void:
 			set_caret_line(text.count('\n', 0, i.get_start()+1))
 			center_viewport_to_caret()
 			return
+
+
+func _search_timeline(search_text:String) -> bool:
+	set_search_text(search_text)
+	queue_redraw()
+	set_meta("current_search", search_text)
+
+	return search(search_text, 0, 0, 0).y != -1
+
+
+func _search_navigate_down() -> void:
+	search_navigate(false)
+
+
+func _search_navigate_up() -> void:
+	search_navigate(true)
+
+
+func search_navigate(navigate_up := false) -> void:
+	if not has_meta("current_search"):
+		return
+	var pos: Vector2i
+	var search_from_line := 0
+	var search_from_column := 0
+	if has_selection():
+		if navigate_up:
+			search_from_line = get_selection_from_line()
+			search_from_column = get_selection_from_column()-1
+			if search_from_column == -1:
+				if search_from_line == 0:
+					search_from_line = get_line_count()
+				else:
+					search_from_line -= 1
+				search_from_column = max(get_line(search_from_line).length()-1,0)
+		else:
+			search_from_line = get_selection_to_line()
+			search_from_column = get_selection_to_column()
+	else:
+		search_from_line = get_caret_line()
+		search_from_column = get_caret_column()
+
+	pos = search(get_meta("current_search"), 4 if navigate_up else 0, search_from_line, search_from_column)
+	select(pos.y, pos.x, pos.y, pos.x+len(get_meta("current_search")))
+	set_caret_line(pos.y)
+	center_viewport_to_caret()
+	queue_redraw()
 
 
 ################################################################################

@@ -104,6 +104,9 @@ var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_b
 var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
 	get: return get_subsystem("Portraits")
 
+var PortraitContainers := preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd").new():
+	get: return get_subsystem("PortraitContainers")
+
 var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
 	get: return get_subsystem("Choices")
 
@@ -206,7 +209,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 		printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 		return
 
-	await (timeline as DialogicTimeline).process()
+	(timeline as DialogicTimeline).process()
 
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
@@ -234,7 +237,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return null
 
-	await (timeline_resource as DialogicTimeline).process()
+	(timeline_resource as DialogicTimeline).process()
 
 	return timeline_resource
 

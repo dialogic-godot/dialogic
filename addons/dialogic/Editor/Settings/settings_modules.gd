@@ -272,7 +272,7 @@ func _on_tree_item_selected() -> void:
 				%GeneralInfo.text = ""
 
 
-func _on_external_link_pressed():
+func _on_external_link_pressed() -> void:
 	if %ExternalLink.has_meta('url'):
 		OS.shell_open(%ExternalLink.get_meta('url'))
 

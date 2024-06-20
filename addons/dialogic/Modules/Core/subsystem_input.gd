@@ -177,7 +177,7 @@ func _process(delta: float) -> void:
 ################################################################################
 
 
-func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_input(_text_node:Control, skipped:bool, _argument:String) -> void:
 	if skipped:
 		return
 	dialogic.Text.show_next_indicators()
@@ -192,7 +192,7 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	effect_autoadvance(text_node, skipped, argument)
 
 
-func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> void:
+func effect_autoadvance(_text_node: Control, _skipped:bool, argument:String) -> void:
 	if argument.ends_with('?'):
 		argument = argument.trim_suffix('?')
 	else:

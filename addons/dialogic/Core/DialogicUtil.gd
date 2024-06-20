@@ -6,8 +6,8 @@ class_name DialogicUtil
 
 #region EDITOR
 
-# This method should be used instead of EditorInterface.get_editor_scale(), because if you use that
-# it will run perfectly fine from the editor, but crash when the game is exported.
+## This method should be used instead of EditorInterface.get_editor_scale(), because if you use that
+## it will run perfectly fine from the editor, but crash when the game is exported.
 static func get_editor_scale() -> float:
 	return EditorInterface.get_editor_scale()
 
@@ -34,7 +34,7 @@ static func autoload() -> DialogicGameHandler:
 
 #region FILE SYSTEM
 ################################################################################
-static func listdir(path: String, files_only:= true, throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
+static func listdir(path: String, files_only:= true, _throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
 	var files: Array = []
 	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
@@ -115,7 +115,7 @@ enum AnimationType {ALL, IN, OUT, ACTION}
 
 
 
-static func get_portrait_animation_scripts(type := AnimationType.ALL, include_custom := true) -> Array:
+static func get_portrait_animation_scripts(type := AnimationType.ALL) -> Array:
 	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
 	const CROSS_ANIMATION := "_in_out"
 	const OUT_ANIMATION := "_out"
@@ -137,7 +137,8 @@ static func get_portrait_animation_scripts(type := AnimationType.ALL, include_cu
 				# Extra check for CROSS animations to prevent parsing parts
 				# of the name as an IN or OUT animation.
 				AnimationType.ACTION:
-					return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
+					#return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
+					return not IN_ANIMATION in script and not OUT_ANIMATION in script
 
 				_:
 					return false
@@ -218,6 +219,29 @@ static func update_timer_process_callback(timer:Timer) -> void:
 #endregion
 
 
+#region MULTITWEEN
+################################################################################
+static func multitween(tweened_value:Variant, item:Node, property:String, part:String) -> void:
+	var parts: Dictionary = item.get_meta(property+'_parts', {})
+	parts[part] = tweened_value
+
+	if not item.has_meta(property+'_base_value') and not 'base' in parts:
+		item.set_meta(property+'_base_value', item.get(property))
+
+	var final_value: Variant = parts.get('base', item.get_meta(property+'_base_value', item.get(property)))
+
+	for key in parts:
+		if key == 'base':
+			continue
+		else:
+			final_value += parts[key]
+
+	item.set(property, final_value)
+	item.set_meta(property+'_parts', parts)
+
+#endregion
+
+
 #region TRANSLATIONS
 ################################################################################
 
@@ -250,7 +274,7 @@ static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> A
 	return array
 
 
-static func get_variable_value_type(value:Variant) -> int:
+static func get_variable_value_type(value:Variant) -> VarTypes:
 	match typeof(value):
 		TYPE_STRING:
 			return VarTypes.STRING
@@ -540,3 +564,85 @@ static func str_to_hash_set(source: String) -> Dictionary:
 	return dictionary
 
 #endregion
+
+
+static func get_character_suggestions(search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
+	var suggestions := {}
+
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+	if allow_none and current_value:
+		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	if allow_all:
+		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
+
+	# Get characters in the current timeline and place them at the top of suggestions.
+	if editor_node:
+		var recent_characters := []
+		var timeline_node := editor_node.get_parent().find_parent("Timeline") as DialogicEditor
+		for event_node in timeline_node.find_child("Timeline").get_children():
+			if event_node == editor_node:
+				break
+			if event_node.resource is DialogicCharacterEvent or event_node.resource is DialogicTextEvent:
+				recent_characters.append(event_node.resource.character)
+
+		recent_characters.reverse()
+		for character in recent_characters:
+			if character and not character.get_character_name() in suggestions:
+				suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
+
+	var character_directory := DialogicResourceUtil.get_character_directory()
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon}
+
+	return suggestions
+
+
+static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change") -> Dictionary:
+	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	var suggestions := {}
+
+	if allow_empty:
+		suggestions[empty_text] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
+
+	if character != null:
+		for portrait in character.portraits:
+			suggestions[portrait] = {'value':portrait, 'icon':icon}
+
+	return suggestions
+
+
+static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
+	var icon := load(DialogicUtil.get_module_path("Character").path_join('event_portrait_position.svg'))
+
+	var setting: String = ProjectSettings.get_setting('dialogic/portraits/position_suggestion_names', 'leftmost, left, center, right, rightmost')
+
+	var suggestions := {}
+
+	if not search_text.is_empty():
+		suggestions[search_text] = {'value':search_text.strip_edges(), 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+
+	for position_id in setting.split(','):
+		suggestions[position_id.strip_edges()] = {'value':position_id.strip_edges(), 'icon':icon}
+		if not search_text.is_empty() and position_id.strip_edges().begins_with(search_text):
+			suggestions.erase(search_text)
+
+	return suggestions
+
+
+static func get_portrait_animation_suggestions(search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
+	var suggestions := {}
+
+	suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+
+	for anim in DialogicUtil.get_portrait_animation_scripts(action):
+		suggestions[DialogicUtil.pretty_name(anim)] = {
+			'value'			: DialogicUtil.pretty_name(anim),
+			'editor_icon'	: ["Animation", "EditorIcons"]
+			}
+
+	return suggestions

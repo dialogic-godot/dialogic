@@ -3,7 +3,7 @@ extends PopupMenu
 
 var current_event : Node = null
 
-func _ready():
+func _ready() -> void:
 	clear()
 	add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), "Duplicate")
 	add_separator()

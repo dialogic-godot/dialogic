@@ -72,7 +72,7 @@ func to_text() -> String:
 	return "<<END BRANCH>>"
 
 
-func from_text(string:String) -> void:
+func from_text(_string:String) -> void:
 	pass
 
 

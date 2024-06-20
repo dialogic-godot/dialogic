@@ -5,7 +5,7 @@ extends Window
 ## Other scripts can call the add_ref_change() method to register changes directly
 ##   or use the helpers add_variable_ref_change() and add_portrait_ref_change()
 
-@onready var editors_manager := get_node("../Margin/EditorsManager")
+@onready var editors_manager := get_node("../EditorsManager")
 @onready var broken_manager := get_node("Manager/Tabs/BrokenReferences")
 enum Where {EVERYWHERE, BY_CHARACTER, TEXTS_ONLY}
 enum Types {TEXT, VARIABLE, PORTRAIT, CHARACTER_NAME, TIMELINE_NAME}

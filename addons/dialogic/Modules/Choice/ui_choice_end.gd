@@ -3,7 +3,7 @@ extends HBoxContainer
 
 var parent_resource: DialogicChoiceEvent = null
 
-func refresh():
+func refresh() -> void:
 	$AddChoice.icon = get_theme_icon("Add", "EditorIcons")
 
 	if parent_resource is DialogicChoiceEvent:

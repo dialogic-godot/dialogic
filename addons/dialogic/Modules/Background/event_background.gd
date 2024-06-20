@@ -95,7 +95,7 @@ func get_shortcode_parameters() -> Dictionary:
 #region EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('_scene_type', ValueType.FIXED_OPTIONS, {
 		'left_text' :'Show',
 		'options': [
@@ -146,7 +146,7 @@ func build_event_editor():
 	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade time:'})
 
 
-func get_transition_suggestions(filter:String="") -> Dictionary:
+func get_transition_suggestions(_filter:String="") -> Dictionary:
 	var transitions := DialogicResourceUtil.list_special_resources_of_type("BackgroundTransition")
 	var suggestions := {}
 	for i in transitions:

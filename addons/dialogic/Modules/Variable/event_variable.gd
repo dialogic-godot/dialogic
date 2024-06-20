@@ -228,7 +228,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {
 			'left_text'		: 'Set',
 			'suggestions_func' 	: get_var_suggestions,
@@ -310,7 +310,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func get_value_suggestions(filter:String) -> Dictionary:
+func get_value_suggestions(_filter:String) -> Dictionary:
 	var suggestions := {}
 
 	for var_path in DialogicUtil.list_variables(DialogicUtil.get_default_variables()):
@@ -318,8 +318,8 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func _on_variable_editor_pressed():
-	var editor_manager := _editor_node.find_parent('EditorsManager')
+func _on_variable_editor_pressed() -> void:
+	var editor_manager := editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.open_editor(editor_manager.editors['VariablesEditor']['node'], true)
 
@@ -341,14 +341,14 @@ func update_editor_warning() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if CodeCompletionHelper.get_line_untill_caret(line) == 'set ':
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
 	if symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'set', 'set ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
 
 

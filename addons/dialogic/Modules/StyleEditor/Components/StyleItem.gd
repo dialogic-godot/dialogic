@@ -54,11 +54,11 @@ func set_current(current:bool):
 	%CurrentIcon.visible = current
 
 
-func _on_mouse_entered():
+func _on_mouse_entered() -> void:
 	%HoverBG.show()
 
 
-func _on_mouse_exited():
+func _on_mouse_exited() -> void:
 	%HoverBG.hide()
 
 
@@ -72,10 +72,10 @@ func _on_gui_input(event):
 		middle_clicked.emit()
 
 
-func _on_focus_entered():
+func _on_focus_entered() -> void:
 	$FocusFG.show()
 	focused.emit()
 
 
-func _on_focus_exited():
+func _on_focus_exited() -> void:
 	$FocusFG.hide()

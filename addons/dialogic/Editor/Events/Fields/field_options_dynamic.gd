@@ -60,6 +60,7 @@ func _load_display_info(info:Dictionary) -> void:
 	placeholder_text = info.get('placeholder', 'Select Resource')
 	mode = info.get("mode", 0)
 	resource_icon = info.get('icon', null)
+	%Search.tooltip_text = info.get('tooltip_text', '')
 	await ready
 	if resource_icon == null and info.has('editor_icon'):
 		resource_icon = callv('get_theme_icon', info.editor_icon)

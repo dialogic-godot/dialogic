@@ -11,7 +11,7 @@ func _get_title() -> String:
 	return "Settings"
 
 
-func _init():
+func _init() -> void:
 	hint_text = "The settings here are @export variables from the used scene."
 
 
@@ -33,7 +33,7 @@ func _recheck(data:Dictionary):
 		load_portrait_scene_export_variables()
 
 
-func load_portrait_scene_export_variables():
+func load_portrait_scene_export_variables() -> void:
 	var scene = null
 	if !current_portrait_data.get('scene', '').is_empty():
 		scene = load(current_portrait_data.get('scene'))

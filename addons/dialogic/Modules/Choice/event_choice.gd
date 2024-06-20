@@ -20,6 +20,7 @@ var disabled_text: String = ""
 
 #endregion
 
+var regex := RegEx.create_from_string(r'- (?<text>(?(?=\[if)|.)*)(\[if (?<condition>([^\]\[]|\[[^\]]*\])+)])?\s?(\s*\[(?<shortcode>.*)\])?')
 
 #region EXECUTION
 ################################################################################
@@ -27,7 +28,7 @@ var disabled_text: String = ""
 func _execute() -> void:
 
 	if dialogic.Choices.is_question(dialogic.current_event_idx):
-		dialogic.Choices.show_current_choices(false)
+		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
 
 #endregion
@@ -62,7 +63,7 @@ func to_text() -> String:
 		result_string += " [if "+condition+"]"
 
 
-	var shortcode = '['
+	var shortcode := '['
 	if else_action == ElseActions.HIDE:
 		shortcode += 'else="hide"'
 	elif else_action == ElseActions.DISABLE:
@@ -77,15 +78,13 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var regex = RegEx.new()
-	regex.compile('- (?<text>(?(?=\\[if)|.)*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\s*\\[(?<shortcode>.*)\\])?')
-	var result = regex.search(string.strip_edges())
+	var result := regex.search(string.strip_edges())
 	if result == null:
 		return
 	text = result.get_string('text')
 	condition = result.get_string('condition')
 	if result.get_string('shortcode'):
-		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
+		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
 		else_action = {
 			'default':ElseActions.DEFAULT,
 			'hide':ElseActions.HIDE,
@@ -155,9 +154,8 @@ func allow_alt_text() -> bool:
 #region  CODE COMPLETION
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	line = CodeCompletionHelper.get_line_untill_caret(line)
-
 
 	if !'[if' in line:
 		if symbol == '{':
@@ -184,14 +182,25 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	var result := regex.search(line)
+
 	dict[0] = {'color':event_color}
-	dict = Highlighter.color_region(dict, event_color.lerp(Highlighter.variable_color, 0.5), line, '{','}', 0, line.find('[if'), event_color)
-	if '[if' in line:
+
+	var condition_begin := result.get_start("condition")
+	var condition_end := result.get_end("condition")
+
+	var shortcode_begin := result.get_start("shortcode")
+
+	dict = Highlighter.color_region(dict, event_color.lerp(Highlighter.variable_color, 0.5), line, '{','}', 0, condition_begin, event_color)
+
+	if condition_begin > 0:
 		var from := line.find('[if')
 		dict[from] = {"color":Highlighter.normal_color}
-		dict = Highlighter.color_word(dict, Highlighter.code_flow_color, line, 'if', from, line.find(']', from))
-		dict = Highlighter.color_condition(dict, line, from, line.find(']', from))
-		dict = Highlighter.color_shortcode_content(dict, line, line.find(']', from), 0,event_color)
+		dict[from+1] = {"color":Highlighter.code_flow_color}
+		dict[condition_begin] = {"color":Highlighter.normal_color}
+		dict = Highlighter.color_condition(dict, line, condition_begin, condition_end)
+		if shortcode_begin:
+			dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
 	return dict
 #endregion
 

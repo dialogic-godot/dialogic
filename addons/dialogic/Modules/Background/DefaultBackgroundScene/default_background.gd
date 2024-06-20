@@ -15,7 +15,7 @@ func _ready() -> void:
 	image_node.anchor_bottom = 1
 
 
-func _update_background(argument:String, time:float) -> void:
+func _update_background(argument:String, _time:float) -> void:
 	if argument.begins_with('res://'):
 		image_node.texture = load(argument)
 		color_node.color = Color.TRANSPARENT

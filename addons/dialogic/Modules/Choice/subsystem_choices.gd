@@ -20,6 +20,7 @@ var block_delay: float = 0.2
 ## If true, the first (top-most) choice will be focused
 var autofocus_first_choice: bool = true
 
+
 enum FalseBehaviour {HIDE=0, DISABLE=1}
 ## The behaviour of choices with a false condition and else_action set to DEFAULT.
 var default_false_behaviour := FalseBehaviour.HIDE
@@ -37,7 +38,7 @@ var _choice_blocker := Timer.new()
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	hide_all_choices()
 
 
@@ -63,116 +64,151 @@ func _ready() -> void:
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		node.hide()
-		if node.is_connected('button_up', _on_ChoiceButton_choice_selected):
-			node.disconnect('button_up', _on_ChoiceButton_choice_selected)
+		if node.is_connected('button_up', _on_choice_selected):
+			node.disconnect('button_up', _on_choice_selected)
+
+
+
+func show_choices() -> void:
+	hide_all_choices()
+
+## Collects information on all the choices of the current question.
+## The result is a dictionary like this:
+## {'choices':
+##	[
+##		{'event_index':10, 'button_index':1, 'disabled':false, 'text':"My Choice", 'visible':true},
+##		{'event_index':15, 'button_index':2, 'disabled':false, 'text':"My Choice2", 'visible':true},
+##	]
+func get_current_question_info() -> Dictionary:
+	var question_info := {'choices':[]}
+
+	var button_idx := 1
+	last_question_info = {'choices':[]}
+
+	for choice_index in get_current_choice_indexes():
+		var event: DialogicEvent = dialogic.current_timeline_events[choice_index]
+
+		if not event is DialogicChoiceEvent:
+			continue
+
+		var choice_event: DialogicChoiceEvent = event
+		var choice_info := {}
+		choice_info['event_index'] = choice_index
+		choice_info['button_index'] = button_idx
+
+		# Check Condition
+		var condition: String = choice_event.condition
+
+		if condition.is_empty() or dialogic.Expressions.execute_condition(choice_event.condition):
+			choice_info['disabled'] = false
+			choice_info['text'] = choice_event.get_property_translated('text')
+			choice_info['visible'] = true
+			button_idx += 1
+		else:
+			choice_info['disabled'] = true
+			if not choice_event.disabled_text.is_empty():
+				choice_info['text'] = choice_event.get_property_translated('disabled_text')
+			else:
+				choice_info['text'] = choice_event.get_property_translated('text')
+
+			var hide := choice_event.else_action == DialogicChoiceEvent.ElseActions.HIDE
+			hide = hide or choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT and default_false_behaviour == DialogicChoiceEvent.ElseActions.HIDE
+			choice_info['visible'] = not hide
+			if not hide:
+				button_idx += 1
+
+		choice_info.text = dialogic.Text.parse_text(choice_info.text, true, true, false, true, false, false)
+
+		if dialogic.has_subsystem('History'):
+			choice_info['visited_before'] = dialogic.History.has_event_been_visited(choice_index)
+
+		question_info['choices'].append(choice_info)
+
+	return question_info
 
 
 ## Lists all current choices and shows buttons.
-func show_current_choices(instant:=true) -> void:
+func show_current_question(instant:=true) -> void:
 	hide_all_choices()
 	_choice_blocker.stop()
 
 	if !instant and (reveal_delay != 0 or reveal_by_input):
 		if reveal_delay != 0:
 			_choice_blocker.start(reveal_delay)
-			_choice_blocker.timeout.connect(show_current_choices)
+			_choice_blocker.timeout.connect(show_current_question)
 		if reveal_by_input:
-			dialogic.Inputs.dialogic_action.connect(show_current_choices)
+			dialogic.Inputs.dialogic_action.connect(show_current_question)
 		return
 
-	if _choice_blocker.timeout.is_connected(show_current_choices):
-		_choice_blocker.timeout.disconnect(show_current_choices)
-	if dialogic.Inputs.dialogic_action.is_connected(show_current_choices):
-		dialogic.Inputs.dialogic_action.disconnect(show_current_choices)
+	if _choice_blocker.timeout.is_connected(show_current_question):
+		_choice_blocker.timeout.disconnect(show_current_question)
+	if dialogic.Inputs.dialogic_action.is_connected(show_current_question):
+		dialogic.Inputs.dialogic_action.disconnect(show_current_question)
 
+	var missing_button := false
 
-	var button_idx := 1
-	last_question_info = {'choices':[]}
-	for choice_index in get_current_choice_indexes():
-		var choice_event: DialogicEvent = dialogic.current_timeline_events[choice_index]
-		# check if condition is false
-		if not choice_event.condition.is_empty() and not dialogic.Expressions.execute_condition(choice_event.condition):
-			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT:
-				choice_event.else_action = default_false_behaviour
+	var question_info := get_current_question_info()
 
-			# check what to do in this case
-			if choice_event.else_action == DialogicChoiceEvent.ElseActions.DISABLE:
-				if !choice_event.disabled_text.is_empty():
-					show_choice(button_idx, choice_event.get_property_translated('disabled_text'), false, choice_index)
-					last_question_info['choices'].append(choice_event.get_property_translated('disabled_text')+'#disabled')
-				else:
-					show_choice(button_idx, choice_event.get_property_translated('text'), false, choice_index)
-					last_question_info['choices'].append(choice_event.get_property_translated('text')+'#disabled')
-				button_idx += 1
-		# else just show it
-		else:
-			show_choice(button_idx, choice_event.get_property_translated('text'), true, choice_index)
-			last_question_info['choices'].append(choice_event.get_property_translated('text'))
-			button_idx += 1
-	choices_shown.emit(last_question_info)
+	for choice in question_info.choices:
+		var node: DialogicNode_ChoiceButton = get_choice_button_node(choice.button_index)
+
+		if not node:
+			missing_button = true
+			continue
+
+		node._load_info(choice)
+
+		if choice.button_index == 1 and autofocus_first_choice:
+			node.grab_focus()
+
+		match hotkey_behaviour:
+			## Add 1 to 9 as shortcuts if it's enabled
+			HotkeyBehaviour.NUMBERS:
+				if choice.button_index > 0 or choice.button_index < 10:
+					var shortcut: Shortcut
+					if node.shortcut != null:
+						shortcut = node.shortcut
+					else:
+						shortcut = Shortcut.new()
+
+					var input_key := InputEventKey.new()
+					input_key.keycode = OS.find_keycode_from_string(str(choice.button_index))
+					shortcut.events.append(input_key)
+					node.shortcut = shortcut
+
+		if node.pressed.is_connected(_on_choice_selected):
+			node.pressed.disconnect(_on_choice_selected)
+		node.pressed.connect(_on_choice_selected.bind(choice))
 	_choice_blocker.start(block_delay)
 
+	if missing_button:
+		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
-## Adds a button with the given text that leads to the given event.
-func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
+
+
+func get_choice_button_node(button_index:int) -> DialogicNode_ChoiceButton:
 	var idx := 1
-	var shown_at_all := false
 	for node: DialogicNode_ChoiceButton in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		if !node.get_parent().is_visible_in_tree():
 			continue
-		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
-			node.show()
-
-
-			if dialogic.has_subsystem('Text'):
-				text = dialogic.Text.parse_text(text, true, true, false, true, false, false)
-
-			node._set_text_changed(text)
-
-			if idx == 1 and autofocus_first_choice:
-				node.grab_focus()
-
-			## Add 1 to 9 as shortcuts if it's enabled
-			match hotkey_behaviour:
-				HotkeyBehaviour.NUMBERS:
-					if idx > 0 or idx < 10:
-						var shortcut: Shortcut
-						if node.shortcut != null:
-							shortcut = node.shortcut
-						else:
-							shortcut = Shortcut.new()
-
-						var shortcut_events: Array[InputEventKey] = []
-						var input_key := InputEventKey.new()
-						input_key.keycode = OS.find_keycode_from_string(str(idx))
-						shortcut.events.append(input_key)
-						node.shortcut = shortcut
-
-			node.disabled = not enabled
-
-			if node.pressed.is_connected(_on_ChoiceButton_choice_selected):
-				node.pressed.disconnect(_on_ChoiceButton_choice_selected)
-
-			node.pressed.connect(_on_ChoiceButton_choice_selected.bind(event_index,
-				{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
-			shown_at_all = true
+		if node.choice_index == button_index or (node.choice_index == -1 and idx == button_index):
+			return node
 
 		if node.choice_index > 0:
 			idx = node.choice_index
 		idx += 1
 
-	if not shown_at_all:
-		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
+	return null
 
 
-func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
+func _on_choice_selected(choice_info := {}) -> void:
 	if dialogic.paused or not _choice_blocker.is_stopped():
 		return
 
 	choice_selected.emit(choice_info)
 	hide_all_choices()
 	dialogic.current_state = dialogic.States.IDLE
-	dialogic.handle_event(event_index+1)
+	dialogic.handle_event(choice_info.event_index + 1)
 
 	if dialogic.has_subsystem('History'):
 		var all_choices: Array = dialogic.Choices.last_question_info['choices']
@@ -180,7 +216,8 @@ func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(choice_info.text), "Choice", {'all_choices': all_choices})
 		else:
 			dialogic.History.store_simple_history_entry(choice_info.text, "Choice", {'all_choices': all_choices})
-
+		if dialogic.has_subsystem("History"):
+			dialogic.History.mark_event_as_visited(choice_info.event_index)
 
 
 func get_current_choice_indexes() -> Array:

@@ -88,7 +88,6 @@ func to_text() -> String:
 				result += '()'
 			else:
 				result += '('
-				var arr := []
 				for i in arguments:
 					if i is String and i.begins_with('@'):
 						result += i.trim_prefix('@')
@@ -137,7 +136,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('autoload_name', ValueType.DYNAMIC_OPTIONS, {'left_text':'On autoload',
 		'empty_text':'Autoload',
 		'suggestions_func':get_autoload_suggestions,
@@ -180,10 +179,10 @@ func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dict
 			script = loaded_autoload
 
 	if script:
-		for method in script.get_script_method_list():
-			if method.name.begins_with('@') or method.name.begins_with('_'):
+		for script_method in script.get_script_method_list():
+			if script_method.name.begins_with('@') or script_method.name.begins_with('_'):
 				continue
-			suggestions[method.name] = {'value': method.name, 'tooltip':method.name, 'editor_icon': ["Callable", "EditorIcons"]}
+			suggestions[script_method.name] = {'value': script_method.name, 'tooltip':script_method.name, 'editor_icon': ["Callable", "EditorIcons"]}
 	if !filter.is_empty():
 		suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
@@ -201,7 +200,7 @@ func update_argument_info() -> void:
 				break
 
 
-func check_arguments_and_update_warning():
+func check_arguments_and_update_warning() -> void:
 	if not _current_method_arg_hints.has("info") or _current_method_arg_hints.info.is_empty():
 		ui_update_warning.emit()
 		return
@@ -237,7 +236,7 @@ func check_arguments_and_update_warning():
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if line.count(' ') == 1 and not '.' in line:
 		for i in get_autoload_suggestions():
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'.', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("Node", "EditorIcons"))
@@ -246,7 +245,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'(', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("Callable", "EditorIcons"))
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'do', 'do ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), _get_icon())
 
 

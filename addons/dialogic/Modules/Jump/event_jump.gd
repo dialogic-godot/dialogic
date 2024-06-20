@@ -100,7 +100,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('timeline_identifier', ValueType.DYNAMIC_OPTIONS, {'left_text':'Jump to',
 		'file_extension': '.dtl',
 		'mode'			: 2,
@@ -115,7 +115,7 @@ func build_event_editor():
 		'editor_icon':["ArrowRight", "EditorIcons"]})
 
 
-func get_timeline_suggestions(filter:String= "") -> Dictionary:
+func get_timeline_suggestions(_filter:String= "") -> Dictionary:
 	var suggestions := {}
 
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
@@ -124,7 +124,7 @@ func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	return suggestions
 
 
-func get_label_suggestions(filter:String="") -> Dictionary:
+func get_label_suggestions(_filter:String="") -> Dictionary:
 	var suggestions := {}
 	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	if timeline_identifier in DialogicResourceUtil.get_label_cache().keys():
@@ -136,7 +136,7 @@ func get_label_suggestions(filter:String="") -> Dictionary:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if symbol == ' ' and line.count(' ') == 1:
 		CodeCompletionHelper.suggest_labels(TextNode, '', '\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
 		CodeCompletionHelper.suggest_timelines(TextNode, CodeEdit.KIND_MEMBER, event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
@@ -144,7 +144,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		CodeCompletionHelper.suggest_labels(TextNode, line.strip_edges().trim_prefix('jump ').trim_suffix('/'+String.chr(0xFFFF)).strip_edges(), '\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'jump', 'jump ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
 
