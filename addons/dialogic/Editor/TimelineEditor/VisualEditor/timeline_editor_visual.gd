@@ -1171,3 +1171,109 @@ func get_previous_character(double_previous := false) -> DialogicCharacter:
 	return character
 
 #endregion
+
+#region SEARCH
+################################################################################
+
+var search_results := {}
+func _search_timeline(search_text:String) -> bool:
+	for event in search_results:
+		if is_instance_valid(search_results[event]):
+			search_results[event].set_search_text("")
+			search_results[event].deselect()
+			search_results[event].queue_redraw()
+	search_results.clear()
+
+	for block in %Timeline.get_children():
+		if block.resource is DialogicTextEvent:
+			var text_field: TextEdit = block.get_node("%BodyContent").find_child("Field_Text_Multiline", true, false)
+			text_field.set_search_text(search_text)
+			if text_field.search(search_text, 0, 0, 0).x != -1:
+				search_results[block] = text_field
+				text_field.queue_redraw()
+	set_meta("current_search", search_text)
+	search_navigate(false)
+	return not search_results.is_empty()
+
+
+func _search_navigate_down() -> void:
+	search_navigate(false)
+
+
+func _search_navigate_up() -> void:
+	search_navigate(true)
+
+
+func search_navigate(navigate_up := false) -> void:
+	var search_text: String = get_meta("current_search", "")
+
+	if search_results.is_empty() or %Timeline.get_child_count() == 0:
+		return
+	if selected_items.is_empty():
+		select_item(%Timeline.get_child(0), false)
+
+	while not selected_items[0] in search_results:
+		select_item(%Timeline.get_child(wrapi(selected_items[0].get_index()+1, 0, %Timeline.get_child_count()-1)), false)
+
+	var event: Node = selected_items[0]
+	var counter := 0
+	while true:
+		counter += 1
+		var field: TextEdit = search_results[event]
+		field.queue_redraw()
+		var result := search_text_field(field, search_text, navigate_up)
+		var current_line := field.get_selection_from_line() if field.has_selection() else -1
+		var current_column := field.get_selection_from_column() if field.has_selection() else -1
+		var next_is_in_this_event := false
+		if result.y == -1:
+			next_is_in_this_event = false
+		elif navigate_up:
+			if current_line == -1:
+				current_line = field.get_line_count()-1
+				current_column = field.get_line(current_line).length()
+			next_is_in_this_event = result.x < current_column or result.y < current_line
+		else:
+			next_is_in_this_event = result.x > current_column or result.y > current_line
+
+		if next_is_in_this_event:
+			if not event in selected_items:
+				select_item(event, false)
+			%TimelineArea.ensure_control_visible(event)
+			event._on_ToggleBodyVisibility_toggled(true)
+			field.select(result.y, result.x, result.y, result.x+len(search_text))
+			break
+
+		else:
+			field.deselect()
+			var index := search_results.keys().find(event)
+			event = search_results.keys()[wrapi(index+(-1 if navigate_up else 1), 0, search_results.size())]
+
+		if counter > 5:
+			print("[Dialogic] Search failed.")
+			break
+
+
+func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -> Vector2i:
+	var search_from_line: int = 0
+	var search_from_column: int = 0
+	if field.has_selection():
+		if navigate_up:
+			search_from_line = field.get_selection_from_line()
+			search_from_column = field.get_selection_from_column()-1
+			if search_from_column == -1:
+				search_from_line -= 1
+				if search_from_line == -1:
+					return Vector2i(-1, -1)
+				search_from_column = field.get_line(search_from_line).length()-1
+		else:
+			search_from_line = field.get_selection_to_line()
+			search_from_column = field.get_selection_to_column()
+	else:
+		if navigate_up:
+			search_from_line = field.get_line_count()-1
+			search_from_column = field.get_line(search_from_line).length()-1
+
+	var search := field.search(search_text, 4 if navigate_up else 0, search_from_line, search_from_column)
+	return search
+
+#endregion
