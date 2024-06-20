@@ -386,19 +386,22 @@ func get_character_suggestions(_search_text:String) -> Dictionary:
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	var character_directory := DialogicResourceUtil.get_character_directory()
+
 	# Get characters in the current timeline and place them at the top of suggestions.
-	var timeline_node = editor_node.get_parent().find_parent("Timeline") as DialogicEditor
-	var event_nodes = timeline_node.find_child("Timeline").get_children()
-	event_nodes.reverse()
-	var this_event_idx := event_nodes.find(editor_node)
-	event_nodes = event_nodes.slice(this_event_idx, event_nodes.size())
-	for event_node in event_nodes:
-		var event = event_node.resource
-		if event is DialogicCharacterEvent or event is DialogicTextEvent:
-			var event_character = event.character
-			if event_character:
-				suggestions[event_character.get_character_name()] = {'value': event_character.get_character_name(), 'tooltip': event_character.resource_path, 'icon': icon.duplicate()}
+	var recent_characters := []
+	var timeline_node := editor_node.get_parent().find_parent("Timeline") as DialogicEditor
+	for event_node in timeline_node.find_child("Timeline").get_children():
+		if event_node == editor_node:
+			break
+		if event_node.resource is DialogicCharacterEvent or event_node.resource is DialogicTextEvent:
+			recent_characters.append(event_node.resource.character)
+
+	recent_characters.reverse()
+	for character in recent_characters:
+		if character and not character.get_character_name() in suggestions:
+			suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
+
+	var character_directory := DialogicResourceUtil.get_character_directory()
 	for resource in character_directory.keys():
 		if suggestions.has(resource):
 			continue
