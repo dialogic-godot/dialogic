@@ -99,6 +99,7 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 			if filter.is_empty() or filter.to_lower() in timeline_name.to_lower():
 				%ResourcesList.add_item(timeline_name, get_theme_icon("TripleBar", "EditorIcons"))
 				%ResourcesList.set_item_metadata(idx, timeline_directory[timeline_name])
+				%ResourcesList.set_item_tooltip(idx, timeline_directory[timeline_name])
 				if timeline_directory[timeline_name] == current_file:
 					%ResourcesList.select(idx)
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
