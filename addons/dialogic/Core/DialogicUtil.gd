@@ -599,25 +599,3 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 
 	return suggestions
 
-
-enum AnimationType {ALL=-1, IN=1, OUT=2, ACTION=3}
-static func get_portrait_animations_filtered(type := AnimationType.ALL) -> Dictionary:
-	var filter := {"type":type}
-	if type == AnimationType.ALL:
-		filter["type"] = [AnimationType.IN, AnimationType.OUT, AnimationType.ACTION]
-	return DialogicResourceUtil.list_special_resources("PortraitAnimation", filter)
-
-
-static func get_portrait_animation_suggestions(_search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
-	var suggestions := {}
-
-	if empty_text:
-		suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-
-	for anim_name in DialogicUtil.get_portrait_animations_filtered(action):
-		suggestions[DialogicUtil.pretty_name(anim_name)] = {
-			'value'			: DialogicUtil.pretty_name(anim_name),
-			'editor_icon'	: ["Animation", "EditorIcons"]
-			}
-
-	return suggestions

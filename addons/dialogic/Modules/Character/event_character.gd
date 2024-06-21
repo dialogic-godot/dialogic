@@ -450,13 +450,19 @@ func get_position_suggestions(search_text:String='') -> Dictionary:
 
 
 func get_animation_suggestions(search_text:String='') -> Dictionary:
-	var empty_text := "Default"
-	if action == Actions.UPDATE:
-		empty_text = "None"
-	return DialogicUtil.get_portrait_animation_suggestions(search_text, empty_text, action+1)
+	var DPAU := DialogicPortraitAnimationUtil
+	match action:
+		Actions.JOIN:
+			return DPAU.get_suggestions(search_text, animation_name, "Default", DPAU.AnimationType.IN)
+		Actions.LEAVE:
+			return DPAU.get_suggestions(search_text, animation_name, "Default", DPAU.AnimationType.OUT)
+		Actions.UPDATE:
+			return DPAU.get_suggestions(search_text, animation_name, "None", DPAU.AnimationType.ACTION)
+	return {}
+
 
 func get_fade_suggestions(search_text:String='') -> Dictionary:
-	return DialogicUtil.get_portrait_animation_suggestions(search_text, "Default", 1)
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, fade_animation, "Default", DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
 
 
 ####################### CODE COMPLETION ########################################
@@ -496,13 +502,13 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		var animations := {}
 
 		if line.begins_with('join'):
-			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.IN)
+			animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.IN)
 
 		if line.begins_with('update'):
-			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.ACTION)
+			animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.ACTION)
 
 		if line.begins_with('leave'):
-			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.OUT)
+			animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.OUT)
 
 		for script: String  in animations:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)

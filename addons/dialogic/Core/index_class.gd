@@ -70,7 +70,7 @@ func list_dir(subdir:='') -> Array:
 	return Array(DirAccess.get_files_at(this_folder.path_join(subdir))).map(func(file):return this_folder.path_join(subdir).path_join(file))
 
 
-func list_special_resources(subdir:='', type:='', extension:="") -> Dictionary:
+func list_special_resources(subdir:='', extension:="") -> Dictionary:
 	var dict := {}
 	for i in list_dir(subdir):
 		if extension.is_empty() or i.ends_with(extension):
@@ -79,7 +79,6 @@ func list_special_resources(subdir:='', type:='', extension:="") -> Dictionary:
 
 
 func list_animations(subdir := "") -> Dictionary:
-	var animations := list_special_resources(subdir, "PortraitAnimation", ".gd")
 	var full_animation_list := {}
 	for path in list_dir(subdir):
 		if not path.ends_with(".gd"):

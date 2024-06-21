@@ -210,24 +210,38 @@ static func match_resource_filter(dict:Dictionary, filter:Dictionary) -> bool:
 	return true
 
 
-static func guess_special_resource(type: String, string: String, default := {}) -> Dictionary:
+static func guess_special_resource(type: String, string: String, default := {}, filter := {}, ignores:PackedStringArray=[]) -> Dictionary:
 	if special_resources.is_empty():
 		update_special_resources()
-
-	if not type in special_resources:
+	var resources := list_special_resources(type, filter)
+	if resources.is_empty():
+		printerr("[Dialogic] No ", type, "s found, but attempted to use one.")
 		return default
 
 	string = string.to_lower()
 
 	if string.begins_with('res://'):
-		for i in special_resources[type].values():
+		for i in resources.values():
 			if i.path == string:
 				return i
+		printerr("[Dialogic] Unable to find ", type, " at path '", string, "'.")
 		return default
 
-	if string in special_resources[type]:
-		return special_resources[type]
+	if string in resources:
+		return resources[string]
 
+	if not ignores.is_empty():
+		var regex := RegEx.create_from_string(r" ?\b(" + "|".join(ignores) + r")\b")
+		for name in resources:
+			if regex.sub(name, "") == string:
+				return resources[name]
+
+	## As a last effort check against the unfiltered list
+	if string in special_resources[type]:
+		push_warning("[Dialogic] Using ", type, " '", string,"' when not supposed to.")
+		return special_resources[type][string]
+
+	printerr("[Dialogic] Unable to identify ", type, " based on string '", string, "'.")
 	return default
 
 #endregion
