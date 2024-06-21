@@ -88,6 +88,7 @@ func list_animations(subdir := "") -> Dictionary:
 		for version_name in versions:
 			full_animation_list[version_name] = versions[version_name]
 			full_animation_list[version_name]["path"] = path
+		anim_object.queue_free()
 	return full_animation_list
 
 #endregion

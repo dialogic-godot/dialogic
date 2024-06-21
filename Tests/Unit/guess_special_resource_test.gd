@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 func test_fade_in_animation_paths() -> void:
 	const TYPE := "PortraitAnimation"
 	var fade_in_1: String = DialogicResourceUtil.guess_special_resource(TYPE, "fade in").get('path', "")
-	var fade_in_2: String = DialogicResourceUtil.guess_special_resource(TYPE, "fade in out").get('path', "")
+	var fade_in_2: String = DialogicResourceUtil.guess_special_resource(TYPE, "fade cross").get('path', "")
 	var fade_in_3: String = DialogicResourceUtil.guess_special_resource(TYPE, "fade out").get('path', "")
 
 	var is_any_fade_in_empty := fade_in_1.is_empty() or fade_in_2.is_empty() or fade_in_3.is_empty()
