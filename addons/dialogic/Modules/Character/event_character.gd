@@ -493,16 +493,16 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				suggest_parameter(param, line, TextNode)
 
 	if line_until_caret.ends_with('animation="'):
-		var animations := []
+		var animations := {}
 
 		if line.begins_with('join'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.IN)
 
 		if line.begins_with('update'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.ACTION)
 
 		if line.begins_with('leave'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
+			animations = DialogicUtil.get_portrait_animations_filtered(DialogicUtil.AnimationType.OUT)
 
 		for script: String  in animations:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)

@@ -15,3 +15,8 @@ func animate() -> void:
 	tween.tween_property(node, 'position:y', orig_pos.y, time*0.2)
 
 	tween.finished.connect(emit_signal.bind('finished_once'))
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"shake y": {"type": AnimationType.ACTION},
+	}

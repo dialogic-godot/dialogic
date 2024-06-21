@@ -13,3 +13,8 @@ func animate() -> void:
 	tween.tween_method(bound_multitween, Vector2(), Vector2(-1,0)*strength, time*0.1)
 	tween.tween_method(bound_multitween, Vector2(), Vector2(1, 0)*strength, time*0.2)
 	tween.finished.connect(emit_signal.bind('finished_once'))
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"shake x": {"type": AnimationType.ACTION},
+	}

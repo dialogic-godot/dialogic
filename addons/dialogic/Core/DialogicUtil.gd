@@ -111,39 +111,6 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	return indexers
 
 
-enum AnimationType {ALL, IN, OUT, ACTION}
-
-
-
-static func get_portrait_animation_scripts(type := AnimationType.ALL) -> Array:
-	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
-	const CROSS_ANIMATION := "_in_out"
-	const OUT_ANIMATION := "_out"
-	const IN_ANIMATION := "_in"
-
-	return animations.filter(
-		func(script: String) -> bool:
-			match (type):
-				AnimationType.ALL:
-					return true
-
-				AnimationType.IN:
-					return IN_ANIMATION in script or CROSS_ANIMATION in script
-
-				AnimationType.OUT:
-					return OUT_ANIMATION in script or CROSS_ANIMATION in script
-
-				# All animations that are not IN or OUT.
-				# Extra check for CROSS animations to prevent parsing parts
-				# of the name as an IN or OUT animation.
-				AnimationType.ACTION:
-					#return CROSS_ANIMATION in script or not (IN_ANIMATION in script or OUT_ANIMATION in script)
-					return not IN_ANIMATION in script and not OUT_ANIMATION in script
-
-				_:
-					return false
-	)
-
 
 ## Turns a [param file_path] from `some_file.png` to `Some File`.
 static func pretty_name(file_path: String) -> String:
@@ -152,7 +119,6 @@ static func pretty_name(file_path: String) -> String:
 	_name = _name.capitalize()
 
 	return _name
-
 
 #endregion
 
@@ -634,14 +600,23 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 	return suggestions
 
 
+enum AnimationType {ALL=-1, IN=1, OUT=2, ACTION=3}
+static func get_portrait_animations_filtered(type := AnimationType.ALL) -> Dictionary:
+	var filter := {"type":type}
+	if type == AnimationType.ALL:
+		filter["type"] = [AnimationType.IN, AnimationType.OUT, AnimationType.ACTION]
+	return DialogicResourceUtil.list_special_resources("PortraitAnimation", filter)
+
+
 static func get_portrait_animation_suggestions(_search_text := "", empty_text := "Default", action := AnimationType.ALL) -> Dictionary:
 	var suggestions := {}
 
-	suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	if empty_text:
+		suggestions[empty_text] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 
-	for anim in DialogicUtil.get_portrait_animation_scripts(action):
-		suggestions[DialogicUtil.pretty_name(anim)] = {
-			'value'			: DialogicUtil.pretty_name(anim),
+	for anim_name in DialogicUtil.get_portrait_animations_filtered(action):
+		suggestions[DialogicUtil.pretty_name(anim_name)] = {
+			'value'			: DialogicUtil.pretty_name(anim_name),
 			'editor_icon'	: ["Animation", "EditorIcons"]
 			}
 

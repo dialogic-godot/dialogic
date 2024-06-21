@@ -26,3 +26,10 @@ func animate() -> void:
 
 	await tween.finished
 	finished_once.emit()
+
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"zoom in": {"reversed": false, "type": AnimationType.IN},
+		"zoom out": {"reversed": true, "type": AnimationType.OUT},
+	}

@@ -35,3 +35,10 @@ func animate() -> void:
 
 	await tween.finished
 	finished_once.emit()
+
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"fade in up": {"reversed": false, "type": AnimationType.IN},
+		"fade out down": {"reversed": true, "type": AnimationType.OUT},
+	}

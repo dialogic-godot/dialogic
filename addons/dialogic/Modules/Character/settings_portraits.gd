@@ -87,6 +87,7 @@ func save_setting(value:Variant, settings_key:String) -> void:
 
 
 func get_join_animation_suggestions(search_text:String) -> Dictionary:
+	return DialogicUtil.get_portrait_animation_suggestions(search_text, "", DialogicUtil.AnimationType.IN)
 	var suggestions := {}
 	for anim in list_animations():
 		if '_in' in anim.get_file():
@@ -95,6 +96,7 @@ func get_join_animation_suggestions(search_text:String) -> Dictionary:
 
 
 func get_leave_animation_suggestions(search_text:String) -> Dictionary:
+	return DialogicUtil.get_portrait_animation_suggestions(search_text, "", DialogicUtil.AnimationType.OUT)
 	var suggestions := {}
 	for anim in list_animations():
 		if '_out' in anim.get_file():

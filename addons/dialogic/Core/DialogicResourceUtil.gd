@@ -4,7 +4,7 @@ class_name DialogicResourceUtil
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
 
-static var special_resources : Array[Dictionary] = []
+static var special_resources := {}
 
 
 static func update() -> void:
@@ -173,42 +173,60 @@ static func update_event_cache() -> Array:
 ################################################################################
 
 static func update_special_resources() -> void:
-	special_resources = []
+	special_resources.clear()
 	for indexer in DialogicUtil.get_indexers():
-		special_resources.append_array(indexer._get_special_resources())
+		var additions := indexer._get_special_resources()
+		for resource_type in additions:
+			if not resource_type in special_resources:
+				special_resources[resource_type] = {}
+			special_resources[resource_type].merge(additions[resource_type])
 
 
-static func list_special_resources_of_type(type:String) -> Array:
+static func list_special_resources(type:String, filter := {}) -> Dictionary:
 	if special_resources.is_empty():
 		update_special_resources()
-	return special_resources.filter(func(x:Dictionary): return type == x.get('type','')).map(func(x:Dictionary): return x.get('path', ''))
+	if type in special_resources:
+		if filter.is_empty():
+			return special_resources[type]
+		else:
+			var results := {}
+			for i in special_resources[type]:
+				if match_resource_filter(special_resources[type][i], filter):
+					results[i] = special_resources[type][i]
+			return results
+	return {}
 
 
-static func guess_special_resource(type: String, name: String, default := "") -> String:
+static func match_resource_filter(dict:Dictionary, filter:Dictionary) -> bool:
+	for i in filter:
+		if not i in dict:
+			return false
+		if typeof(filter[i]) == TYPE_ARRAY:
+			if not dict[i] in filter[i]:
+				return false
+		else:
+			if not dict[i] == filter[i]:
+				return false
+	return true
+
+
+static func guess_special_resource(type: String, string: String, default := {}) -> Dictionary:
 	if special_resources.is_empty():
 		update_special_resources()
 
-	if name.begins_with('res://'):
-		return name
+	if not type in special_resources:
+		return default
 
-	for path: String in list_special_resources_of_type(type):
-		var pretty_path := DialogicUtil.pretty_name(path).to_lower()
-		var pretty_name := name.to_lower()
+	string = string.to_lower()
 
-		if pretty_path == pretty_name:
-			return path
+	if string.begins_with('res://'):
+		for i in special_resources[type].values():
+			if i.path == string:
+				return i
+		return default
 
-		elif pretty_name.ends_with(" in"):
-			pretty_name = pretty_name + " out"
-
-			if pretty_path == pretty_name:
-				return path
-
-		elif pretty_name.ends_with(" out"):
-			pretty_name = pretty_name.replace("out", "in out")
-
-			if pretty_path == pretty_name:
-				return path
+	if string in special_resources[type]:
+		return special_resources[type]
 
 	return default
 

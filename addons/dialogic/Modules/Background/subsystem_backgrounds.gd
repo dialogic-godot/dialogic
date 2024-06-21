@@ -99,7 +99,7 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 	else:
 		new_viewport = null
 
-	var trans_script: Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, default_transition))
+	var trans_script: Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, {"path":default_transition}).path)
 	var trans_node := Node.new()
 	trans_node.set_script(trans_script)
 	trans_node = (trans_node as DialogicBackgroundTransition)
