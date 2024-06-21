@@ -630,7 +630,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 				var leave_animation_length := _get_leave_default_length()
 
 				if leave_animation and leave_animation_length:
-					var animate_out := _animate_node(character_node, leave_animation, leave_animation_length)
+					var animate_out := _animate_node(character_node, leave_animation, leave_animation_length, 1, true)
 					animate_out.finished.connect(character_node.queue_free)
 				else:
 					character_node.get_parent().remove_child(character_node)
