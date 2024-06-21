@@ -299,8 +299,8 @@ func z_sort_portrait_containers(con1: DialogicNode_PortraitContainer, con2: Dial
 
 ## Private method to remove a [param portrait_node].
 func _remove_portrait(portrait_node: Node) -> void:
+	portrait_node.get_parent().remove_child(portrait_node)
 	portrait_node.queue_free()
-	#_remove_portrait_timed(portrait_node)
 
 
 ## Gets the default animation length for joining characters
@@ -622,39 +622,59 @@ func get_character_info(character:DialogicCharacter) -> Dictionary:
 ## Updates all portrait containers set to SPEAKER.
 func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 	for container: Node in get_tree().get_nodes_in_group('dialogic_portrait_con_speaker'):
-
+		var just_joined := true
 		for character_node: Node in container.get_children():
-
 			if not character_node.get_meta('character') == speaker:
+				var leave_animation: String = ProjectSettings.get_setting('dialogic/animations/leave_default', "Fade Up Out")
+				leave_animation = DialogicResourceUtil.guess_special_resource("PortraitAnimation", leave_animation, "")
+				var leave_animation_length := _get_leave_default_length()
 
-				for portrait_node: Node in character_node.get_children():
-					_remove_portrait(portrait_node)
+				if leave_animation and leave_animation_length:
+					var animate_out := _animate_node(character_node, leave_animation, leave_animation_length, 1, true)
+					animate_out.finished.connect(character_node.queue_free)
+				else:
+					character_node.get_parent().remove_child(character_node)
+					character_node.queue_free()
+			else:
+				just_joined = false
 
 		if speaker == null or speaker.portraits.is_empty():
 			continue
 
-		if container.get_children().is_empty():
+		if just_joined:
 			_create_character_node(speaker, container)
+
 		elif portrait.is_empty():
 			continue
 
 		if portrait.is_empty(): portrait = speaker.default_portrait
 
+		var fade_animation: String = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade In Out")
+		var fade_length: float = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5)
+
+		fade_animation = DialogicResourceUtil.guess_special_resource("PortraitAnimation", fade_animation, fade_animation)
+
 		if container.portrait_prefix+portrait in speaker.portraits:
-			_change_portrait(container.get_child(-1), container.portrait_prefix+portrait)
-		else:
-			_change_portrait(container.get_child(-1), portrait)
+			portrait = container.portrait_prefix+portrait
+
+		_change_portrait(container.get_child(-1), portrait, fade_animation, fade_length)
 
 		# if the character has no portraits _change_portrait won't actually add a child node
 		if container.get_child(-1).get_child_count() == 0:
 			continue
 
+		if just_joined:
+			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade Up In")
+			join_animation = DialogicResourceUtil.guess_special_resource("PortraitAnimation", join_animation, "")
+			var join_animation_length := _get_join_default_length()
+
+			if join_animation and join_animation_length:
+				_animate_node(container.get_child(-1), join_animation, join_animation_length)
+
 		_change_portrait_mirror(container.get_child(-1))
 
 	if speaker:
-
 		if speaker.resource_path != dialogic.current_state_info['speaker']:
-
 			if dialogic.current_state_info['speaker'] and is_character_joined(load(dialogic.current_state_info['speaker'])):
 				dialogic.current_state_info['portraits'][dialogic.current_state_info['speaker']].node.get_child(-1)._unhighlight()
 
