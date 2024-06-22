@@ -75,7 +75,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var result := RegEx.create_from_string('jump (?<timeline>.*\\/)?(?<label>.*)?').search(string.strip_edges())
+	var result := RegEx.create_from_string(r"jump (?<timeline>.*\/)?(?<label>.*)?").search(string.strip_edges())
 	if result:
 		timeline_identifier = result.get_string('timeline').trim_suffix('/')
 		label_name = result.get_string('label')
