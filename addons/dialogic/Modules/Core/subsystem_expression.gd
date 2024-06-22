@@ -52,7 +52,7 @@ func execute_condition(condition:String) -> bool:
 	return false
 
 
-var condition_modifier_regex := RegEx.create_from_string(r"\[if *(?<condition>\{.*\})(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
+var condition_modifier_regex := RegEx.create_from_string(r"(?(DEFINE)(?<nobraces>([^{}]|\{(?P>nobraces)\})*))\[if *(?<condition>\{(?P>nobraces)\})(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
 func modifier_condition(text:String) -> String:
 	for find in condition_modifier_regex.search_all(text):
 		if execute_condition(find.get_string("condition")):
