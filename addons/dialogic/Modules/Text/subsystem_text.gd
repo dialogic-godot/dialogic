@@ -88,10 +88,10 @@ func post_install() -> void:
 
 ## Applies modifiers, effects and coloring to the text
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if variables and dialogic.has_subsystem('VAR'):
-		text = dialogic.VAR.parse_variables(text)
 	if modifiers:
 		text = parse_text_modifiers(text, type)
+	if variables and dialogic.has_subsystem('VAR'):
+		text = dialogic.VAR.parse_variables(text)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
@@ -397,7 +397,7 @@ func _ready() -> void:
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))[.,](?!([\w\s]*!?[\]\}]|$))")] = autopause_data[i]
 
 
 ## Parses the character's display_name and returns the text that
@@ -556,7 +556,7 @@ func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+var modifier_words_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\[\>]+(\/[^\>]*)\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
 		var string: String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
