@@ -12,6 +12,9 @@ signal dialogic_action
 signal autoskip_timer_finished
 
 
+const _SETTING_INPUT_ACTION := "dialogic/text/input_action"
+const _SETTING_INPUT_ACTION_DEFAULT := "dialogic_default_action"
+
 var input_block_timer := Timer.new()
 var _auto_skip_timer_left: float = 0.0
 var action_was_consumed := false
@@ -89,7 +92,7 @@ func handle_input() -> void:
 
 ## Unhandled Input is used for all NON-Mouse based inputs.
 func _unhandled_input(event:InputEvent) -> void:
-	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT), true):
 		if event is InputEventMouse:
 			return
 		handle_input()
@@ -98,7 +101,7 @@ func _unhandled_input(event:InputEvent) -> void:
 ## Input is used for all mouse based inputs.
 ## If any DialogicInputNode is present this won't do anything (because that node handles MouseInput then).
 func _input(event:InputEvent) -> void:
-	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)):
 
 		if not event is InputEventMouse or get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
 			return
@@ -108,7 +111,7 @@ func _input(event:InputEvent) -> void:
 
 ## This is called from the gui_input of the InputCatcher and DialogText nodes
 func handle_node_gui_input(event:InputEvent) -> void:
-	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)):
 		if event is InputEventMouseButton and event.pressed:
 			DialogicUtil.autoload().Inputs.handle_input()
 
