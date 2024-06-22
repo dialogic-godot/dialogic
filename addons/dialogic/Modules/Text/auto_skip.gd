@@ -21,12 +21,12 @@ var disable_on_user_input: bool = true
 
 ## If `true`, Auto-Skip will be disabled when the timeline advances to a
 ## unread Text event or an event requesting user input.
-var disable_on_unread_text: bool = true
+var disable_on_unread_text: bool = false
 
 ## If `true`, Auto-Skip will be enabled when the timeline advances to a
 ## previously visited Text event.
 ## Useful if the player always wants to skip already-visited Text events.
-var enable_on_visited: bool = true
+var enable_on_visited: bool = false
 
 ## If `true`, Auto-Skip will skip Voice events instead of playing them.
 var skip_voice: bool = true
@@ -38,7 +38,6 @@ var time_per_event: float = 0.1
 
 ## Setting up Auto-Skip.
 func _init() -> void:
-	enable_on_visited = ProjectSettings.get_setting('dialogic/text/autoskip_enabled', enable_on_visited)
 	time_per_event = ProjectSettings.get_setting('dialogic/text/autoskip_time_per_event', time_per_event)
 
 	if DialogicUtil.autoload().has_subsystem('History'):
