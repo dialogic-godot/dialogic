@@ -324,6 +324,8 @@ func recalculate_field_visibility() -> void:
 		else:
 			if _evaluate_visibility_condition(p):
 				if p.node != null:
+					if p.node.visible == false and p.has("property"):
+						p.node._set_value(resource.get(p.property))
 					p.node.show()
 				if p.location == 1:
 					has_any_enabled_body_content = true
