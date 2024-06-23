@@ -9,14 +9,17 @@ enum ElseActions {HIDE=0, DISABLE=1, DEFAULT=2}
 
 ### Settings
 ## The text that is displayed on the choice button.
-var text :String = ""
+var text := ""
 ## If not empty this condition will determine if this choice is active.
-var condition: String = ""
+var condition := ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
 var else_action: = ElseActions.DEFAULT
 ## The text that is displayed if [condition] is false and [else_action] is Disable.
 ## If empty [text] will be used for disabled button as well.
-var disabled_text: String = ""
+var disabled_text := ""
+## A dictionary that can be filled with arbitrary information
+## This can then be interpreted by a custom choice layer
+var extra_data := {}
 
 #endregion
 
@@ -26,7 +29,6 @@ var regex := RegEx.create_from_string(r'- (?<text>(?(?=\[if)|.)*)(\[if (?<condit
 ################################################################################
 
 func _execute() -> void:
-
 	if dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
@@ -62,18 +64,9 @@ func to_text() -> String:
 	if condition:
 		result_string += " [if "+condition+"]"
 
-
-	var shortcode := '['
-	if else_action == ElseActions.HIDE:
-		shortcode += 'else="hide"'
-	elif else_action == ElseActions.DISABLE:
-		shortcode += 'else="disable"'
-
-	if disabled_text:
-		shortcode += " alt_text="+'"'+disabled_text+'"'
-
-	if len(shortcode) > 1:
-		result_string += shortcode + "]"
+	var shortcode := store_to_shortcode_parameters()
+	if shortcode:
+		result_string += "["+shortcode+"]"
 	return result_string
 
 
@@ -84,13 +77,19 @@ func from_text(string:String) -> void:
 	text = result.get_string('text')
 	condition = result.get_string('condition')
 	if result.get_string('shortcode'):
-		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
-		else_action = {
-			'default':ElseActions.DEFAULT,
-			'hide':ElseActions.HIDE,
-			'disable':ElseActions.DISABLE}.get(shortcode_params.get('else', ''), ElseActions.DEFAULT)
+		load_from_shortcode_parameters(result.get_string("shortcode"))
 
-		disabled_text = shortcode_params.get('alt_text', '')
+
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		"else"			: {"property": "else_action", 		"default": ElseActions.DEFAULT,
+									"suggestions": func(): return {
+										"Default"	:{'value':ElseActions.DEFAULT, 'text_alt':['default']},
+										"Hide"		:{'value':ElseActions.HIDE,'text_alt':['hide'] },
+										"Disable"	:{'value':ElseActions.DISABLE,'text_alt':['disable']}}},
+		"alt_text"		: {"property": "disabled_text", 	"default": ""},
+		"extra_data"	: {"property": "extra_data", 		"default": {}},
+		}
 
 
 func is_valid_event(string:String) -> bool:
@@ -122,7 +121,7 @@ func _get_property_original_translation(property:String) -> String:
 
 func build_event_editor() -> void:
 	add_header_edit("text", ValueType.SINGLELINE_TEXT, {'autofocus':true})
-	add_body_edit("condition", ValueType.CONDITION, {'left_text':'if '})
+	add_body_edit("condition", ValueType.CONDITION, {'left_text':'Condition:'})
 	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'else ',
 		'options': [
 			{
@@ -141,6 +140,8 @@ func build_event_editor() -> void:
 	add_body_edit("disabled_text", ValueType.SINGLELINE_TEXT, {
 			'left_text':'Disabled text:',
 			'placeholder':'(Empty for same)'}, 'allow_alt_text()')
+	add_body_line_break()
+	add_body_edit("extra_data", ValueType.DICTIONARY, {"left_text":"Extra Data:"})
 
 
 func allow_alt_text() -> bool:
