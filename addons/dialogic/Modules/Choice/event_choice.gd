@@ -21,9 +21,13 @@ var disabled_text := ""
 ## This can then be interpreted by a custom choice layer
 var extra_data := {}
 
+
+## UI helper
+var _has_condition := false
+
 #endregion
 
-var regex := RegEx.create_from_string(r'- (?<text>(?(?=\[if)|.)*)(\[if (?<condition>([^\]\[]|\[[^\]]*\])+)])?\s?(\s*\[(?<shortcode>.*)\])?')
+var regex := RegEx.create_from_string(r'- (?<text>(?>\\\||(?(?=.*\|)[^|]|(?!\[if)[^|]))*)\|?\s*(\[if(?<condition>([^\]\[]|\[[^\]]*\])+)\])?\s*(?<shortcode>\[[^]]*\])?')
 
 #region EXECUTION
 ################################################################################
@@ -61,12 +65,14 @@ func to_text() -> String:
 	var result_string := ""
 
 	result_string = "- "+text.strip_edges()
+	var shortcode := store_to_shortcode_parameters()
+	if condition or shortcode:
+		result_string += " |"
 	if condition:
 		result_string += " [if "+condition+"]"
 
-	var shortcode := store_to_shortcode_parameters()
 	if shortcode:
-		result_string += "["+shortcode+"]"
+		result_string += " ["+shortcode+"]"
 	return result_string
 
 
@@ -76,6 +82,7 @@ func from_text(string:String) -> void:
 		return
 	text = result.get_string('text')
 	condition = result.get_string('condition')
+	_has_condition = not condition.is_empty()
 	if result.get_string('shortcode'):
 		load_from_shortcode_parameters(result.get_string("shortcode"))
 
@@ -121,8 +128,10 @@ func _get_property_original_translation(property:String) -> String:
 
 func build_event_editor() -> void:
 	add_header_edit("text", ValueType.SINGLELINE_TEXT, {'autofocus':true})
-	add_body_edit("condition", ValueType.CONDITION, {'left_text':'Condition:'})
-	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'else ',
+	add_body_edit("", ValueType.LABEL, {"text":"Condition:"})
+	add_body_edit("_has_condition", ValueType.BOOL_BUTTON, {"editor_icon":["Add", "EditorIcons"]}, "not _has_condition")
+	add_body_edit("condition", ValueType.CONDITION, {}, "_has_condition")# {'left_text':'Condition:'})
+	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'Else:',
 		'options': [
 			{
 				'label': 'Default',
@@ -200,8 +209,8 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict[from+1] = {"color":Highlighter.code_flow_color}
 		dict[condition_begin] = {"color":Highlighter.normal_color}
 		dict = Highlighter.color_condition(dict, line, condition_begin, condition_end)
-		if shortcode_begin:
-			dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
+	if shortcode_begin:
+		dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
 	return dict
 #endregion
 
