@@ -10,10 +10,12 @@ extends DialogicLayoutBase
 @export var global_font_color: Color = Color("white")
 @export_file('*.ttf', '*.tres') var global_font: String = ""
 @export var global_font_size: int = 18
+@export var follow_viewport: bool = false
 
 
 func _apply_export_overrides() -> void:
 	# apply layer
 	set(&'layer', canvas_layer)
+	set(&'follow_viewport_enabled', follow_viewport)
 
 
