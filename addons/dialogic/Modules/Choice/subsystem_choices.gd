@@ -114,10 +114,13 @@ func get_current_question_info() -> Dictionary:
 			var hide := choice_event.else_action == DialogicChoiceEvent.ElseActions.HIDE
 			hide = hide or choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT and default_false_behaviour == DialogicChoiceEvent.ElseActions.HIDE
 			choice_info['visible'] = not hide
+
 			if not hide:
 				button_idx += 1
 
 		choice_info.text = dialogic.Text.parse_text(choice_info.text, true, true, false, true, false, false)
+
+		choice_info.merge(choice_event.extra_data)
 
 		if dialogic.has_subsystem('History'):
 			choice_info['visited_before'] = dialogic.History.has_event_been_visited(choice_index)

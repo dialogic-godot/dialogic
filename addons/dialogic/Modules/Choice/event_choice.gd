@@ -9,24 +9,30 @@ enum ElseActions {HIDE=0, DISABLE=1, DEFAULT=2}
 
 ### Settings
 ## The text that is displayed on the choice button.
-var text :String = ""
+var text := ""
 ## If not empty this condition will determine if this choice is active.
-var condition: String = ""
+var condition := ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
 var else_action: = ElseActions.DEFAULT
 ## The text that is displayed if [condition] is false and [else_action] is Disable.
 ## If empty [text] will be used for disabled button as well.
-var disabled_text: String = ""
+var disabled_text := ""
+## A dictionary that can be filled with arbitrary information
+## This can then be interpreted by a custom choice layer
+var extra_data := {}
+
+
+## UI helper
+var _has_condition := false
 
 #endregion
 
-var regex := RegEx.create_from_string(r'- (?<text>(?(?=\[if)|.)*)(\[if (?<condition>([^\]\[]|\[[^\]]*\])+)])?\s?(\s*\[(?<shortcode>.*)\])?')
+var regex := RegEx.create_from_string(r'- (?<text>(?>\\\||(?(?=.*\|)[^|]|(?!\[if)[^|]))*)\|?\s*(\[if(?<condition>([^\]\[]|\[[^\]]*\])+)\])?\s*(?<shortcode>\[[^]]*\])?')
 
 #region EXECUTION
 ################################################################################
 
 func _execute() -> void:
-
 	if dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
@@ -59,21 +65,14 @@ func to_text() -> String:
 	var result_string := ""
 
 	result_string = "- "+text.strip_edges()
+	var shortcode := store_to_shortcode_parameters()
+	if condition or shortcode:
+		result_string += " |"
 	if condition:
 		result_string += " [if "+condition+"]"
 
-
-	var shortcode := '['
-	if else_action == ElseActions.HIDE:
-		shortcode += 'else="hide"'
-	elif else_action == ElseActions.DISABLE:
-		shortcode += 'else="disable"'
-
-	if disabled_text:
-		shortcode += " alt_text="+'"'+disabled_text+'"'
-
-	if len(shortcode) > 1:
-		result_string += shortcode + "]"
+	if shortcode:
+		result_string += " ["+shortcode+"]"
 	return result_string
 
 
@@ -83,14 +82,21 @@ func from_text(string:String) -> void:
 		return
 	text = result.get_string('text')
 	condition = result.get_string('condition')
+	_has_condition = not condition.is_empty()
 	if result.get_string('shortcode'):
-		var shortcode_params := parse_shortcode_parameters(result.get_string('shortcode'))
-		else_action = {
-			'default':ElseActions.DEFAULT,
-			'hide':ElseActions.HIDE,
-			'disable':ElseActions.DISABLE}.get(shortcode_params.get('else', ''), ElseActions.DEFAULT)
+		load_from_shortcode_parameters(result.get_string("shortcode"))
 
-		disabled_text = shortcode_params.get('alt_text', '')
+
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		"else"			: {"property": "else_action", 		"default": ElseActions.DEFAULT,
+									"suggestions": func(): return {
+										"Default"	:{'value':ElseActions.DEFAULT, 'text_alt':['default']},
+										"Hide"		:{'value':ElseActions.HIDE,'text_alt':['hide'] },
+										"Disable"	:{'value':ElseActions.DISABLE,'text_alt':['disable']}}},
+		"alt_text"		: {"property": "disabled_text", 	"default": ""},
+		"extra_data"	: {"property": "extra_data", 		"default": {}},
+		}
 
 
 func is_valid_event(string:String) -> bool:
@@ -122,8 +128,10 @@ func _get_property_original_translation(property:String) -> String:
 
 func build_event_editor() -> void:
 	add_header_edit("text", ValueType.SINGLELINE_TEXT, {'autofocus':true})
-	add_body_edit("condition", ValueType.CONDITION, {'left_text':'if '})
-	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'else ',
+	add_body_edit("", ValueType.LABEL, {"text":"Condition:"})
+	add_body_edit("_has_condition", ValueType.BOOL_BUTTON, {"editor_icon":["Add", "EditorIcons"]}, "not _has_condition")
+	add_body_edit("condition", ValueType.CONDITION, {}, "_has_condition")# {'left_text':'Condition:'})
+	add_body_edit("else_action", ValueType.FIXED_OPTIONS, {'left_text':'Else:',
 		'options': [
 			{
 				'label': 'Default',
@@ -141,6 +149,8 @@ func build_event_editor() -> void:
 	add_body_edit("disabled_text", ValueType.SINGLELINE_TEXT, {
 			'left_text':'Disabled text:',
 			'placeholder':'(Empty for same)'}, 'allow_alt_text()')
+	add_body_line_break()
+	add_body_edit("extra_data", ValueType.DICTIONARY, {"left_text":"Extra Data:"})
 
 
 func allow_alt_text() -> bool:
@@ -199,8 +209,8 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict[from+1] = {"color":Highlighter.code_flow_color}
 		dict[condition_begin] = {"color":Highlighter.normal_color}
 		dict = Highlighter.color_condition(dict, line, condition_begin, condition_end)
-		if shortcode_begin:
-			dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
+	if shortcode_begin:
+		dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
 	return dict
 #endregion
 

@@ -321,7 +321,10 @@ func store_to_shortcode_parameters() -> String:
 			_:
 				value_as_string = var_to_str(value)
 
-		result_string += " " + parameter + '="' + value_as_string.replace('"', '\\"') + '"'
+		if not ((value_as_string.begins_with("[") and value_as_string.ends_with("]")) or (value_as_string.begins_with("{") and value_as_string.ends_with("}"))):
+			value_as_string.replace('"', '\\"')
+
+		result_string += " " + parameter + '="' + value_as_string + '"'
 	return result_string.strip_edges()
 
 
@@ -382,7 +385,7 @@ func is_string_full_event(string: String) -> bool:
 ## Used to get all the shortcode parameters in a string as a dictionary.
 func parse_shortcode_parameters(shortcode: String) -> Dictionary:
 	var regex: RegEx = RegEx.new()
-	regex.compile(r'((?<parameter>[^\s=]*)\s*=\s*"(?<value>([^"]|\\")*)(?<!\\)")')
+	regex.compile(r'(?<parameter>[^\s=]*)\s*=\s*"(?<value>(\{[^}]*\}|\[[^]]*\]|([^"]|\\")*|))(?<!\\)\"')
 	var dict: Dictionary = {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
