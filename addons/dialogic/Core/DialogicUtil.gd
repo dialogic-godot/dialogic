@@ -84,7 +84,7 @@ static func _update_autoload_subsystem_access() -> void:
 			new_subsystem_access_list += '\nvar {name} := preload("{script}").new():\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
 
 	new_subsystem_access_list += "\n#endregion"
-	script.source_code = RegEx.create_from_string("#region SUBSYSTEMS\\n#*\\n((?!#endregion)(.*\\n))*#endregion").sub(script.source_code, new_subsystem_access_list)
+	script.source_code = RegEx.create_from_string(r"#region SUBSYSTEMS\n#*\n((?!#endregion)(.*\n))*#endregion").sub(script.source_code, new_subsystem_access_list)
 	ResourceSaver.save(script)
 	Engine.get_singleton("EditorInterface").get_resource_filesystem().reimport_files(["res://addons/dialogic/Core/DialogicGameHandler.gd"])
 

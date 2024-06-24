@@ -92,7 +92,7 @@ func get_release_tag_info(release_tag:String) -> Dictionary:
 	release_tag = release_tag.substr(0, release_tag.find('('))
 	release_tag = release_tag.to_lower()
 
-	var regex := RegEx.create_from_string('(?<major>\\d+\\.\\d+)(-(?<state>alpha|beta)-)?(?(2)(?<stateversion>\\d*)|\\.(?<minor>\\d*))?')
+	var regex := RegEx.create_from_string(r"(?<major>\d+\.\d+)(-(?<state>alpha|beta)-)?(?(2)(?<stateversion>\d*)|\.(?<minor>\d*))?")
 
 	var result: RegExMatch = regex.search(release_tag)
 	if !result:
