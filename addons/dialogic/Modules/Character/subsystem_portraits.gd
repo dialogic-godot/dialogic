@@ -254,6 +254,8 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 ## Moves the given portrait to the given container.
 func _move_character(character_node: Node2D, transform:="", time := 0.0, easing:= Tween.EASE_IN_OUT, trans:= Tween.TRANS_SINE) -> void:
 	var tween := character_node.create_tween().set_ease(easing).set_trans(trans).set_parallel()
+	if time == 0:
+		tween = null
 	var container: DialogicNode_PortraitContainer = character_node.get_parent()
 	dialogic.PortraitContainers.move_container(container, transform, tween, time)
 
@@ -563,6 +565,7 @@ func remove_character(character: DialogicCharacter) -> void:
 
 	if is_instance_valid(character_node) and character_node is Node:
 		var container := character_node.get_parent()
+		container.get_parent().remove_child(container)
 		container.queue_free()
 		character_node.queue_free()
 		character_left.emit({'character': character})
