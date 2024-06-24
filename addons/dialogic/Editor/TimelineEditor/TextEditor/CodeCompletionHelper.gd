@@ -15,6 +15,8 @@ var completion_word_regex := RegEx.new()
 var completion_shortcode_getter_regex := RegEx.new()
 # To find the parameter name of the current if typing a value
 var completion_shortcode_param_getter_regex := RegEx.new()
+# To find the value of a paramater that is being typed
+var completion_shortcode_value_regex := RegEx.new()
 
 # Stores references to all shortcode events for parameter and value suggestions
 var shortcode_events := {}
@@ -26,6 +28,7 @@ func _ready() -> void:
 	completion_word_regex.compile("(?<s>(\\W)|^)(?<word>\\w*)\\x{FFFF}")
 	completion_shortcode_getter_regex.compile("\\[(?<code>\\w*)")
 	completion_shortcode_param_getter_regex.compile("(?<param>\\w*)\\W*=\\s*\"?(\\w|\\s)*"+String.chr(0xFFFF))
+	completion_shortcode_value_regex.compile(r'(\[|\s)[^\[\s=]*="(?<value>[^"$]*)'+String.chr(0xFFFF))
 
 	text_syntax_highlighter.mode = text_syntax_highlighter.Modes.TEXT_EVENT_ONLY
 
@@ -41,6 +44,11 @@ func get_code_completion_line(text:CodeEdit) -> String:
 func get_code_completion_word(text:CodeEdit) -> String:
 	var result := completion_word_regex.search(get_code_completion_line(text))
 	return result.get_string('word') if result else ""
+
+# Helper that gets the currently typed parameter
+func get_code_completion_parameter_value(text:CodeEdit) -> String:
+	var result := completion_shortcode_value_regex.search(get_code_completion_line(text))
+	return result.get_string('value') if result else ""
 
 
 # Helper that gets the symbol before the current word
@@ -98,8 +106,8 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 			# word in option
 
 	## Note on VALUE key
-	# The value key is used to store a potential closing letter for the completion.
-	# The completion will check if the letter is already present and add it otherwise.
+	# The value key is used to store a potential closing string for the completion.
+	# The completion will check if the string is already present and add it otherwise.
 
 	# Shortcode event suggestions
 	if mode == Modes.FULL_HIGHLIGHTING and syntax_highlighter.line_is_shortcode_event(text.get_caret_line()):
@@ -134,7 +142,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 						text.add_code_completion_option(CodeEdit.KIND_MEMBER, param, param+'="' , shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("MemberProperty", "EditorIcons"))
 
 			# suggest values
-			elif symbol == '=' or symbol == '"' or get_code_completion_prev_symbol(text) == '"':
+			elif symbol == '=' or symbol == '"':
 				var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
 				if !current_parameter_gex:
 					text.update_code_completion_options(false)
@@ -148,7 +156,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					if typeof(shortcode_events[code].get_shortcode_parameters()[current_parameter].default) == TYPE_BOOL:
 						suggest_bool(text, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3))
 					elif len(word) > 0:
-						text.add_code_completion_option(CodeEdit.KIND_MEMBER, word, word, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
+						text.add_code_completion_option(CodeEdit.KIND_VARIABLE, word, word, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
 					text.update_code_completion_options(true)
 					return
 
@@ -218,16 +226,16 @@ func suggest_variables(text:CodeEdit):
 
 # Helper that adds true and false as options
 func suggest_bool(text:CodeEdit, color:Color):
-	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'true', 'true', color, text.get_theme_icon("GuiChecked", "EditorIcons"), '" ')
-	text.add_code_completion_option(CodeEdit.KIND_MEMBER, 'false', 'false', color, text.get_theme_icon("GuiUnchecked", "EditorIcons"), '" ')
+	text.add_code_completion_option(CodeEdit.KIND_VARIABLE, 'true', 'true', color, text.get_theme_icon("GuiChecked", "EditorIcons"), '" ')
+	text.add_code_completion_option(CodeEdit.KIND_VARIABLE, 'false', 'false', color, text.get_theme_icon("GuiUnchecked", "EditorIcons"), '" ')
 
 
 func suggest_custom_suggestions(suggestions:Dictionary, text:CodeEdit, color:Color) -> void:
 	for key in suggestions.keys():
 		if suggestions[key].has('text_alt'):
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, suggestions[key].text_alt[0], color, suggestions[key].get('icon', null), '" ')
+			text.add_code_completion_option(CodeEdit.KIND_VARIABLE, key, suggestions[key].text_alt[0], color, suggestions[key].get('icon', null), '" ')
 		else:
-			text.add_code_completion_option(CodeEdit.KIND_MEMBER, key, str(suggestions[key].value), color, suggestions[key].get('icon', null), '" ')
+			text.add_code_completion_option(CodeEdit.KIND_VARIABLE, key, str(suggestions[key].value), color, suggestions[key].get('icon', null), '" ')
 
 
 # Filters the list of all possible options, depending on what was typed
@@ -242,6 +250,10 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 		elif candidate.kind == text.KIND_MEMBER:
 			if current_word.is_empty() or current_word.to_lower() in candidate.insert_text.to_lower():
 				valid_candidates.append(candidate)
+		elif candidate.kind == text.KIND_VARIABLE:
+			var current_param_value := get_code_completion_parameter_value(text)
+			if current_param_value.is_empty() or current_param_value.to_lower() in candidate.insert_text.to_lower():
+				valid_candidates.append(candidate)
 		elif candidate.kind == text.KIND_CONSTANT:
 			if current_word.is_empty() or candidate.insert_text.begins_with(current_word):
 				valid_candidates.append(candidate)
@@ -255,17 +267,23 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 # Inserts the selected item
 func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 	# Note: I decided to ALWAYS use replace mode, as dialogic is supposed to be beginner friendly
-	var word := get_code_completion_word(text)
+
 	var code_completion := text.get_code_completion_option(text.get_code_completion_selected_index())
+
+	var word := get_code_completion_word(text)
+	if code_completion.kind == CodeEdit.KIND_VARIABLE:
+		word = get_code_completion_parameter_value(text)
+
 	text.remove_text(text.get_caret_line(), text.get_caret_column()-len(word), text.get_caret_line(), text.get_caret_column())
 	text.set_caret_column(text.get_caret_column()-len(word))
-	text.insert_text_at_caret(code_completion.insert_text)#
+	text.insert_text_at_caret(code_completion.insert_text)
+
 	if code_completion.has('default_value') and typeof(code_completion['default_value']) == TYPE_STRING:
-		var next_letter := text.get_line(text.get_caret_line()).substr(text.get_caret_column(), 1)
-		if next_letter != code_completion['default_value']:
-			text.insert_text_at_caret(code_completion['default_value'])
-		else:
+		var next_letter := text.get_line(text.get_caret_line()).substr(text.get_caret_column(), len(code_completion['default_value']))
+		if next_letter == code_completion['default_value'] or next_letter[0] == code_completion['default_value'][0]:
 			text.set_caret_column(text.get_caret_column()+1)
+		else:
+			text.insert_text_at_caret(code_completion['default_value'])
 
 
 #endregion

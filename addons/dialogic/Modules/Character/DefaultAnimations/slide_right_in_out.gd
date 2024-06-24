@@ -18,3 +18,10 @@ func animate() -> void:
 	tween.tween_property(node, 'position:x', end_position_x, time)
 
 	tween.finished.connect(emit_signal.bind('finished_once'))
+
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"slide in right": {"reversed": false, "type": AnimationType.IN},
+		"slide out left": {"reversed": true, "type": AnimationType.OUT},
+	}

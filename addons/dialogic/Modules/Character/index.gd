@@ -16,5 +16,5 @@ func _get_text_effects() -> Array[Dictionary]:
 	return [{'command':'portrait', 'subsystem':'Portraits', 'method':'text_effect_portrait', 'arg':true}]
 
 
-func _get_special_resources() -> Array[Dictionary]:
-	return list_special_resources('DefaultAnimations', &'PortraitAnimation')
+func _get_special_resources() -> Dictionary:
+	return {&'PortraitAnimation': list_animations("DefaultAnimations")}

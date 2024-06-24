@@ -17,3 +17,8 @@ func animate() -> void:
 	tween.parallel().tween_property(node, 'rotation', 0.0, time*0.3)
 
 	tween.finished.connect(emit_signal.bind('finished_once'))
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"tada": {"type": AnimationType.ACTION},
+	}

@@ -9,3 +9,9 @@ func animate() -> void:
 	tween.tween_property(node, 'position:y', orig_pos.y, time*0.6).set_trans(Tween.TRANS_BOUNCE)
 	tween.parallel().tween_property(node, 'scale:y', orig_scale.y, time*0.6).set_trans(Tween.TRANS_BOUNCE)
 	tween.finished.connect(emit_signal.bind('finished_once'))
+
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"bounce": {"type": AnimationType.ACTION},
+	}

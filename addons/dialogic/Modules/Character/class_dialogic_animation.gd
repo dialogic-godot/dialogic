@@ -3,6 +3,8 @@ extends Node
 
 ## Class that can be used to animate portraits. Can be extended to create animations.
 
+enum AnimationType {IN=1, OUT=2, ACTION=3, CROSSFADE=4}
+
 signal finished_once
 signal finished
 
@@ -56,6 +58,10 @@ func pause() -> void:
 func resume() -> void:
 	if node:
 		node.process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func _get_named_variations() -> Dictionary:
+	return {}
 
 
 ## If the animation wants to change the modulation, this method

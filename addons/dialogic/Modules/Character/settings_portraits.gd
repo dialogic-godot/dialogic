@@ -87,23 +87,15 @@ func save_setting(value:Variant, settings_key:String) -> void:
 
 
 func get_join_animation_suggestions(search_text:String) -> Dictionary:
-	var suggestions := {}
-	for anim in list_animations():
-		if '_in' in anim.get_file():
-			suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
-	return suggestions
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, %JoinDefault.current_value, "", DialogicPortraitAnimationUtil.AnimationType.IN)
 
 
 func get_leave_animation_suggestions(search_text:String) -> Dictionary:
-	var suggestions := {}
-	for anim in list_animations():
-		if '_out' in anim.get_file():
-			suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
-	return suggestions
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, %LeaveDefault.current_value, "", DialogicPortraitAnimationUtil.AnimationType.OUT)
 
 
-func list_animations() -> Array:
-	var list := DialogicUtil.listdir(get_script().resource_path.get_base_dir().path_join('DefaultAnimations'), true, false, true)
-	list.append_array(DialogicUtil.listdir(ProjectSettings.get_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
+func get_crossfade_animation_suggestions(search_text:String) -> Dictionary:
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, %CrossFadeDefault.current_value, "", DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
 
-	return list
+
+

@@ -147,7 +147,7 @@ func build_event_editor() -> void:
 
 
 func get_transition_suggestions(_filter:String="") -> Dictionary:
-	var transitions := DialogicResourceUtil.list_special_resources_of_type("BackgroundTransition")
+	var transitions := DialogicResourceUtil.list_special_resources("BackgroundTransition")
 	var suggestions := {}
 	for i in transitions:
 		suggestions[DialogicUtil.pretty_name(i)] = {'value': DialogicUtil.pretty_name(i), 'editor_icon': ["PopupMenu", "EditorIcons"]}

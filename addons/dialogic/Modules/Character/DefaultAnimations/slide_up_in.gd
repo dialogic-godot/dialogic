@@ -16,3 +16,10 @@ func animate() -> void:
 
 	await tween.finished
 	finished_once.emit()
+
+
+func _get_named_variations() -> Dictionary:
+	return {
+		"slide in up": {"reversed": false, "type": AnimationType.IN},
+		"slide out down": {"reversed": true, "type": AnimationType.OUT},
+	}

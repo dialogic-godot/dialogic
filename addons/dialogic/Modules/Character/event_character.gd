@@ -450,13 +450,19 @@ func get_position_suggestions(search_text:String='') -> Dictionary:
 
 
 func get_animation_suggestions(search_text:String='') -> Dictionary:
-	var empty_text := "Default"
-	if action == Actions.UPDATE:
-		empty_text = "None"
-	return DialogicUtil.get_portrait_animation_suggestions(search_text, empty_text, action+1)
+	var DPAU := DialogicPortraitAnimationUtil
+	match action:
+		Actions.JOIN:
+			return DPAU.get_suggestions(search_text, animation_name, "Default", DPAU.AnimationType.IN)
+		Actions.LEAVE:
+			return DPAU.get_suggestions(search_text, animation_name, "Default", DPAU.AnimationType.OUT)
+		Actions.UPDATE:
+			return DPAU.get_suggestions(search_text, animation_name, "None", DPAU.AnimationType.ACTION)
+	return {}
+
 
 func get_fade_suggestions(search_text:String='') -> Dictionary:
-	return DialogicUtil.get_portrait_animation_suggestions(search_text, "Default", 1)
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, fade_animation, "Default", DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
 
 
 ####################### CODE COMPLETION ########################################
@@ -477,41 +483,49 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		for position in get_position_suggestions():
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
 
-	if '[' in line_until_caret and (symbol == "[" or symbol == " "):
-		suggest_parameter("animation", line, TextNode)
+	# Shortcode Part
+	if '[' in line_until_caret:
+		# Suggest Parameters
+		if symbol == '[' or symbol == ' ' and line_until_caret.count('"')%2 == 0:# and (symbol == "[" or (symbol == " " and line_until_caret.rfind('="') < line_until_caret.rfind('"')-1)):
+			suggest_parameter("animation", line, TextNode)
 
-		if "animation=" in line:
-			for param in ["length", "wait"]:
-				suggest_parameter(param, line, TextNode)
-			if line.begins_with('update'):
-				suggest_parameter("repeat", line, TextNode)
-		if line.begins_with("update"):
-			for param in ["time", "trans", "ease"]:
-				suggest_parameter(param, line, TextNode)
-		if not line.begins_with('leave'):
-			for param in ["mirrored", "z_index", "extra_data"]:
-				suggest_parameter(param, line, TextNode)
+			if "animation=" in line:
+				for param in ["length", "wait"]:
+					suggest_parameter(param, line, TextNode)
+				if line.begins_with('update'):
+					suggest_parameter("repeat", line, TextNode)
+			if line.begins_with("update"):
+				for param in ["time", "trans", "ease"]:
+					suggest_parameter(param, line, TextNode)
+			if not line.begins_with('leave'):
+				for param in ["mirrored", "z_index", "extra_data"]:
+					suggest_parameter(param, line, TextNode)
 
-	if line_until_caret.ends_with('animation="'):
-		var animations := []
+		# Suggest Values
+		else:
+			var current_param: RegExMatch = CodeCompletionHelper.completion_shortcode_param_getter_regex.search(line)
+			if not current_param:
+				return
 
-		if line.begins_with('join'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.IN)
+			match current_param.get_string("param"):
+				"animation":
+					var animations := {}
+					if line.begins_with('join'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.IN)
+					elif line.begins_with('update'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.ACTION)
+					elif line.begins_with('leave'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.OUT)
 
-		if line.begins_with('update'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.ACTION)
+					for script: String  in animations:
+						TextNode.add_code_completion_option(CodeEdit.KIND_VARIABLE, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script), TextNode.syntax_highlighter.normal_color, null, '" ')
 
-		if line.begins_with('leave'):
-			animations = DialogicUtil.get_portrait_animation_scripts(DialogicUtil.AnimationType.OUT)
-
-		for script: String  in animations:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script)+'" ', TextNode.syntax_highlighter.normal_color)
-	elif line_until_caret.ends_with('wait="') or line_until_caret.ends_with('mirrored="'):
-		CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
-	elif line_until_caret.ends_with('trans="'):
-		CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(trans_options), TextNode, TextNode.syntax_highlighter.normal_color)
-	elif line_until_caret.ends_with('ease="'):
-		CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(ease_options), TextNode, TextNode.syntax_highlighter.normal_color)
+				"wait", "mirrored":
+					CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
+				"trans":
+					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(trans_options), TextNode, TextNode.syntax_highlighter.normal_color)
+				"ease":
+					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(ease_options), TextNode, TextNode.syntax_highlighter.normal_color)
 
 
 func suggest_parameter(parameter:String, line:String, TextNode:TextEdit) -> void:
