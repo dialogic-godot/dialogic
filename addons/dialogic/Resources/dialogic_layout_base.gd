@@ -22,7 +22,7 @@ func get_layers() -> Array:
 	return layers
 
 
-func appply_export_overrides() -> void:
+func apply_export_overrides() -> void:
 	_apply_export_overrides()
 	for child in get_children():
 		if child.has_method('_apply_export_overrides'):
