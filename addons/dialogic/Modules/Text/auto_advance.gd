@@ -1,5 +1,5 @@
-extends RefCounted
 class_name DialogicAutoAdvance
+extends RefCounted
 ## This class holds the settings for the Auto-Advance feature.
 ## Changing the variables will alter the behaviour of Auto-Advance.
 ##
