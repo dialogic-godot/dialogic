@@ -123,7 +123,6 @@ func update_textbox(text: String, instant := false) -> void:
 func update_dialog_text(text: String, instant := false, additional := false) -> String:
 	update_text_speed()
 
-
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 
 	if additional:
@@ -195,7 +194,7 @@ func show_textbox(instant:=false) -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if not text_node.enabled:
 			continue
-		if !text_node.textbox_root.visible and !emitted:
+		if not text_node.textbox_root.visible and not emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
 			if dialogic.Animations.is_animating():
