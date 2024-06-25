@@ -255,6 +255,7 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 func _move_character(character_node: Node2D, transform:="", time := 0.0, easing:= Tween.EASE_IN_OUT, trans:= Tween.TRANS_SINE) -> void:
 	var tween := character_node.create_tween().set_ease(easing).set_trans(trans).set_parallel()
 	if time == 0:
+		tween.kill()
 		tween = null
 	var container: DialogicNode_PortraitContainer = character_node.get_parent()
 	dialogic.PortraitContainers.move_container(container, transform, tween, time)
