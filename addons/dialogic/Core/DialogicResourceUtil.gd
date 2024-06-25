@@ -211,6 +211,9 @@ static func match_resource_filter(dict:Dictionary, filter:Dictionary) -> bool:
 
 
 static func guess_special_resource(type: String, string: String, default := {}, filter := {}, ignores:PackedStringArray=[]) -> Dictionary:
+	if string.is_empty():
+		return default
+
 	if special_resources.is_empty():
 		update_special_resources()
 	var resources := list_special_resources(type, filter)
