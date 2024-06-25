@@ -10,6 +10,10 @@ var prev_state: int = 0
 #region MAIN METHODS
 ####################################################################################################
 
+func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+	animation_finished()
+
+
 func is_animating() -> bool:
 	return dialogic.current_state == dialogic.States.ANIMATING
 
