@@ -218,14 +218,14 @@ static func guess_special_resource(type: String, string: String, default := {}, 
 		printerr("[Dialogic] No ", type, "s found, but attempted to use one.")
 		return default
 
-	string = string.to_lower()
-
 	if string.begins_with('res://'):
 		for i in resources.values():
 			if i.path == string:
 				return i
 		printerr("[Dialogic] Unable to find ", type, " at path '", string, "'.")
 		return default
+
+	string = string.to_lower()
 
 	if string in resources:
 		return resources[string]

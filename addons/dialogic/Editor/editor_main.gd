@@ -15,7 +15,7 @@ func _ready() -> void:
 
 	## REFERENCES
 	editors_manager = $EditorsManager
-	var button :Button = editors_manager.add_icon_button(get_theme_icon("MakeFloating", "EditorIcons"), 'Make floating')
+	var button: Button = editors_manager.add_icon_button(get_theme_icon("MakeFloating", "EditorIcons"), 'Make floating')
 	button.pressed.connect(toggle_floating_window)
 
 	# File dialog
@@ -86,7 +86,7 @@ func update_theme_additions() -> void:
 
 	# panel used for example for portrait previews in character editor
 	theme.set_type_variation('DialogicPanelB', 'PanelContainer')
-	var side_panel :StyleBoxFlat= panel_style.duplicate()
+	var side_panel: StyleBoxFlat = panel_style.duplicate()
 	side_panel.corner_radius_top_left = 0
 	side_panel.corner_radius_bottom_left = 0
 	side_panel.expand_margin_left = 8
