@@ -107,7 +107,6 @@ func _execute() -> void:
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
-			state = States.REVEALING
 
 			dialogic.current_state_info['text_sub_idx'] = section_idx
 
@@ -118,6 +117,8 @@ func _execute() -> void:
 			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
 
 			await dialogic.Text.update_textbox(final_text, false)
+
+			state = States.REVEALING
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
