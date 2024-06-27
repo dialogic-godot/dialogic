@@ -495,7 +495,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				if line.begins_with('update'):
 					suggest_parameter("repeat", line, TextNode)
 			if line.begins_with("update"):
-				for param in ["time", "trans", "ease"]:
+				for param in ["move_time", "move_trans", "move_ease"]:
 					suggest_parameter(param, line, TextNode)
 			if not line.begins_with('leave'):
 				for param in ["mirrored", "z_index", "extra_data"]:
@@ -522,9 +522,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 				"wait", "mirrored":
 					CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
-				"trans":
+				"move_trans":
 					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(trans_options), TextNode, TextNode.syntax_highlighter.normal_color)
-				"ease":
+				"move_ease":
 					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(ease_options), TextNode, TextNode.syntax_highlighter.normal_color)
 
 
