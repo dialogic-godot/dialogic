@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ddlxjde1cx035"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/StyleEditor/Components/StyleItem.gd" id="1_is0qu"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/BrowserItem.gd" id="1_s3kf0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfw08"]
 bg_color = Color(1, 1, 1, 0.32549)
@@ -45,7 +45,7 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
-[node name="Margin" type="MarginContainer"]
+[node name="BrowserItem" type="MarginContainer"]
 custom_minimum_size = Vector2(200, 150)
 offset_left = 1.0
 offset_top = 1.0
@@ -57,7 +57,7 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
-script = ExtResource("1_is0qu")
+script = ExtResource("1_s3kf0")
 
 [node name="HoverBG" type="Panel" parent="."]
 unique_name_in_owner = true
@@ -87,7 +87,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 6
 
 [node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image"]
 unique_name_in_owner = true
