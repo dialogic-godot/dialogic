@@ -63,7 +63,7 @@ func _recheck(data: Dictionary, force:=false):
 			$Grid.add_child(input)
 
 		if i['usage'] & PROPERTY_USAGE_GROUP:
-			if i['name'] == 'Main':
+			if i['name'] == 'Main' or i["name"] == "Private":
 				skip = true
 				continue
 			else:

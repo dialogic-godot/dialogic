@@ -4,6 +4,7 @@
 
 [node name="LayeredPortrait" type="CanvasGroup"]
 script = ExtResource("1_uubi5")
+fix_offset = null
 
 [node name="Layer1" type="Sprite2D" parent="."]
 centered = false
