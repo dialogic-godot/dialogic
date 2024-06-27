@@ -8,8 +8,8 @@ extends DialogicVisualEditorField
 
 @export var file_filter := ""
 @export var placeholder := ""
-@export var file_mode : EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
-var resource_icon:Texture:
+@export var file_mode: EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
+var resource_icon: Texture:
 	get:
 		return resource_icon
 	set(new_icon):
@@ -21,8 +21,8 @@ var resource_icon:Texture:
 			%Field.theme_type_variation = "LineEditWithIcon"
 
 var max_width := 200
-var current_value : String
-var hide_reset:bool = false
+var current_value: String
+var hide_reset := false
 
 #endregion
 
