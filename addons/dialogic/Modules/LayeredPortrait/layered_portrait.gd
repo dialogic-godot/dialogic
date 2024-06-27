@@ -28,7 +28,6 @@ var _cached_coverage_rect := Rect2(0, 0, 0, 0)
 ##
 ## Load anything related to the given character and portrait
 func _update_portrait(passed_character: DialogicCharacter, passed_portrait: String) -> void:
-
 	if not _initialized:
 		_apply_layer_adjustments()
 		_initialized = true
