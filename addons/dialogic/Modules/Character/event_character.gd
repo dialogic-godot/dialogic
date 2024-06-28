@@ -383,7 +383,7 @@ func build_event_editor() -> void:
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true},
 			'should_show_fade_options()')
-	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s'},
+	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s', "min":0},
 			'should_show_fade_options() and !fade_animation.is_empty()')
 	add_body_line_break("should_show_fade_options()")
 	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
@@ -393,14 +393,14 @@ func build_event_editor() -> void:
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true},
 			'should_show_animation_options()')
-	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s'},
+	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s', "min":0},
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1},
+	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1, "min":1},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
-	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:'},
+	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:', "min":0},
 			"should_show_transform_options()")
 	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:"}, 'should_show_transform_options() and transform_time > 0')
 	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:"}, 'should_show_transform_options() and transform_time > 0')
