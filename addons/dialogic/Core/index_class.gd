@@ -63,6 +63,11 @@ func _get_special_resources() -> Dictionary:
 	return {}
 
 
+## Return a list of dictionaries, each
+func _get_portrait_scene_presets() -> Array[Dictionary]:
+	return []
+
+
 #region HELPERS
 ################################################################################
 

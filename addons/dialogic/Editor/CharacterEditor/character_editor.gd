@@ -190,7 +190,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 	if edit.has_signal('update_preview'):
 		edit.update_preview.connect(update_preview)
 
-	var button :Button
+	var button: Button
 	if edit._show_title():
 		var hbox := HBoxContainer.new()
 		hbox.name = edit._get_title()+"BOX"
@@ -210,7 +210,7 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 		hbox.add_child(button)
 
 		if !edit.hint_text.is_empty():
-			var hint :Node = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+			var hint: Node = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 			hint.hint_text = edit.hint_text
 			hbox.add_child(hint)
 
@@ -317,10 +317,10 @@ func import_portraits_from_folder(path:String) -> void:
 	var file_name :String = dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir():
-			var file_lower = file_name.to_lower()
+			var file_lower := file_name.to_lower()
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
-					var final_name: String = path.path_join(file_name)
+					var final_name := path.path_join(file_name)
 					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()),
 							{'scene':"",'export_overrides':{'image':var_to_str(final_name)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 		file_name = dir.get_next()
@@ -354,7 +354,7 @@ func add_portrait_group() -> void:
 	var parent_item: TreeItem = %PortraitTree.get_root()
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent_item = %PortraitTree.get_selected()
-	var item :TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
+	var item: TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
 	item.set_meta('new', true)
 	item.set_editable(0, true)
 	item.select(0)
@@ -366,8 +366,8 @@ func load_portrait_tree() -> void:
 	var root: TreeItem = %PortraitTree.create_item()
 
 	for portrait in current_resource.portraits.keys():
-		var portrait_label = portrait
-		var parent = %PortraitTree.get_root()
+		var portrait_label: String = portrait
+		var parent: TreeItem = %PortraitTree.get_root()
 		if '/' in portrait:
 			parent = %PortraitTree.create_necessary_group_items(portrait)
 			portrait_label = portrait.split('/')[-1]
@@ -539,7 +539,7 @@ func report_name_change(item: TreeItem) -> void:
 ########### PREVIEW ############################################################
 
 #region Preview
-func update_preview(force := false) -> void:
+func update_preview(force := false, ignore_settings_reload := false) -> void:
 	%ScenePreviewWarning.hide()
 
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
@@ -616,10 +616,10 @@ func update_preview(force := false) -> void:
 		else:
 			%PreviewLabel.text = 'Nothing to preview'
 
-		for child in %PortraitSettingsSection.get_children():
-
-			if child is DialogicCharacterEditorPortraitSection:
-				child._recheck(current_portrait_data)
+		if not ignore_settings_reload:
+			for child in %PortraitSettingsSection.get_children():
+				if child is DialogicCharacterEditorPortraitSection:
+					child._recheck(current_portrait_data)
 
 	else:
 		%PreviewLabel.text = 'No portrait to preview.'
@@ -644,7 +644,7 @@ func _on_some_resource_saved(file:Variant) -> void:
 
 func _on_full_preview_available_rect_resized() -> void:
 	if %FitPreview_Toggle.button_pressed:
-		update_preview()
+		update_preview(false, true)
 
 
 func _on_create_character_button_pressed() -> void:
@@ -665,7 +665,7 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 		%FitPreview_Toggle.tooltip_text = "Fit into preview"
 		%FitPreview_Toggle.icon = get_theme_icon("CenterContainer", "EditorIcons")
 	DialogicUtil.set_editor_setting('character_preview_fit', button_pressed)
-	update_preview()
+	update_preview(false, true)
 
 #endregion
 

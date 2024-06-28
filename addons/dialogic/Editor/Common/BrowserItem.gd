@@ -23,7 +23,9 @@ func _ready() -> void:
 
 func load_info(info:Dictionary) -> void:
 	%Name.text = info.name
-	if info.preview_image[0] == 'custom':
+	if not info.has("preview_image"):
+		pass
+	elif info.preview_image[0] == 'custom':
 		await ready
 		%Image.texture = get_theme_icon("CreateNewSceneFrom", "EditorIcons")
 		%Image.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
@@ -32,6 +34,9 @@ func load_info(info:Dictionary) -> void:
 		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_previewer().queue_resource_preview(info.preview_image[0], self, 'set_scene_preview', null)
 	elif ResourceLoader.exists(info.preview_image[0]):
 		%Image.texture = load(info.preview_image[0])
+	elif info.preview_image[0].is_valid_html_color():
+		%Image.texture = null
+		%Panel.self_modulate = Color(info.preview_image[0])
 
 	if ResourceLoader.exists(info.get('icon', '')):
 		%Icon.get_parent().show()

@@ -24,11 +24,14 @@ var _is_coverage_rect_cached := false
 var _cached_coverage_rect := Rect2(0, 0, 0, 0)
 
 
+@export_group("Private")
+## Attempts to fix the offset based on the first child node
+@export var fix_offset := true
+
 ## Overriding [class DialogicPortrait]'s method.
 ##
 ## Load anything related to the given character and portrait
 func _update_portrait(passed_character: DialogicCharacter, passed_portrait: String) -> void:
-
 	if not _initialized:
 		_apply_layer_adjustments()
 		_initialized = true
@@ -43,9 +46,15 @@ func _update_portrait(passed_character: DialogicCharacter, passed_portrait: Stri
 ## Dialogic editor preview and in-game rendering only.
 func _apply_layer_adjustments() -> void:
 	var coverage := _find_largest_coverage_rect()
+	var offset_fix := Vector2()
+	if fix_offset and get_child_count():
+		offset_fix = -get_child(0).position
+		if "centered" in get_child(0) and get_child(0).centered:
+			offset_fix += get_child(0).get_rect().size/2.0
 
 	for node: Node in get_children():
 		var node_position: Vector2 = node.position
+		node_position += offset_fix
 		node.position = _reposition_with_rect(coverage, node_position)
 
 
@@ -209,7 +218,10 @@ func _find_largest_coverage_rect() -> Rect2:
 
 	for sprite: Sprite2D in _find_sprites_recursively(self):
 		var sprite_size := sprite.get_rect().size
-		var sprite_position := sprite.position
+		var sprite_position: Vector2 = sprite.global_position-self.global_position
+
+		if sprite.centered:
+			sprite_position -= sprite_size/2
 
 		var sprite_width := sprite_size.x * sprite.scale.x
 		var sprite_height := sprite_size.y * sprite.scale.y
@@ -222,11 +234,7 @@ func _find_largest_coverage_rect() -> Rect2:
 		)
 		coverage_rect = coverage_rect.merge(texture_rect)
 
-
 	coverage_rect.position = _reposition_with_rect(coverage_rect)
-
-	#var origin := get("position")
-	#coverage_rect.expand(origin)
 
 	_is_coverage_rect_cached = true
 	_cached_coverage_rect = coverage_rect
