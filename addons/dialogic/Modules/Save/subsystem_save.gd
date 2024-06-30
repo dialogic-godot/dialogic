@@ -26,7 +26,7 @@ const AUTO_SAVE_SETTINGS := "dialogic/save/autosave"
 ## The project settings key for the auto-save mode settings.
 const AUTO_SAVE_MODE_SETTINGS := "dialogic/save/autosave_mode"
 
-## The project settings key for the auto-save mode settings.
+## The project settings key for the auto-save delay settings.
 const AUTO_SAVE_TIME_SETTINGS := "dialogic/save/autosave_delay"
 
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
@@ -475,7 +475,8 @@ func _ready() -> void:
 	_result = dialogic.timeline_started.connect(_on_start_or_end_autosave)
 	_result = dialogic.timeline_ended.connect(_on_start_or_end_autosave)
 
-	_on_autosave_timer_timeout()
+	if autosave_enabled:
+		autosave_timer.start(autosave_time)
 
 
 func _on_autosave_timer_timeout() -> void:
