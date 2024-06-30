@@ -66,6 +66,7 @@ var autosave_mode := AutoSaveMode.ON_TIMELINE_JUMPS
 ## `AutoSaveMode.ON_TIMER`.
 var autosave_time := 60:
 	set(timer_time):
+		autosave_time = timer_time
 		autosave_timer.wait_time = timer_time
 
 
