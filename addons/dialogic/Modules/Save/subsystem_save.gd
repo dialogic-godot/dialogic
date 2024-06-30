@@ -80,6 +80,16 @@ var autosave_time := 60:
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	_make_sure_slot_dir_exists()
 
+
+## Built-in, called by DialogicGameHandler.
+func pause() -> void:
+	autosave_timer.paused = true
+
+
+## Built-in, called by DialogicGameHandler.
+func resume() -> void:
+	autosave_timer.paused = false
+
 #endregion
 
 
