@@ -321,6 +321,9 @@ func get_full_state() -> Dictionary:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
 
+	for subsystem in get_children():
+		(subsystem as DialogicSubsystem).save_game_state()
+
 	return current_state_info.duplicate(true)
 
 
