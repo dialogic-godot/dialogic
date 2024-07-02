@@ -25,6 +25,13 @@ func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 
 # To be overriden by sub-classes
+# Fill in everything that should be saved into the dialogic_game_handler.current_state_info
+# This is called when a save is saved
+func save_game_state() -> void:
+	pass
+
+
+# To be overriden by sub-classes
 func pause() -> void:
 	pass
 

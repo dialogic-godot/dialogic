@@ -95,14 +95,11 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', 0)
+	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
 
-	var reveal_next_segment := true
+	var reveal_next_segment: bool = dialogic.current_state_info['text_sub_idx'] == -1
 
-	if dialogic.current_state_info['text_sub_idx'] > 0:
-		reveal_next_segment = false
-
-	for section_idx in range(min(dialogic.current_state_info['text_sub_idx'], len(split_text)-1), len(split_text)):
+	for section_idx in range(min(max(0, dialogic.current_state_info['text_sub_idx']), len(split_text)-1), len(split_text)):
 		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
@@ -166,7 +163,7 @@ func _execute() -> void:
 
 
 func end_text_event() -> void:
-	dialogic.current_state_info['text_sub_idx'] = 0
+	dialogic.current_state_info['text_sub_idx'] = -1
 
 	_disconnect_signals()
 	finish()
