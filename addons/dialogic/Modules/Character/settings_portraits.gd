@@ -21,7 +21,7 @@ func _ready():
 	%JoinDefault.mode = 1
 	%LeaveDefault.get_suggestions_func = get_leave_animation_suggestions
 	%LeaveDefault.mode = 1
-	%CrossFadeDefault.get_suggestions_func = get_join_animation_suggestions
+	%CrossFadeDefault.get_suggestions_func = get_crossfade_animation_suggestions
 	%CrossFadeDefault.mode = 1
 
 	%PositionSuggestions.text_submitted.connect(save_setting.bind(POSITION_SUGGESTION_KEY))
