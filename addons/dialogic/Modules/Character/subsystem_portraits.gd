@@ -554,8 +554,8 @@ func leave_all_characters(animation_name:="", animation_length:=0.0, animation_w
 ## Return `null` if the [param character] is not part of the scene.
 func get_character_node(character: DialogicCharacter) -> Node:
 	if is_character_joined(character):
-		return dialogic.current_state_info['portraits'][character.resource_path].node
-
+		if is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].node):
+			return dialogic.current_state_info['portraits'][character.resource_path].node
 	return null
 
 
