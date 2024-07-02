@@ -97,7 +97,7 @@ func _execute() -> void:
 
 	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
 
-	var reveal_next_segment : bool = dialogic.current_state_info['text_sub_idx'] == -1
+	var reveal_next_segment: bool = dialogic.current_state_info['text_sub_idx'] == -1
 
 	for section_idx in range(min(max(0, dialogic.current_state_info['text_sub_idx']), len(split_text)-1), len(split_text)):
 		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))

@@ -19,7 +19,7 @@ var full_event_history_save := false
 
 ## The full history of all Dialogic events encountered.
 ## Requires [member full_event_history_enabled] to be true.
-var full_event_history_content : Array[DialogicEvent] = []
+var full_event_history_content: Array[DialogicEvent] = []
 
 ## Emitted if a new event has been inserted into the full event history.
 signal full_event_history_changed
@@ -105,7 +105,7 @@ func post_install() -> void:
 	save_visited_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_visited_history_on_save)
 
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	if clear_flag == DialogicGameHandler.ClearFlags.FULL_CLEAR:
 		if simple_history_save:
 			simple_history_content = []
@@ -115,22 +115,22 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 			dialogic.current_state_info.erase("history_full")
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(load_flag := LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.FULL_LOAD:
-		if simple_history_save && dialogic.current_state_info.has("history_simple"):
+		if simple_history_save and dialogic.current_state_info.has("history_simple"):
 			simple_history_content.assign(dialogic.current_state_info["history_simple"])
-		if full_event_history_save && dialogic.current_state_info.has("history_full"):
+
+		if full_event_history_save and dialogic.current_state_info.has("history_full"):
 			full_event_history_content = []
-			var event_cache = DialogicResourceUtil.get_event_cache()
+
 			for event_text in dialogic.current_state_info["history_full"]:
 				var event: DialogicEvent
-				for i in event_cache:
+				for i in DialogicResourceUtil.get_event_cache():
 					if i.is_valid_event(event_text):
 						event = i.duplicate()
 						break
 				event.from_text(event_text)
 				full_event_history_content.append(event)
-		pass
 
 
 func save_game_state() -> void:
