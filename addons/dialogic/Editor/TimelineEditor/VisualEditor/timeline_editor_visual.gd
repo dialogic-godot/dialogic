@@ -558,7 +558,7 @@ func get_clipboard_data() -> Array:
 	if clipboard_parse is Dictionary:
 		if clipboard_parse.has("project_name"):
 			if clipboard_parse.project_name != ProjectSettings.get_setting("application/config/name"):
-				print("[D] Be careful when copying from another project!")
+				print("[Dialogic] Be careful when copying from another project!")
 		if clipboard_parse.has('events'):
 			return clipboard_parse.events
 	return []

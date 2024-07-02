@@ -169,7 +169,7 @@ func _ready() -> void:
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
-	if !has_subsystem('Styles'):
+	if not has_subsystem('Styles'):
 		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
@@ -187,7 +187,6 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
 		scene.ready.connect(start_timeline.bind(timeline, label))
 	else:
-		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
 
 	return scene

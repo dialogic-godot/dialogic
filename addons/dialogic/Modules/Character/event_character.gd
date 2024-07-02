@@ -296,7 +296,7 @@ func get_shortcode_parameters() -> Dictionary:
 										'Update':{'value':Actions.UPDATE}}},
 		"character" 	: {"property": "character_identifier",	"default": "", "custom_stored":true,},
 		"portrait" 		: {"property": "portrait", 				"default": "", "custom_stored":true,},
-		"tranform" 		: {"property": "tranform", 				"default": 1, "custom_stored":true,},
+		"transform" 	: {"property": "transform", 			"default": "center", "custom_stored":true,},
 
 		"animation"		: {"property": "animation_name", 			"default": ""},
 		"length"		: {"property": "animation_length", 			"default": 0.5},
@@ -480,8 +480,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
 
 	elif not '[' in line_until_caret and symbol == ' ':
-		for position in get_position_suggestions():
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
+		if not line.begins_with("leave"):
+			for position in get_position_suggestions():
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
 
 	# Shortcode Part
 	if '[' in line_until_caret:

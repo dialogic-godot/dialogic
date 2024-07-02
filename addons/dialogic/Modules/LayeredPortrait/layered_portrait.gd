@@ -141,7 +141,7 @@ func _parse_layer_command(input: String) -> LayerCommand:
 	var regex_match: RegExMatch = _REGEX.search(input)
 
 	if regex_match == null:
-		print("Layered Portrait had an invalid command: ", input)
+		print("[Dialogic] Layered Portrait had an invalid command: ", input)
 		return null
 
 	var _path: String = regex_match.get_string(2)

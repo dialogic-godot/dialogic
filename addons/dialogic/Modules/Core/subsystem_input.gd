@@ -126,7 +126,7 @@ func is_input_blocked() -> bool:
 
 func block_input(time:=0.1) -> void:
 	if time > 0:
-		input_block_timer.wait_time = time
+		input_block_timer.wait_time = max(time, input_block_timer.time_left)
 		input_block_timer.start()
 
 
