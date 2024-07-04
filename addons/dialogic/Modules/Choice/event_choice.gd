@@ -196,6 +196,9 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 
 	dict[0] = {'color':event_color}
 
+	if not result:
+		return dict
+
 	var condition_begin := result.get_start("condition")
 	var condition_end := result.get_end("condition")
 
