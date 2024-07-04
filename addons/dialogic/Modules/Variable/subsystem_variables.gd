@@ -229,7 +229,7 @@ func merge_folder(new:Dictionary, defs:Dictionary) -> Dictionary:
 class VariableFolder:
 	var data := {}
 	var path := ""
-	var outside : DialogicSubsystem
+	var outside: DialogicSubsystem
 
 	func _init(_data:Dictionary, _path:String, _outside:DialogicSubsystem):
 		data = _data

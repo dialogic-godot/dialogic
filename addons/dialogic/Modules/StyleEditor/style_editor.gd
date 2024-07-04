@@ -296,7 +296,7 @@ func _on_layout_style_name_text_submitted(new_text:String) -> void:
 
 
 func _on_layout_style_name_focus_exited() -> void:
-	var new_name :String= %LayoutStyleName.text.strip_edges()
+	var new_name: String = %LayoutStyleName.text.strip_edges()
 	if new_name == current_style.name:
 		return
 

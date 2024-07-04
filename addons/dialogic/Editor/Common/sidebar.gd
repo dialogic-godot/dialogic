@@ -7,7 +7,7 @@ signal file_activated(file_path)
 
 signal content_item_activated(item_name)
 
-@onready var editors_manager = get_parent().get_parent()
+@onready var editors_manager: Node = get_parent().get_parent()
 
 
 func _ready() -> void:
@@ -62,7 +62,7 @@ func clean_resource_list(resources_list:Array = []) -> PackedStringArray:
 
 
 func update_resource_list(resources_list:PackedStringArray = []) -> void:
-	var filter :String = %Search.text
+	var filter: String = %Search.text
 	var current_file := ""
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
 		current_file = editors_manager.current_editor.current_resource.resource_path

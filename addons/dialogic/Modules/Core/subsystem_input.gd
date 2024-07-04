@@ -20,7 +20,7 @@ var _auto_skip_timer_left: float = 0.0
 var action_was_consumed := false
 
 var auto_skip: DialogicAutoSkip = null
-var auto_advance : DialogicAutoAdvance = null
+var auto_advance: DialogicAutoAdvance = null
 var manual_advance: DialogicManualAdvance = null
 
 

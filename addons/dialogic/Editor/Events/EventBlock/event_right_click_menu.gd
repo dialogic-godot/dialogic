@@ -1,7 +1,7 @@
 @tool
 extends PopupMenu
 
-var current_event : Node = null
+var current_event: Node = null
 
 func _ready() -> void:
 	clear()

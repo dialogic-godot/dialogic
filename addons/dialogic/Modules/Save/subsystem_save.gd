@@ -31,7 +31,7 @@ const AUTO_SAVE_TIME_SETTINGS := "dialogic/save/autosave_delay"
 
 ## Temporarily stores a taken screen capture when using [take_slot_image()].
 enum ThumbnailMode {NONE, TAKE_AND_STORE, STORE_ONLY}
-var latest_thumbnail : Image = null
+var latest_thumbnail: Image = null
 
 
 ## The different types of auto-save triggers.
@@ -359,7 +359,7 @@ func get_default_slot() -> String:
 
 ## Returns the latest slot or empty if nothing was saved yet
 func get_latest_slot() -> String:
-	var latest_slot: String = ""
+	var latest_slot := ""
 
 	if Engine.get_main_loop().has_meta('dialogic_latest_saved_slot'):
 		latest_slot = Engine.get_main_loop().get_meta('dialogic_latest_saved_slot', '')

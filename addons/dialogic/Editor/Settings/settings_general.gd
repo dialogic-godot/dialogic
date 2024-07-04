@@ -41,11 +41,11 @@ func _refresh() -> void:
 	%SectionList.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
-	var section_order :Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
+	var section_order: Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
 	for ev in cached_events:
 		if !ev.event_category in sections:
 			sections.append(ev.event_category)
-			var item :TreeItem = %SectionList.create_item(null)
+			var item: TreeItem = %SectionList.create_item(null)
 			item.set_text(0, ev.event_category)
 			item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
 			item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
@@ -140,13 +140,13 @@ func _on_submit_extension_button_pressed() -> void:
 	if %NameEdit.text.is_empty():
 		return
 
-	var extensions_folder :String = ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
+	var extensions_folder: String = ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
 
 	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
 	DirAccess.make_dir_recursive_absolute(extensions_folder)
-	var mode :int= %ExtensionMode.selected
+	var mode: int = %ExtensionMode.selected
 
-	var file : FileAccess
+	var file: FileAccess
 	var indexer_content := "@tool\nextends DialogicIndexer\n\n"
 	if mode != 1: # don't add event in Subsystem Only mode
 		indexer_content += """func _get_events() -> Array:

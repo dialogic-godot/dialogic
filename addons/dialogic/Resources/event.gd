@@ -19,9 +19,9 @@ signal event_finished(event_resource:DialogicEvent)
 ### Main Event Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event name that'll be displayed in the editor.
-var event_name: String = "Event"
+var event_name := "Event"
 ## Unique identifier used for translatable events.
-var _translation_id: String = ""
+var _translation_id := ""
 ## A reference to dialogic during execution, can be used the same as Dialogic (reference to the autoload)
 var dialogic: DialogicGameHandler = null
 
@@ -30,48 +30,48 @@ var dialogic: DialogicGameHandler = null
 ### (these properties store how this event affects indentation/flow of timeline)
 
 ## If true this event can not be toplevel (e.g. Choice)
-var needs_indentation: bool = false
+var needs_indentation := false
 ## If true this event will spawn with an END BRANCH event and higher the indentation
-var can_contain_events: bool = false
+var can_contain_events := false
 ## If [can_contain_events] is true this is a reference to the end branch event
 var end_branch_event: DialogicEndBranchEvent = null
 ## If this is true this event will group with other similar events (like choices do).
-var wants_to_group: bool = false
+var wants_to_group := false
 
 
 ### Saving/Loading Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Stores the event in a text format. Does NOT automatically update.
-var event_node_as_text: String = ""
+var event_node_as_text := ""
 ## Flags if the event has been processed or is only stored as text
-var event_node_ready: bool = false
+var event_node_ready := false
 ## How many empty lines are before this event
-var empty_lines_above:int = 0
+var empty_lines_above: int = 0
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event color that event node will take in the editor
-var event_color: Color = Color("FBB13C")
+var event_color := Color("FBB13C")
 ## If you are using the default color palette
-var dialogic_color_name: String = ''
+var dialogic_color_name: = ""
 ## To sort the buttons shown in the editor. Lower index is placed at the top of a category
 var event_sorting_index: int = 0
 ## If true the event will not have a button in the visual editor sidebar
-var disable_editor_button: bool = false
+var disable_editor_button := false
 ## If false the event will hide it's body by default. Recommended for most events
-var expand_by_default: bool = false
+var expand_by_default := false
 ## The URL to open when right_click>Documentation is selected
-var help_page_path: String = ""
+var help_page_path := ""
 ## Is the event block created by a button?
-var created_by_button: bool = false
+var created_by_button := false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
 var editor_node: Control = null
 
 ## The categories and which one to put it in (in the visual editor sidebar)
-var event_category: String = "Other"
+var event_category := "Other"
 
 
 ### Editor UI creation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -384,9 +384,9 @@ func is_string_full_event(string: String) -> bool:
 
 ## Used to get all the shortcode parameters in a string as a dictionary.
 func parse_shortcode_parameters(shortcode: String) -> Dictionary:
-	var regex: RegEx = RegEx.new()
+	var regex := RegEx.new()
 	regex.compile(r'(?<parameter>[^\s=]*)\s*=\s*"(?<value>(\{[^}]*\}|\[[^]]*\]|([^"]|\\")*|))(?<!\\)\"')
-	var dict: Dictionary = {}
+	var dict := {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
 	return dict

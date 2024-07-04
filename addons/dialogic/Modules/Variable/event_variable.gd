@@ -18,7 +18,7 @@ enum VarValueType {
 ## Settings
 
 ## Name/Path of the variable that should be changed.
-var name: String = "":
+var name := "":
 	set(_value):
 		name = _value
 		if Engine.is_editor_hint() and not value:
@@ -33,7 +33,7 @@ var name: String = "":
 		update_editor_warning()
 
 ## The operation to perform.
-var operation: int = Operations.SET:
+var operation := Operations.SET:
 	set(value):
 		operation = value
 		if operation != Operations.SET and _value_type == VarValueType.STRING:
@@ -65,7 +65,7 @@ var random_max: int = 100
 
 ## Used to suppress _value_type from overwriting value with a default value when the type changes
 ## This is only used when initializing the event_variable.
-var _suppress_default_value: bool = false
+var _suppress_default_value := false
 
 
 ################################################################################

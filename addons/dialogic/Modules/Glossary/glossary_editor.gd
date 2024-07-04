@@ -144,7 +144,7 @@ func _on_load_glossary_file_pressed() -> void:
 
 
 func load_glossary_file(path:String) -> void:
-	var list :Array= ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
+	var list: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 
 	if not path in list:
 		list.append(path)

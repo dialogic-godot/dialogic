@@ -8,7 +8,7 @@ extends Control
 signal changed
 
 ## Reference to the character editor, set when instantiated
-var character_editor:Control
+var character_editor: Control
 
 ## If not empty, a hint icon is added to the section title.
 var hint_text := ""

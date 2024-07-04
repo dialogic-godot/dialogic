@@ -3,8 +3,8 @@ extends DialogicVisualEditorField
 
 ## Event block field for displaying conditions in either a simple or complex way.
 
-var _current_value1 :Variant = ""
-var _current_value2 :Variant = ""
+var _current_value1: Variant = ""
+var _current_value2: Variant = ""
 
 #region MAIN METHODS
 ################################################################################
@@ -96,7 +96,7 @@ func value_type_changed(property:String, value_type:int, value_name:String) -> v
 	get_node('%'+value_name+'Text').hide()
 	get_node('%'+value_name+'Number').hide()
 	get_node('%'+value_name+'Bool').hide()
-	var current_val :Variant = ""
+	var current_val: Variant = ""
 	if '1' in value_name:
 		current_val = _current_value1
 	else:
@@ -237,7 +237,7 @@ func _on_complex_editor_text_changed(new_text:String) -> void:
 
 func get_variable_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
-	var vars :Dictionary= ProjectSettings.get_setting('dialogic/variables', {})
+	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions

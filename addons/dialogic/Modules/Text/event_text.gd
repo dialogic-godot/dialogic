@@ -11,13 +11,13 @@ extends DialogicEvent
 ## This is the content of the text event.
 ## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
-var text: String = ""
+var text := ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
 ## The DialogicNode_NameLabel will show the characters display_name. If a typing sound is setup,
 ## it will play.
 var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
-var portrait: String = ""
+var portrait := ""
 
 ### Helpers
 
@@ -480,7 +480,7 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', result.get_start('text'))
 
 		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
-			var color :Color = Highlighter.string_color
+			var color: Color = Highlighter.string_color
 			color = color.lerp(Highlighter.normal_color, 0.4)
 			dict[replace_mod_match.get_start()+result.get_start('text')] = {'color':Highlighter.string_color}
 			var offset := 1

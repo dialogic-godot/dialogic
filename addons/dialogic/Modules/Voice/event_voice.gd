@@ -8,11 +8,11 @@ extends DialogicEvent
 ### Settings
 
 ## The path to the sound file.
-var file_path: String = ""
+var file_path := ""
 ## The volume the sound will be played at.
 var volume: float = 0
 ## The audio bus to play the sound on.
-var audio_bus: String = "Master"
+var audio_bus := "Master"
 
 
 ################################################################################

@@ -14,7 +14,7 @@ var current_scene_path: String = ""
 
 # References
 var selected_item: TreeItem
-var def_portrait_path :String= DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
+var def_portrait_path: String = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 
 
 ######### EDITOR STUFF and LOADING/SAVING ######################################
@@ -27,7 +27,7 @@ func _register() -> void:
 	editors_manager.register_resource_editor("dch", self)
 
 	## Add an "add character" button
-	var add_character_button = editors_manager.add_icon_button(
+	var add_character_button: Button = editors_manager.add_icon_button(
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
 			'Add Character',
 			self)
@@ -314,7 +314,7 @@ func import_portraits_from_folder(path:String) -> void:
 
 	var dir := DirAccess.open(path)
 	dir.list_dir_begin()
-	var file_name :String = dir.get_next()
+	var file_name: String = dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir():
 			var file_lower := file_name.to_lower()

@@ -118,7 +118,7 @@ func _get_layout_parts() -> Array[Dictionary]:
 ## Helper that allows scanning sub directories that might be layout parts or styles
 func scan_for_layout_parts() -> Array[Dictionary]:
 	var dir := DirAccess.open(this_folder)
-	var style_list :Array[Dictionary] = []
+	var style_list: Array[Dictionary] = []
 	if !dir:
 		return style_list
 	dir.list_dir_begin()

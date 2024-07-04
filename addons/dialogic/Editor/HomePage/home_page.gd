@@ -3,7 +3,7 @@ extends DialogicEditor
 
 ## A Main page in the dialogic editor.
 
-var tips : Array = []
+var tips: Array = []
 
 
 
@@ -44,7 +44,7 @@ func _open(extra_info:Variant="") -> void:
 		tips = tips.filter(func(item): return !item.is_empty())
 
 	randomize()
-	var tip :String = tips[randi()%len(tips)]
+	var tip: String = tips[randi()%len(tips)]
 	var text := tip.get_slice(';',0).strip_edges()
 	var action := tip.get_slice(';',1).strip_edges()
 	if action == text:

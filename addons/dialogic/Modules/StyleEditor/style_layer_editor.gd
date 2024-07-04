@@ -377,9 +377,9 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		note.name = "General"
 		return
 
-	var current_grid :GridContainer = null
+	var current_grid: GridContainer = null
 
-	var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
+	var label_bg_style := get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
 	label_bg_style.content_margin_left = 5
 	label_bg_style.content_margin_right = 5
 	label_bg_style.content_margin_top = 5
@@ -391,7 +391,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	for i in settings:
 		match i['id']:
 			&"GROUP":
-				var main_scroll = ScrollContainer.new()
+				var main_scroll := ScrollContainer.new()
 				main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				main_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				main_scroll.name = i['name']
@@ -430,7 +430,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				label.text = str(i['name'].trim_prefix(current_group_name+'_').trim_prefix(current_subgroup_name+'_')).capitalize()
 				current_grid.add_child(label, true)
 
-				var scene_value = scene.get(i['name'])
+				var scene_value: Variant = scene.get(i['name'])
 				customization_editor_info[i['name']] = {}
 
 				if i['name'] in inherited_overrides:
@@ -438,13 +438,13 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				else:
 					customization_editor_info[i['name']]['orig'] = scene_value
 
-				var current_value :Variant
+				var current_value: Variant
 				if i['name'] in overrides:
 					current_value = str_to_var(overrides.get(i['name']))
 				else:
 					current_value = customization_editor_info[i['name']]['orig']
 
-				var input :Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
+				var input: Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
 				customization_editor_info[i['name']]['node'] = input
@@ -523,7 +523,7 @@ func _on_export_override_reset(property_name:String) -> void:
 
 
 func set_customization_value(property_name:String, value:Variant) -> void:
-	var node : Node = customization_editor_info[property_name]['node']
+	var node: Node = customization_editor_info[property_name]['node']
 	if node is CheckBox:
 		node.button_pressed = value
 	elif node is LineEdit:

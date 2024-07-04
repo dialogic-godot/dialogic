@@ -354,7 +354,7 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 	if !Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
 	var defaults := {}
-	var property_info :Array[Dictionary] = node.script.get_script_property_list()
+	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
 			defaults[i['name']] = node.get(i['name'])

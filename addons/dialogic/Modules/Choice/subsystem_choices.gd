@@ -12,13 +12,13 @@ signal choices_shown(info:Dictionary)
 var last_question_info := {}
 
 ## The delay between the text finishing revealing and the choices appearing
-var reveal_delay: float = 0.0
+var reveal_delay := 0.0
 ## If true the player has to click to reveal choices when they are reached
-var reveal_by_input: bool = false
+var reveal_by_input := false
 ## The delay between the choices becoming visible and being clickable. Can prevent accidental selection.
-var block_delay: float = 0.2
+var block_delay := 0.2
 ## If true, the first (top-most) choice will be focused
-var autofocus_first_choice: bool = true
+var autofocus_first_choice := true
 
 
 enum FalseBehaviour {HIDE=0, DISABLE=1}

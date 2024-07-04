@@ -8,7 +8,7 @@ enum TranslationModes {PER_PROJECT, PER_TIMELINE, NONE}
 enum SaveLocationModes {INSIDE_TRANSLATION_FOLDER, NEXT_TO_TIMELINE, NONE}
 
 var loading := false
-@onready var settings_editor :Control = find_parent('Settings')
+@onready var settings_editor: Control = find_parent('Settings')
 
 ## The default CSV filename that contains the translations for character
 ## properties.

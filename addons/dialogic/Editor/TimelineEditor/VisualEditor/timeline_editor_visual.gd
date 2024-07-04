@@ -27,7 +27,7 @@ var _initialized := false
 
 ################## TIMELINE EVENT MANAGEMENT ###################################
 ################################################################################
-var selected_items : Array = []
+var selected_items: Array = []
 var drag_allowed := false
 
 
@@ -112,7 +112,7 @@ func batch_events(array: Array, size: int, batch_number: int) -> Array:
 var opener_events_stack := []
 
 func load_batch(data:Array) -> void:
-	var current_batch :Array = _batches.pop_front()
+	var current_batch: Array = _batches.pop_front()
 	if current_batch:
 		for i in current_batch:
 			if i is DialogicEndBranchEvent:
@@ -247,7 +247,7 @@ func load_event_buttons() -> void:
 			sections[event_resource.event_category].move_child(button, button.get_index()-1)
 
 	# Sort event sections
-	var sections_order :Array= DialogicUtil.get_editor_setting('event_section_order',
+	var sections_order: Array = DialogicUtil.get_editor_setting('event_section_order',
 			['Main', 'Flow', 'Logic', 'Audio', 'Visual','Other', 'Helper'])
 
 	sections_order.reverse()
@@ -320,7 +320,7 @@ func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 ## Activated by TimelineArea drag_completed
 func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void:
 	if type == %TimelineArea.DragTypes.NEW_EVENT:
-		var resource :DialogicEvent = data.duplicate()
+		var resource: DialogicEvent = data.duplicate()
 		resource._load_custom_defaults()
 
 		add_event_undoable(resource, index)
@@ -380,7 +380,7 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 
 
 func create_end_branch_event(at_index:int, parent_node:Node) -> Node:
-	var end_branch_event :Control = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
+	var end_branch_event: Control = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
 	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
 	parent_node.end_node = end_branch_event
@@ -474,7 +474,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		# now create the visual block.
 		deselect_all_items()
 		if event_resource is DialogicEndBranchEvent:
-			var idx :String = indexed_events[event_idx].trim_prefix('<<END BRANCH>>')
+			var idx: String = indexed_events[event_idx].trim_prefix('<<END BRANCH>>')
 			if idx.begins_with('#'): # a global index
 				events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(int(idx.trim_prefix('#')))))
 			else: # a local index (index in the added events list)
@@ -553,7 +553,7 @@ func copy_selected_events() -> void:
 
 
 func get_clipboard_data() -> Array:
-	var clipboard_parse :Variant= str_to_var(DisplayServer.clipboard_get())
+	var clipboard_parse: Variant = str_to_var(DisplayServer.clipboard_get())
 
 	if clipboard_parse is Dictionary:
 		if clipboard_parse.has("project_name"):
@@ -605,7 +605,7 @@ func select_item(item: Node, multi_possible:bool = true) -> void:
 		if len(selected_items) == 0:
 			selected_items = [item]
 		else:
-			var index :int= selected_items[-1].get_index()
+			var index: int = selected_items[-1].get_index()
 			var goal_idx := item.get_index()
 			while true:
 				if index < goal_idx: index += 1
@@ -679,7 +679,7 @@ func _add_event_button_pressed(event_resource:DialogicEvent, force_resource := f
 	else:
 		at_index = %Timeline.get_child_count()
 
-	var resource :DialogicEvent = null
+	var resource: DialogicEvent = null
 	if force_resource:
 		resource = event_resource
 	else:
@@ -904,7 +904,7 @@ func indent_events() -> void:
 ################################################################################
 
 func _on_event_popup_menu_index_pressed(index:int) -> void:
-	var item :Control = %EventPopupMenu.current_event
+	var item: Control = %EventPopupMenu.current_event
 	if index == 0:
 		if not item in selected_items:
 			selected_items = [item]
@@ -1044,7 +1044,7 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 	## Some shortcuts should be disabled when writing text.
-	var focus_owner : Control = get_viewport().gui_get_focus_owner()
+	var focus_owner: Control = get_viewport().gui_get_focus_owner()
 	if focus_owner is TextEdit or focus_owner is LineEdit or (focus_owner is Button and focus_owner.get_parent_control().name == "Spin"):
 		return
 
@@ -1141,8 +1141,8 @@ func _input(event:InputEvent) -> void:
 
 
 func get_previous_character(double_previous := false) -> DialogicCharacter:
-	var character :DialogicCharacter = null
-	var idx :int = %Timeline.get_child_count()
+	var character: DialogicCharacter = null
+	var idx: int = %Timeline.get_child_count()
 	if idx == 0:
 		return null
 	if len(selected_items):
