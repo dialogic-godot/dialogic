@@ -15,19 +15,19 @@ var shortcode_regex := RegEx.create_from_string(r"\W*\[(?<id>\w*)(?<args>[^\]]*)
 var shortcode_param_regex := RegEx.create_from_string(r'((?<parameter>[^\s=]*)\s*=\s*"(?<value>([^=]|\\=)*)(?<!\\)")')
 
 ## Colors
-var normal_color : Color
+var normal_color: Color
 var translation_id_color: Color
 
-var code_flow_color : Color
-var boolean_operator_color : Color
-var variable_color : Color
-var string_color : Color
-var character_name_color : Color
-var character_portrait_color : Color
+var code_flow_color: Color
+var boolean_operator_color: Color
+var variable_color: Color
+var string_color: Color
+var character_name_color: Color
+var character_portrait_color: Color
 
 var shortcode_events := {}
 var custom_syntax_events := []
-var text_event :DialogicTextEvent = null
+var text_event: DialogicTextEvent = null
 
 
 func _init() -> void:
@@ -38,7 +38,7 @@ func _init() -> void:
 func update_colors() -> void:
 	if not DialogicUtil.get_dialogic_plugin():
 		return
-	var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
+	var editor_settings: EditorSettings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
 	normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 
@@ -181,7 +181,7 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 	if end.is_empty():
 		region_regex.compile("(?<!\\\\)"+start+".*")
 	else:
-		region_regex.compile("(?<!\\\\)"+start+"(.(?!"+end+"))*."+end)
+		region_regex.compile("(?<!\\\\)"+start+"((?!"+end+").)*"+end)
 	if to <= from:
 		to = len(line)-1
 	for region in region_regex.search_all(line.substr(from, to-from+2)):

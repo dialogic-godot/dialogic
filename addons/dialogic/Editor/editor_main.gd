@@ -169,6 +169,15 @@ func update_theme_additions() -> void:
 	text_panel.content_margin_left = 13
 	theme.set_stylebox('normal', 'DialogicTextEventTextEdit', text_panel)
 
+	var event_field_group_panel := DCSS.inline({
+		'border-radius': 8,
+		"border":1,
+		"padding":2,
+		"boder-color": get_theme_color("property_color", "Editor"),
+		"background":"none"})
+	theme.set_type_variation("DialogicEventEditGroup", "PanelContainer")
+	theme.set_stylebox("panel", "DialogicEventEditGroup", event_field_group_panel)
+
 	theme.set_icon('Plugin', 'Dialogic', load("res://addons/dialogic/Editor/Images/plugin-icon.svg"))
 
 
