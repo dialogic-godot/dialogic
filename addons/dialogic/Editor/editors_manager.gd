@@ -120,7 +120,7 @@ func _on_editors_tab_changed(tab:int) -> void:
 func edit_resource(resource:Resource, save_previous:bool = true, silent:= false) -> void:
 	if not resource:
 		# The resource doesn't exists, show an error
-		print('[Dialogic] The resource you are trying to edit doesn\'t exists any more.')
+		print("[Dialogic] The resource you are trying to edit doesn't exist any more.")
 		return
 
 	if current_editor and save_previous:
