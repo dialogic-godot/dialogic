@@ -4,8 +4,11 @@ extends DialogicEditor
 ## Editor that holds both the visual and the text timeline editors.
 
 # references
-var current_editor_mode: int = 0 # 0 = visal, 1 = text
-var play_timeline_button : Button = null
+enum EditorMode {VISUAL, TEXT}
+
+var current_editor_mode := EditorMode.VISUAL
+var play_timeline_button: Button = null
+
 
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:
@@ -39,11 +42,11 @@ func _register() -> void:
 	current_editor_mode = DialogicUtil.get_editor_setting('timeline_editor_mode', 0)
 
 	match current_editor_mode:
-		0:
+		EditorMode.VISUAL:
 			%VisualEditor.show()
 			%TextEditor.hide()
 			%SwitchEditorMode.text = "Text Editor"
-		1:
+		EditorMode.TEXT:
 			%VisualEditor.hide()
 			%TextEditor.show()
 			%SwitchEditorMode.text = "Visual Editor"
@@ -65,9 +68,9 @@ func _open_resource(resource:Resource) -> void:
 	current_resource = resource
 	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
-		0:
+		EditorMode.VISUAL:
 			%VisualEditor.load_timeline(current_resource)
-		1:
+		EditorMode.TEXT:
 			%TextEditor.load_timeline(current_resource)
 	$NoTimelineScreen.hide()
 	%TimelineName.text = DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)
@@ -77,9 +80,9 @@ func _open_resource(resource:Resource) -> void:
 ## If this editor supports editing resources, save them here (overwrite in subclass)
 func _save() -> void:
 	match current_editor_mode:
-		0:
+		EditorMode.VISUAL:
 			%VisualEditor.save_timeline()
-		1:
+		EditorMode.TEXT:
 			%TextEditor.save_timeline()
 
 
@@ -102,7 +105,7 @@ func _input(event: InputEvent) -> void:
 func play_timeline() -> void:
 	_save()
 
-	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
+	var dialogic_plugin := DialogicUtil.get_dialogic_plugin()
 
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
@@ -113,15 +116,15 @@ func play_timeline() -> void:
 ## Method to switch from visual to text editor (and vice versa). Connected to the button in the sidebar.
 func toggle_editor_mode() -> void:
 	match current_editor_mode:
-		0:
-			current_editor_mode = 1
+		EditorMode.VISUAL:
+			current_editor_mode = EditorMode.TEXT
 			%VisualEditor.save_timeline()
 			%VisualEditor.hide()
 			%TextEditor.show()
 			%TextEditor.load_timeline(current_resource)
 			%SwitchEditorMode.text = "Visual Editor"
-		1:
-			current_editor_mode = 0
+		EditorMode.TEXT:
+			current_editor_mode = EditorMode.VISUAL
 			%TextEditor.save_timeline()
 			%TextEditor.hide()
 			%VisualEditor.load_timeline(current_resource)
@@ -179,9 +182,9 @@ func _clear() -> void:
 	current_resource = null
 	current_resource_state = ResourceStates.SAVED
 	match current_editor_mode:
-		0:
+		EditorMode.VISUAL:
 			%VisualEditor.clear_timeline_nodes()
-		1:
+		EditorMode.TEXT:
 			%TextEditor.clear_timeline()
 	$NoTimelineScreen.show()
 	play_timeline_button.disabled = true

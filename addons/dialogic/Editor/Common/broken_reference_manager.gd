@@ -3,7 +3,7 @@ extends VSplitContainer
 
 ## This manager shows a list of changed references and allows searching for them and replacing them.
 
-var reference_changes :Array[Dictionary] = []:
+var reference_changes: Array[Dictionary] = []:
 	set(changes):
 		reference_changes = changes
 		update_indicator()
@@ -55,7 +55,7 @@ func open() -> void:
 	%ChangeTree.set_column_custom_minimum_width(2, 50)
 	var categories := {null:%ChangeTree.get_root()}
 	for i in reference_changes:
-		var parent : TreeItem = null
+		var parent: TreeItem = null
 		if !i.get('category', null) in categories:
 			parent = %ChangeTree.create_item()
 			parent.set_text(1, i.category)
@@ -64,7 +64,7 @@ func open() -> void:
 		else:
 			parent = categories[i.get('category')]
 
-		var item :TreeItem = %ChangeTree.create_item(parent)
+		var item: TreeItem = %ChangeTree.create_item(parent)
 		item.set_text(1, i.what+" -> "+i.forwhat)
 		item.add_button(1, get_theme_icon("Edit", "EditorIcons"), 1, false, 'Edit')
 		item.add_button(1, get_theme_icon("Remove", "EditorIcons"), 0, false, 'Remove Change from List')
@@ -98,8 +98,8 @@ func _on_change_tree_item_edited() -> void:
 
 
 func _on_check_button_pressed() -> void:
-	var to_be_checked :Array[Dictionary]= []
-	var item :TreeItem = %ChangeTree.get_root()
+	var to_be_checked: Array[Dictionary]= []
+	var item: TreeItem = %ChangeTree.get_root()
 	while item.get_next_visible():
 		item = item.get_next_visible()
 
@@ -245,7 +245,7 @@ func get_line(string:String, at_index:int) -> String:
 
 
 func update_count_coloring() -> void:
-	var item :TreeItem = %ChangeTree.get_root()
+	var item: TreeItem = %ChangeTree.get_root()
 	while item.get_next_visible():
 		item = item.get_next_visible()
 
@@ -264,9 +264,9 @@ func update_count_coloring() -> void:
 
 
 func _on_replace_pressed() -> void:
-	var to_be_replaced :Array[Dictionary]= []
-	var item :TreeItem = %ReferenceTree.get_root()
-	var affected_timelines :Array[String]= []
+	var to_be_replaced: Array[Dictionary]= []
+	var item: TreeItem = %ReferenceTree.get_root()
+	var affected_timelines: Array[String]= []
 
 	while item.get_next_visible():
 		item = item.get_next_visible()
@@ -284,7 +284,7 @@ func _on_replace_pressed() -> void:
 
 func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> void:
 	var reopen_timeline := ""
-	var timeline_editor :DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline'].node
+	var timeline_editor: DialogicEditor = find_parent('EditorView').editors_manager.editors['Timeline'].node
 	if timeline_editor.current_resource != null and timeline_editor.current_resource.resource_path in timelines:
 		reopen_timeline = timeline_editor.current_resource.resource_path
 		find_parent('EditorView').editors_manager.clear_editor(timeline_editor)
@@ -295,7 +295,7 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 		%State.text = "Loading '"+timeline_path+"'"
 
 		var timeline_file := FileAccess.open(timeline_path, FileAccess.READ_WRITE)
-		var timeline_text :String = timeline_file.get_as_text()
+		var timeline_text: String = timeline_file.get_as_text()
 		var timeline_events := timeline_text.split('\n')
 		timeline_file.close()
 
@@ -343,7 +343,7 @@ func update_indicator() -> void:
 
 
 func close() -> void:
-	var item :TreeItem = %ChangeTree.get_root()
+	var item: TreeItem = %ChangeTree.get_root()
 	if item:
 		while item.get_next_visible():
 			item = item.get_next_visible()

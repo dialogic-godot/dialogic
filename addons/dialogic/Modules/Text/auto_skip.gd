@@ -13,23 +13,23 @@ signal toggled(is_enabled: bool)
 ## If Auto-Skip is referred to be [i]disabled[/i], it refers to setting this
 ## this variable to `false`.
 ## This variable will automatically emit [signal autoskip_changed] when changed.
-var enabled: bool = false : set = _set_enabled
+var enabled := false : set = _set_enabled
 
 ## If `true`, Auto-Skip will be disabled when the user presses a recognised
 ## input action.
-var disable_on_user_input: bool = true
+var disable_on_user_input := true
 
 ## If `true`, Auto-Skip will be disabled when the timeline advances to a
 ## unread Text event or an event requesting user input.
-var disable_on_unread_text: bool = false
+var disable_on_unread_text := false
 
 ## If `true`, Auto-Skip will be enabled when the timeline advances to a
 ## previously visited Text event.
 ## Useful if the player always wants to skip already-visited Text events.
-var enable_on_visited: bool = false
+var enable_on_visited := false
 
 ## If `true`, Auto-Skip will skip Voice events instead of playing them.
-var skip_voice: bool = true
+var skip_voice := true
 
 ## The amount of seconds each event may take.
 ## This is not enforced, each event must implement this behaviour.

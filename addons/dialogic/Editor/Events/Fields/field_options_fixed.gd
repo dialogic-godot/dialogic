@@ -3,7 +3,7 @@ extends DialogicVisualEditorField
 
 ## Event block field for constant options. For varying options use ComplexPicker.
 
-var options : Array = []
+var options: Array = []
 
 ## if true, only the symbol will be displayed. In the dropdown text will be visible.
 ## Useful for making UI simpler

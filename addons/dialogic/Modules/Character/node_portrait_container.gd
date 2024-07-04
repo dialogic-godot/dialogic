@@ -63,7 +63,7 @@ enum PivotModes {AT_ORIGIN, PERCENTAGE, PIXELS}
 	set(character):
 		debug_character = character
 		_update_debug_portrait_scene()
-@export var debug_character_portrait: String = "":
+@export var debug_character_portrait := "":
 	set(portrait):
 		debug_character_portrait = portrait
 		_update_debug_portrait_scene()
@@ -187,8 +187,8 @@ func _update_debug_portrait_scene() -> void:
 	if mode == PositionModes.SPEAKER and !portrait_prefix.is_empty():
 		if portrait_prefix+debug_portrait in character.portraits:
 			debug_portrait = portrait_prefix+debug_portrait
-	var portrait_info :Dictionary = character.get_portrait_info(debug_portrait)
-	var portrait_scene_path :String = portrait_info.get('scene', default_portrait_scene)
+	var portrait_info: Dictionary = character.get_portrait_info(debug_portrait)
+	var portrait_scene_path: String = portrait_info.get('scene', default_portrait_scene)
 	if portrait_scene_path.is_empty(): portrait_scene_path = default_portrait_scene
 	debug_character_scene_node = load(portrait_scene_path).instantiate()
 	if !is_instance_valid(debug_character_scene_node):

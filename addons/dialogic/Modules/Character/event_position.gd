@@ -13,7 +13,7 @@ enum Actions {CHANGE, RESET, RESET_ALL}
 ## The type of action: SetRelative, SetAbsolute, Reset, ResetAll
 var action := Actions.CHANGE
 ## The position that should be affected
-var position: String = "center"
+var position := "center"
 
 var relative_change := false
 
@@ -30,7 +30,7 @@ var set_rotation := false # auto-set
 var rect_size := ""
 var set_rect_size := false # auto-set
 
-var scale: Vector2 = Vector2()
+var scale := Vector2()
 var set_scale := false # auto-set
 
 ## The time the tweening will take.

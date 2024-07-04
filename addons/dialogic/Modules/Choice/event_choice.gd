@@ -13,7 +13,7 @@ var text := ""
 ## If not empty this condition will determine if this choice is active.
 var condition := ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
-var else_action: = ElseActions.DEFAULT
+var else_action := ElseActions.DEFAULT
 ## The text that is displayed if [condition] is false and [else_action] is Disable.
 ## If empty [text] will be used for disabled button as well.
 var disabled_text := ""

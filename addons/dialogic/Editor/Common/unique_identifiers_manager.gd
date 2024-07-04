@@ -48,7 +48,7 @@ func fill_table() -> void:
 
 func _on_identifier_table_item_edited() -> void:
 	var item: TreeItem = %IdentifierTable.get_edited()
-	var new_identifier : String = item.get_text(1)
+	var new_identifier: String = item.get_text(1)
 
 
 	if new_identifier == item.get_metadata(1):

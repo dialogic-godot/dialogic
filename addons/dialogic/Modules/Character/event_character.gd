@@ -8,20 +8,20 @@ enum Actions {JOIN, LEAVE, UPDATE}
 ### Settings
 
 ## The type of action of this event (JOIN/LEAVE/UPDATE). See [Actions].
-var action : int =  Actions.JOIN
+var action :=  Actions.JOIN
 ## The character that will join/leave/update.
-var character : DialogicCharacter = null
+var character: DialogicCharacter = null
 ## For Join/Update, this will be the portrait of the character that is shown.
 ## Not used on Leave.
 ## If empty, the default portrait will be used.
-var portrait: String = ""
+var portrait := ""
 ## The index of the position this character should move to
-var transform: String = "center"
+var transform := "center"
 
 ## Name of the animation script (extending DialogicAnimation).
 ## On Join/Leave empty (default) will fallback to the animations set in the settings.
 ## On Update empty will mean no animation.
-var animation_name: String = ""
+var animation_name := ""
 ## Length of the animation.
 var animation_length: float = 0.5
 ## How often the animation is repeated. Only for Update events.
@@ -64,9 +64,9 @@ var trans_options := [
 ## The z_index that the portrait should have.
 var z_index: int = 0
 ## If true, the portrait will be set to mirrored.
-var mirrored: bool = false
+var mirrored := false
 ## If set, will be passed to the portrait scene.
-var extra_data: String = ""
+var extra_data := ""
 
 
 ### Helpers

@@ -10,7 +10,7 @@ extends DialogicEvent
 ## The time in seconds that the event will stop before continuing.
 var time: float = 1.0
 ## If true the text box will be hidden while the event waits.
-var hide_text: bool = true
+var hide_text := true
 
 
 ################################################################################

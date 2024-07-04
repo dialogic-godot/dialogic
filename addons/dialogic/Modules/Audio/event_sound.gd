@@ -8,13 +8,13 @@ extends DialogicEvent
 ### Settings
 
 ## The path to the file to play.
-var file_path: String = ""
+var file_path := ""
 ## The volume to play the sound at.
 var volume: float = 0
 ## The bus to play the sound on.
-var audio_bus: String = ""
+var audio_bus := ""
 ## If true, the sound will loop infinitely. Not recommended (as there is no way to stop it).
-var loop: bool = false
+var loop := false
 
 
 ################################################################################

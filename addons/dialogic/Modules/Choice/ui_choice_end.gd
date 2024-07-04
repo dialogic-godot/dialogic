@@ -17,9 +17,9 @@ func refresh() -> void:
 
 
 func _on_add_choice_pressed() -> void:
-	var timeline = find_parent('VisualEditor')
+	var timeline := find_parent('VisualEditor')
 	if timeline:
-		var resource = DialogicChoiceEvent.new()
+		var resource := DialogicChoiceEvent.new()
 		resource.created_by_button = true
 		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()

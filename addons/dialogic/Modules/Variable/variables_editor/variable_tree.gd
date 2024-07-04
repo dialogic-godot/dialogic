@@ -271,7 +271,7 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		parent = to_item.get_parent()
 
 	## Test for inheritance-recursion
-	var test_item:= to_item
+	var test_item := to_item
 	while true:
 		if test_item == item:
 			return

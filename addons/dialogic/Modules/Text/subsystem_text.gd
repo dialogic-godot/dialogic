@@ -558,10 +558,10 @@ func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 var modifier_words_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\[\>]+(\/[^\>]*)\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string: String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
+		var string: String = replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
 		string = string.replace('//', '<slash>')
-		var list: PackedStringArray= string.split('/')
-		var item: String= list[randi()%len(list)]
+		var list: PackedStringArray = string.split('/')
+		var item: String = list[randi()%len(list)]
 		item = item.replace('<slash>', '/')
 		text = text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return text

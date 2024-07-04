@@ -38,10 +38,10 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 @export_subgroup('Font')
 @export var text_use_global_font: bool = true
-@export_file('*.ttf', '*.tres') var normal_font:String = ""
-@export_file('*.ttf', '*.tres') var bold_font:String = ""
-@export_file('*.ttf', '*.tres') var italics_font:String = ""
-@export_file('*.ttf', '*.tres') var bold_italics_font:String = ""
+@export_file('*.ttf', '*.tres') var normal_font: String = ""
+@export_file('*.ttf', '*.tres') var bold_font: String = ""
+@export_file('*.ttf', '*.tres') var italics_font: String = ""
+@export_file('*.ttf', '*.tres') var bold_italics_font: String = ""
 
 
 @export_group("Box")

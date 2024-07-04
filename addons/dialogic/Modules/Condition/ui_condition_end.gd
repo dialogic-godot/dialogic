@@ -1,11 +1,13 @@
 @tool
 extends HBoxContainer
 
-var parent_resource = null
+var parent_resource: DialogicEvent = null
+
 
 func _ready() -> void:
 	$AddElif.button_up.connect(add_elif)
 	$AddElse.button_up.connect(add_else)
+
 
 func refresh() -> void:
 	if parent_resource is DialogicConditionEvent:
@@ -15,9 +17,9 @@ func refresh() -> void:
 		$Label.text = "End of "+["IF", "ELIF", "ELSE"][parent_resource.condition_type]+" ("+parent_resource.condition+")"
 
 		# hide add add else button if followed by ELIF or ELSE event
-		var timeline_editor = find_parent('VisualEditor')
+		var timeline_editor := find_parent('VisualEditor')
 		if timeline_editor:
-			var next_event = null
+			var next_event: DialogicEvent = null
 			if timeline_editor.get_block_below(get_parent()):
 				next_event = timeline_editor.get_block_below(get_parent()).resource
 				if next_event is DialogicConditionEvent:
@@ -28,19 +30,21 @@ func refresh() -> void:
 	else:
 		hide()
 
+
 func add_elif() -> void:
-	var timeline = find_parent('VisualEditor')
+	var timeline := find_parent('VisualEditor')
 	if timeline:
-		var resource = DialogicConditionEvent.new()
+		var resource := DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.ELIF
 		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()
 		timeline.something_changed()
 
+
 func add_else() -> void:
-	var timeline = find_parent('VisualEditor')
+	var timeline := find_parent('VisualEditor')
 	if timeline:
-		var resource = DialogicConditionEvent.new()
+		var resource := DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.ELSE
 		timeline.add_event_undoable(resource, get_parent().get_index()+1)
 		timeline.indent_events()

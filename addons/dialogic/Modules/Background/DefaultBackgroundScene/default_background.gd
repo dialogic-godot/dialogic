@@ -3,8 +3,8 @@ extends DialogicBackground
 ## The default background scene.
 ## Extend the DialogicBackground class to create your own background scene.
 
-@onready var image_node = $Image
-@onready var color_node = $ColorRect
+@onready var image_node: TextureRect = $Image
+@onready var color_node: ColorRect = $ColorRect
 
 
 func _ready() -> void:

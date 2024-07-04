@@ -127,8 +127,8 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
-	var line_length = 0
-	var idx: int = 0
+	var line_length := 0
+	var idx := 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
 			var curr_line_length: int = 0

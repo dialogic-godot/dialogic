@@ -2,7 +2,7 @@ class_name DialogicBackgroundTransition
 extends Node
 
 ## Helper
-var this_folder : String = get_script().resource_path.get_base_dir()
+var this_folder: String = get_script().resource_path.get_base_dir()
 
 
 ## Set before _fade() is called, will be the root node of the previous bg scene.

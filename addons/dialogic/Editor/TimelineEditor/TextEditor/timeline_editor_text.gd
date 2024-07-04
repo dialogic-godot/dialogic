@@ -4,7 +4,7 @@ extends CodeEdit
 ## Sub-Editor that allows editing timelines in a text format.
 
 @onready var timeline_editor := get_parent().get_parent()
-@onready var code_completion_helper :Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
+@onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
@@ -61,8 +61,8 @@ func text_timeline_to_array(text:String) -> Array:
 
 	while idx < len(lines)-1:
 		idx += 1
-		var line :String = lines[idx]
-		var line_stripped :String = line.strip_edges(true, true)
+		var line: String = lines[idx]
+		var line_stripped: String = line.strip_edges(true, true)
 		events.append(line)
 
 	return events
@@ -188,7 +188,7 @@ func _on_update_timer_timeout() -> void:
 
 
 func update_content_list() -> void:
-	var labels :PackedStringArray = []
+	var labels: PackedStringArray = []
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)

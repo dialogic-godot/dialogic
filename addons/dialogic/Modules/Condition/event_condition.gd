@@ -10,7 +10,7 @@ enum ConditionTypes {IF, ELIF, ELSE}
 ## condition type (see [ConditionTypes]). Defaults to if.
 var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
-var condition: String = ""
+var condition := ""
 
 
 ################################################################################
@@ -26,7 +26,7 @@ func _execute() -> void:
 
 	var result :bool= dialogic.Expressions.execute_condition(condition)
 	if not result:
-		var idx :int= dialogic.current_event_idx
+		var idx :int = dialogic.current_event_idx
 		var ignore := 1
 		while true:
 			idx += 1

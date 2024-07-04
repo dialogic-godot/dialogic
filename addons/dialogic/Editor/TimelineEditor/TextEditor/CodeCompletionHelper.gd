@@ -21,7 +21,7 @@ var completion_shortcode_value_regex := RegEx.new()
 # Stores references to all shortcode events for parameter and value suggestions
 var shortcode_events := {}
 var custom_syntax_events := []
-var text_event :DialogicTextEvent = null
+var text_event: DialogicTextEvent = null
 
 func _ready() -> void:
 	# Compile RegEx's
@@ -187,7 +187,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 # Helper that adds all characters as options
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, text_event_start:=false) -> void:
 	for character in DialogicResourceUtil.get_character_directory():
-		var result :String = character
+		var result: String = character
 		if " " in character:
 			result = '"'+character+'"'
 		if text_event_start and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():

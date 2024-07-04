@@ -20,7 +20,7 @@ func _set_value(value:Variant) -> void:
 		dict = value
 	elif typeof(value) == TYPE_STRING:
 		if value.begins_with('{'):
-			var result = JSON.parse_string(value)
+			var result: Variant = JSON.parse_string(value)
 			if result != null:
 				dict = result as Dictionary
 			else:

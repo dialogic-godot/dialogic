@@ -61,7 +61,7 @@ func _on_search_text_changed(new_text:String) -> void:
 		filter.text = ""
 		filter.set_meta("counter", 0)
 
-	var hidden_events :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 
 	for child in %Tree.get_root().get_children():
 		if new_text.to_lower() in child.get_text(0).to_lower() or new_text.is_empty():
@@ -86,7 +86,7 @@ func _on_search_text_changed(new_text:String) -> void:
 			if sub_child.visible:
 				child.add_button(0, sub_child.get_icon(0), counter, false, sub_child.get_text(0))
 				if sub_child.get_metadata(0) and sub_child.get_metadata(0)['type'] == 'Event' and sub_child.get_metadata(0)['hidden']:
-					var color : Color = sub_child.get_icon_modulate(0)
+					var color: Color = sub_child.get_icon_modulate(0)
 					color.a = 0.5
 					child.set_button_color(0, counter, color)
 				else:
@@ -99,12 +99,12 @@ func _on_search_text_changed(new_text:String) -> void:
 
 func load_modules_tree() -> void:
 	%Tree.clear()
-	var root :TreeItem = %Tree.create_item()
+	var root: TreeItem = %Tree.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
 	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var indexers := DialogicUtil.get_indexers()
 	for i in indexers:
-		var module_item :TreeItem = %Tree.create_item(root)
+		var module_item: TreeItem = %Tree.create_item(root)
 		module_item.set_text(0, i.get_script().resource_path.trim_suffix('/index.gd').get_file())
 		module_item.set_metadata(0, {'type':'Module'})
 
@@ -112,13 +112,13 @@ func load_modules_tree() -> void:
 		for ev in i._get_events():
 			if not ResourceLoader.exists(ev):
 				continue
-			var event_item : TreeItem = %Tree.create_item(module_item)
+			var event_item: TreeItem = %Tree.create_item(module_item)
 			event_item.set_icon(0, get_theme_icon("Favorites", "EditorIcons"))
 			for cached_event in cached_events:
 				if cached_event.get_script().resource_path == ev:
 					event_item.set_text(0, cached_event.event_name + " Event")
 					event_item.set_icon_modulate(0, cached_event.event_color)
-					var hidden :bool = cached_event.event_name in hidden_events
+					var hidden: bool = cached_event.event_name in hidden_events
 					event_item.set_metadata(0, {'type':'Event', 'event':cached_event, 'hidden':hidden})
 					event_item.add_button(0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"), 0, false, "Toggle Event Button Visibility")
 					if hidden:
@@ -128,7 +128,7 @@ func load_modules_tree() -> void:
 
 		# Subsystems
 		for subsys in i._get_subsystems():
-			var subsys_item : TreeItem = %Tree.create_item(module_item)
+			var subsys_item: TreeItem = %Tree.create_item(module_item)
 			subsys_item.set_icon(0, get_theme_icon("Callable", "EditorIcons"))
 			subsys_item.set_text(0, subsys.name + " Subsystem")
 			subsys_item.set_icon_modulate(0, get_theme_color("readonly_color", "Editor"))
@@ -138,7 +138,7 @@ func load_modules_tree() -> void:
 
 		# Style scenes
 		for style in i._get_layout_parts():
-			var style_item : TreeItem = %Tree.create_item(module_item)
+			var style_item: TreeItem = %Tree.create_item(module_item)
 			style_item.set_icon(0, get_theme_icon("PopupMenu", "EditorIcons"))
 			style_item.set_text(0, style.name)
 			style_item.set_icon_modulate(0, get_theme_color("property_color_x", "Editor"))
@@ -148,7 +148,7 @@ func load_modules_tree() -> void:
 
 		# Text Effects
 		for effect in i._get_text_effects():
-			var effect_item : TreeItem = %Tree.create_item(module_item)
+			var effect_item: TreeItem = %Tree.create_item(module_item)
 			effect_item.set_icon(0, get_theme_icon("RichTextEffect", "EditorIcons"))
 			effect_item.set_text(0, "Text effect ["+effect.command+"]")
 			effect_item.set_icon_modulate(0, get_theme_color("property_color_z", "Editor"))
@@ -158,7 +158,7 @@ func load_modules_tree() -> void:
 
 		# Text Modifiers
 		for mod in i._get_text_modifiers():
-			var mod_item : TreeItem = %Tree.create_item(module_item)
+			var mod_item: TreeItem = %Tree.create_item(module_item)
 			mod_item.set_icon(0, get_theme_icon("RichTextEffect", "EditorIcons"))
 			mod_item.set_text(0, mod.method.capitalize())
 			mod_item.set_icon_modulate(0, get_theme_color("property_color_z", "Editor"))
@@ -168,7 +168,7 @@ func load_modules_tree() -> void:
 
 		# Settings
 		for settings in i._get_settings_pages():
-			var settings_item : TreeItem = %Tree.create_item(module_item)
+			var settings_item: TreeItem = %Tree.create_item(module_item)
 			settings_item.set_icon(0, get_theme_icon("PluginScript", "EditorIcons"))
 			settings_item.set_text(0, module_item.get_text(0) + " Settings")
 			settings_item.set_icon_modulate(0, get_theme_color("readonly_color", "Editor"))
@@ -178,7 +178,7 @@ func load_modules_tree() -> void:
 
 		# Editors
 		for editor in i._get_editors():
-			var editor_item : TreeItem = %Tree.create_item(module_item)
+			var editor_item: TreeItem = %Tree.create_item(module_item)
 			editor_item.set_icon(0, get_theme_icon("ConfirmationDialog", "EditorIcons"))
 			editor_item.set_text(0, editor.get_file().trim_suffix('.tscn').capitalize())
 			editor_item.set_icon_modulate(0, get_theme_color("readonly_color", "Editor"))
@@ -200,7 +200,7 @@ func _on_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_ind
 		'Event':
 			# Visibility item clicked
 			if id == 0:
-				var meta :Dictionary= item.get_metadata(0)
+				var meta: Dictionary= item.get_metadata(0)
 				if meta['hidden']:
 					item.set_button(0, 0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"))
 					item.get_parent().set_button_color(0, item.get_index(), item.get_icon_modulate(0))
@@ -208,7 +208,7 @@ func _on_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_ind
 						%VisibilityToggle.button_pressed = true
 				else:
 					item.set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
-					var color : Color = item.get_icon_modulate(0)
+					var color: Color = item.get_icon_modulate(0)
 					color.a = 0.5
 					item.get_parent().set_button_color(0, item.get_index(), color)
 					if item == %Tree.get_selected():
@@ -219,9 +219,9 @@ func _on_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_ind
 
 
 func _on_tree_item_selected() -> void:
-	var selected_item :TreeItem = %Tree.get_selected()
+	var selected_item: TreeItem = %Tree.get_selected()
 
-	var metadata :Variant = selected_item.get_metadata(0)
+	var metadata: Variant = selected_item.get_metadata(0)
 
 	%Title.text = selected_item.get_text(0)
 	%EventDefaultsPanel.hide()
@@ -279,7 +279,7 @@ func _on_external_link_pressed() -> void:
 
 func change_event_visibility(event:DialogicEvent, visibility:bool) -> void:
 	if event:
-		var list :Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+		var list: Array= DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 		if visibility:
 			list.erase(event.event_name)
 		else:
@@ -298,7 +298,7 @@ func _on_visibility_toggle_toggled(button_pressed:bool) -> void:
 	else:
 		%VisibilityToggle.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 		%Tree.get_selected().set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
-		var color : Color = %Tree.get_selected().get_icon_modulate(0)
+		var color: Color = %Tree.get_selected().get_icon_modulate(0)
 		color.a = 0.5
 		%Tree.get_selected().get_parent().set_button_color(0, %Tree.get_selected().get_index(), color)
 
@@ -314,7 +314,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 	for child in %EventDefaults.get_children():
 		child.queue_free()
 
-	var event_default_overrides :Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
+	var event_default_overrides: Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
 
 	var params := event.get_shortcode_parameters()
 	for prop in params:
@@ -324,8 +324,8 @@ func load_event_settings(event:DialogicEvent) -> void:
 		%EventDefaults.add_child(label)
 
 		# Editing field
-		var editor_node :Node = null
-		var current_value :Variant = params[prop].default
+		var editor_node: Node = null
+		var current_value: Variant = params[prop].default
 		if event_default_overrides.get(event.event_name, {}).has(params[prop].property):
 			current_value = event_default_overrides.get(event.event_name, {}).get(params[prop].property)
 
@@ -376,8 +376,8 @@ func load_event_settings(event:DialogicEvent) -> void:
 
 
 func set_event_default_override(prop:String, value:Variant) -> void:
-	var event_default_overrides :Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
-	var event :DialogicEvent = %Tree.get_selected().get_metadata(0).event
+	var event_default_overrides: Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
+	var event: DialogicEvent = %Tree.get_selected().get_metadata(0).event
 
 	if not event_default_overrides.has(event.event_name):
 		event_default_overrides[event.event_name] = {}

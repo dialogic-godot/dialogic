@@ -8,15 +8,15 @@ extends DialogicEvent
 ### Settings
 
 ## The timeline to jump to, if null then it's the current one. This setting should be a dialogic timeline resource.
-var timeline : DialogicTimeline
+var timeline: DialogicTimeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
-var label_name : String = ""
+var label_name := ""
 
 
 ### Helpers
 
 ## Used to set the timeline resource from the unique name identifier and vice versa
-var timeline_identifier: String = "":
+var timeline_identifier := "":
 	get:
 		if timeline:
 			var identifier := DialogicResourceUtil.get_unique_identifier(timeline.resource_path)
