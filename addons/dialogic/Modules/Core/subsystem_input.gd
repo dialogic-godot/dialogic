@@ -93,7 +93,7 @@ func handle_input() -> void:
 ## Unhandled Input is used for all NON-Mouse based inputs.
 func _unhandled_input(event:InputEvent) -> void:
 	if is_input_pressed(event, true):
-		if event is InputEventMouse:
+		if event is InputEventMouse or event is InputEventScreenTouch:
 			return
 		handle_input()
 
