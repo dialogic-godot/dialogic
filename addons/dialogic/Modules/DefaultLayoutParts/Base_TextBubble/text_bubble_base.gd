@@ -24,10 +24,30 @@ func _ready() -> void:
 		add_bubble()
 
 
-func register_character(character:DialogicCharacter, node:Node):
+func register_character(character:Variant, node:Node):
+	if typeof(character) == TYPE_STRING:
+		var character_string: String = character
+		if character.begins_with("res://"):
+			character = load(character)
+		else:
+			character = DialogicResourceUtil.get_character_resource(character)
+		if not character:
+			printerr("[Dialogic] Textbubble: Tried registering character from invalid string '", character_string, "'.")
+
 	registered_characters[character] = node
 	if len(registered_characters) > len(bubbles) and len(bubbles) < bubble_count:
 		add_bubble()
+
+
+func _get_persistent_info() -> Dictionary:
+	return {"textbubble_registers": registered_characters}
+
+
+func _load_persistent_info(info: Dictionary) -> void:
+	var register_info: Dictionary = info.get("textbubble_registers", {})
+	for character in register_info:
+		if is_instance_valid(register_info[character]):
+			register_character(character, register_info[character])
 
 
 func add_bubble() -> void:
