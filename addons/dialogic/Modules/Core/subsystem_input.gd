@@ -109,7 +109,7 @@ func _input(event:InputEvent) -> void:
 
 
 func is_input_pressed(event: InputEvent, exact := false) -> bool:
-	var action := ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)
+	var action: String = ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)
 	return (event is InputEventAction and event.action == action) or Input.is_action_just_pressed(action, exact)
 
 

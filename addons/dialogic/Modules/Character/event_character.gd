@@ -238,6 +238,11 @@ func to_text() -> String:
 	if action == Actions.JOIN or (action == Actions.UPDATE and set_transform):
 		result_string += " " + str(transform)
 
+	# SETS:
+	if action == Actions.JOIN or action == Actions.LEAVE:
+		set_mirrored = mirrored != default_values.get("mirrored", false)
+		set_z_index = z_index != default_values.get("z_index", 0)
+
 	var shortcode := store_to_shortcode_parameters()
 
 	if shortcode != "":
