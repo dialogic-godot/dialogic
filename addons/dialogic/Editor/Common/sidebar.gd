@@ -40,6 +40,8 @@ func _ready() -> void:
 	%RightClickMenu.clear()
 	%RightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Remove From List", 1)
 	%RightClickMenu.add_separator()
+	%RightClickMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
+	%RightClickMenu.add_separator()
 	%RightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2)
 	%RightClickMenu.add_icon_item(get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3)
 
@@ -186,3 +188,5 @@ func _on_right_click_menu_id_pressed(id:int) -> void:
 			EditorInterface.get_file_system_dock().navigate_to_path(%ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_index")))
 		3: # OPEN IN EXTERNAL EDITOR
 			OS.shell_open(ProjectSettings.globalize_path(%ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_index"))))
+		4:
+			DisplayServer.clipboard_set(DialogicResourceUtil.get_unique_identifier(%ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_index"))))
