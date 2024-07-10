@@ -22,7 +22,12 @@ enum PositionModes {
 @export var portrait_prefix := ''
 
 @export_subgroup('Portrait Placement')
-enum SizeModes {KEEP, FIT_STRETCH, FIT_IGNORE_SCALE, FIT_SCALE_HEIGHT}
+enum SizeModes {
+	KEEP, ## The height and width of the container have no effect, only the origin.
+	FIT_STRETCH, ## The portrait will be fitted into the container, ignoring it's aspect ratio and the character/portrait scale.
+	FIT_IGNORE_SCALE, ## The portrait will be fitted into the container, ignoring the character/portrait scale, but preserving the aspect ratio.
+	FIT_SCALE_HEIGHT ## Recommended. The portrait will be scaled to fit the container height. A character/portrait scale of 100% means 100% container height. Aspect ratio will be preserved.
+	}
 ## Defines how to affect the scale of the portrait
 @export var size_mode: SizeModes = SizeModes.FIT_SCALE_HEIGHT :
 	set(mode):
