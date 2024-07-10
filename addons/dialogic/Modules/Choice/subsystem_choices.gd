@@ -6,7 +6,7 @@ extends DialogicSubsystem
 signal choice_selected(info:Dictionary)
 ## Emitted when a set of choices is reached and shown.
 ## Info includes the keys 'choices' (an array of dictionaries with infos on all the choices).
-signal choices_shown(info:Dictionary)
+signal question_shown(info:Dictionary)
 
 ## Contains information on the latest question.
 var last_question_info := {}
@@ -67,10 +67,6 @@ func hide_all_choices() -> void:
 		if node.is_connected('button_up', _on_choice_selected):
 			node.disconnect('button_up', _on_choice_selected)
 
-
-
-func show_choices() -> void:
-	hide_all_choices()
 
 ## Collects information on all the choices of the current question.
 ## The result is a dictionary like this:
@@ -182,7 +178,9 @@ func show_current_question(instant:=true) -> void:
 		if node.pressed.is_connected(_on_choice_selected):
 			node.pressed.disconnect(_on_choice_selected)
 		node.pressed.connect(_on_choice_selected.bind(choice))
+
 	_choice_blocker.start(block_delay)
+	question_shown.emit(question_info)
 
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")

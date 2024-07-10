@@ -32,7 +32,7 @@ var bg_padding := 30
 
 func _ready() -> void:
 	reset()
-	DialogicUtil.autoload().Choices.choices_shown.connect(_on_choices_shown)
+	DialogicUtil.autoload().Choices.question_shown.connect(_on_question_shown)
 
 
 func reset() -> void:
@@ -133,7 +133,7 @@ func _resize_bubble(content_size:Vector2, popup:=false) -> void:
 	name_label_holder.size.x = text.size.x
 
 
-func _on_choices_shown(info:Dictionary) -> void:
+func _on_question_shown(info:Dictionary) -> void:
 	if !is_visible_in_tree():
 		return
 
