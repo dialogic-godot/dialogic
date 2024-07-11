@@ -55,25 +55,19 @@ func _refresh():
 
 	# JOIN
 	%JoinDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
-	%JoinDefault.set_value(DialogicUtil.pretty_name(
-		ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_KEY,
-		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))))
+	%JoinDefault.set_value(ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_KEY, "Fade In Up"))
 	%JoinDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_LENGTH_KEY, 0.5))
 	%JoinDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_JOIN_DEFAULT_WAIT_KEY, true)
 
 	# LEAVE
 	%LeaveDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
-	%LeaveDefault.set_value(
-		ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_KEY,
-		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd')))
+	%LeaveDefault.set_value(ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_KEY, "Fade Out Down"))
 	%LeaveDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_LENGTH_KEY, 0.5))
 	%LeaveDefaultWait.button_pressed = ProjectSettings.get_setting(ANIMATION_LEAVE_DEFAULT_WAIT_KEY, true)
 
 	# CROSS FADE
 	%CrossFadeDefault.resource_icon = get_theme_icon(&"Animation", &"EditorIcons")
-	%CrossFadeDefault.set_value(
-		ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_KEY,
-		get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in.gd')))
+	%CrossFadeDefault.set_value(ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_KEY, "Fade Cross"))
 	%CrossFadeDefaultLength.set_value(ProjectSettings.get_setting(ANIMATION_CROSSFADE_DEFAULT_LENGTH_KEY, 0.5))
 
 
