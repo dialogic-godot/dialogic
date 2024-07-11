@@ -236,7 +236,7 @@ static func guess_special_resource(type: String, string: String, default := {}, 
 	if not ignores.is_empty():
 		var regex := RegEx.create_from_string(r" ?\b(" + "|".join(ignores) + r")\b")
 		for name in resources:
-			if regex.sub(name, "") == string:
+			if regex.sub(name, "") == regex.sub(string, ""):
 				return resources[name]
 
 	## As a last effort check against the unfiltered list

@@ -394,7 +394,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_id:S
 	character_joined.emit(info)
 
 	if animation_name.is_empty():
-		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade Up In")
+		animation_name = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 		animation_length = _get_join_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/join_default_wait', true)
 
@@ -450,7 +450,7 @@ func change_character_portrait(character: DialogicCharacter, portrait: String, f
 		return
 
 	if fade_animation == "DEFAULT":
-		fade_animation = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade In Out")
+		fade_animation = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade Cross")
 		fade_length = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5)
 
 	fade_animation = DialogicPortraitAnimationUtil.guess_animation(fade_animation, DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
@@ -522,7 +522,7 @@ func leave_character(character: DialogicCharacter, animation_name:= "", animatio
 		return
 
 	if animation_name.is_empty():
-		animation_name = ProjectSettings.get_setting('dialogic/animations/leave_default', "Fade Down Out")
+		animation_name = ProjectSettings.get_setting('dialogic/animations/leave_default', "Fade Out Down")
 		animation_length = _get_leave_default_length()
 		animation_wait = ProjectSettings.get_setting('dialogic/animations/leave_default_wait', true)
 
@@ -622,7 +622,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 		var just_joined := true
 		for character_node: Node in container.get_children():
 			if not character_node.get_meta('character') == speaker:
-				var leave_animation: String = ProjectSettings.get_setting('dialogic/animations/leave_default', "Fade Up Out")
+				var leave_animation: String = ProjectSettings.get_setting('dialogic/animations/leave_default', "Fade Out")
 				leave_animation = DialogicPortraitAnimationUtil.guess_animation(leave_animation, DialogicPortraitAnimationUtil.AnimationType.OUT)
 				var leave_animation_length := _get_leave_default_length()
 
@@ -646,7 +646,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 
 		if portrait.is_empty(): portrait = speaker.default_portrait
 
-		var fade_animation: String = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade In Out")
+		var fade_animation: String = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade Cross")
 		var fade_length: float = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5)
 
 		fade_animation = DialogicPortraitAnimationUtil.guess_animation(fade_animation, DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
@@ -661,7 +661,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 			continue
 
 		if just_joined:
-			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade Up In")
+			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 			join_animation = DialogicPortraitAnimationUtil.guess_animation(join_animation, DialogicPortraitAnimationUtil.AnimationType.IN)
 			var join_animation_length := _get_join_default_length()
 
