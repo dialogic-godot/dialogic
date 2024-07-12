@@ -143,6 +143,7 @@ func _on_transition_finished(background_node:DialogicNode_BackgroundHolder, tran
 	background_node.color = Color.TRANSPARENT
 	transition_node.queue_free()
 
+
 ## Adds sub-viewport with the given background scene as child to
 ## Dialogic scene.
 func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
@@ -166,6 +167,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	viewport.transparent_bg = true
 	viewport.disable_3d = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
 
 	viewport.add_child(b_scene)
 	b_scene.viewport = viewport
@@ -175,6 +177,7 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	v_con.set_meta('node', b_scene)
 
 	return v_con
+
 
 ## Whether a background is set.
 func has_background() -> bool:
