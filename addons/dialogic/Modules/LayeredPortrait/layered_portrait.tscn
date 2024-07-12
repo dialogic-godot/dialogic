@@ -6,7 +6,6 @@
 script = ExtResource("1_uubi5")
 
 [node name="Layer1" type="Sprite2D" parent="."]
-centered = false
 
 [node name="Group1" type="Node2D" parent="."]
 
