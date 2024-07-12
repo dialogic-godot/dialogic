@@ -24,6 +24,7 @@ func _ready() -> void:
 		child.toggled.connect(_on_type_pressed.bind(child.get_index()+1))
 		child.icon = get_theme_icon(["String", "float", "int", "bool"][child.get_index()], "EditorIcons")
 
+	%RightClickMenu.set_item_icon(0, get_theme_icon("ActionCopy", "EditorIcons"))
 #endregion
 
 
@@ -324,13 +325,28 @@ func report_name_changes(item:TreeItem) -> void:
 
 
 func get_item_path(item:TreeItem) -> String:
-	if item.get_meta('type') == "VARIABLE":
-		var path := item.get_text(0)
-		while item.get_parent() != get_root():
-			item = item.get_parent()
-			path = item.get_text(0)+"."+path
-		return path
-	return ""
-
+	var path := item.get_text(0)
+	while item.get_parent() != get_root():
+		item = item.get_parent()
+		path = item.get_text(0)+"."+path
+	return path
 
 #endregion
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_RIGHT and event.pressed:
+		var item := get_item_at_position(get_local_mouse_position())
+		if item and item != get_root():
+			%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
+			%RightClickMenu.set_item_text(0, 'Copy "' + get_item_path(item) + '"')
+			%RightClickMenu.set_meta("item", item)
+			%RightClickMenu.size = Vector2()
+
+
+func _on_right_click_menu_id_pressed(id: int) -> void:
+	if %RightClickMenu.get_meta("item", null) == null:
+		return
+	match id:
+		0:
+			DisplayServer.clipboard_set(get_item_path(%RightClickMenu.get_meta("item")))
