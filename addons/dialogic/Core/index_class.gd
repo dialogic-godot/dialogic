@@ -7,7 +7,7 @@ extends RefCounted
 ## Overwrite the methods to return the contents of that folder.
 
 
-var this_folder : String = get_script().resource_path.get_base_dir()
+var this_folder: String = get_script().resource_path.get_base_dir()
 
 ## Overwrite if this module contains any events. [br]
 ## Return an array with all the paths to the event scripts.[br]
