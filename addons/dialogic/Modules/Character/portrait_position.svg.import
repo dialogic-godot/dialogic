@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bn3nq7gw67kye"
-path="res://.godot/imported/event_portrait_position.svg-f91e8e0cc02545b0b28152d6ef70ff10.ctex"
+path="res://.godot/imported/portrait_position.svg-f025767e40032b9ebdeab1f9e882467a.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/dialogic/Modules/Character/event_portrait_position.svg"
-dest_files=["res://.godot/imported/event_portrait_position.svg-f91e8e0cc02545b0b28152d6ef70ff10.ctex"]
+source_file="res://addons/dialogic/Modules/Character/portrait_position.svg"
+dest_files=["res://.godot/imported/portrait_position.svg-f025767e40032b9ebdeab1f9e882467a.ctex"]
 
 [params]
 
