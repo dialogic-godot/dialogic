@@ -37,6 +37,8 @@ func _refresh() -> void:
 
 
 func _on_refresh_pressed() -> void:
+	DialogicUtil.get_indexers(true, true)
+	DialogicResourceUtil.update_event_cache()
 	load_modules_tree()
 
 
@@ -318,17 +320,23 @@ func load_event_settings(event:DialogicEvent) -> void:
 
 	var params := event.get_shortcode_parameters()
 	for prop in params:
+		var current_value: Variant = params[prop].default
+		if event_default_overrides.get(event.event_name, {}).has(params[prop].property):
+			current_value = event_default_overrides.get(event.event_name, {}).get(params[prop].property)
+
 		# Label
 		var label := Label.new()
 		label.text = prop.capitalize()
 		%EventDefaults.add_child(label)
 
+		var reset := Button.new()
+		reset.icon = get_theme_icon("Clear", "EditorIcons")
+		reset.flat = true
+
+		%EventDefaults.add_child(reset)
+
 		# Editing field
 		var editor_node: Node = null
-		var current_value: Variant = params[prop].default
-		if event_default_overrides.get(event.event_name, {}).has(params[prop].property):
-			current_value = event_default_overrides.get(event.event_name, {}).get(params[prop].property)
-
 		match typeof(event.get(params[prop].property)):
 			TYPE_STRING:
 				editor_node = LineEdit.new()
@@ -356,7 +364,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 					editor_node.value_changed.connect(_on_event_default_number_changed.bind(params[prop].property))
 
 			TYPE_VECTOR2:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn").instantiate()
 				editor_node.set_value(current_value)
 				editor_node.property_name = params[prop].property
 				editor_node.value_changed.connect(_on_event_default_value_changed)
@@ -367,12 +375,18 @@ func load_event_settings(event:DialogicEvent) -> void:
 				editor_node.toggled.connect(_on_event_default_bool_toggled.bind(params[prop].property))
 
 			TYPE_ARRAY:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/field_array.tscn").instantiate()
 				editor_node.set_value(current_value)
 				editor_node.property_name = params[prop].property
 				editor_node.value_changed.connect(_on_event_default_value_changed)
 
+			TYPE_DICTIONARY:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn").instantiate()
+				editor_node.set_value(current_value)
+				editor_node.property_name = params[prop].property
+				editor_node.value_changed.connect(_on_event_default_value_changed)
 		%EventDefaults.add_child(editor_node)
+		reset.pressed.connect(reset_event_default_override.bind(prop, editor_node, params[prop].default))
 
 
 func set_event_default_override(prop:String, value:Variant) -> void:
@@ -387,6 +401,29 @@ func set_event_default_override(prop:String, value:Variant) -> void:
 	ProjectSettings.set_setting('dialogic/event_default_overrides', event_default_overrides)
 
 
+func reset_event_default_override(prop:String, node:Node, default:Variant) -> void:
+	var event_default_overrides: Dictionary = ProjectSettings.get_setting('dialogic/event_default_overrides', {})
+	var event: DialogicEvent = %Tree.get_selected().get_metadata(0).event
+
+	if not event_default_overrides.has(event.event_name):
+		return
+
+	event_default_overrides[event.event_name].erase(prop)
+
+	ProjectSettings.set_setting('dialogic/event_default_overrides', event_default_overrides)
+
+	if node is CheckBox:
+		node.button_pressed = default
+	elif node is LineEdit:
+		node.text = default
+	elif node.has_method('set_value'):
+		node.set_value(default)
+	elif node is ColorPickerButton:
+		node.color = default
+	elif node is OptionButton:
+		node.select(default)
+	elif node is SpinBox:
+		node.value = default
 
 
 func _on_event_default_string_submitted(text:String, prop:String) -> void:
@@ -398,7 +435,7 @@ func _on_event_default_option_selected(index:int, option_button:OptionButton, pr
 func _on_event_default_number_changed(value:float, prop:String) -> void:
 	set_event_default_override(prop, value)
 
-func _on_event_default_value_changed(prop:String, value:Vector2) -> void:
+func _on_event_default_value_changed(prop:String, value:Variant) -> void:
 	set_event_default_override(prop, value)
 
 func _on_event_default_bool_toggled(value:bool, prop:String) -> void:

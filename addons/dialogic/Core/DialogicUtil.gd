@@ -447,9 +447,14 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.text = value
 				input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_info.name, property_changed))
+		TYPE_DICTIONARY:
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn").instantiate()
+			input.property_name = property_info["name"]
+			input.value_changed.connect(_on_export_dict_submitted.bind(property_changed))
 		TYPE_OBJECT:
 			input = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 			input.hint_text = "Objects/Resources as settings are currently not supported. \nUse @export_file('*.extension') instead and load the resource once needed."
+
 		_:
 			input = LineEdit.new()
 			if value != null:
@@ -480,6 +485,9 @@ static func _on_export_string_enum_submitted(value:int, property_name:String, li
 	callable.call(property_name, var_to_str(list[value]))
 
 static func _on_export_vector_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	callable.call(property_name, var_to_str(value))
+
+static func _on_export_dict_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
 #endregion
