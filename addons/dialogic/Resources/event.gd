@@ -275,8 +275,9 @@ func from_text(string: String) -> void:
 
 
 ## Returns a string with all the shortcode parameters.
-func store_to_shortcode_parameters() -> String:
-	var params: Dictionary = get_shortcode_parameters()
+func store_to_shortcode_parameters(params:Dictionary = {}) -> String:
+	if params.is_empty():
+		params = get_shortcode_parameters()
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	var result_string := ""
 	for parameter in params.keys():
@@ -294,38 +295,43 @@ func store_to_shortcode_parameters() -> String:
 			if not "set_" + parameter_info.property in self or not get("set_" + parameter_info.property):
 				continue
 
-		var value_as_string := ""
-		match typeof(value):
-			TYPE_OBJECT:
-				value_as_string = str(value.resource_path)
+		result_string += " " + parameter + '="' + value_to_string(value, parameter_info.get("suggestions", Callable())) + '"'
 
-			TYPE_STRING:
-				value_as_string = value
-
-			TYPE_INT when parameter_info.has('suggestions'):
-				# HANDLE TEXT ALTERNATIVES FOR ENUMS
-				for option in parameter_info.suggestions.call().values():
-					if option.value != value:
-						continue
-
-					if option.has('text_alt'):
-						value_as_string = option.text_alt[0]
-					else:
-						value_as_string = var_to_str(option.value)
-
-					break
-
-			TYPE_DICTIONARY:
-				value_as_string = JSON.stringify(value)
-
-			_:
-				value_as_string = var_to_str(value)
-
-		if not ((value_as_string.begins_with("[") and value_as_string.ends_with("]")) or (value_as_string.begins_with("{") and value_as_string.ends_with("}"))):
-			value_as_string.replace('"', '\\"')
-
-		result_string += " " + parameter + '="' + value_as_string + '"'
 	return result_string.strip_edges()
+
+
+func value_to_string(value: Variant, suggestions := Callable()) -> String:
+	var value_as_string := ""
+	match typeof(value):
+		TYPE_OBJECT:
+			value_as_string = str(value.resource_path)
+
+		TYPE_STRING:
+			value_as_string = value
+
+		TYPE_INT when suggestions.is_valid():
+			# HANDLE TEXT ALTERNATIVES FOR ENUMS
+			for option in suggestions.call().values():
+				if option.value != value:
+					continue
+
+				if option.has('text_alt'):
+					value_as_string = option.text_alt[0]
+				else:
+					value_as_string = var_to_str(option.value)
+
+				break
+
+		TYPE_DICTIONARY:
+			value_as_string = JSON.stringify(value)
+
+		_:
+			value_as_string = var_to_str(value)
+
+	if not ((value_as_string.begins_with("[") and value_as_string.ends_with("]")) or (value_as_string.begins_with("{") and value_as_string.ends_with("}"))):
+		value_as_string.replace('"', '\\"')
+
+	return value_as_string
 
 
 func load_from_shortcode_parameters(string:String) -> void:
