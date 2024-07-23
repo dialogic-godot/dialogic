@@ -396,7 +396,7 @@ func _ready() -> void:
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))[.,](?!([\w\s]*!?[\]\}]|$))")] = autopause_data[i]
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
 
 
 ## Parses the character's display_name and returns the text that
