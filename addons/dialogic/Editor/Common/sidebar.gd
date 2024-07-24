@@ -23,7 +23,7 @@ func _ready() -> void:
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 
-	resource_tree.item_selected.connect(_on_resources_tree_item_selected)
+	resource_tree.item_activated.connect(_on_resources_tree_item_activated)
 	resource_tree.item_mouse_selected.connect(_on_resources_tree_item_clicked)
 
 	%ContentList.item_selected.connect(
@@ -91,7 +91,7 @@ func _hide_sidebar() -> void:
 
 
 func _on_editors_resource_opened(resource: Resource) -> void:
-	# update_resource_list()
+	update_resource_list()
 	pass
 
 
@@ -119,13 +119,12 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 
 	resources_list = clean_resource_list(resources_list)
 
-
 	%CurrentResource.text = "No Resource"
 	%CurrentResource.add_theme_color_override(
 		"font_uneditable_color", get_theme_color("disabled_font_color", "Editor")
 	)
+
 	resource_tree.clear()
-	#TODO: This is still super broken.
 	var resource_list_items = []
 
 	var character_items = []
@@ -155,10 +154,6 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 
 	# TREE
 	var root: TreeItem = resource_tree.create_item()
-	var debug_string = "[b]Tree: [/b]\n\t%s\n[b]TreeRoot: [/b]\n\t%s\n[b]Root: [/b]\n\t%s" % [resource_tree,resource_tree.get_root(), root]
-	print_rich(debug_string)
-	if root == null:
-		return
 
 	if character_items.size() > 0:
 		var character_tree = resource_tree.create_item(root)
@@ -171,6 +166,9 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 			character_item.set_icon(0, item.icon)
 			character_item.set_metadata(0, item.metadata)
 			character_item.set_tooltip_text(0, item.tooltip)
+			if item.metadata == current_file:
+				%CurrentResource.text = item.metadata.get_file()
+				resource_tree.set_selected(character_item, 0)
 	if timeline_items.size() > 0:
 		var timeline_tree = resource_tree.create_item(root) as TreeItem
 		timeline_tree.set_text(0, "Timelines")
@@ -182,34 +180,18 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 			timeline_item.set_icon(0, item.icon)
 			timeline_item.set_metadata(0, item.metadata)
 			timeline_item.set_tooltip_text(0, item.tooltip)
+			if item.metadata == current_file:
+				%CurrentResource.text = item.metadata.get_file()
+				resource_tree.set_selected(timeline_item, 0)
 
 	if %CurrentResource.text != "No Resource":
 		%CurrentResource.add_theme_color_override(
 			"font_uneditable_color", get_theme_color("font_color", "Editor")
 		)
 	DialogicUtil.set_editor_setting("last_resources", resources_list)
-	#TODO: Implement the " When searching the first item should be focused so enter actually opens that item."
 
 
-func _on_resources_list_item_selected(index: int) -> void:
-	if %ResourcesList.get_item_metadata(index) == null:
-		return
-	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
-
-
-func _on_resources_list_item_clicked(
-	index: int, at_position: Vector2, mouse_button_index: int
-) -> void:
-	# If clicked with the middle mouse button, remove the item from the list
-	if mouse_button_index == MOUSE_BUTTON_MIDDLE:
-		remove_item_from_list(index)
-	if mouse_button_index == MOUSE_BUTTON_RIGHT:
-		%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
-		%RightClickMenu.set_meta("item_index", index)
-
-
-func _on_resources_tree_item_selected() -> void:
-	print("Selected\n\t{%s}" % resource_tree.get_selected())
+func _on_resources_tree_item_activated() -> void:
 	if resource_tree.get_selected() == null:
 		return
 	var item := resource_tree.get_selected()
@@ -219,16 +201,36 @@ func _on_resources_tree_item_selected() -> void:
 
 
 func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> void:
-	print("Clicked, mouse_button_index: ", mouse_button_index)
+	if mouse_button_index == MOUSE_BUTTON_LEFT:
+		return
 	if mouse_button_index == MOUSE_BUTTON_MIDDLE:
 		remove_item_from_list(resource_tree.get_selected())
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
-		%RightClickMenu.set_meta("item_index", resource_tree.get_selected())
+		(%RightClickMenu as PopupMenu).set_meta("item_clicked", resource_tree.get_selected())
+		# %RightClickMenu.set_meta("item_index", resource_tree.get_selected())
 
 
 func _on_search_text_changed(new_text: String) -> void:
 	update_resource_list()
+	var tree_root := resource_tree.get_root()
+	var tree_items := tree_root.get_children()
+	if tree_items.size() == 0:
+		return
+	for item in tree_items:
+		if item.get_children().size() > 0:
+			resource_tree.set_selected(item.get_child(0), 0)
+			break
+
+
+func _on_search_text_submitted(new_text: String) -> void:
+	if resource_tree.get_selected() == null:
+		return
+	var item := resource_tree.get_selected()
+	if item.get_metadata(0) == null:
+		return
+	editors_manager.edit_resource(load(item.get_metadata(0)))
+	%Search.clear()
 
 
 func set_unsaved_indicator(saved: bool = true) -> void:
@@ -273,27 +275,27 @@ func update_content_list(list: PackedStringArray) -> void:
 	DialogicResourceUtil.set_label_cache(label_directory)
 
 
-func remove_item_from_list(index) -> void:
+func remove_item_from_list(item) -> void:
 	var new_list := []
 	for entry in DialogicUtil.get_editor_setting("last_resources", []):
-		if entry != %ResourcesList.get_item_metadata(index):
+		if entry != item.get_metadata(0):
 			new_list.append(entry)
 	DialogicUtil.set_editor_setting("last_resources", new_list)
-	%ResourcesList.remove_item(index)
+	update_resource_list(new_list)
 
 
 func _on_right_click_menu_id_pressed(id: int) -> void:
 	match id:
 		1:  # REMOVE ITEM FROM LIST
-			remove_item_from_list(%RightClickMenu.get_meta("item_index"))
+			remove_item_from_list(%RightClickMenu.get_meta("item_clicked"))
 		2:  # OPEN IN FILESYSTEM
 			EditorInterface.get_file_system_dock().navigate_to_path(
-				%ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_index"))
+				%RightClickMenu.get_meta("item_clicked").get_metadata(0)
 			)
 		3:  # OPEN IN EXTERNAL EDITOR
 			OS.shell_open(
 				ProjectSettings.globalize_path(
-					%ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_index"))
+					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
 				)
 			)
 

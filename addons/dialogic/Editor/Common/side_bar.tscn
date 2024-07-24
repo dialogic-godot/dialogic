@@ -24,7 +24,6 @@ script = ExtResource("1_jnq65")
 
 [node name="VBoxHidden" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="OpenButton" type="Button" parent="VBoxHidden"]
@@ -33,14 +32,14 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 tooltip_text = "Show Sidebar"
-text = "   "
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("2_ilyps")
 flat = true
 icon_alignment = 1
-expand_icon = true
 
 [node name="VBoxPrimary" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -147,5 +146,6 @@ size = Vector2i(164, 100)
 
 [connection signal="gui_input" from="VBoxPrimary/Margin/VSplitContainer/VBox/Logo" to="." method="_on_logo_gui_input"]
 [connection signal="text_changed" from="VBoxPrimary/Margin/VSplitContainer/VBox/Search" to="." method="_on_search_text_changed"]
+[connection signal="text_submitted" from="VBoxPrimary/Margin/VSplitContainer/VBox/Search" to="." method="_on_search_text_submitted"]
 [connection signal="pressed" from="VBoxPrimary/CurrentVersion" to="." method="_on_current_version_pressed"]
 [connection signal="id_pressed" from="RightClickMenu" to="." method="_on_right_click_menu_id_pressed"]
