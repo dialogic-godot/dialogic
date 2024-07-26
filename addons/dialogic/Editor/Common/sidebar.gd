@@ -273,7 +273,7 @@ func update_content_list(list: PackedStringArray) -> void:
 	DialogicResourceUtil.set_label_cache(label_directory)
 
 
-func remove_item_from_list(item) -> void:
+func remove_item_from_list(item:TreeItem) -> void:
 	var new_list := []
 	for entry in DialogicUtil.get_editor_setting("last_resources", []):
 		if entry != item.get_metadata(0):
@@ -298,10 +298,10 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 			)
 		4:  # COPY IDENTIFIER
 			DisplayServer.clipboard_set(
-                DialogicResourceUtil.get_unique_identifier(
-                    %ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_clicked"))
-                )
-            )
+				DialogicResourceUtil.get_unique_identifier(
+					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
+				)
+			)
 
 
 func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:
