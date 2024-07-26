@@ -65,6 +65,10 @@ func _ready() -> void:
 	%RightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2)
 	%RightClickMenu.add_icon_item(get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3)
 
+	await get_tree().process_frame
+	if DialogicUtil.get_editor_setting("sidebar_collapsed", false):
+		_hide_sidebar()
+
 
 ################################################################################
 ## 						SHOW/HIDE SIDEBAR
@@ -74,12 +78,14 @@ func _ready() -> void:
 func _show_sidebar() -> void:
 	%VBoxPrimary.show()
 	%VBoxHidden.hide()
+	DialogicUtil.set_editor_setting("sidebar_collapsed", false)
 	show_sidebar.emit(true)
 
 
 func _hide_sidebar() -> void:
 	%VBoxPrimary.hide()
 	%VBoxHidden.show()
+	DialogicUtil.set_editor_setting("sidebar_collapsed", true)
 	show_sidebar.emit(false)
 
 
@@ -123,24 +129,24 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	)
 
 	resource_tree.clear()
-	var resource_list_items = []
+	var resource_list_items := []
 
-	var character_items = []
+	var character_items := []
 	for character_name in character_directory:
 		if character_directory[character_name] in resources_list:
 			if filter.is_empty() or filter.to_lower() in character_name.to_lower():
-				var item = ResourceListItem.new()
+				var item := ResourceListItem.new()
 				item.text = character_name
 				item.icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 				item.metadata = character_directory[character_name]
 				item.tooltip = character_directory[character_name]
 				character_items.append(item)
 
-	var timeline_items = []
+	var timeline_items := []
 	for timeline_name in timeline_directory:
 		if timeline_directory[timeline_name] in resources_list:
 			if filter.is_empty() or filter.to_lower() in timeline_name.to_lower():
-				var item = ResourceListItem.new()
+				var item := ResourceListItem.new()
 				item.text = timeline_name
 				item.icon = get_theme_icon("TripleBar", "EditorIcons")
 				item.metadata = timeline_directory[timeline_name]
@@ -206,7 +212,6 @@ func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> 
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
 		(%RightClickMenu as PopupMenu).set_meta("item_clicked", resource_tree.get_selected())
-		# %RightClickMenu.set_meta("item_index", resource_tree.get_selected())
 
 
 func _on_search_text_changed(new_text: String) -> void:
@@ -306,3 +311,27 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 
 func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:
 	return a.text < b.text
+
+
+class ResourceListItem:
+	extends Object
+	var text: String
+	var index: int = -1
+	var icon: Texture
+	var metadata: String
+	var tooltip: String
+
+
+	func add_to_item_list(item_list: ItemList, current_file: String) -> void:
+		item_list.add_item(text, icon)
+		item_list.set_item_metadata(item_list.item_count - 1, metadata)
+		item_list.set_item_tooltip(item_list.item_count - 1, tooltip)
+
+
+	func current_file(sidebar: Control, resource_list: ItemList, current_file: String) -> void:
+		if metadata == current_file:
+			resource_list.select(index)
+			resource_list.set_item_custom_fg_color(
+				index, resource_list.get_theme_color("accent_color", "Editor")
+			)
+			sidebar.find_child("CurrentResource").text = metadata.get_file()

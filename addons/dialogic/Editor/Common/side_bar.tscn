@@ -24,6 +24,7 @@ script = ExtResource("1_jnq65")
 
 [node name="VBoxHidden" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="OpenButton" type="Button" parent="VBoxHidden"]
@@ -39,7 +40,6 @@ icon_alignment = 1
 
 [node name="VBoxPrimary" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -114,9 +114,9 @@ vertical_alignment = 1
 [node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 0
 item_count = 1
 popup/item_0/text = "Alphabetical (All)"
+popup/item_0/id = 0
 
 [node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer"]
 unique_name_in_owner = true
