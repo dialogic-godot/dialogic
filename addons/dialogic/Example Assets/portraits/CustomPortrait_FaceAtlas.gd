@@ -3,7 +3,7 @@ extends DialogicPortrait
 
 enum Faces {BASED_ON_PORTRAIT_NAME, NEUTRAL, HAPPY, SAD, JOY, SHOCK, ANGRY}
 
-@export var emotion : Faces = Faces.BASED_ON_PORTRAIT_NAME
+@export var emotion: Faces = Faces.BASED_ON_PORTRAIT_NAME
 @export var portrait_width: int
 @export var portrait_height: int
 @export var alien := true

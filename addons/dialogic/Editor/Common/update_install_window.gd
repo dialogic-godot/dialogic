@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-var current_info : Dictionary = {}
+var current_info := {}
 @onready var editor_view := find_parent('EditorView')
 
 

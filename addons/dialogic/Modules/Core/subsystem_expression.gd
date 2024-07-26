@@ -51,6 +51,15 @@ func execute_condition(condition:String) -> bool:
 		return true
 	return false
 
+
+var condition_modifier_regex := RegEx.create_from_string(r"(?(DEFINE)(?<nobraces>([^{}]|\{(?P>nobraces)\})*))\[if *(?<condition>\{(?P>nobraces)\})(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
+func modifier_condition(text:String) -> String:
+	for find in condition_modifier_regex.search_all(text):
+		if execute_condition(find.get_string("condition")):
+			text = text.replace(find.get_string(), find.get_string("truetext").strip_edges())
+		else:
+			text = text.replace(find.get_string(), find.get_string("falsetext").strip_edges())
+	return text
 #endregion
 
 

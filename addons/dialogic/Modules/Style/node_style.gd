@@ -1,7 +1,7 @@
 class_name DialogicNode_StyleLayer
 extends Control
 
-## Control node that is hidden and shown based on the current dialogic style. 
+## Control node that is hidden and shown based on the current dialogic style.
 
 ## The name this layer listens to
 @export var layer_name: String = 'Default'

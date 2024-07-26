@@ -104,6 +104,9 @@ var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_b
 var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
 	get: return get_subsystem("Portraits")
 
+var PortraitContainers := preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd").new():
+	get: return get_subsystem("PortraitContainers")
+
 var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
 	get: return get_subsystem("Choices")
 
@@ -166,7 +169,7 @@ func _ready() -> void:
 ## -> returns the layout node
 func start(timeline:Variant, label:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
-	if !has_subsystem('Styles'):
+	if not has_subsystem('Styles'):
 		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
@@ -184,7 +187,6 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
 		scene.ready.connect(start_timeline.bind(timeline, label))
 	else:
-		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label)
 
 	return scene
@@ -320,6 +322,9 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
+
+	for subsystem in get_children():
+		(subsystem as DialogicSubsystem).save_game_state()
 
 	return current_state_info.duplicate(true)
 

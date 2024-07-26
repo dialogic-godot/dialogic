@@ -54,6 +54,10 @@ func _setting_changed(property:StringName, value:Variant) -> void:
 		return
 
 	for i in _connections[property]:
+		if not is_instance_valid(i.get_object()):
+			var remove := func(): _connections[property].erase(i)
+			remove.call_deferred()
+			continue
 		i.call(value)
 
 #endregion
@@ -83,6 +87,7 @@ func reset_setting(property: StringName) -> void:
 	else:
 		settings.erase(property)
 		_setting_changed(property, null)
+
 
 ## If a setting named `property` changes its value, this will emit `Callable`.
 func connect_to_change(property: StringName, callable: Callable) -> void:

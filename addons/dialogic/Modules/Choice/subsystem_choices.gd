@@ -6,19 +6,19 @@ extends DialogicSubsystem
 signal choice_selected(info:Dictionary)
 ## Emitted when a set of choices is reached and shown.
 ## Info includes the keys 'choices' (an array of dictionaries with infos on all the choices).
-signal choices_shown(info:Dictionary)
+signal question_shown(info:Dictionary)
 
 ## Contains information on the latest question.
 var last_question_info := {}
 
 ## The delay between the text finishing revealing and the choices appearing
-var reveal_delay: float = 0.0
+var reveal_delay := 0.0
 ## If true the player has to click to reveal choices when they are reached
-var reveal_by_input: bool = false
+var reveal_by_input := false
 ## The delay between the choices becoming visible and being clickable. Can prevent accidental selection.
-var block_delay: float = 0.2
+var block_delay := 0.2
 ## If true, the first (top-most) choice will be focused
-var autofocus_first_choice: bool = true
+var autofocus_first_choice := true
 
 
 enum FalseBehaviour {HIDE=0, DISABLE=1}
@@ -68,10 +68,6 @@ func hide_all_choices() -> void:
 			node.disconnect('button_up', _on_choice_selected)
 
 
-
-func show_choices() -> void:
-	hide_all_choices()
-
 ## Collects information on all the choices of the current question.
 ## The result is a dictionary like this:
 ## {'choices':
@@ -114,10 +110,13 @@ func get_current_question_info() -> Dictionary:
 			var hide := choice_event.else_action == DialogicChoiceEvent.ElseActions.HIDE
 			hide = hide or choice_event.else_action == DialogicChoiceEvent.ElseActions.DEFAULT and default_false_behaviour == DialogicChoiceEvent.ElseActions.HIDE
 			choice_info['visible'] = not hide
+
 			if not hide:
 				button_idx += 1
 
 		choice_info.text = dialogic.Text.parse_text(choice_info.text, true, true, false, true, false, false)
+
+		choice_info.merge(choice_event.extra_data)
 
 		if dialogic.has_subsystem('History'):
 			choice_info['visited_before'] = dialogic.History.has_event_been_visited(choice_index)
@@ -179,7 +178,9 @@ func show_current_question(instant:=true) -> void:
 		if node.pressed.is_connected(_on_choice_selected):
 			node.pressed.disconnect(_on_choice_selected)
 		node.pressed.connect(_on_choice_selected.bind(choice))
+
 	_choice_blocker.start(block_delay)
+	question_shown.emit(question_info)
 
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")

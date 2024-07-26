@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-var ListItem := load(DialogicUtil.get_module_path('StyleEditor').path_join("Components/StyleItem.tscn"))
+var ListItem := load("res://addons/dialogic/Editor/Common/BrowserItem.tscn")
 enum Types {ALL, STYLES, LAYER, LAYOUT_BASE}
 
 var current_type := Types.ALL

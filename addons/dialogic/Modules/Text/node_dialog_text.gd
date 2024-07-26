@@ -11,7 +11,7 @@ enum Alignment {LEFT, CENTER, RIGHT}
 
 @export var enabled := true
 @export var alignment := Alignment.LEFT
-@export var textbox_root : Node = self
+@export var textbox_root: Node = self
 
 @export var hide_when_empty := false
 @export var start_hidden := true

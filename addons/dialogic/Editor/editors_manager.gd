@@ -7,11 +7,11 @@ signal resource_opened(resource)
 signal editor_changed(previous, current)
 
 ### References
-@onready var hsplit = $HSplit
-@onready var sidebar = $HSplit/Sidebar
-@onready var editors_holder = $HSplit/VBox/Editors
-@onready var toolbar = $HSplit/VBox/Toolbar
-@onready var tabbar = $HSplit/VBox/Toolbar/EditorTabBar
+@onready var hsplit := $HSplit
+@onready var sidebar := $HSplit/Sidebar
+@onready var editors_holder := $HSplit/VBox/Editors
+@onready var toolbar := $HSplit/VBox/Toolbar
+@onready var tabbar := $HSplit/VBox/Toolbar/EditorTabBar
 
 var reference_manager: Node:
 	get:
@@ -22,7 +22,7 @@ var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null
 var editors := {}
 var supported_file_extensions := []
-var used_resources_cache : Array = []
+var used_resources_cache: Array = []
 
 
 ################################################################################
@@ -120,7 +120,7 @@ func _on_editors_tab_changed(tab:int) -> void:
 func edit_resource(resource:Resource, save_previous:bool = true, silent:= false) -> void:
 	if not resource:
 		# The resource doesn't exists, show an error
-		print('[Dialogic] The resource you are trying to edit doesn\'t exists any more.')
+		print("[Dialogic] The resource you are trying to edit doesn't exist any more.")
 		return
 
 	if current_editor and save_previous:
@@ -169,7 +169,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	tabbar.current_tab = editor.get_index()
 
 	if editor.current_resource:
-		var text:String = editor.current_resource.resource_path.get_file()
+		var text: String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.UNSAVED:
 			text += "(*)"
 
@@ -201,7 +201,7 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 
 
 func _on_add_resource_dialog_accepted(path:String, callable:Callable) -> void:
-	var file_name :String= path.get_file().trim_suffix('.'+path.get_extension())
+	var file_name: String = path.get_file().trim_suffix('.'+path.get_extension())
 	for i in ['#','&','+',';','(',')','!','*','*','"',"'",'%', '$', ':','.',',']:
 		file_name = file_name.replace(i, '')
 	callable.call(path.trim_suffix(path.get_file()).path_join(file_name)+'.'+path.get_extension())

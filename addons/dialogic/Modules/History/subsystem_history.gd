@@ -9,15 +9,17 @@ signal close_requested
 ## Simple history that stores limited information
 ## Used for the history display
 var simple_history_enabled := false
+var simple_history_save := false
 var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
 ## Whether to keep a history of every Dialogic event encountered.
 var full_event_history_enabled := false
+var full_event_history_save := false
 
 ## The full history of all Dialogic events encountered.
 ## Requires [member full_event_history_enabled] to be true.
-var full_event_history_content := []
+var full_event_history_content: Array[DialogicEvent] = []
 
 ## Emitted if a new event has been inserted into the full event history.
 signal full_event_history_changed
@@ -78,8 +80,10 @@ func _ready() -> void:
 	dialogic.event_handled.connect(store_full_event)
 	dialogic.event_handled.connect(_check_seen)
 
-	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', simple_history_enabled )
+	simple_history_enabled = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', simple_history_enabled)
+	simple_history_save = ProjectSettings.get_setting('dialogic/history/simple_history_save', simple_history_save)
 	full_event_history_enabled = ProjectSettings.get_setting('dialogic/history/full_history_enabled', full_event_history_enabled)
+	full_event_history_save = ProjectSettings.get_setting('dialogic/history/full_history_save', full_event_history_save)
 	visited_event_history_enabled = ProjectSettings.get_setting('dialogic/history/visited_event_history_enabled', visited_event_history_enabled)
 
 
@@ -97,6 +101,47 @@ func _on_save(info: Dictionary) -> void:
 func post_install() -> void:
 	save_visited_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', save_visited_history_on_autosave)
 	save_visited_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_visited_history_on_save)
+
+
+func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+	if clear_flag == DialogicGameHandler.ClearFlags.FULL_CLEAR:
+		if simple_history_save:
+			simple_history_content = []
+			dialogic.current_state_info.erase("history_simple")
+		if full_event_history_save:
+			full_event_history_content = []
+			dialogic.current_state_info.erase("history_full")
+
+
+func load_game_state(load_flag := LoadFlags.FULL_LOAD) -> void:
+	if load_flag == LoadFlags.FULL_LOAD:
+		if simple_history_save and dialogic.current_state_info.has("history_simple"):
+			simple_history_content.assign(dialogic.current_state_info["history_simple"])
+
+		if full_event_history_save and dialogic.current_state_info.has("history_full"):
+			full_event_history_content = []
+
+			for event_text in dialogic.current_state_info["history_full"]:
+				var event: DialogicEvent
+				for i in DialogicResourceUtil.get_event_cache():
+					if i.is_valid_event(event_text):
+						event = i.duplicate()
+						break
+				event.from_text(event_text)
+				full_event_history_content.append(event)
+
+
+func save_game_state() -> void:
+	if simple_history_save:
+		dialogic.current_state_info["history_simple"] = Array(simple_history_content)
+	else:
+		dialogic.current_state_info.erase("history_simple")
+	if full_event_history_save:
+		dialogic.current_state_info["history_full"] = []
+		for event in full_event_history_content:
+			dialogic.current_state_info["history_full"].append(event.to_text())
+	else:
+		dialogic.current_state_info.erase("history_full")
 
 
 func open_history() -> void:

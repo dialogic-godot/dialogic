@@ -60,12 +60,10 @@ func _ready() -> void:
 	%RightClickMenu.clear()
 	%RightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Remove From List", 1)
 	%RightClickMenu.add_separator()
-	%RightClickMenu.add_icon_item(
-		get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2
-	)
-	%RightClickMenu.add_icon_item(
-		get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3
-	)
+	%RightClickMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
+	%RightClickMenu.add_separator()
+	%RightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2)
+	%RightClickMenu.add_icon_item(get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3)
 
 
 ################################################################################
@@ -298,6 +296,12 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
 				)
 			)
+		4:  # COPY IDENTIFIER
+			DisplayServer.clipboard_set(
+                DialogicResourceUtil.get_unique_identifier(
+                    %ResourcesList.get_item_metadata(%RightClickMenu.get_meta("item_clicked"))
+                )
+            )
 
 
 func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:

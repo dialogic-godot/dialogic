@@ -8,15 +8,15 @@ extends DialogicEvent
 ### Settings
 
 ## The timeline to jump to, if null then it's the current one. This setting should be a dialogic timeline resource.
-var timeline : DialogicTimeline
+var timeline: DialogicTimeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
-var label_name : String = ""
+var label_name := ""
 
 
 ### Helpers
 
 ## Used to set the timeline resource from the unique name identifier and vice versa
-var timeline_identifier: String = "":
+var timeline_identifier := "":
 	get:
 		if timeline:
 			var identifier := DialogicResourceUtil.get_unique_identifier(timeline.resource_path)
@@ -75,7 +75,7 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var result := RegEx.create_from_string('jump (?<timeline>.*\\/)?(?<label>.*)?').search(string.strip_edges())
+	var result := RegEx.create_from_string(r"jump (?<timeline>.*\/)?(?<label>.*)?").search(string.strip_edges())
 	if result:
 		timeline_identifier = result.get_string('timeline').trim_suffix('/')
 		label_name = result.get_string('label')

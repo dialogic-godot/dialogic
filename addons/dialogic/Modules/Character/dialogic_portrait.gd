@@ -17,7 +17,7 @@ var portrait: String
 ## This is only relevant if the next portrait uses the same scene.
 ## This allows implementing transitions between portraits that use the same scene.
 func _should_do_portrait_update(_character: DialogicCharacter, _portrait: String) -> bool:
-	return true
+	return false
 
 
 ## If the custom portrait accepts a change, then accept it here

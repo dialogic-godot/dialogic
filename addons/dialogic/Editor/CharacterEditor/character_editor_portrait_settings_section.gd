@@ -12,10 +12,10 @@ signal changed
 signal update_preview
 
 ## Reference to the character editor, set when instantiated
-var character_editor:Control
+var character_editor: Control
 ## Reference to the selected portrait item.
 ##  `selected_item.get_metadata(0)` can access the portraits data
-var selected_item :TreeItem = null
+var selected_item: TreeItem = null
 
 ## If not empty a hint icon is added to the section title
 var hint_text := ""

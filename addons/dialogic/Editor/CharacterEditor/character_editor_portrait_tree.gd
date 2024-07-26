@@ -64,7 +64,7 @@ func create_necessary_group_items(path: String) -> TreeItem:
 		if current_group_nodes.has(item_path+"/"+i):
 			last_item = current_group_nodes[item_path+"/"+i]
 		else:
-			var new_item:TreeItem = add_portrait_group(i, last_item)
+			var new_item: TreeItem = add_portrait_group(i, last_item)
 			current_group_nodes[item_path+"/"+i] = new_item
 			last_item = new_item
 	return last_item
@@ -97,7 +97,7 @@ func _can_drop_data(position: Vector2, data: Variant) -> bool:
 func _drop_data(position: Vector2, item: Variant) -> void:
 	var to_item := get_item_at_position(position)
 	if to_item:
-		var test_item:= to_item
+		var test_item := to_item
 		while true:
 			if test_item == item:
 				return

@@ -21,6 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_7jt4d")
 box_panel = "res://addons/dialogic/Modules/DefaultLayoutParts/Layer_SpeakerPortraitTextbox/default_stylebox.tres"
 
@@ -33,6 +34,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="Anchor"]
 unique_name_in_owner = true
@@ -49,9 +51,11 @@ offset_right = 250.0
 offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="HBox" type="HBoxContainer" parent="Anchor/Panel"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 15
 
 [node name="PortraitPanel" type="Panel" parent="Anchor/Panel/HBox"]
@@ -60,6 +64,7 @@ clip_children = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dmg1w")
 
 [node name="PortraitBackgroundColor" type="ColorRect" parent="Anchor/Panel/HBox/PortraitPanel"]
@@ -74,6 +79,7 @@ offset_right = 7.0
 offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 0.231373)
 
 [node name="DialogicNode_PortraitContainer" type="Control" parent="Anchor/Panel/HBox/PortraitPanel/PortraitBackgroundColor"]
@@ -84,13 +90,16 @@ anchor_bottom = 1.0
 offset_top = 4.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_4jxq7")
 mode = 1
+container_ids = PackedStringArray("1")
 debug_character_portrait = "speaker"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Anchor/Panel/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="DialogicNode_NameLabel" type="Label" parent="Anchor/Panel/HBox/VBoxContainer"]
 unique_name_in_owner = true
@@ -99,7 +108,7 @@ theme_override_font_sizes/font_size = 8
 text = "Name"
 script = ExtResource("2_y0h34")
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Anchor/Panel/HBox/VBoxContainer"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Anchor/Panel/HBox/VBoxContainer" node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -108,6 +117,7 @@ bbcode_enabled = true
 text = "Some text"
 scroll_following = true
 script = ExtResource("3_11puy")
+textbox_root = NodePath("../../..")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="Anchor/Panel/HBox/VBoxContainer/DialogicNode_DialogText"]
 script = ExtResource("5_sr2qw")

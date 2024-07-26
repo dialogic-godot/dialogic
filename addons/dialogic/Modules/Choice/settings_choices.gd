@@ -7,8 +7,8 @@ func _refresh() -> void:
 	%FalseBehaviour.select(ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0))
 	%HotkeyType.select(ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0))
 
-	var reveal_delay :float = ProjectSettings.get_setting('dialogic/choices/reveal_delay', 0)
-	var reveal_by_input :bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
+	var reveal_delay: float = ProjectSettings.get_setting('dialogic/choices/reveal_delay', 0)
+	var reveal_by_input: bool = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', false)
 	if not reveal_by_input and reveal_delay == 0:
 		_on_appear_mode_item_selected(0)
 	if not reveal_by_input and reveal_delay != 0:

@@ -11,13 +11,13 @@ extends DialogicEvent
 ## This is the content of the text event.
 ## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
-var text: String = ""
+var text := ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
 ## The DialogicNode_NameLabel will show the characters display_name. If a typing sound is setup,
 ## it will play.
 var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
-var portrait: String = ""
+var portrait := ""
 
 ### Helpers
 
@@ -52,13 +52,13 @@ func _execute() -> void:
 	if (not character or character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
 		# if previous characters had a custom style change back to base style
 		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
-			dialogic.Styles.load_style(dialogic.current_state_info.get('base_style', 'Default'))
+			dialogic.Styles.change_style(dialogic.current_state_info.get('base_style', 'Default'))
 			await dialogic.get_tree().process_frame
 
 	var character_name_text := dialogic.Text.get_character_name_parsed(character)
 	if character:
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
-			dialogic.Styles.load_style(character.custom_info.style, null, false)
+			dialogic.Styles.change_style(character.custom_info.style, false)
 			await dialogic.get_tree().process_frame
 
 
@@ -95,19 +95,15 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', 0)
+	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
 
-	var reveal_next_segment := true
+	var reveal_next_segment: bool = dialogic.current_state_info['text_sub_idx'] == -1
 
-	if dialogic.current_state_info['text_sub_idx'] > 0:
-		reveal_next_segment = false
-
-	for section_idx in range(min(dialogic.current_state_info['text_sub_idx'], len(split_text)-1), len(split_text)):
+	for section_idx in range(min(max(0, dialogic.current_state_info['text_sub_idx']), len(split_text)-1), len(split_text)):
 		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
-			state = States.REVEALING
 
 			dialogic.current_state_info['text_sub_idx'] = section_idx
 
@@ -118,6 +114,8 @@ func _execute() -> void:
 			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
 
 			await dialogic.Text.update_textbox(final_text, false)
+
+			state = States.REVEALING
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
@@ -165,7 +163,7 @@ func _execute() -> void:
 
 
 func end_text_event() -> void:
-	dialogic.current_state_info['text_sub_idx'] = 0
+	dialogic.current_state_info['text_sub_idx'] = -1
 
 	_disconnect_signals()
 	finish()
@@ -370,58 +368,25 @@ func build_event_editor() -> void:
 			{'suggestions_func' : get_portrait_suggestions,
 			'placeholder' 		: "(Don't change)",
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg"),
-			'collapse_when_empty':true,},
-			'character != null and !has_no_portraits()')
+			'collapse_when_empty': true,},
+			'should_show_portrait_selector()')
 	add_body_edit('text', ValueType.MULTILINE_TEXT, {'autofocus':true})
 
+
+func should_show_portrait_selector() -> bool:
+	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+
+
 func do_any_characters_exist() -> bool:
-	return !DialogicResourceUtil.get_character_directory().is_empty()
-
-func has_no_portraits() -> bool:
-	return character and character.portraits.is_empty()
+	return not DialogicResourceUtil.get_character_directory().is_empty()
 
 
-func get_character_suggestions(_search_text:String) -> Dictionary:
-	var suggestions := {}
-
-	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-
-	# Get characters in the current timeline and place them at the top of suggestions.
-	var recent_characters := []
-	var timeline_node := editor_node.get_parent().find_parent("Timeline") as DialogicEditor
-	for event_node in timeline_node.find_child("Timeline").get_children():
-		if event_node == editor_node:
-			break
-		if event_node.resource is DialogicCharacterEvent or event_node.resource is DialogicTextEvent:
-			recent_characters.append(event_node.resource.character)
-
-	recent_characters.reverse()
-	for character in recent_characters:
-		if character and not character.get_character_name() in suggestions:
-			suggestions[character.get_character_name()] = {'value': character.get_character_name(), 'tooltip': character.resource_path, 'icon': icon.duplicate()}
-
-	var character_directory := DialogicResourceUtil.get_character_directory()
-	for resource in character_directory.keys():
-		if suggestions.has(resource):
-			continue
-		suggestions[resource] = {
-				'value' 	: resource,
-				'tooltip' 	: character_directory[resource],
-				'icon' 		: icon.duplicate()}
-	return suggestions
+func get_character_suggestions(search_text:String) -> Dictionary:
+	return DialogicUtil.get_character_suggestions(search_text, character, true, false, editor_node)
 
 
 func get_portrait_suggestions(search_text:String) -> Dictionary:
-	var suggestions := {}
-	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	if "{" in search_text:
-		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
-	if character != null:
-		for chr_portrait in character.portraits:
-			suggestions[chr_portrait] = {'value':chr_portrait, 'icon':icon}
-	return suggestions
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
 
 #endregion
 
@@ -515,7 +480,7 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', result.get_start('text'))
 
 		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
-			var color :Color = Highlighter.string_color
+			var color: Color = Highlighter.string_color
 			color = color.lerp(Highlighter.normal_color, 0.4)
 			dict[replace_mod_match.get_start()+result.get_start('text')] = {'color':Highlighter.string_color}
 			var offset := 1

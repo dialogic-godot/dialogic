@@ -8,15 +8,15 @@ extends DialogicEvent
 ### Settings
 
 ## The promt to be shown.
-var text: String = "Please enter some text:"
+var text := "Please enter some text:"
 ## The name/path of the variable to set.
-var variable: String = ""
+var variable := ""
 ## The placeholder text to show in the line edit.
-var placeholder: String = ""
+var placeholder := ""
 ## The value that should be in the line edit by default.
-var default: String = ""
+var default := ""
 ## If true, the player can continue if nothing is entered.
-var allow_empty : bool = false
+var allow_empty := false
 
 
 ################################################################################
@@ -92,7 +92,7 @@ func get_var_suggestions(filter:String="") -> Dictionary:
 		suggestions[filter] = {
 			'value'			: filter,
 			'editor_icon'	: ["GuiScrollArrowRight", "EditorIcons"]}
-	var vars :Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
+	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars, "", DialogicUtil.VarTypes.STRING):
 		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions

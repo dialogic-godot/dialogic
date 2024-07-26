@@ -88,10 +88,10 @@ func post_install() -> void:
 
 ## Applies modifiers, effects and coloring to the text
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if variables and dialogic.has_subsystem('VAR'):
-		text = dialogic.VAR.parse_variables(text)
 	if modifiers:
 		text = parse_text_modifiers(text, type)
+	if variables and dialogic.has_subsystem('VAR'):
+		text = dialogic.VAR.parse_variables(text)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
@@ -122,7 +122,6 @@ func update_textbox(text: String, instant := false) -> void:
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text: String, instant := false, additional := false) -> String:
 	update_text_speed()
-
 
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 
@@ -195,7 +194,7 @@ func show_textbox(instant:=false) -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if not text_node.enabled:
 			continue
-		if !text_node.textbox_root.visible and !emitted:
+		if not text_node.textbox_root.visible and not emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
 			if dialogic.Animations.is_animating():
@@ -397,7 +396,7 @@ func _ready() -> void:
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
 
 
 ## Parses the character's display_name and returns the text that
@@ -556,13 +555,13 @@ func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+var modifier_words_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\[\>]+(\/[^\>]*)\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string: String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
+		var string: String = replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
 		string = string.replace('//', '<slash>')
-		var list: PackedStringArray= string.split('/')
-		var item: String= list[randi()%len(list)]
+		var list: PackedStringArray = string.split('/')
+		var item: String = list[randi()%len(list)]
 		item = item.replace('<slash>', '/')
 		text = text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return text

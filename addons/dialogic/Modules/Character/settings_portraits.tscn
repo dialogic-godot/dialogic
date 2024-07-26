@@ -11,30 +11,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("2")
 
-[node name="Animations3" type="HBoxContainer" parent="."]
+[node name="PositionsTitle" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Title2" type="Label" parent="Animations3"]
+[node name="Title2" type="Label" parent="PositionsTitle"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Position Suggestions
+"
+
+[node name="HintTooltip" parent="PositionsTitle" instance=ExtResource("2_dce78")]
+layout_mode = 2
+tooltip_text = "You can change the position names that will be suggested in the timeline editor here."
+texture = null
+hint_text = "You can change the position names that will be suggested in the timeline editor here."
+
+[node name="PositionSuggestions" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DefaultSceneTitle" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Title2" type="Label" parent="DefaultSceneTitle"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Default Portrait Scene
 "
 
-[node name="HintTooltip" parent="Animations3" instance=ExtResource("2_dce78")]
+[node name="HintTooltip" parent="DefaultSceneTitle" instance=ExtResource("2_dce78")]
 layout_mode = 2
 tooltip_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
+texture = null
 hint_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="DefaultScene" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="DefaultScene"]
 layout_mode = 2
 text = "Scene"
 
-[node name="CustomPortraitScene" parent="HBoxContainer" instance=ExtResource("3_m06d8")]
+[node name="CustomPortraitScene" parent="DefaultScene" instance=ExtResource("3_m06d8")]
 unique_name_in_owner = true
 layout_mode = 2
 file_filter = "*.tscn, *.scn; PortraitScene"
@@ -57,6 +79,7 @@ tooltip_text = "These settings are used for Leave and Join events if no animatio
 
 The Cross-Fade will play if the portrait of a character changes and 
 no animation is set."
+texture = null
 hint_text = "These settings are used for Leave and Join events if no animation is selected.
 
 The Cross-Fade will play if the portrait of a character changes and 
@@ -127,12 +150,6 @@ unique_name_in_owner = true
 layout_mode = 2
 step = 0.1
 
-[node name="CrossFadeDefaultWait" type="CheckButton" parent="GridContainer/DefaultCrossFade"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Wait:"
-
-[connection signal="value_changed" from="HBoxContainer/CustomPortraitScene" to="." method="_on_custom_portrait_scene_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefault" to="." method="_on_JoinDefault_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultIn/JoinDefaultLength" to="." method="_on_JoinDefaultLength_value_changed"]
 [connection signal="toggled" from="GridContainer/DefaultIn/JoinDefaultWait" to="." method="_on_JoinDefaultWait_toggled"]
@@ -141,4 +158,3 @@ text = "Wait:"
 [connection signal="toggled" from="GridContainer/DefaultOut/LeaveDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]
 [connection signal="value_changed" from="GridContainer/DefaultCrossFade/CrossFadeDefault" to="." method="_on_LeaveDefault_value_changed"]
 [connection signal="value_changed" from="GridContainer/DefaultCrossFade/CrossFadeDefaultLength" to="." method="_on_LeaveDefaultLength_value_changed"]
-[connection signal="toggled" from="GridContainer/DefaultCrossFade/CrossFadeDefaultWait" to="." method="_on_LeaveDefaultWait_toggled"]

@@ -17,28 +17,28 @@ func _load_portrait_data(data:Dictionary) -> void:
 
 
 func _on_portrait_scale_value_changed(value:float) -> void:
-	var data:Dictionary = selected_item.get_metadata(0)
+	var data: Dictionary = selected_item.get_metadata(0)
 	data['scale'] = value/100.0
 	update_preview.emit()
 	changed.emit()
 
 
 func _on_portrait_mirror_toggled(button_pressed:bool)-> void:
-	var data:Dictionary = selected_item.get_metadata(0)
+	var data: Dictionary = selected_item.get_metadata(0)
 	data['mirror'] = button_pressed
 	update_preview.emit()
 	changed.emit()
 
 
 func _on_ignore_scale_toggled(button_pressed:bool) -> void:
-	var data:Dictionary = selected_item.get_metadata(0)
+	var data: Dictionary = selected_item.get_metadata(0)
 	data['ignore_char_scale'] = button_pressed
 	update_preview.emit()
 	changed.emit()
 
 
 func _on_portrait_offset_value_changed(property:String, value:Vector2) -> void:
-	var data:Dictionary = selected_item.get_metadata(0)
+	var data: Dictionary = selected_item.get_metadata(0)
 	data['offset'] = value
 	update_preview.emit()
 	changed.emit()

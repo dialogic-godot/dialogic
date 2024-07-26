@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="4_1t6bf"]
 
-[sub_resource type="Image" id="Image_3cd31"]
+[sub_resource type="Image" id="Image_43fqw"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,13 +15,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_wvrw5"]
-image = SubResource("Image_3cd31")
+[sub_resource type="ImageTexture" id="ImageTexture_lvr8x"]
+image = SubResource("Image_43fqw")
 
 [sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_7lpql"]
 script = ExtResource("4_1t6bf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3migc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpeon"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -62,11 +62,11 @@ text = "Cool Name"
 
 [node name="NameTooltip" parent="VBox/HBox" instance=ExtResource("2_yqd26")]
 layout_mode = 2
-tooltip_text = "The name of the timeline is determined from the file name. 
+tooltip_text = "This unique identifier is based on the file name. You can change it in the Reference Manager.
 This is what you should use in a jump event to reference this timeline.
 
-Besides the file path, you can also use this name in Dialogic.start()"
-texture = SubResource("ImageTexture_wvrw5")
+You can also use this name in Dialogic.start()."
+texture = SubResource("ImageTexture_lvr8x")
 hint_text = "This unique identifier is based on the file name. You can change it in the Reference Manager.
 This is what you should use in a jump event to reference this timeline.
 
@@ -80,7 +80,7 @@ size_flags_horizontal = 10
 size_flags_vertical = 4
 tooltip_text = "Switch between Text Editor and Visual Editor"
 text = "Text editor"
-icon = SubResource("ImageTexture_wvrw5")
+icon = SubResource("ImageTexture_lvr8x")
 
 [node name="VisualEditor" parent="VBox" instance=ExtResource("2_qs7vc")]
 unique_name_in_owner = true
@@ -100,6 +100,34 @@ symbol_lookup_on_click = true
 line_folding = false
 gutters_draw_fold_gutter = false
 
+[node name="SearchSection" type="HBoxContainer" parent="VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="VBox/SearchSection"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search"
+
+[node name="SearchLabel" type="Label" parent="VBox/SearchSection"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SearchUp" type="Button" parent="VBox/SearchSection"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SearchDown" type="Button" parent="VBox/SearchSection"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SearchClose" type="Button" parent="VBox/SearchSection"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="NoTimelineScreen" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
@@ -108,7 +136,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3migc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lpeon")
 
 [node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen"]
 layout_mode = 2
@@ -128,4 +156,8 @@ autowrap_mode = 3
 layout_mode = 2
 text = "Create New Timeline"
 
+[connection signal="text_changed" from="VBox/SearchSection/Search" to="." method="_on_search_text_changed"]
+[connection signal="pressed" from="VBox/SearchSection/SearchUp" to="." method="_on_search_up_pressed"]
+[connection signal="pressed" from="VBox/SearchSection/SearchDown" to="." method="_on_search_down_pressed"]
+[connection signal="pressed" from="VBox/SearchSection/SearchClose" to="." method="_on_close_search_pressed"]
 [connection signal="pressed" from="NoTimelineScreen/CenterContainer/VBoxContainer/CreateTimelineButton" to="." method="_on_create_timeline_button_pressed"]

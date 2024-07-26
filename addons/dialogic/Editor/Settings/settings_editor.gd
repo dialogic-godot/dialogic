@@ -4,7 +4,7 @@ extends DialogicEditor
 ## Editor that contains all settings
 
 var button_group := ButtonGroup.new()
-var registered_sections :Array[DialogicSettingsPage] = []
+var registered_sections: Array[DialogicSettingsPage] = []
 
 
 func _get_title() -> String:
@@ -38,7 +38,7 @@ func _ready() -> void:
 
 
 func register_settings_section(path:String) -> void:
-	var section :Control = load(path).instantiate()
+	var section: Control = load(path).instantiate()
 	registered_sections.append(section)
 
 
@@ -71,7 +71,7 @@ func add_registered_sections() -> void:
 
 
 		if !section.short_info.is_empty():
-			var tooltip_hint :Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+			var tooltip_hint: Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 			tooltip_hint.hint_text = section.short_info
 			hbox.add_child(tooltip_hint)
 
@@ -91,7 +91,7 @@ func add_registered_sections() -> void:
 		inner_vbox.add_child(panel)
 
 
-		var info_section :Control = section._get_info_section()
+		var info_section: Control = section._get_info_section()
 		if info_section != null:
 			inner_vbox.add_child(Control.new())
 			inner_vbox.get_child(-1).custom_minimum_size.y = 50

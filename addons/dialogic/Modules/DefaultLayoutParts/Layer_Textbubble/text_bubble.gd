@@ -32,7 +32,7 @@ var bg_padding := 30
 
 func _ready() -> void:
 	reset()
-	DialogicUtil.autoload().Choices.choices_shown.connect(_on_choices_shown)
+	DialogicUtil.autoload().Choices.question_shown.connect(_on_question_shown)
 
 
 func reset() -> void:
@@ -133,7 +133,7 @@ func _resize_bubble(content_size:Vector2, popup:=false) -> void:
 	name_label_holder.size.x = text.size.x
 
 
-func _on_choices_shown(info:Dictionary) -> void:
+func _on_question_shown(info:Dictionary) -> void:
 	if !is_visible_in_tree():
 		return
 
@@ -193,7 +193,7 @@ func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEG
 
 
 func get_speaker_canvas_position() -> Vector2:
-	if node_to_point_at:
+	if is_instance_valid(node_to_point_at):
 		if node_to_point_at is Node3D:
 			base_position = get_viewport().get_camera_3d().unproject_position(
 				(node_to_point_at as Node3D).global_position)

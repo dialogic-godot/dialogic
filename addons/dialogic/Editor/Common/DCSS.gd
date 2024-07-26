@@ -15,7 +15,10 @@ static func inline(style: Dictionary) -> StyleBoxFlat:
 				s.set('corner_radius_bottom_left', radius)
 				s.set('corner_radius_bottom_right', radius)
 			'background':
-				s.set('bg_color', style[property])
+				if typeof(style[property]) == TYPE_STRING and style[property] == "none":
+					s.set('draw_center', false)
+				else:
+					s.set('bg_color', style[property])
 			'border':
 				var width: float = style[property] * scale
 				s.set('border_width_left', width)

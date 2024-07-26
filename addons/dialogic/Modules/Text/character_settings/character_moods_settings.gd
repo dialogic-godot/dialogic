@@ -68,7 +68,7 @@ func update_mood_list(selected_name := "") -> void:
 	%MoodList.clear()
 
 	for mood in current_moods_info:
-		var idx :int = %MoodList.add_item(mood, get_theme_icon("AudioStreamPlayer", "EditorIcons"))
+		var idx: int = %MoodList.add_item(mood, get_theme_icon("AudioStreamPlayer", "EditorIcons"))
 		if mood == selected_name:
 			%MoodList.select(idx)
 			_on_mood_list_item_selected(idx)

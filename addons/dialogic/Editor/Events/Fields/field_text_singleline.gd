@@ -4,7 +4,7 @@ extends DialogicVisualEditorField
 ## Event block field for a single line of text.
 
 
-var placeholder :String= "":
+var placeholder := "":
 	set(value):
 		placeholder = value
 		self.placeholder_text = placeholder

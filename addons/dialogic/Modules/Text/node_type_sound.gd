@@ -21,11 +21,11 @@ enum Modes {INTERRUPT, OVERLAP, AWAIT}
 ## Allows changing the volume by a random value from (volume - volume_variance) to (volume + volume_variance)
 @export_range(0, 10, 0.01) var volume_variance := 0.0
 ## Characters that don't increase the 'characters_since_last_sound' variable, useful for the space or fullstop
-@export var ignore_characters:String = ' .,'
+@export var ignore_characters: String = ' .,'
 
 var characters_since_last_sound: int = 0
-var base_pitch :float = pitch_scale
-var base_volume :float = volume_db
+var base_pitch: float = pitch_scale
+var base_volume: float = volume_db
 var RNG := RandomNumberGenerator.new()
 
 var current_overwrite_data := {}
@@ -77,7 +77,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 
 	characters_since_last_sound = 0
 
-	var audio_player : AudioStreamPlayer = self
+	var audio_player: AudioStreamPlayer = self
 	if current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
 		audio_player = AudioStreamPlayer.new()
 		audio_player.bus = bus
@@ -118,7 +118,7 @@ func load_overwrite(dictionary:Dictionary) -> void:
 static func load_sounds_from_path(path:String) -> Array[AudioStream]:
 	if path.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(path) is AudioStream:
 		return [load(path)]
-	var _sounds :Array[AudioStream]= []
+	var _sounds: Array[AudioStream] = []
 	for file in DialogicUtil.listdir(path, true, false, true, true):
 		if !file.ends_with('.import'):
 			continue

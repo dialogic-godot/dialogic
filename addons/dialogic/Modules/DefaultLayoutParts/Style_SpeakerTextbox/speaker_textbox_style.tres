@@ -15,14 +15,14 @@ script = ExtResource("2_i34tx")
 scene = ExtResource("1_sde84")
 overrides = {}
 
-[sub_resource type="Resource" id="Resource_gc1b5"]
-script = ExtResource("2_i34tx")
-scene = ExtResource("3_epko4")
-overrides = {}
-
 [sub_resource type="Resource" id="Resource_x576n"]
 script = ExtResource("2_i34tx")
 scene = ExtResource("4_8y2vo")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_gc1b5"]
+script = ExtResource("2_i34tx")
+scene = ExtResource("3_epko4")
 overrides = {}
 
 [sub_resource type="Resource" id="Resource_otikm"]
@@ -51,4 +51,4 @@ name = "Speaker Textbox Style"
 base_overrides = {
 "global_bg_color": "Color(0.298039, 0.2, 0.113725, 0.901961)"
 }
-layers = Array[ExtResource("2_i34tx")]([SubResource("Resource_35sbo"), SubResource("Resource_gc1b5"), SubResource("Resource_x576n"), SubResource("Resource_otikm"), SubResource("Resource_w8ec6"), SubResource("Resource_qmo1y"), SubResource("Resource_legp8")])
+layers = Array[ExtResource("2_i34tx")]([SubResource("Resource_35sbo"), SubResource("Resource_x576n"), SubResource("Resource_gc1b5"), SubResource("Resource_otikm"), SubResource("Resource_w8ec6"), SubResource("Resource_qmo1y"), SubResource("Resource_legp8")])

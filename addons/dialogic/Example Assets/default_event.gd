@@ -2,7 +2,7 @@
 extends DialogicEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-# var MySetting :String = ""
+# var MySetting: String = ""
 
 func _execute() -> void:
 	# I have no idea how this event works ;)

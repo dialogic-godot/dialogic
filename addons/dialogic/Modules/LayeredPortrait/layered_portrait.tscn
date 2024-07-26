@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://jac4eurttev1"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/LayeredPortrait/custom_layered_portrait.gd" id="1_uubi5"]
+
+[node name="LayeredPortrait" type="CanvasGroup"]
+script = ExtResource("1_uubi5")
+
+[node name="Layer1" type="Sprite2D" parent="."]
+
+[node name="Group1" type="Node2D" parent="."]
+
+[node name="Layer1" type="Sprite2D" parent="Group1"]
+
+[node name="Layer2" type="Sprite2D" parent="Group1"]

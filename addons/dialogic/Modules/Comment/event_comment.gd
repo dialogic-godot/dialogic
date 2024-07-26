@@ -8,7 +8,7 @@ extends DialogicEvent
 ### Settings
 
 ## Content of the comment.
-var text :String = ""
+var text := ""
 
 
 ################################################################################
@@ -36,8 +36,7 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
-	var result_string = "# "+text
-	return result_string
+	return "# "+text
 
 
 func from_text(string:String) -> void:

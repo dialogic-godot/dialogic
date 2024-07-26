@@ -7,16 +7,16 @@ extends DialogicEvent
 ### Settings
 
 ## The name of the autoload to call the method on.
-var autoload_name: String = ""
+var autoload_name := ""
 ## The name of the method to call on the given autoload.
-var method: String = "":
+var method := "":
 	set(value):
 		method = value
 		if Engine.is_editor_hint():
 			update_argument_info()
 			check_arguments_and_update_warning()
 ## A list of arguments to give to the call.
-var arguments: Array = []:
+var arguments := []:
 	set(value):
 		arguments = value
 		if Engine.is_editor_hint():
@@ -193,7 +193,7 @@ func update_argument_info() -> void:
 		if !ResourceLoader.exists(ProjectSettings.get_setting('autoload/'+autoload_name, '').trim_prefix('*')):
 			_current_method_arg_hints = {}
 			return
-		var script :Script = load(ProjectSettings.get_setting('autoload/'+autoload_name, '').trim_prefix('*'))
+		var script: Script = load(ProjectSettings.get_setting('autoload/'+autoload_name, '').trim_prefix('*'))
 		for m in script.get_script_method_list():
 			if m.name == method:
 				_current_method_arg_hints = {'a':autoload_name, 'm':method, 'info':m}
@@ -214,7 +214,7 @@ func check_arguments_and_update_warning() -> void:
 			if _current_method_arg_hints.info.args[idx].type != typeof(arg):
 				if arg is String and arg.begins_with('@'):
 					continue
-				var expected_type :String = ""
+				var expected_type: String = ""
 				match _current_method_arg_hints.info.args[idx].type:
 					TYPE_BOOL: 		expected_type = "bool"
 					TYPE_STRING: 	expected_type = "string"

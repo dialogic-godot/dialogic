@@ -34,7 +34,7 @@ func _execute() -> void:
 
 	if clear_portraits and dialogic.has_subsystem('Portraits') and len(dialogic.Portraits.get_joined_characters()) != 0:
 		if final_time == 0:
-			dialogic.Portraits.leave_all_characters(DialogicResourceUtil.guess_special_resource("PortraitAnimation", 'Instant In Or Out'), final_time, step_by_step)
+			dialogic.Portraits.leave_all_characters(DialogicResourceUtil.guess_special_resource("PortraitAnimation", 'Instant In Or Out').path, final_time, step_by_step)
 		else:
 			dialogic.Portraits.leave_all_characters("", final_time, step_by_step)
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
@@ -48,10 +48,10 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
-		dialogic.Styles.load_style()
+		dialogic.Styles.change_style()
 
 	if clear_portrait_positions and dialogic.has_subsystem('Portraits'):
-		dialogic.Portraits.reset_all_portrait_positions()
+		dialogic.PortraitContainers.reset_all_containers()
 
 	finish()
 

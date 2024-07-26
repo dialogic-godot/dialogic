@@ -23,7 +23,7 @@ func _recognize(resource: Resource) -> bool:
 func _save(resource: Resource, path: String = '', _flags: int = 0) -> Error:
 	if resource.get_meta("timeline_not_saved", false):
 
-		var timeline_as_text: String = ""
+		var timeline_as_text := ""
 		# if events are resources, create text
 		if resource.events_processed:
 

@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func tab_changed(enabled:bool, index:int) -> void:
 	for child in $Tabs.get_children():
-		if child.get_index() == 0 or child.get_index() == index:
+		if child.get_index() == 0 or child.get_index() == index or child is Button:
 			child.show()
 			if child.get_index() == index:
 				child.open()

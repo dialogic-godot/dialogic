@@ -16,7 +16,7 @@ enum SettingValueType {
 }
 
 ## The name of the setting to save to.
-var name: String = ""
+var name := ""
 var _value_type := 0 :
 	get:
 		return _value_type
