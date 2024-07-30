@@ -1,5 +1,5 @@
 @tool
-extends Control
+class_name DialogicEditorSidebar extends Control
 
 ## Script that handles the editor sidebar.
 
@@ -62,8 +62,12 @@ func _ready() -> void:
 	%RightClickMenu.add_separator()
 	%RightClickMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
 	%RightClickMenu.add_separator()
-	%RightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2)
-	%RightClickMenu.add_icon_item(get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3)
+	%RightClickMenu.add_icon_item(
+		get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2
+	)
+	%RightClickMenu.add_icon_item(
+		get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3
+	)
 
 	await get_tree().process_frame
 	if DialogicUtil.get_editor_setting("sidebar_collapsed", false):
@@ -161,6 +165,8 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 
 	if character_items.size() > 0:
 		var character_tree = resource_tree.create_item(root)
+		if character_tree == null:
+			return
 		character_tree.set_text(0, "Characters")
 		character_tree.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 		character_tree.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
@@ -201,17 +207,27 @@ func _on_resources_tree_item_activated() -> void:
 	var item := resource_tree.get_selected()
 	if item.get_metadata(0) == null:
 		return
-	editors_manager.edit_resource(load(item.get_metadata(0)))
+	# editors_manager.edit_resource(load(item.get_metadata(0)))
+	edit_resource(item.get_metadata(0))
 
 
 func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_LEFT:
+		var selected_item := resource_tree.get_selected()
+		if selected_item == null:
+			return
+		if selected_item.get_metadata(0) == null:
+			return
+		var resource_item := load(selected_item.get_metadata(0))
+		call_deferred("edit_resource", resource_item)
 		return
 	if mouse_button_index == MOUSE_BUTTON_MIDDLE:
 		remove_item_from_list(resource_tree.get_selected())
+		return
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
 		(%RightClickMenu as PopupMenu).set_meta("item_clicked", resource_tree.get_selected())
+		return
 
 
 func _on_search_text_changed(new_text: String) -> void:
@@ -232,7 +248,7 @@ func _on_search_text_submitted(new_text: String) -> void:
 	var item := resource_tree.get_selected()
 	if item.get_metadata(0) == null:
 		return
-	editors_manager.edit_resource(load(item.get_metadata(0)))
+	edit_resource(item.get_metadata(0))
 	%Search.clear()
 
 
@@ -278,7 +294,7 @@ func update_content_list(list: PackedStringArray) -> void:
 	DialogicResourceUtil.set_label_cache(label_directory)
 
 
-func remove_item_from_list(item:TreeItem) -> void:
+func remove_item_from_list(item: TreeItem) -> void:
 	var new_list := []
 	for entry in DialogicUtil.get_editor_setting("last_resources", []):
 		if entry != item.get_metadata(0):
@@ -313,6 +329,13 @@ func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:
 	return a.text < b.text
 
 
+func edit_resource(resource_item: Variant) -> void:
+	if resource_item is Resource:
+		editors_manager.edit_resource(resource_item)
+	else:
+		editors_manager.edit_resource(load(resource_item))
+
+
 class ResourceListItem:
 	extends Object
 	var text: String
@@ -321,12 +344,10 @@ class ResourceListItem:
 	var metadata: String
 	var tooltip: String
 
-
 	func add_to_item_list(item_list: ItemList, current_file: String) -> void:
 		item_list.add_item(text, icon)
 		item_list.set_item_metadata(item_list.item_count - 1, metadata)
 		item_list.set_item_tooltip(item_list.item_count - 1, tooltip)
-
 
 	func current_file(sidebar: Control, resource_list: ItemList, current_file: String) -> void:
 		if metadata == current_file:
