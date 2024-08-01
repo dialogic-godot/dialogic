@@ -1,5 +1,5 @@
 @tool
-class_name DialogicEditorSidebar extends Control
+class_name DialogicSidebar extends Control
 
 ## Script that handles the editor sidebar.
 
@@ -11,13 +11,16 @@ signal show_sidebar(show: bool)
 
 @onready var editors_manager = get_parent().get_parent()
 @onready var resource_tree: Tree = %ResourceTree
+@onready var sort_option: OptionButton = %SortOption
 var current_resource_list: Array = []
+var sort_mode: SortMode = SortMode.Default
 
 
 func _ready() -> void:
-	if owner.get_parent() is SubViewport:
+	if owner != null and owner.get_parent() is SubViewport:
 		return
-
+	if editors_manager is SubViewportContainer:
+		return
 	## CONNECTIONS
 
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
@@ -25,6 +28,8 @@ func _ready() -> void:
 
 	resource_tree.item_activated.connect(_on_resources_tree_item_activated)
 	resource_tree.item_mouse_selected.connect(_on_resources_tree_item_clicked)
+
+	sort_option.item_selected.connect(_on_sort_changed)
 
 	%ContentList.item_selected.connect(
 		func(idx: int): content_item_activated.emit(%ContentList.get_item_text(idx))
@@ -72,6 +77,10 @@ func _ready() -> void:
 	await get_tree().process_frame
 	if DialogicUtil.get_editor_setting("sidebar_collapsed", false):
 		_hide_sidebar()
+	if DialogicUtil.get_editor_setting("sidebar_sort_mode", 0) != 0:
+		sort_option.select(DialogicUtil.get_editor_setting("sidebar_sort_mode", 0))
+		sort_mode = DialogicUtil.get_editor_setting("sidebar_sort_mode", 0)
+		update_resource_list()
 
 
 ################################################################################
@@ -113,6 +122,13 @@ func clean_resource_list(resources_list: Array = []) -> PackedStringArray:
 
 
 func update_resource_list(resources_list: PackedStringArray = []) -> void:
+	print_rich(
+		(
+			"[b]Updating resource list[/b]:\n\t [i]Resource List: [/i]%s\n\t[i]Resource List D: [/i]%s"
+			% [resources_list, DialogicUtil.get_editor_setting("last_resources", [])]
+		)
+	)
+
 	var filter: String = %Search.text
 	var current_file := ""
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
@@ -153,47 +169,81 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 				var item := ResourceListItem.new()
 				item.text = timeline_name
 				item.icon = get_theme_icon("TripleBar", "EditorIcons")
+				# item.icon = load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")
 				item.metadata = timeline_directory[timeline_name]
 				item.tooltip = timeline_directory[timeline_name]
 				timeline_items.append(item)
 
-	character_items.sort_custom(_sort_by_item_text)
-	timeline_items.sort_custom(_sort_by_item_text)
-
 	# TREE
 	var root: TreeItem = resource_tree.create_item()
+	if sort_mode == SortMode.Default:
+		character_items.sort_custom(_sort_by_item_text)
+		timeline_items.sort_custom(_sort_by_item_text)
+		if character_items.size() > 0:
+			var character_tree = resource_tree.create_item(root)
+			if character_tree == null:
+				return
+			character_tree.set_text(0, "Characters")
+			character_tree.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
+			character_tree.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+			for item in character_items:
+				var character_item = resource_tree.create_item(character_tree)
+				character_item.set_text(0, item.text)
+				character_item.set_icon(0, item.icon)
+				character_item.set_metadata(0, item.metadata)
+				character_item.set_tooltip_text(0, item.tooltip)
+				if item.metadata == current_file:
+					%CurrentResource.text = item.metadata.get_file()
+					resource_tree.set_selected(character_item, 0)
+		if timeline_items.size() > 0:
+			var timeline_tree = resource_tree.create_item(root) as TreeItem
+			timeline_tree.set_text(0, "Timelines")
+			timeline_tree.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
+			timeline_tree.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+			for item in timeline_items:
+				var timeline_item = resource_tree.create_item(timeline_tree) as TreeItem
+				timeline_item.set_text(0, item.text)
+				timeline_item.set_icon(0, item.icon)
+				timeline_item.set_metadata(0, item.metadata)
+				timeline_item.set_tooltip_text(0, item.tooltip)
+				if item.metadata == current_file:
+					%CurrentResource.text = item.metadata.get_file()
+					resource_tree.set_selected(timeline_item, 0)
 
-	if character_items.size() > 0:
-		var character_tree = resource_tree.create_item(root)
-		if character_tree == null:
-			return
-		character_tree.set_text(0, "Characters")
-		character_tree.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-		character_tree.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
-		for item in character_items:
-			var character_item = resource_tree.create_item(character_tree)
-			character_item.set_text(0, item.text)
-			character_item.set_icon(0, item.icon)
-			character_item.set_metadata(0, item.metadata)
-			character_item.set_tooltip_text(0, item.tooltip)
+	if sort_mode == SortMode.None:
+		var all_items := character_items + timeline_items
+		all_items.sort_custom(_sort_by_item_text)
+		for item in all_items:
+			var tree_item = resource_tree.create_item(root)
+			tree_item.set_text(0, item.text)
+			tree_item.set_icon(0, item.icon)
+			tree_item.set_metadata(0, item.metadata)
+			tree_item.set_tooltip_text(0, item.tooltip)
 			if item.metadata == current_file:
 				%CurrentResource.text = item.metadata.get_file()
-				resource_tree.set_selected(character_item, 0)
-	if timeline_items.size() > 0:
-		var timeline_tree = resource_tree.create_item(root) as TreeItem
-		timeline_tree.set_text(0, "Timelines")
-		timeline_tree.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-		timeline_tree.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
-		for item in timeline_items:
-			var timeline_item = resource_tree.create_item(timeline_tree) as TreeItem
-			timeline_item.set_text(0, item.text)
-			timeline_item.set_icon(0, item.icon)
-			timeline_item.set_metadata(0, item.metadata)
-			timeline_item.set_tooltip_text(0, item.tooltip)
-			if item.metadata == current_file:
-				%CurrentResource.text = item.metadata.get_file()
-				resource_tree.set_selected(timeline_item, 0)
-
+				resource_tree.set_selected(tree_item, 0)
+	if sort_mode == SortMode.Folder:
+		var all_items := character_items + timeline_items
+		var dirs := {}
+		for item in all_items:
+			var dir := item.get_parent_directory() as String
+			if !dirs.has(dir):
+				dirs[dir] = []
+			dirs[dir].append(item)
+		for dir in dirs:
+			var dir_item = resource_tree.create_item(root)
+			dir_item.set_text(0, dir)
+			dir_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
+			dir_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+			for item in dirs[dir]:
+				var tree_item = resource_tree.create_item(dir_item)
+				tree_item.set_text(0, item.text)
+				tree_item.set_icon(0, item.icon)
+				tree_item.set_metadata(0, item.metadata)
+				tree_item.set_tooltip_text(0, item.tooltip)
+				if item.metadata == current_file:
+					%CurrentResource.text = item.metadata.get_file()
+					resource_tree.set_selected(tree_item, 0)
 	if %CurrentResource.text != "No Resource":
 		%CurrentResource.add_theme_color_override(
 			"font_uneditable_color", get_theme_color("font_color", "Editor")
@@ -207,7 +257,6 @@ func _on_resources_tree_item_activated() -> void:
 	var item := resource_tree.get_selected()
 	if item.get_metadata(0) == null:
 		return
-	# editors_manager.edit_resource(load(item.get_metadata(0)))
 	edit_resource(item.get_metadata(0))
 
 
@@ -227,6 +276,7 @@ func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> 
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
 		(%RightClickMenu as PopupMenu).set_meta("item_clicked", resource_tree.get_selected())
+
 		return
 
 
@@ -325,6 +375,16 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 			)
 
 
+func _on_sort_changed(idx: int) -> void:
+	if (SortMode as Dictionary).values().has(idx):
+		sort_mode = idx
+		DialogicUtil.set_editor_setting("sidebar_sort_mode", idx)
+		update_resource_list()
+	else:
+		sort_mode = SortMode.Default
+		print("Invalid sort mode: ", idx)
+
+
 func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:
 	return a.text < b.text
 
@@ -336,18 +396,43 @@ func edit_resource(resource_item: Variant) -> void:
 		editors_manager.edit_resource(load(resource_item))
 
 
+enum SortMode {
+	Default,
+	Folder,
+	None,
+}
+
+
 class ResourceListItem:
 	extends Object
+
 	var text: String
 	var index: int = -1
 	var icon: Texture
 	var metadata: String
 	var tooltip: String
 
+	func _to_string() -> String:
+		return JSON.stringify(
+			{
+				"text": text,
+				"index": index,
+				"icon": icon.resource_path,
+				"metadata": metadata,
+				"tooltip": tooltip,
+				"parent_dir": get_parent_directory()
+			},
+			"\t",
+			false
+		)
+
 	func add_to_item_list(item_list: ItemList, current_file: String) -> void:
 		item_list.add_item(text, icon)
 		item_list.set_item_metadata(item_list.item_count - 1, metadata)
 		item_list.set_item_tooltip(item_list.item_count - 1, tooltip)
+
+	func get_parent_directory() -> String:
+		return (metadata.get_base_dir() as String).split("/")[-1]
 
 	func current_file(sidebar: Control, resource_list: ItemList, current_file: String) -> void:
 		if metadata == current_file:

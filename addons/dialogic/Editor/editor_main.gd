@@ -8,13 +8,14 @@ var editors_manager: Control = null
 
 var editor_file_dialog: EditorFileDialog
 
+@onready var sidebar := %Sidebar as DialogicSidebar
 
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 
 	## CONNECTIONS
-	%Sidebar.show_sidebar.connect(_on_sidebar_toggled)
+	sidebar.show_sidebar.connect(_on_sidebar_toggled)
 
 	## REFERENCES
 	editors_manager = $EditorsManager
