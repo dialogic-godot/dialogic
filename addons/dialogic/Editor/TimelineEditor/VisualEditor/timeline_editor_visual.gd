@@ -920,7 +920,6 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 			offset_blocks_by_index(selected_items, -1)
 		else:
 			offset_blocks_by_index(selected_items, +1)
-
 	elif index == 8:
 		var events_indexed : Dictionary
 		if item in selected_items:
@@ -932,6 +931,13 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 		TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 		TimelineUndoRedo.commit_action()
 		indent_events()
+	elif index == 10: # Play from here
+		timeline_editor._save()
+		DialogicUtil.set_editor_setting('current_timeline_path', timeline_editor.current_resource.resource_path)
+		DialogicUtil.set_editor_setting('current_timeline_index', item.get_index())
+		print("current_timeline_path: ", DialogicUtil.get_editor_setting('current_timeline_path'))
+		print("current_timeline_index: ", DialogicUtil.get_editor_setting('current_timeline_index'))
+		DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
 
 func _on_right_sidebar_resized() -> void:
