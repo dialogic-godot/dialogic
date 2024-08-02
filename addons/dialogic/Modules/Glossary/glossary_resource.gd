@@ -15,10 +15,10 @@ extends Resource
 ## If false, no entries from this glossary will be shown
 @export var enabled: bool = true
 
-## Refers to the translation type of this resource used for CSV translation files.
+## Refers to the translation type of this resource used for translation files.
 const RESOURCE_NAME := "Glossary"
 ## The name of glossary entries, the value is the key in [member entries].
-## This constant is used for CSV translation files.
+## This constant is used for translation files.
 const NAME_PROPERTY := "name"
 ## Property in a glossary entry. Alternative words for the entry name.
 const ALTERNATIVE_PROPERTY := "alternatives"
@@ -40,13 +40,6 @@ const PRIVATE_PROPERTY_PREFIX := "_"
 
 ## Private ID assigned when this glossary is translated.
 @export var _translation_id := ""
-
-## Private lookup table used to find the translation ID of a glossary entry.
-## The keys (String) are all translated words that may trigger a glossary entry to
-## be shown.
-## The values (String) are the translation ID.
-@export var _translation_keys := {}
-
 
 
 ## Removes an entry and all its aliases (alternative property) from
@@ -256,14 +249,12 @@ func clear_translation_keys() -> void:
 		if translation_key.begins_with(RESOURCE_NAME_KEY):
 			entries.erase(translation_key)
 
-	_translation_keys.clear()
-
 #endregion
 
 
 #region GET AND SET TRANSLATION IDS AND KEYS
 
-## Returns a key used to reference this glossary in the translation CSV file.
+## Returns a key used to reference this glossary in the translation file.
 ##
 ## Time complexity: O(1)
 func get_property_translation_key(entry_key: String, property: String) -> String:
@@ -277,12 +268,12 @@ func get_property_translation_key(entry_key: String, property: String) -> String
 	if entry_translation_key.is_empty() or _translation_id.is_empty():
 		return ""
 
-	var glossary_csv_key := (RESOURCE_NAME
+	var glossary_translation_key := (RESOURCE_NAME
 		.path_join(_translation_id)
 		.path_join(entry_translation_key)
 		.path_join(property))
 
-	return glossary_csv_key
+	return glossary_translation_key
 
 
 
