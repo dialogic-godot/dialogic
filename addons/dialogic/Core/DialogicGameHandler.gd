@@ -259,8 +259,7 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
 
-	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent and (get_meta('previous_event') as DialogicEvent).event_finished.is_connected(handle_next_event):
-		(get_meta('previous_event') as DialogicEvent).event_finished.disconnect(handle_next_event)
+	_cleanup_previous_event()
 
 	if paused:
 		await dialogic_resumed
@@ -290,6 +289,8 @@ func handle_event(event_index:int) -> void:
 ## what info should be kept.
 ## For example, at timeline end usually it doesn't clear node or subsystem info.
 func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
+	_cleanup_previous_event()
+
 	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
@@ -305,6 +306,16 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	# Resetting variables
 	if timeline:
 		await timeline.clean()
+
+
+## Cleanup after previous event (if any).
+func _cleanup_previous_event():
+	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent:
+		var event := get_meta('previous_event') as DialogicEvent
+		if event.event_finished.is_connected(handle_next_event):
+			event.event_finished.disconnect(handle_next_event)
+		event._clear_state()
+		remove_meta("previous_event")
 
 #endregion
 
