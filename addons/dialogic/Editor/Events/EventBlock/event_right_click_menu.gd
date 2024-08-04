@@ -2,7 +2,7 @@
 extends PopupMenu
 
 var current_event: Node = null
-
+const jump_icon := preload("res://addons/dialogic/Modules/Jump/icon_jump_@.5.png")
 func _ready() -> void:
 	clear()
 	add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), "Duplicate")
@@ -14,6 +14,8 @@ func _ready() -> void:
 	add_icon_item(get_theme_icon("ArrowDown", "EditorIcons"), "Move down")
 	add_separator()
 	add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete")
+	add_separator()
+	add_icon_item(jump_icon, "Play from here")
 
 	var menu_background := StyleBoxFlat.new()
 	menu_background.bg_color = get_parent().get_theme_color("base_color", "Editor")
