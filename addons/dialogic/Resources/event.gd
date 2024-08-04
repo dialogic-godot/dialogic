@@ -47,6 +47,10 @@ var event_node_as_text := ""
 var event_node_ready := false
 ## How many empty lines are before this event
 var empty_lines_above: int = 0
+## Path to the resource file the event has been loaded from.
+var source_path: String = ""
+## Line number inside the resource file.
+var source_line_number: int = -1
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

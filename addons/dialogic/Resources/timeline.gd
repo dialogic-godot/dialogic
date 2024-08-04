@@ -118,6 +118,8 @@ func process() -> void:
 				event = i.duplicate()
 				break
 
+		event.source_path = resource_path
+		event.source_line_number = idx + 1
 		event.empty_lines_above = empty_lines
 		# add the following lines until the event says it's full or there is an empty line
 		while !event.is_string_full_event(event_content):
