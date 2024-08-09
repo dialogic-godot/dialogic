@@ -143,4 +143,9 @@ func add_dialogic_default_action() -> void:
 	ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
 	ProjectSettings.save()
 
+# Create cache when project is compiled
+func _build() -> bool:
+	DialogicResourceUtil.update()
+	return true
+
 #endregion
