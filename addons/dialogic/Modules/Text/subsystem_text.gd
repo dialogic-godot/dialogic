@@ -474,7 +474,7 @@ func collect_character_names() -> void:
 
 	character_colors = {}
 
-	for dch_path in ProjectSettings.get_setting("dialogic/directories/dch_directory", {}).values():
+	for dch_path in DialogicResourceUtil.get_character_directory().values():
 		var character := (load(dch_path) as DialogicCharacter)
 
 		if character.display_name:
