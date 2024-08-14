@@ -7,10 +7,10 @@ func animate() -> void:
 	var viewport_x: float = node.get_viewport().size.x
 
 	var start_position_x: float = viewport_x + viewport_x / 5
-	var end_position_x := end_position.x
+	var end_position_x := base_position.x
 
 	if is_reversed:
-		start_position_x = end_position.x
+		start_position_x = base_position.x
 		end_position_x = viewport_x + node.get_viewport().size.x / 5
 
 

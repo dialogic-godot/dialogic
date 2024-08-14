@@ -3,15 +3,15 @@ extends DialogicAnimation
 func animate() -> void:
 	var tween := (node.create_tween() as Tween)
 
-	var start_height: float = orig_pos.y - node.get_viewport().size.y / 5
-	var end_height := orig_pos.y
+	var start_height: float = base_position.y - node.get_viewport().size.y / 5
+	var end_height := base_position.y
 
 	var start_modulation := 0.0
 	var end_modulation := 1.0
 
 	if is_reversed:
 		end_height = start_height
-		start_height = orig_pos.y
+		start_height = base_position.y
 		end_modulation = 0.0
 		start_modulation = 1.0
 
@@ -21,7 +21,7 @@ func animate() -> void:
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_parallel()
 
-	var end_postion := Vector2(orig_pos.x, end_height)
+	var end_postion := Vector2(base_position.x, end_height)
 	tween.tween_property(node, "position", end_postion, time)
 
 	var property := get_modulation_property()
