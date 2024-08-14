@@ -116,6 +116,7 @@ theme_override_font_sizes/normal_font_size = 6
 bbcode_enabled = true
 text = "Some text"
 scroll_following = true
+visible_characters_behavior = 1
 script = ExtResource("3_11puy")
 textbox_root = NodePath("../../..")
 
