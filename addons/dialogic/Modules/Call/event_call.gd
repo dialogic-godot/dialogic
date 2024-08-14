@@ -165,7 +165,7 @@ func get_method_suggestions(filter:String="", temp_autoload:String = "") -> Dict
 	var suggestions := {}
 
 	var script: Script
-	if temp_autoload:
+	if temp_autoload and ProjectSettings.has_setting('autoload/'+temp_autoload):
 		script = load(ProjectSettings.get_setting('autoload/'+temp_autoload).trim_prefix('*'))
 
 	elif autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
