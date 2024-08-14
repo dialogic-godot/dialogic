@@ -8,7 +8,7 @@ signal character_portrait_changed(info:Dictionary)
 signal character_moved(info:Dictionary)
 
 ## Emitted when a portrait starts animating.
-signal portrait_animating(character_node: Node, portrait_node: Node, animation_name: String, animation_length: float)
+#signal portrait_animating(character_node: Node, portrait_node: Node, animation_name: String, animation_length: float)
 
 
 ## The default portrait scene.
@@ -194,7 +194,7 @@ func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
 	var portrait_info: Dictionary = character.portraits.get(portrait_node.get_meta('portrait'), {})
 
 	# ignore the character scale on custom portraits that have 'ignore_char_scale' set to true
-	var apply_character_scale: bool= !portrait_info.get('ignore_char_scale', false)
+	var apply_character_scale: bool = not portrait_info.get('ignore_char_scale', false)
 
 	var transform: Rect2 = character_node.get_parent().get_local_portrait_transform(
 		portrait_node._get_covered_rect(),
@@ -232,8 +232,8 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 	anim_node.set_script(anim_script)
 	anim_node = (anim_node as DialogicAnimation)
 	anim_node.node = node
-	anim_node.orig_pos = node.position
-	anim_node.end_position = node.position
+	anim_node.base_position = node.position
+	anim_node.base_scale = node.scale
 	anim_node.time = length
 	anim_node.repeats = repeats
 	anim_node.is_reversed = is_reversed
@@ -661,6 +661,11 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 			continue
 
 		if just_joined:
+			# Change speaker is called before the text is changed.
+			# In styles where the speaker is IN the textbox,
+			# this can mean the portrait container isn't sized correctly yet.
+			if not container.is_visible_in_tree():
+				await get_tree().process_frame
 			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 			join_animation = DialogicPortraitAnimationUtil.guess_animation(join_animation, DialogicPortraitAnimationUtil.AnimationType.IN)
 			var join_animation_length := _get_join_default_length()

@@ -5,10 +5,10 @@ func animate() -> void:
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
 	var start_position_y: float = node.get_viewport().size.y * 2
-	var end_position_y := end_position.y
+	var end_position_y := base_position.y
 
 	if is_reversed:
-		start_position_y = end_position.y
+		start_position_y = base_position.y
 		end_position_y = node.get_viewport().size.y * 2
 
 	node.position.y = start_position_y
