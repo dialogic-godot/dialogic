@@ -275,7 +275,16 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 		word = get_code_completion_parameter_value(text)
 
 	text.remove_text(text.get_caret_line(), text.get_caret_column()-len(word), text.get_caret_line(), text.get_caret_column())
-	text.set_caret_column(text.get_caret_column()-len(word))
+
+	# Something has changed between 4.2 and 4.3
+	# Probably about how carets are reset when text is removed or idk.
+	# To keep compatibility with 4.2 for at least a while this should do the trick:
+	# TODO: Remove once compatibility for 4.2 is dropped.
+	if Engine.get_version_info().hex >= 0x040300:
+		text.set_caret_column(text.get_caret_column())
+	else:
+		text.set_caret_column(text.get_caret_column()-len(word))
+
 	text.insert_text_at_caret(code_completion.insert_text)
 
 	if code_completion.has('default_value') and typeof(code_completion['default_value']) == TYPE_STRING:
