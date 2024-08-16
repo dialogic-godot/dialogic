@@ -123,7 +123,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Scroll/VBox/MainHSplit/Split"]
 layout_mode = 2
