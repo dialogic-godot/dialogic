@@ -66,7 +66,7 @@ func to_text() -> String:
 
 	result_string = "- "+text.strip_edges()
 	var shortcode := store_to_shortcode_parameters()
-	if (condition and _has_condition) or shortcode:
+	if (condition and _has_condition) or shortcode or extra_data:
 		result_string += " |"
 	if condition and _has_condition:
 		result_string += " [if " + condition + "]"
@@ -74,8 +74,12 @@ func to_text() -> String:
 	if shortcode or extra_data:
 		result_string += " [" + shortcode
 		if extra_data:
+			var extra_data_string := ""
 			for i in extra_data:
-				result_string += ' ' + i + '="' + value_to_string(extra_data[i]) + '"'
+				extra_data_string += " " + i + '="' + value_to_string(extra_data[i]) + '"'
+			if shortcode:
+				result_string += " "
+			result_string += extra_data_string.strip_edges()
 		result_string += "]"
 
 	return result_string
@@ -226,4 +230,3 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict = Highlighter.color_shortcode_content(dict, line, shortcode_begin, 0, event_color)
 	return dict
 #endregion
-
