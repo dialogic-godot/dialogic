@@ -62,7 +62,6 @@ offset_right = -3.0
 offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
 script = ExtResource("1_gy14f")
 
 [node name="Panel" type="PanelContainer" parent="."]

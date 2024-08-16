@@ -52,7 +52,10 @@ func _execute() -> void:
 
 	if clear_portrait_positions and dialogic.has_subsystem('Portraits'):
 		dialogic.PortraitContainers.reset_all_containers()
-
+	
+	if not step_by_step:
+		await dialogic.get_tree().create_timer(final_time).timeout
+	
 	finish()
 
 

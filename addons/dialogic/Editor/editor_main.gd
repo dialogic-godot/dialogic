@@ -89,7 +89,7 @@ func update_theme_additions() -> void:
 	var side_panel: StyleBoxFlat = panel_style.duplicate()
 	side_panel.corner_radius_top_left = 0
 	side_panel.corner_radius_bottom_left = 0
-	side_panel.expand_margin_left = 8
+	side_panel.expand_margin_left = get_theme_constant("separation", "SplitContainer")
 	side_panel.bg_color = get_theme_color("dark_color_2", "Editor")
 	side_panel.set_border_width_all(1)
 	side_panel.border_width_left = 0
@@ -251,4 +251,3 @@ func godot_file_dialog(callable:Callable, filter:String, mode := EditorFileDialo
 		editor_file_dialog.dir_selected.connect(callable)
 		editor_file_dialog.file_selected.connect(callable)
 	return editor_file_dialog
-
