@@ -75,6 +75,11 @@ func resume() -> void:
 	for child in get_children():
 		child.stream_paused = false
 
+
+func _on_dialogic_timeline_ended() -> void:
+	if not dialogic.Styles.get_layout_node():
+		clear_game_state()
+	pass
 #endregion
 
 
@@ -82,6 +87,8 @@ func resume() -> void:
 ####################################################################################################
 
 func _ready() -> void:
+	dialogic.timeline_ended.connect(_on_dialogic_timeline_ended)
+	
 	base_music_player.name = "Music"
 	add_child(base_music_player)
 
