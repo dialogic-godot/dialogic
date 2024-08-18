@@ -21,8 +21,8 @@ func _ready() -> void:
 		return
 	if editors_manager is SubViewportContainer:
 		return
-	## CONNECTIONS
 
+	## CONNECTIONS
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 
@@ -122,13 +122,6 @@ func clean_resource_list(resources_list: Array = []) -> PackedStringArray:
 
 
 func update_resource_list(resources_list: PackedStringArray = []) -> void:
-	print_rich(
-		(
-			"[b]Updating resource list[/b]:\n\t [i]Resource List: [/i]%s\n\t[i]Resource List D: [/i]%s"
-			% [resources_list, DialogicUtil.get_editor_setting("last_resources", [])]
-		)
-	)
-
 	var filter: String = %Search.text
 	var current_file := ""
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
@@ -244,6 +237,29 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 				if item.metadata == current_file:
 					%CurrentResource.text = item.metadata.get_file()
 					resource_tree.set_selected(tree_item, 0)
+	if sort_mode == SortMode.Path:
+		var all_items := character_items + timeline_items
+		var dirs := {}
+		for item in all_items:
+			var path := (item.metadata.get_base_dir() as String).replace("res://", "")
+			if !dirs.has(path):
+				dirs[path] = []
+			dirs[path].append(item)
+		for dir in dirs:
+			var dir_item = resource_tree.create_item(root)
+			dir_item.set_text(0, dir)
+			dir_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
+			dir_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+			for item in dirs[dir]:
+				var tree_item = resource_tree.create_item(dir_item)
+				tree_item.set_text(0, item.text)
+				tree_item.set_icon(0, item.icon)
+				tree_item.set_metadata(0, item.metadata)
+				tree_item.set_tooltip_text(0, item.tooltip)
+				if item.metadata == current_file:
+					%CurrentResource.text = item.metadata.get_file()
+					resource_tree.set_selected(tree_item, 0)
+
 	if %CurrentResource.text != "No Resource":
 		%CurrentResource.add_theme_color_override(
 			"font_uneditable_color", get_theme_color("font_color", "Editor")
@@ -399,6 +415,7 @@ func edit_resource(resource_item: Variant) -> void:
 enum SortMode {
 	Default,
 	Folder,
+	Path,
 	None,
 }
 

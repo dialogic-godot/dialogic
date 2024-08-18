@@ -106,12 +106,14 @@ tooltip_text = "Sort
 - Folder: Sort alphabetically by parent directory.
 - None: Sort alphabetically with no categories."
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "Default"
 popup/item_1/text = "Folder"
 popup/item_1/id = 1
-popup/item_2/text = "None"
+popup/item_2/text = "Path"
 popup/item_2/id = 2
+popup/item_3/text = "None"
+popup/item_3/id = 3
 
 [node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
 unique_name_in_owner = true
