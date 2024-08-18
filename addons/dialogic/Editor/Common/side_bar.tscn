@@ -105,6 +105,7 @@ tooltip_text = "Sort
 - Default: Sort alphabetically split into Characters & Timeilnes.
 - Folder: Sort alphabetically by parent directory.
 - None: Sort alphabetically with no categories."
+<<<<<<< HEAD
 selected = 0
 item_count = 4
 popup/item_0/text = "Default"
@@ -114,6 +115,11 @@ popup/item_2/text = "Path"
 popup/item_2/id = 2
 popup/item_3/text = "None"
 popup/item_3/id = 3
+=======
+text_overrun_behavior = 1
+clip_text = true
+fit_to_longest_item = false
+>>>>>>> fc6ab2191562bdc750fbf08f2c075df3a9188733
 
 [node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
 unique_name_in_owner = true
@@ -138,6 +144,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 item_count = 1
 popup/item_0/text = "Alphabetical (All)"
+popup/item_0/id = 0
 
 [node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer"]
 unique_name_in_owner = true
