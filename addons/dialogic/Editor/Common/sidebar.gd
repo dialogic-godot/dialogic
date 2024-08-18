@@ -82,10 +82,10 @@ func _ready() -> void:
 	)
 
 	## SORT MENU
-	%SortOption.clear()
-	%SortOption.add_icon_item(get_theme_icon("AnimationTrackGroup", "EditorIcons"), "Type", 0)
-	%SortOption.add_icon_item(get_theme_icon("Folder", "EditorIcons"), "Folder", 1)
-	%SortOption.add_icon_item(get_theme_icon("AnimationTrackList", "EditorIcons"), "None", 2)
+	%SortOption.set_item_icon(0, get_theme_icon("AnimationTrackGroup", "EditorIcons"))
+	%SortOption.set_item_icon(1, get_theme_icon("Folder", "EditorIcons"))
+	%SortOption.set_item_icon(2, get_theme_icon("FolderBrowse", "EditorIcons"))
+	%SortOption.set_item_icon(3, get_theme_icon("AnimationTrackList", "EditorIcons"))
 	%SortOption.item_selected.connect(_on_sort_changed)
 
 	await get_tree().process_frame
