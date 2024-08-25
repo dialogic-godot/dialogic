@@ -34,8 +34,8 @@ func find_next_index() -> int:
 	return idx
 
 
-func find_opening_index() -> int:
-	var idx: int = dialogic.current_event_idx
+func find_opening_index(at_index:int) -> int:
+	var idx: int = at_index
 
 	var ignore: int = 1
 	while true:

@@ -258,7 +258,7 @@ func is_question(index:int) -> bool:
 
 	if dialogic.current_timeline_events[index] is DialogicChoiceEvent:
 		if index != 0 and dialogic.current_timeline_events[index-1] is DialogicEndBranchEvent:
-			if dialogic.current_timeline_events[dialogic.current_timeline_events[index-1].find_opening_index()] is DialogicChoiceEvent:
+			if dialogic.current_timeline_events[dialogic.current_timeline_events[index-1].find_opening_index(index-1)] is DialogicChoiceEvent:
 				return false
 			else:
 				return true
