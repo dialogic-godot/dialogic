@@ -315,15 +315,27 @@ func import_portraits_from_folder(path:String) -> void:
 	var dir := DirAccess.open(path)
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
+	var files := []
 	while file_name != "":
 		if not dir.current_is_dir():
 			var file_lower := file_name.to_lower()
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
-					var final_name := path.path_join(file_name)
-					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()),
-							{'scene':"",'export_overrides':{'image':var_to_str(final_name)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+					files.append(file_name)
 		file_name = dir.get_next()
+	
+	var prefix: String = files[0]
+	for file in files:
+		while true:
+			if file.begins_with(prefix):
+				break
+			if prefix.is_empty():
+				break
+			prefix = prefix.substr(0, len(prefix)-1)
+	
+	for file in files:
+		%PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
+			{'scene':"",'export_overrides':{'image':var_to_str(path.path_join(file))}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 
 	## Handle selection
 	if parent.get_child_count():
@@ -673,4 +685,3 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 func _on_reference_manger_button_pressed() -> void:
 	editors_manager.reference_manager.open()
 	%PortraitChangeInfo.hide()
-
