@@ -143,10 +143,8 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	nlp.get_theme_stylebox(&'panel').content_margin_bottom = name_label_padding.y
 	bubble.name_label_offset = name_label_offset
 	bubble.name_label_alignment = name_label_alignment
-
-	if !name_label_enabled:
-		nlp.queue_free()
-
+	
+	nlp.get_parent().visible = name_label_enabled
 
 	## CHOICE SETTINGS
 	if choices_layout_force_lines:
@@ -185,5 +183,3 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	choice_theme.set_color(&'font_focus_color', &'Button', choices_text_color_focus)
 	choice_theme.set_color(&'font_disabled_color', &'Button', choices_text_color_disabled)
 	bubble.choice_container.theme = choice_theme
-
-
