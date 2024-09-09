@@ -273,12 +273,17 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 	file.close()
 	if scene_text.begins_with('[gd_scene'):
 		var base_path: String = previous_file.get_base_dir()
-
-		var result := RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
+		
+		var remove_uuid_regex := r'\[gd_scene .* (?<uid>uid="uid:[^"]*")'
+		var result := RegEx.create_from_string(remove_uuid_regex).search(scene_text)
+		scene_text = scene_text.replace(result.get_string("uid"), "")
+		
+		var file_regex := r'\Q"'+base_path+r'\E(?<file>[^"]*)"'
+		result = RegEx.create_from_string(file_regex).search(scene_text)
 		while result:
 			DirAccess.copy_absolute(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
 			scene_text = scene_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			result = RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
+			result = RegEx.create_from_string(file_regex).search(scene_text)
 
 	file = FileAccess.open(target_folder.path_join(target_file), FileAccess.WRITE)
 	file.store_string(scene_text)
