@@ -9,7 +9,7 @@ const PLUGIN_ICON_PATH := "res://addons/dialogic/Editor/Images/plugin-icon.svg"
 
 ## References used by various other scripts to quickly reference these things
 var editor_view: Control  # the root of the dialogic editor
-
+var inspector_plugin: EditorInspectorPlugin = null
 
 ## Initialization
 func _init() -> void:
@@ -36,6 +36,9 @@ func _enter_tree() -> void:
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
+	inspector_plugin = load("res://addons/dialogic/Editor/Inspector/inspector_plugin.gd").new()
+	add_inspector_plugin(inspector_plugin)
+
 	# Auto-update the singleton path for alpha users
 	# TODO remove at some point during beta or later
 	if not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, ""):
@@ -48,6 +51,8 @@ func _exit_tree() -> void:
 		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()
 
+	if inspector_plugin:
+		remove_inspector_plugin(inspector_plugin)
 
 #endregion
 
