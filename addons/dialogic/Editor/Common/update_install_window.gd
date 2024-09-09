@@ -55,7 +55,7 @@ func load_info(info:Dictionary, update_type:int) -> void:
 		%Install.disabled = true
 
 	%UpdateName.text = info.name
-	%Content.text = markdown_to_bbcode('#'+info.body.get_slice('#', 1)).strip_edges()
+	%Content.text = markdown_to_bbcode(info.body).get_slice("\n[font_size", 0).strip_edges()
 	%ShortInfo.text = "Published on "+info.published_at.substr(0, info.published_at.find('T'))+" by "+info.author.login
 	if info.has("html_url"):
 		%ReadFull.uri = info.html_url
@@ -154,7 +154,7 @@ func markdown_to_bbcode(text:String) -> String:
 	while res:
 		text = text.replace(res.get_string(), '[code][bgcolor='+get_theme_color("box_selection_fill_color", "Editor").to_html()+']'+res.get_string('text').strip_edges()+'[/bgcolor][/code]')
 		res = big_code_regex.search(text)
-
+	
 	return text
 
 
