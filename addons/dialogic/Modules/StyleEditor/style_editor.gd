@@ -150,13 +150,18 @@ func load_style_list() -> void:
 	var idx := 0
 	for style in styles:
 		%StyleList.add_item(style.name, get_theme_icon("PopupMenu", "EditorIcons"))
+		%StyleList.set_item_tooltip(idx, style.resource_path)
+		%StyleList.set_item_metadata(idx, style)
+		
 		if style.resource_path == default_style:
 			%StyleList.set_item_icon_modulate(idx, get_theme_color("warning_color", "Editor"))
+		if style.resource_path.begins_with("res://addons/dialogic"):
+			%StyleList.set_item_icon_modulate(idx, get_theme_color("property_color_z", "Editor"))
+			%StyleList.set_item_tooltip(idx, "This is a default style. Only edit it if you know what you are doing!")
+			%StyleList.set_item_custom_bg_color(idx, get_theme_color("property_color_z", "Editor").lerp(get_theme_color("dark_color_3", "Editor"), 0.8))
 		if style.name == latest:
 			%StyleList.select(idx)
 			load_style(style)
-		%StyleList.set_item_tooltip(idx, style.resource_path)
-		%StyleList.set_item_metadata(idx, style)
 		idx += 1
 
 	if len(styles) == 0:
@@ -388,4 +393,3 @@ func _get_new_name(base_name:String) -> String:
 	return new_name
 
 #endregion
-
