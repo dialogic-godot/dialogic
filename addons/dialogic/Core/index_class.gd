@@ -86,7 +86,7 @@ func list_special_resources(subdir:='', extension:="") -> Dictionary:
 func list_animations(subdir := "") -> Dictionary:
 	var full_animation_list := {}
 	for path in list_dir(subdir):
-		if not path.ends_with(".gd"):
+		if not path.ends_with(".gd") and not path.ends_with(".gdc"):
 			continue
 		var anim_object: DialogicAnimation = load(path).new()
 		var versions := anim_object._get_named_variations()
