@@ -363,6 +363,58 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 
 #endregion
 
+#region MAKE CUSTOM
+
+static func make_file_custom(original_file:String, target_folder:String, new_file_name := "", new_folder_name := "") -> String:
+	if not ResourceLoader.exists(original_file):
+		push_error("[Dialogic] Unable to make file with invalid path custom!")
+		return ""
+	
+	if new_folder_name:
+		target_folder = target_folder.path_join(new_folder_name)
+		DirAccess.make_dir_absolute(target_folder)
+	
+	if new_file_name.is_empty():
+		new_file_name = "custom_" + original_file.get_file()
+	
+	if not new_file_name.ends_with(original_file.get_extension()):
+		new_file_name += "." + original_file.get_extension()
+	
+	var target_file := target_folder.path_join(new_file_name)
+
+	DirAccess.copy_absolute(original_file, target_file)
+
+	var file := FileAccess.open(target_file, FileAccess.READ)
+	var file_text := file.get_as_text()
+	file.close()
+	
+	# If we are customizing a scene, we check for any resources used in that scene that are in the same folder.
+	# Those will be copied as well and the scene will be modified to point to them.
+	if file_text.begins_with('[gd_scene'):
+		var base_path: String = original_file.get_base_dir()
+		
+		var remove_uuid_regex := r'\[gd_scene .* (?<uid>uid="uid:[^"]*")'
+		var result := RegEx.create_from_string(remove_uuid_regex).search(file_text)
+		if result:
+			file_text = file_text.replace(result.get_string("uid"), "")
+		
+		var file_regex := r'\Q"'+base_path+r'\E(?<file>[^"]*)"'
+		result = RegEx.create_from_string(file_regex).search(file_text)
+		while result:
+			DirAccess.copy_absolute(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
+			file_text = file_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
+			result = RegEx.create_from_string(file_regex).search(file_text)
+
+	file = FileAccess.open(target_file, FileAccess.WRITE)
+	file.store_string(file_text)
+	file.close()
+
+	get_dialogic_plugin().get_editor_interface().get_resource_filesystem().scan_sources()
+	
+	return target_file
+
+
+#endregion
 
 #region INSPECTOR FIELDS
 ################################################################################
@@ -606,4 +658,3 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 			suggestions.erase(search_text)
 
 	return suggestions
-

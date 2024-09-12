@@ -66,32 +66,10 @@ func create_new_portrait_scene(target_file: String, info: Dictionary) -> void:
 
 func make_portrait_preset_custom(target_file:String, info: Dictionary) -> String:
 	var previous_file: String = info.path
-
-	var target_folder := target_file.get_base_dir()
-	target_file = target_file.get_file()
-
-	DirAccess.make_dir_absolute(target_folder)
-
-	DirAccess.copy_absolute(previous_file, target_folder.path_join(target_file))
-
-	var file := FileAccess.open(target_folder.path_join(target_file), FileAccess.READ)
-	var scene_text := file.get_as_text()
-	file.close()
-	if scene_text.begins_with('[gd_scene'):
-		var base_path: String = previous_file.get_base_dir()
-
-		var result := RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
-		while result:
-			DirAccess.copy_absolute(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			scene_text = scene_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			result = RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
-
-	file = FileAccess.open(target_folder.path_join(target_file), FileAccess.WRITE)
-	file.store_string(scene_text)
-	file.close()
-
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
-	return target_folder.path_join(target_file)
+	
+	var result_path := DialogicUtil.make_file_custom(previous_file, target_file.get_base_dir(), target_file.get_file())
+	
+	return result_path
 
 
 func set_scene_path(path:String) -> void:
@@ -121,4 +99,3 @@ func reload_ui(data: Dictionary) -> void:
 		%SceneLabel.tooltip_text = path
 		%SceneLabel.add_theme_color_override("font_color", get_theme_color("property_color_x", "Editor"))
 		%OpenSceneButton.show()
-
