@@ -196,6 +196,8 @@ func _update_debug_portrait_scene() -> void:
 	if mode == PositionModes.SPEAKER and !portrait_prefix.is_empty():
 		if portrait_prefix+debug_portrait in character.portraits:
 			debug_portrait = portrait_prefix+debug_portrait
+	if not debug_portrait in character.portraits:
+		debug_portrait = character.default_portrait
 	
 	var portrait_info: Dictionary = character.get_portrait_info(debug_portrait)
 	
