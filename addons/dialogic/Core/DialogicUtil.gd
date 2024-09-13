@@ -382,6 +382,17 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 	
 	var target_file := target_folder.path_join(new_file_name)
 
+	customize_file(original_file, target_file)
+	
+	get_dialogic_plugin().get_editor_interface().get_resource_filesystem().scan_sources()
+	
+	return target_file
+
+
+static func customize_file(original_file:String, target_file:String) -> String:
+	#print("\nCUSTOMIZE FILE")
+	#printt(original_file, "->", target_file)
+	
 	DirAccess.copy_absolute(original_file, target_file)
 
 	var file := FileAccess.open(target_file, FileAccess.READ)
@@ -390,29 +401,34 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 	
 	# If we are customizing a scene, we check for any resources used in that scene that are in the same folder.
 	# Those will be copied as well and the scene will be modified to point to them.
-	if file_text.begins_with('[gd_scene'):
+	if file_text.begins_with('[gd_'):
 		var base_path: String = original_file.get_base_dir()
 		
-		var remove_uuid_regex := r'\[gd_scene .* (?<uid>uid="uid:[^"]*")'
+		var remove_uuid_regex := r'\[gd_.* (?<uid>uid="uid:[^"]*")'
 		var result := RegEx.create_from_string(remove_uuid_regex).search(file_text)
 		if result:
 			file_text = file_text.replace(result.get_string("uid"), "")
 		
-		var file_regex := r'\Q"'+base_path+r'\E(?<file>[^"]*)"'
+		# This regex also removes the UID referencing the original resource
+		var file_regex := r'(uid="[^"]*" )?\Qpath="'+base_path+r'\E(?<file>[^"]*)"'
 		result = RegEx.create_from_string(file_regex).search(file_text)
 		while result:
-			DirAccess.copy_absolute(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			file_text = file_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
+			var found_file_name := result.get_string('file')
+			var found_file_path := base_path.path_join(found_file_name)
+			var target_file_path := target_file.get_base_dir().path_join(found_file_name)
+			
+			# Files found in this file will ALSO be customized.
+			customize_file(found_file_path, target_file_path)
+			
+			file_text = file_text.replace(found_file_path, target_file_path)
+			
 			result = RegEx.create_from_string(file_regex).search(file_text)
 
 	file = FileAccess.open(target_file, FileAccess.WRITE)
 	file.store_string(file_text)
 	file.close()
 
-	get_dialogic_plugin().get_editor_interface().get_resource_filesystem().scan_sources()
-	
 	return target_file
-
 
 #endregion
 
