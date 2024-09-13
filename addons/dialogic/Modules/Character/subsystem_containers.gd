@@ -40,16 +40,14 @@ func get_container_container() -> CanvasItem:
 ## Creates a new portrait container node.
 ## It will copy it's size and most settings from the first p_container in the tree.
 ## It will be added as a sibling of the first p_container in the tree.
-func add_container(position_id: String, position := "", size := "") -> DialogicNode_PortraitContainer:
+func add_container(position_id: String) -> DialogicNode_PortraitContainer:
 	var example_position := get_tree().get_first_node_in_group(&'dialogic_portrait_con_position')
 	if example_position:
 		var new_position := DialogicNode_PortraitContainer.new()
 		example_position.get_parent().add_child(new_position)
 		new_position.name = "Portrait_"+position_id.validate_node_name()
-		new_position.size = str_to_vector(size)
 		copy_container_setup(example_position, new_position)
 		new_position.container_ids = [position_id]
-		new_position.position = str_to_vector(position)-new_position._get_origin_position()
 		position_changed.emit({&'change':'added', &'container_node':new_position, &'position_id':position_id})
 		return new_position
 	return null
@@ -62,7 +60,7 @@ func move_container(container:DialogicNode_PortraitContainer, destination:String
 	var target_position: Vector2 = container.position + container._get_origin_position()
 	var target_rotation: float = container.rotation
 	var target_size: Vector2 = container.size
-
+	
 	var destination_container := get_container(destination)
 	if destination_container:
 		container.set_meta("target_container", destination_container)
@@ -79,6 +77,7 @@ func move_container(container:DialogicNode_PortraitContainer, destination:String
 					target_rotation = float(found.get_string("value"))
 				'siz', 'size':
 					target_size = str_to_vector(found.get_string("value"), target_size)
+	
 	translate_container(container, target_position, false, tween, time)
 	rotate_container(container, target_rotation, false, tween, time)
 	resize_container(container, target_size, false, tween, time)
@@ -112,9 +111,11 @@ func copy_container_setup(from:DialogicNode_PortraitContainer, to:DialogicNode_P
 	to.update_portrait_transforms()
 
 
+## Translates the given container. 
+## The given translation should be the target position of the ORIGIN point, not the container!
 func translate_container(container:DialogicNode_PortraitContainer, translation:Variant, relative := false, tween:Tween=null, time:float=1.0) -> void:
 	if !container.has_meta(&'default_translation'):
-		container.set_meta(&'default_translation', container.position+container._get_origin_position())
+		container.set_meta(&'default_translation', container.position + container._get_origin_position())
 
 	var final_translation: Vector2
 	if typeof(translation) == TYPE_STRING:
@@ -171,9 +172,9 @@ func resize_container(container: DialogicNode_PortraitContainer, rect_size: Vari
 
 	if relative:
 		final_rect_resize += container.rect_size
-
+	
 	var relative_position_change := container._get_origin_position()-container._get_origin_position(final_rect_resize)
-
+	
 	if tween:
 		tween.tween_method(DialogicUtil.multitween.bind(container, "position", "resize_move"), Vector2(), relative_position_change, time)
 		tween.tween_property(container, 'size', final_rect_resize, time)
@@ -181,7 +182,7 @@ func resize_container(container: DialogicNode_PortraitContainer, rect_size: Vari
 			tween.finished.connect(save_position_container.bind(container))
 	else:
 		container.position = container.position + relative_position_change
-		container.set_deferred("size", final_rect_resize)
+		container.size = final_rect_resize
 		save_position_container(container)
 
 	position_changed.emit({&'change':'resized', &'container_node':container})
