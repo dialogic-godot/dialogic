@@ -28,6 +28,7 @@ func load_game_state(load_flag := LoadFlags.FULL_LOAD) -> void:
 func change_style(style_name := "", is_base_style := true) -> Node:
 	return load_style(style_name, null, is_base_style, true)
 
+
 ## Loads a style. Consider using the simpler [method change_style] if you want to change the style while another style is already in use.
 ## [br] If [param state_reload] is true, the current state will be loaded into a new layout scenes nodes.
 ## That should not be done before calling start() or load() as it would be unnecessary or cause double-loading.
@@ -70,6 +71,10 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 	# if this is another style:
 	var new_layout := create_layout(style, parent)
 	if state_reload:
+		# Preserve process_mode on style changes
+		if previous_layout:
+			new_layout.process_mode = previous_layout.process_mode
+		
 		new_layout.ready.connect(reload_current_info_into_new_style)
 
 	style_changed.emit(signal_info)
