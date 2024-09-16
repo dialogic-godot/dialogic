@@ -153,6 +153,8 @@ func load_style_list() -> void:
 	StyleList.clear()
 	var idx := 0
 	for style in styles:
+		# TODO remove when going Beta
+		style.update_from_pre_alpha16()
 		StyleList.add_item(style.name, get_theme_icon("PopupMenu", "EditorIcons"))
 		StyleList.set_item_tooltip(idx, style.resource_path)
 		StyleList.set_item_metadata(idx, style)

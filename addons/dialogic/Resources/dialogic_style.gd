@@ -21,13 +21,6 @@ class_name DialogicStyle
 	"" : DialogicStyleLayer.new()
 }
 
-# TODO  Deprecated
-var base_scene: PackedScene = null
-# TODO Deprecated
-var base_overrides := {}
-# TODO Deprecated, only for Styles before alpha 16!
-var layers: Array[DialogicStyleLayer] = []
-
 
 
 
@@ -35,10 +28,39 @@ func _init(_name := "") -> void:
 	if not _name.is_empty():
 		name = _name
 
-	# TODO deprecated when going into beta
+#region UPDATE OLD STYLES
+# TODO deprecated when going into beta
+
+# TODO  Deprecated, only for Styles before alpha 16!
+@export var base_scene: PackedScene = null
+# TODO Deprecated, only for Styles before alpha 16!
+@export var base_overrides := {}
+# TODO Deprecated, only for Styles before alpha 16!
+@export var layers: Array[DialogicStyleLayer] = []
+
+func update_from_pre_alpha16() -> void:
 	if not layers.is_empty():
+		var idx := 0
 		for layer in layers:
-			pass
+			var id := "##"
+			if inherits_anything():
+				id = get_layer_inherited_list()[idx]
+			if layer.scene:
+				add_layer(layer.scene.resource_path, layer.overrides, id)
+			else:
+				add_layer("", layer.overrides, id)
+			idx += 1
+		layers.clear()
+
+	if not base_scene == null:
+		set_layer_scene("", base_scene.resource_path)
+		base_scene = null
+	if not base_overrides.is_empty():
+		set_layer_overrides("", base_overrides)
+		base_overrides.clear()
+
+#endregion
+
 
 #region BASE METHODS
 # These methods are local, meaning they do NOT take inheritance into account.
@@ -144,6 +166,14 @@ func set_layer_scene(layer_id:String, scene:String) -> void:
 		return
 
 	layer_info[layer_id].scene = load(scene)
+	changed.emit()
+
+
+func set_layer_overrides(layer_id:String, overrides:Dictionary) -> void:
+	if not has_layer(layer_id):
+		return
+
+	layer_info[layer_id].overrides = overrides
 	changed.emit()
 
 
