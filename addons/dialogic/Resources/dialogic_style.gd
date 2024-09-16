@@ -110,6 +110,7 @@ func add_layer(scene:String, overrides:Dictionary = {}, id:="##") -> String:
 	if id == "##":
 		id = get_new_layer_id()
 	layer_info[id] = DialogicStyleLayer.new(scene, overrides)
+	layer_list.append(id)
 	changed.emit()
 	return id
 
