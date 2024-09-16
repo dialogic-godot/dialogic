@@ -28,38 +28,6 @@ func _init(_name := "") -> void:
 	if not _name.is_empty():
 		name = _name
 
-#region UPDATE OLD STYLES
-# TODO deprecated when going into beta
-
-# TODO  Deprecated, only for Styles before alpha 16!
-@export var base_scene: PackedScene = null
-# TODO Deprecated, only for Styles before alpha 16!
-@export var base_overrides := {}
-# TODO Deprecated, only for Styles before alpha 16!
-@export var layers: Array[DialogicStyleLayer] = []
-
-func update_from_pre_alpha16() -> void:
-	if not layers.is_empty():
-		var idx := 0
-		for layer in layers:
-			var id := "##"
-			if inherits_anything():
-				id = get_layer_inherited_list()[idx]
-			if layer.scene:
-				add_layer(layer.scene.resource_path, layer.overrides, id)
-			else:
-				add_layer("", layer.overrides, id)
-			idx += 1
-		layers.clear()
-
-	if not base_scene == null:
-		set_layer_scene("", base_scene.resource_path)
-		base_scene = null
-	if not base_overrides.is_empty():
-		set_layer_overrides("", base_overrides)
-		base_overrides.clear()
-
-#endregion
 
 
 #region BASE METHODS
@@ -245,17 +213,18 @@ func get_layer_inherited_info(id:String, inherited_only := false) -> Dictionary:
 	return info
 
 
+## Returns the layer list of the root style.
 func get_layer_inherited_list() -> Array:
-	var style := self
 	var list := layer_list
 
-	while style.inherits_anything():
-		style = style.inherits
-		list = style.layer_list
+	if inherits_anything():
+		list = get_inheritance_root().layer_list
 
 	return list
 
 
+## Applies inherited info to the local layers.
+## Then removes inheritance.
 func realize_inheritance() -> void:
 	layer_list = get_layer_inherited_list()
 
@@ -269,8 +238,9 @@ func realize_inheritance() -> void:
 	changed.emit()
 
 
-##endregion
+#endregion
 
+## Creates a fresh new style with the same settings.
 func clone() -> DialogicStyle:
 	var style := DialogicStyle.new()
 	style.name = name
@@ -284,7 +254,42 @@ func clone() -> DialogicStyle:
 	return style
 
 
+## Starts preloading all the scenes used by this style.
 func prepare() -> void:
 	for id in layer_info:
 		if layer_info[id].scene:
 			ResourceLoader.load_threaded_request(layer_info[id].scene.resource_path)
+
+
+#region UPDATE OLD STYLES
+# TODO deprecated when going into beta
+
+# TODO  Deprecated, only for Styles before alpha 16!
+@export var base_scene: PackedScene = null
+# TODO Deprecated, only for Styles before alpha 16!
+@export var base_overrides := {}
+# TODO Deprecated, only for Styles before alpha 16!
+@export var layers: Array[DialogicStyleLayer] = []
+
+func update_from_pre_alpha16() -> void:
+	if not layers.is_empty():
+		var idx := 0
+		for layer in layers:
+			var id := "##"
+			if inherits_anything():
+				id = get_layer_inherited_list()[idx]
+			if layer.scene:
+				add_layer(layer.scene.resource_path, layer.overrides, id)
+			else:
+				add_layer("", layer.overrides, id)
+			idx += 1
+		layers.clear()
+
+	if not base_scene == null:
+		set_layer_scene("", base_scene.resource_path)
+		base_scene = null
+	if not base_overrides.is_empty():
+		set_layer_overrides("", base_overrides)
+		base_overrides.clear()
+
+#endregion
