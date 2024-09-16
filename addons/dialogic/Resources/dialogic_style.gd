@@ -96,7 +96,7 @@ func get_new_layer_id() -> String:
 
 ## Adds a layer with the given scene and overrides.
 ## Returns the new layers id.
-func add_layer(scene:String, overrides:Dictionary = {}, id:="##") -> String:
+func add_layer(scene:String, overrides:Dictionary = {}, id:= "##") -> String:
 	if id == "##":
 		id = get_new_layer_id()
 	layer_info[id] = DialogicStyleLayer.new(scene, overrides)
@@ -245,9 +245,12 @@ func clone() -> DialogicStyle:
 	var style := DialogicStyle.new()
 	style.name = name
 	style.inherits = inherits
-	style.layer_list = layer_list.duplicate(true)
 
-	for id in layer_info:
+	var base_info := get_layer_info("")
+	set_layer_scene("", base_info.path)
+	set_layer_overrides("", base_info.overrides)
+
+	for id in layer_list:
 		var info := get_layer_info(id)
 		style.add_layer(info.path, info.overrides, id)
 
@@ -291,5 +294,6 @@ func update_from_pre_alpha16() -> void:
 	if not base_overrides.is_empty():
 		set_layer_overrides("", base_overrides)
 		base_overrides.clear()
+
 
 #endregion

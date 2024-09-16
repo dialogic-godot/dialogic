@@ -84,7 +84,7 @@ func add_style(file_path:String, style:DialogicStyle, inherits:DialogicStyle= nu
 	style.resource_path = file_path
 	style.inherits = inherits
 
-	if style.layers.is_empty() and style.inherits != null:
+	if style.layer_list.is_empty() and style.inherits_anything():
 		for id in style.get_layer_inherited_list():
 			style.add_layer('', {}, id)
 
