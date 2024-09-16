@@ -13,14 +13,14 @@ signal show_sidebar(show: bool)
 @onready var resource_tree: Tree = %ResourceTree
 var current_resource_list: Array = []
 enum SortMode {
-	DEFAULT,
+	TYPE,
 	FOLDER,
 	PATH,
 	NONE,
 }
 
 
-var sort_mode: SortMode = SortMode.DEFAULT
+var sort_mode: SortMode = SortMode.TYPE
 
 
 func _ready() -> void:
@@ -176,7 +176,8 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 
 	# BUILD TREE
 	var root: TreeItem = resource_tree.create_item()
-	if sort_mode == SortMode.DEFAULT:
+
+	if sort_mode == SortMode.TYPE:
 		character_items.sort_custom(_sort_by_item_text)
 		timeline_items.sort_custom(_sort_by_item_text)
 		if character_items.size() > 0:
@@ -201,6 +202,7 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 			if item.metadata == current_file:
 				%CurrentResource.text = item.metadata.get_file()
 				resource_tree.set_selected(tree_item, 0)
+
 	if sort_mode == SortMode.FOLDER:
 		var all_items := character_items + timeline_items
 		var dirs := {}
@@ -223,24 +225,41 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 				if item.metadata == current_file:
 					%CurrentResource.text = item.metadata.get_file()
 					resource_tree.set_selected(tree_item, 0)
+
 	if sort_mode == SortMode.PATH:
 		var all_items := character_items + timeline_items
 		var dirs := {}
+		var regex := RegEx.new()
 		for item in all_items:
 			var path := (item.metadata.get_base_dir() as String).replace("res://", "")
+			regex.compile("(\\w+\\/)?\\w+$")
 			if !dirs.has(path):
 				dirs[path] = []
 			dirs[path].append(item)
+
 		for dir in dirs:
+			var dir_display := regex.search(dir).get_string(0)
 			var dir_item = resource_tree.create_item(root)
-			dir_item.set_text(0, dir)
+			var dir_color = ProjectSettings.get_setting("file_customization/folder_colors").get("res://" + dir + "/", get_theme_color("base_color", "Editor"))
+			var default_color_used = true;
+			if dir_color as Color != null and Color(dir_color) != get_theme_color("base_color", "Editor"):
+				dir_color = Color(dir_color)
+				dir_color.a = 0.2
+				dir_color = (dir_color as Color).to_html(true)
+				default_color_used = false
+			dir_item.set_text(0, dir_display)
 			dir_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-			dir_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+			dir_item.set_custom_bg_color(0, dir_color)
 			for item in dirs[dir]:
 				var tree_item = resource_tree.create_item(dir_item)
 				tree_item.set_text(0, item.text)
 				tree_item.set_icon(0, item.icon)
 				tree_item.set_metadata(0, item.metadata)
+				if !default_color_used:
+					dir_color = Color(dir_color)
+					dir_color.a = 0.1
+					dir_color = (dir_color as Color).to_html(true)
+					tree_item.set_custom_bg_color(0, dir_color)
 				tree_item.set_tooltip_text(0, item.tooltip)
 				if item.metadata == current_file:
 					%CurrentResource.text = item.metadata.get_file()
@@ -404,7 +423,7 @@ func _on_sort_changed(idx: int) -> void:
 		DialogicUtil.set_editor_setting("sidebar_sort_mode", idx)
 		update_resource_list()
 	else:
-		sort_mode = SortMode.DEFAULT
+		sort_mode = SortMode.TYPE
 		print("Invalid sort mode: ", idx)
 
 
