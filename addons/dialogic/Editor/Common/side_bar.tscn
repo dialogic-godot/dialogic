@@ -46,17 +46,16 @@ size_flags_vertical = 3
 [node name="Margin" type="MarginContainer" parent="VBoxPrimary"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_bottom = 5
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VBoxPrimary/Margin"]
+[node name="MainVSplit" type="VSplitContainer" parent="VBoxPrimary/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer"]
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Logo" type="TextureRect" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
+[node name="Logo" type="TextureRect" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.623529)
 texture_filter = 6
@@ -65,10 +64,10 @@ layout_mode = 2
 expand_mode = 3
 stretch_mode = 4
 
-[node name="HBox" type="HBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 layout_mode = 2
 
-[node name="CurrentResource" type="LineEdit" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBox"]
+[node name="CurrentResource" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -76,7 +75,7 @@ text = "No resource"
 alignment = 1
 editable = false
 
-[node name="CloseButton" type="Button" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBox"]
+[node name="CloseButton" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Hide Sidebar"
@@ -86,10 +85,10 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="HBoxSearchSort" type="HBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
+[node name="HBoxSearchSort" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 layout_mode = 2
 
-[node name="Search" type="LineEdit" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxSearchSort"]
+[node name="Search" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -98,27 +97,60 @@ placeholder_text = "Filter Resources"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxSearchSort"]
+[node name="Options" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Sort
-- Default: Sort alphabetically split into Characters & Timeilnes.
-- Folder: Sort alphabetically by parent directory.
-- Path: Display full path relative to res://.
-- None: Sort alphabetically with no categories."
+
+[node name="OptionsPopup" type="Popup" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options"]
+unique_name_in_owner = true
+transparent_bg = true
+position = Vector2i(890, 65)
+size = Vector2i(165, 101)
+visible = true
+transparent = true
+
+[node name="OptionsPanel" type="PanelContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel"]
+layout_mode = 2
+
+[node name="GroupingOptions" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Grouping
+- None: No Grouping, sorted alphabetically
+- Type: Group by type (Characters/Timeilnes)
+- Folder: Group based on the parent folder name.
+- Path: Group based on folders."
 text_overrun_behavior = 1
 clip_text = true
 selected = 0
 item_count = 4
-popup/item_0/text = "Type"
-popup/item_1/text = "Folder"
+popup/item_0/text = "No Grouping"
+popup/item_1/text = "Type Grouping"
 popup/item_1/id = 1
-popup/item_2/text = "Path"
+popup/item_2/text = "Folder Grouping"
 popup/item_2/id = 2
-popup/item_3/text = "None"
+popup/item_3/text = "Path Grouping"
 popup/item_3/id = 3
 
-[node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
+[node name="FolderColors" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Use Folder Colors"
+
+[node name="TrimFolderPaths" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Trim Folder Paths"
+
+[node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -126,28 +158,29 @@ allow_rmb_select = true
 hide_root = true
 scroll_horizontal_enabled = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Sort Order"
 vertical_alignment = 1
 
-[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxContainer"]
+[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 1
 popup/item_0/text = "Alphabetical (All)"
 
-[node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/VSplitContainer"]
+[node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ContentList" type="ItemList" parent="VBoxPrimary/Margin/VSplitContainer/ContentListSection"]
+[node name="ContentList" type="ItemList" parent="VBoxPrimary/Margin/MainVSplit/ContentListSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -168,8 +201,12 @@ clip_text = true
 unique_name_in_owner = true
 size = Vector2i(164, 100)
 
-[connection signal="gui_input" from="VBoxPrimary/Margin/VSplitContainer/VBox/Logo" to="." method="_on_logo_gui_input"]
-[connection signal="text_changed" from="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_changed"]
-[connection signal="text_submitted" from="VBoxPrimary/Margin/VSplitContainer/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_submitted"]
+[connection signal="dragged" from="VBoxPrimary/Margin/MainVSplit" to="." method="_on_main_v_split_dragged"]
+[connection signal="gui_input" from="VBoxPrimary/Margin/MainVSplit/VBox/Logo" to="." method="_on_logo_gui_input"]
+[connection signal="text_changed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_changed"]
+[connection signal="text_submitted" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_submitted"]
+[connection signal="pressed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options" to="." method="_on_options_pressed"]
+[connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/FolderColors" to="." method="_on_folder_colors_toggled"]
+[connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/TrimFolderPaths" to="." method="_on_trim_folder_paths_toggled"]
 [connection signal="pressed" from="VBoxPrimary/CurrentVersion" to="." method="_on_current_version_pressed"]
 [connection signal="id_pressed" from="RightClickMenu" to="." method="_on_right_click_menu_id_pressed"]

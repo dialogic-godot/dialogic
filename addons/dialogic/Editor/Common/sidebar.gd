@@ -13,13 +13,13 @@ signal show_sidebar(show: bool)
 
 var current_resource_list: Array = []
 
-enum SortMode {
+enum GroupMode {
+	NONE,
 	TYPE,
 	FOLDER,
 	PATH,
-	NONE,
 }
-var sort_mode: SortMode = SortMode.TYPE
+var group_mode: GroupMode = GroupMode.TYPE
 
 
 func _ready() -> void:
@@ -43,26 +43,20 @@ func _ready() -> void:
 	(%CloseButton as Button).pressed.connect(_hide_sidebar)
 
 	var editor_scale := DialogicUtil.get_editor_scale()
+
 	## ICONS
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Logo.custom_minimum_size.y = 30 * editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+	%Options.icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
+	%OptionsPanel.add_theme_stylebox_override("panel", get_theme_stylebox("PanelForeground", "EditorStyles"))
+	%OptionsPopup.hide()
 
 	%ContentList.add_theme_color_override(
 		"font_hovered_color", get_theme_color("warning_color", "Editor")
 	)
 	%ContentList.add_theme_color_override(
 		"font_selected_color", get_theme_color("property_color_z", "Editor")
-	)
-
-	## MARGINS
-	%VBoxPrimary/Margin.set(
-		"theme_override_constants/margin_left",
-		get_theme_constant("base_margin", "Editor") * editor_scale
-	)
-	%VBoxPrimary/Margin.set(
-		"theme_override_constants/margin_bottom",
-		get_theme_constant("base_margin", "Editor") * editor_scale
 	)
 
 	## RIGHT CLICK MENU
@@ -79,18 +73,23 @@ func _ready() -> void:
 	)
 
 	## SORT MENU
-	%SortOption.set_item_icon(0, get_theme_icon("AnimationTrackGroup", "EditorIcons"))
-	%SortOption.set_item_icon(1, get_theme_icon("Folder", "EditorIcons"))
-	%SortOption.set_item_icon(2, get_theme_icon("FolderBrowse", "EditorIcons"))
-	%SortOption.set_item_icon(3, get_theme_icon("AnimationTrackList", "EditorIcons"))
-	%SortOption.item_selected.connect(_on_sort_changed)
+	%GroupingOptions.set_item_icon(0, get_theme_icon("AnimationTrackGroup", "EditorIcons"))
+	%GroupingOptions.set_item_icon(1, get_theme_icon("Folder", "EditorIcons"))
+	%GroupingOptions.set_item_icon(2, get_theme_icon("FolderBrowse", "EditorIcons"))
+	%GroupingOptions.set_item_icon(3, get_theme_icon("AnimationTrackList", "EditorIcons"))
+	%GroupingOptions.item_selected.connect(_on_grouping_changed)
 
 	await get_tree().process_frame
 	if DialogicUtil.get_editor_setting("sidebar_collapsed", false):
 		_hide_sidebar()
 
-	%SortOption.select(DialogicUtil.get_editor_setting("sidebar_sort_mode", 0))
-	sort_mode = DialogicUtil.get_editor_setting("sidebar_sort_mode", 0)
+	%MainVSplit.split_offset = DialogicUtil.get_editor_setting("sidebar_v_split", 0)
+	group_mode = DialogicUtil.get_editor_setting("sidebar_group_mode", 0)
+	%GroupingOptions.select(%GroupingOptions.get_item_index(group_mode))
+
+	%FolderColors.button_pressed = DialogicUtil.get_editor_setting("sidebar_use_folder_colors", true)
+	%TrimFolderPaths.button_pressed = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths", true)
+
 	update_resource_list()
 
 
@@ -175,8 +174,14 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	# BUILD TREE
 	var root: TreeItem = resource_tree.create_item()
 
-	match sort_mode:
-		SortMode.TYPE:
+	match group_mode:
+		GroupMode.NONE:
+			all_items.sort_custom(_sort_by_item_text)
+			for item in all_items:
+				add_item(item, root, current_file)
+
+
+		GroupMode.TYPE:
 			character_items.sort_custom(_sort_by_item_text)
 			timeline_items.sort_custom(_sort_by_item_text)
 			if character_items.size() > 0:
@@ -190,13 +195,7 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 					add_item(item, timeline_tree, current_file)
 
 
-		SortMode.NONE:
-			all_items.sort_custom(_sort_by_item_text)
-			for item in all_items:
-				add_item(item, root, current_file)
-
-
-		SortMode.FOLDER:
+		GroupMode.FOLDER:
 			var dirs := {}
 			for item in all_items:
 				var dir := item.get_parent_directory() as String
@@ -211,7 +210,7 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 					add_item(item, dir_item, current_file)
 
 
-		SortMode.PATH:
+		GroupMode.PATH:
 			# Collect all different directories that contain resources
 			var dirs := {}
 			for item in all_items:
@@ -249,16 +248,21 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 					return x.get_slice("/", x.get_slice_count("/")-1) < y.get_slice("/", y.get_slice_count("/")-1)
 					)
 			var folder_colors := ProjectSettings.get_setting("file_customization/folder_colors", {})
+
 			for dir in sorted_dir_keys:
+				var display_name: String = dir
+				if not %TrimFolderPaths.button_pressed:
+					display_name = unique_folder_names[dir]
 				var dir_path: String = unique_folder_names[dir]
 				var dir_color_path := ""
 				var dir_color := Color.BLACK
-				for path in folder_colors:
-					if String("res://"+dir_path+"/").begins_with(path) and len(path) > len(dir_color_path):
-						dir_color_path = path
-						dir_color = folder_colors[path]
+				if %FolderColors.button_pressed:
+					for path in folder_colors:
+						if String("res://"+dir_path+"/").begins_with(path) and len(path) > len(dir_color_path):
+							dir_color_path = path
+							dir_color = folder_colors[path]
 
-				var dir_item := add_folder_item(dir, root, dir_color, dir_path)
+				var dir_item := add_folder_item(display_name, root, dir_color, dir_path)
 
 				for item in dirs[dir_path]:
 					var tree_item := add_item(item, dir_item, current_file)
@@ -423,14 +427,18 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 			)
 
 
-func _on_sort_changed(idx: int) -> void:
-	if (SortMode as Dictionary).values().has(idx):
-		sort_mode = idx
-		DialogicUtil.set_editor_setting("sidebar_sort_mode", idx)
+func _on_grouping_changed(idx: int) -> void:
+	var id : int = %GroupingOptions.get_item_id(idx)
+	if (GroupMode as Dictionary).values().has(id):
+		group_mode = id
+		DialogicUtil.set_editor_setting("sidebar_group_mode", id)
 		update_resource_list()
 	else:
-		sort_mode = SortMode.TYPE
-		print("Invalid sort mode: ", idx)
+		group_mode = GroupMode.TYPE
+		print("Invalid sort mode: ", id)
+
+	%FolderColors.disabled = group_mode != GroupMode.PATH
+	%TrimFolderPaths.disabled = group_mode != GroupMode.PATH
 
 
 func _sort_by_item_text(a: ResourceListItem, b: ResourceListItem) -> bool:
@@ -495,3 +503,21 @@ class ResourceListItem:
 				index, resource_list.get_theme_color("accent_color", "Editor")
 			)
 			sidebar.find_child("CurrentResource").text = metadata.get_file()
+
+
+func _on_options_pressed() -> void:
+	%OptionsPopup.popup_on_parent(Rect2(%Options.global_position+%Options.size*Vector2(0,1), Vector2()))
+
+
+func _on_folder_colors_toggled(toggled_on: bool) -> void:
+	DialogicUtil.set_editor_setting("sidebar_use_folder_colors", toggled_on)
+	update_resource_list()
+
+
+func _on_trim_folder_paths_toggled(toggled_on: bool) -> void:
+	DialogicUtil.set_editor_setting("sidebar_trim_folder_paths", toggled_on)
+	update_resource_list()
+
+
+func _on_main_v_split_dragged(offset: int) -> void:
+	DialogicUtil.set_editor_setting("sidebar_v_split", offset)
