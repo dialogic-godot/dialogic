@@ -4,22 +4,21 @@ class_name DialogicSidebar extends Control
 ## Script that handles the editor sidebar.
 
 signal file_activated(file_path)
-
 signal content_item_activated(item_name)
-
 signal show_sidebar(show: bool)
 
+# References
 @onready var editors_manager = get_parent().get_parent()
 @onready var resource_tree: Tree = %ResourceTree
+
 var current_resource_list: Array = []
+
 enum SortMode {
 	TYPE,
 	FOLDER,
 	PATH,
 	NONE,
 }
-
-
 var sort_mode: SortMode = SortMode.TYPE
 
 
@@ -35,8 +34,6 @@ func _ready() -> void:
 
 	resource_tree.item_activated.connect(_on_resources_tree_item_activated)
 	resource_tree.item_mouse_selected.connect(_on_resources_tree_item_clicked)
-
-
 
 	%ContentList.item_selected.connect(
 		func(idx: int): content_item_activated.emit(%ContentList.get_item_text(idx))
@@ -97,10 +94,20 @@ func _ready() -> void:
 	update_resource_list()
 
 
-################################################################################
-## 						SHOW/HIDE SIDEBAR
-################################################################################
+func set_unsaved_indicator(saved: bool = true) -> void:
+	if saved and %CurrentResource.text.ends_with("(*)"):
+		%CurrentResource.text = %CurrentResource.text.trim_suffix("(*)")
+	if not saved and not %CurrentResource.text.ends_with("(*)"):
+		%CurrentResource.text = %CurrentResource.text + "(*)"
 
+
+func _on_logo_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		editors_manager.open_editor(editors_manager.editors["HomePage"].node)
+
+
+#region SHOW/HIDE SIDEBAR
+################################################################################
 
 func _show_sidebar() -> void:
 	%VBoxPrimary.show()
@@ -115,6 +122,8 @@ func _hide_sidebar() -> void:
 	DialogicUtil.set_editor_setting("sidebar_collapsed", true)
 	show_sidebar.emit(false)
 
+#endregion
+
 
 ################################################################################
 ## 						RESOURCE LIST
@@ -123,7 +132,6 @@ func _hide_sidebar() -> void:
 
 func _on_editors_resource_opened(resource: Resource) -> void:
 	update_resource_list()
-	pass
 
 
 func _on_editors_editor_changed(previous: DialogicEditor, current: DialogicEditor) -> void:
@@ -131,9 +139,12 @@ func _on_editors_editor_changed(previous: DialogicEditor, current: DialogicEdito
 	update_resource_list()
 
 
+## Cleans resources that have been deleted from the resource list
 func clean_resource_list(resources_list: Array = []) -> PackedStringArray:
 	return PackedStringArray(resources_list.filter(func(x): return ResourceLoader.exists(x)))
 
+
+#region BULDING/FILTERING THE RESOURCE LIST
 
 func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	var filter: String = %Search.text
@@ -145,7 +156,7 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	var timeline_directory: Dictionary = DialogicResourceUtil.get_timeline_directory()
 	if resources_list.is_empty():
 		resources_list = DialogicUtil.get_editor_setting("last_resources", [])
-		if !current_file in resources_list:
+		if not current_file in resources_list:
 			resources_list.append(current_file)
 
 	resources_list = clean_resource_list(resources_list)
@@ -156,114 +167,102 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	)
 
 	resource_tree.clear()
-	var resource_list_items := []
 
-	var get_directory_items := func(directory:Dictionary, filter:String, icon:Texture2D) -> Array:
-		var items := []
-		for item_name in directory:
-			if (directory[item_name] in resources_list) and (filter.is_empty() or filter.to_lower() in item_name.to_lower()):
-				var item := ResourceListItem.new()
-				item.text = item_name
-				item.icon = icon
-				item.metadata = directory[item_name]
-				item.tooltip = directory[item_name]
-				items.append(item)
-		return items
-
-	var character_items: Array = get_directory_items.call(character_directory, filter, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-	var timeline_items: Array = get_directory_items.call(timeline_directory, filter, get_theme_icon("TripleBar", "EditorIcons"))
-
+	var character_items: Array = get_directory_items.call(character_directory, filter, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), resources_list)
+	var timeline_items: Array = get_directory_items.call(timeline_directory, filter, get_theme_icon("TripleBar", "EditorIcons"), resources_list)
+	var all_items := character_items + timeline_items
 
 	# BUILD TREE
 	var root: TreeItem = resource_tree.create_item()
 
-	if sort_mode == SortMode.TYPE:
-		character_items.sort_custom(_sort_by_item_text)
-		timeline_items.sort_custom(_sort_by_item_text)
-		if character_items.size() > 0:
-			var character_tree := add_folder_item("Characters", root)
-			for item in character_items:
-				add_item(item, character_tree, current_file)
+	match sort_mode:
+		SortMode.TYPE:
+			character_items.sort_custom(_sort_by_item_text)
+			timeline_items.sort_custom(_sort_by_item_text)
+			if character_items.size() > 0:
+				var character_tree := add_folder_item("Characters", root)
+				for item in character_items:
+					add_item(item, character_tree, current_file)
 
-		if timeline_items.size() > 0:
-			var timeline_tree := add_folder_item("Timelines", root)
-			for item in timeline_items:
-				add_item(item, timeline_tree, current_file)
+			if timeline_items.size() > 0:
+				var timeline_tree := add_folder_item("Timelines", root)
+				for item in timeline_items:
+					add_item(item, timeline_tree, current_file)
 
-	if sort_mode == SortMode.NONE:
-		var all_items := character_items + timeline_items
-		all_items.sort_custom(_sort_by_item_text)
-		for item in all_items:
-			var tree_item = resource_tree.create_item(root)
-			tree_item.set_text(0, item.text)
-			tree_item.set_icon(0, item.icon)
-			tree_item.set_metadata(0, item.metadata)
-			tree_item.set_tooltip_text(0, item.tooltip)
-			if item.metadata == current_file:
-				%CurrentResource.text = item.metadata.get_file()
-				resource_tree.set_selected(tree_item, 0)
 
-	if sort_mode == SortMode.FOLDER:
-		var all_items := character_items + timeline_items
-		var dirs := {}
-		for item in all_items:
-			var dir := item.get_parent_directory() as String
-			if !dirs.has(dir):
-				dirs[dir] = []
-			dirs[dir].append(item)
-		for dir in dirs:
-			var dir_item = resource_tree.create_item(root)
-			dir_item.set_text(0, dir)
-			dir_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-			dir_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
-			for item in dirs[dir]:
-				var tree_item = resource_tree.create_item(dir_item)
-				tree_item.set_text(0, item.text)
-				tree_item.set_icon(0, item.icon)
-				tree_item.set_metadata(0, item.metadata)
-				tree_item.set_tooltip_text(0, item.tooltip)
-				if item.metadata == current_file:
-					%CurrentResource.text = item.metadata.get_file()
-					resource_tree.set_selected(tree_item, 0)
+		SortMode.NONE:
+			all_items.sort_custom(_sort_by_item_text)
+			for item in all_items:
+				add_item(item, root, current_file)
 
-	if sort_mode == SortMode.PATH:
-		var all_items := character_items + timeline_items
-		var dirs := {}
-		var regex := RegEx.new()
-		for item in all_items:
-			var path := (item.metadata.get_base_dir() as String).replace("res://", "")
-			regex.compile("(\\w+\\/)?\\w+$")
-			if !dirs.has(path):
-				dirs[path] = []
-			dirs[path].append(item)
 
-		for dir in dirs:
-			var dir_display := regex.search(dir).get_string(0)
-			var dir_item = resource_tree.create_item(root)
-			var dir_color = ProjectSettings.get_setting("file_customization/folder_colors").get("res://" + dir + "/", get_theme_color("base_color", "Editor"))
-			var default_color_used = true;
-			if dir_color as Color != null and Color(dir_color) != get_theme_color("base_color", "Editor"):
-				dir_color = Color(dir_color)
-				dir_color.a = 0.2
-				dir_color = (dir_color as Color).to_html(true)
-				default_color_used = false
-			dir_item.set_text(0, dir_display)
-			dir_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-			dir_item.set_custom_bg_color(0, dir_color)
-			for item in dirs[dir]:
-				var tree_item = resource_tree.create_item(dir_item)
-				tree_item.set_text(0, item.text)
-				tree_item.set_icon(0, item.icon)
-				tree_item.set_metadata(0, item.metadata)
-				if !default_color_used:
-					dir_color = Color(dir_color)
-					dir_color.a = 0.1
-					dir_color = (dir_color as Color).to_html(true)
-					tree_item.set_custom_bg_color(0, dir_color)
-				tree_item.set_tooltip_text(0, item.tooltip)
-				if item.metadata == current_file:
-					%CurrentResource.text = item.metadata.get_file()
-					resource_tree.set_selected(tree_item, 0)
+		SortMode.FOLDER:
+			var dirs := {}
+			for item in all_items:
+				var dir := item.get_parent_directory() as String
+				if not dirs.has(dir):
+					dirs[dir] = []
+				dirs[dir].append(item)
+
+			for dir in dirs:
+				var dir_item := add_folder_item(dir, root)
+
+				for item in dirs[dir]:
+					add_item(item, dir_item, current_file)
+
+
+		SortMode.PATH:
+			# Collect all different directories that contain resources
+			var dirs := {}
+			for item in all_items:
+				var path := (item.metadata.get_base_dir() as String).trim_prefix("res://")
+				if not dirs.has(path):
+					dirs[path] = []
+				dirs[path].append(item)
+
+			# Sort them into ones with the same folder name
+			var dir_names := {}
+			for dir in dirs:
+				var sliced: String = dir.get_slice("/", dir.get_slice_count("/")-1)
+				if not sliced in dir_names:
+					dir_names[sliced] = {"folders":[dir]}
+				else:
+					dir_names[sliced].folders.append(dir)
+
+			# Create a dictionary mapping a unique name to each directory
+			# If two have been found to have the same folder name, the parent directory is added
+			var unique_folder_names := {}
+			for dir_name in dir_names:
+				if dir_names[dir_name].folders.size() > 1:
+					for i in dir_names[dir_name].folders:
+						if "/" in i:
+							unique_folder_names[i.get_slice("/", i.get_slice_count("/")-2)+"/"+i.get_slice("/", i.get_slice_count("/")-1)] = i
+						else:
+							unique_folder_names[i] = i
+				else:
+					unique_folder_names[dir_name] = dir_names[dir_name].folders[0]
+
+			# Sort the folder names by their folder name (not by the full path)
+			var sorted_dir_keys := unique_folder_names.keys()
+			sorted_dir_keys.sort_custom(
+				func(x, y):
+					return x.get_slice("/", x.get_slice_count("/")-1) < y.get_slice("/", y.get_slice_count("/")-1)
+					)
+			var folder_colors := ProjectSettings.get_setting("file_customization/folder_colors", {})
+			for dir in sorted_dir_keys:
+				var dir_path: String = unique_folder_names[dir]
+				var dir_color_path := ""
+				var dir_color := Color.BLACK
+				for path in folder_colors:
+					if String("res://"+dir_path+"/").begins_with(path) and len(path) > len(dir_color_path):
+						dir_color_path = path
+						dir_color = folder_colors[path]
+
+				var dir_item := add_folder_item(dir, root, dir_color, dir_path)
+
+				for item in dirs[dir_path]:
+					var tree_item := add_item(item, dir_item, current_file)
+
 
 	if %CurrentResource.text != "No Resource":
 		%CurrentResource.add_theme_color_override(
@@ -279,18 +278,32 @@ func add_item(item:ResourceListItem, parent:TreeItem, current_file := "") -> Tre
 	tree_item.set_icon(0, item.icon)
 	tree_item.set_metadata(0, item.metadata)
 	tree_item.set_tooltip_text(0, item.tooltip)
+
 	if item.metadata == current_file:
 		%CurrentResource.text = item.metadata.get_file()
 		resource_tree.set_selected(tree_item, 0)
+
+	var bg_color := parent.get_custom_bg_color(0)
+	if bg_color != get_theme_color("base_color", "Editor"):
+		bg_color.a = 0.1
+		tree_item.set_custom_bg_color(0, bg_color)
+
 	return tree_item
 
 
-func add_folder_item(label: String, parent:TreeItem) -> TreeItem:
+func add_folder_item(label: String, parent:TreeItem, color:= Color.BLACK, tooltip:="") -> TreeItem:
 	var folder_item := resource_tree.create_item(parent)
 	folder_item.set_text(0, label)
 	folder_item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
-	folder_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+	folder_item.set_tooltip_text(0, tooltip)
+	if color == Color.BLACK:
+		folder_item.set_custom_bg_color(0, get_theme_color("base_color", "Editor"))
+	else:
+		color.a = 0.2
+		folder_item.set_custom_bg_color(0, color)
 	return folder_item
+
+#endregion
 
 
 func _on_resources_tree_item_activated() -> void:
@@ -344,17 +357,8 @@ func _on_search_text_submitted(new_text: String) -> void:
 	%Search.clear()
 
 
-func set_unsaved_indicator(saved: bool = true) -> void:
-	if saved and %CurrentResource.text.ends_with("(*)"):
-		%CurrentResource.text = %CurrentResource.text.trim_suffix("(*)")
-	if not saved and not %CurrentResource.text.ends_with("(*)"):
-		%CurrentResource.text = %CurrentResource.text + "(*)"
 
-
-func _on_logo_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		editors_manager.open_editor(editors_manager.editors["HomePage"].node)
-
+#region CONTENT LIST
 
 func update_content_list(list: PackedStringArray) -> void:
 	var prev_selected := ""
@@ -384,6 +388,8 @@ func update_content_list(list: PackedStringArray) -> void:
 	label_directory[""] = list
 
 	DialogicResourceUtil.set_label_cache(label_directory)
+
+#endregion
 
 
 func remove_item_from_list(item: TreeItem) -> void:
@@ -438,6 +444,17 @@ func edit_resource(resource_item: Variant) -> void:
 		editors_manager.edit_resource(load(resource_item))
 
 
+func get_directory_items(directory:Dictionary, filter:String, icon:Texture2D, resources_list:Array) -> Array:
+	var items := []
+	for item_name in directory:
+		if (directory[item_name] in resources_list) and (filter.is_empty() or filter.to_lower() in item_name.to_lower()):
+			var item := ResourceListItem.new()
+			item.text = item_name
+			item.icon = icon
+			item.metadata = directory[item_name]
+			item.tooltip = directory[item_name]
+			items.append(item)
+	return items
 
 
 class ResourceListItem:
