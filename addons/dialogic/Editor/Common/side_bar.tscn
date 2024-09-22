@@ -208,5 +208,4 @@ size = Vector2i(164, 100)
 [connection signal="pressed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options" to="." method="_on_options_pressed"]
 [connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/FolderColors" to="." method="_on_folder_colors_toggled"]
 [connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/TrimFolderPaths" to="." method="_on_trim_folder_paths_toggled"]
-[connection signal="pressed" from="VBoxPrimary/CurrentVersion" to="." method="_on_current_version_pressed"]
 [connection signal="id_pressed" from="RightClickMenu" to="." method="_on_right_click_menu_id_pressed"]
