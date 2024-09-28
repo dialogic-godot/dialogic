@@ -147,7 +147,6 @@ icon_alignment = 1
 [node name="RightClickMenu" type="PopupMenu" parent="Editor/Tree"]
 unique_name_in_owner = true
 size = Vector2i(67, 35)
-visible = true
 item_count = 1
 item_0/text = "Copy"
 item_0/id = 0
