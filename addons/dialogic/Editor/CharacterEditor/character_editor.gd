@@ -126,6 +126,7 @@ func new_character(path: String) -> void:
 	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(resource, path)
+	EditorInterface.get_resource_filesystem().update_file(path)
 	DialogicResourceUtil.update_directory('dch')
 	editors_manager.edit_resource(resource)
 
