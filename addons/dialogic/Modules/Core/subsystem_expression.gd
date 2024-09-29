@@ -20,7 +20,7 @@ func execute_string(string:String, default: Variant = null, no_warning := false)
 	for res in regex.search_all(string):
 		var value: Variant = dialogic.VAR.get_variable(res.get_string())
 		string = string.replace(res.get_string(), var_to_str(value))
-	
+
 	if string.begins_with("{") and string.ends_with('}') and string.count("{") == 1:
 		string = string.trim_prefix("{").trim_suffix("}")
 

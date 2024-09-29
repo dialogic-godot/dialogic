@@ -105,7 +105,7 @@ func toggle_comment() -> void:
 	for i in range(from, to+1):
 		if not lines[i].begins_with("#"):
 			will_comment = true
-	
+
 	for i in range(from, to + 1):
 		if will_comment:
 			lines[i] = "#" + lines[i]

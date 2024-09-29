@@ -104,7 +104,7 @@ func _on_dialogic_timeline_ended() -> void:
 
 func _ready() -> void:
 	dialogic.timeline_ended.connect(_on_dialogic_timeline_ended)
-	
+
 	base_music_player.name = "Music"
 	add_child(base_music_player)
 
