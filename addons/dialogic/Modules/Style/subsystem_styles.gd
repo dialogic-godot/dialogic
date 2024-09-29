@@ -74,7 +74,7 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 		# Preserve process_mode on style changes
 		if previous_layout:
 			new_layout.process_mode = previous_layout.process_mode
-		
+
 		new_layout.ready.connect(reload_current_info_into_new_style)
 
 	style_changed.emit(signal_info)

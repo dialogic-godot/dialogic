@@ -214,7 +214,7 @@ func _on_choice_selected(choice_info := {}) -> void:
 			dialogic.History.store_simple_history_entry(choice_info.text, "Choice", {'all_choices': all_choices})
 		if dialogic.has_subsystem("History"):
 			dialogic.History.mark_event_as_visited(choice_info.event_index)
-	
+
 	choice_selected.emit(choice_info)
 	hide_all_choices()
 	dialogic.current_state = dialogic.States.IDLE

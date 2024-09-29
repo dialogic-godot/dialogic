@@ -143,7 +143,7 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	nlp.get_theme_stylebox(&'panel').content_margin_bottom = name_label_padding.y
 	bubble.name_label_offset = name_label_offset
 	bubble.name_label_alignment = name_label_alignment
-	
+
 	nlp.get_parent().visible = name_label_enabled
 
 	## CHOICE SETTINGS

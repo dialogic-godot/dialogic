@@ -154,7 +154,7 @@ func markdown_to_bbcode(text:String) -> String:
 	while res:
 		text = text.replace(res.get_string(), '[code][bgcolor='+get_theme_color("box_selection_fill_color", "Editor").to_html()+']'+res.get_string('text').strip_edges()+'[/bgcolor][/code]')
 		res = big_code_regex.search(text)
-	
+
 	return text
 
 
