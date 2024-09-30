@@ -133,7 +133,7 @@ func _execute() -> void:
 	var tweener := tween.tween_property(target_node, full_property_path, _value, _time)
 
 	if tweener == null:
-		printerr("[Dialogic] Tween Event failed to create Tween, aborting.")
+		printerr("[Dialogic] Tween Event failed to create Tween, aborting. Check if property " + full_property_path + " matches type of the value " + _value)
 		finish()
 		return
 
