@@ -20,3 +20,8 @@ func _get_text_effects() -> Array[Dictionary]:
 		{'command':'ns', 'subsystem':'Inputs', 'method':'effect_noskip'},
 		{'command':'input', 'subsystem':'Inputs', 'method':'effect_input'},
 	]
+
+func _get_text_modifiers() -> Array[Dictionary]:
+	return [
+		{'subsystem':'Expressions', 'method':"modifier_condition", 'command':'if', 'mode':-1},
+	]

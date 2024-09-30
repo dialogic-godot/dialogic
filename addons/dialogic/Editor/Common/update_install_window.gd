@@ -1,22 +1,22 @@
 @tool
 extends Control
 
-var current_info : Dictionary = {}
+var current_info := {}
 @onready var editor_view := find_parent('EditorView')
 
 
-func _ready():
+func _ready() -> void:
 	await editor_view.ready
 	theme = editor_view.theme
 
 	%Install.icon = editor_view.get_theme_icon("AssetLib", "EditorIcons")
 	%LoadingIcon.texture = editor_view.get_theme_icon("KeyTrackScale", "EditorIcons")
 	%InstallWarning.modulate = editor_view.get_theme_color("warning_color", "Editor")
-
+	%CloseButton.icon = editor_view.get_theme_icon("Close", "EditorIcons")
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
 
 
-func open():
+func open() -> void:
 	get_parent().popup_centered_ratio(0.5)
 	get_parent().mode = Window.MODE_WINDOWED
 	get_parent().move_to_foreground()
@@ -55,7 +55,7 @@ func load_info(info:Dictionary, update_type:int) -> void:
 		%Install.disabled = true
 
 	%UpdateName.text = info.name
-	%Content.text = markdown_to_bbcode('#'+info.body.get_slice('#', 1)).strip_edges()
+	%Content.text = markdown_to_bbcode(info.body).get_slice("\n[font_size", 0).strip_edges()
 	%ShortInfo.text = "Published on "+info.published_at.substr(0, info.published_at.find('T'))+" by "+info.author.login
 	if info.has("html_url"):
 		%ReadFull.uri = info.html_url
@@ -76,11 +76,11 @@ func load_info(info:Dictionary, update_type:int) -> void:
 	else:
 		%Reactions.hide()
 
-func _on_window_close_requested():
+func _on_window_close_requested() -> void:
 	get_parent().visible = false
 
 
-func _on_install_pressed():
+func _on_install_pressed() -> void:
 	find_parent('UpdateManager').request_update_download()
 
 	%InfoLabel.text = "Downloading. This can take a moment."
@@ -88,7 +88,7 @@ func _on_install_pressed():
 	%LoadingIcon.create_tween().set_loops().tween_property(%LoadingIcon, 'rotation', 2*PI, 1).from(0)
 
 
-func _on_refresh_pressed():
+func _on_refresh_pressed() -> void:
 	find_parent('UpdateManager').request_update_check()
 
 
@@ -154,7 +154,7 @@ func markdown_to_bbcode(text:String) -> String:
 	while res:
 		text = text.replace(res.get_string(), '[code][bgcolor='+get_theme_color("box_selection_fill_color", "Editor").to_html()+']'+res.get_string('text').strip_edges()+'[/bgcolor][/code]')
 		res = big_code_regex.search(text)
-
+	
 	return text
 
 
@@ -163,14 +163,18 @@ func _on_content_meta_clicked(meta:Variant) -> void:
 	OS.shell_open(str(meta))
 
 
-func _on_install_mouse_entered():
+func _on_install_mouse_entered() -> void:
 	if not %Install.disabled:
 		%InstallWarning.show()
 
 
-func _on_install_mouse_exited():
+func _on_install_mouse_exited() -> void:
 	%InstallWarning.hide()
 
 
-func _on_restart_pressed():
+func _on_restart_pressed() -> void:
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().restart_editor(true)
+
+
+func _on_close_button_pressed() -> void:
+	get_parent().hide()

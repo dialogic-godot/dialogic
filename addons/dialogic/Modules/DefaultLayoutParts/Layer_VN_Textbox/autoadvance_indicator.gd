@@ -1,6 +1,6 @@
 extends Range
 
-var enabled : bool = true
+var enabled: bool = true
 
 func _process(_delta : float) -> void:
 	if !enabled:

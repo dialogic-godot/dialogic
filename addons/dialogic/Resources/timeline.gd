@@ -6,7 +6,7 @@ class_name DialogicTimeline
 ## It can store them as text and load them from text too.
 
 var events: Array = []
-var events_processed: bool = false
+var events_processed := false
 
 
 ## Method used for printing timeline resources identifiably
@@ -30,7 +30,7 @@ func from_text(text:String) -> void:
 
 ## Stores all events in their text format and returns them as a string
 func as_text() -> String:
-	var result: String = ""
+	var result := ""
 
 	if events_processed:
 		var indent := 0

@@ -9,7 +9,7 @@ extends DialogicEvent
 
 ## The name of the slot to save to. Learn more in the saving subsystem.
 ## If empty, the event will attempt to save to the latest slot, and otherwise use the default.
-var slot_name: String = ""
+var slot_name := ""
 
 
 ################################################################################
@@ -61,5 +61,5 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('slot_name', ValueType.SINGLELINE_TEXT, {'left_text':'Save to slot'})

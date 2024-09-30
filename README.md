@@ -2,7 +2,7 @@
   <img width="1280" alt="cover" src="https://user-images.githubusercontent.com/2206700/189457799-6327bab0-b085-4421-8640-6a18e395d17d.png">
 </p>
 
-<h1 align="center">Dialogic</h1>
+<h1 align="center">Dialogic 2</h1>
 
 <p align="center">
   Create <b>Dialogs</b>, <b>Visual Novels</b>, <b>RPGs</b>, and <b>manage Characters</b> with Godot to create your Game!
@@ -28,9 +28,7 @@
 
 Dialogic 2 **requires at least Godot 4.2**.
 
-It's a major rewrite compared to the previous Dialogic 1.
-
-[If you are looking for the Godot 3.5 version you can find it here.](https://github.com/dialogic-godot/dialogic/tree/dialogic-1)
+[If you are looking for the Godot 3.x version (Dialogic 1.x) you can find it here.](https://github.com/dialogic-godot/dialogic-1)
 
 ## Installation
 Follow the installation instructions on our [Getting Started](https://docs.dialogic.pro/getting-started.html#1-installation--activation) documentation.
@@ -68,9 +66,9 @@ Changelogs will accommodate for these changes and inform you on how to update yo
 
 
 ## Credits
-Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
+Made by [Jowan-Spooner](https://github.com/Jowan-Spooner) and [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [zaknafean](https://github.com/zaknafean), [thebardsrc](https://github.com/thebardsrc), [and more!](https://github.com/dialogic-godot/dialogic/graphs/contributors).
+Contributors: [CakeVR](https://github.com/CakeVR), [Exelia](https://github.com/exelia-antonov), [zaknafean](https://github.com/zaknafean), [and more!](https://github.com/dialogic-godot/dialogic/graphs/contributors).
 
 Special thanks: [Arnaud](https://github.com/arnaudvergnet), [AnidemDex](https://github.com/AnidemDex), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14).
 

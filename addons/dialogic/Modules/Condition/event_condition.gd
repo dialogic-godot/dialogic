@@ -10,7 +10,7 @@ enum ConditionTypes {IF, ELIF, ELSE}
 ## condition type (see [ConditionTypes]). Defaults to if.
 var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
-var condition: String = ""
+var condition := ""
 
 
 ################################################################################
@@ -24,9 +24,9 @@ func _execute() -> void:
 
 	if condition.is_empty(): condition = "true"
 
-	var result :bool= dialogic.Expressions.execute_condition(condition)
+	var result: bool = dialogic.Expressions.execute_condition(condition)
 	if not result:
-		var idx :int= dialogic.current_event_idx
+		var idx: int = dialogic.current_event_idx
 		var ignore := 1
 		while true:
 			idx += 1
@@ -103,7 +103,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('condition_type', ValueType.FIXED_OPTIONS, {
 		'options': [
 			{
@@ -125,12 +125,12 @@ func build_event_editor():
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if (line.begins_with('if') or line.begins_with('elif')) and symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', TextNode.syntax_highlighter.code_flow_color)
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', TextNode.syntax_highlighter.code_flow_color)

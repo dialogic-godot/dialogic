@@ -6,7 +6,7 @@ extends MarginContainer
 signal content_changed()
 
 ## REFERENCES
-var resource : DialogicEvent
+var resource: DialogicEvent
 var editor_reference
 # for choice and condition
 var end_node: Node = null:
@@ -14,7 +14,7 @@ var end_node: Node = null:
 		return end_node
 	set(node):
 		end_node = node
-		%CollapseButton.visible = true if end_node else false
+		%ToggleChildrenVisibilityButton.visible = true if end_node else false
 
 
 ## FLAGS
@@ -40,7 +40,7 @@ var current_indent_level := 1
 #region UI AND LOGIC INITIALIZATION
 ################################################################################
 
-func _ready():
+func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 
@@ -63,8 +63,12 @@ func initialize_ui() -> void:
 	%Warning.position = Vector2(-5 * _scale, -10 * _scale)
 
 	# Expand Button
-	%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
-	%ExpandButton.modulate = get_theme_color("readonly_color", "Editor")
+	%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_normal_color", get_theme_color("contrast_color_2", "Editor"))
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_hover_color", get_theme_color("accent_color", "Editor"))
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_pressed_color", get_theme_color("contrast_color_2", "Editor"))
+	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_hover_pressed_color", get_theme_color("accent_color", "Editor"))
+	%ToggleBodyVisibilityButton.add_theme_stylebox_override('hover_pressed', StyleBoxEmpty.new())
 
 	# Icon Panel
 	%IconPanel.tooltip_text = resource.event_name
@@ -86,9 +90,9 @@ func initialize_ui() -> void:
 	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
 
 	# Collapse Button
-	%CollapseButton.toggled.connect(_on_collapse_toggled)
-	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
-	%CollapseButton.hide()
+	%ToggleChildrenVisibilityButton.toggled.connect(_on_collapse_toggled)
+	%ToggleChildrenVisibilityButton.icon = get_theme_icon("Collapse", "EditorIcons")
+	%ToggleChildrenVisibilityButton.hide()
 
 	%Body.add_theme_constant_override("margin_left", icon_size * _scale)
 
@@ -103,7 +107,7 @@ func initialize_logic() -> void:
 
 	content_changed.connect(recalculate_field_visibility)
 
-	_on_ExpandButton_toggled(resource.expand_by_default or resource.created_by_button)
+	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button)
 
 #endregion
 
@@ -138,7 +142,7 @@ func set_warning(text:String= "") -> void:
 
 
 func set_indent(indent: int) -> void:
-	add_theme_constant_override("margin_left", indent_size*indent*DialogicUtil.get_editor_scale())
+	add_theme_constant_override("margin_left", indent_size * indent * DialogicUtil.get_editor_scale())
 	current_indent_level = indent
 
 #endregion
@@ -161,7 +165,8 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.NUMBER: 			"res://addons/dialogic/Editor/Events/Fields/field_number.tscn",
 	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn",
 	DialogicEvent.ValueType.VECTOR3: 			"res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn",
-	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn"
+	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn",
+	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn"
 	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
@@ -189,7 +194,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
-		var editor_node : Control
+		var editor_node: Control
 
 		### LINEBREAK
 		if p.name == "linebreak":
@@ -213,12 +218,13 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		elif p.field_type == resource.ValueType.BUTTON:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
+			editor_node.tooltip_text = p.display_info.get('tooltip', '')
 			if typeof(p.display_info.icon) == TYPE_ARRAY:
 				editor_node.icon = callv('get_theme_icon', p.display_info.icon)
 			else:
 				editor_node.icon = p.display_info.icon
 			editor_node.flat = true
-			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
+			editor_node.custom_minimum_size.x = 30 * DialogicUtil.get_editor_scale()
 			editor_node.pressed.connect(p.display_info.callable)
 
 		## CUSTOM
@@ -318,13 +324,15 @@ func recalculate_field_visibility() -> void:
 		else:
 			if _evaluate_visibility_condition(p):
 				if p.node != null:
+					if p.node.visible == false and p.has("property"):
+						p.node._set_value(resource.get(p.property))
 					p.node.show()
 				if p.location == 1:
 					has_any_enabled_body_content = true
 			else:
 				if p.node != null:
 					p.node.hide()
-	%ExpandButton.visible = has_any_enabled_body_content
+	%ToggleBodyVisibilityButton.visible = has_any_enabled_body_content
 
 
 func set_property(property_name:String, value:Variant) -> void:
@@ -368,7 +376,7 @@ func _on_resource_ui_update_needed() -> void:
 
 func _on_collapse_toggled(toggled:bool) -> void:
 	collapsed = toggled
-	var timeline_editor = find_parent('VisualEditor')
+	var timeline_editor: Node = find_parent('VisualEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 		# consider to make it "public" or add a public helper function
@@ -376,15 +384,15 @@ func _on_collapse_toggled(toggled:bool) -> void:
 
 
 
-func _on_ExpandButton_toggled(button_pressed:bool) -> void:
+func _on_ToggleBodyVisibility_toggled(button_pressed:bool) -> void:
 	if button_pressed and !body_was_build:
 		build_editor(false, true)
-	%ExpandButton.set_pressed_no_signal(button_pressed)
+	%ToggleBodyVisibilityButton.set_pressed_no_signal(button_pressed)
 
 	if button_pressed:
-		%ExpandButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	else:
-		%ExpandButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
+		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 
 	expanded = button_pressed
 	%Body.visible = button_pressed
@@ -398,11 +406,11 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
 			if has_any_enabled_body_content:
-				_on_ExpandButton_toggled(!expanded)
+				_on_ToggleBodyVisibility_toggled(!expanded)
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			var popup :PopupMenu = get_parent().get_parent().get_node('EventPopupMenu')
+			var popup: PopupMenu = get_parent().get_parent().get_node('EventPopupMenu')
 			popup.current_event = self
 			popup.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 			if resource.help_page_path == "":

@@ -1,0 +1,154 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddlxjde1cx035"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/BrowserItem.gd" id="1_s3kf0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfw08"]
+bg_color = Color(1, 1, 1, 0.32549)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ab24c"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnehp"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.847059, 0.847059, 0.847059, 0.384314)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxx8t"]
+bg_color = Color(0.435294, 0.435294, 0.435294, 0.211765)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[node name="BrowserItem" type="MarginContainer"]
+custom_minimum_size = Vector2(200, 150)
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 128.0
+offset_bottom = 102.0
+size_flags_horizontal = 0
+focus_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_s3kf0")
+
+[node name="HoverBG" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pfw08")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="VBox"]
+unique_name_in_owner = true
+self_modulate = Color(0.0705882, 0.0705882, 0.0705882, 1)
+clip_children = 2
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ab24c")
+
+[node name="Image" type="TextureRect" parent="VBox/Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -22.0
+offset_top = 5.0
+offset_right = -6.0
+offset_bottom = 21.0
+grow_horizontal = 0
+tooltip_text = "Currently in use"
+stretch_mode = 2
+
+[node name="Panel" type="Panel" parent="VBox/Panel/Image"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -36.0
+offset_right = -7.0
+offset_bottom = -6.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qnehp")
+
+[node name="Icon" type="TextureRect" parent="VBox/Panel/Image/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dialogic Theme"
+horizontal_alignment = 1
+
+[node name="FocusFG" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nxx8t")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

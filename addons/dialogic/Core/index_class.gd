@@ -7,13 +7,13 @@ extends RefCounted
 ## Overwrite the methods to return the contents of that folder.
 
 
-var this_folder : String = get_script().resource_path.get_base_dir()
+var this_folder: String = get_script().resource_path.get_base_dir()
 
 ## Overwrite if this module contains any events. [br]
 ## Return an array with all the paths to the event scripts.[br]
 ## You can use the [property this_folder].path_join('my_event.gd')
 func _get_events() -> Array:
-	if FileAccess.file_exists(this_folder.path_join('event.gd')):
+	if ResourceLoader.exists(this_folder.path_join('event.gd')):
 		return [this_folder.path_join('event.gd')]
 	return []
 
@@ -59,7 +59,12 @@ func _get_text_modifiers() -> Array[Dictionary]:
 ## These can later be retrieved with DialogicResourceUtil.
 ## Each dictionary should contain (at least "type" and "path").
 ## 		E.g. {"type":"Animation", "path": "res://..."}
-func _get_special_resources() -> Array[Dictionary]:
+func _get_special_resources() -> Dictionary:
+	return {}
+
+
+## Return a list of dictionaries, each
+func _get_portrait_scene_presets() -> Array[Dictionary]:
 	return []
 
 
@@ -70,12 +75,26 @@ func list_dir(subdir:='') -> Array:
 	return Array(DirAccess.get_files_at(this_folder.path_join(subdir))).map(func(file):return this_folder.path_join(subdir).path_join(file))
 
 
-func list_special_resources(subdir:='', type:='', extension:="") -> Array[Dictionary]:
-	var array := []
+func list_special_resources(subdir:='', extension:="") -> Dictionary:
+	var dict := {}
 	for i in list_dir(subdir):
 		if extension.is_empty() or i.ends_with(extension):
-			array.append({'type':type, 'path':i})
-	return Array(array, TYPE_DICTIONARY, "", null)
+			dict[DialogicUtil.pretty_name(i).to_lower()] = {"path":i}
+	return dict
+
+
+func list_animations(subdir := "") -> Dictionary:
+	var full_animation_list := {}
+	for path in list_dir(subdir):
+		if not path.ends_with(".gd") and not path.ends_with(".gdc"):
+			continue
+		var anim_object: DialogicAnimation = load(path).new()
+		var versions := anim_object._get_named_variations()
+		for version_name in versions:
+			full_animation_list[version_name] = versions[version_name]
+			full_animation_list[version_name]["path"] = path
+		anim_object.queue_free()
+	return full_animation_list
 
 #endregion
 
@@ -99,7 +118,7 @@ func _get_layout_parts() -> Array[Dictionary]:
 ## Helper that allows scanning sub directories that might be layout parts or styles
 func scan_for_layout_parts() -> Array[Dictionary]:
 	var dir := DirAccess.open(this_folder)
-	var style_list :Array[Dictionary] = []
+	var style_list: Array[Dictionary] = []
 	if !dir:
 		return style_list
 	dir.list_dir_begin()

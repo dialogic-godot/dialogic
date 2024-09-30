@@ -19,9 +19,9 @@ signal event_finished(event_resource:DialogicEvent)
 ### Main Event Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event name that'll be displayed in the editor.
-var event_name: String = "Event"
+var event_name := "Event"
 ## Unique identifier used for translatable events.
-var _translation_id: String = ""
+var _translation_id := ""
 ## A reference to dialogic during execution, can be used the same as Dialogic (reference to the autoload)
 var dialogic: DialogicGameHandler = null
 
@@ -30,50 +30,48 @@ var dialogic: DialogicGameHandler = null
 ### (these properties store how this event affects indentation/flow of timeline)
 
 ## If true this event can not be toplevel (e.g. Choice)
-var needs_indentation: bool = false
+var needs_indentation := false
 ## If true this event will spawn with an END BRANCH event and higher the indentation
-var can_contain_events: bool = false
+var can_contain_events := false
 ## If [can_contain_events] is true this is a reference to the end branch event
 var end_branch_event: DialogicEndBranchEvent = null
 ## If this is true this event will group with other similar events (like choices do).
-var wants_to_group: bool = false
+var wants_to_group := false
 
 
 ### Saving/Loading Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Stores the event in a text format. Does NOT automatically update.
-var event_node_as_text: String = ""
+var event_node_as_text := ""
 ## Flags if the event has been processed or is only stored as text
-var event_node_ready: bool = false
+var event_node_ready := false
 ## How many empty lines are before this event
-var empty_lines_above:int = 0
+var empty_lines_above: int = 0
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event color that event node will take in the editor
-var event_color: Color = Color("FBB13C")
+var event_color := Color("FBB13C")
 ## If you are using the default color palette
-var dialogic_color_name: String = ''
+var dialogic_color_name: = ""
 ## To sort the buttons shown in the editor. Lower index is placed at the top of a category
 var event_sorting_index: int = 0
-## If false the name is not displayed on the event.
-var display_name: bool = true
 ## If true the event will not have a button in the visual editor sidebar
-var disable_editor_button: bool = false
+var disable_editor_button := false
 ## If false the event will hide it's body by default. Recommended for most events
-var expand_by_default: bool = false
+var expand_by_default := false
 ## The URL to open when right_click>Documentation is selected
-var help_page_path: String = ""
+var help_page_path := ""
 ## Is the event block created by a button?
-var created_by_button: bool = false
+var created_by_button := false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
-var _editor_node: Control = null
+var editor_node: Control = null
 
 ## The categories and which one to put it in (in the visual editor sidebar)
-var event_category: String = "Other"
+var event_category := "Other"
 
 
 ### Editor UI creation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,10 +93,13 @@ enum ValueType {
 	NUMBER,
 	VECTOR2, VECTOR3, VECTOR4,
 	# Other
-	CUSTOM, BUTTON, LABEL
+	CUSTOM, BUTTON, LABEL, COLOR
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
+
+var this_folder: String = get_script().resource_path.get_base_dir()
+
 ## Singal that notifies the visual editor block to update
 signal ui_update_needed
 signal ui_update_warning(text:String)
@@ -124,6 +125,14 @@ func execute(_dialogic_game_handler: DialogicGameHandler) -> void:
 ## Ends the event behaviour.
 func finish() -> void:
 	event_finished.emit(self)
+
+
+## Called before executing the next event or before clear(any flags) / load_full_state().
+##
+## Should be overridden if the event stores temporary state into dialogic.current_state_info
+## or some other cleanup is needed before another event can run.
+func _clear_state() -> void:
+	pass
 
 
 ## To be overridden by subclasses.
@@ -162,7 +171,7 @@ func _get_translatable_properties() -> Array:
 
 
 ## Overwrite if this events needs translation.
-func _get_property_original_translation(property_name:String) -> String:
+func _get_property_original_translation(_property_name:String) -> String:
 	return ''
 
 
@@ -247,85 +256,136 @@ func _test_event_string(string:String) -> bool:
 ################################################################################
 ### All of these functions can/should be overridden by the sub classes
 
-## if this uses the short-code format, return the shortcode
+## If this uses the short-code format, return the shortcode.
 func get_shortcode() -> String:
 	return 'default_shortcode'
 
 
-## if this uses the short-code format, return the parameters and corresponding property names
+## If this uses the short-code format, return the parameters and corresponding property names.
 func get_shortcode_parameters() -> Dictionary:
 	return {}
 
 
-## returns a readable presentation of the event (This is how it's stored)
-## by default it uses a shortcode format, but can be overridden
+## Returns a readable presentation of the event (This is how it's stored).
+## By default it uses a shortcode format, but can be overridden.
 func to_text() -> String:
-	var result_string: String = "["+self.get_shortcode()
-	var params: Dictionary = get_shortcode_parameters()
+	var shortcode := store_to_shortcode_parameters()
+	if shortcode:
+		return "[" + self.get_shortcode() + " " + store_to_shortcode_parameters() + "]"
+	else:
+		return "[" + self.get_shortcode() + "]"
+
+
+## Loads the variables from the string stored by [method to_text].
+## By default it uses the shortcode format, but can be overridden.
+func from_text(string: String) -> void:
+	load_from_shortcode_parameters(string)
+
+
+## Returns a string with all the shortcode parameters.
+func store_to_shortcode_parameters(params:Dictionary = {}) -> String:
+	if params.is_empty():
+		params = get_shortcode_parameters()
+
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 
-	for parameter: String in params.keys():
+	var result_string := ""
+	for parameter in params.keys():
+		var parameter_info: Dictionary = params[parameter]
+		var value: Variant = get(parameter_info.property)
+		var default_value: Variant = custom_defaults.get(parameter_info.property, parameter_info.default)
 
-		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
-		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
+		if parameter_info.get('custom_stored', false):
+			continue
 
-			if typeof(get(params[parameter].property)) == TYPE_OBJECT:
-				result_string += " "+parameter+'="'+str(get(params[parameter].property).resource_path)+'"'
+		if "set_" + parameter_info.property in self and not get("set_" + parameter_info.property):
+			continue
 
-			elif typeof(get(params[parameter].property)) == TYPE_STRING:
-				result_string += " "+parameter+'="'+get(params[parameter].property).replace('=', "\\=")+'"'
-			# if this is an enum with values provided, try to use a text alternative
-			elif typeof(get(params[parameter].property)) == TYPE_INT and params[parameter].has('suggestions'):
+		if typeof(value) == typeof(default_value) and value == default_value:
+			if not "set_" + parameter_info.property in self or not get("set_" + parameter_info.property):
+				continue
 
-				for option in params[parameter].suggestions.call().values():
+		result_string += " " + parameter + '="' + value_to_string(value, parameter_info.get("suggestions", Callable())) + '"'
 
-					if option.value == get(params[parameter].property):
-
-						if option.has('text_alt'):
-							result_string += " "+parameter+'="'+option.text_alt[0]+'"'
-						else:
-							result_string += " "+parameter+'="'+var_to_str(option.value).replace('=', "\\=")+'"'
-						break
-
-			elif typeof(get(params[parameter].property)) == TYPE_DICTIONARY:
-				result_string += " "+parameter+'="'+ JSON.stringify(get(params[parameter].property)).replace('=', "\\=")+'"'
-
-			else:
-				result_string += " "+parameter+'="'+var_to_str(get(params[parameter].property)).replace('=', "\\=")+'"'
-	result_string += "]"
-	return result_string
+	return result_string.strip_edges()
 
 
-## loads the variables from the string stored above
-## by default it uses the shortcode format, but can be overridden
-func from_text(string:String) -> void:
+func value_to_string(value: Variant, suggestions := Callable()) -> String:
+	var value_as_string := ""
+	match typeof(value):
+		TYPE_OBJECT:
+			value_as_string = str(value.resource_path)
+
+		TYPE_STRING:
+			value_as_string = value
+
+		TYPE_INT when suggestions.is_valid():
+			# HANDLE TEXT ALTERNATIVES FOR ENUMS
+			for option in suggestions.call().values():
+				if option.value != value:
+					continue
+
+				if option.has('text_alt'):
+					value_as_string = option.text_alt[0]
+				else:
+					value_as_string = var_to_str(option.value)
+
+				break
+
+		TYPE_DICTIONARY:
+			value_as_string = JSON.stringify(value)
+
+		_:
+			value_as_string = var_to_str(value)
+
+	if not ((value_as_string.begins_with("[") and value_as_string.ends_with("]")) or (value_as_string.begins_with("{") and value_as_string.ends_with("}"))):
+		value_as_string.replace('"', '\\"')
+
+	return value_as_string
+
+
+func load_from_shortcode_parameters(string:String) -> void:
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
 
 	for parameter: String in params.keys():
-		if not parameter in data:
+		var parameter_info: Dictionary = params[parameter]
+		if parameter_info.get('custom_stored', false):
 			continue
 
+		if not parameter in data:
+			if "set_" + parameter_info.property in self:
+				set("set_" + parameter_info.property, false)
+			continue
+
+		if "set_" + parameter_info.property in self:
+			set("set_" + parameter_info.property, true)
+
+		var param_value: String = data[parameter].replace('\\"', '"')
 		var value: Variant
-		match typeof(get(params[parameter].property)):
+		match typeof(get(parameter_info.property)):
 			TYPE_STRING:
-				value = data[parameter].replace('\\=', '=')
+				value = param_value
+
 			TYPE_INT:
-				if params[parameter].has('suggestions'):
-					for option in params[parameter].suggestions.call().values():
-						if option.has('text_alt') and data[parameter] in option.text_alt:
+				# If a string is given
+				if parameter_info.has('suggestions'):
+					for option in parameter_info.suggestions.call().values():
+						if option.has('text_alt') and param_value in option.text_alt:
 							value = option.value
 							break
-				if !value:
-					value = float(data[parameter].replace('\\=', '='))
+
+				if not value:
+					value = float(param_value)
+
 			_:
-				value = str_to_var(data[parameter].replace('\\=', '='))
-		set(params[parameter].property, value)
+				value = str_to_var(param_value)
 
+		set(parameter_info.property, value)
 
-## has to return true, if the given string can be interpreted as this event
-## by default it uses the shortcode formta, but can be overridden
-func is_valid_event(string:String) -> bool:
+## Has to return `true`, if the given string can be interpreted as this event.
+## By default it uses the shortcode formta, but can be overridden.
+func is_valid_event(string: String) -> bool:
 	if string.strip_edges().begins_with('['+get_shortcode()+' ') or string.strip_edges().begins_with('['+get_shortcode()+']'):
 		return true
 	return false
@@ -334,16 +394,16 @@ func is_valid_event(string:String) -> bool:
 ## has to return true if this string seems to be a full event of this kind
 ## (only tested if is_valid_event() returned true)
 ## if a shortcode it used it will default to true if the string ends with ']'
-func is_string_full_event(string:String) -> bool:
+func is_string_full_event(string: String) -> bool:
 	if get_shortcode() != 'default_shortcode': return string.strip_edges().ends_with(']')
 	return true
 
 
-## used to get all the shortcode parameters in a string as a dictionary
-func parse_shortcode_parameters(shortcode : String) -> Dictionary:
-	var regex: RegEx = RegEx.new()
-	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
-	var dict: Dictionary = {}
+## Used to get all the shortcode parameters in a string as a dictionary.
+func parse_shortcode_parameters(shortcode: String) -> Dictionary:
+	var regex := RegEx.new()
+	regex.compile(r'(?<parameter>[^\s=]*)\s*=\s*"(?<value>(\{[^}]*\}|\[[^]]*\]|([^"]|\\")*|))(?<!\\)\"')
+	var dict := {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
 	return dict
@@ -356,10 +416,11 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 
 func _get_icon() -> Resource:
 	var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
-	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
-		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
-	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
+	# Check for both svg and png, but prefer svg if available
+	if ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
 		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
+	elif ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
 	return load(_icon_file_name)
 
 
@@ -369,7 +430,7 @@ func set_default_color(value:Variant) -> void:
 
 
 ## Called when the resource is assigned to a event block in the visual editor
-func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
+func _enter_visual_editor(_timeline_editor:DialogicEditor) -> void:
 	pass
 
 #endregion
@@ -379,11 +440,11 @@ func _enter_visual_editor(timeline_editor:DialogicEditor) -> void:
 ################################################################################
 
 ## This method can be overwritten to implement code completion for custom syntaxes
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(_CodeCompletionHelper:Node, _TextNode:TextEdit, _line:String, _word:String, _symbol:String) -> void:
 	pass
 
 ## This method can be overwritten to add starting suggestions for this event
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, _TextNode:TextEdit) -> void:
 	pass
 
 #endregion
@@ -392,7 +453,7 @@ func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) ->
 #region SYNTAX HIGHLIGHTING
 ################################################################################
 
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+func _get_syntax_highlighting(_Highlighter:SyntaxHighlighter, dict:Dictionary, _line:String) -> Dictionary:
 	return dict
 
 #endregion

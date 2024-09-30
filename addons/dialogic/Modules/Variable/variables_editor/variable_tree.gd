@@ -24,12 +24,13 @@ func _ready() -> void:
 		child.toggled.connect(_on_type_pressed.bind(child.get_index()+1))
 		child.icon = get_theme_icon(["String", "float", "int", "bool"][child.get_index()], "EditorIcons")
 
+	%RightClickMenu.set_item_icon(0, get_theme_icon("ActionCopy", "EditorIcons"))
 #endregion
 
 
 #region POPULATING THE TREE
 
-func load_info(dict:Dictionary, parent:TreeItem = null) -> void:
+func load_info(dict:Dictionary, parent:TreeItem = null, is_new:=false) -> void:
 	if parent == null:
 		clear()
 		parent = add_folder_item("VAR", null)
@@ -38,12 +39,16 @@ func load_info(dict:Dictionary, parent:TreeItem = null) -> void:
 	sorted_keys.sort()
 	for key in sorted_keys:
 		if typeof(dict[key]) != TYPE_DICTIONARY:
-			add_variable_item(key, dict[key], parent)
+			var item := add_variable_item(key, dict[key], parent)
+			if is_new:
+				item.set_meta("new", true)
 
 	for key in sorted_keys:
 		if typeof(dict[key]) == TYPE_DICTIONARY:
 			var folder := add_folder_item(key, parent)
-			load_info(dict[key], folder)
+			if is_new:
+				folder.set_meta("new", true)
+			load_info(dict[key], folder, is_new)
 
 
 
@@ -117,17 +122,21 @@ func get_variable_item_default(item:TreeItem) -> Variant:
 func _on_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
 	match id:
 		TreeButtons.ADD_FOLDER:
-			add_folder_item("Folder", item).select(0)
+			var new_item := add_folder_item("Folder", item)
+			new_item.select(0)
+			new_item.set_meta("new", true)
 			await get_tree().process_frame
 			edit_selected()
 		TreeButtons.ADD_VARIABLE:
-			add_variable_item("Var", "", item).select(0)
+			var new_item := add_variable_item("Var", "", item)
+			new_item.select(0)
+			new_item.set_meta("new", true)
 			await get_tree().process_frame
 			edit_selected()
 		TreeButtons.DELETE:
 			item.free()
 		TreeButtons.DUPLICATE_FOLDER:
-			load_info({item.get_text(0)+"(copy)":get_info(item)}, item.get_parent())
+			load_info({item.get_text(0)+"(copy)":get_info(item)}, item.get_parent(), true)
 		TreeButtons.CHANGE_TYPE:
 			%ChangeTypePopup.show()
 			%ChangeTypePopup.set_meta('item', item)
@@ -139,7 +148,7 @@ func _on_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index
 
 func _on_type_pressed(pressed:bool, type:int) -> void:
 	%ChangeTypePopup.hide()
-	var item := %ChangeTypePopup.get_meta('item')
+	var item: Variant = %ChangeTypePopup.get_meta('item')
 	adjust_variable_type(item, type, item.get_metadata(2))
 
 
@@ -263,7 +272,7 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		parent = to_item.get_parent()
 
 	## Test for inheritance-recursion
-	var test_item:= to_item
+	var test_item := to_item
 	while true:
 		if test_item == item:
 			return
@@ -276,9 +285,13 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		"VARIABLE":
 			new_item = add_variable_item(item.get_text(0), item.get_metadata(2), parent)
 			new_item.set_meta('prev_path', get_item_path(item))
+			if item.get_meta("new", false):
+				new_item.set_meta("new", true)
 		"FOLDER":
 			new_item = add_folder_item(item.get_text(0), parent)
 			load_info(get_info(item), new_item)
+			if item.get_meta("new", false):
+				new_item.set_meta("new", true)
 
 	# If this was dropped on a variable (or the root node)
 	if to_item != parent:
@@ -298,8 +311,11 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 ################################################################################
 
 func report_name_changes(item:TreeItem) -> void:
+
 	match item.get_meta('type'):
 		"VARIABLE":
+			if item.get_meta("new", false):
+				return
 			var new_path := get_item_path(item)
 			editor.variable_renamed(item.get_meta('prev_path'), new_path)
 			item.set_meta('prev_path', new_path)
@@ -309,13 +325,28 @@ func report_name_changes(item:TreeItem) -> void:
 
 
 func get_item_path(item:TreeItem) -> String:
-	if item.get_meta('type') == "VARIABLE":
-		var path := item.get_text(0)
-		while item.get_parent() != get_root():
-			item = item.get_parent()
-			path = item.get_text(0)+"."+path
-		return path
-	return ""
-
+	var path := item.get_text(0)
+	while item.get_parent() != get_root():
+		item = item.get_parent()
+		path = item.get_text(0)+"."+path
+	return path
 
 #endregion
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_RIGHT and event.pressed:
+		var item := get_item_at_position(get_local_mouse_position())
+		if item and item != get_root():
+			%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
+			%RightClickMenu.set_item_text(0, 'Copy "' + get_item_path(item) + '"')
+			%RightClickMenu.set_meta("item", item)
+			%RightClickMenu.size = Vector2()
+
+
+func _on_right_click_menu_id_pressed(id: int) -> void:
+	if %RightClickMenu.get_meta("item", null) == null:
+		return
+	match id:
+		0:
+			DisplayServer.clipboard_set(get_item_path(%RightClickMenu.get_meta("item")))

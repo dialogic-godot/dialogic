@@ -3,7 +3,7 @@ extends DialogicEditor
 
 ## A Main page in the dialogic editor.
 
-var tips : Array = []
+var tips: Array = []
 
 
 
@@ -11,7 +11,7 @@ func _get_icon() -> Texture:
 	return load("res://addons/dialogic/Editor/Images/plugin-icon.svg")
 
 
-func _ready():
+func _ready() -> void:
 	self_modulate = get_theme_color("font_color", "Editor")
 	self_modulate.a = 0.2
 
@@ -30,7 +30,7 @@ func _ready():
 
 
 
-func _register():
+func _register() -> void:
 	editors_manager.register_simple_editor(self)
 
 	self.alternative_text = "Welcome to dialogic!"
@@ -44,7 +44,7 @@ func _open(extra_info:Variant="") -> void:
 		tips = tips.filter(func(item): return !item.is_empty())
 
 	randomize()
-	var tip :String = tips[randi()%len(tips)]
+	var tip: String = tips[randi()%len(tips)]
 	var text := tip.get_slice(';',0).strip_edges()
 	var action := tip.get_slice(';',1).strip_edges()
 	if action == text:

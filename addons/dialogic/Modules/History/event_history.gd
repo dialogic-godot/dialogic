@@ -57,7 +57,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('action', ValueType.FIXED_OPTIONS, {
 		'options': [
 			{

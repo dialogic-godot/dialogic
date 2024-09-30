@@ -18,7 +18,7 @@ enum VarValueType {
 ## Settings
 
 ## Name/Path of the variable that should be changed.
-var name: String = "":
+var name := "":
 	set(_value):
 		name = _value
 		if Engine.is_editor_hint() and not value:
@@ -33,7 +33,7 @@ var name: String = "":
 		update_editor_warning()
 
 ## The operation to perform.
-var operation: int = Operations.SET:
+var operation := Operations.SET:
 	set(value):
 		operation = value
 		if operation != Operations.SET and _value_type == VarValueType.STRING:
@@ -65,7 +65,7 @@ var random_max: int = 100
 
 ## Used to suppress _value_type from overwriting value with a default value when the type changes
 ## This is only used when initializing the event_variable.
-var _suppress_default_value: bool = false
+var _suppress_default_value := false
 
 
 ################################################################################
@@ -74,37 +74,55 @@ var _suppress_default_value: bool = false
 
 func _execute() -> void:
 	if name:
-		var orig: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
-		if value != null and (orig != null or (operation == Operations.SET and "[" in name)):
-			var the_value: Variant
+		var original_value: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
+
+		if value != null and (original_value != null or (operation == Operations.SET and "[" in name)):
+
+			var interpreted_value: Variant
+			var result: Variant
+
 			match _value_type:
 				VarValueType.STRING:
-					the_value = dialogic.VAR.get_variable('"'+value+'"')
+					interpreted_value = dialogic.VAR.get_variable('"' + value + '"')
 				VarValueType.VARIABLE:
-					the_value = dialogic.VAR.get_variable('{'+value+'}')
-				VarValueType.NUMBER,VarValueType.BOOL,VarValueType.EXPRESSION,VarValueType.RANDOM_NUMBER:
-					the_value = dialogic.VAR.get_variable(str(value))
+					interpreted_value = dialogic.VAR.get_variable('{' + value + '}')
+				VarValueType.NUMBER, VarValueType.BOOL, VarValueType.EXPRESSION, VarValueType.RANDOM_NUMBER:
+					interpreted_value = dialogic.VAR.get_variable(str(value))
 
-			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
-				orig = float(orig)
-				the_value = float(the_value)
+			if operation != Operations.SET and (not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float()):
+				printerr("[Dialogic] Set Variable event failed because one value wasn't a float! [", original_value, ", ",interpreted_value,"]")
+				finish()
+				return
+
+			if operation == Operations.SET:
+				result = interpreted_value
+
+			else:
+				original_value = float(original_value)
+				interpreted_value = float(interpreted_value)
+
 				match operation:
 					Operations.ADD:
-						dialogic.VAR.set_variable(name, orig+the_value)
+						result = original_value + interpreted_value
 					Operations.SUBSTRACT:
-						dialogic.VAR.set_variable(name, orig-the_value)
+						result = original_value - interpreted_value
 					Operations.MULTIPLY:
-						dialogic.VAR.set_variable(name, orig*the_value)
+						result = original_value * interpreted_value
 					Operations.DIVIDE:
-						dialogic.VAR.set_variable(name, orig/the_value)
-				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			elif operation == Operations.SET:
-				dialogic.VAR.set_variable(name, the_value)
-				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			else:
-				printerr("Dialogic: Set Variable event failed because one value wasn't a float! [", orig, ", ",the_value,"]")
+						result = original_value / interpreted_value
+
+			dialogic.VAR.set_variable(name, result)
+			dialogic.VAR.variable_was_set.emit(
+				{
+					'variable' : name,
+					'value' : interpreted_value,
+					'value_str' : value,
+					'orig_value' : original_value,
+					'new_value' : result,
+				})
+
 		else:
-			printerr("Dialogic: Set Variable event failed because one value wasn't set!")
+			printerr("[Dialogic] Set Variable event failed because one value wasn't set!")
 
 	finish()
 
@@ -210,7 +228,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('name', ValueType.DYNAMIC_OPTIONS, {
 			'left_text'		: 'Set',
 			'suggestions_func' 	: get_var_suggestions,
@@ -292,7 +310,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func get_value_suggestions(filter:String) -> Dictionary:
+func get_value_suggestions(_filter:String) -> Dictionary:
 	var suggestions := {}
 
 	for var_path in DialogicUtil.list_variables(DialogicUtil.get_default_variables()):
@@ -300,8 +318,8 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	return suggestions
 
 
-func _on_variable_editor_pressed():
-	var editor_manager := _editor_node.find_parent('EditorsManager')
+func _on_variable_editor_pressed() -> void:
+	var editor_manager := editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.open_editor(editor_manager.editors['VariablesEditor']['node'], true)
 
@@ -323,14 +341,14 @@ func update_editor_warning() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if CodeCompletionHelper.get_line_untill_caret(line) == 'set ':
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
 	if symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'set', 'set ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
 
 

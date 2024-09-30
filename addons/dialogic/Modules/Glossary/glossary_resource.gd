@@ -10,7 +10,7 @@ extends Resource
 ## a string, representing the actual key for the key used.
 ## The string key-value pairs are the alias keys, they allow to redirect
 ## the actual glossary entry.
-@export var entries: Dictionary = {}
+@export var entries := {}
 
 ## If false, no entries from this glossary will be shown
 @export var enabled: bool = true
@@ -37,20 +37,16 @@ const REGEX_OPTION_PROPERTY := "regex_options"
 ## Ignored when entries are translated.
 const PRIVATE_PROPERTY_PREFIX := "_"
 
-const _MISSING_ENTRY_INDEX := -1
 
 ## Private ID assigned when this glossary is translated.
-@export var _translation_id: String = ""
+@export var _translation_id := ""
 
 ## Private lookup table used to find the translation ID of a glossary entry.
 ## The keys (String) are all translated words that may trigger a glossary entry to
 ## be shown.
 ## The values (String) are the translation ID.
-@export var _translation_keys: Dictionary = {}
+@export var _translation_keys := {}
 
-
-func __get_property_list() -> Array:
-	return []
 
 
 ## Removes an entry and all its aliases (alternative property) from
@@ -226,6 +222,8 @@ func get_set_regex_option(entry_key: String) -> String:
 	return regex_option
 
 
+#region ADD AND CLEAR TRANSLATION KEYS
+
 ## This is automatically called, no need to use this.
 func add_translation_id() -> String:
 	_translation_id = DialogicUtil.get_next_translation_id()
@@ -260,6 +258,10 @@ func clear_translation_keys() -> void:
 
 	_translation_keys.clear()
 
+#endregion
+
+
+#region GET AND SET TRANSLATION IDS AND KEYS
 
 ## Returns a key used to reference this glossary in the translation CSV file.
 ##
@@ -282,19 +284,6 @@ func get_property_translation_key(entry_key: String, property: String) -> String
 
 	return glossary_csv_key
 
-
-## Returns the matching translation key for the given [param word].
-## This key can be used via [method tr] to get the translation.
-##
-## Time complexity: O(1)
-## Uses an internal dictionary to find the translation key.
-## This dictionary is generated when the glossary is translated.
-## See [member _translation_keys].
-func get_word_translation_key(word: String) -> String:
-	if _translation_keys.has(word):
-		return _translation_keys[word]
-
-	return ""
 
 
 ## Returns the translation key prefix for this glossary.
@@ -348,3 +337,4 @@ func get_set_glossary_translation_id() -> String:
 
 	return _translation_id
 
+#endregion

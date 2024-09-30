@@ -38,10 +38,10 @@ enum AnimationsNewText {NONE, WIGGLE}
 
 @export_subgroup('Font')
 @export var text_use_global_font: bool = true
-@export_file('*.ttf', '*.tres') var normal_font:String = ""
-@export_file('*.ttf', '*.tres') var bold_font:String = ""
-@export_file('*.ttf', '*.tres') var italics_font:String = ""
-@export_file('*.ttf', '*.tres') var bold_italics_font:String = ""
+@export_file('*.ttf', '*.tres') var normal_font: String = ""
+@export_file('*.ttf', '*.tres') var bold_font: String = ""
+@export_file('*.ttf', '*.tres') var italics_font: String = ""
+@export_file('*.ttf', '*.tres') var bold_italics_font: String = ""
 
 
 @export_group("Box")
@@ -246,8 +246,8 @@ func _apply_indicator_settings() -> void:
 	next_indicator.enabled = next_indicator_enabled
 
 	if next_indicator_enabled:
-		next_indicator.animation = next_indicator_animation
-		if FileAccess.file_exists(next_indicator_texture):
+		next_indicator.animation = next_indicator_animation as DialogicNode_NextIndicator.Animations
+		if ResourceLoader.exists(next_indicator_texture):
 			next_indicator.texture = load(next_indicator_texture)
 		next_indicator.show_on_questions = next_indicator_show_on_questions
 		next_indicator.show_on_autoadvance = next_indicator_show_on_autoadvance

@@ -9,5 +9,5 @@ func _get_subsystems() -> Array:
 	return [{'name':'Backgrounds', 'script':this_folder.path_join('subsystem_backgrounds.gd')}]
 
 
-func _get_special_resources() -> Array[Dictionary]:
-	return list_special_resources("Transitions/Defaults", "BackgroundTransition", ".gd")
+func _get_special_resources() -> Dictionary:
+	return {&"BackgroundTransition":list_special_resources("Transitions/Defaults", ".gd")}

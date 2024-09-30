@@ -27,8 +27,8 @@ If applicable, add screenshots to help explain your problem.
 
 **System (please complete the following information):**
  - OS: [e.g. Windows, Linux]
- - Godot Version: [e.g. 3.2.3]
- - Dialogic Version: [e.g. 1.0]
+ - Godot Version: [e.g. 4.2.2]
+ - Dialogic Version: [e.g. 2.0 Alpha 14, please be specific!]
 
 ## Solutions
 

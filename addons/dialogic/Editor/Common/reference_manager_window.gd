@@ -5,12 +5,12 @@ extends Window
 ## Other scripts can call the add_ref_change() method to register changes directly
 ##   or use the helpers add_variable_ref_change() and add_portrait_ref_change()
 
-@onready var editors_manager := get_node("../Margin/EditorsManager")
+@onready var editors_manager := get_node("../EditorsManager")
 @onready var broken_manager := get_node("Manager/Tabs/BrokenReferences")
 enum Where {EVERYWHERE, BY_CHARACTER, TEXTS_ONLY}
 enum Types {TEXT, VARIABLE, PORTRAIT, CHARACTER_NAME, TIMELINE_NAME}
 
-var icon_button :Button = null
+var icon_button: Button = null
 
 
 func _ready() -> void:
@@ -31,7 +31,7 @@ func _ready() -> void:
 
 	icon_button.add_child(dot)
 
-	var old_changes :Array = DialogicUtil.get_editor_setting('reference_changes', [])
+	var old_changes: Array = DialogicUtil.get_editor_setting('reference_changes', [])
 	if !old_changes.is_empty():
 		broken_manager.reference_changes = old_changes
 

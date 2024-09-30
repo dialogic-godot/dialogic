@@ -136,7 +136,7 @@ func add_layer(scene_path:="", overrides:= {}):
 	%LayerTree.get_root().get_child(-1).select(0)
 
 
-func delete_layer():
+func delete_layer() -> void:
 	if current_layer_idx == -1:
 		return
 	current_style.delete_layer(current_layer_idx)
@@ -250,41 +250,22 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 
 
 func make_layer_custom(target_folder:String, custom_name := "") -> void:
-	if not ResourceLoader.exists(current_style.get_layer_info(current_layer_idx).path):
-		printerr("[Dialogic] Unable to copy layer that has no scene path specified!")
-		return
-
-	var target_file := ""
-	var previous_file: String = current_style.get_layer_info(current_layer_idx).path
+	
+	var original_file: String = current_style.get_layer_info(current_layer_idx).path
+	var custom_new_folder := ""
+	
 	if custom_name.is_empty():
-		target_file = 'custom_' + previous_file.get_file()
-		target_folder = target_folder.path_join(%StyleBrowser.premade_scenes_reference[previous_file].name.to_pascal_case())
-	else:
-		if not custom_name.ends_with('.tscn'):
-			custom_name += ".tscn"
-		target_file = custom_name
+		custom_name = "custom_"+%StyleBrowser.premade_scenes_reference[original_file].name.to_snake_case()
+		custom_new_folder = %StyleBrowser.premade_scenes_reference[original_file].name.to_pascal_case()
+	
+	var result_path := DialogicUtil.make_file_custom(
+		original_file,
+		target_folder,
+		custom_name,
+		custom_new_folder,
+		)
 
-	DirAccess.make_dir_absolute(target_folder)
-
-	DirAccess.copy_absolute(previous_file, target_folder.path_join(target_file))
-
-	var file := FileAccess.open(target_folder.path_join(target_file), FileAccess.READ)
-	var scene_text := file.get_as_text()
-	file.close()
-	if scene_text.begins_with('[gd_scene'):
-		var base_path: String = previous_file.get_base_dir()
-
-		var result := RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
-		while result:
-			DirAccess.copy_absolute(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			scene_text = scene_text.replace(base_path.path_join(result.get_string('file')), target_folder.path_join(result.get_string('file')))
-			result = RegEx.create_from_string("\\Q\""+base_path+"\\E(?<file>[^\"]*)\"").search(scene_text)
-
-	file = FileAccess.open(target_folder.path_join(target_file), FileAccess.WRITE)
-	file.store_string(scene_text)
-	file.close()
-
-	current_style.set_layer_scene(current_layer_idx, target_folder.path_join(target_file))
+	current_style.set_layer_scene(current_layer_idx, result_path)
 
 	load_style_layer_list()
 
@@ -292,8 +273,6 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 		%LayerTree.get_root().select(0)
 	else:
 		%LayerTree.get_root().get_child(%LayerTree.get_selected().get_index()).select(0)
-
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 
 
 func make_layout_custom(target_folder:String) -> void:
@@ -357,7 +336,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		child.queue_free()
 
 	var scene: Node = null
-	if !custom_scene_path.is_empty() and FileAccess.file_exists(custom_scene_path):
+	if !custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
 		var pck_scn := load(custom_scene_path)
 		if pck_scn:
 			scene = pck_scn.instantiate()
@@ -377,9 +356,9 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		note.name = "General"
 		return
 
-	var current_grid :GridContainer = null
+	var current_grid: GridContainer = null
 
-	var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
+	var label_bg_style := get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
 	label_bg_style.content_margin_left = 5
 	label_bg_style.content_margin_right = 5
 	label_bg_style.content_margin_top = 5
@@ -391,7 +370,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	for i in settings:
 		match i['id']:
 			&"GROUP":
-				var main_scroll = ScrollContainer.new()
+				var main_scroll := ScrollContainer.new()
 				main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				main_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				main_scroll.name = i['name']
@@ -430,7 +409,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				label.text = str(i['name'].trim_prefix(current_group_name+'_').trim_prefix(current_subgroup_name+'_')).capitalize()
 				current_grid.add_child(label, true)
 
-				var scene_value = scene.get(i['name'])
+				var scene_value: Variant = scene.get(i['name'])
 				customization_editor_info[i['name']] = {}
 
 				if i['name'] in inherited_overrides:
@@ -438,13 +417,13 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				else:
 					customization_editor_info[i['name']]['orig'] = scene_value
 
-				var current_value :Variant
+				var current_value: Variant
 				if i['name'] in overrides:
 					current_value = str_to_var(overrides.get(i['name']))
 				else:
 					current_value = customization_editor_info[i['name']]['orig']
 
-				var input :Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
+				var input: Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
 				customization_editor_info[i['name']]['node'] = input
@@ -523,7 +502,7 @@ func _on_export_override_reset(property_name:String) -> void:
 
 
 func set_customization_value(property_name:String, value:Variant) -> void:
-	var node : Node = customization_editor_info[property_name]['node']
+	var node: Node = customization_editor_info[property_name]['node']
 	if node is CheckBox:
 		node.button_pressed = value
 	elif node is LineEdit:

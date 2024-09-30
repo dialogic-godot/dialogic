@@ -40,10 +40,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
-prefix = null
 
 [node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
+theme_type_variation = &"DialogicEventEdit"
 
 [node name="Layout" type="HBoxContainer" parent="Value_Panel"]
 layout_mode = 2
@@ -106,26 +106,17 @@ shortcut_keys_enabled = false
 drag_and_drop_selection_enabled = false
 text_direction = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Value_Panel/Layout"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Spacer" type="MarginContainer" parent="Value_Panel/Layout/HBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_right = 1
-
-[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout/HBoxContainer"]
+[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Increment" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
+[node name="Increment" type="Button" parent="Value_Panel/Layout/Spin"]
 layout_mode = 2
 size_flags_vertical = 3
 auto_translate = false
-focus_neighbor_left = NodePath("../../../Value")
+focus_neighbor_left = NodePath("../../Value")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath("../Decrement")
 theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
@@ -139,11 +130,11 @@ icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
 
-[node name="Decrement" type="Button" parent="Value_Panel/Layout/HBoxContainer/Spin"]
+[node name="Decrement" type="Button" parent="Value_Panel/Layout/Spin"]
 layout_mode = 2
 size_flags_vertical = 3
 auto_translate = false
-focus_neighbor_left = NodePath("../../../Value")
+focus_neighbor_left = NodePath("../../Value")
 focus_neighbor_top = NodePath("../Increment")
 focus_neighbor_bottom = NodePath(".")
 theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
@@ -157,17 +148,13 @@ icon = ExtResource("4_ph52o")
 flat = true
 vertical_icon_alignment = 2
 
-[node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(3, 0)
-layout_mode = 2
-
 [connection signal="gui_input" from="Value_Panel/Layout/Prefix" to="." method="_on_sublabel_clicked"]
 [connection signal="focus_entered" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_entered"]
 [connection signal="focus_exited" from="Value_Panel/Layout/Value" to="." method="_on_value_focus_exited"]
 [connection signal="gui_input" from="Value_Panel/Layout/Value" to="." method="_on_gui_input"]
 [connection signal="text_submitted" from="Value_Panel/Layout/Value" to="." method="_on_value_text_submitted"]
 [connection signal="gui_input" from="Value_Panel/Layout/Suffix" to="." method="_on_sublabel_clicked"]
-[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_increment_button_down" binds= [NodePath("%Spin/Increment")]]
-[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Increment" to="." method="_on_gui_input"]
-[connection signal="button_down" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_decrement_button_down" binds= [NodePath("%Spin/Decrement")]]
-[connection signal="gui_input" from="Value_Panel/Layout/HBoxContainer/Spin/Decrement" to="." method="_on_gui_input"]
+[connection signal="button_down" from="Value_Panel/Layout/Spin/Increment" to="." method="_on_increment_button_down" binds= [NodePath("%Spin/Increment")]]
+[connection signal="gui_input" from="Value_Panel/Layout/Spin/Increment" to="." method="_on_gui_input"]
+[connection signal="button_down" from="Value_Panel/Layout/Spin/Decrement" to="." method="_on_decrement_button_down" binds= [NodePath("%Spin/Decrement")]]
+[connection signal="gui_input" from="Value_Panel/Layout/Spin/Decrement" to="." method="_on_gui_input"]

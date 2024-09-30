@@ -4,22 +4,23 @@ extends CodeEdit
 ## Sub-Editor that allows editing timelines in a text format.
 
 @onready var timeline_editor := get_parent().get_parent()
-@onready var code_completion_helper :Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
+@onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 
-func _ready():
+func _ready() -> void:
 	await find_parent('EditorView').ready
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
-func _on_text_editor_text_changed():
+
+func _on_text_editor_text_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 	request_code_completion(true)
 	$UpdateTimer.start()
 
 
-func clear_timeline():
+func clear_timeline() -> void:
 	text = ''
 	update_content_list()
 
@@ -36,11 +37,11 @@ func load_timeline(timeline:DialogicTimeline) -> void:
 	update_content_list()
 
 
-func save_timeline():
+func save_timeline() -> void:
 	if !timeline_editor.current_resource:
 		return
 
-	var text_array:Array = text_timeline_to_array(text)
+	var text_array: Array = text_timeline_to_array(text)
 
 	timeline_editor.current_resource.events = text_array
 	timeline_editor.current_resource.events_processed = false
@@ -60,8 +61,8 @@ func text_timeline_to_array(text:String) -> Array:
 
 	while idx < len(lines)-1:
 		idx += 1
-		var line :String = lines[idx]
-		var line_stripped :String = line.strip_edges(true, true)
+		var line: String = lines[idx]
+		var line_stripped: String = line.strip_edges(true, true)
 		events.append(line)
 
 	return events
@@ -90,6 +91,9 @@ func _gui_input(event):
 # Toggle the selected lines as comments
 func toggle_comment() -> void:
 	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
+	var selection := Rect2i(
+		Vector2i(get_selection_origin_line(), get_selection_origin_column()),
+		Vector2i(get_caret_line(), get_caret_column()))
 	var from: int = cursor.y
 	var to: int = cursor.y
 	if has_selection():
@@ -97,14 +101,27 @@ func toggle_comment() -> void:
 		to = get_selection_to_line()
 
 	var lines: PackedStringArray = text.split("\n")
-	var will_comment: bool = not lines[from].begins_with("# ")
+	var will_comment: bool = false
+	for i in range(from, to+1):
+		if not lines[i].begins_with("#"):
+			will_comment = true
+	
 	for i in range(from, to + 1):
-		lines[i] = "# " + lines[i] if will_comment else lines[i].substr(2)
+		if will_comment:
+			lines[i] = "#" + lines[i]
+		else:
+			lines[i] = lines[i].trim_prefix("#")
 
 	text = "\n".join(lines)
-	select(from, 0, to, get_line_width(to))
-	set_caret_line(cursor.y)
-	set_caret_column(cursor.x)
+	if will_comment:
+		cursor.x += 1
+		selection.position.y += 1
+		selection.size.y += 1
+	else:
+		cursor.x -= 1
+		selection.position.y -= 1
+		selection.size.y -= 1
+	select(selection.position.x, selection.position.y, selection.size.x, selection.size.y)
 	text_changed.emit()
 
 
@@ -182,12 +199,12 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		insert_text_at_caret(result)
 
 
-func _on_update_timer_timeout():
+func _on_update_timer_timeout() -> void:
 	update_content_list()
 
 
-func update_content_list():
-	var labels :PackedStringArray = []
+func update_content_list() -> void:
+	var labels: PackedStringArray = []
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
@@ -206,6 +223,52 @@ func _on_content_item_clicked(label:String) -> void:
 			set_caret_line(text.count('\n', 0, i.get_start()+1))
 			center_viewport_to_caret()
 			return
+
+
+func _search_timeline(search_text:String) -> bool:
+	set_search_text(search_text)
+	queue_redraw()
+	set_meta("current_search", search_text)
+
+	return search(search_text, 0, 0, 0).y != -1
+
+
+func _search_navigate_down() -> void:
+	search_navigate(false)
+
+
+func _search_navigate_up() -> void:
+	search_navigate(true)
+
+
+func search_navigate(navigate_up := false) -> void:
+	if not has_meta("current_search"):
+		return
+	var pos: Vector2i
+	var search_from_line := 0
+	var search_from_column := 0
+	if has_selection():
+		if navigate_up:
+			search_from_line = get_selection_from_line()
+			search_from_column = get_selection_from_column()-1
+			if search_from_column == -1:
+				if search_from_line == 0:
+					search_from_line = get_line_count()
+				else:
+					search_from_line -= 1
+				search_from_column = max(get_line(search_from_line).length()-1,0)
+		else:
+			search_from_line = get_selection_to_line()
+			search_from_column = get_selection_to_column()
+	else:
+		search_from_line = get_caret_line()
+		search_from_column = get_caret_column()
+
+	pos = search(get_meta("current_search"), 4 if navigate_up else 0, search_from_line, search_from_column)
+	select(pos.y, pos.x, pos.y, pos.x+len(get_meta("current_search")))
+	set_caret_line(pos.y)
+	center_viewport_to_caret()
+	queue_redraw()
 
 
 ################################################################################

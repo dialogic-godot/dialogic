@@ -48,7 +48,7 @@ var _autopauses := {}
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['speaker'] = ""
@@ -62,7 +62,7 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 			text_node.textbox_root.hide()
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_textbox(dialogic.current_state_info.get('text', ''), true)
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character: DialogicCharacter = null
@@ -73,8 +73,12 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 		update_name_label(character)
 
 
-func post_install():
+func post_install() -> void:
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
+
+	collect_character_names()
+	collect_text_effects()
+	collect_text_modifiers()
 
 #endregion
 
@@ -84,14 +88,14 @@ func post_install():
 
 ## Applies modifiers, effects and coloring to the text
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if variables and dialogic.has_subsystem('VAR'):
-		text = dialogic.VAR.parse_variables(text)
 	if modifiers:
 		text = parse_text_modifiers(text, type)
+	if variables and dialogic.has_subsystem('VAR'):
+		text = dialogic.VAR.parse_variables(text)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
-		text = color_names(text)
+		text = color_character_names(text)
 	if glossary and dialogic.has_subsystem('Glossary'):
 		text = dialogic.Glossary.parse_glossary(text)
 	return text
@@ -118,7 +122,6 @@ func update_textbox(text: String, instant := false) -> void:
 ## If additional is true, the previous text will be kept.
 func update_dialog_text(text: String, instant := false, additional := false) -> String:
 	update_text_speed()
-
 
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
 
@@ -148,7 +151,7 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 	# Reset Auto-Advance temporarily and the No-Skip setting:
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.manual_advance.enabled_until_next_event = false
+	dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
 	set_text_reveal_skippable(true, true)
 
@@ -189,7 +192,9 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 func show_textbox(instant:=false) -> void:
 	var emitted := instant
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if !text_node.textbox_root.visible and !emitted:
+		if not text_node.enabled:
+			continue
+		if not text_node.textbox_root.visible and not emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
 			if dialogic.Animations.is_animating():
@@ -253,13 +258,16 @@ func is_text_voice_synced() -> bool:
 
 
 ## Sets how fast text will be revealed.
-##
-## [param absolute] will force test to display at the given speed, regardless
+## [br][br]
+## [param letter_speed] is the speed a single text character takes to appear
+## on the textbox.
+## [br][br]
+## [param absolute] will force text to display at the given speed, regardless
 ## of the user's text speed setting.
-##
+## [br][br]
 ## [param _speed_multiplier] adjusts the speed of the text, if set to -1,
 ## the value won't be updated and the current value will persist.
-##
+## [br][br]
 ## [param _user_speed] adjusts the speed of the text, if set to -1, the
 ## project setting 'text_speed' will be used.operator
 func update_text_speed(letter_speed: float = -1,
@@ -382,16 +390,13 @@ func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String
 #region HELPERS & OTHER STUFF
 ####################################################################################################
 
-func _ready():
-	collect_character_names()
-	collect_text_effects()
-	collect_text_modifiers()
+func _ready() -> void:
 	dialogic.event_handled.connect(hide_next_indicators)
 
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
 
 
 ## Parses the character's display_name and returns the text that
@@ -426,7 +431,7 @@ func get_current_speaker() -> DialogicCharacter:
 	return speaker_character
 
 
-func _update_user_speed(user_speed:float) -> void:
+func _update_user_speed(_user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
@@ -449,7 +454,7 @@ func emit_meta_signal(meta:Variant, sig:String) -> void:
 #region AUTOCOLOR NAMES
 ################################################################################
 
-func color_names(text:String) -> String:
+func color_character_names(text:String) -> String:
 	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
 
@@ -469,7 +474,7 @@ func collect_character_names() -> void:
 
 	character_colors = {}
 
-	for dch_path in DialogicResourceUtil.list_resources_of_type('.dch'):
+	for dch_path in DialogicResourceUtil.get_character_directory().values():
 		var character := (load(dch_path) as DialogicCharacter)
 
 		if character.display_name:
@@ -482,16 +487,22 @@ func collect_character_names() -> void:
 
 	if dialogic.has_subsystem('Glossary'):
 		dialogic.Glossary.color_overrides.merge(character_colors, true)
+	var sorted_keys := character_colors.keys()
+	sorted_keys.sort_custom(sort_by_length)
+	color_regex.compile('(?<=\\W|^)(?<name>'+str(sorted_keys).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
-	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
 
+func sort_by_length(a:String, b:String) -> bool:
+	if a.length() > b.length():
+		return true
+	return false
 #endregion
 
 
 #region DEFAULT TEXT EFFECTS & MODIFIERS
 ################################################################################
 
-func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_pause(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 
@@ -502,18 +513,17 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
-
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
 
-		elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-			await get_tree().create_timer(float(argument) * _speed_multiplier * dialogic.Settings.get_setting('text_speed', 1)).timeout
+		elif _speed_multiplier != 0 and text_speed != 0:
+			await get_tree().create_timer(float(argument) * _speed_multiplier * text_speed).timeout
 
-	elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-		await get_tree().create_timer(0.5 * _speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+	elif _speed_multiplier != 0 and text_speed != 0:
+		await get_tree().create_timer(0.5 * _speed_multiplier * text_speed).timeout
 
 
-func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_speed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
@@ -522,7 +532,7 @@ func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
 		update_text_speed(-1, false, 1)
 
 
-func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_lspeed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
@@ -534,24 +544,24 @@ func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
 		update_text_speed()
 
 
-func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_signal(_text_node:Control, _skipped:bool, argument:String) -> void:
 	dialogic.text_signal.emit(argument)
 
 
-func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
 	if dialogic.current_state_info.get('speaker', ""):
 		update_typing_sound_mood(
 			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+var modifier_words_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\[\>]+(\/[^\>]*)\>")
 func modifier_random_selection(text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string: String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
+		var string: String = replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
 		string = string.replace('//', '<slash>')
-		var list: PackedStringArray= string.split('/')
-		var item: String= list[randi()%len(list)]
+		var list: PackedStringArray = string.split('/')
+		var item: String = list[randi()%len(list)]
 		item = item.replace('<slash>', '/')
 		text = text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return text

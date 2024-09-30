@@ -5,7 +5,7 @@ extends DialogicPortrait
 ## The parent class has a character and portrait variable.
 
 @export_group('Main')
-@export_file var image : String = ""
+@export_file var image := ""
 
 
 ## Load anything related to the given character and portrait

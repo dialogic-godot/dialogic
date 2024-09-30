@@ -12,12 +12,15 @@ signal dialogic_action
 signal autoskip_timer_finished
 
 
+const _SETTING_INPUT_ACTION := "dialogic/text/input_action"
+const _SETTING_INPUT_ACTION_DEFAULT := "dialogic_default_action"
+
 var input_block_timer := Timer.new()
 var _auto_skip_timer_left: float = 0.0
 var action_was_consumed := false
 
 var auto_skip: DialogicAutoSkip = null
-var auto_advance : DialogicAutoAdvance = null
+var auto_advance: DialogicAutoAdvance = null
 var manual_advance: DialogicManualAdvance = null
 
 
@@ -28,8 +31,8 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	if not is_node_ready():
 		await ready
 
-	manual_advance.enabled_until_next_event = false
-	manual_advance.enabled_forced = true
+	manual_advance.disabled_until_next_event = false
+	manual_advance.system_enabled = true
 
 
 func pause() -> void:
@@ -48,6 +51,7 @@ func resume() -> void:
 func post_install() -> void:
 	dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
 	auto_skip.toggled.connect(_on_autoskip_toggled)
+	auto_skip._init()
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
 
@@ -88,8 +92,8 @@ func handle_input() -> void:
 
 ## Unhandled Input is used for all NON-Mouse based inputs.
 func _unhandled_input(event:InputEvent) -> void:
-	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
-		if event is InputEventMouse:
+	if is_input_pressed(event, true):
+		if event is InputEventMouse or event is InputEventScreenTouch:
 			return
 		handle_input()
 
@@ -97,12 +101,23 @@ func _unhandled_input(event:InputEvent) -> void:
 ## Input is used for all mouse based inputs.
 ## If any DialogicInputNode is present this won't do anything (because that node handles MouseInput then).
 func _input(event:InputEvent) -> void:
-	if Input.is_action_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
-
+	if is_input_pressed(event):
 		if not event is InputEventMouse or get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
 			return
 
 		handle_input()
+
+
+func is_input_pressed(event: InputEvent, exact := false) -> bool:
+	var action: String = ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)
+	return (event is InputEventAction and event.action == action) or Input.is_action_just_pressed(action, exact)
+
+
+## This is called from the gui_input of the InputCatcher and DialogText nodes
+func handle_node_gui_input(event:InputEvent) -> void:
+	if Input.is_action_just_pressed(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)):
+		if event is InputEventMouseButton and event.pressed:
+			DialogicUtil.autoload().Inputs.handle_input()
 
 
 func is_input_blocked() -> bool:
@@ -111,7 +126,7 @@ func is_input_blocked() -> bool:
 
 func block_input(time:=0.1) -> void:
 	if time > 0:
-		input_block_timer.wait_time = time
+		input_block_timer.wait_time = max(time, input_block_timer.time_left)
 		input_block_timer.start()
 
 
@@ -169,7 +184,7 @@ func _process(delta: float) -> void:
 ################################################################################
 
 
-func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_input(_text_node:Control, skipped:bool, _argument:String) -> void:
 	if skipped:
 		return
 	dialogic.Text.show_next_indicators()
@@ -180,11 +195,11 @@ func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	dialogic.Text.set_text_reveal_skippable(false, true)
-	manual_advance.enabled_until_next_event = true
+	manual_advance.disabled_until_next_event = true
 	effect_autoadvance(text_node, skipped, argument)
 
 
-func effect_autoadvance(text_node: Control, skipped:bool, argument:String) -> void:
+func effect_autoadvance(_text_node: Control, _skipped:bool, argument:String) -> void:
 	if argument.ends_with('?'):
 		argument = argument.trim_suffix('?')
 	else:

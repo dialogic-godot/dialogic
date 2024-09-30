@@ -4,12 +4,12 @@ extends DialogicVisualEditorField
 
 ## Event block field for integers and floats. Improved version of the native spinbox.
 
-@export var allow_string : bool = false
+@export var allow_string: bool = false
 @export var step: float = 0.1
 @export var enforce_step: bool = true
 @export var limit_value: bool = false
-@export var min: float = 0.0
-@export var max: float = 999.0
+@export var min: float = -INF
+@export var max: float = INF
 @export var only_positive: bool = false
 @export var value = 0.0
 @export var prefix: String = ""
@@ -26,7 +26,6 @@ func _ready() -> void:
 
 	update_prefix(prefix)
 	update_suffix(suffix)
-	$Value_Panel.add_theme_stylebox_override('panel', get_theme_stylebox('panel', 'DialogicEventEdit'))
 
 
 func _load_display_info(info: Dictionary) -> void:
@@ -161,6 +160,8 @@ func _on_decrement_button_down(button: NodePath) -> void:
 
 
 func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
+	if new_text.is_empty() and not allow_string:
+		new_text = "0.0"
 	if new_text.is_valid_float():
 		var final_value := new_text.to_float()
 

@@ -60,6 +60,7 @@ func _load_display_info(info:Dictionary) -> void:
 	placeholder_text = info.get('placeholder', 'Select Resource')
 	mode = info.get("mode", 0)
 	resource_icon = info.get('icon', null)
+	%Search.tooltip_text = info.get('tooltip_text', '')
 	await ready
 	if resource_icon == null and info.has('editor_icon'):
 		resource_icon = callv('get_theme_icon', info.editor_icon)
@@ -75,7 +76,10 @@ func _autofocus() -> void:
 ################################################################################
 
 func _ready() -> void:
-	%Focus.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'DialogicEventEdit'))
+	var focus := get_theme_stylebox("focus", "LineEdit")
+	if has_theme_stylebox("focus", "DialogicEventEdit"):
+		focus = get_theme_stylebox('focus', 'DialogicEventEdit')
+	%Focus.add_theme_stylebox_override('panel', focus)
 
 	%Search.text_changed.connect(_on_Search_text_changed)
 	%Search.text_submitted.connect(_on_Search_text_entered)
@@ -126,8 +130,8 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
-	var line_length = 0
-	var idx: int = 0
+	var line_length := 0
+	var idx := 0
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
 			var curr_line_length: int = 0
@@ -178,7 +182,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
-func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_BUTTON_LEFT) -> void:
+func suggestion_selected(index: int, position := Vector2(), button_index := MOUSE_BUTTON_LEFT) -> void:
 	if button_index != MOUSE_BUTTON_LEFT:
 		return
 	if %Suggestions.is_item_disabled(index):
