@@ -52,10 +52,12 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 
 		# If this has the same scene setup, just apply the new overrides
 		elif previous_layout.get_meta('style') == style.get_inheritance_root():
-			DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info(-1).overrides)
+			DialogicUtil.apply_scene_export_overrides(previous_layout, style.get_layer_inherited_info("").overrides)
 			var index := 0
 			for layer in previous_layout.get_layers():
-				DialogicUtil.apply_scene_export_overrides(layer, style.get_layer_inherited_info(index).overrides)
+				DialogicUtil.apply_scene_export_overrides(
+					layer,
+					style.get_layer_inherited_info(style.get_layer_id_at_index(index)).overrides)
 				index += 1
 
 			previous_layout.set_meta('style', style)
@@ -74,7 +76,7 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 		# Preserve process_mode on style changes
 		if previous_layout:
 			new_layout.process_mode = previous_layout.process_mode
-		
+
 		new_layout.ready.connect(reload_current_info_into_new_style)
 
 	style_changed.emit(signal_info)
@@ -96,11 +98,11 @@ func create_layout(style: DialogicStyle, parent: Node = null) -> DialogicLayoutB
 	base_scene.name = "DialogicLayout_"+style.name.to_pascal_case()
 
 	# Apply base scene overrides
-	DialogicUtil.apply_scene_export_overrides(base_scene, style.get_layer_inherited_info(-1).overrides)
+	DialogicUtil.apply_scene_export_overrides(base_scene, style.get_layer_inherited_info("").overrides)
 
 	# Load layers
-	for layer_idx in range(style.get_layer_count()):
-		var layer := style.get_layer_inherited_info(layer_idx)
+	for layer_id in style.get_layer_inherited_list():
+		var layer := style.get_layer_inherited_info(layer_id)
 
 		if not ResourceLoader.exists(layer.path):
 			continue
@@ -152,7 +154,7 @@ func has_active_layout_node() -> bool:
 	)
 
 
-func get_layout_node() -> Node:
+func get_layout_node() -> DialogicLayoutBase:
 	if has_active_layout_node():
 		return get_tree().get_meta('dialogic_layout_node')
 	return null

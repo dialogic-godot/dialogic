@@ -8,11 +8,13 @@ var current_style: DialogicStyle = null
 
 var customization_editor_info := {}
 
-## -1 is the base scene, 0 to n are the layers
-var current_layer_idx := -1
+## The id of the currently selected layer.
+## "" is the base scene.
+var current_layer_id := ""
 
 var _minimum_tree_item_height: int
 
+@onready var tree: Tree = %LayerTree
 
 
 func _ready() -> void:
@@ -34,10 +36,10 @@ func _ready() -> void:
 func load_style(style:DialogicStyle) -> void:
 	current_style = style
 
-	if current_style.has_meta('_latest_layer'):
-		current_layer_idx = current_style.get_meta('_latest_layer', -1)
+	if current_style.has_meta("_latest_layer"):
+		current_layer_id = str(current_style.get_meta("_latest_layer", ""))
 	else:
-		current_layer_idx = -1
+		current_layer_id = ""
 
 	%AddLayerButton.disabled = style.inherits_anything()
 	%ReplaceLayerButton.disabled = style.inherits_anything()
@@ -48,58 +50,57 @@ func load_style(style:DialogicStyle) -> void:
 
 
 func load_style_layer_list() -> void:
-	var tree: Tree = %LayerTree
-
 	tree.clear()
 
 	var root := tree.create_item()
-	root.custom_minimum_height = _minimum_tree_item_height
-	var base_scene := current_style.get_inheritance_root().get_base_scene().resource_path
-	if %StyleBrowser.is_premade_style_part(base_scene):
-		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[base_scene].get('icon', '')):
-			root.set_icon(0, load(%StyleBrowser.premade_scenes_reference[base_scene].get('icon')))
-		root.set_text(0, %StyleBrowser.premade_scenes_reference[base_scene].get('name', 'Layer'))
-	else:
-		root.set_text(0, clean_scene_name(base_scene))
-		root.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
-		root.set_button_tooltip_text(0, 0, 'Open Scene')
-	root.set_meta('scene', base_scene)
 
-	for layer_scene in current_style.get_layer_list():
+	var base_layer_info := current_style.get_layer_inherited_info("")
+	setup_layer_tree_item(base_layer_info, root)
+
+	for layer_id in current_style.get_layer_inherited_list():
+		var layer_info := current_style.get_layer_inherited_info(layer_id)
 		var layer_item := tree.create_item(root)
-		layer_item.custom_minimum_height = _minimum_tree_item_height
-		if %StyleBrowser.is_premade_style_part(layer_scene):
-			if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[layer_scene].get('icon', '')):
-				layer_item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[layer_scene].get('icon')))
+		setup_layer_tree_item(layer_info, layer_item)
 
-			layer_item.set_text(0, %StyleBrowser.premade_scenes_reference[layer_scene].get('name', 'Layer'))
-		else:
-			layer_item.set_text(0, clean_scene_name(layer_scene))
-			layer_item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
-			layer_item.set_button_tooltip_text(0, 0, 'Open Scene')
+	select_layer(current_layer_id)
 
-		layer_item.set_meta('scene', layer_scene)
 
-	if current_layer_idx == -1:
-		root.select(0)
+func select_layer(id:String) -> void:
+	if id == "":
+		tree.get_root().select(0)
 	else:
-		root.get_child(current_layer_idx).select(0)
+		for child in tree.get_root().get_children():
+			if child.get_meta("id", "") == id:
+				child.select(0)
+				return
+
+
+func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
+	item.custom_minimum_height = _minimum_tree_item_height
+
+	if %StyleBrowser.is_premade_style_part(info.path):
+		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[info.path].get('icon', '')):
+			item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[info.path].get("icon")))
+		item.set_text(0, %StyleBrowser.premade_scenes_reference[info.path].get("name", "Layer"))
+
+	else:
+		item.set_text(0, clean_scene_name(info.path))
+		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
+		item.set_button_tooltip_text(0, 0, "Open Scene")
+	item.set_meta("scene", info.path)
+	item.set_meta("id", info.id)
 
 
 func _on_layer_selected() -> void:
 	var item: TreeItem = %LayerTree.get_selected()
-	if item == %LayerTree.get_root():
-		load_layer(-1)
-	else:
-		load_layer(item.get_index())
+	load_layer(item.get_meta("id", ""))
 
 
+func load_layer(layer_id:=""):
+	current_layer_id = layer_id
+	current_style.set_meta('_latest_layer', current_layer_id)
 
-func load_layer(layer_idx:=-1):
-	current_layer_idx = layer_idx
-
-	current_style.set_meta('_latest_layer', current_layer_idx)
-	var layer_info := current_style.get_layer_inherited_info(layer_idx)
+	var layer_info := current_style.get_layer_inherited_info(layer_id)
 
 	%SmallLayerPreview.hide()
 	if %StyleBrowser.is_premade_style_part(layer_info.get('path', 'Unkown Layer')):
@@ -117,16 +118,17 @@ func load_layer(layer_idx:=-1):
 		%SmallLayerAuthor.text = "Custom Layer"
 		%SmallLayerDescription.text = layer_info.get('path', 'Unkown Layer')
 
-	%DeleteLayerButton.disabled = layer_idx == -1 or current_style.inherits_anything()
+	%DeleteLayerButton.disabled = layer_id == "" or current_style.inherits_anything()
 
 	%SmallLayerScene.text = layer_info.get('path', 'Unkown Layer').get_file()
 	%SmallLayerScene.tooltip_text = layer_info.get('path', '')
 
-	var inherited_layer_info := current_style.get_layer_inherited_info(layer_idx, true)
+	var inherited_layer_info := current_style.get_layer_inherited_info(layer_id, true)
 	load_layout_scene_customization(
 			layer_info.path,
 			layer_info.overrides,
 			inherited_layer_info.overrides)
+
 
 
 func add_layer(scene_path:="", overrides:= {}):
@@ -137,27 +139,26 @@ func add_layer(scene_path:="", overrides:= {}):
 
 
 func delete_layer() -> void:
-	if current_layer_idx == -1:
+	if current_layer_id == "":
 		return
-	current_style.delete_layer(current_layer_idx)
+
+	current_style.delete_layer(current_layer_id)
 	load_style_layer_list()
 	%LayerTree.get_root().select(0)
 
 
 func move_layer(from_idx:int, to_idx:int) -> void:
 	current_style.move_layer(from_idx, to_idx)
+
 	load_style_layer_list()
-	%LayerTree.get_root().get_child(to_idx).select(0)
+	select_layer(current_style.get_layer_id_at_index(to_idx))
 
 
-func replace_layer(layer_index:int, scene_path:String) -> void:
-	current_style.set_layer_scene(layer_index, scene_path)
+func replace_layer(layer_id:String, scene_path:String) -> void:
+	current_style.set_layer_scene(layer_id, scene_path)
+
 	load_style_layer_list()
-
-	if layer_index == -1:
-		%LayerTree.get_root().select(0)
-	else:
-		%LayerTree.get_root().get_child(layer_index).select(0)
+	select_layer(layer_id)
 
 
 func _on_add_layer_menu_pressed(index:int) -> void:
@@ -190,10 +191,7 @@ func _on_replace_layer_menu_pressed(index:int) -> void:
 		%StyleBrowser.load_parts()
 		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
 		if not picked_info.is_empty():
-			if %LayerTree.get_selected() == %LayerTree.get_root():
-				replace_layer(-1, picked_info.get('path', ''))
-			elif %LayerTree.get_selected() != null:
-				replace_layer(%LayerTree.get_selected().get_index(), picked_info.get('path', ''))
+			replace_layer(%LayerTree.get_selected().get_meta("id", ""), picked_info.get('path', ''))
 
 	# Adding a custom scene as a layer
 	else:
@@ -209,18 +207,14 @@ func _on_add_custom_layer_file_selected(file_path:String) -> void:
 
 
 func _on_replace_custom_layer_file_selected(file_path:String) -> void:
-	if %LayerTree.get_selected() == %LayerTree.get_root():
-		replace_layer(-1, file_path)
-	elif %LayerTree.get_selected() != null:
-		replace_layer(%LayerTree.get_selected().get_index(), file_path)
-
+	replace_layer(%LayerTree.get_selected().get_meta("id", ""), file_path)
 
 
 func _on_make_custom_button_about_to_popup() -> void:
 	%MakeCustomButton.get_popup().set_item_disabled(2, false)
 	%MakeCustomButton.get_popup().set_item_disabled(3, false)
 
-	if not %StyleBrowser.is_premade_style_part(current_style.get_layer_info(current_layer_idx).path):
+	if not %StyleBrowser.is_premade_style_part(current_style.get_layer_info(current_layer_id).path):
 		%MakeCustomButton.get_popup().set_item_disabled(2, true)
 
 
@@ -250,14 +244,14 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 
 
 func make_layer_custom(target_folder:String, custom_name := "") -> void:
-	
-	var original_file: String = current_style.get_layer_info(current_layer_idx).path
+
+	var original_file: String = current_style.get_layer_info(current_layer_id).path
 	var custom_new_folder := ""
-	
+
 	if custom_name.is_empty():
 		custom_name = "custom_"+%StyleBrowser.premade_scenes_reference[original_file].name.to_snake_case()
 		custom_new_folder = %StyleBrowser.premade_scenes_reference[original_file].name.to_pascal_case()
-	
+
 	var result_path := DialogicUtil.make_file_custom(
 		original_file,
 		target_folder,
@@ -265,7 +259,7 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 		custom_new_folder,
 		)
 
-	current_style.set_layer_scene(current_layer_idx, result_path)
+	current_style.set_layer_scene(current_layer_id, result_path)
 
 	load_style_layer_list()
 
@@ -283,16 +277,17 @@ func make_layout_custom(target_folder:String) -> void:
 	make_layer_custom(target_folder, "custom_" + current_style.name.to_snake_case())
 
 
-	var target_path := current_style.get_base_scene().resource_path
+	var base_layer_info := current_style.get_layer_info("")
+	var target_path: String = base_layer_info.path
 
 	# Load base scene
-	var base_scene_pck: PackedScene = current_style.get_base_scene().duplicate()
+	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
 
 	# Load layers
-	for layer_idx in range(current_style.get_layer_count()):
-		var layer_info := current_style.get_layer_inherited_info(layer_idx)
+	for layer_id in current_style.get_layer_inherited_list():
+		var layer_info := current_style.get_layer_inherited_info(layer_id)
 
 		if not ResourceLoader.exists(layer_info.path):
 			continue
@@ -488,15 +483,15 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 
 func set_export_override(property_name:String, value:String = "") -> void:
 	if str_to_var(value) != customization_editor_info[property_name]['orig']:
-		current_style.set_layer_setting(current_layer_idx, property_name, value)
+		current_style.set_layer_setting(current_layer_id, property_name, value)
 		customization_editor_info[property_name]['reset'].disabled = false
 	else:
-		current_style.remove_layer_setting(current_layer_idx, property_name)
+		current_style.remove_layer_setting(current_layer_id, property_name)
 		customization_editor_info[property_name]['reset'].disabled = true
 
 
 func _on_export_override_reset(property_name:String) -> void:
-	current_style.remove_layer_setting(current_layer_idx, property_name)
+	current_style.remove_layer_setting(current_layer_id, property_name)
 	customization_editor_info[property_name]['reset'].disabled = true
 	set_customization_value(property_name, customization_editor_info[property_name]['orig'])
 
