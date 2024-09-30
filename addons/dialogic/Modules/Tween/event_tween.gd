@@ -264,12 +264,10 @@ func from_text(string: String) -> void:
 
 			"path":
 				_target = TweenTarget.NODE_PATH
+				_node_path = value
 
 			"character":
 				_character_identifier = value
-
-			"path":
-				_node_path = value
 
 			"property":
 				_property = value
