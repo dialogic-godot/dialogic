@@ -45,6 +45,8 @@ var current_state := States.IDLE:
 		current_state = new_state
 		state_changed.emit(new_state)
 
+##'true' when a timeline is active
+var timeline_active := false
 ## Emitted when [member current_state] change.
 signal state_changed(new_state:States)
 
@@ -208,6 +210,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	(timeline as DialogicTimeline).process()
 
+	timeline_active = true
 	current_timeline = timeline
 	current_timeline_events = current_timeline.events
 	for event in current_timeline_events:
@@ -244,6 +247,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 ## Clears and stops the current timeline.
 func end_timeline() -> void:
 	await clear(ClearFlags.TIMELINE_INFO_ONLY)
+	timeline_active = false
 	_on_timeline_ended()
 	timeline_ended.emit()
 
