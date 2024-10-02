@@ -53,8 +53,12 @@ static func update_directory(extension:String) -> void:
 
 static func add_resource_to_directory(file_path:String, directory:Dictionary) -> Dictionary:
 	var suggested_name := file_path.get_file().trim_suffix("."+file_path.get_extension())
+	var temp := suggested_name
 	while suggested_name in directory:
 		suggested_name = file_path.trim_suffix("/"+suggested_name+"."+file_path.get_extension()).get_file().path_join(suggested_name)
+		if suggested_name == temp:
+			break
+		temp = suggested_name
 	directory[suggested_name] = file_path
 	return directory
 
