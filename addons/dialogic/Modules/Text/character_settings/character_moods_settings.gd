@@ -60,8 +60,8 @@ func _ready() -> void:
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")
 	%Play.icon = get_theme_icon("Play", "EditorIcons")
 	%Default.icon = get_theme_icon("NonFavorite", "EditorIcons")
-
 	%NameWarning.texture = get_theme_icon("StatusWarning", "EditorIcons")
+	_load_audio_bus_options()
 
 
 func update_mood_list(selected_name := "") -> void:
@@ -127,6 +127,7 @@ func load_mood_info(dict:Dictionary) -> void:
 	%VolumeBase.set_value(dict.get('volume_base', 0))
 	%VolumeVariance.set_value(dict.get('volume_variance', 0))
 	%Skip.set_value(dict.get('skip_characters', 0))
+	%AudioBus.select(dict.get('audio_bus', 0))
 
 
 func get_mood_info() -> Dictionary:
@@ -139,6 +140,7 @@ func get_mood_info() -> Dictionary:
 	dict['volume_base'] = %VolumeBase.value
 	dict['volume_variance'] = %VolumeVariance.value
 	dict['skip_characters'] = %Skip.value
+	dict['audio_bus'] = %AudioBus.selected
 	return dict
 
 
@@ -228,3 +230,10 @@ func preview() -> void:
 		await preview_timer.timeout
 
 	preview_timer.queue_free()
+
+
+func _load_audio_bus_options() -> void:
+	%AudioBus.clear()
+	for i in AudioServer.bus_count:
+		var bus = AudioServer.get_bus_name(i)
+		%AudioBus.add_item(bus)
