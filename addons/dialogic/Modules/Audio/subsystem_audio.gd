@@ -79,7 +79,6 @@ func resume() -> void:
 func _on_dialogic_timeline_ended() -> void:
 	if not dialogic.Styles.get_layout_node():
 		clear_game_state()
-	pass
 #endregion
 
 
@@ -108,9 +107,7 @@ func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, 
 
 	var prev_node: Node = null
 	if is_instance_valid(current_music_player) and current_music_player.playing:
-		prev_node = current_music_player.duplicate()
-		add_child(prev_node)
-		prev_node.play(current_music_player.get_playback_position())
+		prev_node = current_music_player
 		fader.tween_method(interpolate_volume_linearly.bind(prev_node), db_to_linear(prev_node.volume_db),0.0,fade_time)
 
 	if path:
@@ -131,10 +128,6 @@ func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, 
 
 		current_music_player.play(0)
 		fader.parallel().tween_method(interpolate_volume_linearly.bind(current_music_player), 0.0, db_to_linear(volume),fade_time)
-	else:
-		if is_instance_valid(current_music_player):
-			current_music_player.stop()
-			current_music_player.queue_free()
 
 	if prev_node:
 		fader.tween_callback(prev_node.queue_free)
@@ -189,8 +182,9 @@ func interpolate_volume_linearly(value: float, node: Node) -> void:
 ## Returns whether the currently playing audio resource is the same as this
 ## event's [param resource_path].
 func is_music_playing_resource(resource_path: String) -> bool:
-	var is_playing_resource: bool = (base_music_player.is_playing()
-		and base_music_player.stream.resource_path == resource_path)
+	var is_playing_resource: bool = (is_instance_valid(current_music_player)
+		and current_music_player.playing
+		and current_music_player.stream.resource_path == resource_path)
 
 	return is_playing_resource
 
