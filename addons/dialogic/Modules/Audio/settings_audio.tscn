@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2qgetjc3mfo3"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Audio/settings_audio.gd" id="1_2iyyr"]
+
+[node name="Audio" type="VBoxContainer"]
+offset_right = 121.0
+offset_bottom = 58.0
+script = ExtResource("1_2iyyr")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Music Channels"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Max music channels"
+
+[node name="MusicChannelCount" type="SpinBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+value = 1.0
