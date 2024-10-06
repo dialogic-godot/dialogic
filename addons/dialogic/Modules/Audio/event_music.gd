@@ -76,24 +76,7 @@ func build_event_editor() -> void:
 			'file_filter' 	: "*.mp3, *.ogg, *.wav; Supported Audio Files",
 			'placeholder' 	: "No music",
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
-	add_header_edit('channel_id', ValueType.FIXED_OPTIONS, {'left_text':'on:', 'options': get_channel_list()})#[
-			#{
-				#'label': 'Channel A',
-				#'value': 0,
-			#},
-			#{
-				#'label': 'Channel B',
-				#'value': 1,
-			#},
-			#{
-				#'label': 'Channel C',
-				#'value': 2,
-			#},
-			#{
-				#'label': 'Channel D',
-				#'value': 3,
-			#}
-		#]})
+	add_header_edit('channel_id', ValueType.FIXED_OPTIONS, {'left_text':'on:', 'options': get_channel_list()})
 	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Fade Time:'})
 	add_body_edit('volume', ValueType.NUMBER, {'left_text':'Volume:', 'mode':2}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')

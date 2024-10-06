@@ -15,7 +15,7 @@ extends DialogicSubsystem
 ## `volume`    | [type float]  | The volume of the audio resource that will be set to the [member base_music_player]. [br]
 ## `audio_bus` | [type String] | The audio bus name that the [member base_music_player] will use. [br]
 ## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
-## `channel`   | [type int]    | The channel id to play the audio on. [br]
+## `channel`   | [type int]    | The channel ID to play the audio on. [br]
 signal music_started(info: Dictionary)
 
 
@@ -30,8 +30,6 @@ signal music_started(info: Dictionary)
 ## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
 signal sound_started(info: Dictionary)
 
-
-#const MAX_CHANNELS = 6
 
 var max_channels: int:
 	set(value):
