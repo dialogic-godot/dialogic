@@ -44,6 +44,7 @@ func _on_started_revealing_text() -> void:
 	var default_bus_index: int = AudioServer.get_bus_index(bus)
 	var bus_index: int = current_overwrite_data.get('audio_bus', default_bus_index)
 	bus = AudioServer.get_bus_name(bus_index)
+	
 	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
 	characters_since_last_sound = current_overwrite_data.get('skip_characters', play_every_character-1)+1

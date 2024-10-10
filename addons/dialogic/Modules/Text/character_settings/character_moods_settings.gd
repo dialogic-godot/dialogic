@@ -234,6 +234,6 @@ func preview() -> void:
 
 func _load_audio_bus_options() -> void:
 	%AudioBus.clear()
-	for i in AudioServer.bus_count:
+	for i: int in AudioServer.bus_count:
 		var bus = AudioServer.get_bus_name(i)
 		%AudioBus.add_item(bus)

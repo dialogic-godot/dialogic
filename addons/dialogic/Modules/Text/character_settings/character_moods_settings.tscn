@@ -170,7 +170,7 @@ text = "Audio Bus:"
 [node name="AudioBus" type="OptionButton" parent="VBox/Settings/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Audio bus in which the type sounds will be sent"
+tooltip_text = "Audio bus on which the typing sounds will be played."
 selected = 0
 item_count = 1
 popup/item_0/text = "Master"
