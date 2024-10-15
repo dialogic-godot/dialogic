@@ -21,6 +21,8 @@ var audio_bus := ""
 var loop := true
 
 
+var _preview_node: AudioStreamPlayer
+
 ################################################################################
 ## 						EXECUTE
 ################################################################################
@@ -44,6 +46,12 @@ func _init() -> void:
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon_music.png'))
+
+
+func _enter_visual_editor(_timeline_editor:DialogicEditor) -> void:
+	_preview_node = AudioStreamPlayer.new()
+	editor_node.add_child(_preview_node)
+	_preview_node.finished.connect(_on_preview_finished)
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -77,6 +85,8 @@ func build_event_editor() -> void:
 			'placeholder' 	: "No music",
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
 	add_header_edit('channel_id', ValueType.FIXED_OPTIONS, {'left_text':'on:', 'options': get_channel_list()})
+	add_header_button('', _on_play_preview_audio, '', ["Play", "EditorIcons"], '!file_path.is_empty() && !_preview_node.is_playing()')
+	add_header_button('', _on_stop_preview_audio, '', ["Stop", "EditorIcons"], '_preview_node.is_playing()')
 	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Fade Time:'})
 	add_body_edit('volume', ValueType.NUMBER, {'left_text':'Volume:', 'mode':2}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SINGLELINE_TEXT, {'left_text':'Audio Bus:'}, '!file_path.is_empty()')
@@ -98,3 +108,22 @@ func get_channel_list() -> Array:
 			'value': i,
 		})
 	return channel_name_list
+
+
+
+func _on_play_preview_audio() -> void:
+	if _preview_node:
+		_preview_node.stream = load(file_path)
+		_preview_node.play()
+		ui_update_needed.emit()
+
+
+func _on_stop_preview_audio() -> void:
+	_preview_node.stop()
+	_preview_node.stream = null
+	ui_update_needed.emit()
+
+
+func _on_preview_finished() -> void:
+	ui_update_needed.emit()
+
