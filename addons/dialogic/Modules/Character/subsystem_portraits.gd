@@ -698,4 +698,11 @@ func text_effect_portrait(_text_node:Control, _skipped:bool, argument:String) ->
 		if dialogic.current_state_info.get('speaker', null):
 			change_character_portrait(load(dialogic.current_state_info.speaker), argument)
 			change_speaker(load(dialogic.current_state_info.speaker), argument)
+
+
+## Called from the [extra_data=something] text effect.
+func text_effect_extradata(_text_node:Control, _skipped:bool, argument:String) -> void:
+	if argument:
+		if dialogic.current_state_info.get('speaker', null):
+			change_character_extradata(load(dialogic.current_state_info.speaker), argument)
 #endregion
