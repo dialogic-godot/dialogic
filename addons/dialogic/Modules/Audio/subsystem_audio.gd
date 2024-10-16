@@ -117,6 +117,11 @@ func _ready() -> void:
 ## Updates the background music. Will fade out previous music.
 func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, loop := true, channel_id := 0) -> void:
 
+	if channel_id > max_channels:
+		printerr("\tChannel ID (%s) higher than Max Music Channels (%s)" % [channel_id, max_channels])
+		dialogic.print_debug_moment()
+		return
+
 	if not dialogic.current_state_info.has('music'):
 		dialogic.current_state_info['music'] = {}
 
@@ -204,7 +209,8 @@ func interpolate_volume_linearly(value: float, node: Node) -> void:
 ## Returns whether the currently playing audio resource is the same as this
 ## event's [param resource_path], for [param channel_id].
 func is_music_playing_resource(resource_path: String, channel_id := 0) -> bool:
-	var is_playing_resource: bool = (is_instance_valid(current_music_player[channel_id])
+	var is_playing_resource: bool = (current_music_player.size() > channel_id
+		and is_instance_valid(current_music_player[channel_id])
 		and current_music_player[channel_id].is_playing()
 		and current_music_player[channel_id].stream.resource_path == resource_path)
 
