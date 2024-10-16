@@ -242,7 +242,6 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 
 			# Sort the folder names by their folder name (not by the full path)
 			var sorted_dir_keys := unique_folder_names.keys()
-			print(sorted_dir_keys)
 			sorted_dir_keys.sort_custom(
 				func(x, y):
 					return x.get_slice("/", x.get_slice_count("/")-1) < y.get_slice("/", y.get_slice_count("/")-1)
