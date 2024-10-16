@@ -9,11 +9,20 @@ func _get_recognized_extensions() -> PackedStringArray:
 	return PackedStringArray(["dch"])
 
 
-## Returns "Rrsource" if this file can/should be loaded by this script
+## Returns "Resource" if this file can/should be loaded by this script
 func _get_resource_type(path: String) -> String:
 	var ext := path.get_extension().to_lower()
 	if ext == "dch":
 		return "Resource"
+
+	return ""
+
+
+## Returns the script class associated with a Resource
+func _get_resource_script_class(path: String) -> String:
+	var ext := path.get_extension().to_lower()
+	if ext == "dch":
+		return "DialogicCharacter"
 
 	return ""
 
