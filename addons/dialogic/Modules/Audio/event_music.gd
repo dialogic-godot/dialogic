@@ -110,7 +110,6 @@ func get_channel_list() -> Array:
 	return channel_name_list
 
 
-
 func _on_play_preview_audio() -> void:
 	if _preview_node:
 		_preview_node.stream = load(file_path)
@@ -126,4 +125,3 @@ func _on_stop_preview_audio() -> void:
 
 func _on_preview_finished() -> void:
 	ui_update_needed.emit()
-
