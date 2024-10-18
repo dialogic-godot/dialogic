@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://slgruoy74a7m"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_image_preview.gd" id="1_12y73"]
+
+[node name="Field_Image_Preview" type="TextureRect"]
+custom_minimum_size = Vector2(0, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+expand_mode = 2
+stretch_mode = 4
+script = ExtResource("1_12y73")
