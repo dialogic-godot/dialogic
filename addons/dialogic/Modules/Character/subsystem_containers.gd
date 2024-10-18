@@ -257,8 +257,8 @@ func str_to_vector(input: String, base_vector:=Vector2()) -> Vector2:
 				pass # Keep values as they are
 			'%', _:
 				match i.get_string(&'part'):
-					'x': value *= get_viewport().get_window().size.x
-					'y': value *= get_viewport().get_window().size.y
+					'x': value *= get_viewport().get_visible_rect().size.x
+					'y': value *= get_viewport().get_visible_rect().size.y
 
 		match i.get_string(&'part'):
 			'x': vec.x = value
