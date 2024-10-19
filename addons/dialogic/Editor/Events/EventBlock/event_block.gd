@@ -167,7 +167,6 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.VECTOR3: 			"res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn",
 	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn",
 	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn",
-	DialogicEvent.ValueType.IMAGE_PREVIEW: 		"res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn",
 	DialogicEvent.ValueType.AUDIO_PREVIEW: 		"res://addons/dialogic/Editor/Events/Fields/field_audio_preview.tscn",
 	}
 
