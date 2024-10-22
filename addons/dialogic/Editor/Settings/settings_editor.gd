@@ -25,6 +25,7 @@ func _ready() -> void:
 		return
 
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_general.tscn")
+	register_settings_section("res://addons/dialogic/Editor/Settings/settings_accessibility.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_translation.tscn")
 	register_settings_section("res://addons/dialogic/Editor/Settings/settings_modules.tscn")
 

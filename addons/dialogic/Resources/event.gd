@@ -93,7 +93,7 @@ enum ValueType {
 	NUMBER,
 	VECTOR2, VECTOR3, VECTOR4,
 	# Other
-	CUSTOM, BUTTON, LABEL, COLOR, AUDIO_PREVIEW
+	CUSTOM, BUTTON, LABEL, COLOR, AUDIO_PREVIEW, IMAGE_PREVIEW
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []
@@ -466,6 +466,8 @@ func get_event_editor_info() -> Array:
 		else:
 			editor_list = []
 
+		if ProjectSettings.get_setting('dialogic/accessibility/show_event_names', false):
+			add_header_label(event_name)
 		build_event_editor()
 		return editor_list
 	else:
