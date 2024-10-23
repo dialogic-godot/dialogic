@@ -80,17 +80,18 @@ func _on_item_mouse_selected(pos: Vector2, mouse_button_index: int) -> void:
 ##					DRAG AND DROP
 ################################################################################
 
-func _get_drag_data(_at_position: Vector2) -> Variant:
-	if not get_selected():
+func _get_drag_data(at_position: Vector2) -> Variant:
+	var drag_item := get_item_at_position(at_position)
+	if not drag_item:
 		return null
 	
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
-	preview.text = "     "+get_selected().get_text(0)
+	preview.text = "     "+drag_item.get_text(0)
 	preview.add_theme_stylebox_override('normal', get_theme_stylebox("Background", "EditorStyles"))
 	set_drag_preview(preview)
 
-	return get_selected()
+	return drag_item
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
