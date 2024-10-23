@@ -33,7 +33,6 @@ text = "Image preview height"
 
 [node name="HintTooltip" parent="HBoxContainer" instance=ExtResource("2_7u84i")]
 layout_mode = 2
-tooltip_text = "This is the amount of space between event blocks in the timeline."
 texture = null
 hint_text = "If set to 0, image previews will be disabled."
 
@@ -55,7 +54,6 @@ text = "Event block bottom margin"
 
 [node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_7u84i")]
 layout_mode = 2
-tooltip_text = "These settings affect the visual timeline."
 texture = null
 hint_text = "This adds extra space at the bottom of event blocks. Requires reloading the visual timeline to take effect."
 
@@ -77,7 +75,6 @@ text = "Show event names in timeline"
 
 [node name="HintTooltip" parent="HBoxContainer3" instance=ExtResource("2_7u84i")]
 layout_mode = 2
-tooltip_text = "This is the amount of space between event blocks in the timeline."
 texture = null
 hint_text = "Enabling this prepends the event name at the beginning of event blocks. Requires reloading the visual timeline to take effect."
 

@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_image_preview.gd" id="1_e5vbc"]
 
 [node name="Field_Image_Preview" type="TextureRect"]
-custom_minimum_size = Vector2(0, 100)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -17,7 +16,8 @@ script = ExtResource("1_e5vbc")
 
 [node name="HiddenLabel" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
-tooltip_text = "Preview hidden because 'dialogic/accessibility/image_preview_height' is 0."
+tooltip_text = "Preview hidden because project setting 'dialogic/accessibility/image_preview_height' is 0."
 mouse_filter = 1
 text = "(Hidden)"
