@@ -14,180 +14,286 @@ class_name DialogicStyle
 
 @export var inherits: DialogicStyle = null
 
-@export var base_scene: PackedScene = null
-@export var base_overrides := {}
+## Stores the layer order
+@export var layer_list: Array[String] = []
+## Stores the layer infos
+@export var layer_info := {
+	"" : DialogicStyleLayer.new()
+}
 
-@export var layers: Array[DialogicStyleLayer] = []
 
 
 
-func _init(_name:="") -> void:
+func _init(_name := "") -> void:
 	if not _name.is_empty():
 		name = _name
 
 
-## This always returns the inheritance root's scene!
-func get_base_scene() -> PackedScene:
-	if base_scene == null:
-		return DialogicUtil.get_default_layout_base()
 
-	return get_inheritance_root().base_scene
+#region BASE METHODS
+# These methods are local, meaning they do NOT take inheritance into account.
 
 
-## This always returns the full inherited roots layers!
-func get_layer_list() -> PackedStringArray:
-	return PackedStringArray(get_inheritance_root().layers.map(func(x:DialogicStyleLayer): return x.scene.resource_path))
-
-
+## Returns the amount of layers (the base layer is not included).
 func get_layer_count() -> int:
-	return layers.size()
+	return layer_list.size()
 
 
-func get_layer_info(index:int) -> Dictionary:
+## Returns the index of the layer with [param id] in the layer list.
+## Returns -1 for the base layer (id=="") which is not in the layer list.
+func get_layer_index(id:String) -> int:
+	return layer_list.find(id)
+
+
+## Returns `true` if [param id] is a valid id for a layer.
+func has_layer(id:String) -> bool:
+	return id in layer_info or id == ""
+
+
+## Returns `true` if [param index] is a valid index for a layer.
+func has_layer_index(index:int) -> bool:
+	return index < layer_list.size()
+
+
+## Returns the id of the layer at [param index].
+func get_layer_id_at_index(index:int) -> String:
 	if index == -1:
-		return {'path':get_base_scene().resource_path, 'overrides':base_overrides.duplicate()}
-
-	if index < layers.size():
-		if layers[index].scene != null:
-			return {'path':layers[index].scene.resource_path, 'overrides':layers[index].overrides.duplicate()}
-		else:
-			return {'path':'', 'overrides':layers[index].overrides.duplicate()}
-
-	return {'path':'', 'overrides':{}}
+		return ""
+	if has_layer_index(index):
+		return layer_list[index]
+	return ""
 
 
-func get_layer_inherited_info(index:int, inherited_only:=false) -> Dictionary:
-	var style := self
-	var info := {'path':'', 'overrides':{}}
-	if not inherited_only:
-		info = get_layer_info(index)
+func get_layer_info(id:String) -> Dictionary:
+	var info := {"id": id, "path": "", "overrides": {}}
 
-	while style.inherits != null:
-		style = style.inherits
-		info = merge_layer_infos(info, style.get_layer_info(index))
+	if has_layer(id):
+		var layer_resource: DialogicStyleLayer = layer_info[id]
+
+		if layer_resource.scene != null:
+			info.path = layer_resource.scene.resource_path
+		elif id == "":
+			info.path = DialogicUtil.get_default_layout_base().resource_path
+
+		info.overrides = layer_resource.overrides.duplicate()
 
 	return info
 
+#endregion
 
-func add_layer(scene:String, overrides:Dictionary = {}) -> void:
-	layers.append(DialogicStyleLayer.new(scene, overrides))
+
+#region MODIFICATION METHODS
+# These methods modify the layers of this style.
+
+
+## Returns a new layer id not yet in use.
+func get_new_layer_id() -> String:
+	var i := 16
+	while String.num_int64(i, 16) in layer_info:
+		i += 1
+	return String.num_int64(i, 16)
+
+
+## Adds a layer with the given scene and overrides.
+## Returns the new layers id.
+func add_layer(scene:String, overrides:Dictionary = {}, id:= "##") -> String:
+	if id == "##":
+		id = get_new_layer_id()
+	layer_info[id] = DialogicStyleLayer.new(scene, overrides)
+	layer_list.append(id)
 	changed.emit()
+	return id
 
 
-func delete_layer(layer_index:int) -> void:
-	if not has_layer(layer_index):
+## Deletes the layer with the given id.
+## Deleting the base layer is not allowed.
+func delete_layer(id:String) -> void:
+	if not has_layer(id) or id == "":
 		return
 
-	layers.remove_at(layer_index)
+	layer_info.erase(id)
+	layer_list.erase(id)
+
 	changed.emit()
 
 
+## Moves the layer at [param from_index] to [param to_index].
 func move_layer(from_index:int, to_index:int) -> void:
-	if not has_layer(from_index) or not has_layer(to_index-1):
+	if not has_layer_index(from_index) or not has_layer_index(to_index-1):
 		return
 
-	var info: Resource = layers.pop_at(from_index)
-	layers.insert(to_index, info)
-	changed.emit()
-
-
-func set_layer_scene(layer_index:int, scene:String) -> void:
-	if not has_layer(layer_index):
-		return
-
-	if layer_index == -1:
-		base_scene = load(scene)
-	else:
-		layers[layer_index].scene = load(scene)
+	var id := layer_list.pop_at(from_index)
+	layer_list.insert(to_index, id)
 
 	changed.emit()
 
 
-func set_layer_setting(layer:int, setting:String, value:Variant) -> void:
-	if not has_layer(layer):
+## Changes the scene property of the DialogicStyleLayer resource at [param layer_id].
+func set_layer_scene(layer_id:String, scene:String) -> void:
+	if not has_layer(layer_id):
 		return
 
-	if layer == -1:
-		base_overrides[setting] = value
-	else:
-		layers[layer].overrides[setting] = value
-
+	layer_info[layer_id].scene = load(scene)
 	changed.emit()
 
 
-func remove_layer_setting(layer:int, setting:String) -> void:
-	if not has_layer(layer):
+func set_layer_overrides(layer_id:String, overrides:Dictionary) -> void:
+	if not has_layer(layer_id):
 		return
 
-	if layer == -1:
-		base_overrides.erase(setting)
-	else:
-		layers[layer].overrides.erase(setting)
-
+	layer_info[layer_id].overrides = overrides
 	changed.emit()
 
 
-## This merges two layers (mainly their overrides). Layer a has priority!
-func merge_layer_infos(layer_a:Dictionary, layer_b:Dictionary) -> Dictionary:
-	var combined := layer_a.duplicate(true)
+## Changes an override of the DialogicStyleLayer resource at [param layer_id].
+func set_layer_setting(layer_id:String, setting:String, value:Variant) -> void:
+	if not has_layer(layer_id):
+		return
 
-	combined.path = layer_b.path
-	combined.overrides.merge(layer_b.overrides)
-
-	return combined
-
-
-func has_layer(index:int) -> bool:
-	return index < layers.size()
+	layer_info[layer_id].overrides[setting] = value
+	changed.emit()
 
 
+## Resets (removes) an override of the DialogicStyleLayer resource at [param layer_id].
+func remove_layer_setting(layer_id:String, setting:String) -> void:
+	if not has_layer(layer_id):
+		return
+
+	layer_info[layer_id].overrides.erase(setting)
+	changed.emit()
+
+#
+#endregion
+
+
+#region INHERITANCE METHODS
+# These methods are what you should usually use to get info about this style.
+
+
+## Returns `true` if this style is inheriting from another style.
 func inherits_anything() -> bool:
 	return inherits != null
 
 
+## Returns the base style of this style.
 func get_inheritance_root() -> DialogicStyle:
-	if inherits == null:
+	if not inherits_anything():
 		return self
 
 	var style: DialogicStyle = self
-	while style.inherits != null:
+	while style.inherits_anything():
 		style = style.inherits
 
 	return style
 
 
+## This merges some [param layer_info] with it's param ancestors layer info.
+func merge_layer_infos(layer_info:Dictionary, ancestor_info:Dictionary) -> Dictionary:
+	var combined := layer_info.duplicate(true)
+
+	combined.path = ancestor_info.path
+	combined.overrides.merge(ancestor_info.overrides)
+
+	return combined
+
+
+## Returns the layer info of the layer at [param id] taking into account inherited info.
+## If [param inherited_only] is `true`, the local info is not included.
+func get_layer_inherited_info(id:String, inherited_only := false) -> Dictionary:
+	var style := self
+	var info := {"id": id, "path": "", "overrides": {}}
+
+	if not inherited_only:
+		info = get_layer_info(id)
+
+	while style.inherits_anything():
+		style = style.inherits
+		info = merge_layer_infos(info, style.get_layer_info(id))
+
+	return info
+
+
+## Returns the layer list of the root style.
+func get_layer_inherited_list() -> Array:
+	var list := layer_list
+
+	if inherits_anything():
+		list = get_inheritance_root().layer_list
+
+	return list
+
+
+## Applies inherited info to the local layers.
+## Then removes inheritance.
 func realize_inheritance() -> void:
-	base_scene = get_base_scene()
-	base_overrides = get_layer_inherited_info(-1)
+	layer_list = get_layer_inherited_list()
 
-	var _layers: Array[DialogicStyleLayer] = []
-	for i in range(get_layer_count()):
-		var info := get_layer_inherited_info(i)
-		_layers.append(DialogicStyleLayer.new(info.get("path", ""), info.get("overrides", {})))
+	var new_layer_info := {}
+	for id in layer_info:
+		var info := get_layer_inherited_info(id)
+		new_layer_info[id] = DialogicStyleLayer.new(info.get("path", ""), info.get("overrides", {}))
 
-	layers = _layers
+	layer_info = new_layer_info
 	inherits = null
 	changed.emit()
 
 
+#endregion
+
+## Creates a fresh new style with the same settings.
 func clone() -> DialogicStyle:
 	var style := DialogicStyle.new()
 	style.name = name
-	if base_scene != null:
-		style.base_scene = base_scene
 	style.inherits = inherits
-	style.base_overrides = base_overrides
-	for layer_idx in range(get_layer_count()):
-		var info := get_layer_info(layer_idx)
-		style.add_layer(info.path, info.overrides)
+
+	var base_info := get_layer_info("")
+	set_layer_scene("", base_info.path)
+	set_layer_overrides("", base_info.overrides)
+
+	for id in layer_list:
+		var info := get_layer_info(id)
+		style.add_layer(info.path, info.overrides, id)
 
 	return style
 
 
+## Starts preloading all the scenes used by this style.
 func prepare() -> void:
-	if base_scene:
-		ResourceLoader.load_threaded_request(base_scene.resource_path)
+	for id in layer_info:
+		if layer_info[id].scene:
+			ResourceLoader.load_threaded_request(layer_info[id].scene.resource_path)
 
-	for layer in layers:
-		if layer.scene:
-			ResourceLoader.load_threaded_request(layer.scene.resource_path)
+
+#region UPDATE OLD STYLES
+# TODO deprecated when going into beta
+
+# TODO  Deprecated, only for Styles before alpha 16!
+@export var base_scene: PackedScene = null
+# TODO Deprecated, only for Styles before alpha 16!
+@export var base_overrides := {}
+# TODO Deprecated, only for Styles before alpha 16!
+@export var layers: Array[DialogicStyleLayer] = []
+
+func update_from_pre_alpha16() -> void:
+	if not layers.is_empty():
+		var idx := 0
+		for layer in layers:
+			var id := "##"
+			if inherits_anything():
+				id = get_layer_inherited_list()[idx]
+			if layer.scene:
+				add_layer(layer.scene.resource_path, layer.overrides, id)
+			else:
+				add_layer("", layer.overrides, id)
+			idx += 1
+		layers.clear()
+
+	if not base_scene == null:
+		set_layer_scene("", base_scene.resource_path)
+		base_scene = null
+	if not base_overrides.is_empty():
+		set_layer_overrides("", base_overrides)
+		base_overrides.clear()
+
+
+#endregion

@@ -12,4 +12,3 @@ func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
 	elif scene_path is String and ResourceLoader.exists(scene_path):
 		scene = load(scene_path)
 	overrides = scene_overrides
-
