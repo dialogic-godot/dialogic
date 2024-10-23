@@ -324,7 +324,7 @@ func import_portraits_from_folder(path:String) -> void:
 				if not '.import' in file_lower:
 					files.append(file_name)
 		file_name = dir.get_next()
-	
+
 	var prefix: String = files[0]
 	for file in files:
 		while true:
@@ -333,7 +333,7 @@ func import_portraits_from_folder(path:String) -> void:
 			if prefix.is_empty():
 				break
 			prefix = prefix.substr(0, len(prefix)-1)
-	
+
 	for file in files:
 		%PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
 			{'scene':"",'export_overrides':{'image':var_to_str(path.path_join(file))}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)

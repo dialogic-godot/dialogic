@@ -152,7 +152,7 @@ func load_style_list() -> void:
 		%StyleList.add_item(style.name, get_theme_icon("PopupMenu", "EditorIcons"))
 		%StyleList.set_item_tooltip(idx, style.resource_path)
 		%StyleList.set_item_metadata(idx, style)
-		
+
 		if style.resource_path == default_style:
 			%StyleList.set_item_icon_modulate(idx, get_theme_color("warning_color", "Editor"))
 		if style.resource_path.begins_with("res://addons/dialogic"):

@@ -76,7 +76,6 @@ func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 func post_install() -> void:
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
-	collect_character_names()
 	collect_text_effects()
 	collect_text_modifiers()
 
@@ -455,8 +454,10 @@ func emit_meta_signal(meta:Variant, sig:String) -> void:
 ################################################################################
 
 func color_character_names(text:String) -> String:
-	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
+	if not ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
+
+	collect_character_names()
 
 	var counter := 0
 	for result in color_regex.search_all(text):
@@ -469,7 +470,7 @@ func color_character_names(text:String) -> String:
 
 func collect_character_names() -> void:
 	#don't do this at all if we're not using autocolor names to begin with
-	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
+	if not ProjectSettings.get_setting("dialogic/text/autocolor_names", false):
 		return
 
 	character_colors = {}
@@ -478,25 +479,38 @@ func collect_character_names() -> void:
 		var character := (load(dch_path) as DialogicCharacter)
 
 		if character.display_name:
-			character_colors[character.display_name] = character.color
+			if "{" in character.display_name and "}" in character.display_name:
+				character_colors[dialogic.VAR.parse_variables(character.display_name)] = character.color
+			else:
+				character_colors[character.display_name] = character.color
 
 		for nickname in character.get_nicknames_translated():
+			nickname = nickname.strip_edges()
+			if nickname:
+				if "{" in nickname and "}" in nickname:
+					character_colors[dialogic.VAR.parse_variables(nickname)] = character.color
+				else:
+					character_colors[nickname] = character.color
 
-			if nickname.strip_edges():
-				character_colors[nickname.strip_edges()] = character.color
-
-	if dialogic.has_subsystem('Glossary'):
+	if dialogic.has_subsystem("Glossary"):
 		dialogic.Glossary.color_overrides.merge(character_colors, true)
+
 	var sorted_keys := character_colors.keys()
 	sorted_keys.sort_custom(sort_by_length)
-	color_regex.compile('(?<=\\W|^)(?<name>'+str(sorted_keys).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
+
+	var character_names := ""
+	for key in sorted_keys:
+		character_names += r"\Q" + key + r"\E|"
+
+	character_names = character_names.trim_suffix("|")
+	color_regex.compile(r"(?<=\W|^)(?<name>" + character_names + r")(?=\W|$)")
 
 
 func sort_by_length(a:String, b:String) -> bool:
 	if a.length() > b.length():
 		return true
 	return false
-#endregion
+#endregion+
 
 
 #region DEFAULT TEXT EFFECTS & MODIFIERS

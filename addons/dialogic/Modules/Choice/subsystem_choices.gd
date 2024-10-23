@@ -19,7 +19,9 @@ var reveal_by_input := false
 var block_delay := 0.2
 ## If true, the first (top-most) choice will be focused
 var autofocus_first_choice := true
-
+## If true the dialogic input action is used to trigger choices.
+## However mouse events will be ignored no matter what.
+var use_input_action := false
 
 enum FalseBehaviour {HIDE=0, DISABLE=1}
 ## The behaviour of choices with a false condition and else_action set to DEFAULT.
@@ -53,6 +55,10 @@ func _ready() -> void:
 	autofocus_first_choice = ProjectSettings.get_setting('dialogic/choices/autofocus_first', autofocus_first_choice)
 	hotkey_behaviour = ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', hotkey_behaviour)
 	default_false_behaviour = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', default_false_behaviour)
+
+
+func post_install() -> void:
+	dialogic.Inputs.dialogic_action.connect(_on_dialogic_action)
 
 #endregion
 
@@ -214,7 +220,7 @@ func _on_choice_selected(choice_info := {}) -> void:
 			dialogic.History.store_simple_history_entry(choice_info.text, "Choice", {'all_choices': all_choices})
 		if dialogic.has_subsystem("History"):
 			dialogic.History.mark_event_as_visited(choice_info.event_index)
-	
+
 	choice_selected.emit(choice_info)
 	hide_all_choices()
 	dialogic.current_state = dialogic.States.IDLE
@@ -243,6 +249,12 @@ func get_current_choice_indexes() -> Array:
 			ignore -= 1
 		evt_idx += 1
 	return choices
+
+
+func _on_dialogic_action() -> void:
+	if get_viewport().gui_get_focus_owner() is DialogicNode_ChoiceButton and use_input_action and not dialogic.Inputs.input_was_mouse_input:
+		get_viewport().gui_get_focus_owner().pressed.emit()
+
 
 #endregion
 

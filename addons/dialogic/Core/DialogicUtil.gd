@@ -369,46 +369,46 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 	if not ResourceLoader.exists(original_file):
 		push_error("[Dialogic] Unable to make file with invalid path custom!")
 		return ""
-	
+
 	if new_folder_name:
 		target_folder = target_folder.path_join(new_folder_name)
 		DirAccess.make_dir_absolute(target_folder)
-	
+
 	if new_file_name.is_empty():
 		new_file_name = "custom_" + original_file.get_file()
-	
+
 	if not new_file_name.ends_with(original_file.get_extension()):
 		new_file_name += "." + original_file.get_extension()
-	
+
 	var target_file := target_folder.path_join(new_file_name)
 
 	customize_file(original_file, target_file)
-	
+
 	get_dialogic_plugin().get_editor_interface().get_resource_filesystem().scan_sources()
-	
+
 	return target_file
 
 
 static func customize_file(original_file:String, target_file:String) -> String:
 	#print("\nCUSTOMIZE FILE")
 	#printt(original_file, "->", target_file)
-	
+
 	DirAccess.copy_absolute(original_file, target_file)
 
 	var file := FileAccess.open(target_file, FileAccess.READ)
 	var file_text := file.get_as_text()
 	file.close()
-	
+
 	# If we are customizing a scene, we check for any resources used in that scene that are in the same folder.
 	# Those will be copied as well and the scene will be modified to point to them.
 	if file_text.begins_with('[gd_'):
 		var base_path: String = original_file.get_base_dir()
-		
+
 		var remove_uuid_regex := r'\[gd_.* (?<uid>uid="uid:[^"]*")'
 		var result := RegEx.create_from_string(remove_uuid_regex).search(file_text)
 		if result:
 			file_text = file_text.replace(result.get_string("uid"), "")
-		
+
 		# This regex also removes the UID referencing the original resource
 		var file_regex := r'(uid="[^"]*" )?\Qpath="'+base_path+r'\E(?<file>[^"]*)"'
 		result = RegEx.create_from_string(file_regex).search(file_text)
@@ -416,12 +416,12 @@ static func customize_file(original_file:String, target_file:String) -> String:
 			var found_file_name := result.get_string('file')
 			var found_file_path := base_path.path_join(found_file_name)
 			var target_file_path := target_file.get_base_dir().path_join(found_file_name)
-			
+
 			# Files found in this file will ALSO be customized.
 			customize_file(found_file_path, target_file_path)
-			
+
 			file_text = file_text.replace(found_file_path, target_file_path)
-			
+
 			result = RegEx.create_from_string(file_regex).search(file_text)
 
 	file = FileAccess.open(target_file, FileAccess.WRITE)

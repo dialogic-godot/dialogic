@@ -188,5 +188,3 @@ func _on_update_check_completed(result:int):
 	version_indicator.add_theme_color_override('font_hover_color', result_color.lightened(0.5))
 	version_indicator.add_theme_color_override('font_pressed_color', result_color)
 	version_indicator.add_theme_color_override('font_focus_color', result_color)
-
-

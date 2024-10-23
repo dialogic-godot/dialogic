@@ -66,9 +66,9 @@ func create_new_portrait_scene(target_file: String, info: Dictionary) -> void:
 
 func make_portrait_preset_custom(target_file:String, info: Dictionary) -> String:
 	var previous_file: String = info.path
-	
+
 	var result_path := DialogicUtil.make_file_custom(previous_file, target_file.get_base_dir(), target_file.get_file())
-	
+
 	return result_path
 
 

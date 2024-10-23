@@ -35,7 +35,7 @@ func load_style(style:DialogicStyle) -> void:
 	current_style = style
 
 	if current_style.has_meta('_latest_layer'):
-		current_layer_idx = current_style.get_meta('_latest_layer', -1)
+		current_layer_idx = int(current_style.get_meta('_latest_layer', -1))
 	else:
 		current_layer_idx = -1
 
@@ -80,7 +80,7 @@ func load_style_layer_list() -> void:
 
 		layer_item.set_meta('scene', layer_scene)
 
-	if current_layer_idx == -1:
+	if current_layer_idx == -1 or root.get_child_count() < current_layer_idx:
 		root.select(0)
 	else:
 		root.get_child(current_layer_idx).select(0)
@@ -250,14 +250,14 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 
 
 func make_layer_custom(target_folder:String, custom_name := "") -> void:
-	
+
 	var original_file: String = current_style.get_layer_info(current_layer_idx).path
 	var custom_new_folder := ""
-	
+
 	if custom_name.is_empty():
 		custom_name = "custom_"+%StyleBrowser.premade_scenes_reference[original_file].name.to_snake_case()
 		custom_new_folder = %StyleBrowser.premade_scenes_reference[original_file].name.to_pascal_case()
-	
+
 	var result_path := DialogicUtil.make_file_custom(
 		original_file,
 		target_folder,
