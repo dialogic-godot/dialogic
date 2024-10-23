@@ -142,7 +142,8 @@ func build_event_editor() -> void:
 			'_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.CUSTOM')
 
-	add_body_edit("argument", ValueType.IMAGE_PREVIEW, {'left_text':'Preview:'}, '(_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT) and !argument.is_empty()')
+	add_body_edit("argument", ValueType.IMAGE_PREVIEW, {'left_text':'Preview:'},
+		'(_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT) and !argument.is_empty()')
 	add_body_line_break('(_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT) and !argument.is_empty()')
 
 	add_body_edit("transition", ValueType.DYNAMIC_OPTIONS,
