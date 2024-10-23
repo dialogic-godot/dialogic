@@ -89,6 +89,9 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
+		if character and not character.portraits.has(portrait):
+			portrait = ""
+			ui_update_needed.emit()
 
 var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<transform>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
 

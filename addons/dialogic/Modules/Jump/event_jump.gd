@@ -26,6 +26,10 @@ var timeline_identifier := "":
 	set(value):
 		timeline_identifier = value
 		timeline = DialogicResourceUtil.get_timeline_resource(value)
+		if (not timeline_identifier in DialogicResourceUtil.get_label_cache().keys()
+				or not label_name in DialogicResourceUtil.get_label_cache()[timeline_identifier]):
+			label_name = ""
+			ui_update_needed.emit()
 
 
 ################################################################################
