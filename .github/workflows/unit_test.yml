@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: "Checkout your Repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: true
 
@@ -93,7 +93,7 @@ jobs:
 
       - name: "Upload Unit Test Reports"
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "godot-version"
           path: |
