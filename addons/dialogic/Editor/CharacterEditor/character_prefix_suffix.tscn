@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn3vj0y1nh7nb"]
+
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="1_o3alv"]
+[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/character_settings/character_prefix_suffix.gd" id="1_tkxff"]
+
+[node name="CharacterPrefixSuffix" type="GridContainer"]
+offset_right = 121.0
+offset_bottom = 66.0
+columns = 2
+script = ExtResource("1_tkxff")
+
+[node name="Prefix" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Prefix"]
+layout_mode = 2
+text = "Prefix"
+
+[node name="HintTooltip" parent="Prefix" instance=ExtResource("1_o3alv")]
+layout_mode = 2
+tooltip_text = "Choices can appear either instantly when the text finished, after a delay, a click or either."
+texture = null
+hint_text = "If a character speaks, this appears before their text.
+Example: Colour Tags or Quotation Marks."
+
+[node name="PrefixInput" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Mood name"
+placeholder_text = "“"
+caret_blink = true
+
+[node name="Suffix" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Suffix"]
+layout_mode = 2
+text = "Suffix"
+
+[node name="HintTooltip" parent="Suffix" instance=ExtResource("1_o3alv")]
+layout_mode = 2
+tooltip_text = "If a character speaks, this appears before their text.
+Example: Colour Tags or Quotation Marks."
+texture = null
+hint_text = "If a character speaks, this appears after their text.
+Example: Colour Tags or Quotation Marks."
+
+[node name="SuffixInput" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Mood name"
+placeholder_text = "”"
+caret_blink = true
