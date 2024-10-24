@@ -8,3 +8,7 @@ func _get_events() -> Array:
 
 func _get_subsystems() -> Array:
 	return [{'name':'Audio', 'script':this_folder.path_join('subsystem_audio.gd')}]
+
+
+func _get_settings_pages() -> Array:
+	return [this_folder.path_join('settings_audio.tscn')]

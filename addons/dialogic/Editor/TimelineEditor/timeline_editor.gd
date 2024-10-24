@@ -150,6 +150,7 @@ func new_timeline(path:String) -> void:
 	new_timeline.resource_path = path
 	new_timeline.set_meta('timeline_not_saved', true)
 	var err := ResourceSaver.save(new_timeline)
+	EditorInterface.get_resource_filesystem().update_file(new_timeline.resource_path)
 	DialogicResourceUtil.update_directory('dtl')
 	editors_manager.edit_resource(new_timeline)
 

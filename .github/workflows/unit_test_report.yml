@@ -17,8 +17,9 @@ jobs:
 
     - name: "Publish Test Report"
       if: ${{ always() }}
-      uses: dorny/test-reporter@v1.6.0
+      uses: dorny/test-reporter@v1.9.1
       with:
+        artifact: "godot-version"
         name: "test_report"
-        path: "reports/**/results.xml"
+        path: "**/reports/**/results.xml"
         reporter: java-junit

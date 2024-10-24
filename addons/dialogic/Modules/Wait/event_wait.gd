@@ -11,7 +11,10 @@ extends DialogicEvent
 var time: float = 1.0
 ## If true the text box will be hidden while the event waits.
 var hide_text := true
+## If true the wait can be skipped with user input
+var skippable := false
 
+var _tween: Tween
 
 ################################################################################
 ## 						EXECUTE
@@ -30,7 +33,22 @@ func _execute() -> void:
 		dialogic.Text.update_dialog_text('', true)
 		dialogic.Text.hide_textbox()
 
-	await dialogic.get_tree().create_timer(final_wait_time, false, DialogicUtil.is_physics_timer()).timeout
+	_tween = dialogic.get_tree().create_tween()
+	if DialogicUtil.is_physics_timer():
+		_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	_tween.tween_callback(_on_finish).set_delay(final_wait_time)
+	
+	if skippable:
+		dialogic.Inputs.dialogic_action.connect(_on_finish)
+
+
+func _on_finish() -> void:
+	if is_instance_valid(_tween):
+		_tween.kill()
+	
+	if skippable:
+		dialogic.Inputs.dialogic_action.disconnect(_on_finish)
+	
 	if dialogic.Animations.is_animating():
 		dialogic.Animations.stop_animation()
 	dialogic.current_state = dialogic.States.IDLE
@@ -62,6 +80,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_info
 		"time" 		:  {"property": "time", 		"default": 1},
 		"hide_text" :  {"property": "hide_text", 	"default": true},
+		"skippable" :  {"property": "skippable", 	"default": false},
 	}
 
 
@@ -74,3 +93,4 @@ func build_event_editor() -> void:
 	add_header_label('seconds', 'time != 1')
 	add_header_label('second', 'time == 1')
 	add_body_edit('hide_text', ValueType.BOOL, {'left_text':'Hide text box:'})
+	add_body_edit('skippable', ValueType.BOOL, {'left_text':'Skippable:'})

@@ -148,7 +148,7 @@ func _on_submit_extension_button_pressed() -> void:
 
 	var file: FileAccess
 	var indexer_content := "@tool\nextends DialogicIndexer\n\n"
-	if mode != 1: # don't add event in Subsystem Only mode
+	if mode != 2: # don't add event in Subsystem Only mode
 		indexer_content += """func _get_events() -> Array:
 	return [this_folder.path_join('event_"""+%NameEdit.text.to_snake_case()+""".gd')]\n\n"""
 		file = FileAccess.open(extensions_folder.path_join('event_'+%NameEdit.text.to_snake_case()+'.gd'), FileAccess.WRITE)

@@ -22,7 +22,7 @@ func _ready() -> void:
 	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
 	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
 
-func receive_event_signal(argument:String) -> void:
+func receive_event_signal(argument:Variant) -> void:
 	print("[Dialogic] Encountered a signal event: ", argument)
 
 func receive_text_signal(argument:String) -> void:
