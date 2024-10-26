@@ -18,6 +18,7 @@ const _SETTING_INPUT_ACTION_DEFAULT := "dialogic_default_action"
 var input_block_timer := Timer.new()
 var _auto_skip_timer_left: float = 0.0
 var action_was_consumed := false
+var input_was_mouse_input := false
 
 var auto_skip: DialogicAutoSkip = null
 var auto_advance: DialogicAutoAdvance = null
@@ -88,6 +89,7 @@ func handle_input() -> void:
 		return
 
 	dialogic_action.emit()
+	input_was_mouse_input = false
 
 
 ## Unhandled Input is used for all NON-Mouse based inputs.
@@ -95,6 +97,7 @@ func _unhandled_input(event:InputEvent) -> void:
 	if is_input_pressed(event, true):
 		if event is InputEventMouse or event is InputEventScreenTouch:
 			return
+		input_was_mouse_input = false
 		handle_input()
 
 
@@ -102,9 +105,11 @@ func _unhandled_input(event:InputEvent) -> void:
 ## If any DialogicInputNode is present this won't do anything (because that node handles MouseInput then).
 func _input(event:InputEvent) -> void:
 	if is_input_pressed(event):
-		if not event is InputEventMouse or get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
+		if not event is InputEventMouse:
 			return
-
+		if get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
+			return
+		input_was_mouse_input = true
 		handle_input()
 
 
@@ -117,7 +122,8 @@ func is_input_pressed(event: InputEvent, exact := false) -> bool:
 func handle_node_gui_input(event:InputEvent) -> void:
 	if Input.is_action_just_pressed(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, _SETTING_INPUT_ACTION_DEFAULT)):
 		if event is InputEventMouseButton and event.pressed:
-			DialogicUtil.autoload().Inputs.handle_input()
+			input_was_mouse_input = true
+			handle_input()
 
 
 func is_input_blocked() -> bool:
