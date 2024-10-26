@@ -9,8 +9,12 @@ enum DragTypes {NOTHING, NEW_EVENT, EXISTING_EVENTS}
 
 var drag_type: DragTypes = DragTypes.NOTHING
 var drag_data: Variant
-var drag_to_position := 0
+var drag_to_position := 0:
+	set(value):
+		drag_to_position = value
+		drag_to_position_updated = true
 var dragging := false
+var drag_to_position_updated := false
 
 
 signal drag_completed(type, index, data)
@@ -33,6 +37,7 @@ func start_dragging(type:DragTypes, data:Variant) -> void:
 	dragging = true
 	drag_type = type
 	drag_data = data
+	drag_to_position_updated = false
 
 
 func _input(event:InputEvent) -> void:
@@ -61,7 +66,7 @@ func _process(delta:float) -> void:
 
 func finish_dragging() -> void:
 	dragging = false
-	if get_global_rect().has_point(get_global_mouse_position()):
+	if drag_to_position_updated and get_global_rect().has_point(get_global_mouse_position()):
 		drag_completed.emit(drag_type, drag_to_position, drag_data)
 	else:
 		drag_canceled.emit()
