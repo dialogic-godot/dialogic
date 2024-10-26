@@ -166,7 +166,8 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn",
 	DialogicEvent.ValueType.VECTOR3: 			"res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn",
 	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn",
-	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn"
+	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn",
+	DialogicEvent.ValueType.AUDIO_PREVIEW: 		"res://addons/dialogic/Editor/Events/Fields/field_audio_preview.tscn",
 	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:

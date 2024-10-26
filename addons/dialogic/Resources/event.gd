@@ -93,7 +93,7 @@ enum ValueType {
 	NUMBER,
 	VECTOR2, VECTOR3, VECTOR4,
 	# Other
-	CUSTOM, BUTTON, LABEL, COLOR
+	CUSTOM, BUTTON, LABEL, COLOR, AUDIO_PREVIEW
 }
 ## List that stores the fields for the editor
 var editor_list: Array = []

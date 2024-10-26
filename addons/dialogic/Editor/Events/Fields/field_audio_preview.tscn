@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dotvrsumm5y5c"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_audio_preview.gd" id="1_7wm54"]
+
+[node name="Field_Audio_Preview" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+flat = true
+script = ExtResource("1_7wm54")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
