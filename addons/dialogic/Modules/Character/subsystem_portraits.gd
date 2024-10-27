@@ -619,6 +619,7 @@ func get_character_info(character:DialogicCharacter) -> Dictionary:
 ## Updates all portrait containers set to SPEAKER.
 func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 	for container: Node in get_tree().get_nodes_in_group('dialogic_portrait_con_speaker'):
+
 		var just_joined := true
 		for character_node: Node in container.get_children():
 			if not character_node.get_meta('character') == speaker:
@@ -644,7 +645,10 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 		elif portrait.is_empty():
 			continue
 
-		if portrait.is_empty(): portrait = speaker.default_portrait
+		if portrait.is_empty():
+			portrait = speaker.default_portrait
+
+		var character_node := container.get_child(-1)
 
 		var fade_animation: String = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade Cross")
 		var fade_length: float = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5)
@@ -654,26 +658,28 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 		if container.portrait_prefix+portrait in speaker.portraits:
 			portrait = container.portrait_prefix+portrait
 
-		_change_portrait(container.get_child(-1), portrait, fade_animation, fade_length)
+		_change_portrait(character_node, portrait, fade_animation, fade_length)
 
 		# if the character has no portraits _change_portrait won't actually add a child node
-		if container.get_child(-1).get_child_count() == 0:
+		if character_node.get_child_count() == 0:
 			continue
 
 		if just_joined:
 			# Change speaker is called before the text is changed.
 			# In styles where the speaker is IN the textbox,
 			# this can mean the portrait container isn't sized correctly yet.
+			character_node.hide()
 			if not container.is_visible_in_tree():
 				await get_tree().process_frame
+			character_node.show()
 			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 			join_animation = DialogicPortraitAnimationUtil.guess_animation(join_animation, DialogicPortraitAnimationUtil.AnimationType.IN)
 			var join_animation_length := _get_join_default_length()
 
 			if join_animation and join_animation_length:
-				_animate_node(container.get_child(-1), join_animation, join_animation_length)
+				_animate_node(character_node, join_animation, join_animation_length)
 
-		_change_portrait_mirror(container.get_child(-1))
+		_change_portrait_mirror(character_node)
 
 	if speaker:
 		if speaker.resource_path != dialogic.current_state_info['speaker']:
