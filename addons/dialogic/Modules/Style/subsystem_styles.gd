@@ -90,15 +90,16 @@ func create_layout(style: DialogicStyle, parent: Node = null) -> DialogicLayoutB
 
 	# Load base scene
 	var base_scene: DialogicLayoutBase
-	if style.base_scene == null:
+	var base_layer_info := style.get_layer_inherited_info("")
+	if base_layer_info.path.is_empty():
 		base_scene = DialogicUtil.get_default_layout_base().instantiate()
 	else:
-		base_scene = style.get_base_scene().instantiate()
+		base_scene = load(base_layer_info.path).instantiate()
 
 	base_scene.name = "DialogicLayout_"+style.name.to_pascal_case()
 
 	# Apply base scene overrides
-	DialogicUtil.apply_scene_export_overrides(base_scene, style.get_layer_inherited_info("").overrides)
+	DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
 
 	# Load layers
 	for layer_id in style.get_layer_inherited_list():
