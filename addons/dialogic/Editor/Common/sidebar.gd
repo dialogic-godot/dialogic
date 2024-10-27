@@ -33,6 +33,7 @@ func _ready() -> void:
 
 	resource_tree.item_activated.connect(_on_resources_tree_item_activated)
 	resource_tree.item_mouse_selected.connect(_on_resources_tree_item_clicked)
+	resource_tree.item_collapsed.connect(_on_resources_tree_item_collapsed)
 
 	%ContentList.item_selected.connect(
 		func(idx: int): content_item_activated.emit(%ContentList.get_item_text(idx))
@@ -304,6 +305,10 @@ func add_folder_item(label: String, parent:TreeItem, color:= Color.BLACK, toolti
 	else:
 		color.a = 0.2
 		folder_item.set_custom_bg_color(0, color)
+
+	if label in DialogicUtil.get_editor_setting("resource_list_collapsed_info", []):
+		folder_item.collapsed = true
+
 	return folder_item
 
 
@@ -383,6 +388,17 @@ func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> 
 			if resource_tree.get_selected().get_metadata(0):
 				%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
 				%RightClickMenu.set_meta("item_clicked", resource_tree.get_selected())
+
+
+func _on_resources_tree_item_collapsed(item:TreeItem) -> void:
+	var collapsed_info := DialogicUtil.get_editor_setting("resource_list_collapsed_info", [])
+	if item.get_text(0) in collapsed_info:
+		if not item.collapsed:
+			collapsed_info.erase(item.get_text(0))
+	else:
+		if item.collapsed:
+			collapsed_info.append(item.get_text(0))
+	DialogicUtil.set_editor_setting("resource_list_collapsed_info", collapsed_info)
 
 
 func edit_resource(resource_item: Variant) -> void:
