@@ -41,8 +41,9 @@ func _enter_tree() -> void:
 
 	# Auto-update the singleton path for alpha users
 	# TODO remove at some point during beta or later
-	if not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, ""):
-		remove_autoload_singleton(PLUGIN_NAME)
+	if not ProjectSettings.has_setting("autoload/"+PLUGIN_NAME) or not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, ""):
+		if ProjectSettings.has_setting("autoload/"+PLUGIN_NAME):
+			remove_autoload_singleton(PLUGIN_NAME)
 		add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 
 
