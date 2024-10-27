@@ -1112,7 +1112,7 @@ func _input(event:InputEvent) -> void:
 			if events_list:
 				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
 				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events_list, paste_position))
-				TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(paste_position+1, len(events_list)))
+				TimelineUndoRedo.add_undo_method(delete_events_at_index.bind(paste_position, len(events_list)))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 
