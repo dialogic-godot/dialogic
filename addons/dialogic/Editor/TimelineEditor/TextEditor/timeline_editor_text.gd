@@ -92,7 +92,9 @@ func _gui_input(event):
 func toggle_comment() -> void:
 	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
 	var selection := Rect2i(
-		Vector2i(get_selection_origin_line(), get_selection_origin_column()),
+		Vector2i(get_selection_line(), get_selection_column()),
+		# TODO When ditching godot 4.2, switch to this, the above methods have been deprecated in 4.3
+		#Vector2i(get_selection_origin_line(), get_selection_origin_column()),
 		Vector2i(get_caret_line(), get_caret_column()))
 	var from: int = cursor.y
 	var to: int = cursor.y
