@@ -110,7 +110,7 @@ func _ready() -> void:
 
 	base_sound_player.name = "Sound"
 	add_child(base_sound_player)
-	
+
 	current_music_player.resize(max_channels)
 
 
