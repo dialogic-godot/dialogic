@@ -1108,8 +1108,8 @@ func _input(event:InputEvent) -> void:
 			var paste_position := 0
 			if selected_items:
 				paste_position = selected_items[-1].get_index()+1
-			elif %Timeline.get_child_count() > 0:
-				paste_position = %Timeline.get_child_count()-1
+			else:
+				paste_position = %Timeline.get_child_count()
 			if events_list:
 				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
 				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events_list, paste_position))
