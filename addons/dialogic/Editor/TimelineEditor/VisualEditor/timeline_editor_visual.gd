@@ -1104,10 +1104,10 @@ func _input(event:InputEvent) -> void:
 
 		"Ctrl+V":
 			var events_list := get_clipboard_data()
-			var paste_position := -1
+			var paste_position := 0
 			if selected_items:
 				paste_position = selected_items[-1].get_index()+1
-			else:
+			elif %Timeline.get_child_count() > 0:
 				paste_position = %Timeline.get_child_count()-1
 			if events_list:
 				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
