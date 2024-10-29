@@ -1,13 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://cn3vj0y1nh7nb"]
 
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="1_o3alv"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/character_settings/character_prefix_suffix.gd" id="1_tkxff"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_prefix_suffix.gd" id="1_tkxff"]
 
-[node name="CharacterPrefixSuffix" type="GridContainer"]
+[node name="CharacterPrefixSuffix" type="GridContainer" node_paths=PackedStringArray("prefix_input", "suffix_input")]
 offset_right = 121.0
 offset_bottom = 66.0
 columns = 2
 script = ExtResource("1_tkxff")
+prefix_input = NodePath("PrefixInput")
+suffix_input = NodePath("SuffixInput")
 
 [node name="Prefix" type="HBoxContainer" parent="."]
 layout_mode = 2
