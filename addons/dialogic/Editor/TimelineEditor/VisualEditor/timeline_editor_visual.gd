@@ -1099,6 +1099,7 @@ func _input(event:InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 		"Ctrl+C":
+			select_events_indexed(get_events_indexed(selected_items))
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 
