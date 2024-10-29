@@ -187,12 +187,14 @@ func _ready() -> void:
 ## - sets up the title of the section
 ## - connects to various signals
 func add_settings_section(edit:Control, parent:Node) ->  void:
-	## edit.changed.connect(something_changed)
+	edit.changed.connect(something_changed)
 	edit.character_editor = self
+
 	if edit.has_signal('update_preview'):
 		edit.update_preview.connect(update_preview)
 
 	var button: Button
+
 	if edit._show_title():
 		var hbox := HBoxContainer.new()
 		hbox.name = edit._get_title()+"BOX"
