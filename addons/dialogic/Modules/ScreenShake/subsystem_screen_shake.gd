@@ -72,11 +72,7 @@ func update_shake_x(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 
 	shake_horizontal_started.emit(dialogic.current_state_info['screen_shake']['x'])
 
-	var screen_shaker: DialogicNode_ScreenShaker
-	if dialogic.has_subsystem('Styles'):
-		screen_shaker = dialogic.Styles.get_first_node_in_layout('dialogic_screen_shaker')
-	else:
-		screen_shaker = get_tree().get_first_node_in_group('dialogic_screen_shaker')
+	var screen_shaker := get_screen_shaker()
 
 	if not screen_shaker:
 		return
@@ -88,9 +84,9 @@ func update_shake_x(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 		var current_amplitude := screen_shaker.material.get_shader_parameter('amplitude_x') as float
 		var current_frequency := screen_shaker.material.get_shader_parameter('frequency_x') as float
 		var tween := get_tree().create_tween()
-		tween.tween_method(_tween_amplitude_x.bind(screen_shaker.material), current_amplitude, amplitude, fade)
+		tween.tween_method(_tween_amplitude_x, current_amplitude, amplitude, fade)
 		tween.set_parallel()
-		tween.tween_method(_tween_frequency_x.bind(screen_shaker), current_frequency, frequency, fade)
+		tween.tween_method(_tween_frequency_x, current_frequency, frequency, fade)
 		await tween.finished
 	else:
 		screen_shaker.material.set_shader_parameter('amplitude_x', amplitude)
@@ -109,9 +105,9 @@ func update_shake_x(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 		var current_amplitude := screen_shaker.material.get_shader_parameter('amplitude_x') as float
 		var current_frequency := screen_shaker.material.get_shader_parameter('frequency_x') as float
 		var tween := get_tree().create_tween()
-		tween.tween_method(_tween_amplitude_x.bind(screen_shaker.material), current_amplitude, 0.0, fade)
+		tween.tween_method(_tween_amplitude_x, current_amplitude, 0.0, fade)
 		tween.set_parallel()
-		tween.tween_method(_tween_frequency_x.bind(screen_shaker), current_frequency, 0.0, fade)
+		tween.tween_method(_tween_frequency_x, current_frequency, 0.0, fade)
 		await tween.finished
 	else:
 		screen_shaker.material.set_shader_parameter('amplitude_x', 0.0)
@@ -132,11 +128,7 @@ func update_shake_y(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 
 	shake_vertical_started.emit(dialogic.current_state_info['screen_shake']['y'])
 
-	var screen_shaker: DialogicNode_ScreenShaker
-	if dialogic.has_subsystem('Styles'):
-		screen_shaker = dialogic.Styles.get_first_node_in_layout('dialogic_screen_shaker')
-	else:
-		screen_shaker = get_tree().get_first_node_in_group('dialogic_screen_shaker')
+	var screen_shaker := get_screen_shaker()
 
 	if not screen_shaker:
 		return
@@ -148,9 +140,9 @@ func update_shake_y(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 		var current_amplitude := screen_shaker.material.get_shader_parameter('amplitude_y') as float
 		var current_frequency := screen_shaker.material.get_shader_parameter('frequency_y') as float
 		var tween := get_tree().create_tween()
-		tween.tween_method(_tween_amplitude_y.bind(screen_shaker.material), current_amplitude, amplitude, fade)
+		tween.tween_method(_tween_amplitude_y, current_amplitude, amplitude, fade)
 		tween.set_parallel()
-		tween.tween_method(_tween_frequency_y.bind(screen_shaker), current_frequency, frequency, fade)
+		tween.tween_method(_tween_frequency_y, current_frequency, frequency, fade)
 		await tween.finished
 	else:
 		screen_shaker.material.set_shader_parameter('amplitude_y', amplitude)
@@ -169,9 +161,9 @@ func update_shake_y(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 		var current_amplitude := screen_shaker.material.get_shader_parameter('amplitude_y') as float
 		var current_frequency := screen_shaker.material.get_shader_parameter('frequency_y') as float
 		var tween := get_tree().create_tween()
-		tween.tween_method(_tween_amplitude_y.bind(screen_shaker.material), current_amplitude, 0.0, fade)
+		tween.tween_method(_tween_amplitude_y, current_amplitude, 0.0, fade)
 		tween.set_parallel()
-		tween.tween_method(_tween_frequency_y.bind(screen_shaker), current_frequency, 0.0, fade)
+		tween.tween_method(_tween_frequency_y, current_frequency, 0.0, fade)
 		await tween.finished
 	else:
 		screen_shaker.material.set_shader_parameter('amplitude_y', 0.0)
@@ -182,17 +174,48 @@ func update_shake_y(amplitude: float = 0.0, frequency: float = 0.0, fade: float 
 
 #endregion
 
-func _tween_amplitude_x(value: float, material: ShaderMaterial) -> void:
-	material.set_shader_parameter('amplitude_x', value)
+func _tween_amplitude_x(value: float) -> void:
+	var screen_shaker := get_screen_shaker()
+
+	if not screen_shaker:
+		return
+
+	screen_shaker.material.set_shader_parameter('amplitude_x', value)
 
 
-func _tween_amplitude_y(value: float, material: ShaderMaterial) -> void:
-	material.set_shader_parameter('amplitude_y', value)
+func _tween_amplitude_y(value: float) -> void:
+	var screen_shaker := get_screen_shaker()
+
+	if not screen_shaker:
+		return
+
+	screen_shaker.material.set_shader_parameter('amplitude_y', value)
 
 
-func _tween_frequency_x(value: float, screen_shaker: DialogicNode_ScreenShaker) -> void:
+func _tween_frequency_x(value: float) -> void:
+	var screen_shaker := get_screen_shaker()
+
+	if not screen_shaker:
+		return
+
 	screen_shaker.update_frequency_x(value)
 
 
-func _tween_frequency_y(value: float, screen_shaker: DialogicNode_ScreenShaker) -> void:
+func _tween_frequency_y(value: float) -> void:
+	var screen_shaker := get_screen_shaker()
+
+	if not screen_shaker:
+		return
+
 	screen_shaker.update_frequency_y(value)
+
+
+func get_screen_shaker() -> DialogicNode_ScreenShaker:
+	var screen_shaker: DialogicNode_ScreenShaker = null
+
+	if dialogic.has_subsystem('Styles'):
+		screen_shaker = dialogic.Styles.get_first_node_in_layout('dialogic_screen_shaker')
+	else:
+		screen_shaker = get_tree().get_first_node_in_group('dialogic_screen_shaker')
+
+	return screen_shaker
