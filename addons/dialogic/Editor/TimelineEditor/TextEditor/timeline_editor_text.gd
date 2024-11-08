@@ -7,6 +7,7 @@ extends CodeEdit
 @onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
+var channel_regex := RegEx.create_from_string(r'audio +(?<channel>[\w-]{2,}|[\w]+)')
 
 func _ready() -> void:
 	await find_parent('EditorView').ready
@@ -210,6 +211,11 @@ func update_content_list() -> void:
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+
+	var channels: PackedStringArray = []
+	for i in channel_regex.search_all(text):
+		channels.append(i.get_string('channel'))
+	timeline_editor.update_channel_cache(channels)
 
 
 func _on_content_item_clicked(label:String) -> void:

@@ -301,6 +301,7 @@ func update_content_list() -> void:
 	if not is_inside_tree():
 		return
 
+	var channels: PackedStringArray = []
 	var labels: PackedStringArray = []
 
 	for event in %Timeline.get_children():
@@ -308,7 +309,12 @@ func update_content_list() -> void:
 		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
 			labels.append(event.resource.name)
 
+		if 'event_name' in event.resource and event.resource is DialogicAudioEvent:
+			if not event.resource.channel_name in channels:
+				channels.append(event.resource.channel_name)
+
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+	timeline_editor.update_channel_cache(channels)
 
 
 #endregion
@@ -379,6 +385,8 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	block.content_changed.connect(something_changed)
 
 	if event_resource.event_name == "Label":
+		block.content_changed.connect(update_content_list)
+	if event_resource.event_name == "Audio":
 		block.content_changed.connect(update_content_list)
 	if at_index == -1:
 		if len(selected_items) != 0:
