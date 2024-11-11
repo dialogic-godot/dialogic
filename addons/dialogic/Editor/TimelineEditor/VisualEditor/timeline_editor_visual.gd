@@ -425,12 +425,12 @@ func get_events_indexed(events:Array) -> Dictionary:
 		if event.resource is DialogicEndBranchEvent:
 			continue
 
-		indexed_dict[event.get_index()] = event.resource.to_text()
+		indexed_dict[event.get_index()] = event.resource._store_as_string()
 
 		# store an end branch if it is selected or connected to a selected event
 		if 'end_node' in event and event.end_node:
 			event = event.end_node
-			indexed_dict[event.get_index()] = event.resource.to_text()
+			indexed_dict[event.get_index()] = event.resource._store_as_string()
 		elif event.resource is DialogicEndBranchEvent:
 			if event.parent_node in events: # add local index
 				indexed_dict[event.get_index()] += str(events.find(event.parent_node))
@@ -542,7 +542,7 @@ func copy_selected_events() -> void:
 
 	var event_copy_array := []
 	for item in selected_items:
-		event_copy_array.append(item.resource.to_text())
+		event_copy_array.append(item.resource._store_as_string())
 		if item.resource is DialogicEndBranchEvent:
 			if item.parent_node in selected_items: # add local index
 				event_copy_array[-1] += str(selected_items.find(item.parent_node))
