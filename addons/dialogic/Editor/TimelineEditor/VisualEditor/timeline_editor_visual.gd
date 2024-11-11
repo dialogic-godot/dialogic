@@ -471,7 +471,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 				event_resource = i.duplicate()
 				break
 
-		event_resource.from_text(indexed_events[event_idx])
+		event_resource._load_from_string(indexed_events[event_idx])
 
 		# now create the visual block.
 		deselect_all_items()
