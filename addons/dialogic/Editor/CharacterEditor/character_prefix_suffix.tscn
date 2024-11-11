@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dytaor41paer4"]
+[gd_scene load_steps=3 format=3 uid="uid://1ctcs6ywjjtd"]
 
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="1_o3alv"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_prefix_suffix.gd" id="1_tkxff"]
@@ -27,7 +27,6 @@ Example: Color Tags or Quotation Marks."
 [node name="PrefixInput" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "“"
 caret_blink = true
 
 [node name="Suffix" type="HBoxContainer" parent="."]
@@ -46,5 +45,4 @@ Example: Color Tags or Quotation Marks."
 [node name="SuffixInput" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "”"
 caret_blink = true
