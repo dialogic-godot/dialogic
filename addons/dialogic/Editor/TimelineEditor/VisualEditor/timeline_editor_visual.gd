@@ -312,6 +312,11 @@ func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 
 			drag_allowed = true
 
+		if event.is_released() and not %TimelineArea.dragging and not Input.is_key_pressed(KEY_SHIFT):
+			if len(selected_items) > 1 and item in selected_items and not Input.is_key_pressed(KEY_CTRL):
+				deselect_all_items()
+				select_item(item)
+
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging() and drag_allowed:
