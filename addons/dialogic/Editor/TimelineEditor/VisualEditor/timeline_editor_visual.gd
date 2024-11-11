@@ -312,8 +312,8 @@ func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 
 			drag_allowed = true
 
-		if event.is_released() and !%TimelineArea.dragging and !Input.is_key_pressed(KEY_SHIFT):
-			if len(selected_items) > 1 and item in selected_items and !Input.is_key_pressed(KEY_CTRL):
+		if event.is_released() and not %TimelineArea.dragging and not Input.is_key_pressed(KEY_SHIFT):
+			if len(selected_items) > 1 and item in selected_items and not Input.is_key_pressed(KEY_CTRL):
 				deselect_all_items()
 				select_item(item)
 
