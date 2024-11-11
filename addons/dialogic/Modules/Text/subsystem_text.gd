@@ -138,6 +138,13 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 				text_node.text = text
 
 			else:
+				var current_character := get_current_speaker()
+
+				if current_character:
+					var character_prefix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
+					var character_suffix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
+					text = character_prefix + text + character_suffix
+
 				text_node.reveal_text(text, additional)
 
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
