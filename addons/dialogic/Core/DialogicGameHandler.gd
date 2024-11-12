@@ -95,17 +95,14 @@ signal text_signal(argument: String)
 # Careful, this section is repopulated automatically at certain moments.
 #region SUBSYSTEMS
 
+var Animations := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd").new():
+	get: return get_subsystem("Animations")
+
 var Audio := preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd").new():
 	get: return get_subsystem("Audio")
 
 var Backgrounds := preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd").new():
 	get: return get_subsystem("Backgrounds")
-
-var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
-	get: return get_subsystem("Portraits")
-
-var PortraitContainers := preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd").new():
-	get: return get_subsystem("PortraitContainers")
 
 var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd").new():
 	get: return get_subsystem("Choices")
@@ -113,11 +110,6 @@ var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.g
 var Expressions := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd").new():
 	get: return get_subsystem("Expressions")
 
-var Animations := preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd").new():
-	get: return get_subsystem("Animations")
-
-var Inputs := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd").new():
-	get: return get_subsystem("Inputs")
 
 var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd").new():
 	get: return get_subsystem("Glossary")
@@ -125,8 +117,17 @@ var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossa
 var History := preload("res://addons/dialogic/Modules/History/subsystem_history.gd").new():
 	get: return get_subsystem("History")
 
+var Inputs := preload("res://addons/dialogic/Modules/Core/subsystem_input.gd").new():
+	get: return get_subsystem("Inputs")
+
 var Jump := preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd").new():
 	get: return get_subsystem("Jump")
+
+var PortraitContainers := preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd").new():
+	get: return get_subsystem("PortraitContainers")
+
+var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd").new():
+	get: return get_subsystem("Portraits")
 
 var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd").new():
 	get: return get_subsystem("Save")

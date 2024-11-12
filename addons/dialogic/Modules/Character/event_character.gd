@@ -154,10 +154,10 @@ func _execute() -> void:
 			finish()
 			return
 
-		dialogic.Portraits.change_character_extradata(character, extra_data)
-
 		if set_portrait:
 			dialogic.Portraits.change_character_portrait(character, portrait, fade_animation, fade_length)
+
+		dialogic.Portraits.change_character_extradata(character, extra_data)
 
 		if set_mirrored:
 			dialogic.Portraits.change_character_mirror(character, mirrored)
