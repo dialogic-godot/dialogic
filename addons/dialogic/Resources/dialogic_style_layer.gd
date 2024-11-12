@@ -12,3 +12,10 @@ func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
 	elif scene_path is String and ResourceLoader.exists(scene_path):
 		scene = load(scene_path)
 	overrides = scene_overrides
+
+
+func _to_string() -> String:
+	if scene:
+		return "<Layer:" + scene.resource_path + " {" + str(len(overrides)) + " overrides} >"
+	else:
+		return "<Layer:no-scene>"
