@@ -64,7 +64,7 @@ func _execute() -> void:
 
 	var character_name_text := dialogic.Text.get_character_name_parsed(character)
 	if character:
-        dialogic.current_state_info['speaker'] = character.resource_path
+		dialogic.current_state_info['speaker'] = character.resource_path
 		if dialogic.has_subsystem('Styles') and character.custom_info.get('style', null):
 			dialogic.Styles.change_style(character.custom_info.style, false)
 			await dialogic.get_tree().process_frame
