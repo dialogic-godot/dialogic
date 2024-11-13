@@ -88,7 +88,7 @@ static func _update_autoload_subsystem_access() -> void:
 		return a.name < b.name
 	)
 
-	for subsystem: DialogicSubsystem in subsystems_sorted:
+	for subsystem: Dictionary in subsystems_sorted:
 		new_subsystem_access_list += '\nvar {name} := preload("{script}").new():\n\tget: return get_subsystem("{name}")\n'.format(subsystem)
 
 	new_subsystem_access_list += "\n#endregion"
