@@ -19,6 +19,10 @@ func _ready() -> void:
 		self.modulate = unhighlighted_color
 
 
+func _should_do_portrait_update(_character: DialogicCharacter, _portrait: String) -> bool:
+    return true
+
+
 func _highlight() -> void:
 	create_tween().tween_property(self, 'modulate', Color.WHITE, 0.15)
 	_prev_z_index = DialogicUtil.autoload().Portraits.get_character_info(character).get('z_index', 0)
