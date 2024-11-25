@@ -3,7 +3,7 @@ extends DialogicIndexer
 
 
 func _get_events() -> Array:
-	return [this_folder.path_join('event_music.gd'), this_folder.path_join('event_sound.gd')]
+	return [this_folder.path_join('event_audio.gd')]
 
 
 func _get_subsystems() -> Array:
