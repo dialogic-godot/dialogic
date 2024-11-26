@@ -199,3 +199,13 @@ func color_shortcode_content(dict:Dictionary, line:String, from:int = 0, to:int 
 		dict[x.get_start('value')+from-1] = {"color":base_color.lerp(normal_color, 0.7)}
 		dict[x.get_end()+from] = {"color":normal_color}
 	return dict
+
+
+func dict_get_color_at_column(dict:Dictionary, column:int) -> Color:
+	var prev_idx := -1
+	for i in dict:
+		if i > prev_idx and i <= column:
+			prev_idx = i
+	if prev_idx != -1:
+		return dict[prev_idx].color
+	return normal_color
