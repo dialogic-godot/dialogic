@@ -4,7 +4,7 @@ extends DialogicVisualEditorField
 
 
 func _ready() -> void:
-	for child in get_children():
+	for child: Node in get_children():
 		child.tooltip_text = tooltip_text
 		child.property_name = child.name #to identify the name of the changed sub-component
 		child.value_changed.connect(_on_sub_value_changed)

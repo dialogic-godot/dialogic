@@ -179,6 +179,21 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	return v_con
 
 
+## Returns the current background node.
+func get_current_background_node() -> Node:
+	var background_holder: DialogicNode_BackgroundHolder = null
+
+	if dialogic.has_subsystem("Styles"):
+		background_holder = dialogic.Styles.get_first_node_in_layout("dialogic_background_holders")
+	else:
+		background_holder = get_tree().get_first_node_in_group("dialogic_background_holders")
+
+	var current_viewport: Node = background_holder.get_meta("current_viewport")
+	var current_background_node: Node = current_viewport.get_meta("node")
+
+	return current_background_node
+
+
 ## Whether a background is set.
 func has_background() -> bool:
 	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
