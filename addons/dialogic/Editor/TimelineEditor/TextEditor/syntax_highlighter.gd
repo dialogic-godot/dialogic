@@ -11,7 +11,7 @@ var mode := Modes.FULL_HIGHLIGHTING
 var word_regex := RegEx.new()
 var region_regex := RegEx.new()
 var number_regex := RegEx.create_from_string(r"(\d|\.)+")
-var shortcode_regex := RegEx.create_from_string(r"\W*\[(?<id>\w*)(?<args>[^\]]*)?")
+var shortcode_regex := RegEx.create_from_string(r'\W*\[(?<id>\w*)(?<args>([^\]"]|"[^"]*")*)?')
 var shortcode_param_regex := RegEx.create_from_string(r'((?<parameter>[^\s=]*)\s*=\s*"(?<value>([^=]|\\=)*)(?<!\\)")')
 
 ## Colors
