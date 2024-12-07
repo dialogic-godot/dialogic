@@ -478,7 +478,7 @@ func get_fade_suggestions(search_text:String='') -> Dictionary:
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
-	if symbol == ' ' and line_until_caret.count(' ') == 1:
+	if symbol == ' ' and line_until_caret.split(" ", false).size() == 1:
 		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER)
 		if line.begins_with('leave'):
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
@@ -487,7 +487,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		var completion_character := regex.search(line).get_string('name')
 		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
 
-	elif not '[' in line_until_caret and symbol == ' ':
+	elif not '[' in line_until_caret and symbol == ' ' and line_until_caret.split(" ", false).size() > 1:
 		if not line.begins_with("leave"):
 			for position in get_position_suggestions():
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
