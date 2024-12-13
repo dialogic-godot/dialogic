@@ -110,7 +110,6 @@ var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.g
 var Expressions := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd").new():
 	get: return get_subsystem("Expressions")
 
-
 var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd").new():
 	get: return get_subsystem("Glossary")
 
@@ -131,6 +130,9 @@ var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_port
 
 var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd").new():
 	get: return get_subsystem("Save")
+
+var ScreenShake := preload("res://addons/dialogic/Modules/ScreenShake/subsystem_screen_shake.gd").new():
+	get: return get_subsystem("ScreenShake")
 
 var Settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd").new():
 	get: return get_subsystem("Settings")
