@@ -31,6 +31,8 @@ func jump_to_label(label:String) -> void:
 		dialogic.current_event_idx = 0
 		jumped_to_label.emit({'timeline':dialogic.current_timeline, 'label':"TOP"})
 		return
+	## Allows label to be a variable, making the jump event dynamic
+	label = str(dialogic.VAR.parse_variables(label))
 
 	var idx: int = -1
 	while true:
