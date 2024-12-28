@@ -191,7 +191,10 @@ func show_current_question(instant:=true) -> void:
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
-
+func focus_choice_button_node(button_index:int) -> void:
+	var node: DialogicNode_ChoiceButton = get_choice_button_node(button_index)
+	if node:
+		node.grab_focus();
 
 func get_choice_button_node(button_index:int) -> DialogicNode_ChoiceButton:
 	var idx := 1
