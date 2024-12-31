@@ -31,6 +31,8 @@ func _save(resource: Resource, path: String = '', _flags: int = 0) -> Error:
 			for idx in range(0, len(resource.events)):
 				if resource.events[idx]:
 					var event: DialogicEvent = resource.events[idx]
+					event.source_path = resource.resource_path
+					event.source_line_number = timeline_as_text.count("\n") + 1
 					if event.event_name == 'End Branch':
 						indent -=1
 						continue
