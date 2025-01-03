@@ -275,7 +275,7 @@ static func list_resources_of_type(extension:String) -> Array:
 
 static func scan_folder(path:String, extension:String) -> Array:
 	var list: Array = []
-	if DirAccess.dir_exists_absolute(path):
+	if DirAccess.dir_exists_absolute(path) and not FileAccess.file_exists(path + "/" + ".gdignore"):
 		var dir := DirAccess.open(path)
 		dir.list_dir_begin()
 		var file_name := dir.get_next()
