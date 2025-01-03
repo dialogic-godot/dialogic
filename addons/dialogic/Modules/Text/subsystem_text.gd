@@ -576,14 +576,15 @@ func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-var modifier_words_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\[\>]+(\/[^\>]*)\>")
+var modifier_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\>]+(\/[^\>]*)\>")
+var modifier_select_split_regex := RegEx.create_from_string(r"(\[[^\]]*\]|[^\/]|\/\/)+")
 func modifier_random_selection(text:String) -> String:
-	for replace_mod_match in modifier_words_select_regex.search_all(text):
+	for replace_mod_match: RegExMatch in modifier_select_regex.search_all(text):
 		var string: String = replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
-		string = string.replace('//', '<slash>')
-		var list: PackedStringArray = string.split('/')
-		var item: String = list[randi()%len(list)]
-		item = item.replace('<slash>', '/')
+		var options := []
+		for split: RegExMatch in modifier_select_split_regex.search_all(string):
+			options.append(split.get_string())
+		var item: String = options.pick_random()
 		text = text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return text
 

@@ -463,10 +463,10 @@ var text_effect_color := Color('#898276')
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	load_text_effects()
 	if text_random_word_regex.get_pattern().is_empty():
-		text_random_word_regex.compile("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+		text_random_word_regex.compile(r"(?<!\\)\<[^\>]+(\/[^\>]*)\>")
 
 	var result := regex.search(line)
-	if !result:
+	if not result:
 		return dict
 	if Highlighter.mode == Highlighter.Modes.FULL_HIGHLIGHTING:
 		if result.get_string('name'):
@@ -476,24 +476,29 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 			dict[result.get_start('portrait')] = {"color":Highlighter.character_portrait_color}
 			dict[result.get_end('portrait')] = {"color":Highlighter.normal_color}
 	if result.get_string('text'):
-		var effects_result := text_effects_regex.search_all(line)
-		for eff in effects_result:
-			dict[eff.get_start()] = {"color":text_effect_color}
-			dict[eff.get_end()] = {"color":Highlighter.normal_color}
-		dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', result.get_start('text'))
 
+		## Color the random selection modifier
 		for replace_mod_match in text_random_word_regex.search_all(result.get_string('text')):
 			var color: Color = Highlighter.string_color
 			color = color.lerp(Highlighter.normal_color, 0.4)
 			dict[replace_mod_match.get_start()+result.get_start('text')] = {'color':Highlighter.string_color}
 			var offset := 1
-			for b in replace_mod_match.get_string().trim_suffix('>').trim_prefix('<').split('/'):
+			for b:RegExMatch in RegEx.create_from_string(r"(\[[^\]]*\]|[^\/]|\/\/)+").search_all(replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")):
 				color.h = wrap(color.h+0.2, 0, 1)
 				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':color}
-				offset += len(b)
+				offset += len(b.get_string())
 				dict[replace_mod_match.get_start()+result.get_start('text')+offset] = {'color':Highlighter.string_color}
 				offset += 1
 			dict[replace_mod_match.get_end()+result.get_start('text')] = {'color':Highlighter.normal_color}
+
+		## Color bbcode and text effects
+		var effects_result := text_effects_regex.search_all(line)
+		for eff in effects_result:
+			var prev_color: Color = Highlighter.dict_get_color_at_column(dict, eff.get_start())
+			dict[eff.get_start()] = {"color":text_effect_color.lerp(prev_color, 0.4)}
+			dict[eff.get_end()] = {"color":prev_color}
+		dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', result.get_start('text'))
+
 	return dict
 
 #endregion
