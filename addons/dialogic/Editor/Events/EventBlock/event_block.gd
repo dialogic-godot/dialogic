@@ -55,6 +55,8 @@ func _ready() -> void:
 func initialize_ui() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
 
+	add_theme_constant_override("margin_bottom", ProjectSettings.get_setting('dialogic/accessibility/event_block_margin', 0) * _scale)
+
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 
 	# Warning Icon
@@ -168,6 +170,7 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn",
 	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn",
 	DialogicEvent.ValueType.AUDIO_PREVIEW: 		"res://addons/dialogic/Editor/Events/Fields/field_audio_preview.tscn",
+	DialogicEvent.ValueType.IMAGE_PREVIEW:		"res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn",
 	}
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
