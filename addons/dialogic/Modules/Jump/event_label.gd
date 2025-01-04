@@ -80,7 +80,10 @@ func get_shortcode_parameters() -> Dictionary:
 
 
 func _get_translatable_properties() -> Array:
-	return ["display_name"]
+	if display_name.is_empty():
+		return []
+	else:
+		return ["display_name"]
 
 
 func _get_property_original_translation(property_name:String) -> String:

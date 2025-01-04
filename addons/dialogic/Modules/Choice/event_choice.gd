@@ -123,7 +123,10 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func _get_translatable_properties() -> Array:
-	return ['text', 'disabled_text']
+	if allow_alt_text():
+		return ['text', 'disabled_text']
+	else:
+		return ['text']
 
 
 func _get_property_original_translation(property:String) -> String:

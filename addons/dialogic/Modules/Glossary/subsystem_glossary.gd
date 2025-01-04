@@ -138,17 +138,9 @@ func get_entry(entry_key: String) -> Dictionary:
 		result.color = ProjectSettings.get_setting(SETTING_DEFAULT_COLOR, Color.POWDER_BLUE)
 
 	if is_translation_enabled and not glossary._translation_id.is_empty():
-		var translation_key: String = glossary._translation_keys.get(entry_key)
-		var last_slash := translation_key.rfind('/')
-
-		if last_slash == -1:
-			return {}
-
-		var tr_base := translation_key.substr(0, last_slash)
-
-		result.title = translate(tr_base, "title", entry)
-		result.text = translate(tr_base, "text", entry)
-		result.extra = translate(tr_base, "extra", entry)
+		result.title = translate(glossary, entry, "title")
+		result.text = translate(glossary, entry, "text")
+		result.extra = translate(glossary, entry, "extra")
 	else:
 		result.title = entry.get("title", "")
 		result.text = entry.get("text", "")
@@ -164,11 +156,11 @@ func get_entry(entry_key: String) -> Dictionary:
 
 
 ## Tries to translate the property with the given
-func translate(tr_base: String, property: StringName, fallback_entry: Dictionary) -> String:
-	var tr_key := tr_base.path_join(property)
+func translate(glossary: DialogicGlossary, entry: Dictionary, property: StringName) -> String:
+	var tr_key := glossary._get_glossary_translation_key(entry[DialogicGlossary.TRANSLATION_PROPERTY], property)
 	var tr_value := tr(tr_key)
 
 	if tr_key == tr_value:
-		tr_value = fallback_entry.get(property, "")
+		tr_value = entry.get(property, "")
 
 	return tr_value
