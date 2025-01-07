@@ -440,4 +440,3 @@ func _on_event_default_value_changed(prop:String, value:Variant) -> void:
 
 func _on_event_default_bool_toggled(value:bool, prop:String) -> void:
 	set_event_default_override(prop, value)
-

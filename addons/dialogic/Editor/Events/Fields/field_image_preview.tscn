@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bar0t74j5v4sa"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_image_preview.gd" id="1_e5vbc"]
+
+[node name="Field_Image_Preview" type="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+expand_mode = 2
+stretch_mode = 4
+script = ExtResource("1_e5vbc")
+
+[node name="HiddenLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+tooltip_text = "Preview hidden because project setting 'dialogic/accessibility/image_preview_height' is 0."
+mouse_filter = 1
+text = "(Hidden)"
