@@ -198,7 +198,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if (timeline as String).contains("res://"):
+		if (timeline as String).contains("res://") or (timeline as String).contains("uid://"):
 			timeline = load((timeline as String))
 		else:
 			timeline = DialogicResourceUtil.get_timeline_resource((timeline as String))
