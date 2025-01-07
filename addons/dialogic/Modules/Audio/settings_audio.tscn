@@ -8,29 +8,6 @@ offset_right = 121.0
 offset_bottom = 58.0
 script = ExtResource("1_2iyyr")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 2
-theme_type_variation = &"DialogicSettingsSection"
-text = "Music Channels"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
-layout_mode = 2
-text = "Max music channels"
-
-[node name="HintTooltip" parent="HBoxContainer" instance=ExtResource("2_o1ban")]
-layout_mode = 2
-texture = null
-hint_text = "Lowering this value may invalidate existing music events!"
-
-[node name="MusicChannelCount" type="SpinBox" parent="HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 1.0
-value = 1.0
-
 [node name="TypingSoundsTitle" type="Label" parent="."]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
@@ -45,10 +22,36 @@ text = "Audio Bus"
 
 [node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_o1ban")]
 layout_mode = 2
-tooltip_text = "Lowering this value may invalidate existing music events!"
 texture = null
 hint_text = "The default audio bus used by TypeSound nodes."
 
 [node name="TypeSoundBus" type="OptionButton" parent="HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Audio Channel Defaults"
+
+[node name="HintTooltip" parent="HBoxContainer3" instance=ExtResource("2_o1ban")]
+layout_mode = 2
+texture = null
+hint_text = "Default settings for named audio channels."
+
+[node name="Add" type="Button" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "Add channel"
+
+[node name="AudioChannelDefaults" type="GridContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 6
+
+[connection signal="pressed" from="HBoxContainer3/Add" to="." method="_on_add_channel_defaults_pressed"]
