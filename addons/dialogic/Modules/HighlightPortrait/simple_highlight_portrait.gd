@@ -20,7 +20,7 @@ func _ready() -> void:
 
 
 func _should_do_portrait_update(_character: DialogicCharacter, _portrait: String) -> bool:
-    return true
+	return true
 
 
 func _highlight() -> void:
