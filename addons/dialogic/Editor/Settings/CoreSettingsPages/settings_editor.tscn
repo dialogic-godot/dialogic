@@ -102,7 +102,7 @@ text = "Event block bottom margin"
 [node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_ey6hj")]
 layout_mode = 2
 texture = null
-hint_text = "This adds extra space at the bottom of event blocks. Requires reloading the visual timeline to take effect."
+hint_text = "This adds extra space at the bottom of event blocks."
 
 [node name="EventBlockMargin" type="SpinBox" parent="HBoxContainer2"]
 unique_name_in_owner = true
@@ -123,7 +123,7 @@ text = "Show event names"
 [node name="HintTooltip" parent="HBoxContainer3" instance=ExtResource("2_ey6hj")]
 layout_mode = 2
 texture = null
-hint_text = "Enabling this prepends the event name at the beginning of event blocks. Requires reloading the visual timeline to take effect."
+hint_text = "Enabling this prepends the event name at the beginning of event blocks."
 
 [node name="ShowEventNames" type="CheckButton" parent="HBoxContainer3"]
 unique_name_in_owner = true
