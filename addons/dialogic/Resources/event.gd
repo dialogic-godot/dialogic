@@ -52,7 +52,11 @@ var empty_lines_above: int = 0
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## The event color that event node will take in the editor
-var event_color := Color("FBB13C")
+var event_color := Color("FBB13C"):
+	get:
+		if dialogic_color_name:
+			return DialogicUtil.get_color(dialogic_color_name)
+		return event_color
 ## If you are using the default color palette
 var dialogic_color_name: = ""
 ## To sort the buttons shown in the editor. Lower index is placed at the top of a category
@@ -466,7 +470,7 @@ func get_event_editor_info() -> Array:
 		else:
 			editor_list = []
 
-		if ProjectSettings.get_setting('dialogic/accessibility/show_event_names', false):
+		if DialogicUtil.get_editor_setting('show_event_names', false):
 			add_header_label(event_name)
 		build_event_editor()
 		return editor_list

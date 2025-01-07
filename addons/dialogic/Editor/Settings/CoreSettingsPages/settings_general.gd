@@ -22,9 +22,6 @@ func _ready() -> void:
 	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
 	%PhysicsTimerButton.toggled.connect(_on_physics_timer_button_toggled)
 
-	# Colors
-	%ResetColorsButton.icon = get_theme_icon("Reload", "EditorIcons")
-	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
 
 	# Extension creator
 	%ExtensionCreator.hide()
@@ -35,76 +32,6 @@ func _refresh() -> void:
 	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))
 	%ExtensionsFolderPicker.set_value(ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
 
-	update_color_palette()
-
-	%SectionList.clear()
-	%SectionList.create_item()
-	var cached_events := DialogicResourceUtil.get_event_cache()
-	var sections := []
-	var section_order: Array = DialogicUtil.get_editor_setting('event_section_order', ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
-	for ev in cached_events:
-		if !ev.event_category in sections:
-			sections.append(ev.event_category)
-			var item: TreeItem = %SectionList.create_item(null)
-			item.set_text(0, ev.event_category)
-			item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
-			item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
-			if ev.event_category in section_order:
-
-				item.move_before(item.get_parent().get_child(min(section_order.find(ev.event_category),item.get_parent().get_child_count()-1)))
-
-	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
-	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
-
-
-func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_index):
-	if id == 0:
-		item.move_before(item.get_parent().get_child(item.get_index()-1))
-	else:
-		item.move_after(item.get_parent().get_child(item.get_index()+1))
-
-	for child in %SectionList.get_root().get_children():
-		child.set_button_disabled(0, 0, false)
-		child.set_button_disabled(0, 1, false)
-
-	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
-	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
-
-	var sections := []
-	for child in %SectionList.get_root().get_children():
-		sections.append(child.get_text(0))
-
-	DialogicUtil.set_editor_setting('event_section_order', sections)
-	force_event_button_list_reload()
-
-
-func force_event_button_list_reload() -> void:
-	find_parent('EditorsManager').editors['Timeline'].node.get_node('%VisualEditor').load_event_buttons()
-
-
-func update_color_palette() -> void:
-	# Color Palette
-	for child in %Colors.get_children():
-		child.queue_free()
-	for color in DialogicUtil.get_color_palette():
-		var button := ColorPickerButton.new()
-		button.custom_minimum_size = Vector2(50 ,50) * DialogicUtil.get_editor_scale()
-		%Colors.add_child(button)
-		button.color = DialogicUtil.get_color(color)
-		button.color_changed.connect(_on_color_change)
-
-
-func _on_color_change(color:Color) -> void:
-	var new_palette := {}
-	for i in %Colors.get_children():
-		new_palette['Color'+str(i.get_index()+1)] = i.color
-	DialogicUtil.set_editor_setting('color_palette', new_palette)
-
-
-
-func _on_reset_colors_button() -> void:
-	DialogicUtil.set_editor_setting('color_palette', null)
-	update_color_palette()
 
 
 func _on_physics_timer_button_toggled(is_toggled: bool) -> void:
@@ -241,6 +168,9 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	force_event_button_list_reload()
 
+
+func force_event_button_list_reload() -> void:
+	find_parent('EditorsManager').editors['Timeline'].node.get_node('%VisualEditor').load_event_buttons()
 
 
 func _on_reload_pressed() -> void:

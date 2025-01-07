@@ -6,13 +6,8 @@ var body: Control
 var image_path: String
 
 func _ready() -> void:
-	if _is_preview_enabled():
-		%HiddenLabel.hide()
-	
 	body = find_parent('Body') as Control
 	body.visibility_changed.connect(_on_body_visibility_toggled)
-	custom_minimum_size.y = ProjectSettings.get_setting(
-		'dialogic/accessibility/image_preview_height', 50) * DialogicUtil.get_editor_scale()
 
 
 func _enter_tree() -> void:
@@ -24,23 +19,18 @@ func _enter_tree() -> void:
 #region OVERWRITES
 ################################################################################
 
-
 ## To be overwritten
 func _set_value(value:Variant) -> void:
-	if not _is_preview_enabled():
-		if ResourceLoader.exists(value):
-			image_path = value
-			return
-	
 	if ResourceLoader.exists(value):
-		self.texture = load(value)
-		custom_minimum_size.y = ProjectSettings.get_setting(
-			'dialogic/accessibility/image_preview_height', 50)  * DialogicUtil.get_editor_scale()
 		image_path = value
-		minimum_size_changed.emit()
+
+		if is_preview_enabled():
+			self.texture = load(value)
+			custom_minimum_size.y = get_preview_size()
 	else:
 		self.texture = null
-		minimum_size_changed.emit()
+
+	minimum_size_changed.emit()
 
 #endregion
 
@@ -51,24 +41,24 @@ func _set_value(value:Variant) -> void:
 
 func _on_body_visibility_toggled() -> void:
 	custom_minimum_size.y = 0
-	
-	if not _is_preview_enabled():
-		self.texture = null
-		%HiddenLabel.show()
-		minimum_size_changed.emit()
-		return
-	
-	if body.visible and ResourceLoader.exists(image_path):
-		%HiddenLabel.hide()
-		self.texture = load(image_path)
-		custom_minimum_size.y = ProjectSettings.get_setting(
-			'dialogic/accessibility/image_preview_height', 50)  * DialogicUtil.get_editor_scale()
-		minimum_size_changed.emit()
-	elif not body.visible:
-		self.texture = null
-		minimum_size_changed.emit()
+
+	if body.is_visible:
+		%HiddenLabel.visible = not is_preview_enabled()
+
+		if is_preview_enabled() and ResourceLoader.exists(image_path):
+			self.texture = load(image_path)
+			custom_minimum_size.y = get_preview_size()
+		else:
+			self.texture = null
+
+	minimum_size_changed.emit()
 
 #endregion
 
-func _is_preview_enabled() -> bool:
-	return ProjectSettings.get_setting('dialogic/accessibility/image_preview_height', 50) != 0
+func is_preview_enabled() -> bool:
+	return get_preview_size() != 0
+
+
+func get_preview_size() -> int:
+	return DialogicUtil.get_editor_setting(
+		"image_preview_height", 50)   * DialogicUtil.get_editor_scale()

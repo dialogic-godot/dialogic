@@ -55,7 +55,7 @@ func _ready() -> void:
 func initialize_ui() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
 
-	add_theme_constant_override("margin_bottom", ProjectSettings.get_setting('dialogic/accessibility/event_block_margin', 0) * _scale)
+	add_theme_constant_override("margin_bottom", DialogicUtil.get_editor_setting("event_block_margin", 0) * _scale)
 
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 
