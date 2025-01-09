@@ -62,7 +62,7 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 ## Returns the unique identifier for the given resource path.
 ## Returns an empty string if no identifier was found.
 static func get_unique_identifier(file_path:String) -> String:
-	var identifier: String = get_directory(file_path.get_extension()).find_key(file_path)
+	var identifier: Variant = get_directory(file_path.get_extension()).find_key(file_path)
 	if typeof(identifier) == TYPE_STRING:
 		return identifier
 	return ""
