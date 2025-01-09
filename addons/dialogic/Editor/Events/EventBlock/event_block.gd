@@ -356,6 +356,13 @@ func _evaluate_visibility_condition(p: Dictionary) -> bool:
 	return result
 
 
+func get_field_node(property_name:String) -> Node:
+	for i in field_list:
+		if i.get("property", "") == property_name:
+			return i.node
+	return null
+
+
 func _on_resource_ui_update_needed() -> void:
 	for node_info in field_list:
 		if node_info.node and node_info.node.has_method('set_value'):

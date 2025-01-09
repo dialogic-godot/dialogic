@@ -22,7 +22,7 @@ signal timeline_loaded
 ################################################################################
 var _batches := []
 var _building_timeline := false
-var _timeline_changed_while_loading := false
+var _cancel_loading := false
 var _initialized := false
 
 ################## TIMELINE EVENT MANAGEMENT ###################################
@@ -75,11 +75,8 @@ func _notification(what:int) -> void:
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
-	if _building_timeline:
-		_timeline_changed_while_loading = true
-		await batch_loaded
-		_timeline_changed_while_loading = false
-		_building_timeline = false
+	# In case another timeline is still loading
+	cancel_loading()
 
 	clear_timeline_nodes()
 
@@ -99,9 +96,22 @@ func load_timeline(resource:DialogicTimeline) -> void:
 		while batch_events(data, batch_size, page).size() != 0:
 			_batches.append(batch_events(data, batch_size, page))
 			page += 1
+		set_meta("batch_count", len(_batches))
 		batch_loaded.emit()
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
+
+
+func is_loading_timeline() -> bool:
+	return _building_timeline
+
+func cancel_loading() -> void:
+	timeline_editor.set_progress(1)
+	if _building_timeline:
+		_cancel_loading = true
+		await batch_loaded
+		_cancel_loading = false
+		_building_timeline = false
 
 
 func batch_events(array: Array, size: int, batch_number: int) -> Array:
@@ -127,18 +137,26 @@ func load_batch(data:Array) -> void:
 
 
 func _on_batch_loaded() -> void:
-	if _timeline_changed_while_loading:
+	if _cancel_loading:
 		return
+
 	if _batches.size() > 0:
 		indent_events()
+		var progress: float = 1-(1.0/get_meta("batch_count")*len(_batches))
+		timeline_editor.set_progress(progress)
 		await get_tree().process_frame
 		load_batch(_batches)
 		return
+
+	# This hides the progress bar again
+	timeline_editor.set_progress(1)
 
 	if opener_events_stack:
 		for ev in opener_events_stack:
 			if is_instance_valid(ev):
 				create_end_branch_event(%Timeline.get_child_count(), ev)
+
+	timeline_loaded.emit()
 
 	opener_events_stack = []
 	indent_events()
@@ -1185,22 +1203,32 @@ func get_previous_character(double_previous := false) -> DialogicCharacter:
 
 var search_results := {}
 func _search_timeline(search_text:String) -> bool:
-	for event in search_results:
-		if is_instance_valid(search_results[event]):
-			search_results[event].set_search_text("")
-			search_results[event].deselect()
-			search_results[event].queue_redraw()
+	#for event in search_results:
+		#if is_instance_valid(search_results[event]):
+			#search_results[event].set_search_text("")
+			#
 	search_results.clear()
+
+	# This checks all text events for whether they contain the text.
+	# If so, the text field is stored in search_results
+	# which is later used to navigate through only the relevant text fields.
 
 	for block in %Timeline.get_children():
 		if block.resource is DialogicTextEvent:
-			var text_field: TextEdit = block.get_node("%BodyContent").find_child("Field_Text_Multiline", true, false)
+			var text_field: TextEdit = block.get_field_node("text")
+
+			text_field.deselect()
 			text_field.set_search_text(search_text)
+
 			if text_field.search(search_text, 0, 0, 0).x != -1:
 				search_results[block] = text_field
-				text_field.queue_redraw()
+
+			text_field.queue_redraw()
+
 	set_meta("current_search", search_text)
+
 	search_navigate(false)
+
 	return not search_results.is_empty()
 
 
@@ -1217,11 +1245,26 @@ func search_navigate(navigate_up := false) -> void:
 
 	if search_results.is_empty() or %Timeline.get_child_count() == 0:
 		return
-	if selected_items.is_empty():
-		select_item(%Timeline.get_child(0), false)
 
-	while not selected_items[0] in search_results:
-		select_item(%Timeline.get_child(wrapi(selected_items[0].get_index()+1, 0, %Timeline.get_child_count()-1)), false)
+	# We start the search on the selected item,
+	# so these checks make sure something sensible is selected
+
+	# Try to select the event that has focus
+	if get_viewport().gui_get_focus_owner() is TextEdit and get_viewport().gui_get_focus_owner() is DialogicVisualEditorField:
+		select_item(get_viewport().gui_get_focus_owner().event_resource.editor_node, false)
+		get_viewport().gui_get_focus_owner().deselect()
+
+	# Select the first event if nothing is selected
+	if selected_items.is_empty():
+		select_item(search_results.keys()[0], false)
+
+	# Loop to the next event that where something was found
+	if not selected_items[0] in search_results:
+		var index: int = selected_items[0].get_index()
+		while not %Timeline.get_child(index) in search_results:
+			index = wrapi(index+1, 0, %Timeline.get_child_count()-1)
+		select_item(%Timeline.get_child(index), false)
+
 
 	var event: Node = selected_items[0]
 	var counter := 0
@@ -1229,9 +1272,13 @@ func search_navigate(navigate_up := false) -> void:
 		counter += 1
 		var field: TextEdit = search_results[event]
 		field.queue_redraw()
+
+		# First locates the next result in this field
 		var result := search_text_field(field, search_text, navigate_up)
 		var current_line := field.get_selection_from_line() if field.has_selection() else -1
 		var current_column := field.get_selection_from_column() if field.has_selection() else -1
+
+		# Determines if the found result is valid or navigation should continue into the next event
 		var next_is_in_this_event := false
 		if result.y == -1:
 			next_is_in_this_event = false
@@ -1243,18 +1290,19 @@ func search_navigate(navigate_up := false) -> void:
 		else:
 			next_is_in_this_event = result.x > current_column or result.y > current_line
 
+		# If the next result was found, select it and break out of the loop
 		if next_is_in_this_event:
 			if not event in selected_items:
 				select_item(event, false)
 			%TimelineArea.ensure_control_visible(event)
 			event._on_ToggleBodyVisibility_toggled(true)
-			field.select(result.y, result.x, result.y, result.x+len(search_text))
+			field.call_deferred("select", result.y, result.x, result.y, result.x+len(search_text))
 			break
 
-		else:
-			field.deselect()
-			var index := search_results.keys().find(event)
-			event = search_results.keys()[wrapi(index+(-1 if navigate_up else 1), 0, search_results.size())]
+		# Otherwise deselct this field and continue in the next/previous
+		field.deselect()
+		var index := search_results.keys().find(event)
+		event = search_results.keys()[wrapi(index+(-1 if navigate_up else 1), 0, search_results.size())]
 
 		if counter > 5:
 			print("[Dialogic] Search failed.")
