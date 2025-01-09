@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://o7ljiritpgap"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_modules.gd" id="1_l2hk0"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_modules.gd" id="1_l2hk0"]
 
 [sub_resource type="Image" id="Image_570p8"]
 data = {

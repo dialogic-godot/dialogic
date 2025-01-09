@@ -213,7 +213,7 @@ func load_event_buttons() -> void:
 	var button_scene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
 
 	var scripts := DialogicResourceUtil.get_event_cache()
-	var hidden_buttons :Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var hidden_buttons: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 	var sections := {}
 
 	for event_script in scripts:

@@ -62,6 +62,7 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 ## Returns the unique identifier for the given resource path.
 ## Returns an empty string if no identifier was found.
 static func get_unique_identifier(file_path:String) -> String:
+	if not file_path: return ""
 	var identifier: Variant = get_directory(file_path.get_extension()).find_key(file_path)
 	if typeof(identifier) == TYPE_STRING:
 		return identifier
@@ -275,7 +276,7 @@ static func list_resources_of_type(extension:String) -> Array:
 
 static func scan_folder(path:String, extension:String) -> Array:
 	var list: Array = []
-	if DirAccess.dir_exists_absolute(path):
+	if DirAccess.dir_exists_absolute(path) and not FileAccess.file_exists(path + "/" + ".gdignore"):
 		var dir := DirAccess.open(path)
 		dir.list_dir_begin()
 		var file_name := dir.get_next()

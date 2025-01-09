@@ -24,9 +24,10 @@ func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 
-	register_settings_section("res://addons/dialogic/Editor/Settings/settings_general.tscn")
-	register_settings_section("res://addons/dialogic/Editor/Settings/settings_translation.tscn")
-	register_settings_section("res://addons/dialogic/Editor/Settings/settings_modules.tscn")
+	register_settings_section("res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_general.tscn")
+	register_settings_section("res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_editor.tscn")
+	register_settings_section("res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_translation.tscn")
+	register_settings_section("res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_modules.tscn")
 
 	for indexer in DialogicUtil.get_indexers():
 		for settings_page in indexer._get_settings_pages():
@@ -166,4 +167,3 @@ func refresh() -> void:
 	for child in %SettingsContent.get_children():
 		if child.get_meta('section').has_method('_refresh'):
 			child.get_meta('section')._refresh()
-
