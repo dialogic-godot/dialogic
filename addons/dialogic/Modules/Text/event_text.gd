@@ -32,7 +32,7 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
-		if not character.portraits.has(portrait):
+		if (not character) or (character and not character.portraits.has(portrait)):
 			portrait = ""
 			ui_update_needed.emit()
 

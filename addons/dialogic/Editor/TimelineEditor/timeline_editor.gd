@@ -118,19 +118,24 @@ func toggle_editor_mode() -> void:
 	match current_editor_mode:
 		EditorMode.VISUAL:
 			current_editor_mode = EditorMode.TEXT
-			%VisualEditor.save_timeline()
+			if %VisualEditor.is_loading_timeline():
+				%VisualEditor.cancel_loading()
+			else:
+				%VisualEditor.save_timeline()
 			%VisualEditor.hide()
 			%TextEditor.show()
 			%TextEditor.load_timeline(current_resource)
 			%SwitchEditorMode.text = "Visual Editor"
+			_on_search_text_changed(%Search.text)
 		EditorMode.TEXT:
+			_on_search_text_changed.bind("")
 			current_editor_mode = EditorMode.VISUAL
 			%TextEditor.save_timeline()
 			%TextEditor.hide()
 			%VisualEditor.load_timeline(current_resource)
 			%VisualEditor.show()
 			%SwitchEditorMode.text = "Text Editor"
-	_on_search_text_changed(%Search.text)
+			%VisualEditor.timeline_loaded.connect(_on_search_text_changed.bind(%Search.text), CONNECT_ONE_SHOT)
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 
@@ -168,6 +173,7 @@ func _ready() -> void:
 	%SearchUp.icon = get_theme_icon("MoveUp", "EditorIcons")
 	%SearchDown.icon = get_theme_icon("MoveDown", "EditorIcons")
 
+	%ProgressSection.hide()
 
 
 func _on_create_timeline_button_pressed() -> void:
@@ -236,4 +242,13 @@ func _on_search_up_pressed() -> void:
 
 #endregion
 
+#region PROGRESS
 
+func set_progress(percentage:float, text := "") -> void:
+	%ProgressSection.visible = percentage != 1
+
+	%ProgressBar.value = percentage
+	%ProgressLabel.text = text
+	%ProgressLabel.visible = not text.is_empty()
+
+#endregion

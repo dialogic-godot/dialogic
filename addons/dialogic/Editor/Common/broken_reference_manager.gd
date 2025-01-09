@@ -158,6 +158,8 @@ func display_search_results(finds:Array[Dictionary]) -> void:
 
 	%ReferenceTree.clear()
 	%ReferenceTree.set_column_expand(0, false)
+	%ReferenceTree.set_column_expand(1, false)
+	%ReferenceTree.set_column_custom_minimum_width(1, 50)
 	%ReferenceTree.create_item()
 
 	var timelines := {}
@@ -166,20 +168,25 @@ func display_search_results(finds:Array[Dictionary]) -> void:
 		var parent: TreeItem = null
 		if !i.timeline in timelines:
 			parent = %ReferenceTree.create_item()
-			parent.set_text(1, i.timeline)
-			parent.set_custom_color(1, get_theme_color("disabled_font_color", "Editor"))
+			parent.set_text(0, i.timeline)
+			parent.set_custom_color(0, get_theme_color("disabled_font_color", "Editor"))
+			parent.set_expand_right(0, true)
 			timelines[i.timeline] = parent
 			height += %ReferenceTree.get_item_area_rect(parent).size.y+10
 		else:
 			parent = timelines[i.timeline]
 
 		var item: TreeItem = %ReferenceTree.create_item(parent)
-		item.set_text(1, 'Line '+str(i.line_number)+': '+i.line)
-		item.set_tooltip_text(1, i.info.what+' -> '+i.info.forwhat)
 		item.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
 		item.set_checked(0, true)
 		item.set_editable(0, true)
 		item.set_metadata(0, i)
+		item.set_text(1, str(i.line_number)+':')
+		item.set_text_alignment(1, HORIZONTAL_ALIGNMENT_RIGHT)
+		item.set_cell_mode(2, TreeItem.CELL_MODE_CUSTOM)
+		item.set_text(2, i.line)
+		item.set_tooltip_text(2, i.info.what+' -> '+i.info.forwhat)
+		item.set_custom_draw_callback(2, _custom_draw)
 		height += %ReferenceTree.get_item_area_rect(item).size.y+10
 		var change_item: TreeItem = i.info.item
 		change_item.set_meta('found_items', change_item.get_meta('found_items', [])+[item])
@@ -192,6 +199,27 @@ func display_search_results(finds:Array[Dictionary]) -> void:
 		%State.text = "Nothing found"
 	else:
 		%Replace.grab_focus()
+
+
+## Highlights the found text in the result tree
+## Inspired by how godot highlights stuff in its search results
+func _custom_draw(item:TreeItem, rect:Rect2) -> void:
+	var text := item.get_text(2)
+	var find := item.get_metadata(0)
+
+	var font: Font = %ReferenceTree.get_theme_font("font")
+	var font_size: int = %ReferenceTree.get_theme_font_size("font_size")
+
+	var match_rect := rect
+	var beginning_index: int = find.match.get_start("replace")-find.line_start-1
+	match_rect.position.x += font.get_string_size(text.left(beginning_index), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x -1
+	match_rect.size.x = font.get_string_size(find.info.what, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + 1
+	match_rect.position.y += 1 * DialogicUtil.get_editor_scale()
+	match_rect.size.y -= 2 * DialogicUtil.get_editor_scale()
+	match_rect.position.x += 4
+
+	%ReferenceTree.draw_rect(match_rect, get_theme_color("highlight_color", "Editor"), true)
+	%ReferenceTree.draw_rect(match_rect, get_theme_color("box_selection_stroke_color", "Editor"), false)
 
 
 func search_timelines(regexes:Array[Array]) -> Array[Dictionary]:

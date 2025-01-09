@@ -303,10 +303,26 @@ func build_event_editor() -> void:
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
-	if filter:
-		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	for var_path in DialogicUtil.list_variables(DialogicUtil.get_default_variables()):
 		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
+
+	var autoloads := DialogicUtil.get_autoload_suggestions().keys()
+	var is_autoload := ""
+	for autoload in autoloads:
+		if autoload == filter:
+			is_autoload = autoload
+			break
+		suggestions[autoload] = {'value':autoload, 'editor_icon':["Node", "EditorIcons"]}
+
+	if is_autoload or filter.count(".") == 1 and filter.split(".")[0] in autoloads:
+		var autoload := filter.trim_suffix(".")
+		var properties := DialogicUtil.get_autoload_property_suggestions("", autoload)
+		for property in properties:
+			suggestions["."+property] = {'value':autoload+"."+property, 'editor_icon':["MemberProperty", "EditorIcons"]}
+
+	if not filter in suggestions:
+		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+
 	return suggestions
 
 
@@ -342,9 +358,22 @@ func update_editor_warning() -> void:
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
-	if CodeCompletionHelper.get_line_untill_caret(line) == 'set ':
+	var autoloads := DialogicUtil.get_autoload_suggestions()
+	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
+	if line_until_caret.count(" ") == 1 and not "{" in line and not line_until_caret.ends_with("."):
+
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
-	if symbol == '{':
+		for i in autoloads:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'.', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("Node", "EditorIcons"))
+
+	if (line_until_caret.ends_with(".") or symbol == "."):
+		var autoload_name := line_until_caret.split(" ")[-1].split(".")[0]
+		if autoload_name in autoloads:
+			var properties := DialogicUtil.get_autoload_property_suggestions("", autoload_name)
+			for i in properties.keys():
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+" ", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("MemberMethod", "EditorIcons"))
+
+	elif symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 

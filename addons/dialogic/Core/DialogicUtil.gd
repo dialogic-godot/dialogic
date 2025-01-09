@@ -682,3 +682,57 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 			suggestions.erase(search_text)
 
 	return suggestions
+
+
+static func get_autoload_suggestions(filter:String="") -> Dictionary:
+	var suggestions := {}
+
+	for prop in ProjectSettings.get_property_list():
+		if prop.name.begins_with('autoload/'):
+			var autoload: String = prop.name.trim_prefix('autoload/')
+			suggestions[autoload] = {'value': autoload, 'tooltip':autoload, 'editor_icon': ["Node", "EditorIcons"]}
+			if filter.begins_with(autoload):
+				suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+	return suggestions
+
+
+static func get_autoload_script_resource(autoload_name:String) -> Script:
+	var script: Script
+	if autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
+		var loaded_autoload := load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+
+		if loaded_autoload is PackedScene:
+			var packed_scene: PackedScene = loaded_autoload
+			script = packed_scene.instantiate().get_script()
+
+		else:
+			script = loaded_autoload
+	return script
+
+
+static func get_autoload_method_suggestions(filter:String, autoload_name:String) -> Dictionary:
+	var suggestions := {}
+
+	var script := get_autoload_script_resource(autoload_name)
+	if script:
+		for script_method in script.get_script_method_list():
+			if script_method.name.begins_with('@') or script_method.name.begins_with('_'):
+				continue
+			suggestions[script_method.name] = {'value': script_method.name, 'tooltip':script_method.name, 'editor_icon': ["Callable", "EditorIcons"]}
+
+	if not filter.is_empty():
+		suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+
+	return suggestions
+
+
+static func get_autoload_property_suggestions(filter:String, autoload_name:String) -> Dictionary:
+	var suggestions := {}
+	var script := get_autoload_script_resource(autoload_name)
+	if script:
+		for property in script.get_script_property_list():
+			if property.name.ends_with('.gd') or property.name.begins_with('_'):
+				continue
+			suggestions[property.name] = {'value': property.name, 'tooltip':property.name, 'editor_icon': ["MemberProperty", "EditorIcons"]}
+
+	return suggestions

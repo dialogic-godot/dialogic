@@ -127,7 +127,7 @@ func handle_node_gui_input(event:InputEvent) -> void:
 
 
 func is_input_blocked() -> bool:
-	return input_block_timer.time_left > 0.0
+	return input_block_timer.time_left > 0.0 and not auto_skip.enabled
 
 
 func block_input(time:=0.1) -> void:

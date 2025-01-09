@@ -123,10 +123,13 @@ func _on_Search_text_entered(new_text:String) -> void:
 func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.clear()
 
-	if new_text == "" and !just_update:
+	if new_text == "" and not just_update:
 		change_to_empty()
 	else:
 		%Search.show()
+
+	if just_update and new_text.is_empty() and %Search.text.ends_with("."):
+		new_text = %Search.text
 
 	var suggestions: Dictionary = get_suggestions_func.call(new_text)
 
