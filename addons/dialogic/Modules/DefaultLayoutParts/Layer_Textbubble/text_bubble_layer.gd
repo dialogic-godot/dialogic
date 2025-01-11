@@ -93,7 +93,7 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	if !bold_font.is_empty():
 		rtl.add_theme_font_override(&"bold_font", load(bold_font) as Font)
 	if !italic_font.is_empty():
-		rtl.add_theme_font_override(&"italitc_font", load(italic_font) as Font)
+		rtl.add_theme_font_override(&"italics_font", load(italic_font) as Font)
 	if !bold_italic_font.is_empty():
 		rtl.add_theme_font_override(&"bold_italics_font", load(bold_italic_font) as Font)
 	bubble.set(&'max_width', text_max_width)
