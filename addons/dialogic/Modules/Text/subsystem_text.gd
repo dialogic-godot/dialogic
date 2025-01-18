@@ -87,10 +87,10 @@ func post_install() -> void:
 
 ## Applies modifiers, effects and coloring to the text
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if modifiers:
-		text = parse_text_modifiers(text, type)
 	if variables and dialogic.has_subsystem('VAR'):
 		text = dialogic.VAR.parse_variables(text)
+	if modifiers:
+		text = parse_text_modifiers(text, type)
 	if effects:
 		text = parse_text_effects(text)
 	if color_names:
