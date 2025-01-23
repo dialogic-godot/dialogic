@@ -190,8 +190,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 ## Unless @force is false, this will take into consideration the character mirror,
 ## portrait mirror and portrait position mirror settings.
 func _change_portrait_mirror(character_node: Node2D, mirrored := false, force := false) -> void:
-	var latest_portrait := character_node.get_child(-1) 
-	if character_node.get_child_count() > 0 else null
+	var latest_portrait := character_node.get_child(-1) if character_node.get_child_count() > 0 else null
 
 	if latest_portrait and latest_portrait.has_method("_set_mirror"):
 		var character: DialogicCharacter = character_node.get_meta('character')
