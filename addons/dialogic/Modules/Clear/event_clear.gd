@@ -12,6 +12,7 @@ var clear_textbox := true
 var clear_portraits := true
 var clear_style := true
 var clear_music := true
+var clear_screen_shake := true
 var clear_portrait_positions := true
 var clear_background := true
 
@@ -47,6 +48,11 @@ func _execute() -> void:
 		for channel_id in dialogic.Audio.max_channels:
 			if dialogic.Audio.has_music(channel_id):
 				dialogic.Audio.update_music('', 0.0, "", final_time, channel_id)
+		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
+
+	if clear_screen_shake and dialogic.has_subsystem('ScreenShake'):
+		dialogic.ScreenShake.update_shake_x(0.0, 0.0, final_time)
+		dialogic.ScreenShake.update_shake_y(0.0, 0.0, final_time)
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
@@ -88,6 +94,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"text"		: {"property": "clear_textbox",		"default": true},
 		"portraits"	: {"property": "clear_portraits", 	"default": true},
 		"music"		: {"property": "clear_music", 		"default": true},
+		"shake"		: {"property": "clear_screen_shake",	"default": true},
 		"background": {"property": "clear_background", 	"default": true},
 		"positions"	: {"property": "clear_portrait_positions", 	"default": true},
 		"style"		: {"property": "clear_style", 		"default": true},
@@ -110,5 +117,6 @@ func build_event_editor() -> void:
 	add_body_edit('clear_portraits', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
 	add_body_edit('clear_background', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})
 	add_body_edit('clear_music', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Music'})
+	add_body_edit('clear_screen_shake', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_shake.svg"), 'tooltip':'Clear Screen Shake'})
 	add_body_edit('clear_style', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
 	add_body_edit('clear_portrait_positions', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_positions.svg"), 'tooltip':'Clear Portrait Positions'})
