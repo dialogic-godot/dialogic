@@ -127,7 +127,9 @@ func _execute() -> void:
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-			#this is after the await for the textbox so the text starts rendering here
+			# This is after the await for the textbox so it's after any text box 
+			# opening animations that may make animations reliant on knowing when
+			# the text starts 
 			dialogic.Text.text_started.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
 
 			_mark_as_read(character_name_text, final_text)
