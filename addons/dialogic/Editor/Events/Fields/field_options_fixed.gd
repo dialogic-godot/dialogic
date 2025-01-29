@@ -18,6 +18,7 @@ var current_value: Variant = -1
 func _ready() -> void:
 	add_theme_color_override("font_disabled_color", get_theme_color("font_color", "MenuButton"))
 	self.about_to_popup.connect(insert_options)
+	self.text = placeholder_text
 	call("get_popup").index_pressed.connect(index_pressed)
 
 
@@ -25,15 +26,23 @@ func _load_display_info(info:Dictionary) -> void:
 	options = info.get('options', [])
 	self.disabled = info.get('disabled', false)
 	symbol_only = info.get('symbol_only', false)
+	placeholder_text = info.get('placeholder', 'Select Resource')
 
 
-func _set_value(value:Variant) -> void:
+func _set_value(value: Variant) -> void:
+
+	if value == null:
+		self.text = placeholder_text
+
 	for option in options:
 		if option['value'] == value:
+
 			if typeof(option.get('icon')) == TYPE_ARRAY:
 				option.icon = callv('get_theme_icon', option.get('icon'))
+
 			if !symbol_only:
 				self.text = option['label']
+
 			self.icon = option.get('icon', null)
 			current_value = value
 

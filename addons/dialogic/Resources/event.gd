@@ -120,7 +120,7 @@ func _to_string() -> String:
 ################################################################################
 
 ## Executes the event behaviour. In subclasses [_execute] (not this one) should be overriden!
-func execute(_dialogic_game_handler) -> void:
+func execute(_dialogic_game_handler: DialogicGameHandler) -> void:
 	event_started.emit(self)
 	dialogic = _dialogic_game_handler
 	call_deferred("_execute")
@@ -290,7 +290,9 @@ func from_text(string: String) -> void:
 func store_to_shortcode_parameters(params:Dictionary = {}) -> String:
 	if params.is_empty():
 		params = get_shortcode_parameters()
+
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
+
 	var result_string := ""
 	for parameter in params.keys():
 		var parameter_info: Dictionary = params[parameter]
@@ -349,7 +351,8 @@ func value_to_string(value: Variant, suggestions := Callable()) -> String:
 func load_from_shortcode_parameters(string:String) -> void:
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
-	for parameter in params.keys():
+
+	for parameter: String in params.keys():
 		var parameter_info: Dictionary = params[parameter]
 		if parameter_info.get('custom_stored', false):
 			continue
