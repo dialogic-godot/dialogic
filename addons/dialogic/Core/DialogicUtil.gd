@@ -772,7 +772,7 @@ static func get_channel_suggestions(search_text:String, is_sync := false, event:
 		elif i in channel_defaults.keys():
 			suggestions[i] = {
 				'value': i,
-				'editor_icon': ["Favorites", "EditorIcons"],
+				'editor_icon': ["ProjectList", "EditorIcons"],
 			}
 
 			if not is_sync:
@@ -781,7 +781,7 @@ static func get_channel_suggestions(search_text:String, is_sync := false, event:
 		else:
 			suggestions[i] = {
 				'value': i,
-				'editor_icon': ["AudioStream", "EditorIcons"],
+				'editor_icon': ["AudioStreamPlayer", "EditorIcons"],
 			}
 
 	return suggestions
@@ -803,9 +803,9 @@ static func get_channel_defaults() -> Dictionary:
 		}})
 
 
-static var channel_name_regex := RegEx.create_from_string(r'(?<dash_only>^-$)|(?<invalid>[^\w-]{1})')
 static func validate_channel_name(text: String) -> Dictionary:
 	var result := {}
+	var channel_name_regex := RegEx.create_from_string(r'(?<dash_only>^-$)|(?<invalid>[^\w-]{1})')
 	var matches := channel_name_regex.search_all(text)
 	var invalid_chars := []
 

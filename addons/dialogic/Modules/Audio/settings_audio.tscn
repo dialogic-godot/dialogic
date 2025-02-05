@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2qgetjc3mfo3"]
+[gd_scene load_steps=4 format=3 uid="uid://c2qgetjc3mfo3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Audio/settings_audio.gd" id="1_2iyyr"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_o1ban"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rguqi"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
 
 [node name="Audio" type="VBoxContainer"]
 offset_right = 121.0
@@ -42,16 +55,22 @@ layout_mode = 2
 texture = null
 hint_text = "Default settings for named audio channels."
 
-[node name="Add" type="Button" parent="HBoxContainer3"]
+[node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-text = "Add channel"
+theme_override_styles/panel = SubResource("StyleBoxFlat_rguqi")
 
-[node name="AudioChannelDefaults" type="GridContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="AudioChannelDefaults" type="GridContainer" parent="Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
 
-[connection signal="pressed" from="HBoxContainer3/Add" to="." method="_on_add_channel_defaults_pressed"]
+[node name="Add" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Add channel"
+
+[connection signal="pressed" from="Panel/VBox/Add" to="." method="_on_add_channel_defaults_pressed"]

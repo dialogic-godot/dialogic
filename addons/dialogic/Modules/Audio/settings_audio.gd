@@ -12,6 +12,8 @@ var _revalidate_channel_names := false
 
 func _ready() -> void:
 	%TypeSoundBus.item_selected.connect(_on_type_sound_bus_item_selected)
+	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+
 
 
 func _refresh() -> void:
@@ -86,7 +88,7 @@ func save_channel_defaults() -> void:
 					continue
 
 				channel_name = channel_defaults[i].channel_name.current_value
-				channel_name = DialogicUtil.channel_name_regex.sub(channel_name, '', true)
+				#channel_name = DialogicUtil.channel_name_regex.sub(channel_name, '', true)
 
 			if channel_name.is_empty():
 				dictionary[channel_name] = {
@@ -161,7 +163,7 @@ func add_channel_defaults(channel_name: String, volume: float, audio_bus: String
 		fade_disabled.tooltip_text = "Fading is disbaled for this channel."
 		info['fade_length'] = fade_disabled
 		%AudioChannelDefaults.add_child(fade_disabled)
-		
+
 		info['loop'] = fade_disabled.duplicate()
 		info['loop'].tooltip_text = "Looping is disabled for this channel."
 		%AudioChannelDefaults.add_child(info['loop'])
@@ -185,7 +187,7 @@ func add_channel_defaults(channel_name: String, volume: float, audio_bus: String
 	info['delete'] = remove_btn
 	%AudioChannelDefaults.add_child(remove_btn)
 	channel_defaults[len(channel_defaults)] = info
-	
+
 	return info['channel_name']
 
 
