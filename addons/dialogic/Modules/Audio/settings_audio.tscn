@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_bx557"]
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="4_xfyvc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kgb5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m57ns"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -59,7 +59,7 @@ hint_text = "Default settings for named audio channels."
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8kgb5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m57ns")
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 2

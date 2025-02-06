@@ -137,7 +137,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"bus"		: {"property": "audio_bus", 	"default": "",
 						"suggestions": DialogicUtil.get_audio_bus_suggestions},
 		"loop"		: {"property": "loop", 			"default": true},
-		"sync"		: {"property": "sync_channel", 	"default": ""},
+		"sync"		: {"property": "sync_channel", 	"default": "",
+						"suggestions": get_sync_audio_channel_suggestions},
 	}
 
 
@@ -337,17 +338,48 @@ func get_audio_channel_suggestions(filter:String) -> Dictionary:
 	return suggestions.merged(DialogicUtil.get_audio_channel_suggestions(filter))
 
 
-func get_sync_audio_channel_suggestions(filter:String) -> Dictionary:
+func get_sync_audio_channel_suggestions(filter:="") -> Dictionary:
 	return DialogicUtil.get_audio_channel_suggestions(filter)
 
-#
-#func _update_defaults_for_channel() -> void:
-	#var defaults := DialogicUtil.get_audio_channel_defaults()
-	#defaults[channel_name] = {
-		#'volume': volume,
-		#'audio_bus': audio_bus,
-		#'fade_length': fade_length,
-		#'loop': loop,
-	#}
-	#ProjectSettings.set_setting('dialogic/audio/channel_defaults', defaults)
-	#ProjectSettings.save()
+
+
+####################### CODE COMPLETION ########################################
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+	var line_until: String = CodeCompletionHelper.get_line_untill_caret(line)
+	if symbol == ' ':
+		if line_until.count(' ') == 1:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, "One-Shot SFX", ' ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+			for i in DialogicUtil.get_audio_channel_suggestions(""):
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i, event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6), null, " ")
+		elif line_until.count(" ") == 2:
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '"', '"', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+
+	if symbol == "[" or (symbol == " " and line.count("[")):
+		for i in ["fade", "volume", "bus", "loop", "sync"]:
+			if not i+"=" in line:
+				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'="', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.6))
+
+	if (symbol == '"' or symbol == "=") and line.count("["):
+		CodeCompletionHelper.suggest_shortcode_values(TextNode, self, line, word)
+
+
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'audio', 'audio ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
+
+
+#################### SYNTAX HIGHLIGHTING #######################################
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	var result := regex.search(line)
+
+	dict[result.get_start()] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
+	dict[result.get_start("channel")] = {"color":event_color.lerp(Highlighter.normal_color, 0.8)}
+	dict[result.get_start("file_path")] = {"color":event_color.lerp(Highlighter.string_color, 0.8)}
+	if result.get_string("shortcode"):
+		dict[result.get_start("shortcode")-1] = {"color":Highlighter.normal_color}
+		dict = Highlighter.color_shortcode_content(dict, line, result.get_start("shortcode"), 0, event_color)
+
+	return dict

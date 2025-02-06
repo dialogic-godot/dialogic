@@ -144,25 +144,9 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 			# suggest values
 			elif symbol == '=' or symbol == '"':
-				var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
-				if !current_parameter_gex:
-					text.update_code_completion_options(false)
-					return
-
-				var current_parameter := current_parameter_gex.get_string('param')
-				if !shortcode_events[code].get_shortcode_parameters().has(current_parameter):
-					text.update_code_completion_options(false)
-					return
-				if !shortcode_events[code].get_shortcode_parameters()[current_parameter].has('suggestions'):
-					if typeof(shortcode_events[code].get_shortcode_parameters()[current_parameter].default) == TYPE_BOOL:
-						suggest_bool(text, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3))
-					elif len(word) > 0:
-						text.add_code_completion_option(CodeEdit.KIND_VARIABLE, word, word, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
-					text.update_code_completion_options(true)
-					return
-
-				var suggestions: Dictionary = shortcode_events[code].get_shortcode_parameters()[current_parameter]['suggestions'].call()
-				suggest_custom_suggestions(suggestions, text, shortcode_events[code].event_color.lerp(syntax_highlighter.normal_color, 0.3))
+				suggest_shortcode_values(text, shortcode_events[code], line, word)
+				text.update_code_completion_options(true)
+				return
 
 		# Force update and showing of the popup
 		text.update_code_completion_options(true)
@@ -242,13 +226,31 @@ func suggest_custom_suggestions(suggestions:Dictionary, text:CodeEdit, color:Col
 			text.add_code_completion_option(CodeEdit.KIND_VARIABLE, key, str(suggestions[key].value), color, suggestions[key].get('icon', null), '" ')
 
 
-# Filters the list of all possible options, depending on what was typed
-# Purpose of the different Kinds is explained in [_request_code_completion]
+func suggest_shortcode_values(text:CodeEdit, event:DialogicEvent, line:String, word:String) -> void:
+	var current_parameter_gex := completion_shortcode_param_getter_regex.search(line)
+	if !current_parameter_gex:
+		return
+
+	var current_parameter := current_parameter_gex.get_string('param')
+	if !event.get_shortcode_parameters().has(current_parameter):
+		return
+	if !event.get_shortcode_parameters()[current_parameter].has('suggestions'):
+		if typeof(event.get_shortcode_parameters()[current_parameter].default) == TYPE_BOOL:
+			suggest_bool(text, event.event_color.lerp(syntax_highlighter.normal_color, 0.3))
+		elif len(word) > 0:
+			text.add_code_completion_option(CodeEdit.KIND_VARIABLE, word, word, event.event_color.lerp(syntax_highlighter.normal_color, 0.3), text.get_theme_icon("GuiScrollArrowRight", "EditorIcons"), '" ')
+		return
+
+	var suggestions: Dictionary = event.get_shortcode_parameters()[current_parameter]['suggestions'].call()
+	suggest_custom_suggestions(suggestions, text, event.event_color.lerp(syntax_highlighter.normal_color, 0.3))
+
+
+## Filters the list of all possible options, depending on what was typed
+## Purpose of the different Kinds is explained in [_request_code_completion]
 func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array:
 	var valid_candidates := []
 
 	var current_word := get_code_completion_word(text)
-
 	for candidate in candidates:
 		if candidate.kind == text.KIND_PLAIN_TEXT:
 			if !current_word.is_empty() and candidate.insert_text.begins_with(current_word):
@@ -295,7 +297,7 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 
 	if code_completion.has('default_value') and typeof(code_completion['default_value']) == TYPE_STRING:
 		var next_letter := text.get_line(text.get_caret_line()).substr(text.get_caret_column(), len(code_completion['default_value']))
-		if next_letter == code_completion['default_value'] or next_letter[0] == code_completion['default_value'][0]:
+		if next_letter and (next_letter == code_completion['default_value'] or next_letter[0] == code_completion['default_value'][0]):
 			text.set_caret_column(text.get_caret_column()+1)
 		else:
 			text.insert_text_at_caret(code_completion['default_value'])

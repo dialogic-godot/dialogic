@@ -738,7 +738,7 @@ static func get_autoload_property_suggestions(filter:String, autoload_name:Strin
 	return suggestions
 
 
-static func get_audio_bus_suggestions(filter:String) -> Dictionary:
+static func get_audio_bus_suggestions(filter:= "") -> Dictionary:
 	var bus_name_list := {}
 	for i in range(AudioServer.bus_count):
 		if i == 0:
