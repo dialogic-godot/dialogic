@@ -11,7 +11,7 @@ enum Modes {PURE_STRING, PRETTY_PATH, IDENTIFIER, ANY_VALID_STRING}
 @export var fit_text_length := true
 var collapse_when_empty := false
 var valid_file_drop_extension := ""
-var get_suggestions_func: Callable
+var suggestions_func: Callable
 var validation_func: Callable
 
 var resource_icon: Texture = null:
@@ -63,7 +63,7 @@ func _set_value(value:Variant) -> void:
 func _load_display_info(info:Dictionary) -> void:
 	valid_file_drop_extension = info.get('file_extension', '')
 	collapse_when_empty = info.get('collapse_when_empty', false)
-	get_suggestions_func = info.get('suggestions_func', get_suggestions_func)
+	suggestions_func = info.get('suggestions_func', suggestions_func)
 	validation_func = info.get('validation_func', validation_func)
 	empty_text = info.get('empty_text', '')
 	placeholder_text = info.get('placeholder', 'Select Resource')
@@ -126,11 +126,10 @@ func change_to_empty() -> void:
 
 
 func validate() -> void:
-	if mode == Modes.ANY_VALID_STRING:
-		if validation_func:
-			var validation_result := validation_func.call(current_value)
-			current_value = validation_result.get('valid_text', current_value)
-			update_error_tooltip(validation_result.get('error_tooltip', ''))
+	if mode == Modes.ANY_VALID_STRING and validation_func:
+		var validation_result := validation_func.call(current_value)
+		current_value = validation_result.get('valid_text', current_value)
+		update_error_tooltip(validation_result.get('error_tooltip', ''))
 
 
 func update_error_tooltip(text: String) -> void:
@@ -192,7 +191,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	if just_update and new_text.is_empty() and %Search.text.ends_with("."):
 		new_text = %Search.text
 
-	var suggestions: Dictionary = get_suggestions_func.call(new_text)
+	var suggestions: Dictionary = suggestions_func.call(new_text)
 
 	var line_length := 0
 	var idx := 0

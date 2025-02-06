@@ -56,7 +56,7 @@ func _ready() -> void:
 
 
 	for i in [%Value1Variable, %Value2Variable]:
-		i.get_suggestions_func = get_variable_suggestions
+		i.suggestions_func = get_variable_suggestions
 		i.value_changed.connect(something_changed)
 
 	%Value1Number.value_changed.connect(something_changed)
@@ -264,4 +264,3 @@ func _on_value_1_variable_value_changed(property_name: Variant, value: Variant) 
 				%Value2Type.index_pressed(1)
 
 	something_changed()
-

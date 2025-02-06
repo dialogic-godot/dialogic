@@ -7,7 +7,7 @@ func _get_title() -> String:
 
 
 func _ready() -> void:
-	%PortraitMood.get_suggestions_func = mood_suggestions
+	%PortraitMood.suggestions_func = mood_suggestions
 	%PortraitMood.resource_icon = get_theme_icon("AudioStreamPlayer", "EditorIcons")
 
 

@@ -738,12 +738,22 @@ static func get_autoload_property_suggestions(filter:String, autoload_name:Strin
 	return suggestions
 
 
-static func get_channel_suggestions(search_text:String, is_sync := false, event: DialogicAudioEvent = null) -> Dictionary:
-	if is_sync and event and event.channel_name.is_empty():
-		return {}
+static func get_audio_bus_suggestions(filter:String) -> Dictionary:
+	var bus_name_list := {}
+	for i in range(AudioServer.bus_count):
+		if i == 0:
+			bus_name_list[AudioServer.get_bus_name(i)] = {'value':''}
+		else:
+			bus_name_list[AudioServer.get_bus_name(i)] = {'value':AudioServer.get_bus_name(i)}
+	return bus_name_list
+
+
+static func get_audio_channel_suggestions(search_text:String) -> Dictionary:#, is_sync := false, event: DialogicAudioEvent = null) -> Dictionary:
+	#if is_sync and event and event.channel_name.is_empty():
+		#return {}
 
 	var suggestions := {}
-	var channel_defaults := DialogicUtil.get_channel_defaults()
+	var channel_defaults := DialogicUtil.get_audio_channel_defaults()
 	var cached_names := DialogicResourceUtil.get_channel_list()
 
 	for i in channel_defaults.keys():
@@ -754,41 +764,38 @@ static func get_channel_suggestions(search_text:String, is_sync := false, event:
 
 	for i in cached_names:
 		if i.is_empty():
-			if is_sync:
-				suggestions['(No Sync)'] = {
-					'value': i,
-					'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
-				}
-			else:
-				suggestions['(One-Shot SFX)'] = {
-					'value': i,
-					'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
-					'tooltip': "Used for one shot sounds effects. Plays each sound in its own AudioStreamPlayer."
-				}
-
-		elif is_sync and event and event.channel_name == i:
 			continue
+			##if is_sync:
+				##suggestions['(No Sync)'] = {
+					##'value': i,
+					##'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
+				##}
+			##else:
+				##suggestions['(One-Shot SFX)'] = {
+					##'value': i,
+					##'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
+					##'tooltip': "Used for one shot sounds effects. Plays each sound in its own AudioStreamPlayer."
+				##}
+#
+		#elif is_sync and event and event.channel_name == i:
+			#continue
+		suggestions[i] = {'value': i}
 
-		elif i in channel_defaults.keys():
-			suggestions[i] = {
-				'value': i,
-				'editor_icon': ["ProjectList", "EditorIcons"],
-			}
 
-			if not is_sync:
-				suggestions[i]['tooltip'] = 'This channel has default settings.'
+		if i in channel_defaults.keys():
+			suggestions[i]["editor_icon"] = ["ProjectList", "EditorIcons"]
+			suggestions[i]["tooltip"] = "A default channel defined in the settings."
 
 		else:
-			suggestions[i] = {
-				'value': i,
-				'editor_icon': ["AudioStreamPlayer", "EditorIcons"],
-			}
+			suggestions[i]["editor_icon"] = ["AudioStreamPlayer", "EditorIcons"]
+			suggestions[i]["tooltip"] = "A temporary channel without defaults."
 
 	return suggestions
 
 
-static func get_channel_defaults() -> Dictionary:
-	return ProjectSettings.get_setting('dialogic/audio/channel_defaults', {
+static func get_audio_channel_defaults() -> Dictionary:
+	return {
+	#return ProjectSettings.get_setting('dialogic/audio/channel_defaults', {
 		"": {
 			'volume': 0.0,
 			'audio_bus': '',
@@ -800,10 +807,10 @@ static func get_channel_defaults() -> Dictionary:
 			'audio_bus': '',
 			'fade_length': 0.0,
 			'loop': true,
-		}})
+		}}#)
 
 
-static func validate_channel_name(text: String) -> Dictionary:
+static func validate_audio_channel_name(text: String) -> Dictionary:
 	var result := {}
 	var channel_name_regex := RegEx.create_from_string(r'(?<dash_only>^-$)|(?<invalid>[^\w-]{1})')
 	var matches := channel_name_regex.search_all(text)

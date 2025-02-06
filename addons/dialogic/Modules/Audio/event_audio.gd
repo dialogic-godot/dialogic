@@ -17,7 +17,7 @@ var channel_name := "":
 	set(value):
 		if channel_name != channel_name_regex.sub(value, '', true):
 			channel_name = channel_name_regex.sub(value, '', true)
-			var defaults := DialogicUtil.get_channel_defaults().get(channel_name, {})
+			var defaults := DialogicUtil.get_audio_channel_defaults().get(channel_name, {})
 			if defaults:
 				fade_length = defaults.fade_length
 				volume = defaults.volume
@@ -41,6 +41,7 @@ var set_fade_length := false
 var set_volume := false
 var set_audio_bus := false
 var set_loop := false
+var set_sync_channel := false
 
 var regex := RegEx.create_from_string(r'(?:audio)\s*(?<channel>[\w-]{2,}|[\w]*)?\s*(")?(?<file_path>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(?:\s*\[(?<shortcode>.*)\])?')
 var channel_name_regex := RegEx.create_from_string(r'(?<dash_only>^-$)|(?<invalid>[^\w-]{1})')
@@ -61,15 +62,6 @@ func _execute() -> void:
 		audio_settings_overrides["loop"] = loop
 	audio_settings_overrides["sync_channel"] = sync_channel
 	dialogic.Audio.update_audio(channel_name, file_path, audio_settings_overrides)
-
-#
-	#if channel_name.is_empty() and :
-		#if file_path.is_empty():
-			#dialogic.Audio.stop_all_sounds()
-		#else:
-			#dialogic.Audio.play_sound(file_path, volume, audio_bus)
-	#elif not dialogic.Audio.is_audio_playing_resource(file_path, channel_name):
-
 
 	finish()
 
@@ -143,7 +135,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"fade"		: {"property": "fade_length", 	"default": 0.0},
 		"volume"	: {"property": "volume", 		"default": 0.0},
 		"bus"		: {"property": "audio_bus", 	"default": "",
-						"suggestions": get_bus_suggestions},
+						"suggestions": DialogicUtil.get_audio_bus_suggestions},
 		"loop"		: {"property": "loop", 			"default": true},
 		"sync"		: {"property": "sync_channel", 	"default": ""},
 	}
@@ -154,7 +146,7 @@ func store_to_shortcode_parameters(params:Dictionary = {}) -> String:
 	if params.is_empty():
 		params = get_shortcode_parameters()
 	var custom_defaults: Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
-	var channel_defaults := DialogicUtil.get_channel_defaults()
+	var channel_defaults := DialogicUtil.get_audio_channel_defaults()
 	var result_string := ""
 	for parameter in params.keys():
 		var parameter_info: Dictionary = params[parameter]
@@ -183,11 +175,12 @@ func is_valid_event(string:String) -> bool:
 	if string.begins_with("audio"):
 		return true
 	# Pre Alpha 17 Converter
-	if string.strip_edges().begins_with('[music ') or string.strip_edges().begins_with('[music]'):
+	if string.strip_edges().begins_with('[music '):
 		return true
-	if string.strip_edges().begins_with('[sound ') or string.strip_edges().begins_with('[sound]'):
+	if string.strip_edges().begins_with('[sound '):
 		return true
 	return false
+
 
 #region PreAlpha17 Conversion
 
@@ -268,17 +261,13 @@ func build_event_editor() -> void:
 		"right_text"		: "channel.",
 		'placeholder'		: '(One-Shot SFX)',
 		'mode'				: 3,
-		'suggestions_func' 	: DialogicUtil.get_channel_suggestions.bind(false, self),
-		'validation_func'	: DialogicUtil.validate_channel_name,
+		'suggestions_func' 	: get_audio_channel_suggestions,
+		'validation_func'	: DialogicUtil.validate_audio_channel_name,
 		'tooltip'			: 'Use an existing channel or type the name for a new channel.',
 	})
 
-	add_header_button('', open_audio_settings, 'Edit Audio Channels',
+	add_header_button('', _open_audio_settings, 'Edit Audio Channels',
 		editor_node.get_theme_icon("ExternalLink", "EditorIcons"))
-
-	#get_theme_icon("ExternalLink", "EditorIcons")
-	#get_theme_icon("FadeIn", "EditorIcons")
-	#get_theme_icon("ProjectList", "EditorIcons")
 
 	add_body_edit("set_fade_length", ValueType.BOOL_BUTTON,{
 			"editor_icon"	: ["FadeCross", "EditorIcons"],
@@ -301,7 +290,7 @@ func build_event_editor() -> void:
 		'left_text':'Audio Bus:',
 		'placeholder'		: 'Master',
 		'mode'				: 2,
-		'suggestions_func' 	: get_bus_suggestions,
+		'suggestions_func' 	: DialogicUtil.get_audio_bus_suggestions,
 	}, '!file_path.is_empty() and (not has_channel_defaults() or set_audio_bus)')
 	add_body_edit("set_loop", ValueType.BOOL_BUTTON,{
 			"editor_icon"	: ["Loop", "EditorIcons"],
@@ -310,44 +299,55 @@ func build_event_editor() -> void:
 	add_body_edit('loop', ValueType.BOOL, {'left_text':'Loop:'},
 		'!channel_name.is_empty() and !file_path.is_empty() and (not has_channel_defaults() or set_loop)')
 	add_body_line_break("!channel_name.is_empty() and !file_path.is_empty()")
+	add_body_edit("set_sync_channel", ValueType.BOOL_BUTTON,{
+			"editor_icon"	: ["TransitionSync", "EditorIcons"],
+			"tooltip"		: "Enable Syncing"
+			},"!channel_name.is_empty() and !file_path.is_empty()")
+
 	add_body_edit('sync_channel', ValueType.DYNAMIC_OPTIONS, {
 		'left_text'			:'Sync with:',
 		'placeholder'		: '(No Sync)',
 		'mode'				: 3,
-		'suggestions_func' 	: DialogicUtil.get_channel_suggestions.bind(true, self),
-		'validation_func'	: DialogicUtil.validate_channel_name,
+		'suggestions_func' 	: get_sync_audio_channel_suggestions,
+		'validation_func'	: DialogicUtil.validate_audio_channel_name,
 		'tooltip'			: "Use an existing channel or type the name for a new channel. If channel doesn't exist, this setting will be ignored.",
-	}, '!channel_name.is_empty() and !file_path.is_empty()')
+	}, '!channel_name.is_empty() and !file_path.is_empty() and set_sync_channel')
 
 
-func open_audio_settings() -> void:
+## Used by the button on the visual event
+func _open_audio_settings() -> void:
 	var editor_manager := editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.open_editor(editor_manager.editors['Settings']['node'], true, "Audio")
 
 
+## Helper for the visibility conditions
 func has_channel_defaults() -> bool:
-	var defaults := DialogicUtil.get_channel_defaults()
+	var defaults := DialogicUtil.get_audio_channel_defaults()
 	return defaults.has(channel_name)
 
 
-func _update_defaults_for_channel() -> void:
-	var defaults := DialogicUtil.get_channel_defaults()
-	defaults[channel_name] = {
-		'volume': volume,
-		'audio_bus': audio_bus,
-		'fade_length': fade_length,
-		'loop': loop,
-	}
-	ProjectSettings.set_setting('dialogic/audio/channel_defaults', defaults)
-	ProjectSettings.save()
+func get_audio_channel_suggestions(filter:String) -> Dictionary:
+	var suggestions := {}
+	suggestions["(One-Shot SFX)"] = {
+		"value":"",
+		"tooltip": "Used for one shot sounds effects. Plays each sound in its own AudioStreamPlayer.",
+		"editor_icon": ["GuiRadioUnchecked", "EditorIcons"]
+		}
+	return suggestions.merged(DialogicUtil.get_audio_channel_suggestions(filter))
 
 
-func get_bus_suggestions(search_text:String) -> Dictionary:
-	var bus_name_list := {}
-	for i in range(AudioServer.bus_count):
-		if i == 0:
-			bus_name_list[AudioServer.get_bus_name(i)] = {'value':''}
-		else:
-			bus_name_list[AudioServer.get_bus_name(i)] = {'value':AudioServer.get_bus_name(i)}
-	return bus_name_list
+func get_sync_audio_channel_suggestions(filter:String) -> Dictionary:
+	return DialogicUtil.get_audio_channel_suggestions(filter)
+
+#
+#func _update_defaults_for_channel() -> void:
+	#var defaults := DialogicUtil.get_audio_channel_defaults()
+	#defaults[channel_name] = {
+		#'volume': volume,
+		#'audio_bus': audio_bus,
+		#'fade_length': fade_length,
+		#'loop': loop,
+	#}
+	#ProjectSettings.set_setting('dialogic/audio/channel_defaults', defaults)
+	#ProjectSettings.save()

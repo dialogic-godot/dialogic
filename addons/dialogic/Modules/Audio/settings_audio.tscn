@@ -1,9 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2qgetjc3mfo3"]
+[gd_scene load_steps=6 format=3 uid="uid://c2qgetjc3mfo3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Modules/Audio/settings_audio.gd" id="1_2iyyr"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_o1ban"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_bx557"]
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="4_xfyvc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rguqi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kgb5"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -57,7 +59,7 @@ hint_text = "Default settings for named audio channels."
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rguqi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kgb5")
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 2
@@ -67,6 +69,41 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
+
+[node name="AudioChannelDefaultRow" type="HBoxContainer" parent="Panel/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="channel_name" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("3_bx557")]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter Channel Name"
+mode = 3
+
+[node name="volume" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("4_xfyvc")]
+layout_mode = 2
+mode = 2
+min = -80.0
+max = 6.0
+suffix = "dB"
+
+[node name="audio_bus" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("3_bx557")]
+layout_mode = 2
+placeholder_text = "Master"
+mode = 2
+
+[node name="fade_length" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("4_xfyvc")]
+layout_mode = 2
+mode = 0
+enforce_step = false
+min = 0.0
+
+[node name="loop" type="CheckButton" parent="Panel/VBox/AudioChannelDefaultRow"]
+layout_mode = 2
+
+[node name="delete" type="Button" parent="Panel/VBox/AudioChannelDefaultRow"]
+layout_mode = 2
 
 [node name="Add" type="Button" parent="Panel/VBox"]
 layout_mode = 2

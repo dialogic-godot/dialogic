@@ -215,7 +215,7 @@ func update_content_list() -> void:
 	var channels: PackedStringArray = []
 	for i in channel_regex.search_all(text):
 		channels.append(i.get_string('channel'))
-	timeline_editor.update_channel_cache(channels)
+	timeline_editor.update_audio_channel_cache(channels)
 
 
 func _on_content_item_clicked(label:String) -> void:

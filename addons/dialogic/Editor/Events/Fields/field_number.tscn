@@ -40,6 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
+mode = null
 
 [node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -77,9 +78,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
 theme_override_constants/minimum_character_width = 0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_8yqsu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8yqsu")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_8yqsu")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8yqsu")
 text = "0"
 alignment = 1
 expand_to_text_length = true
@@ -113,37 +114,37 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="Increment" type="Button" parent="Value_Panel/Layout/Spin"]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
-auto_translate = false
 focus_neighbor_left = NodePath("../../Value")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath("../Decrement")
-theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
 theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_increment")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_increment")
 theme_override_styles/hover = SubResource("StyleBoxFlat_increment")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_increment")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_increment")
-theme_override_styles/focus = SubResource("StyleBoxFlat_increment")
+theme_override_styles/normal = SubResource("StyleBoxFlat_increment")
 icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
 
 [node name="Decrement" type="Button" parent="Value_Panel/Layout/Spin"]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
-auto_translate = false
 focus_neighbor_left = NodePath("../../Value")
 focus_neighbor_top = NodePath("../Increment")
 focus_neighbor_bottom = NodePath(".")
-theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
 theme_override_colors/icon_focus_color = Color(0.412738, 0.550094, 0.760917, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
+theme_override_colors/icon_hover_color = Color(0.412738, 0.550094, 0.760917, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_decrement")
 theme_override_styles/hover = SubResource("StyleBoxFlat_decrement")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_decrement")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_decrement")
-theme_override_styles/focus = SubResource("StyleBoxFlat_decrement")
+theme_override_styles/normal = SubResource("StyleBoxFlat_decrement")
 icon = ExtResource("4_ph52o")
 flat = true
 vertical_icon_alignment = 2

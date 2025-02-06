@@ -19,7 +19,7 @@ func _ready() -> void:
 
 	# Setting up Default Portrait Picker
 	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
+	%DefaultPortraitPicker.suggestions_func = suggest_portraits
 
 
 ## Make sure preview get's updated when portrait settings change
@@ -74,4 +74,3 @@ func suggest_portraits(search:String) -> Dictionary:
 	for portrait in character_editor.get_updated_portrait_dict().keys():
 		suggestions[portrait] = {'value':portrait}
 	return suggestions
-

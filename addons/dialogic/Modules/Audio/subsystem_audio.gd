@@ -35,9 +35,8 @@ var current_audio_channels: Dictionary = {}
 ## If you want to stop sounds only, use [method stop_all_sounds].
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	var info: Dictionary = dialogic.current_state_info.get("audio", {})
-	for channel_name in current_audio_channels.keys():
-		update_audio(channel_name)
-	stop_all_sounds()
+	stop_all_channels()
+	stop_all_one_shot_sounds()
 
 
 ## Loads the state on this subsystem from the current state info.
@@ -99,11 +98,10 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		return
 
 	## Determine audio settings
-	var audio_settings: Dictionary = DialogicUtil.get_channel_defaults().get(channel_name, {}).merged(
+	var audio_settings: Dictionary = DialogicUtil.get_audio_channel_defaults().get(channel_name, {}).merged(
 		{"volume":0, "audio_bus":"", "fade_length":0.0, "loop":false, "sync_channel":""}
 	)
 	audio_settings.merge(settings_overrides, true)
-	print(audio_settings)
 
 	## Handle previous audio on channel
 	if is_channel_playing(channel_name):
@@ -188,48 +186,24 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 	if channel_name:
 		current_audio_channels[channel_name] = new_player
 
-## Whether audio is playing for this [param channel_name].
+
+## Returns true if any audio is playing on the given [param channel_name].
 func is_channel_playing(channel_name: String) -> bool:
 	return (current_audio_channels.has(channel_name)
 		and is_instance_valid(current_audio_channels[channel_name])
 		and current_audio_channels[channel_name].is_playing())
 
 
-## Stops audio on all channels (does not affect one-shot sounds) with optional fade time.
-func stop_all_audio(fade := 0.0) -> void:
+## Stops audio on all channels.
+func stop_all_channels(fade := 0.0) -> void:
 	for channel_name in current_audio_channels.keys():
 		update_audio(channel_name, '', {"fade_length":fade})
 
 
-### Plays a given sound file.
-#func play_sound(path: String, volume := 0.0, audio_bus := "", loop := false) -> void:
-	#if !path.is_empty():
-		#audio_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop, 'channel':''})
-#
-		#var new_player := AudioStreamPlayer.new()
-		#new_player.stream = load(path)
-#
-		#if "loop" in new_player.stream:
-			#new_player.stream.loop = loop
-		#elif "loop_mode" in new_player.stream:
-			#if loop:
-				#new_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-				#new_player.stream.loop_begin = 0
-				#new_player.stream.loop_end = new_player.stream.mix_rate * new_player.stream.get_length()
-			#else:
-				#new_player.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
-#
-		#new_player.volume_db = volume
-		#if audio_bus:
-			#new_player.bus = audio_bus
-		#sound_node.add_child(new_player)
-		#new_player.play()
-		#new_player.finished.connect(new_player.queue_free)
-#
-#
 ### Stops all one-shot sounds.
-func stop_all_sounds() -> void:
-	stop_all_audio()
+func stop_all_one_shot_sounds() -> void:
+	for i in one_shot_audio_node.get_children():
+		i.queue_free()
 
 
 ## Converts a linear loudness value to decibel and sets that volume to

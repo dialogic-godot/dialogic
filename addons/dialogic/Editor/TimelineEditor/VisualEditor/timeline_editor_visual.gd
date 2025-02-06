@@ -314,7 +314,7 @@ func update_content_list() -> void:
 				channels.append(event.resource.channel_name)
 
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
-	timeline_editor.update_channel_cache(channels)
+	timeline_editor.update_audio_channel_cache(channels)
 
 
 #endregion

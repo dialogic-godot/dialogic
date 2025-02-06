@@ -15,7 +15,6 @@ func _ready() -> void:
 	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 
 
-
 func _refresh() -> void:
 	%TypeSoundBus.clear()
 	var idx := 0
@@ -25,22 +24,25 @@ func _refresh() -> void:
 			idx = i
 	%TypeSoundBus.select(idx)
 
-	load_channel_defaults(DialogicUtil.get_channel_defaults())
+	load_channel_defaults(DialogicUtil.get_audio_channel_defaults())
 
 
 func _about_to_close() -> void:
 	save_channel_defaults()
 
 
+## TYPE SOUND AUDIO BUS
 func _on_type_sound_bus_item_selected(index:int) -> void:
 	ProjectSettings.set_setting(TYPE_SOUND_AUDIO_BUS, %TypeSoundBus.get_item_text(index))
 	ProjectSettings.save()
 
 
-## CHANNEL DEFAULTS
+#region AUDIO CHANNELS
 ################################################################################
 
 func load_channel_defaults(dictionary:Dictionary) -> void:
+	print(dictionary)
+
 	channel_defaults.clear()
 	for i in %AudioChannelDefaults.get_children():
 		i.queue_free()
@@ -117,77 +119,57 @@ func _on_add_channel_defaults_pressed() -> void:
 	revalidate_channel_names.call_deferred()
 
 
-func add_channel_defaults(channel_name: String, volume: float, audio_bus: String, fade: float, loop: bool) -> Control:
+func add_channel_defaults(channel_name: String, volume: float, audio_bus: String, fade_length: float, loop: bool) -> Control:
 	var info := {}
 
+	for i in %AudioChannelDefaultRow.get_children():
+		var x := i.duplicate()
+		%AudioChannelDefaults.add_child(x)
+		info[i.name] = x
+
+
 	if channel_name.is_empty():
-		var channel_label = Label.new()
-		channel_label.text = 'One-Shot SFX'
+		var channel_label := Label.new()
+		channel_label.text = &"One-Shot SFX"
 		channel_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		info['channel_name'] = channel_label
+
 		%AudioChannelDefaults.add_child(channel_label)
+		%AudioChannelDefaults.move_child(channel_label, info.channel_name.get_index())
+		info.channel_name.queue_free()
+		info.channel_name = channel_label
+
+		var HintTooltip := preload("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn")
+		var fade_hint := HintTooltip.instantiate()
+		fade_hint.hint_text = "Fading is disabled for this channel."
+		%AudioChannelDefaults.add_child(fade_hint)
+		%AudioChannelDefaults.move_child(fade_hint, info.fade_length.get_index())
+		info.fade_length.queue_free()
+		info.fade_length = fade_hint
+
+		var loop_hint := HintTooltip.instantiate()
+		loop_hint.hint_text = "Looping is disabled for this channel."
+		%AudioChannelDefaults.add_child(loop_hint)
+		%AudioChannelDefaults.move_child(loop_hint, info.loop.get_index())
+		info.loop.queue_free()
+		info.loop = loop_hint
+
+		info.delete.disabled = true
+
 	else:
-		var channel_options := preload("res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn").instantiate()
-		channel_options._load_display_info({
-			'placeholder'		: 'Enter channel name',
-			'mode'				: 3,
-			'suggestions_func' 	: get_channel_suggestions,
-			'validation_func'	: validate_channel_names.bind(channel_options)
-		})
-		channel_options.set_value(channel_name)
-		channel_options.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		info['channel_name'] = channel_options
-		%AudioChannelDefaults.add_child(channel_options)
+		info.channel_name.suggestions_func = get_audio_channel_suggestions
+		info.channel_name.validation_func = validate_channel_names.bind(info.channel_name)
+		info.channel_name.set_value(channel_name)
 
-	var volume_field := preload("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
-	volume_field.use_decibel_mode(0.1)
-	volume_field.set_value(volume)
-	info['volume'] = volume_field
-	%AudioChannelDefaults.add_child(volume_field)
+		info.fade_length.set_value(fade_length)
 
-	var bus_options := preload("res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn").instantiate()
-	bus_options._load_display_info({
-		'placeholder'		: 'Master',
-		'mode'				: 2,
-		'suggestions_func' 	: get_bus_suggestions
-	})
-	bus_options.set_value(audio_bus)
-	info['audio_bus'] = bus_options
-	%AudioChannelDefaults.add_child(bus_options)
+		info.loop.set_pressed_no_signal(loop)
 
-	if channel_name.is_empty():
-		var fade_disabled := TextureRect.new()
-		fade_disabled.texture = get_theme_icon('NodeInfo', 'EditorIcons')
-		fade_disabled.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
-		fade_disabled.set_anchors_preset(Control.PRESET_FULL_RECT)
-		fade_disabled.tooltip_text = "Fading is disbaled for this channel."
-		info['fade_length'] = fade_disabled
-		%AudioChannelDefaults.add_child(fade_disabled)
+	info.audio_bus.suggestions_func = DialogicUtil.get_audio_bus_suggestions
+	info.audio_bus.set_value(audio_bus)
 
-		info['loop'] = fade_disabled.duplicate()
-		info['loop'].tooltip_text = "Looping is disabled for this channel."
-		%AudioChannelDefaults.add_child(info['loop'])
-	else:
-		var fade_field := preload("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
-		fade_field.use_float_mode(0.1)
-		fade_field.set_value(fade)
-		fade_field.min = 0.0
-		info['fade_length'] = fade_field
-		%AudioChannelDefaults.add_child(fade_field)
+	info.delete.icon = get_theme_icon(&"Remove", &"EditorIcons")
 
-		var loop_button := CheckButton.new()
-		loop_button.set_pressed_no_signal(loop)
-		info['loop'] = loop_button
-		%AudioChannelDefaults.add_child(loop_button)
-
-	var remove_btn := Button.new()
-	remove_btn.icon = get_theme_icon(&'Remove', &'EditorIcons')
-	remove_btn.pressed.connect(_on_remove_channel_defaults_pressed.bind(len(channel_defaults)))
-	remove_btn.disabled = channel_name.is_empty()
-	info['delete'] = remove_btn
-	%AudioChannelDefaults.add_child(remove_btn)
 	channel_defaults[len(channel_defaults)] = info
-
 	return info['channel_name']
 
 
@@ -197,34 +179,19 @@ func _on_remove_channel_defaults_pressed(index: int) -> void:
 	channel_defaults.erase(index)
 
 
-func get_bus_suggestions(search_text:String) -> Dictionary:
-	var bus_name_list := {}
-	for i in range(AudioServer.bus_count):
-		bus_name_list[AudioServer.get_bus_name(i)] = {'value':AudioServer.get_bus_name(i)}
-	return bus_name_list
+func get_audio_channel_suggestions(search_text:String) -> Dictionary:
+	var suggestions := DialogicUtil.get_audio_channel_suggestions(search_text)
 
-
-func get_channel_suggestions(search_text:String) -> Dictionary:
-	var suggestions := DialogicUtil.get_channel_suggestions(search_text)
-
-	var suggestion_values := []
-	for key in suggestions.keys():
-		if suggestions[key].value:
-			suggestion_values.append(suggestions[key].value)
-		else:
-			suggestions.erase(key)
-
-	for i in channel_defaults:
-		if (is_instance_valid(channel_defaults[i].channel_name)
-				and not channel_defaults[i].channel_name is Label
-				and channel_defaults[i].channel_name.current_value in suggestion_values):
-			suggestions.erase(channel_defaults[i].channel_name.current_value)
+	for i in channel_defaults.values():
+		if i.channel_name is DialogicVisualEditorField:
+			suggestions.erase(i.channel_name.current_value)
 
 	for key in suggestions.keys():
 		suggestions[key].erase('tooltip')
-		suggestions[key]['editor_icon'] = ["AudioStream", "EditorIcons"]
+		suggestions[key]['editor_icon'] = ["AudioStreamPlayer", "EditorIcons"]
 
 	return suggestions
+
 
 func revalidate_channel_names() -> void:
 	_revalidate_channel_names = false
@@ -265,7 +232,7 @@ func validate_channel_names(search_text: String, field_node: Control) -> Diction
 		tooltips.append("Duplicate channel name.")
 
 	# Check for invalid characters
-	result = DialogicUtil.validate_channel_name(search_text)
+	result = DialogicUtil.validate_audio_channel_name(search_text)
 	if result:
 		tooltips.append(result.error_tooltip)
 		result.error_tooltip = "\n".join(tooltips)
@@ -273,3 +240,4 @@ func validate_channel_names(search_text: String, field_node: Control) -> Diction
 		result['error_tooltip'] = "\n".join(tooltips)
 
 	return result
+#endregion

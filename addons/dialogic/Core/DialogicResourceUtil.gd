@@ -1,9 +1,9 @@
 @tool
 class_name DialogicResourceUtil
 
-static var channel_cache := {}
 static var label_cache := {}
 static var event_cache: Array[DialogicEvent] = []
+static var channel_cache := {}
 
 static var special_resources := {}
 
@@ -12,7 +12,7 @@ static func update() -> void:
 	update_directory('.dch')
 	update_directory('.dtl')
 	update_label_cache()
-	update_channel_cache()
+	update_audio_channel_cache()
 
 
 #region RESOURCE DIRECTORIES
@@ -142,12 +142,12 @@ static func update_label_cache() -> void:
 
 #endregion
 
-#region CHANNEL CACHE
+#region AUDIO CHANNEL CACHE
 ################################################################################
-# The channel cache is only for the editor so we don't have to scan all timelines
+# The audio channel cache is only for the editor so we don't have to scan all timelines
 # whenever we want to suggest channels. This has no use in game and is not always perfect.
 
-static func get_channel_cache() -> Dictionary:
+static func get_audio_channel_cache() -> Dictionary:
 	if not channel_cache.is_empty():
 		return channel_cache
 
@@ -167,17 +167,17 @@ static func get_channel_list() -> Array:
 	return cached_names
 
 
-static func set_channel_cache(cache:Dictionary) -> void:
+static func set_audio_channel_cache(cache:Dictionary) -> void:
 	channel_cache = cache
 
 
-static func update_channel_cache() -> void:
-	var cache := get_channel_cache()
+static func update_audio_channel_cache() -> void:
+	var cache := get_audio_channel_cache()
 	var timelines := get_timeline_directory().values()
 	for timeline in cache:
 		if !timeline in timelines:
 			cache.erase(timeline)
-	set_channel_cache(cache)
+	set_audio_channel_cache(cache)
 
 #endregion
 

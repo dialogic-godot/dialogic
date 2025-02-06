@@ -62,7 +62,7 @@ func _refresh() -> void:
 
 	%InputAction.resource_icon = get_theme_icon(&"Mouse", &"EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting(_SETTING_INPUT_ACTION, &'dialogic_default_action'))
-	%InputAction.get_suggestions_func = suggest_actions
+	%InputAction.suggestions_func = suggest_actions
 
 	%Skippable.button_pressed = ProjectSettings.get_setting(_SETTING_TEXT_REVEAL_SKIPPABLE, true)
 	%SkippableDelay.value = ProjectSettings.get_setting(_SETTING_TEXT_REVEAL_SKIPPABLE_DELAY, 0.1)
