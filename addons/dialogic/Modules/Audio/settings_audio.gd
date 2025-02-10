@@ -41,8 +41,6 @@ func _on_type_sound_bus_item_selected(index:int) -> void:
 ################################################################################
 
 func load_channel_defaults(dictionary:Dictionary) -> void:
-	print(dictionary)
-
 	channel_defaults.clear()
 	for i in %AudioChannelDefaults.get_children():
 		i.queue_free()
