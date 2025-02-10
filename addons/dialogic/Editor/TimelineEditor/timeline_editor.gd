@@ -152,6 +152,9 @@ func _on_resource_saved() -> void:
 func new_timeline(path:String) -> void:
 	_save()
 	var new_timeline := DialogicTimeline.new()
+	if not path.ends_with(".dtl"):
+		path = path.trim_suffix(".")
+		path += ".dtl"
 	new_timeline.resource_path = path
 	new_timeline.set_meta('timeline_not_saved', true)
 	var err := ResourceSaver.save(new_timeline)

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b873ho41sklv8"]
+[gd_scene load_steps=6 format=3 uid="uid://b873ho41sklv8"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_general.gd" id="2"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_tools.gd" id="2_3xeuv"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/tool_resave.gd" id="3_dbfvv"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_i7rug"]
 
 [node name="General" type="VBoxContainer"]
@@ -15,12 +17,44 @@ script = ExtResource("2")
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="SectionBehaviourTitle" type="Label" parent="HBoxContainer2"]
+[node name="SectionToolsTitle" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Tools"
+
+[node name="Tools" type="Node" parent="."]
+script = ExtResource("2_3xeuv")
+
+[node name="ResaveTool" type="Node" parent="Tools"]
+script = ExtResource("3_dbfvv")
+
+[node name="ToolButtons" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ResaveTool" type="Button" parent="ToolButtons"]
+layout_mode = 2
+text = "Resave all timelines"
+
+[node name="ToolProgress" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+max_value = 1.0
+value = 1.0
+
+[node name="HSeparator5" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SectionBehaviourTitle" type="Label" parent="HBoxContainer5"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Layout Node Behaviour"
 
-[node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_kqhx5")]
+[node name="HintTooltip" parent="HBoxContainer5" instance=ExtResource("2_kqhx5")]
 layout_mode = 2
 tooltip_text = "The layout scene configured in the Layout editor is automatically 
 instanced when calling Dialogic.start(). Depending on your game, 
@@ -198,6 +232,7 @@ text = "Process timers in physics_process"
 unique_name_in_owner = true
 layout_mode = 2
 
+[connection signal="pressed" from="ToolButtons/ResaveTool" to="." method="_on_resave_tool_pressed"]
 [connection signal="item_selected" from="HBoxContainer3/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
 [connection signal="pressed" from="HBoxContainer6/HBoxContainer4/HBoxContainer5/Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]

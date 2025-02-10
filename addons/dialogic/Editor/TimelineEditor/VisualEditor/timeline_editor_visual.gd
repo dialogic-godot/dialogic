@@ -496,7 +496,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events := []
 	for event_idx in indexes:
 		# first get a new resource from the text version
-		var event_resource :DialogicEvent
+		var event_resource: DialogicEvent
 		for i in DialogicResourceUtil.get_event_cache():
 			if i._test_event_string(indexed_events[event_idx]):
 				event_resource = i.duplicate()
@@ -571,6 +571,7 @@ func copy_selected_events() -> void:
 	if len(selected_items) == 0:
 		return
 
+	sort_selection()
 	var event_copy_array := []
 	for item in selected_items:
 		event_copy_array.append(item.resource._store_as_string())
@@ -579,6 +580,7 @@ func copy_selected_events() -> void:
 				event_copy_array[-1] += str(selected_items.find(item.parent_node))
 			else: # add global index
 				event_copy_array[-1] += '#'+str(item.parent_node.get_index())
+
 	DisplayServer.clipboard_set(var_to_str({
 			"events":event_copy_array,
 			"project_name": ProjectSettings.get_setting("application/config/name")

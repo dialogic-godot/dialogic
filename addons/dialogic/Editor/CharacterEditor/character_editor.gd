@@ -119,6 +119,9 @@ func _save() -> void:
 
 ## Saves a new empty character to the given path
 func new_character(path: String) -> void:
+	if not path.ends_with(".dch"):
+		path = path.trim_suffix(".")
+		path += ".dch"
 	var resource := DialogicCharacter.new()
 	resource.resource_path = path
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
