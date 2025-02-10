@@ -132,8 +132,8 @@ func process() -> void:
 
 			event_content += "\n"+following_line_stripped
 
-		event._load_from_string(event_content)
 		event.event_node_as_text = event_content
+		await event._load_from_string(event_content)
 
 		processed_events.append(event)
 		prev_was_opener = event.can_contain_events

@@ -269,6 +269,7 @@ func handle_event(event_index:int) -> void:
 		end_timeline()
 		return
 
+	# TODO: Check if necessary. This should be impossible.
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
 	if current_timeline_events[event_index].event_node_ready == false:

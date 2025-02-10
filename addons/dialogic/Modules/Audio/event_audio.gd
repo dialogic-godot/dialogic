@@ -220,6 +220,7 @@ func _music_from_text(string:String) -> void:
 	if data.has('loop'):
 		set_loop = true
 		loop = str_to_var(data['loop'])
+	update_text_version()
 
 
 func _sound_from_text(string:String) -> void:
@@ -250,6 +251,8 @@ func _sound_from_text(string:String) -> void:
 	if data.has('loop'):
 		set_loop = true
 		loop = str_to_var(data['loop'])
+	update_text_version()
+
 
 #endregion
 
