@@ -7,6 +7,7 @@ extends CodeEdit
 @onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
+var channel_regex := RegEx.create_from_string(r'audio +(?<channel>[\w-]{2,}|[\w]+)')
 
 func _ready() -> void:
 	await find_parent('EditorView').ready
@@ -193,12 +194,14 @@ func _drop_data(at_position:Vector2, data:Variant) -> void:
 		set_caret_column(get_line_column_at_pos(at_position).x)
 		set_caret_line(get_line_column_at_pos(at_position).y)
 		var result: String = data.files[0]
-		if get_line(get_caret_line())[get_caret_column()-1] != '"':
+		var line := get_line(get_caret_line())
+		if line[get_caret_column()-1] != '"':
 			result = '"'+result
-		if get_line(get_caret_line())[get_caret_column()] != '"':
+		if line.length() == get_caret_column() or line[get_caret_column()] != '"':
 			result = result+'"'
 
 		insert_text_at_caret(result)
+		grab_focus()
 
 
 func _on_update_timer_timeout() -> void:
@@ -210,6 +213,11 @@ func update_content_list() -> void:
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+
+	var channels: PackedStringArray = []
+	for i in channel_regex.search_all(text):
+		channels.append(i.get_string('channel'))
+	timeline_editor.update_audio_channel_cache(channels)
 
 
 func _on_content_item_clicked(label:String) -> void:

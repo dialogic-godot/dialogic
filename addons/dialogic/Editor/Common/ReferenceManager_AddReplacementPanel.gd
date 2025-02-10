@@ -11,7 +11,7 @@ var item: TreeItem = null
 func _ready() -> void:
 	hide()
 	%Character.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	%Character.get_suggestions_func = get_character_suggestions
+	%Character.suggestions_func = get_character_suggestions
 
 	%WholeWords.icon = get_theme_icon("FontItem", "EditorIcons")
 	%MatchCase.icon = get_theme_icon("MatchCase", "EditorIcons")

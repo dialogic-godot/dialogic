@@ -1,101 +1,79 @@
 extends DialogicSubsystem
-## Subsystem for managing background music and one-shot sound effects.
+## Subsystem for managing background audio and one-shot sound effects.
 ##
 ## This subsystem has many different helper methods for managing audio
 ## in your timeline.
-## For instance, you can listen to music changes via [signal music_started].
+## For instance, you can listen to audio changes via [signal audio_started].
 
 
-## Whenever a new background music is started, this signal is emitted and
+## Whenever a new audio event is started, this signal is emitted and
 ## contains a dictionary with the following keys: [br]
 ## [br]
 ## Key         |   Value Type  | Value [br]
 ## ----------- | ------------- | ----- [br]
 ## `path`      | [type String] | The path to the audio resource file. [br]
-## `volume`    | [type float]  | The volume of the audio resource that will be set to the [member base_music_player]. [br]
-## `audio_bus` | [type String] | The audio bus name that the [member base_music_player] will use. [br]
+## `channel`   | [type String] | The channel name to play the audio on. [br]
+## `volume`    | [type float]  | The volume in `db` of the audio resource that will be set to the [AudioStreamPlayer]. [br]
+## `audio_bus` | [type String] | The audio bus name that the [AudioStreamPlayer] will use. [br]
 ## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
-## `channel`   | [type int]    | The channel ID to play the audio on. [br]
-signal music_started(info: Dictionary)
+signal audio_started(info: Dictionary)
 
 
-## Whenever a new sound effect is set, this signal is emitted and contains a
-## dictionary with the following keys: [br]
-## [br]
-## Key         |   Value Type  | Value [br]
-## ----------- | ------------- | ----- [br]
-## `path`      | [type String] | The path to the audio resource file. [br]
-## `volume`    | [type float]  | The volume of the audio resource that will be set to [member base_sound_player]. [br]
-## `audio_bus` | [type String] | The audio bus name that the [member base_sound_player] will use. [br]
-## `loop`      | [type bool]   | Whether the audio resource will loop or not once it finishes playing. [br]
-signal sound_started(info: Dictionary)
 
-
-var max_channels: int:
-	set(value):
-		if max_channels != value:
-			max_channels = value
-			ProjectSettings.set_setting('dialogic/audio/max_channels', value)
-			ProjectSettings.save()
-			current_music_player.resize(value)
-	get:
-		return ProjectSettings.get_setting('dialogic/audio/max_channels', 4)
-
-## Audio player base duplicated to play background music.
-##
-## Background music is long audio.
-var base_music_player := AudioStreamPlayer.new()
-## Reference to the last used music player.
-var current_music_player: Array[AudioStreamPlayer] = []
-## Audio player base, that will be duplicated to play sound effects.
-##
-## Sound effects are short audio.
-var base_sound_player := AudioStreamPlayer.new()
-
+## Audio node for holding audio players
+var audio_node := Node.new()
+## Sound node for holding sound players
+var one_shot_audio_node := Node.new()
+## Dictionary with info of all current audio channels
+var current_audio_channels: Dictionary = {}
 
 #region STATE
 ####################################################################################################
 
 ## Clears the state on this subsystem and stops all audio.
-##
-## If you want to stop sounds only, use [method stop_all_sounds].
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	for idx in max_channels:
-		update_music('', 0.0, '', 0.0, true, idx)
-	stop_all_sounds()
+	var info: Dictionary = dialogic.current_state_info.get("audio", {})
+	stop_all_channels()
+	stop_all_one_shot_sounds()
 
 
 ## Loads the state on this subsystem from the current state info.
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
-	var info: Dictionary = dialogic.current_state_info.get("music", {})
-	if not info.is_empty() and info.has('path'):
-		update_music(info.path, info.volume, info.audio_bus, 0, info.loop, 0)
-	else:
-		for channel_id in info.keys():
-			if info[channel_id].is_empty() or info[channel_id].path.is_empty():
-				update_music('', 0.0, '', 0.0, true, channel_id)
-			else:
-				update_music(info[channel_id].path, info[channel_id].volume, info[channel_id].audio_bus, 0, info[channel_id].loop, channel_id)
+
+	# Pre Alpha 17 Converter
+	_convert_state_info()
+
+	var info: Dictionary = dialogic.current_state_info.get("audio", {})
+
+	for channel_name in info.keys():
+		if info[channel_name].path.is_empty():
+			update_audio(channel_name)
+		else:
+			update_audio(channel_name, info[channel_name].path, info[channel_name].settings_overrides)
 
 
 ## Pauses playing audio.
 func pause() -> void:
-	for child in get_children():
+	for child in audio_node.get_children():
+		child.stream_paused = true
+	for child in one_shot_audio_node.get_children():
 		child.stream_paused = true
 
 
 ## Resumes playing audio.
 func resume() -> void:
-	for child in get_children():
+	for child in audio_node.get_children():
+		child.stream_paused = false
+	for child in one_shot_audio_node.get_children():
 		child.stream_paused = false
 
 
 func _on_dialogic_timeline_ended() -> void:
 	if not dialogic.Styles.get_layout_node():
 		clear_game_state()
-	pass
+
 #endregion
 
 
@@ -105,99 +83,127 @@ func _on_dialogic_timeline_ended() -> void:
 func _ready() -> void:
 	dialogic.timeline_ended.connect(_on_dialogic_timeline_ended)
 
-	base_music_player.name = "Music"
-	add_child(base_music_player)
-
-	base_sound_player.name = "Sound"
-	add_child(base_sound_player)
-
-	current_music_player.resize(max_channels)
+	audio_node.name = "Audio"
+	add_child(audio_node)
+	one_shot_audio_node.name = "OneShotAudios"
+	add_child(one_shot_audio_node)
 
 
-## Updates the background music. Will fade out previous music.
-func update_music(path := "", volume := 0.0, audio_bus := "", fade_time := 0.0, loop := true, channel_id := 0) -> void:
-
-	if channel_id > max_channels:
-		printerr("\tChannel ID (%s) higher than Max Music Channels (%s)" % [channel_id, max_channels])
-		dialogic.print_debug_moment()
+## Plays the given file (or nothing) on the given channel.
+## No channel given defaults to the "One-Shot SFX" channel,
+##   which does not save audio but can have multiple audios playing simultaneously.
+func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> void:
+	#volume := 0.0, audio_bus := "", fade_time := 0.0, loop := true, sync_channel := "") -> void:
+	if not is_channel_playing(channel_name) and path.is_empty():
 		return
 
-	if not dialogic.current_state_info.has('music'):
-		dialogic.current_state_info['music'] = {}
+	## Determine audio settings
+	var audio_settings: Dictionary = DialogicUtil.get_audio_channel_defaults().get(channel_name, {}).merged(
+		{"volume":0, "audio_bus":"", "fade_length":0.0, "loop":false, "sync_channel":""}
+	)
+	audio_settings.merge(settings_overrides, true)
 
-	dialogic.current_state_info['music'][channel_id] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop, 'channel':channel_id}
-	music_started.emit(dialogic.current_state_info['music'][channel_id])
+	## Handle previous audio on channel
+	if is_channel_playing(channel_name):
+		var prev_audio_node: Node = current_audio_channels[channel_name]
+		prev_audio_node.name += "_Prev"
+		if audio_settings.fade_length > 0.0:
+			var fade_out_tween: Tween = create_tween()
+			fade_out_tween.tween_method(
+				interpolate_volume_linearly.bind(prev_audio_node),
+				db_to_linear(prev_audio_node.volume_db),
+				0.0,
+				audio_settings.fade_length)
+			fade_out_tween.tween_callback(prev_audio_node.queue_free)
 
-	var fader: Tween = null
-	if is_instance_valid(current_music_player[channel_id]) and current_music_player[channel_id].playing or !path.is_empty():
-		fader = create_tween()
+		else:
+			prev_audio_node.queue_free()
 
-	var prev_node: Node = null
-	if is_instance_valid(current_music_player[channel_id]) and current_music_player[channel_id].playing:
-		prev_node = current_music_player[channel_id]
-		fader.tween_method(interpolate_volume_linearly.bind(prev_node), db_to_linear(prev_node.volume_db),0.0,fade_time)
+	## Set state
+	if not dialogic.current_state_info.has('audio'):
+		dialogic.current_state_info['audio'] = {}
 
-	if path:
-		current_music_player[channel_id] = base_music_player.duplicate()
-		add_child(current_music_player[channel_id])
-		current_music_player[channel_id].stream = load(path)
-		current_music_player[channel_id].volume_db = volume
-		if audio_bus:
-			current_music_player[channel_id].bus = audio_bus
-		if not current_music_player[channel_id].stream is AudioStreamWAV:
-			if "loop" in current_music_player[channel_id].stream:
-				current_music_player[channel_id].stream.loop = loop
-			elif "loop_mode" in current_music_player[channel_id].stream:
-				if loop:
-					current_music_player[channel_id].stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-				else:
-					current_music_player[channel_id].stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	if not path:
+		dialogic.current_state_info['audio'].erase(channel_name)
+		return
 
-		current_music_player[channel_id].play(0)
-		fader.parallel().tween_method(interpolate_volume_linearly.bind(current_music_player[channel_id]), 0.0, db_to_linear(volume),fade_time)
+	dialogic.current_state_info['audio'][channel_name] = {'path':path, 'settings_overrides':settings_overrides}
+	audio_started.emit(dialogic.current_state_info['audio'][channel_name])
 
-	if prev_node:
-		fader.tween_callback(prev_node.queue_free)
+	var new_player := AudioStreamPlayer.new()
+	if channel_name:
+		new_player.name = channel_name.validate_node_name()
+		audio_node.add_child(new_player)
+	else:
+		new_player.name = "OneShotSFX"
+		one_shot_audio_node.add_child(new_player)
+
+	new_player.stream = load(path)
+
+	## Apply audio settings
+
+	## Volume & Fade
+	if audio_settings.fade_length > 0.0:
+		new_player.volume_db = linear_to_db(0.0)
+		var fade_in_tween := create_tween()
+		fade_in_tween.tween_method(
+			interpolate_volume_linearly.bind(new_player),
+			0.0,
+			db_to_linear(audio_settings.volume),
+			audio_settings.fade_length)
+
+	else:
+		new_player.volume_db = audio_settings.volume
+
+	## Audio Bus
+	new_player.bus = audio_settings.audio_bus
+
+	## Loop
+	if "loop" in new_player.stream:
+		new_player.stream.loop = audio_settings.loop
+	elif "loop_mode" in new_player.stream:
+		if audio_settings.loop:
+			new_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+			new_player.stream.loop_begin = 0
+			new_player.stream.loop_end = new_player.stream.mix_rate * new_player.stream.get_length()
+		else:
+			new_player.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
+
+	## Sync & start player
+	if audio_settings.sync_channel and is_channel_playing(audio_settings.sync_channel):
+		var play_position: float = current_audio_channels[audio_settings.sync_channel].get_playback_position()
+		new_player.play(play_position)
+
+		# TODO Remove this once https://github.com/godotengine/godot/issues/18878 is fixed
+		if new_player.stream is AudioStreamWAV and new_player.stream.format == AudioStreamWAV.FORMAT_IMA_ADPCM:
+			printerr("[Dialogic] WAV files using Ima-ADPCM compression cannot be synced. Reimport the file using a different compression mode.")
+			dialogic.print_debug_moment()
+	else:
+		new_player.play()
+
+	new_player.finished.connect(_on_audio_finished.bind(new_player, channel_name, path))
+
+	if channel_name:
+		current_audio_channels[channel_name] = new_player
 
 
-## Whether music is playing.
-func has_music(channel_id := 0) -> bool:
-	return !dialogic.current_state_info.get('music', {}).get(channel_id, {}).get('path', '').is_empty()
+## Returns true if any audio is playing on the given [param channel_name].
+func is_channel_playing(channel_name: String) -> bool:
+	return (current_audio_channels.has(channel_name)
+		and is_instance_valid(current_audio_channels[channel_name])
+		and current_audio_channels[channel_name].is_playing())
 
 
-## Plays a given sound file.
-func play_sound(path: String, volume := 0.0, audio_bus := "", loop := false) -> void:
-	if base_sound_player != null and !path.is_empty():
-		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
-
-		var new_sound_node := base_sound_player.duplicate()
-		new_sound_node.name += "Sound"
-		new_sound_node.stream = load(path)
-
-		if "loop" in new_sound_node.stream:
-			new_sound_node.stream.loop = loop
-		elif "loop_mode" in new_sound_node.stream:
-			if loop:
-				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-			else:
-				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
-
-		new_sound_node.volume_db = volume
-		if audio_bus:
-			new_sound_node.bus = audio_bus
-
-		add_child(new_sound_node)
-		new_sound_node.play()
-		new_sound_node.finished.connect(new_sound_node.queue_free)
+## Stops audio on all channels.
+func stop_all_channels(fade := 0.0) -> void:
+	for channel_name in current_audio_channels.keys():
+		update_audio(channel_name, '', {"fade_length":fade})
 
 
-## Stops all audio.
-func stop_all_sounds() -> void:
-	for node in get_children():
-		if node == base_sound_player:
-			continue
-		if "Sound" in node.name:
-			node.queue_free()
+### Stops all one-shot sounds.
+func stop_all_one_shot_sounds() -> void:
+	for i in one_shot_audio_node.get_children():
+		i.queue_free()
 
 
 ## Converts a linear loudness value to decibel and sets that volume to
@@ -207,13 +213,59 @@ func interpolate_volume_linearly(value: float, node: Node) -> void:
 
 
 ## Returns whether the currently playing audio resource is the same as this
-## event's [param resource_path], for [param channel_id].
-func is_music_playing_resource(resource_path: String, channel_id := 0) -> bool:
-	var is_playing_resource: bool = (current_music_player.size() > channel_id
-		and is_instance_valid(current_music_player[channel_id])
-		and current_music_player[channel_id].is_playing()
-		and current_music_player[channel_id].stream.resource_path == resource_path)
+## event's [param resource_path], for [param channel_name].
+func is_channel_playing_file(file_path: String, channel_name: String) -> bool:
+	return (is_channel_playing(channel_name)
+		and current_audio_channels[channel_name].stream.resource_path == file_path)
 
-	return is_playing_resource
+
+func _on_audio_finished(player: AudioStreamPlayer, channel_name: String, path: String) -> void:
+	if current_audio_channels.has(channel_name) and current_audio_channels[channel_name] == player:
+		current_audio_channels.erase(channel_name)
+	player.queue_free()
+	if dialogic.current_state_info.get('audio', {}).get(channel_name, {}).get('path', '') == path:
+		dialogic.current_state_info['audio'].erase(channel_name)
+
+#endregion
+
+
+#region Pre Alpha 17 Conversion
+
+func _convert_state_info() -> void:
+	var info: Dictionary = dialogic.current_state_info.get("music", {})
+	if info.is_empty():
+		return
+
+	var new_info := {}
+	if info.has("path"):
+		# Pre Alpha 16 Save Data Conversion
+		new_info['music'] = {
+			"path":info.path,
+			"settings_overrides": {
+				"volume":info.volume,
+				"audio_bus":info.audio_bus,
+				"loop":info.loop}
+				}
+
+	else:
+		# Pre Alpha 17 Save Data Conversion
+		for channel_id in info.keys():
+			if info[channel_id].is_empty():
+				continue
+
+			var channel_name = "music"
+			if channel_id > 0:
+				channel_name += str(channel_id + 1)
+			new_info[channel_name] = {
+				"path": info[channel_id].path,
+				"settings_overrides":{
+					'volume': info[channel_id].volume,
+					'audio_bus': info[channel_id].audio_bus,
+					'loop': info[channel_id].loop,
+					}
+				}
+
+	dialogic.current_state_info['audio'] = new_info
+	dialogic.current_state_info.erase('music')
 
 #endregion

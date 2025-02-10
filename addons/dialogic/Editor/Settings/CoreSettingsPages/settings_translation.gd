@@ -35,10 +35,10 @@ func _is_feature_tab() -> bool:
 
 func _ready() -> void:
 	%TransEnabled.toggled.connect(store_changes)
-	%OrigLocale.get_suggestions_func = get_locales
+	%OrigLocale.suggestions_func = get_locales
 	%OrigLocale.resource_icon = get_theme_icon("Translation", "EditorIcons")
 	%OrigLocale.value_changed.connect(store_changes)
-	%TestingLocale.get_suggestions_func = get_locales
+	%TestingLocale.suggestions_func = get_locales
 	%TestingLocale.resource_icon = get_theme_icon("Translation", "EditorIcons")
 	%TestingLocale.value_changed.connect(store_changes)
 	%TransFolderPicker.value_changed.connect(store_changes)

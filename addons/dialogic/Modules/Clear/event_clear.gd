@@ -44,9 +44,8 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_music and dialogic.has_subsystem('Audio'):
-		for channel_id in dialogic.Audio.max_channels:
-			if dialogic.Audio.has_music(channel_id):
-				dialogic.Audio.update_music('', 0.0, "", final_time, channel_id)
+		dialogic.Audio.stop_all_channels(final_time)
+		dialogic.Audio.stop_all_one_shot_sounds()
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
@@ -109,6 +108,6 @@ func build_event_editor() -> void:
 	add_body_edit('clear_textbox', ValueType.BOOL_BUTTON, {'left_text':'Clear:', 'icon':load("res://addons/dialogic/Modules/Clear/clear_textbox.svg"), 'tooltip':'Clear Textbox'})
 	add_body_edit('clear_portraits', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_characters.svg"), 'tooltip':'Clear Portraits'})
 	add_body_edit('clear_background', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_background.svg"), 'tooltip':'Clear Background'})
-	add_body_edit('clear_music', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Music'})
+	add_body_edit('clear_music', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Audio'})
 	add_body_edit('clear_style', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
 	add_body_edit('clear_portrait_positions', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_positions.svg"), 'tooltip':'Clear Portrait Positions'})

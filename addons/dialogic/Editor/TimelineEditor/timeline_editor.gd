@@ -160,6 +160,20 @@ func new_timeline(path:String) -> void:
 	editors_manager.edit_resource(new_timeline)
 
 
+func update_audio_channel_cache(list:PackedStringArray) -> void:
+	var timeline_directory := DialogicResourceUtil.get_timeline_directory()
+	var channel_directory := DialogicResourceUtil.get_audio_channel_cache()
+	if current_resource != null:
+		for i in timeline_directory:
+			if timeline_directory[i] == current_resource.resource_path:
+				channel_directory[i] = list
+
+	# also always store the current timelines channels for easy access
+	channel_directory[""] = list
+
+	DialogicResourceUtil.set_audio_channel_cache(channel_directory)
+
+
 func _ready() -> void:
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 

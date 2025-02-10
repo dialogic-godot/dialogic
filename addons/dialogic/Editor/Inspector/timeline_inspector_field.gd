@@ -22,7 +22,7 @@ func _init() -> void:
 	field.fit_text_length = false
 	field.valid_file_drop_extension = ".dtl"
 	field.value_changed.connect(_on_field_value_changed)
-	field.get_suggestions_func = get_timeline_suggestions
+	field.suggestions_func = get_timeline_suggestions
 
 	button = Button.new()
 	hbox.add_child(button)

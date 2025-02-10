@@ -127,9 +127,17 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_g74jb")
 metadata/_edit_use_anchors_ = true
 
+[node name="ErrorTooltip" type="Label" parent="PanelContainer/Focus"]
+unique_name_in_owner = true
+visible = false
+top_level = true
+layout_mode = 0
+offset_left = -2.0
+offset_top = -44.5
+offset_right = 11.0
+offset_bottom = -9.5
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_entered" from="PanelContainer/MarginContainer/HBoxContainer/Search" to="." method="_on_search_focus_entered"]
 [connection signal="focus_exited" from="PanelContainer/MarginContainer/HBoxContainer/Search" to="." method="_on_search_focus_exited"]
 [connection signal="gui_input" from="PanelContainer/MarginContainer/HBoxContainer/Search" to="." method="_on_search_gui_input"]
-[connection signal="gui_input" from="PanelContainer/MarginContainer/HBoxContainer/Search/Suggestions" to="." method="_on_suggestions_gui_input"]
 [connection signal="toggled" from="PanelContainer/MarginContainer/HBoxContainer/SelectButton" to="." method="_on_SelectButton_toggled"]
