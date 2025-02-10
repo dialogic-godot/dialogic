@@ -44,8 +44,8 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_music and dialogic.has_subsystem('Audio'):
-		dialogic.Audio.stop_all_audio(final_time)
-		dialogic.Audio.stop_all_sounds()
+		dialogic.Audio.stop_all_channels(final_time)
+		dialogic.Audio.stop_all_one_shot_sounds()
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):

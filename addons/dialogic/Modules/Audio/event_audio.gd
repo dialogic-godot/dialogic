@@ -208,12 +208,16 @@ func _music_from_text(string:String) -> void:
 	if data.has('path'):
 		file_path = data['path']
 	if data.has('fade'):
+		set_fade_length = true
 		fade_length = data['fade'].to_float()
 	if data.has('volume'):
+		set_volume = true
 		volume = data['volume'].to_float()
 	if data.has('bus'):
+		set_audio_bus = true
 		audio_bus = data['bus']
 	if data.has('loop'):
+		set_loop = true
 		loop = str_to_var(data['loop'])
 
 
@@ -237,10 +241,13 @@ func _sound_from_text(string:String) -> void:
 	if data.has('path'):
 		file_path = data['path']
 	if data.has('volume'):
+		set_volume = true
 		volume = data['volume'].to_float()
 	if data.has('bus'):
+		set_audio_bus = true
 		audio_bus = data['bus']
 	if data.has('loop'):
+		set_loop = true
 		loop = str_to_var(data['loop'])
 
 #endregion
