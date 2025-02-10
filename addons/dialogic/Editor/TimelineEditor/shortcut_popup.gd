@@ -15,6 +15,8 @@ var shortcuts := [
 	{},
 	{"shortcut":"Alt/Opt+Up", 		"text":"Move selected events/lines up"},
 	{"shortcut":"Alt/Opt+Down", 	"text":"Move selected events/lines down"},
+	{},
+	{"shortcut":"Ctrl+F", 			"text":"Search"},
 
 	{},
 	{"shortcut":"Ctrl+C", 			"text":"Copy"},

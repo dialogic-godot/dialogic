@@ -134,7 +134,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
-tooltip_text = "Shortcut Cheat Sheet"
+tooltip_text = "Shortcuts"
 icon = SubResource("ImageTexture_kqoe6")
 
 [node name="VisualEditor" parent="VBox" instance=ExtResource("2_qs7vc")]
