@@ -80,11 +80,11 @@ func _gui_input(event):
 		"Ctrl+K":
 			toggle_comment()
 		"Alt+Up":
-			move_line(-1)
+			move_lines_up()
 		"Alt+Down":
-			move_line(1)
-		"Ctrl+Shift+D":
-			duplicate_line()
+			move_lines_down()
+		"Ctrl+Shift+D", "Ctrl+D":
+			duplicate_lines()
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -125,59 +125,6 @@ func toggle_comment() -> void:
 		selection.position.y -= 1
 		selection.size.y -= 1
 	select(selection.position.x, selection.position.y, selection.size.x, selection.size.y)
-	text_changed.emit()
-
-
-# Move the selected lines up or down
-func move_line(offset: int) -> void:
-	offset = clamp(offset, -1, 1)
-
-	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
-	var reselect: bool = false
-	var from: int = cursor.y
-	var to: int = cursor.y
-	if has_selection():
-		reselect = true
-		from = get_selection_from_line()
-		to = get_selection_to_line()
-
-	var lines := text.split("\n")
-
-	if from + offset < 0 or to + offset >= lines.size(): return
-
-	var target_from_index: int = from - 1 if offset == -1 else to + 1
-	var target_to_index: int = to if offset == -1 else from
-	var line_to_move: String = lines[target_from_index]
-	lines.remove_at(target_from_index)
-	lines.insert(target_to_index, line_to_move)
-
-	text = "\n".join(lines)
-
-	cursor.y += offset
-	from += offset
-	to += offset
-	if reselect:
-		select(from, 0, to, get_line_width(to))
-	set_caret_line(cursor.y)
-	set_caret_column(cursor.x)
-	text_changed.emit()
-
-
-func duplicate_line() -> void:
-	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
-	var from: int = cursor.y
-	var to: int = cursor.y+1
-	if has_selection():
-		from = get_selection_from_line()
-		to = get_selection_to_line()+1
-
-	var lines := text.split("\n")
-	var lines_to_dupl: PackedStringArray = lines.slice(from, to)
-
-	text = "\n".join(lines.slice(0, from)+lines_to_dupl+lines.slice(from))
-
-	set_caret_line(cursor.y+to-from)
-	set_caret_column(cursor.x)
 	text_changed.emit()
 
 
