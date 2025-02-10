@@ -309,7 +309,6 @@ func godot_file_dialog(
 
 	editor_file_dialog.file_mode = mode
 	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.6)
 	editor_file_dialog.add_filter(filter)
 	editor_file_dialog.title = window_title
 	editor_file_dialog.current_file = current_file_name
@@ -319,6 +318,7 @@ func godot_file_dialog(
 		editor_file_dialog.get_meta("info_message_label").text = extra_message
 	else:
 		editor_file_dialog.get_meta("info_message_label").hide()
+	editor_file_dialog.popup_centered_ratio(0.6)
 
 
 	return editor_file_dialog
