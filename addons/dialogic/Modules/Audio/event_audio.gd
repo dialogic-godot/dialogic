@@ -1,18 +1,19 @@
 @tool
-## Event that can change the currently playing background music.
-## This event won't play new music if it's already playing.
+## Event that can play audio on a channel. The channel can be prededinfed
+## (with default settings defined in the settings) or created on the spot.
+## If no channel is given will play as a One-Shot SFX.
 class_name DialogicAudioEvent
 extends DialogicEvent
 
 ### Settings
 
-## The file to play. If empty, the previous music will be faded out.
+## The file to play. If empty, the previous audio will be faded out.
 var file_path := "":
 	set(value):
 		if file_path != value:
 			file_path = value
 			ui_update_needed.emit()
-## The channel name to use.
+## The channel name to use. If none given plays as a One-Shot SFX.
 var channel_name := "":
 	set(value):
 		if channel_name != channel_name_regex.sub(value, '', true):
@@ -25,11 +26,11 @@ var channel_name := "":
 				loop = defaults.loop
 				ui_update_needed.emit()
 
-## The length of the fade. If 0 (by default) it's an instant change.
+## The length of the fade. If 0 it's an instant change.
 var fade_length: float = 0.0
-## The volume the music will be played at.
+## The volume in decibel.
 var volume: float = 0.0
-## The audio bus the music will be played at.
+## The audio bus the audio will be played on.
 var audio_bus := ""
 ## If true, the audio will loop, otherwise only play once.
 var loop := true

@@ -24,15 +24,13 @@ signal audio_started(info: Dictionary)
 var audio_node := Node.new()
 ## Sound node for holding sound players
 var one_shot_audio_node := Node.new()
-## Reference to the last used music player.
+## Dictionary with info of all current audio channels
 var current_audio_channels: Dictionary = {}
 
 #region STATE
 ####################################################################################################
 
 ## Clears the state on this subsystem and stops all audio.
-##
-## If you want to stop sounds only, use [method stop_all_sounds].
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	var info: Dictionary = dialogic.current_state_info.get("audio", {})
 	stop_all_channels()
@@ -53,20 +51,22 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 		if info[channel_name].path.is_empty():
 			update_audio(channel_name)
 		else:
-			update_audio(channel_name, info[channel_name].path, {
-				"volume": info[channel_name].volume,
-				"audio_bus":info[channel_name].audio_bus, "fade_length":0, "loop":info[channel_name].loop})
+			update_audio(channel_name, info[channel_name].path, info[channel_name].settings_overrides)
 
 
 ## Pauses playing audio.
 func pause() -> void:
-	for child in get_children():
+	for child in audio_node.get_children():
+		child.stream_paused = true
+	for child in one_shot_audio_node.get_children():
 		child.stream_paused = true
 
 
 ## Resumes playing audio.
 func resume() -> void:
-	for child in get_children():
+	for child in audio_node.get_children():
+		child.stream_paused = false
+	for child in one_shot_audio_node.get_children():
 		child.stream_paused = false
 
 
@@ -90,8 +90,8 @@ func _ready() -> void:
 
 
 ## Plays the given file (or nothing) on the given channel.
-## No channel given defaults to the the "One-Shot SFX" channel,
-##   which does not save audio but can habe multiple audios playing simultaneously.
+## No channel given defaults to the "One-Shot SFX" channel,
+##   which does not save audio but can have multiple audios playing simultaneously.
 func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> void:
 	#volume := 0.0, audio_bus := "", fade_time := 0.0, loop := true, sync_channel := "") -> void:
 	if not is_channel_playing(channel_name) and path.is_empty():
@@ -127,7 +127,7 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		dialogic.current_state_info['audio'].erase(channel_name)
 		return
 
-	dialogic.current_state_info['audio'][channel_name] = {'path':path, 'channel':channel_name}.merged(settings_overrides)
+	dialogic.current_state_info['audio'][channel_name] = {'path':path, 'settings_overrides':settings_overrides}
 	audio_started.emit(dialogic.current_state_info['audio'][channel_name])
 
 	var new_player := AudioStreamPlayer.new()
@@ -237,23 +237,34 @@ func _convert_state_info() -> void:
 		return
 
 	var new_info := {}
-	if info.has('path'):
+	if info.has("path"):
 		# Pre Alpha 16 Save Data Conversion
-		new_info['music'] = info
+		new_info['music'] = {
+			"path":info.path,
+			"settings_overrides": {
+				"volume":info.volume,
+				"audio_bus":info.audio_bus,
+				"loop":info.loop}
+				}
+
 	else:
 		# Pre Alpha 17 Save Data Conversion
 		for channel_id in info.keys():
+			if info[channel_id].is_empty():
+				continue
+
 			var channel_name = "music"
 			if channel_id > 0:
 				channel_name += str(channel_id + 1)
-			if not info[channel_id].is_empty():
-				new_info[channel_name] = {
-					'path': info[channel_id].path,
+			new_info[channel_name] = {
+				"path": info[channel_id].path,
+				"settings_overrides":{
 					'volume': info[channel_id].volume,
 					'audio_bus': info[channel_id].audio_bus,
 					'loop': info[channel_id].loop,
-					'channel': channel_name,
+					}
 				}
+
 	dialogic.current_state_info['audio'] = new_info
 	dialogic.current_state_info.erase('music')
 

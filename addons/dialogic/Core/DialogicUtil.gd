@@ -748,9 +748,8 @@ static func get_audio_bus_suggestions(filter:= "") -> Dictionary:
 	return bus_name_list
 
 
-static func get_audio_channel_suggestions(search_text:String) -> Dictionary:#, is_sync := false, event: DialogicAudioEvent = null) -> Dictionary:
-	#if is_sync and event and event.channel_name.is_empty():
-		#return {}
+static func get_audio_channel_suggestions(search_text:String) -> Dictionary:
+
 
 	var suggestions := {}
 	var channel_defaults := DialogicUtil.get_audio_channel_defaults()
@@ -765,22 +764,8 @@ static func get_audio_channel_suggestions(search_text:String) -> Dictionary:#, i
 	for i in cached_names:
 		if i.is_empty():
 			continue
-			##if is_sync:
-				##suggestions['(No Sync)'] = {
-					##'value': i,
-					##'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
-				##}
-			##else:
-				##suggestions['(One-Shot SFX)'] = {
-					##'value': i,
-					##'editor_icon': ["GuiRadioUnchecked", "EditorIcons"],
-					##'tooltip': "Used for one shot sounds effects. Plays each sound in its own AudioStreamPlayer."
-				##}
-#
-		#elif is_sync and event and event.channel_name == i:
-			#continue
-		suggestions[i] = {'value': i}
 
+		suggestions[i] = {'value': i}
 
 		if i in channel_defaults.keys():
 			suggestions[i]["editor_icon"] = ["ProjectList", "EditorIcons"]
@@ -794,8 +779,7 @@ static func get_audio_channel_suggestions(search_text:String) -> Dictionary:#, i
 
 
 static func get_audio_channel_defaults() -> Dictionary:
-	return {
-	#return ProjectSettings.get_setting('dialogic/audio/channel_defaults', {
+	return ProjectSettings.get_setting('dialogic/audio/channel_defaults', {
 		"": {
 			'volume': 0.0,
 			'audio_bus': '',
@@ -807,7 +791,7 @@ static func get_audio_channel_defaults() -> Dictionary:
 			'audio_bus': '',
 			'fade_length': 0.0,
 			'loop': true,
-		}}#)
+		}})
 
 
 static func validate_audio_channel_name(text: String) -> Dictionary:
