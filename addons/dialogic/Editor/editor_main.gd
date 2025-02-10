@@ -287,18 +287,26 @@ func swap_to_embedded_editor() -> void:
 
 
 func godot_file_dialog(
-	callable: Callable,
-	filter: String,
-	mode := EditorFileDialog.FILE_MODE_OPEN_FILE,
-	window_title := "Save",
-	current_file_name := "New_File",
-	saving_something := false,
-	extra_message: String = ""
-) -> EditorFileDialog:
+		callable: Callable, filter: String, mode := EditorFileDialog.FILE_MODE_OPEN_FILE,
+		window_title := "Save",
+		current_file_name := "New_File",
+		saving_something := false,
+		extra_message: String = ""
+		) -> EditorFileDialog:
+
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection.callable)
 	for connection in editor_file_dialog.dir_selected.get_connections():
 		editor_file_dialog.dir_selected.disconnect(connection.callable)
+
+	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.FILE_MODE_SAVE_FILE:
+		editor_file_dialog.file_selected.connect(callable)
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_DIR:
+		editor_file_dialog.dir_selected.connect(callable)
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_ANY:
+		editor_file_dialog.dir_selected.connect(callable)
+		editor_file_dialog.file_selected.connect(callable)
+
 	editor_file_dialog.file_mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.6)
@@ -312,11 +320,5 @@ func godot_file_dialog(
 	else:
 		editor_file_dialog.get_meta("info_message_label").hide()
 
-	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.FILE_MODE_SAVE_FILE:
-		editor_file_dialog.file_selected.connect(callable)
-	elif mode == EditorFileDialog.FILE_MODE_OPEN_DIR:
-		editor_file_dialog.dir_selected.connect(callable)
-	elif mode == EditorFileDialog.FILE_MODE_OPEN_ANY:
-		editor_file_dialog.dir_selected.connect(callable)
-		editor_file_dialog.file_selected.connect(callable)
+
 	return editor_file_dialog
