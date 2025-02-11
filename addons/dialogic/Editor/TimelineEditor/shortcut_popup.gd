@@ -1,0 +1,105 @@
+@tool
+extends PanelContainer
+
+
+var shortcuts := [
+
+	{"shortcut":"Ctrl+T", 			"text":"Add Text event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Shift+T", 	"text":"Add Text event with current character", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Alt/Opt+T", 	"text":"Add Text event with previous character", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+E", 			"text":"Add Character join event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Shift+E", 	"text":"Add Character update event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Alt/Opt+E", 	"text":"Add Character leave event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+J", 			"text":"Add Jump event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+L", 			"text":"Add Label event", "editor":"VisualEditor"},
+	{},
+	{"shortcut":"Alt/Opt+Up", 		"text":"Move selected events/lines up"},
+	{"shortcut":"Alt/Opt+Down", 	"text":"Move selected events/lines down"},
+	{},
+	{"shortcut":"Ctrl+F", 			"text":"Search"},
+
+	{},
+	{"shortcut":"Ctrl+C", 			"text":"Copy"},
+	{"shortcut":"Ctrl+V", 			"text":"Paste"},
+	{"shortcut":"Ctrl+D", 			"text":"Duplicate selected events/lines"},
+	{"shortcut":"Ctrl+X", 			"text":"Cut selected events/lines"},
+	{"shortcut":"Ctrl+#", 			"text":"Toggle Comment" , "editor":"TextEditor"},
+	{"shortcut":"Delete", 			"text":"Delete events", "editor":"VisualEditor"},
+	{},
+	{"shortcut":"Ctrl+A", 			"text":"Select All"},
+	{"shortcut":"Ctrl+Shift+A", 	"text":"Select Nothing", "editor":"VisualEditor"},
+	{"shortcut":"Up", 				"text":"Select previous event", "editor":"VisualEditor"},
+	{"shortcut":"Down", 			"text":"Select next event", "editor":"VisualEditor"},
+	{},
+	{"shortcut":"Ctrl+Z", 			"text":"Undo"},
+	{"shortcut":"Ctrl+Shift+Z", 	"text":"Redo"},
+	{},
+]
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	%CloseShortcutPanel.icon = get_theme_icon("Close", "EditorIcons")
+	get_theme_stylebox("panel").bg_color = get_theme_color("dark_color_3", "Editor")
+
+func reload_shortcuts() -> void:
+	for i in %ShortcutList.get_children():
+		i.queue_free()
+
+
+	var is_text_editor: bool = %TextEditor.visible
+	for i in shortcuts:
+		if i.is_empty():
+			%ShortcutList.add_child(HSeparator.new())
+			%ShortcutList.add_child(HSeparator.new())
+			continue
+		if "editor" in i and not get_node("%"+i.editor).visible:
+			continue
+
+		var hbox := HBoxContainer.new()
+		hbox.add_theme_constant_override("separation", 0)
+		for key_text in i.shortcut.split("+"):
+			if hbox.get_child_count():
+				var plus_l := Label.new()
+				plus_l.text = "+"
+				hbox.add_child(plus_l)
+
+
+
+			var key := Button.new()
+			if key_text == "Up":
+				key.icon = get_theme_icon("ArrowUp", "EditorIcons")
+			elif key_text == "Down":
+				key.icon = get_theme_icon("ArrowDown", "EditorIcons")
+			else:
+				key.text = key_text
+			key.disabled = true
+			key.theme_type_variation = "ShortcutKeyLabel"
+			hbox.add_child(key)
+
+		%ShortcutList.add_child(hbox)
+
+		var text := Label.new()
+		text.text = i.text.replace("events/lines", "lines" if is_text_editor else "events")
+		text.theme_type_variation = "DialogicHintText2"
+		%ShortcutList.add_child(text)
+
+
+func open():
+	if visible:
+		close()
+		return
+
+	reload_shortcuts()
+
+	show()
+	size = get_parent().size - Vector2(200, 200)*DialogicUtil.get_editor_scale()
+	size.x = %ShortcutList.get_minimum_size().x + 100
+	global_position = get_parent().global_position+get_parent().size/2-size/2
+
+
+func _on_close_shortcut_panel_pressed() -> void:
+	close()
+
+func close() -> void:
+	hide()

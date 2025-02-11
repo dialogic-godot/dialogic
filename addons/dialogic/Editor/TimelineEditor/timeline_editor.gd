@@ -186,6 +186,9 @@ func _ready() -> void:
 	%SwitchEditorMode.pressed.connect(toggle_editor_mode)
 	%SwitchEditorMode.custom_minimum_size.x = 200 * DialogicUtil.get_editor_scale()
 
+	%Shortcuts.icon = get_theme_icon("InputEventShortcut", "EditorIcons")
+	%Shortcuts.pressed.connect(%ShortcutsPanel.open)
+
 	%SearchClose.icon = get_theme_icon("Close", "EditorIcons")
 	%SearchUp.icon = get_theme_icon("MoveUp", "EditorIcons")
 	%SearchDown.icon = get_theme_icon("MoveDown", "EditorIcons")

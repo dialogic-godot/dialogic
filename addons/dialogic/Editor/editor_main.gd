@@ -189,41 +189,26 @@ func update_theme_additions() -> void:
 	new_theme.set_color("font_hover_color", "DialogicLink", get_theme_color("warning_color", "Editor"))
 
 	new_theme.set_type_variation("DialogicMegaSeparator", "HSeparator")
-	(
-		new_theme
-		. set_stylebox(
-			"separator",
-			"DialogicMegaSeparator",
-			(
-				DCSS
-				. inline(
-					{
+	new_theme.set_stylebox("separator", "DialogicMegaSeparator",
+				DCSS.inline({
 						"border-radius": 10,
 						"border": 0,
 						"background": get_theme_color("accent_color", "Editor"),
 						"padding": [5, 5],
-					}
+					})
 				)
-			)
-		)
-	)
 	new_theme.set_constant("separation", "DialogicMegaSeparator", 50)
 
 	new_theme.set_type_variation("DialogicTextEventTextEdit", "CodeEdit")
 	var editor_settings := plugin_reference.get_editor_interface().get_editor_settings()
-	var text_panel := (
-		DCSS
-		. inline(
-			{
+	var text_panel := DCSS.inline({
 				"border-radius": 8,
 				"background":
 				editor_settings.get_setting("text_editor/theme/highlighting/background_color").lerp(
 					editor_settings.get_setting("text_editor/theme/highlighting/text_color"), 0.05
 				),
 				"padding": [8, 8],
-			}
-		)
-	)
+			})
 	text_panel.content_margin_bottom = 5
 	text_panel.content_margin_left = 13
 	new_theme.set_stylebox("normal", "DialogicTextEventTextEdit", text_panel)
@@ -309,7 +294,6 @@ func godot_file_dialog(
 
 	editor_file_dialog.file_mode = mode
 	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.6)
 	editor_file_dialog.add_filter(filter)
 	editor_file_dialog.title = window_title
 	editor_file_dialog.current_file = current_file_name
@@ -319,6 +303,7 @@ func godot_file_dialog(
 		editor_file_dialog.get_meta("info_message_label").text = extra_message
 	else:
 		editor_file_dialog.get_meta("info_message_label").hide()
+	editor_file_dialog.popup_centered_ratio(0.6)
 
 
 	return editor_file_dialog
