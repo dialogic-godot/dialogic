@@ -5,6 +5,7 @@ extends DialogicSubsystem
 #region SIGNALS
 
 signal about_to_show_text(info:Dictionary)
+signal text_started(info:Dictionary)
 signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
