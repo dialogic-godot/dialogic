@@ -58,7 +58,7 @@ func _apply_export_overrides() -> void:
 #region HANDLE PERSISTENT DATA
 ################################################################################
 
-func _enter_tree() -> void:
+func _init() -> void:
 	_load_persistent_info(Engine.get_meta("dialogic_persistent_style_info", {}))
 
 
