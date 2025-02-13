@@ -138,6 +138,11 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		new_player.name = "OneShotSFX"
 		one_shot_audio_node.add_child(new_player)
 
+	var file := load(path)
+	if file == null:
+		printerr("[Dialogic] Audio file \"%s\" failed to load." % path)
+		return
+
 	new_player.stream = load(path)
 
 	## Apply audio settings
