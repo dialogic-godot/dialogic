@@ -9,7 +9,9 @@ class_name DialogicUtil
 ## This method should be used instead of EditorInterface.get_editor_scale(), because if you use that
 ## it will run perfectly fine from the editor, but crash when the game is exported.
 static func get_editor_scale() -> float:
-	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
+	if Engine.is_editor_hint():
+		return get_dialogic_plugin().get_editor_interface().get_editor_scale()
+	return 1.0
 
 
 ## Although this does in fact always return a EditorPlugin node,
