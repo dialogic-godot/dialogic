@@ -4,18 +4,43 @@ extends DialogicSubsystem
 
 #region SIGNALS
 
+## Emitted when a text event is reached or a new text section is about to be shown.
+## Gives a dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `text`      | [type String] | The text that is being displayed. [br]
+## `character` | [type DialogicCharacter]  | The character that says this text. [br]
+## `portrait`  | [type String] | The name of the portrait the character will use. [br]
+## `append`    | [type bool]   | Whether the text will be appended to the previous text. [br]
 signal about_to_show_text(info:Dictionary)
+## Emitted when a text event (or a new text section) starts displaying.
+## This will be AFTER the textox animation, while [signal about_to_show_text] is before.
+## Gives a dictionary with the same values as [signal about_to_show_text]
+signal text_started(info:Dictionary)
+## When the text has finished revealing.
+## Gives a dictionary with the keys text and character.
 signal text_finished(info:Dictionary)
+## Emitted when the speaker changes.
 signal speaker_updated(character:DialogicCharacter)
+## Emitted when the textbox is shown or hidden.
 signal textbox_visibility_changed(visible:bool)
 
-signal animation_textbox_new_text
+## Emitted when the textbox appears.
+## Use this together with the Animations subsystem to implement animations.
+## If you start an animation and want dialogic to wait for it to finish before showing text,
+## call Dialogic.Animations.start_animating() and then Dialogic.animation_finished() once it's done.
 signal animation_textbox_show
+## Emitted when the textbox is hiding. Use like [signal animation_textbox_show].
 signal animation_textbox_hide
+## Emitted when a new text starts. Use like [signal animation_textbox_show].
+signal animation_textbox_new_text
 
-# forwards of the dialog_text signals of all present dialog_text nodes
-signal meta_hover_ended(meta:Variant)
+## Emitted when a meta text on any DialogText node is hovered.
 signal meta_hover_started(meta:Variant)
+## Emitted when a meta text on any DialogText node is not hovered anymore.
+signal meta_hover_ended(meta:Variant)
+## Emitted when a meta text on any DialogText node is clicked.
 signal meta_clicked(meta:Variant)
 
 #endregion
