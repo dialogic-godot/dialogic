@@ -79,15 +79,21 @@ func _gui_input(event):
 	match event.as_text():
 		"Ctrl+K":
 			toggle_comment()
+
+		# TODO clean this up when dropping 4.2 support
 		"Alt+Up":
-			move_lines_up()
+			if has_method("move_lines_up"):
+				call("move_lines_up")
 		"Alt+Down":
-			move_lines_down()
+			if has_method("move_lines_down"):
+				call("move_lines_down")
+
 		"Ctrl+Shift+D", "Ctrl+D":
 			duplicate_lines()
 		_:
 			return
 	get_viewport().set_input_as_handled()
+
 
 # Toggle the selected lines as comments
 func toggle_comment() -> void:
@@ -128,14 +134,14 @@ func toggle_comment() -> void:
 	text_changed.emit()
 
 
-# Allows dragging files into the editor
+## Allows dragging files into the editor
 func _can_drop_data(at_position:Vector2, data:Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
 		return true
 	return false
 
 
-# Allows dragging files into the editor
+## Allows dragging files into the editor
 func _drop_data(at_position:Vector2, data:Variant) -> void:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
 		set_caret_column(get_line_column_at_pos(at_position).x)
@@ -232,19 +238,19 @@ func search_navigate(navigate_up := false) -> void:
 ## 					AUTO COMPLETION
 ################################################################################
 
-# Called if something was typed
+## Called if something was typed
 func _request_code_completion(force:bool):
 	code_completion_helper.request_code_completion(force, self)
 
 
-# Filters the list of all possible options, depending on what was typed
-# Purpose of the different Kinds is explained in [_request_code_completion]
+## Filters the list of all possible options, depending on what was typed
+## Purpose of the different Kinds is explained in [_request_code_completion]
 func _filter_code_completion_candidates(candidates:Array) -> Array:
 	return code_completion_helper.filter_code_completion_candidates(candidates, self)
 
 
-# Called when code completion was activated
-# Inserts the selected item
+## Called when code completion was activated
+## Inserts the selected item
 func _confirm_code_completion(replace:bool) -> void:
 	code_completion_helper.confirm_code_completion(replace, self)
 
@@ -253,11 +259,11 @@ func _confirm_code_completion(replace:bool) -> void:
 ##					SYMBOL CLICKING
 ################################################################################
 
-# Performs an action (like opening a link) when a valid symbol was clicked
+## Performs an action (like opening a link) when a valid symbol was clicked
 func _on_symbol_lookup(symbol, line, column):
 	code_completion_helper.symbol_lookup(symbol, line, column)
 
 
-# Called to test if a symbol can be clicked
+## Called to test if a symbol can be clicked
 func _on_symbol_validate(symbol:String) -> void:
 	code_completion_helper.symbol_validate(symbol, self)
