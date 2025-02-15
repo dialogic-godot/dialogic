@@ -70,8 +70,8 @@ func post_install() -> void:
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		node.hide()
-		if node.is_connected('button_up', _on_choice_selected):
-			node.disconnect('button_up', _on_choice_selected)
+		if node.pressed.is_connected(_on_choice_selected):
+			node.pressed.disconnect(_on_choice_selected)
 
 
 ## Collects information on all the choices of the current question.
@@ -155,7 +155,7 @@ func show_current_question(instant:=true) -> void:
 	var question_info := get_current_question_info()
 
 	for choice in question_info.choices:
-		var node: DialogicNode_ChoiceButton = get_choice_button_node(choice.button_index)
+		var node: DialogicNode_ChoiceButton = get_choice_button(choice.button_index)
 
 		if not node:
 			missing_button = true
@@ -191,12 +191,25 @@ func show_current_question(instant:=true) -> void:
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
 
-func select_focused_choice(button_index:int) -> void:
-	var node: DialogicNode_ChoiceButton = get_choice_button_node(button_index)
+
+func focus_choice(button_index:int) -> void:
+	var node: DialogicNode_ChoiceButton = get_choice_button(button_index)
 	if node:
 		node.grab_focus()
 
-func get_choice_button_node(button_index:int) -> DialogicNode_ChoiceButton:
+
+func select_choice(button_index:int) -> void:
+	var node: DialogicNode_ChoiceButton = get_choice_button(button_index)
+	if node:
+		node.pressed.emit()
+
+
+func select_focused_choice() -> void:
+	if get_viewport().gui_get_focus_owner() is DialogicNode_ChoiceButton:
+		(get_viewport().gui_get_focus_owner() as DialogicNode_ChoiceButton).pressed.emit()
+
+
+func get_choice_button(button_index:int) -> DialogicNode_ChoiceButton:
 	var idx := 1
 	for node: DialogicNode_ChoiceButton in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		if !node.get_parent().is_visible_in_tree():
@@ -231,6 +244,7 @@ func _on_choice_selected(choice_info := {}) -> void:
 
 
 
+## Returns the indexes of the choice events related to the current question.
 func get_current_choice_indexes() -> Array:
 	var choices := []
 	var evt_idx := dialogic.current_event_idx
@@ -254,9 +268,10 @@ func get_current_choice_indexes() -> Array:
 	return choices
 
 
+## Forward the dialogic action to the focused button
 func _on_dialogic_action() -> void:
-	if get_viewport().gui_get_focus_owner() is DialogicNode_ChoiceButton and use_input_action and not dialogic.Inputs.input_was_mouse_input:
-		get_viewport().gui_get_focus_owner().pressed.emit()
+	if use_input_action and not dialogic.Inputs.input_was_mouse_input:
+		select_focused_choice()
 
 
 #endregion
