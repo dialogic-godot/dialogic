@@ -32,10 +32,6 @@ script = ExtResource("3_dbfvv")
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ResaveTool" type="Button" parent="ToolButtons"]
-layout_mode = 2
-text = "Resave all timelines"
-
 [node name="ToolProgress" type="ProgressBar" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -232,7 +228,6 @@ text = "Process timers in physics_process"
 unique_name_in_owner = true
 layout_mode = 2
 
-[connection signal="pressed" from="ToolButtons/ResaveTool" to="." method="_on_resave_tool_pressed"]
 [connection signal="item_selected" from="HBoxContainer3/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
 [connection signal="pressed" from="HBoxContainer6/HBoxContainer4/HBoxContainer5/Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]

@@ -4,7 +4,7 @@ extends HBoxContainer
 # Dialogic Editor toolbar. Works together with editors_mangager.
 
 ################################################################################
-## 					EDITOR BUTTONS/LABELS 
+## 					EDITOR BUTTONS/LABELS
 ################################################################################
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
@@ -44,6 +44,3 @@ func add_custom_button(label:String, icon:Texture) -> Button:
 func hide_all_custom_buttons() -> void:
 	for button in %CustomButtons.get_children():
 		button.hide()
-
-
-

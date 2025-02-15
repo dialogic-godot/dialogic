@@ -110,7 +110,6 @@ var Choices := preload("res://addons/dialogic/Modules/Choice/subsystem_choices.g
 var Expressions := preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd").new():
 	get: return get_subsystem("Expressions")
 
-
 var Glossary := preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd").new():
 	get: return get_subsystem("Glossary")
 
