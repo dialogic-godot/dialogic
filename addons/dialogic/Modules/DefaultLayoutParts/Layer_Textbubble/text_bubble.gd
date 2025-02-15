@@ -42,7 +42,7 @@ func reset() -> void:
 	tail.points = []
 	bubble_rect = Rect2(0,0,2,2)
 
-	base_position = get_speaker_canvas_position()
+	base_position = get_speaker_canvas_position() + base_direction * safe_zone
 	position = base_position
 
 
