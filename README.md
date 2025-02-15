@@ -26,7 +26,7 @@
 
 ## Version
 
-Dialogic 2 **requires at least Godot 4.2**.
+Dialogic 2 **requires at least Godot 4.2.2**.
 
 [If you are looking for the Godot 3.x version (Dialogic 1.x) you can find it here.](https://github.com/dialogic-godot/dialogic-1)
 
