@@ -194,7 +194,7 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		current_audio_channels[channel_name] = new_player
 
 
-## Returns true if any audio is playing on the given [param channel_name].
+## Returns `true` if any audio is playing on the given [param channel_name].
 func is_channel_playing(channel_name: String) -> bool:
 	return (current_audio_channels.has(channel_name)
 		and is_instance_valid(current_audio_channels[channel_name])
@@ -224,6 +224,14 @@ func interpolate_volume_linearly(value: float, node: Node) -> void:
 func is_channel_playing_file(file_path: String, channel_name: String) -> bool:
 	return (is_channel_playing(channel_name)
 		and current_audio_channels[channel_name].stream.resource_path == file_path)
+
+
+## Returns `true` if any channel is playing.
+func is_any_channel_playing() -> bool:
+	for channel in current_audio_channels:
+		if is_channel_playing(channel):
+			return true
+	return false
 
 
 func _on_audio_finished(player: AudioStreamPlayer, channel_name: String, path: String) -> void:
