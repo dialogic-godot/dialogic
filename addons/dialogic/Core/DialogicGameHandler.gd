@@ -165,12 +165,12 @@ func _ready() -> void:
 ## Method to start a timeline AND ensure that a layout scene is present.
 ## For argument info, checkout [method start_timeline].
 ## -> returns the layout node
-func start(timeline:Variant, label:Variant="") -> Node:
+func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
 	if not has_subsystem('Styles'):
 		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
 		clear(ClearFlags.KEEP_VARIABLES)
-		start_timeline(timeline, label)
+		start_timeline(timeline, label_or_idx)
 		return null
 
 	# Otherwise make sure there is a style active.
@@ -183,9 +183,9 @@ func start(timeline:Variant, label:Variant="") -> Node:
 
 	if not scene.is_node_ready():
 		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
-		scene.ready.connect(start_timeline.bind(timeline, label))
+		scene.ready.connect(start_timeline.bind(timeline, label_or_idx))
 	else:
-		start_timeline(timeline, label)
+		start_timeline(timeline, label_or_idx)
 
 	return scene
 

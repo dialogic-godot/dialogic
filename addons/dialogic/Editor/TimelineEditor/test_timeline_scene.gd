@@ -15,9 +15,10 @@ func _ready() -> void:
 
 	randomize()
 	var current_timeline: String = DialogicUtil.get_editor_setting("current_timeline_path", "")
+	var start_from_index: int = DialogicUtil.get_editor_setting("play_from_index", -1)
 	if not current_timeline:
 		get_tree().quit()
-	DialogicUtil.autoload().start(current_timeline)
+	DialogicUtil.autoload().start(current_timeline, start_from_index)
 	DialogicUtil.autoload().timeline_ended.connect(get_tree().quit)
 	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
 	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
@@ -41,4 +42,3 @@ func _input(event:InputEvent) -> void:
 
 		auto_skip.disable_on_unread_text = false
 		auto_skip.enabled = not is_auto_skip_enabled
-

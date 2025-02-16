@@ -102,14 +102,14 @@ func _input(event: InputEvent) -> void:
 
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
-func play_timeline() -> void:
+func play_timeline(index := -1) -> void:
 	_save()
 
 	var dialogic_plugin := DialogicUtil.get_dialogic_plugin()
 
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
-
+	DialogicUtil.set_editor_setting('play_from_index', index)
 	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
 

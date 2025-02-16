@@ -7,7 +7,7 @@ class_name DialogicTimeline
 
 var events: Array = []
 var events_processed := false
-
+var text_lines_indexed := {}
 
 ## Method used for printing timeline resources identifiably
 func _to_string() -> String:
@@ -58,6 +58,14 @@ func as_text() -> String:
 	return result.strip_edges()
 
 
+
+## Returns the index of the event that corresponds to a specific line
+func get_index_from_text_line(text:String, line) -> int:
+	from_text(text)
+	process()
+	return text_lines_indexed[line]
+
+
 ## Method that loads all the event resources from the strings, if it wasn't done before
 func process() -> void:
 	if typeof(events[0]) == TYPE_STRING:
@@ -74,6 +82,7 @@ func process() -> void:
 
 	var prev_indent := ""
 	var processed_events := []
+	text_lines_indexed = {}
 
 	# this is needed to add an end branch event even to empty conditions/choices
 	var prev_was_opener := false
@@ -83,6 +92,7 @@ func process() -> void:
 	var empty_lines := 0
 	while idx < len(lines)-1:
 		idx += 1
+		text_lines_indexed[idx] = len(processed_events)
 
 		# make sure we are using the string version, in case this was already converted
 		var line := ""
@@ -122,6 +132,7 @@ func process() -> void:
 		# add the following lines until the event says it's full or there is an empty line
 		while !event.is_string_full_event(event_content):
 			idx += 1
+			text_lines_indexed[idx] = len(processed_events)
 			if idx == len(lines):
 				break
 

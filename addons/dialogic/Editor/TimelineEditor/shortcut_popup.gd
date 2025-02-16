@@ -17,6 +17,11 @@ var shortcuts := [
 	{"shortcut":"Alt/Opt+Down", 	"text":"Move selected events/lines down"},
 	{},
 	{"shortcut":"Ctrl+F", 			"text":"Search"},
+	{},
+	{"shortcut":"Ctrl+F5", 			"text":"Play timeline", "platform":"-macOS"},
+	{"shortcut":"Ctrl+B", 			"text":"Play timeline", "platform":"macOS"},
+	{"shortcut":"Ctrl+F6", 			"text":"Play timeline from here", "platform":"-macOS"},
+	{"shortcut":"Ctrl+Shift+B", 	"text":"Play timeline from here", "platform":"macOS"},
 
 	{},
 	{"shortcut":"Ctrl+C", 			"text":"Copy"},
@@ -42,10 +47,10 @@ func _ready() -> void:
 	%CloseShortcutPanel.icon = get_theme_icon("Close", "EditorIcons")
 	get_theme_stylebox("panel").bg_color = get_theme_color("dark_color_3", "Editor")
 
+
 func reload_shortcuts() -> void:
 	for i in %ShortcutList.get_children():
 		i.queue_free()
-
 
 	var is_text_editor: bool = %TextEditor.visible
 	for i in shortcuts:
@@ -53,8 +58,14 @@ func reload_shortcuts() -> void:
 			%ShortcutList.add_child(HSeparator.new())
 			%ShortcutList.add_child(HSeparator.new())
 			continue
+
 		if "editor" in i and not get_node("%"+i.editor).visible:
 			continue
+
+		if "platform" in i:
+			var platform := OS.get_name()
+			if not (platform == i.platform.trim_prefix("-") != i.platform.begins_with("-")):
+				continue
 
 		var hbox := HBoxContainer.new()
 		hbox.add_theme_constant_override("separation", 0)
@@ -64,17 +75,17 @@ func reload_shortcuts() -> void:
 				plus_l.text = "+"
 				hbox.add_child(plus_l)
 
-
-
 			var key := Button.new()
 			if key_text == "Up":
 				key.icon = get_theme_icon("ArrowUp", "EditorIcons")
 			elif key_text == "Down":
 				key.icon = get_theme_icon("ArrowDown", "EditorIcons")
 			else:
+				key_text = key_text.replace("Alt/Opt", "Opt" if OS.get_name() == "macOS" else "Alt")
 				key.text = key_text
 			key.disabled = true
 			key.theme_type_variation = "ShortcutKeyLabel"
+			key.add_theme_font_override("font", get_theme_font("source", "EditorFonts"))
 			hbox.add_child(key)
 
 		%ShortcutList.add_child(hbox)
@@ -89,12 +100,13 @@ func open():
 	if visible:
 		close()
 		return
-
 	reload_shortcuts()
 
 	show()
-	size = get_parent().size - Vector2(200, 200)*DialogicUtil.get_editor_scale()
+	await get_tree().process_frame
+	size = get_parent().size - Vector2(100, 100)*DialogicUtil.get_editor_scale()
 	size.x = %ShortcutList.get_minimum_size().x + 100
+	size.y = min(size.y, %ShortcutList.get_minimum_size().y+100)
 	global_position = get_parent().global_position+get_parent().size/2-size/2
 
 

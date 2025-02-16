@@ -938,25 +938,30 @@ func indent_events() -> void:
 #region SPECIAL BLOCK OPERATIONS
 ################################################################################
 
-func _on_event_popup_menu_index_pressed(index:int) -> void:
+func _on_event_popup_menu_id_pressed(id:int) -> void:
 	var item: Control = %EventPopupMenu.current_event
-	if index == 0:
+	if id == 0:
 		if not item in selected_items:
 			selected_items = [item]
 		duplicate_selected()
-	elif index == 2:
+
+	elif id == 1:
+		play_from_here(%EventPopupMenu.current_event.get_index())
+
+	elif id == 2:
 		if not item.resource.help_page_path.is_empty():
 			OS.shell_open(item.resource.help_page_path)
-	elif index == 3:
+
+	elif id == 3:
 		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
 		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
-	elif index == 5 or index == 6:
-		if index == 5:
+	elif id == 4 or id == 5:
+		if id == 4:
 			offset_blocks_by_index(selected_items, -1)
 		else:
 			offset_blocks_by_index(selected_items, +1)
 
-	elif index == 8:
+	elif id == 6:
 		var events_indexed : Dictionary
 		if item in selected_items:
 			events_indexed =  get_events_indexed(selected_items)
@@ -968,6 +973,12 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 		TimelineUndoRedo.commit_action()
 		indent_events()
 
+
+func play_from_here(index:=-1) -> void:
+	if index == -1:
+		if not selected_items.is_empty():
+			index = selected_items[0].get_index()
+	timeline_editor.play_timeline(index)
 
 func _on_right_sidebar_resized() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
@@ -1077,6 +1088,11 @@ func _input(event:InputEvent) -> void:
 		"Ctrl+L": # Add label event
 			_add_event_button_pressed(DialogicLabelEvent.new(), true)
 			get_viewport().set_input_as_handled()
+
+		"Ctrl+F6" when OS.get_name() != "macOS": # Play from here
+			play_from_here()
+		"Ctrl+Shift+B" when OS.get_name() == "macOS": # Play from here
+			play_from_here()
 
 	## Some shortcuts should be disabled when writing text.
 	var focus_owner: Control = get_viewport().gui_get_focus_owner()
