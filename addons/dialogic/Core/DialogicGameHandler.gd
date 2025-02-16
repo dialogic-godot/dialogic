@@ -70,6 +70,10 @@ var paused := false:
 
 			dialogic_resumed.emit()
 
+## A timeline that will be played when dialog ends.
+## By default this timeline only contains a clear event.
+var dialog_ending_timeline: DialogicTimeline
+
 ## Emitted when [member paused] changes to `true`.
 signal dialogic_paused
 ## Emitted when [member paused] changes to `false`.
@@ -158,6 +162,9 @@ func _ready() -> void:
 
 	clear()
 
+	dialog_ending_timeline = DialogicTimeline.new()
+	dialog_ending_timeline.from_text("[clear]")
+
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
@@ -242,9 +249,22 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 
 
 ## Clears and stops the current timeline.
-func end_timeline() -> void:
+## If [param skip_ending] is `true`, the dialog_ending_timeline is not getting played
+func end_timeline(skip_ending := false) -> void:
+	if not skip_ending and dialog_ending_timeline and current_timeline != dialog_ending_timeline:
+		start(dialog_ending_timeline)
+		return
+
 	await clear(ClearFlags.TIMELINE_INFO_ONLY)
-	_on_timeline_ended()
+
+	if Styles.has_active_layout_node() and Styles.get_layout_node().is_inside_tree():
+		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
+			0:
+				Styles.get_layout_node().get_parent().remove_child(Styles.get_layout_node())
+				Styles.get_layout_node().queue_free()
+			1:
+				Styles.get_layout_node().hide()
+
 	timeline_ended.emit()
 
 
@@ -368,7 +388,7 @@ func load_full_state(state_info:Dictionary) -> void:
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 	else:
-		end_timeline.call_deferred()
+		end_timeline.call_deferred(true)
 #endregion
 
 
@@ -413,16 +433,6 @@ func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsyst
 #region HELPERS
 ################################################################################
 
-## This handles the `Layout End Behaviour` setting that can be changed in the Dialogic settings.
-func _on_timeline_ended() -> void:
-	if self.Styles.has_active_layout_node() and self.Styles.get_layout_node().is_inside_tree():
-		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
-			0:
-				self.Styles.get_layout_node().get_parent().remove_child(self.Styles.get_layout_node())
-				self.Styles.get_layout_node().queue_free()
-			1:
-				@warning_ignore("unsafe_method_access")
-				self.Styles.get_layout_node().hide()
 
 
 func print_debug_moment() -> void:
