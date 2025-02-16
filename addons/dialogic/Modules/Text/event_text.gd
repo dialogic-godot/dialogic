@@ -260,7 +260,7 @@ func _init() -> void:
 	event_category = "Main"
 	event_sorting_index = 0
 	expand_by_default = true
-	help_page_path = "https://docs.dialogic.pro/writing-text-events.html"
+	help_page_path = "https://docs.dialogic.pro/writing-texts.html"
 
 
 
