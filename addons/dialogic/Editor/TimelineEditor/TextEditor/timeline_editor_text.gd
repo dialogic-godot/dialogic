@@ -14,6 +14,9 @@ func _ready() -> void:
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)
 
+	get_menu().add_icon_item(get_theme_icon("PlayStart", "EditorIcons"), "Play from here", 42)
+	get_menu().id_pressed.connect(_on_context_menu_id_pressed)
+
 
 func _on_text_editor_text_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
@@ -73,6 +76,15 @@ func text_timeline_to_array(text:String) -> Array:
 ## 					HELPFUL EDITOR FUNCTIONALITY
 ################################################################################
 
+func _on_context_menu_id_pressed(id:int) -> void:
+	if id == 42:
+		play_from_here()
+
+
+func play_from_here() -> void:
+	timeline_editor.play_timeline(timeline_editor.current_resource.get_index_from_text_line(text, get_caret_line()))
+
+
 func _gui_input(event):
 	if not event is InputEventKey: return
 	if not event.is_pressed(): return
@@ -90,6 +102,11 @@ func _gui_input(event):
 
 		"Ctrl+Shift+D", "Ctrl+D":
 			duplicate_lines()
+
+		"Ctrl+F6" when OS.get_name() != "macOS": # Play from here
+			play_from_here()
+		"Ctrl+Shift+B" when OS.get_name() == "macOS": # Play from here
+			play_from_here()
 		_:
 			return
 	get_viewport().set_input_as_handled()
