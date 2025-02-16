@@ -26,9 +26,9 @@ func _execute() -> void:
 		var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 		final_time = min(time, time_per_event)
 
-	if clear_textbox and dialogic.has_subsystem("Text"):
+	if clear_textbox and dialogic.has_subsystem("Text") and dialogic.Text.is_textbox_visible():
 		dialogic.Text.update_dialog_text('')
-		dialogic.Text.hide_textbox()
+		dialogic.Text.hide_textbox(final_time == 0)
 		dialogic.current_state = dialogic.States.IDLE
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
@@ -44,9 +44,10 @@ func _execute() -> void:
 		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_music and dialogic.has_subsystem('Audio'):
-		dialogic.Audio.stop_all_channels(final_time)
 		dialogic.Audio.stop_all_one_shot_sounds()
-		if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
+		if dialogic.Audio.is_any_channel_playing():
+			dialogic.Audio.stop_all_channels(final_time)
+			if step_by_step: await dialogic.get_tree().create_timer(final_time).timeout
 
 	if clear_style and dialogic.has_subsystem('Styles'):
 		dialogic.Styles.change_style()
