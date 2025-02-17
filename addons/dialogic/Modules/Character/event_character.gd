@@ -82,7 +82,7 @@ var character_identifier: String:
 		if character_identifier == '--All--':
 			return '--All--'
 		if character:
-			var identifier := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+			var identifier := character.get_identifier()
 			if not identifier.is_empty():
 				return identifier
 		return character_identifier
@@ -225,7 +225,7 @@ func to_text() -> String:
 	if action == Actions.LEAVE and character_identifier == '--All--':
 		result_string += "--All--"
 	elif character:
-		var name := DialogicResourceUtil.get_unique_identifier(character.resource_path)
+		var name := character.get_character_name()
 
 		if name.count(" ") > 0:
 			name = '"' + name + '"'

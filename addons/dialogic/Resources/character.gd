@@ -1,5 +1,5 @@
 @tool
-extends Resource
+extends "res://addons/dialogic/Resources/dialogic_identifiable_resource.gd"
 class_name DialogicCharacter
 
 
@@ -30,8 +30,12 @@ enum TranslatedProperties {
 var _translation_id := ""
 
 
-func _to_string() -> String:
-	return "[{name}:{id}]".format({"name":get_character_name(), "id":get_instance_id()})
+func _get_extension() -> String:
+	return "dch"
+
+
+func _get_resource_name() -> String:
+	return "DialogicCharacter"
 
 
 ## Adds a translation ID to the character.
@@ -125,7 +129,7 @@ func get_display_name_translated() -> String:
 
 ## Returns the best name for this character.
 func get_character_name() -> String:
-	var unique_identifier := DialogicResourceUtil.get_unique_identifier(resource_path)
+	var unique_identifier := get_identifier()
 	if not unique_identifier.is_empty():
 		return unique_identifier
 	if not resource_path.is_empty():
@@ -134,6 +138,19 @@ func get_character_name() -> String:
 		return display_name.validate_node_name()
 	else:
 		return "UnnamedCharacter"
+
+#
+### Sets the unique identifier-string of this resource.
+### In editor (if the resource is already saved) the identifier will be stored.
+### In game (if the resource is not stored) the resource will be temporarily registered.
+#func set_identifier(new_identifier:String) -> bool:
+	#if resource_path and Engine.is_editor_hint():
+		#DialogicResourceUtil.change_unique_identifier(resource_path, new_identifier)
+		#return true
+	#if not resource_path and not Engine.is_editor_hint():
+		#DialogicResourceUtil.register_runtime_resource(self, new_identifier, "dch")
+		#return true
+	#return false
 
 
 ## Returns the info of the given portrait.

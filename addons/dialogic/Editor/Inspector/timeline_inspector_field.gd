@@ -61,7 +61,7 @@ func _update_property() -> void:
 	updating = true
 	current_value = new_value
 	if current_value:
-		field.set_value(DialogicResourceUtil.get_unique_identifier(current_value.resource_path))
+		field.set_value(current_value.get_identifier())
 		button.show()
 	else:
 		button.hide()

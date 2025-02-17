@@ -71,9 +71,9 @@ func _open_resource(resource:Resource) -> void:
 	load_portrait_tree()
 
 	loading = false
-	character_loaded.emit(resource.resource_path)
+	character_loaded.emit(current_resource.resource_path)
 
-	%CharacterName.text = DialogicResourceUtil.get_unique_identifier(resource.resource_path)
+	%CharacterName.text = current_resource.get_identifier()
 
 	$NoCharacterScreen.hide()
 	%PortraitChangeInfo.hide()
@@ -549,7 +549,7 @@ func report_name_change(item: TreeItem) -> void:
 		editors_manager.reference_manager.add_portrait_ref_change(
 			item.get_meta('previous_name'),
 			%PortraitTree.get_full_item_name(item),
-			[DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)])
+			[current_resource.get_identifier()])
 	item.set_meta('previous_name', %PortraitTree.get_full_item_name(item))
 	%PortraitChangeInfo.show()
 

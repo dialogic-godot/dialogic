@@ -63,7 +63,7 @@ static func add_resource_to_directory(file_path:String, directory:Dictionary) ->
 
 ## Returns the unique identifier for the given resource path.
 ## Returns an empty string if no identifier was found.
-static func get_unique_identifier(file_path:String) -> String:
+static func get_unique_identifier_by_path(file_path:String) -> String:
 	if not file_path: return ""
 	var identifier: Variant = get_directory(file_path.get_extension()).find_key(file_path)
 	if typeof(identifier) == TYPE_STRING:
@@ -74,12 +74,15 @@ static func get_unique_identifier(file_path:String) -> String:
 ## Returns the resource associated with the given unique identifier.
 ## The expected extension is needed to use the right directory.
 static func get_resource_from_identifier(identifier:String, extension:String) -> Resource:
-	var path: String = get_directory(extension).get(identifier, '')
-	if ResourceLoader.exists(path):
-		return load(path)
+	var value: Variant = get_directory(extension).get(identifier, '')
+	if typeof(value) == TYPE_STRING and ResourceLoader.exists(value):
+		return load(value)
+	elif value is Resource:
+		return value
 	return null
 
 
+## Editor Only
 static func change_unique_identifier(file_path:String, new_identifier:String) -> void:
 	var directory := get_directory(file_path.get_extension())
 	var key: String = directory.find_key(file_path)
@@ -112,6 +115,21 @@ static func remove_resource(file_path:String) -> void:
 
 static func is_identifier_unused(extension:String, identifier:String) -> bool:
 	return not identifier in get_directory(extension)
+
+
+## While usually the directory maps identifiers to paths, this method (only supposed to be used at runtime)
+## allows mapping resources that are not saved to an identifier.
+static func register_runtime_resource(resource:Resource, identifier:String, extension:String) -> void:
+	var directory := get_directory(extension)
+	directory[identifier] = resource
+	set_directory(extension, directory)
+
+
+static func get_runtime_unique_identifier(resource:Resource, extension:String) -> String:
+	var identifier: Variant = get_directory(extension).find_key(resource)
+	if typeof(identifier) == TYPE_STRING:
+		return identifier
+	return ""
 
 #endregion
 

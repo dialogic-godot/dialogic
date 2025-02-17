@@ -433,7 +433,7 @@ func _on_right_click_menu_id_pressed(id: int) -> void:
 			)
 		4:  # COPY IDENTIFIER
 			DisplayServer.clipboard_set(
-				DialogicResourceUtil.get_unique_identifier(
+				DialogicResourceUtil.get_unique_identifier_by_path(
 					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
 				)
 			)
