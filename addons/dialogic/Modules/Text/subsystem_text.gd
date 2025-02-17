@@ -507,8 +507,8 @@ func collect_character_names() -> void:
 
 	character_colors = {}
 
-	for dch_path in DialogicResourceUtil.get_character_directory().values():
-		var character := (load(dch_path) as DialogicCharacter)
+	for dch_identifier in DialogicResourceUtil.get_character_directory():
+		var character := (DialogicResourceUtil.get_character_resource(dch_identifier) as DialogicCharacter)
 
 		if character.display_name:
 			if "{" in character.display_name and "}" in character.display_name:

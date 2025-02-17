@@ -24,7 +24,7 @@ func _execute() -> void:
 			"identifier": name,
 			"display_name": get_property_translated("display_name"),
 			"display_name_orig": display_name,
-			"timeline": DialogicResourceUtil.get_unique_identifier(dialogic.current_timeline.resource_path)
+			"timeline": dialogic.current_timeline.get_identifier()
 		})
 	finish()
 

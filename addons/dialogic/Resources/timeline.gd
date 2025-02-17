@@ -1,17 +1,23 @@
 @tool
-extends Resource
+extends "res://addons/dialogic/Resources/dialogic_identifiable_resource.gd"
 class_name DialogicTimeline
 
 ## Resource that defines a list of events.
 ## It can store them as text and load them from text too.
 
+
+
 var events: Array = []
 var events_processed := false
 var text_lines_indexed := {}
 
-## Method used for printing timeline resources identifiably
-func _to_string() -> String:
-	return "[DialogicTimeline:{file}]".format({"file":resource_path})
+
+func _get_extension() -> String:
+	return "dtl"
+
+
+func _get_resource_name() -> String:
+	return "DialogicTimeline"
 
 
 ## Helper method
@@ -56,7 +62,6 @@ func as_text() -> String:
 		result.trim_suffix('\n')
 
 	return result.strip_edges()
-
 
 
 ## Returns the index of the event that corresponds to a specific line

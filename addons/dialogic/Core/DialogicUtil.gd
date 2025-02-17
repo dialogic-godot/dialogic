@@ -528,6 +528,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 		TYPE_DICTIONARY:
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn").instantiate()
 			input.property_name = property_info["name"]
+			input.set_value(value)
 			input.value_changed.connect(_on_export_dict_submitted.bind(property_changed))
 		TYPE_OBJECT:
 			input = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()

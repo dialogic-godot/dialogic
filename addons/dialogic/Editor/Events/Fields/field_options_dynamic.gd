@@ -50,7 +50,7 @@ func _set_value(value:Variant) -> void:
 			Modes.PRETTY_PATH:
 				%Search.text = DialogicUtil.pretty_name(value)
 			Modes.IDENTIFIER when value.begins_with("res://"):
-				%Search.text = DialogicResourceUtil.get_unique_identifier(value)
+				%Search.text = DialogicResourceUtil.get_unique_identifier_by_path(value)
 			Modes.ANY_VALID_STRING when validation_func:
 				%Search.text = validation_func.call(value).get('valid_text', value)
 			_:
@@ -361,7 +361,7 @@ func _can_drop_data(position:Vector2, data:Variant) -> bool:
 func _drop_data(position:Vector2, data:Variant) -> void:
 	var path := str(data.files[0])
 	if mode == Modes.IDENTIFIER:
-		path = DialogicResourceUtil.get_unique_identifier(path)
+		path = DialogicResourceUtil.get_unique_identifier_by_path(path)
 	_set_value(path)
 	value_changed.emit(property_name, path)
 	current_value_updated = false

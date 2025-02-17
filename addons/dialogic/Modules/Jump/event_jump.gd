@@ -19,7 +19,7 @@ var label_name := ""
 var timeline_identifier := "":
 	get:
 		if timeline:
-			var identifier := DialogicResourceUtil.get_unique_identifier(timeline.resource_path)
+			var identifier := timeline.get_identifier()
 			if not identifier.is_empty():
 				return identifier
 		return timeline_identifier

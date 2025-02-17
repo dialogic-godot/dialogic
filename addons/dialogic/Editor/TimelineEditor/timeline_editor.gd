@@ -73,7 +73,7 @@ func _open_resource(resource:Resource) -> void:
 		EditorMode.TEXT:
 			%TextEditor.load_timeline(current_resource)
 	$NoTimelineScreen.hide()
-	%TimelineName.text = DialogicResourceUtil.get_unique_identifier(current_resource.resource_path)
+	%TimelineName.text = current_resource.get_identifier()
 	play_timeline_button.disabled = false
 
 

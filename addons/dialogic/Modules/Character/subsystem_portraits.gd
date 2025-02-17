@@ -35,7 +35,7 @@ func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 		var character_info: Dictionary = portraits_info[character_path]
 		var character: DialogicCharacter = load(character_path)
 		var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
-		
+
 		ResourceLoader.load_threaded_request(character_path)
 
 		var load_status = ResourceLoader.load_threaded_get_status(character_path)
@@ -138,7 +138,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 
 		if ResourceLoader.exists(scene_path):
 			ResourceLoader.load_threaded_request(scene_path)
-			
+
 			var load_status = ResourceLoader.load_threaded_get_status(scene_path)
 			while load_status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 				await get_tree().process_frame
@@ -371,7 +371,7 @@ func get_valid_portrait(character:DialogicCharacter, portrait:String) -> String:
 
 	if not portrait in character.portraits:
 		if not portrait.is_empty():
-			printerr('[Dialogic] Tried to use invalid portrait "', portrait, '" on character "', DialogicResourceUtil.get_unique_identifier(character.resource_path), '". Using default portrait instead.')
+			printerr('[Dialogic] Tried to use invalid portrait "', portrait, '" on character "', character.get_character_name(), '". Using default portrait instead.')
 			dialogic.print_debug_moment()
 		portrait = character.default_portrait
 
@@ -452,9 +452,9 @@ func add_character(character: DialogicCharacter, container: DialogicNode_Portrai
 	if not character:
 		printerr('[DialogicError] Cannot call add_portrait() with null character.')
 		return null
-	
+
 	ResourceLoader.load_threaded_request(character.resource_path)
-	
+
 	var load_status = ResourceLoader.load_threaded_get_status(character.resource_path)
 	while load_status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 		await get_tree().process_frame
