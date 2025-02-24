@@ -89,7 +89,7 @@ func _gui_input(event):
 	if not event is InputEventKey: return
 	if not event.is_pressed(): return
 	match event.as_text():
-		"Ctrl+K":
+		"Ctrl+K", "Ctrl+Slash":
 			toggle_comment()
 
 		# TODO clean this up when dropping 4.2 support
