@@ -75,3 +75,28 @@ func get_modulation_property() -> String:
 		return "self_modulate"
 	else:
 		return "modulate"
+
+
+## Tries to return the size of the node to be animated.
+## For portraits this uses the portrait containers size.
+## This is useful if your animation depends on the size of the node.
+func get_node_size() -> Vector2:
+	if not node:
+		return Vector2()
+	if node.get_parent() is DialogicNode_PortraitContainer:
+		return node.get_parent().size
+	if "size" in node:
+		return node.size * node.scale
+	return node.get_viewport().size
+
+
+func get_node_origin() -> Vector2:
+	if not node:
+		return Vector2()
+	if node.get_parent() is DialogicNode_PortraitContainer:
+		return node.get_parent()._get_origin_position()
+	return Vector2()
+
+
+func get_viewport_size() -> Vector2:
+	return node.get_viewport().get_visible_rect().size
