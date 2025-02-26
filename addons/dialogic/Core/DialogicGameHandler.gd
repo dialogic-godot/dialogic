@@ -228,8 +228,10 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
-
-	timeline_started.emit()
+	
+	if not current_timeline == dialog_ending_timeline:
+		timeline_started.emit()
+	
 	handle_next_event()
 
 
