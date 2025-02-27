@@ -18,7 +18,7 @@ func _to_string() -> String:
 func get_identifier() -> String:
 	if resource_path:
 		return DialogicResourceUtil.get_unique_identifier_by_path(resource_path)
-	if Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		return DialogicResourceUtil.get_runtime_unique_identifier(self, _get_extension())
 	return ""
 

@@ -1,6 +1,6 @@
 extends GdUnitTestSuite
 
-const VALID_SPEAKER_PATH := "res://Tests/Resources/unit_test_character.dch"
+const VALID_SPEAKER_PATH := "unit_test_character"
 
 ## We ensure that missing a speaker will return null.
 func test_missing_current_speaker() -> void:
