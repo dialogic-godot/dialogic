@@ -28,7 +28,7 @@ var shortcuts := [
 	{"shortcut":"Ctrl+V", 			"text":"Paste"},
 	{"shortcut":"Ctrl+D", 			"text":"Duplicate selected events/lines"},
 	{"shortcut":"Ctrl+X", 			"text":"Cut selected events/lines"},
-	{"shortcut":"Ctrl+#", 			"text":"Toggle Comment" , "editor":"TextEditor"},
+	{"shortcut":"Ctrl+K", 			"text":"Toggle Comment" , "editor":"TextEditor"},
 	{"shortcut":"Delete", 			"text":"Delete events", "editor":"VisualEditor"},
 	{},
 	{"shortcut":"Ctrl+A", 			"text":"Select All"},
