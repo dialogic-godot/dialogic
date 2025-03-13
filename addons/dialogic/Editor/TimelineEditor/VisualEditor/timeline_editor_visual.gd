@@ -1228,11 +1228,13 @@ func get_previous_character(double_previous := false) -> DialogicCharacter:
 ################################################################################
 
 var search_results := {}
-func _search_timeline(search_text:String) -> bool:
-	#for event in search_results:
-		#if is_instance_valid(search_results[event]):
-			#search_results[event].set_search_text("")
-			#
+func _search_timeline(search_text:String, match_case := false, whole_words := false) -> bool:
+	var flags := 0
+	if match_case:
+		flags = flags | TextEdit.SEARCH_MATCH_CASE
+	if whole_words:
+		flags = flags | TextEdit.SEARCH_WHOLE_WORDS
+
 	search_results.clear()
 
 	# This checks all text events for whether they contain the text.
@@ -1245,13 +1247,15 @@ func _search_timeline(search_text:String) -> bool:
 
 			text_field.deselect()
 			text_field.set_search_text(search_text)
+			text_field.set_search_flags(flags)
 
-			if text_field.search(search_text, 0, 0, 0).x != -1:
+			if text_field.search(search_text, flags, 0, 0).x != -1:
 				search_results[block] = text_field
 
 			text_field.queue_redraw()
 
 	set_meta("current_search", search_text)
+	set_meta("current_search_flags", flags)
 
 	search_navigate(false)
 
@@ -1267,10 +1271,24 @@ func _search_navigate_up() -> void:
 
 
 func search_navigate(navigate_up := false) -> void:
+	var next_pos := get_next_search_position(navigate_up)
+	if next_pos:
+		var event: Node = next_pos[0]
+		var field: TextEdit = next_pos[1]
+		var result: Vector2i = next_pos[2]
+		if not event in selected_items:
+			select_item(next_pos[0], false)
+		%TimelineArea.ensure_control_visible(event)
+		event._on_ToggleBodyVisibility_toggled(true)
+		field.call_deferred("select", result.y, result.x, result.y, result.x+len(get_meta("current_search")))
+
+
+func get_next_search_position(navigate_up:= false, include_current := false) -> Array:
 	var search_text: String = get_meta("current_search", "")
+	var search_flags: int = get_meta("current_search_flags", 0)
 
 	if search_results.is_empty() or %Timeline.get_child_count() == 0:
-		return
+		return []
 
 	# We start the search on the selected item,
 	# so these checks make sure something sensible is selected
@@ -1294,15 +1312,18 @@ func search_navigate(navigate_up := false) -> void:
 
 	var event: Node = selected_items[0]
 	var counter := 0
+	var first := true
 	while true:
 		counter += 1
 		var field: TextEdit = search_results[event]
 		field.queue_redraw()
 
 		# First locates the next result in this field
-		var result := search_text_field(field, search_text, navigate_up)
+		var result := search_text_field(field, search_text, search_flags, navigate_up, first and include_current)
 		var current_line := field.get_selection_from_line() if field.has_selection() else -1
 		var current_column := field.get_selection_from_column() if field.has_selection() else -1
+
+		first = false
 
 		# Determines if the found result is valid or navigation should continue into the next event
 		var next_is_in_this_event := false
@@ -1313,17 +1334,14 @@ func search_navigate(navigate_up := false) -> void:
 				current_line = field.get_line_count()-1
 				current_column = field.get_line(current_line).length()
 			next_is_in_this_event = result.x < current_column or result.y < current_line
+		elif include_current:
+			next_is_in_this_event = true
 		else:
 			next_is_in_this_event = result.x > current_column or result.y > current_line
 
-		# If the next result was found, select it and break out of the loop
+		# If the next result was found return it
 		if next_is_in_this_event:
-			if not event in selected_items:
-				select_item(event, false)
-			%TimelineArea.ensure_control_visible(event)
-			event._on_ToggleBodyVisibility_toggled(true)
-			field.call_deferred("select", result.y, result.x, result.y, result.x+len(search_text))
-			break
+			return [event, field, result]
 
 		# Otherwise deselct this field and continue in the next/previous
 		field.deselect()
@@ -1333,9 +1351,10 @@ func search_navigate(navigate_up := false) -> void:
 		if counter > 5:
 			print("[Dialogic] Search failed.")
 			break
+	return []
 
 
-func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -> Vector2i:
+func search_text_field(field:TextEdit, search_text := "", flags:= 0, navigate_up:= false, include_current := false) -> Vector2i:
 	var search_from_line: int = 0
 	var search_from_column: int = 0
 	if field.has_selection():
@@ -1347,6 +1366,9 @@ func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -
 				if search_from_line == -1:
 					return Vector2i(-1, -1)
 				search_from_column = field.get_line(search_from_line).length()-1
+		elif include_current:
+			search_from_line = field.get_selection_from_line()
+			search_from_column = field.get_selection_from_column()
 		else:
 			search_from_line = field.get_selection_to_line()
 			search_from_column = field.get_selection_to_column()
@@ -1355,7 +1377,62 @@ func search_text_field(field:TextEdit, search_text := "", navigate_up:= false) -
 			search_from_line = field.get_line_count()-1
 			search_from_column = field.get_line(search_from_line).length()-1
 
-	var search := field.search(search_text, 4 if navigate_up else 0, search_from_line, search_from_column)
+	if navigate_up:
+		flags = flags | TextEdit.SEARCH_BACKWARDS
+
+	var search := field.search(search_text, flags, search_from_line, search_from_column)
 	return search
+
+
+func replace(replace_text:String) -> void:
+	var next_pos := get_next_search_position(false, true)
+	var event: Node = next_pos[0]
+	var field: TextEdit = next_pos[1]
+	var result: Vector2i = next_pos[2]
+
+	if field.has_selection():
+		field.set_caret_column(field.get_selection_from_column())
+		field.set_caret_line(field.get_selection_from_line())
+
+	field.begin_complex_operation()
+	field.insert_text("@@", result.y, result.x)
+	if get_meta("current_search_flags") & TextEdit.SEARCH_MATCH_CASE:
+		field.text = field.text.replace("@@"+get_meta("current_search"), replace_text)
+	else:
+		field.text = field.text.replacen("@@"+get_meta("current_search"), replace_text)
+	field.end_complex_operation()
+
+	timeline_editor.replace_in_timeline()
+
+
+func replace_all(replace_text:String) -> void:
+	var next_pos := get_next_search_position()
+	if not next_pos:
+		return
+	var event: Node = next_pos[0]
+	var field: TextEdit = next_pos[1]
+	var result: Vector2i = next_pos[2]
+	field.begin_complex_operation()
+	while next_pos:
+		event = next_pos[0]
+		if field != next_pos[1]:
+			field.end_complex_operation()
+			field = next_pos[1]
+			field.begin_complex_operation()
+		result = next_pos[2]
+
+		if field.has_selection():
+			field.set_caret_column(field.get_selection_from_column())
+			field.set_caret_line(field.get_selection_from_line())
+
+		field.insert_text("@@", result.y, result.x)
+		if get_meta("current_search_flags") & TextEdit.SEARCH_MATCH_CASE:
+			field.text = field.text.replace("@@"+get_meta("current_search"), replace_text)
+		else:
+			field.text = field.text.replacen("@@"+get_meta("current_search"), replace_text)
+
+		next_pos = get_next_search_position()
+	field.end_complex_operation()
+	timeline_editor.replace_in_timeline()
 
 #endregion

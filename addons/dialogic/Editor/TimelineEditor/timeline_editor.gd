@@ -100,6 +100,10 @@ func _input(event: InputEvent) -> void:
 				if is_ancestor_of(get_viewport().gui_get_focus_owner()):
 					search_timeline()
 
+		if event.keycode == KEY_R and event.pressed:
+			if Input.is_key_pressed(KEY_CTRL):
+				if is_ancestor_of(get_viewport().gui_get_focus_owner()):
+					replace_in_timeline(true)
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
 func play_timeline(index := -1) -> void:
@@ -193,7 +197,12 @@ func _ready() -> void:
 	%SearchUp.icon = get_theme_icon("MoveUp", "EditorIcons")
 	%SearchDown.icon = get_theme_icon("MoveDown", "EditorIcons")
 
+	%ReplaceGlobal.icon = get_theme_icon("ExternalLink", "EditorIcons")
+
 	%ProgressSection.hide()
+
+	%SearchReplaceSection.hide()
+	%SearchReplaceSection.add_theme_stylebox_override("panel", get_theme_stylebox("PanelForeground", "EditorStyles"))
 
 
 func _on_create_timeline_button_pressed() -> void:
@@ -225,24 +234,25 @@ func get_current_editor() -> Node:
 #region SEARCH
 
 func search_timeline() -> void:
+	%SearchReplaceSection.show()
 	%SearchSection.show()
+	%ReplaceSection.hide()
 	if get_viewport().gui_get_focus_owner() is TextEdit:
-		%Search.text = get_viewport().gui_get_focus_owner().get_selected_text()
-		_on_search_text_changed(%Search.text)
-	else:
-		%Search.text = ""
+		if get_viewport().gui_get_focus_owner().get_selected_text():
+			%Search.text = get_viewport().gui_get_focus_owner().get_selected_text()
+	_on_search_text_changed(%Search.text)
 	%Search.grab_focus()
 
 
 func _on_close_search_pressed() -> void:
-	%SearchSection.hide()
+	%SearchReplaceSection.hide()
 	%Search.text = ""
 	_on_search_text_changed('')
 
 
 func _on_search_text_changed(new_text: String) -> void:
 	var editor: Node = null
-	var anything_found: bool = get_current_editor()._search_timeline(new_text)
+	var anything_found: bool = get_current_editor()._search_timeline(new_text, %MatchCase.button_pressed, %WholeWords.button_pressed)
 	if anything_found or new_text.is_empty():
 		%SearchLabel.hide()
 		%Search.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
@@ -260,7 +270,43 @@ func _on_search_down_pressed() -> void:
 func _on_search_up_pressed() -> void:
 	get_current_editor()._search_navigate_up()
 
+
+func _on_match_case_toggled(toggled_on: bool) -> void:
+	_on_search_text_changed(%Search.text)
+
+
+func _on_whole_words_toggled(toggled_on: bool) -> void:
+	_on_search_text_changed(%Search.text)
+
+
 #endregion
+
+
+#region REPLACE
+
+func replace_in_timeline(focus_grab:=false) -> void:
+	search_timeline()
+	%ReplaceSection.show()
+	if focus_grab:
+		%ReplaceText.grab_focus()
+		%ReplaceText.select_all()
+
+
+func _on_replace_button_pressed() -> void:
+	get_current_editor().replace(%ReplaceText.text)
+
+
+func _on_replace_all_button_pressed() -> void:
+	get_current_editor().replace_all(%ReplaceText.text)
+
+
+func _on_replace_global_pressed() -> void:
+	editors_manager.reference_manager.add_ref_change(%Search.text, %ReplaceText.text, 0, 0, [],
+			%WholeWords.button_pressed, %MatchCase.button_pressed)
+	editors_manager.reference_manager.open()
+
+#endregion
+
 
 #region PROGRESS
 
