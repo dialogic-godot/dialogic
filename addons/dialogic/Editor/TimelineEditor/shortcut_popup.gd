@@ -17,6 +17,7 @@ var shortcuts := [
 	{"shortcut":"Alt/Opt+Down", 	"text":"Move selected events/lines down"},
 	{},
 	{"shortcut":"Ctrl+F", 			"text":"Search"},
+	{"shortcut":"Ctrl+R", 			"text":"Replace"},
 	{},
 	{"shortcut":"Ctrl+F5", 			"text":"Play timeline", "platform":"-macOS"},
 	{"shortcut":"Ctrl+B", 			"text":"Play timeline", "platform":"macOS"},
