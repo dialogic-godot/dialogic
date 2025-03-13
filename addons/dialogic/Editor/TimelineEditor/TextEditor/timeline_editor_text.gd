@@ -267,7 +267,8 @@ func get_next_search_position(navigate_up := false) -> Vector2i:
 
 	var flags := get_meta("current_search_flags", 0)
 	if navigate_up:
-		flags = flags & SEARCH_BACKWARDS
+		flags = flags | SEARCH_BACKWARDS
+	print()
 	pos = search(get_meta("current_search"), flags, search_from_line, search_from_column)
 	return pos
 
@@ -286,7 +287,10 @@ func replace(replace_text:String) -> void:
 
 	begin_complex_operation()
 	insert_text("@@", pos.y, pos.x)
-	text = text.replace("@@"+get_meta("current_search"), replace_text)
+	if get_meta("current_search_flags") & SEARCH_MATCH_CASE:
+		text = text.replace("@@"+get_meta("current_search"), replace_text)
+	else:
+		text = text.replacen("@@"+get_meta("current_search"), replace_text)
 	end_complex_operation()
 
 	set_caret_line(pos.y)
@@ -297,7 +301,17 @@ func replace(replace_text:String) -> void:
 
 func replace_all(replace_text:String) -> void:
 	begin_complex_operation()
-	text = text.replace(get_meta("current_search"), replace_text)
+	var next_pos := get_next_search_position()
+	var counter := 0
+	while next_pos.y != -1:
+		insert_text("@@", next_pos.y, next_pos.x)
+		if get_meta("current_search_flags") & SEARCH_MATCH_CASE:
+			text = text.replace("@@"+get_meta("current_search"), replace_text)
+		else:
+			text = text.replacen("@@"+get_meta("current_search"), replace_text)
+		next_pos = get_next_search_position()
+		set_caret_line(next_pos.y)
+		set_caret_column(next_pos.x)
 	end_complex_operation()
 
 	timeline_editor.replace_in_timeline()

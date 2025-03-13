@@ -103,7 +103,7 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_R and event.pressed:
 			if Input.is_key_pressed(KEY_CTRL):
 				if is_ancestor_of(get_viewport().gui_get_focus_owner()):
-					replace_in_timeline()
+					replace_in_timeline(true)
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
 func play_timeline(index := -1) -> void:
@@ -284,11 +284,12 @@ func _on_whole_words_toggled(toggled_on: bool) -> void:
 
 #region REPLACE
 
-func replace_in_timeline() -> void:
+func replace_in_timeline(focus_grab:=false) -> void:
 	search_timeline()
 	%ReplaceSection.show()
-	%ReplaceText.grab_focus()
-	%ReplaceText.select_all()
+	if focus_grab:
+		%ReplaceText.grab_focus()
+		%ReplaceText.select_all()
 
 
 func _on_replace_button_pressed() -> void:
