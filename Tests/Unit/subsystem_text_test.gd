@@ -24,4 +24,4 @@ func test_set_valid_current_speaker() -> void:
 	var current_speaker := DialogicUtil.autoload().Text.get_current_speaker()
 
 	assert(not current_speaker == null, "Valid speaker must be valid, but is invalid.")
-	assert(current_speaker.get_path() == VALID_SPEAKER_PATH, "Valid speaker path is not set correctly.")
+	assert(current_speaker.get_identifier() == VALID_SPEAKER_PATH, "Valid speaker path is not set correctly.")
