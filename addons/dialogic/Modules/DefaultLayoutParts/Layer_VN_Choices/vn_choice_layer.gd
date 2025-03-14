@@ -39,6 +39,11 @@ extends DialogicLayoutLayer
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_hover: String = "res://addons/dialogic/Example Assets/sound-effects/typing2.wav"
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_focus: String = "res://addons/dialogic/Example Assets/sound-effects/typing4.wav"
 
+@export_group('Choices')
+@export_subgroup('Behavior')
+@export var maximum_choices: int = 10
+@export_file('*.tscn') var choices_custom_button: String = ""
+
 func get_choices() -> VBoxContainer:
 	return $Choices
 
@@ -96,20 +101,36 @@ func _apply_export_overrides() -> void:
 	if ResourceLoader.exists(boxes_stylebox_focused):
 		layer_theme.set_stylebox(&'focus', &'Button', load(boxes_stylebox_focused) as StyleBox)
 
-	get_choices().add_theme_constant_override(&"separation", boxes_v_separation)
+	var choices : Control = get_choices()
+	choices.add_theme_constant_override(&"separation", boxes_v_separation)
 	self.position = boxes_offset
 
-	for child: Node in get_choices().get_children():
-		if not child is DialogicNode_ChoiceButton:
-			continue
-		var choice: DialogicNode_ChoiceButton = child as DialogicNode_ChoiceButton
+	# replace choice buttons and apply settings
+	for child: Node in choices.get_children():
+		if child is DialogicNode_ChoiceButton:
+			child.queue_free()
+
+	var choices_button: PackedScene = null
+	if not choices_custom_button.is_empty():
+		if ResourceLoader.exists(choices_custom_button):
+			choices_button = (load(choices_custom_button) as PackedScene)
+		else:
+			printerr("[Dialogic] Unable to load custom choice button from ", choices_custom_button)
+
+	for i in range(0, maximum_choices):
+		var new_choice : DialogicNode_ChoiceButton
+		if choices_button != null:
+			new_choice = (choices_button.instantiate() as DialogicNode_ChoiceButton)
+		else:
+			new_choice = DialogicNode_ChoiceButton.new()
+		choices.add_child(new_choice)
 
 		if boxes_fill_width:
-			choice.size_flags_horizontal = Control.SIZE_FILL
+			new_choice.size_flags_horizontal = Control.SIZE_FILL
 		else:
-			choice.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			new_choice.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 
-		choice.custom_minimum_size = boxes_min_size
+		new_choice.custom_minimum_size = boxes_min_size
 
 
 	set(&'theme', layer_theme)
