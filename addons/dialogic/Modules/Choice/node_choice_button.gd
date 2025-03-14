@@ -12,6 +12,10 @@ extends Button
 ## not supported on buttons at this point.
 
 
+## Emitted when the choice is selected. Unless overridden, this is when the button or its shortcut is pressed.
+signal choice_selected
+
+
 ## Used to identify what choices to put on. If you leave it at -1, choices will be distributed automatically.
 @export var choice_index: int = -1
 
@@ -29,6 +33,12 @@ func _ready() -> void:
 	add_to_group('dialogic_choice_button')
 	shortcut_in_tooltip = false
 	hide()
+	pressed.connect(_on_pressed)
+
+
+## Custom choice buttons can override this for specialized behavior when the choice button is pressed.
+func _on_pressed():
+	choice_selected.emit()
 
 
 func _load_info(choice_info: Dictionary) -> void:

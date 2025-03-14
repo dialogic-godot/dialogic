@@ -155,7 +155,7 @@ func get_base_content_size() -> Vector2:
 		)
 
 
-func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEGIN) -> void:
+func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEGIN, choices_button_path:="") -> void:
 	if choice_container:
 		choice_container.get_parent().remove_child(choice_container)
 		choice_container.queue_free()
@@ -168,9 +168,18 @@ func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEG
 
 	if node is HFlowContainer:
 		(node as HFlowContainer).alignment = alignment
+	
+	var choices_button: PackedScene = null
+	if not choices_button_path.is_empty() and ResourceLoader.exists(choices_button_path):
+		choices_button = (load(choices_button_path) as PackedScene)
 
 	for i:int in range(5):
-		choice_container.add_child(DialogicNode_ChoiceButton.new())
+		var new_button : DialogicNode_ChoiceButton
+		if choices_button == null:
+			new_button = DialogicNode_ChoiceButton.new()
+		else:
+			new_button = (choices_button.instantiate() as DialogicNode_ChoiceButton)
+		choice_container.add_child(new_button)
 		if node is HFlowContainer:
 			continue
 		match alignment:
