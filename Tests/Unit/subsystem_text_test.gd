@@ -2,6 +2,11 @@ extends GdUnitTestSuite
 
 const VALID_SPEAKER_PATH := "unit_test_character"
 
+
+func test_build_character_directory() -> void:
+	DialogicResourceUtil.update()
+
+
 ## We ensure that missing a speaker will return null.
 func test_missing_current_speaker() -> void:
 	var null_speaker := DialogicUtil.autoload().Text.get_current_speaker()
