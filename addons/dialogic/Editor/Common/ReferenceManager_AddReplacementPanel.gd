@@ -52,6 +52,9 @@ func open_existing(_item:TreeItem, info:Dictionary):
 	%Old.text = info.what
 	%New.text = info.forwhat
 
+	%MatchCase.button_pressed = info.case_sensitive
+	%WholeWords.button_pressed = info.whole_words
+
 func _on_type_item_selected(index:int) -> void:
 	match index:
 		0:
