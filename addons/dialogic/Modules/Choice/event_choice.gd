@@ -37,6 +37,10 @@ func _execute() -> void:
 		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
 
+
+func should_execute_this_branch() -> bool:
+	return dialogic.Choices.is_question(dialogic.current_timeline_events.find(self))
+
 #endregion
 
 
