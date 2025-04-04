@@ -248,24 +248,19 @@ func _on_choice_selected(choice_info := {}) -> void:
 ## Returns the indexes of the choice events related to the current question.
 func get_current_choice_indexes() -> Array:
 	var choices := []
-	var evt_idx := dialogic.current_event_idx
-	var ignore := 0
+	var index := dialogic.current_event_idx-1
 	while true:
-		if evt_idx >= len(dialogic.current_timeline_events):
+		index += 1
+		if index >= len(dialogic.current_timeline_events):
 			break
-		if dialogic.current_timeline_events[evt_idx] is DialogicChoiceEvent:
-			if ignore == 0:
-				choices.append(evt_idx)
-			ignore += 1
-		elif dialogic.current_timeline_events[evt_idx].can_contain_events:
-			ignore += 1
-		else:
-			if ignore == 0:
-				break
 
-		if dialogic.current_timeline_events[evt_idx] is DialogicEndBranchEvent:
-			ignore -= 1
-		evt_idx += 1
+		var event: DialogicEvent = dialogic.current_timeline_events[index]
+		if event is DialogicChoiceEvent:
+			choices.append(index)
+			index = event.get_end_branch_index()
+		else:
+			break
+
 	return choices
 
 
@@ -296,7 +291,7 @@ func is_question(index:int) -> bool:
 		var prev_event: DialogicEvent = dialogic.current_timeline_events[index-1]
 		if not prev_event is DialogicEndBranchEvent:
 			return true
-		var prev_event_opener: DialogicEvent = dialogic.current_timeline_events[prev_event.find_opening_index(index-1)]
+		var prev_event_opener: DialogicEvent = dialogic.current_timeline_events[prev_event.get_opening_index()]
 		if prev_event_opener is DialogicChoiceEvent:
 			return false
 		else:
