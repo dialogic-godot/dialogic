@@ -26,7 +26,7 @@ func find_next_index() -> int:
 		if event is DialogicEndBranchEvent:
 			if ignore > 1:
 				ignore -= 1
-		elif event.can_contain_events and not event.should_execute_this_branch():
+		elif event.can_contain_events and (not event.should_execute_this_branch() or ignore > 1):
 			ignore += 1
 		elif ignore <= 1:
 			return idx
