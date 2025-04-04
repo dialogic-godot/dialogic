@@ -281,20 +281,27 @@ func _on_dialogic_action() -> void:
 #region HELPERS
 ####################################################################################################
 
+## Returns `true` if the given index is a text event before a question or the first choice event of a question.
 func is_question(index:int) -> bool:
-	if dialogic.current_timeline_events[index] is DialogicTextEvent:
+	var event: DialogicEvent = dialogic.current_timeline_events[index]
+	if event is DialogicTextEvent:
 		if len(dialogic.current_timeline_events)-1 != index:
-			if dialogic.current_timeline_events[index+1] is DialogicChoiceEvent:
+			var next_event: DialogicEvent = dialogic.current_timeline_events[index+1]
+			if next_event is DialogicChoiceEvent:
 				return true
 
-	if dialogic.current_timeline_events[index] is DialogicChoiceEvent:
-		if index != 0 and dialogic.current_timeline_events[index-1] is DialogicEndBranchEvent:
-			if dialogic.current_timeline_events[dialogic.current_timeline_events[index-1].find_opening_index(index-1)] is DialogicChoiceEvent:
-				return false
-			else:
-				return true
+	if event is DialogicChoiceEvent:
+		if index == 0:
+			return true
+		var prev_event: DialogicEvent = dialogic.current_timeline_events[index-1]
+		if not prev_event is DialogicEndBranchEvent:
+			return true
+		var prev_event_opener: DialogicEvent = dialogic.current_timeline_events[prev_event.find_opening_index(index-1)]
+		if prev_event_opener is DialogicChoiceEvent:
+			return false
 		else:
 			return true
+
 	return false
 
 #endregion
