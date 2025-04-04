@@ -171,14 +171,12 @@ func get_end_branch_index() -> int:
 		var event: DialogicEvent = dialogic.current_timeline.get_event(idx)
 		if not event:
 			break
-
 		if event.can_contain_events:
 			idx = event.get_end_branch_index()
-
 		if event is DialogicEndBranchEvent:
 			break
-
 	return idx
+
 
 #endregion
 

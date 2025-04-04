@@ -244,7 +244,6 @@ func _on_choice_selected(choice_info := {}) -> void:
 	dialogic.handle_event(choice_info.event_index + 1)
 
 
-
 ## Returns the indexes of the choice events related to the current question.
 func get_current_choice_indexes() -> Array:
 	var choices := []

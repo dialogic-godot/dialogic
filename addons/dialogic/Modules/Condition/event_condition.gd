@@ -7,7 +7,8 @@ extends DialogicEvent
 enum ConditionTypes {IF, ELIF, ELSE}
 
 ### Settings
-## condition type (see [ConditionTypes]). Defaults to if.
+
+## Condition type (see [ConditionTypes]). Defaults to if.
 var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
 var condition := ""
@@ -25,7 +26,6 @@ func _execute() -> void:
 	if condition.is_empty(): condition = "true"
 
 	var result: bool = dialogic.Expressions.execute_condition(condition)
-	printt(dialogic.current_event_idx, "CONDITION ", condition, get_end_branch_index())
 	if not result:
 		dialogic.current_event_idx = get_end_branch_index()
 

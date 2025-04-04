@@ -10,7 +10,6 @@ extends DialogicEvent
 ################################################################################
 
 func _execute() -> void:
-	printt(dialogic.current_event_idx, "END BRANCH jumping to", find_next_index())
 	dialogic.current_event_idx = find_next_index()-1
 	finish()
 
@@ -20,7 +19,6 @@ func _execute() -> void:
 ## - is not a branching event (unless it is a branch starter)
 func find_next_index() -> int:
 	var idx: int = dialogic.current_event_idx
-
 	while true:
 		idx += 1
 		var event: DialogicEvent = dialogic.current_timeline.get_event(idx)
@@ -40,8 +38,7 @@ func find_next_index() -> int:
 
 
 func get_opening_index() -> int:
-	var own_index := dialogic.current_timeline_events.find(self)
-	var index: int = own_index
+	var index: int = dialogic.current_timeline_events.find(self)
 	while true:
 		index -= 1
 		if index < 0:
