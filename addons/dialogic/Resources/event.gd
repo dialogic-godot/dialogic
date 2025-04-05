@@ -146,22 +146,37 @@ func _execute() -> void:
 #endregion
 
 
-#region OVERRIDABLES
+#region BRANCHING EVENTS
 ################################################################################
+## All of this section should only be in use if [member can_contain_events] is `true`.
 
-## to be overridden by sub-classes
-## only called if can_contain_events is true.
-## return a control node that should show on the END BRANCH node
-func get_end_branch_control() -> Control:
+
+## To be overridden. Only called if [member can_contain_events] is `true`.
+## Return a control node that should show on the END BRANCH node.
+func _get_end_branch_control() -> Control:
 	return null
 
 
-## to be overridden by sub-classes
-## only called if can_contain_events is true and the previous event was an end-branch event
-## return true if this event should be executed if the previous event was an end-branch event
-## basically only important for the Condition event but who knows. Some day someone might need this.
-func should_execute_this_branch() -> bool:
+## To be overridden. Return `true` if this event should be executed even if a previous branch has been executed.
+## E.g. IF events returns true, but ELIF and ELSE do not. The first choice of a question does this, while the others don't.
+func _is_branch_starter() -> bool:
 	return false
+
+
+## Returns the index of the end branch event of this event (Only use if can_contain_events is true).
+func get_end_branch_index() -> int:
+	var idx: int = dialogic.current_timeline_events.find(self)
+	while true:
+		idx += 1
+		var event: DialogicEvent = dialogic.current_timeline.get_event(idx)
+		if not event:
+			break
+		if event.can_contain_events:
+			idx = event.get_end_branch_index()
+		if event is DialogicEndBranchEvent:
+			break
+	return idx
+
 
 #endregion
 

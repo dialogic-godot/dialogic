@@ -14,43 +14,42 @@ func _execute() -> void:
 	finish()
 
 
+## Returns the index of the first event that
+## - is on the same "indentation"
+## - is not a branching event (unless it is a branch starter)
 func find_next_index() -> int:
 	var idx: int = dialogic.current_event_idx
-
-	var ignore: int = 1
 	while true:
 		idx += 1
 		var event: DialogicEvent = dialogic.current_timeline.get_event(idx)
 		if not event:
 			return idx
-		if event is DialogicEndBranchEvent:
-			if ignore > 1:
-				ignore -= 1
-		elif event.can_contain_events and not event.should_execute_this_branch():
-			ignore += 1
-		elif ignore <= 1:
-			return idx
+
+		if event.can_contain_events:
+			if event._is_branch_starter():
+				break
+			else:
+				idx = event.get_end_branch_index()
+				break
+		else:
+			break
 
 	return idx
 
 
-func find_opening_index(at_index:int) -> int:
-	var idx: int = at_index
-
-	var ignore: int = 1
+func get_opening_index() -> int:
+	var index: int = dialogic.current_timeline_events.find(self)
 	while true:
-		idx -= 1
-		var event: DialogicEvent = dialogic.current_timeline.get_event(idx)
-		if not event:
-			return idx
+		index -= 1
+		if index < 0:
+			break
+		var event: DialogicEvent = dialogic.current_timeline_events[index]
 		if event is DialogicEndBranchEvent:
-			ignore += 1
+			index = event.get_opening_index()
 		elif event.can_contain_events:
-			ignore -= 1
-			if ignore == 0:
-				return idx
+			return index
+	return 0
 
-	return idx
 #endregion
 
 #region INITIALIZE
