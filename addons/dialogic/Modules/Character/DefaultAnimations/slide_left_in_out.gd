@@ -5,15 +5,16 @@ func animate() -> void:
 	var tween := (node.create_tween() as Tween)
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
-	var end_position_x: float = base_position.x
+	var end_position_x: float = base_position.x + node.get_parent().global_position.x
 
 	if is_reversed:
-		end_position_x = -node.get_viewport().size.x / 2
+		end_position_x = - get_node_size().x + get_node_origin().x
+		tween.set_ease(Tween.EASE_IN)
 
 	else:
-		node.position.x = -node.get_viewport().size.x / 5
+		node.global_position.x = -get_node_size().x + get_node_origin().x
 
-	tween.tween_property(node, 'position:x', end_position_x, time)
+	tween.tween_property(node, 'global_position:x', end_position_x, time)
 
 	await tween.finished
 	finished_once.emit()
@@ -21,6 +22,6 @@ func animate() -> void:
 
 func _get_named_variations() -> Dictionary:
 	return {
-		"slide in left": {"reversed": false, "type": AnimationType.IN},
-		"slide out right": {"reversed": true, "type": AnimationType.OUT},
+		"slide from left": {"reversed": false, "type": AnimationType.IN},
+		"slide to left": {"reversed": true, "type": AnimationType.OUT},
 	}
