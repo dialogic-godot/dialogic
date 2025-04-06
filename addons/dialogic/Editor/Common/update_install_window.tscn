@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://vv3m5m68fwg7"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
+[ext_resource type="Script" uid="uid://cskkip1wso0pu" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
 [ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_20ke0"]
 
 [sub_resource type="Gradient" id="Gradient_lt7uf"]

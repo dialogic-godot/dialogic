@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cfcs7lb6gqnmd"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.gd" id="1_isys8"]
+[ext_resource type="Script" uid="uid://bcsda7vbawlgv" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_exports.gd" id="1_isys8"]
 
 [node name="Settings" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 35)

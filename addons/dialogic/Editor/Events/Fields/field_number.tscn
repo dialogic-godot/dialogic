@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://kdpp3mibml33"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
+[ext_resource type="Script" uid="uid://dbegwhxegm271" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
 [ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
 [ext_resource type="Texture2D" uid="uid://brjikovneb63n" path="res://addons/dialogic/Editor/Images/Interactable/decrement_icon.svg" id="4_ph52o"]
 

@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://dlx7jcvm52tyw"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd" id="1_jdhpk"]
-[ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gdshader" id="2_1mhvf"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_syv35"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="4_7bm4b"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6_5gd03"]
+[ext_resource type="Script" uid="uid://bminl7x3r40vc" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd" id="1_jdhpk"]
+[ext_resource type="Shader" uid="uid://byskpb7ypvuab" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gdshader" id="2_1mhvf"]
+[ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_syv35"]
+[ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="4_7bm4b"]
+[ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="6_5gd03"]
 
 [sub_resource type="Curve" id="Curve_0j8nu"]
 _data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
@@ -22,13 +22,13 @@ noise = SubResource("FastNoiseLite_lsfnp")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_60xbe"]
 resource_local_to_scene = true
 shader = ExtResource("2_1mhvf")
+shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
 shader_parameter/radius = 200.0
 shader_parameter/box_size = Vector2(100, 100)
 shader_parameter/box_padding = 10.0
 shader_parameter/wobble_amount = 0.75
 shader_parameter/wobble_speed = 10.0
 shader_parameter/wobble_detail = 0.51
-shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_kr7hw")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
 content_margin_left = 5.0

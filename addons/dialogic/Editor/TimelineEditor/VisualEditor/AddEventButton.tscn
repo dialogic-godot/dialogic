@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://depcrpeh3f4rv"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
+[ext_resource type="Script" uid="uid://dofrrscd4c61l" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx31r"]
 content_margin_left = 4.0

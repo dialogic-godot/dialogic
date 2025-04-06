@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cn674foxwedqu"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Input/full_advance_input_layer.gd" id="1_3cmha"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Text/node_input.gd" id="2_dxpjw"]
+[ext_resource type="Script" uid="uid://dwml743wmb7mn" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Input/full_advance_input_layer.gd" id="1_3cmha"]
+[ext_resource type="Script" uid="uid://ctog34kdg222q" path="res://addons/dialogic/Modules/Text/node_input.gd" id="2_dxpjw"]
 
 [node name="FullAdvanceInputLayer" type="Control"]
 layout_mode = 3

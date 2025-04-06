@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cwe3r2tbh2og1"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
+[ext_resource type="Script" uid="uid://myogqmakusx3" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
 [ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="2_54pks"]
 [ext_resource type="Texture2D" uid="uid://dx3o2ild56i76" path="res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" id="2_ilyps"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ba5w02lm3ewkj"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main_exports.gd" id="1_mttrr"]
+[ext_resource type="Script" uid="uid://cp0o6sycac85b" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_p_section_main_exports.gd" id="1_mttrr"]
 
 [node name="MainExports" type="VBoxContainer"]
 offset_right = 374.0

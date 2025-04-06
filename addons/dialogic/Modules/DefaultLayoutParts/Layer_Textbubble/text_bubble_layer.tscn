@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d2it0xiap3gnt"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble_layer.gd" id="1_b37je"]
+[ext_resource type="Script" uid="uid://dcae6nsh8fgtp" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble_layer.gd" id="1_b37je"]
 
 [node name="TextBubbleLayer" type="Control"]
 layout_mode = 3

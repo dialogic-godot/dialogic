@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cvgf4c6gg0tsy"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_TextInput/text_input_layer.gd" id="1_7ahrn"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/TextInput/node_text_input.gd" id="1_mxdep"]
+[ext_resource type="Script" uid="uid://cjdvjwjrj86sj" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_TextInput/text_input_layer.gd" id="1_7ahrn"]
+[ext_resource type="Script" uid="uid://biqpjv0qyefvf" path="res://addons/dialogic/Modules/TextInput/node_text_input.gd" id="1_mxdep"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3dpjm"]
 content_margin_left = 15.0

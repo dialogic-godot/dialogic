@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dl08ubinx6ugu"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_flex_value.gd" id="1_m5nnp"]
+[ext_resource type="Script" uid="uid://bl8pqdbnw005y" path="res://addons/dialogic/Editor/Events/Fields/field_flex_value.gd" id="1_m5nnp"]
 [ext_resource type="PackedScene" uid="uid://d3bhehatwoio" path="res://addons/dialogic/Editor/Events/Fields/field_options_fixed.tscn" id="3_h10fc"]
 
 [node name="FlexValue" type="HBoxContainer"]
