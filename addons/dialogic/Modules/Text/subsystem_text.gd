@@ -74,10 +74,10 @@ var _autopauses := {}
 ####################################################################################################
 
 func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	update_dialog_text('', true)
+	update_dialog_text("", true)
 	update_name_label(null)
-	dialogic.current_state_info['speaker'] = ""
-	dialogic.current_state_info['text'] = ''
+	dialogic.current_state_info["speaker"] = ""
+	dialogic.current_state_info["text"] = ""
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
 
@@ -90,9 +90,7 @@ func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) ->
 func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_textbox(dialogic.current_state_info.get('text', ''), true)
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
-	var character: DialogicCharacter = null
-	if dialogic.current_state_info.get('speaker', ""):
-		character = load(dialogic.current_state_info.get('speaker', ""))
+	var character: DialogicCharacter = get_current_speaker()
 
 	if character:
 		update_name_label(character)
@@ -190,18 +188,18 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 
 func _on_dialog_text_finished() -> void:
-	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
+	text_finished.emit({"text":dialogic.current_state_info["text"], "character":dialogic.current_state_info["speaker"]})
 
 
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter):
-	var character_path := character.resource_path if character else ""
-	var current_character_path: String = dialogic.current_state_info.get("speaker", "")
+	var character_id := character.get_identifier() if character else ""
+	var current_character_id: String = dialogic.current_state_info.get("speaker", "")
 
-	if character_path != current_character_path:
-		dialogic.current_state_info['speaker'] = character_path
+	if character_id != current_character_id:
 		speaker_updated.emit(character)
+		dialogic.current_state_info["speaker"] = character_id
 
 	var name_label_text := get_character_name_parsed(character)
 
@@ -214,8 +212,19 @@ func update_name_label(character:DialogicCharacter):
 			name_label.self_modulate = Color(1,1,1,1)
 
 
+func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:String) -> void:
+	if character.custom_info.get("sound_moods", {}).is_empty():
+		update_typing_sound_mood()
+	elif mood in character.custom_info.get("sound_moods", {}):
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
+	else:
+		var default_mood := character.custom_info.get("sound_mood_default")
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
+		
+
+
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
-	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
+	for typing_sound in get_tree().get_nodes_in_group("dialogic_type_sounds"):
 		typing_sound.load_overwrite(mood)
 
 
@@ -447,19 +456,12 @@ func get_character_name_parsed(character:DialogicCharacter) -> String:
 ## Returns the [class DialogicCharacter] of the current speaker.
 ## If there is no current speaker or the speaker is not found, returns null.
 func get_current_speaker() -> DialogicCharacter:
-	var speaker_path: String = dialogic.current_state_info.get("speaker", "")
+	var speaker_id: String = dialogic.current_state_info.get("speaker", "")
 
-	if speaker_path.is_empty():
+	if speaker_id.is_empty():
 		return null
 
-	var speaker_resource := load(speaker_path)
-
-	if speaker_resource == null:
-		return null
-
-	var speaker_character := speaker_resource as DialogicCharacter
-
-	return speaker_character
+	return DialogicResourceUtil.get_character_resource(speaker_id)
 
 
 func _update_user_speed(_user_speed:float) -> void:
@@ -596,9 +598,9 @@ func effect_signal(_text_node:Control, _skipped:bool, argument:String) -> void:
 
 func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
-	if dialogic.current_state_info.get('speaker', ""):
+	if get_current_speaker():
 		update_typing_sound_mood(
-			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
+			get_current_speaker().custom_info.get('sound_moods', {}).get(argument, {}))
 
 
 var modifier_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\>]+(\/[^\>]*)\>")
