@@ -37,6 +37,10 @@ func _execute() -> void:
 		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
 
+
+func _is_branch_starter() -> bool:
+	return dialogic.Choices.is_question(dialogic.current_timeline_events.find(self))
+
 #endregion
 
 
@@ -53,7 +57,7 @@ func _init() -> void:
 
 
 # return a control node that should show on the END BRANCH node
-func get_end_branch_control() -> Control:
+func _get_end_branch_control() -> Control:
 	return load(get_script().resource_path.get_base_dir().path_join('ui_choice_end.tscn')).instantiate()
 #endregion
 

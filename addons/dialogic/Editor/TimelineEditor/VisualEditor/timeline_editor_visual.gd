@@ -418,7 +418,7 @@ func create_end_branch_event(at_index:int, parent_node:Node) -> Node:
 	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
 	parent_node.end_node = end_branch_event
 	end_branch_event.parent_node = parent_node
-	end_branch_event.add_end_control(parent_node.resource.get_end_branch_control())
+	end_branch_event.add_end_control(parent_node.resource._get_end_branch_control())
 	%Timeline.add_child(end_branch_event)
 	%Timeline.move_child(end_branch_event, at_index)
 	return end_branch_event
