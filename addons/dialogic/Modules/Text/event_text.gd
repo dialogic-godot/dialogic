@@ -56,50 +56,50 @@ func _execute() -> void:
 	if text.is_empty():
 		finish()
 		return
-	
-	
+
+
 	## Change Portrait and Active Speaker
 	if dialogic.has_subsystem("Portraits"):
 		if character:
-			
+
 			dialogic.Portraits.change_speaker(character, portrait)
-			
+
 			if portrait and dialogic.Portraits.is_character_joined(character):
 				dialogic.Portraits.change_character_portrait(character, portrait)
-			
+
 		else:
 			dialogic.Portraits.change_speaker(null)
-	
+
 	## Change and Type Sound Mood
 	if character:
 		dialogic.Text.update_name_label(character)
-		
+
 		var current_portrait: String = portrait
 		if portrait.is_empty():
 			portrait = dialogic.current_state_info["portraits"].get(character.resource_path, {}).get("portrait", "")
-		
+
 		var current_portrait_sound_mood: String = character.portraits.get(current_portrait, {}).get("sound_mood", "")
 		dialogic.Text.update_typing_sound_mood_from_character(character, current_portrait_sound_mood)
-	
+
 	else:
 		dialogic.Text.update_name_label(null)
 		dialogic.Text.update_typing_sound_mood()
-		
-	
+
+
 	## Handle style changes
 	if dialogic.has_subsystem("Styles"):
 		var current_base_style: String = dialogic.current_state_info.get("base_style")
 		var current_style: String = dialogic.current_state_info.get("style", "")
 		var character_style: String = "" if not character else character.custom_info.get("style", "")
-		
+
 		## Change back to base style, if another characters style is currently used
 		if (not character or character_style.is_empty()) and (current_base_style != current_style):
 			dialogic.Styles.change_style(dialogic.current_state_info.get("base_style", "Default"))
 			await dialogic.get_tree().process_frame
-		
+
 		## Change to the characters style if this character has one
 		elif character and not character_style.is_empty():
-			dialogic.Styles.change_style(current_style, false)
+			dialogic.Styles.change_style(character_style, false)
 			await dialogic.get_tree().process_frame
 
 	_connect_signals()
