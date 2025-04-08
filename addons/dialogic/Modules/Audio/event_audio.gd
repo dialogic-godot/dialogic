@@ -18,7 +18,7 @@ var channel_name := "":
 	set(value):
 		if channel_name != channel_name_regex.sub(value, '', true):
 			channel_name = channel_name_regex.sub(value, '', true)
-			var defaults := DialogicUtil.get_audio_channel_defaults().get(channel_name, {})
+			var defaults: Dictionary = DialogicUtil.get_audio_channel_defaults().get(channel_name, {})
 			if defaults:
 				fade_length = defaults.fade_length
 				volume = defaults.volume

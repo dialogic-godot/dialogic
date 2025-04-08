@@ -19,7 +19,6 @@ extends DialogicSubsystem
 signal audio_started(info: Dictionary)
 
 
-
 ## Audio node for holding audio players
 var audio_node := Node.new()
 ## Sound node for holding sound players
@@ -32,7 +31,6 @@ var current_audio_channels: Dictionary = {}
 
 ## Clears the state on this subsystem and stops all audio.
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	var info: Dictionary = dialogic.current_state_info.get("audio", {})
 	stop_all_channels()
 	stop_all_one_shot_sounds()
 

@@ -105,7 +105,9 @@ var editor_list: Array = []
 var this_folder: String = get_script().resource_path.get_base_dir()
 
 ## Singal that notifies the visual editor block to update
+@warning_ignore("unused_signal")
 signal ui_update_needed
+@warning_ignore("unused_signal")
 signal ui_update_warning(text:String)
 
 

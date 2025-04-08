@@ -3,7 +3,7 @@ extends DialogicSubsystem
 ## Subsystem that holds methods for jumping to specific labels, or return to the previous jump.
 
 
-@warning_ignore("unused_signal")
+@warning_ignore("unused_signal") # this is emitted from the jump event
 ## Emitted when a jump event switches from one timeline to another. Gives a dictionary witht the keys:
 ## [br]
 ## Key                  | Value Type              | Value [br]

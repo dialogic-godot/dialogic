@@ -3,7 +3,9 @@ extends DialogicSubsystem
 ## Subsystem that handles showing of input promts.
 
 ## Signal that is fired when a confirmation button was pressed.
+@warning_ignore("unused_signal") # This is emitted by the DialogTextInput node
 signal input_confirmed(input:String)
+
 signal input_shown(info:Dictionary)
 
 

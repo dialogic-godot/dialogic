@@ -1,3 +1,4 @@
+@tool
 extends DialogicIndexer
 
 

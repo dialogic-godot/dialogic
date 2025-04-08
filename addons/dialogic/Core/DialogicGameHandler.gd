@@ -91,8 +91,11 @@ signal timeline_ended
 signal event_handled(resource: DialogicEvent)
 
 ## Emitted when a [class SignalEvent] event was reached.
+@warning_ignore("unused_signal") # This is emitted by the signal event.
 signal signal_event(argument: Variant)
+
 ## Emitted when a signal event gets fired from a [class TextEvent] event.
+@warning_ignore("unused_signal") # This is emitted by the text subsystem.
 signal text_signal(argument: String)
 
 
@@ -228,10 +231,10 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
-	
+
 	if not current_timeline == dialog_ending_timeline:
 		timeline_started.emit()
-	
+
 	handle_next_event()
 
 
