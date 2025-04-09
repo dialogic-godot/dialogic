@@ -25,6 +25,7 @@ extends DialogicLayoutLayer
 @export_subgroup('Behaviour')
 @export var behaviour_distance: int = 50
 @export var behaviour_direction: Vector2 = Vector2(1, -1)
+@export var behaviour_mouse_filter: Control.MouseFilter
 
 @export_group('Name Label')
 @export_subgroup("Name Label")
@@ -118,6 +119,7 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 	## BEHAVIOUR
 	bubble.safe_zone = behaviour_distance
 	bubble.base_direction = behaviour_direction
+	bubble.change_mouse_filter(behaviour_mouse_filter)
 
 
 	## NAME LABEL SETTINGS
