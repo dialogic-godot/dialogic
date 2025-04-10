@@ -489,8 +489,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 	elif not '[' in line_until_caret and symbol == ' ' and line_until_caret.split(" ", false).size() > 1:
 		if not line.begins_with("leave"):
-			for position in get_position_suggestions():
-				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
+			if not line_until_caret.split(" ", false)[-1] in get_position_suggestions():
+				for position in get_position_suggestions():
+					TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
 
 	# Shortcode Part
 	if '[' in line_until_caret:
