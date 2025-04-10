@@ -505,8 +505,10 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 				if line.begins_with('update'):
 					suggest_parameter("repeat", line, TextNode)
 			if line.begins_with("update"):
-				for param in ["move_time", "move_trans", "move_ease"]:
+				for param in ["move_time", "move_trans", "move_ease", "fade"]:
 					suggest_parameter(param, line, TextNode)
+				if "fade=" in line_until_caret:
+					suggest_parameter("fade_length", line, TextNode)
 			if not line.begins_with('leave'):
 				for param in ["mirrored", "z_index", "extra_data"]:
 					suggest_parameter(param, line, TextNode)
