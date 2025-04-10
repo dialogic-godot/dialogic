@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cp463rpri5j8a"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/settings_portraits.gd" id="2"]
+[ext_resource type="Script" uid="uid://c3hdycwp0hrdm" path="res://addons/dialogic/Modules/Character/settings_portraits.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_dce78"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_m06d8"]

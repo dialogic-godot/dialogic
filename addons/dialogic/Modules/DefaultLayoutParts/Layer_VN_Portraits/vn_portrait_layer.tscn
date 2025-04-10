@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cy1y14inwkplb"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.gd" id="1_1i7em"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="1_rxdcc"]
+[ext_resource type="Script" uid="uid://cx1i44s2olq2d" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.gd" id="1_1i7em"]
+[ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="1_rxdcc"]
 
 [node name="VN_PortraitLayer" type="Control"]
 layout_mode = 3

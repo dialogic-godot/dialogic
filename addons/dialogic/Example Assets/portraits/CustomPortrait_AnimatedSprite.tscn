@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cyns86lydp1tl"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/portraits/CustomPortrait_AnimatedSprite.gd" id="1_63c5k"]
+[ext_resource type="Script" uid="uid://b0dpsqdeb27km" path="res://addons/dialogic/Example Assets/portraits/CustomPortrait_AnimatedSprite.gd" id="1_63c5k"]
 [ext_resource type="Texture2D" uid="uid://bfkpn7mrd786b" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5.png" id="2_15o4t"]
 [ext_resource type="Texture2D" uid="uid://s2jsr1aqiu84" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png" id="3_qen6e"]
 

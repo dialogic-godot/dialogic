@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bar0t74j5v4sa"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_image_preview.gd" id="1_e5vbc"]
+[ext_resource type="Script" uid="uid://u6evsmx7tynf" path="res://addons/dialogic/Editor/Events/Fields/field_image_preview.gd" id="1_e5vbc"]
 
 [node name="Field_Image_Preview" type="TextureRect"]
 anchors_preset = 15

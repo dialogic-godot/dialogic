@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cuoywrmvda1yg"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/example_history_item.gd" id="1_dgoja"]
+[ext_resource type="Script" uid="uid://67t6pr2eatac" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/example_history_item.gd" id="1_dgoja"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
 content_margin_left = 5.0

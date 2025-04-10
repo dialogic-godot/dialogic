@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://iypxcctv080u"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_bool_button.gd" id="1_t1n1f"]
+[ext_resource type="Script" uid="uid://do3x030t162u1" path="res://addons/dialogic/Editor/Events/Fields/field_bool_button.gd" id="1_t1n1f"]
 
 [node name="Field_BoolButton" type="Button"]
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 1)

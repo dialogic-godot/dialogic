@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cl6g6ymkhjven"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Background/DefaultBackgroundScene/default_background.gd" id="1_nkdrp"]
+[ext_resource type="Script" uid="uid://ci7s5odxo7543" path="res://addons/dialogic/Modules/Background/DefaultBackgroundScene/default_background.gd" id="1_nkdrp"]
 
 [node name="DefaultBackground" type="Control"]
 layout_mode = 3

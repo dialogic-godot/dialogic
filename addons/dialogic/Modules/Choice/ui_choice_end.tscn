@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cn0wbb2lk0s22"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Choice/ui_choice_end.gd" id="1_7qd85"]
+[ext_resource type="Script" uid="uid://d28x7h2ufh3dd" path="res://addons/dialogic/Modules/Choice/ui_choice_end.gd" id="1_7qd85"]
 
 [node name="Choice_End" type="HBoxContainer"]
 anchors_preset = 15

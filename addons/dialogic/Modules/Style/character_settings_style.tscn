@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://fgplvp0f3giu"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Style/character_settings_style.gd" id="2"]
+[ext_resource type="Script" uid="uid://dbc2xad3oixyw" path="res://addons/dialogic/Modules/Style/character_settings_style.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="2_a46q0"]
 
 [node name="Style" type="VBoxContainer"]

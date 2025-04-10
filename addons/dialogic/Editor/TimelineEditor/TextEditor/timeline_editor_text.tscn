@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://defdeav8rli6o"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
+[ext_resource type="Script" uid="uid://dshp0vy2xrxv" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
 
 [node name="TimelineTextEditor" type="CodeEdit"]
 offset_top = 592.0

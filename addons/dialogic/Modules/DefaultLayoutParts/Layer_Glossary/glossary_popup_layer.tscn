@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsbwnp5hegnu3"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Glossary/glossary_popup_layer.gd" id="1_3nmfj"]
+[ext_resource type="Script" uid="uid://o2cnjam8bomr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Glossary/glossary_popup_layer.gd" id="1_3nmfj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)

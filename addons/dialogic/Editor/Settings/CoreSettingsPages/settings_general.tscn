@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://b873ho41sklv8"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_general.gd" id="2"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_tools.gd" id="2_3xeuv"]
+[ext_resource type="Script" uid="uid://chb81lvjh47jr" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_general.gd" id="2"]
+[ext_resource type="Script" uid="uid://bo0dfmsyky1mm" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_tools.gd" id="2_3xeuv"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/tool_resave.gd" id="3_dbfvv"]
+[ext_resource type="Script" uid="uid://vg4wbm0n64ws" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/tool_resave.gd" id="3_dbfvv"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_i7rug"]
 
 [node name="General" type="VBoxContainer"]

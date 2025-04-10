@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dm5hxmhyyxgq"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/field_bool_check.gd" id="1_ckmtx"]
+[ext_resource type="Script" uid="uid://ddxcyihcistll" path="res://addons/dialogic/Editor/Events/Fields/field_bool_check.gd" id="1_ckmtx"]
 
 [node name="Field_BoolCheck" type="CheckButton"]
 offset_right = 44.0

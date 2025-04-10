@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c2qgetjc3mfo3"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Audio/settings_audio.gd" id="1_2iyyr"]
+[ext_resource type="Script" uid="uid://cqyhm6offcitc" path="res://addons/dialogic/Modules/Audio/settings_audio.gd" id="1_2iyyr"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_o1ban"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_bx557"]
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="4_xfyvc"]

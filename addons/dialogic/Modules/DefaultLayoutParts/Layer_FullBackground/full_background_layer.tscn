@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c1k5m0w3r40xf"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.gd" id="1_tu40u"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_ghan2"]
+[ext_resource type="Script" uid="uid://bqdylb4maacf0" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.gd" id="1_tu40u"]
+[ext_resource type="Script" uid="uid://oxcjhq2817c7" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_ghan2"]
 
 [node name="BackgroundLayer" type="Control"]
 layout_direction = 2
