@@ -12,6 +12,10 @@ extends Button
 ## not supported on buttons at this point.
 
 
+## Emitted when the choice is selected. Unless overridden, this is when the button or its shortcut is pressed.
+signal choice_selected
+
+
 ## Used to identify what choices to put on. If you leave it at -1, choices will be distributed automatically.
 @export var choice_index: int = -1
 
@@ -31,6 +35,24 @@ func _ready() -> void:
 	hide()
 
 
+## Custom choice buttons can override this for specialized behavior when the choice button is pressed.
+func _pressed():
+	choice_selected.emit()
+
+
+## Custom choice buttons can override this if their behavior should change
+## based on event data. If the custom choice button does not override
+## visibility, disabled-ness, nor the choice text, consider
+## calling super(choice_info) at the start of the override.
+##
+## The choice_info Dictionary has the following keys:
+## - event_index:    The index of the choice event in the timeline.
+## - button_index:   The relative index of the choice (starts from 1).
+## - visible:        If the choice should be visible.
+## - disabled:       If the choice should be selectable.
+## - text:           The text of the choice.
+## - visited_before: If the choice has been selected before. Only available is the History submodule is enabled.
+## - *:              Information from the event's additional info.
 func _load_info(choice_info: Dictionary) -> void:
 	set_choice_text(choice_info.text)
 	visible = choice_info.visible

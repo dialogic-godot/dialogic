@@ -56,6 +56,10 @@ extends DialogicLayoutLayer
 @export var choices_layout_force_lines: bool = false
 @export_file('*.tres', "*.res") var choices_base_theme: String = ""
 
+@export_subgroup('Behavior')
+@export var maximum_choices: int = 5
+@export_file('*.tscn') var choices_custom_button: String = ""
+
 const TextBubble := preload("res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd")
 
 var bubbles: Array[TextBubble] = []
@@ -150,9 +154,9 @@ func bubble_apply_overrides(bubble:TextBubble) -> void:
 
 	## CHOICE SETTINGS
 	if choices_layout_force_lines:
-		bubble.add_choice_container(VBoxContainer.new(), choices_layout_alignment)
+		bubble.add_choice_container(VBoxContainer.new(), choices_layout_alignment, choices_custom_button, maximum_choices)
 	else:
-		bubble.add_choice_container(HFlowContainer.new(), choices_layout_alignment)
+		bubble.add_choice_container(HFlowContainer.new(), choices_layout_alignment, choices_custom_button, maximum_choices)
 
 	var choice_theme: Theme = null
 	if choices_base_theme.is_empty() or not ResourceLoader.exists(choices_base_theme):

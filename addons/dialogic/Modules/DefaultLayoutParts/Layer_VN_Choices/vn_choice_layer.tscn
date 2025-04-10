@@ -35,61 +35,6 @@ mouse_filter = 2
 alignment = 1
 metadata/_edit_layout_mode = 1
 
-[node name="DialogicNode_ChoiceButton1" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton2" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton3" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton4" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton5" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton6" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton7" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton8" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton9" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton10" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
-[node name="DialogicNode_ChoiceButton11" type="Button" parent="Choices"]
-layout_mode = 2
-text = "Some text"
-script = ExtResource("1_w632k")
-
 [node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="Choices"]
 unique_name_in_owner = true
 script = ExtResource("2_mgko6")
