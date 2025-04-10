@@ -200,3 +200,11 @@ func get_speaker_canvas_position() -> Vector2:
 		if node_to_point_at is CanvasItem:
 			base_position = (node_to_point_at as CanvasItem).get_global_transform_with_canvas().origin
 	return base_position
+
+
+## Changes the property of mouse filter of the bubble and its children (text and label).
+func change_mouse_filter(mouse_filter: Control.MouseFilter) -> void:
+	mouse_filter = mouse_filter
+	text.mouse_filter = mouse_filter
+	name_label_box.mouse_filter = mouse_filter
+	name_label_holder.mouse_filter = mouse_filter
