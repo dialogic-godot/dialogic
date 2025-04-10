@@ -178,8 +178,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 			if not fade_animation.is_empty() and fade_length > 0:
 				var fade_out := _animate_node(previous_portrait, fade_animation, fade_length, 1, true)
 				var _fade_in := _animate_node(portrait_node, fade_animation, fade_length, 1, false)
-				await fade_out.finished
-				previous_portrait.queue_free()
+				fade_out.finished.connect(previous_portrait.queue_free)
 			else:
 				previous_portrait.queue_free()
 
@@ -479,7 +478,7 @@ func add_character(character: DialogicCharacter, container: DialogicNode_Portrai
 		return null
 
 ## Changes the portrait of a character. Only works with joined characters.
-func change_character_portrait(character: DialogicCharacter, portrait: String, fade_animation:="DEFAULT", fade_length := -1.0) -> void:
+func change_character_portrait(character: DialogicCharacter, portrait: String, fade_animation:="", fade_length := -1.0) -> void:
 	if not is_character_joined(character):
 		return
 
@@ -488,7 +487,7 @@ func change_character_portrait(character: DialogicCharacter, portrait: String, f
 	if dialogic.current_state_info.portraits[character.resource_path].portrait == portrait:
 		return
 
-	if fade_animation == "DEFAULT":
+	if fade_animation == "":
 		fade_animation = ProjectSettings.get_setting('dialogic/animations/cross_fade_default', "Fade Cross")
 		fade_length = ProjectSettings.get_setting('dialogic/animations/cross_fade_default_length', 0.5)
 
@@ -730,7 +729,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 	if speaker != prev_speaker:
 		if is_character_joined(prev_speaker):
 			dialogic.current_state_info["portraits"][prev_speaker.resource_path].node.get_child(-1)._unhighlight()
-		
+
 		if is_character_joined(speaker):
 			dialogic.current_state_info["portraits"][speaker.resource_path].node.get_child(-1)._highlight()
 
