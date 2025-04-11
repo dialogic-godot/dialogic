@@ -8,6 +8,10 @@ signal style_changed(info:Dictionary)
 #region STATE
 ####################################################################################################
 
+func _ready() -> void:
+	DialogicStylesUtil.update_style_directory()
+
+
 func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
 
@@ -33,7 +37,7 @@ func change_style(style_name := "", is_base_style := true) -> Node:
 ## [br] If [param state_reload] is true, the current state will be loaded into a new layout scenes nodes.
 ## That should not be done before calling start() or load() as it would be unnecessary or cause double-loading.
 func load_style(style_name := "", parent: Node = null, is_base_style := true, state_reload := false) -> Node:
-	var style := DialogicUtil.get_style_by_name(style_name)
+	var style := DialogicStylesUtil.get_style(style_name)
 
 	var signal_info := {'style':style_name}
 	dialogic.current_state_info['style'] = style_name
@@ -92,7 +96,7 @@ func create_layout(style: DialogicStyle, parent: Node = null) -> DialogicLayoutB
 	var base_scene: DialogicLayoutBase
 	var base_layer_info := style.get_layer_inherited_info("")
 	if base_layer_info.path.is_empty():
-		base_scene = DialogicUtil.get_default_layout_base().instantiate()
+		base_scene = DialogicStylesUtil.get_default_layout_base().instantiate()
 	else:
 		base_scene = load(base_layer_info.path).instantiate()
 
@@ -171,5 +175,9 @@ func get_first_node_in_layout(group_name: String) -> Node:
 		if layout_node.is_ancestor_of(node):
 			return node
 	return null
+
+
+func preload_style(name_or_path:String = "") -> void:
+	DialogicStylesUtil.start_style_preload(name_or_path)
 
 #endregion

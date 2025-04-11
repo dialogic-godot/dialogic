@@ -78,7 +78,7 @@ func list_dir(subdir:='') -> Array:
 func list_special_resources(subdir:='', extension:="") -> Dictionary:
 	var dict := {}
 	for i in list_dir(subdir):
-		if extension.is_empty() or i.ends_with(extension):
+		if extension.is_empty() or i.ends_with(extension) or (extension == ".gd" and i.ends_with(".gdc")):
 			dict[DialogicUtil.pretty_name(i).to_lower()] = {"path":i}
 	return dict
 

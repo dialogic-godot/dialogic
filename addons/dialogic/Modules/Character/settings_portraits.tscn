@@ -19,8 +19,7 @@ size_flags_stretch_ratio = 0.5
 [node name="Title2" type="Label" parent="PositionsTitle"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
-text = "Position Suggestions
-"
+text = "Position Suggestions"
 
 [node name="HintTooltip" parent="PositionsTitle" instance=ExtResource("2_dce78")]
 layout_mode = 2
@@ -40,8 +39,7 @@ size_flags_stretch_ratio = 0.5
 [node name="Title2" type="Label" parent="DefaultSceneTitle"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
-text = "Default Portrait Scene
-"
+text = "Default Portrait Scene"
 
 [node name="HintTooltip" parent="DefaultSceneTitle" instance=ExtResource("2_dce78")]
 layout_mode = 2
@@ -70,8 +68,7 @@ size_flags_stretch_ratio = 0.5
 [node name="Title2" type="Label" parent="Animations2"]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
-text = "Default Animations
-"
+text = "Default Animations"
 
 [node name="HintTooltip" parent="Animations2" instance=ExtResource("2_dce78")]
 layout_mode = 2

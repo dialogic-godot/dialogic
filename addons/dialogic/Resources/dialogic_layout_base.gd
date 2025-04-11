@@ -74,7 +74,7 @@ func _get_persistent_info() -> Dictionary:
 
 
 ## To be overwritten. Apply any info that a previous style might have stored and this style should use.
-func _load_persistent_info(info: Dictionary) -> void:
+func _load_persistent_info(_info: Dictionary) -> void:
 	pass
 
 #endregion

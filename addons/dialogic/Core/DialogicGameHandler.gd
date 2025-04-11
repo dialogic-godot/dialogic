@@ -91,8 +91,11 @@ signal timeline_ended
 signal event_handled(resource: DialogicEvent)
 
 ## Emitted when a [class SignalEvent] event was reached.
+@warning_ignore("unused_signal") # This is emitted by the signal event.
 signal signal_event(argument: Variant)
+
 ## Emitted when a signal event gets fired from a [class TextEvent] event.
+@warning_ignore("unused_signal") # This is emitted by the text subsystem.
 signal text_signal(argument: String)
 
 
@@ -162,6 +165,8 @@ func _ready() -> void:
 
 	clear()
 
+	DialogicResourceUtil.update_event_cache()
+
 	dialog_ending_timeline = DialogicTimeline.new()
 	dialog_ending_timeline.from_text("[clear]")
 
@@ -204,10 +209,10 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
-		if (timeline as String).contains("res://") or (timeline as String).contains("uid://"):
-			timeline = load((timeline as String))
+		if "://" in timeline:
+			timeline = load(timeline)
 		else:
-			timeline = DialogicResourceUtil.get_timeline_resource((timeline as String))
+			timeline = DialogicResourceUtil.get_timeline_resource(timeline)
 
 	if timeline == null:
 		printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
@@ -228,10 +233,10 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
-	
+
 	if not current_timeline == dialog_ending_timeline:
 		timeline_started.emit()
-	
+
 	handle_next_event()
 
 
@@ -240,7 +245,11 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
-		timeline_resource = load((timeline_resource as String))
+		if "://" in timeline_resource:
+			timeline_resource = load(timeline_resource)
+		else:
+			timeline_resource = DialogicResourceUtil.get_timeline_resource(timeline_resource)
+
 		if timeline_resource == null:
 			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
 			return null

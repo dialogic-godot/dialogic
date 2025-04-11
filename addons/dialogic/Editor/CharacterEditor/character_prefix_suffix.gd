@@ -69,7 +69,7 @@ func _load_prefix_data(data: Dictionary) -> void:
 
 ## Whenever the user makes a save to the character, we save the prefix and suffix.
 func _save_changes(character: DialogicCharacter) -> DialogicCharacter:
-	if not character.custom_info:
+	if not character:
 		printerr("[Dialogic] Unable to save Prefix and Suffix, the character is missing.")
 		return character
 

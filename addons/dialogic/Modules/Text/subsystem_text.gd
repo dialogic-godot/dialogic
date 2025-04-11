@@ -13,10 +13,12 @@ extends DialogicSubsystem
 ## `character` | [type DialogicCharacter]  | The character that says this text. [br]
 ## `portrait`  | [type String] | The name of the portrait the character will use. [br]
 ## `append`    | [type bool]   | Whether the text will be appended to the previous text. [br]
+@warning_ignore("unused_signal") # This is emitted by the text event.
 signal about_to_show_text(info:Dictionary)
 ## Emitted when a text event (or a new text section) starts displaying.
 ## This will be AFTER the textox animation, while [signal about_to_show_text] is before.
 ## Gives a dictionary with the same values as [signal about_to_show_text]
+@warning_ignore("unused_signal") # This is emitted by the text event.
 signal text_started(info:Dictionary)
 ## When the text has finished revealing.
 ## Gives a dictionary with the keys text and character.
@@ -37,10 +39,13 @@ signal animation_textbox_hide
 signal animation_textbox_new_text
 
 ## Emitted when a meta text on any DialogText node is hovered.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_hover_started(meta:Variant)
 ## Emitted when a meta text on any DialogText node is not hovered anymore.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_hover_ended(meta:Variant)
 ## Emitted when a meta text on any DialogText node is clicked.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_clicked(meta:Variant)
 
 #endregion
@@ -218,9 +223,9 @@ func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:S
 	elif mood in character.custom_info.get("sound_moods", {}):
 		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
 	else:
-		var default_mood := character.custom_info.get("sound_mood_default")
+		var default_mood : String = character.custom_info.get("sound_mood_default", "")
 		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
-		
+
 
 
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:

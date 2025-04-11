@@ -22,6 +22,7 @@ var time: float
 var bg_holder: DialogicNode_BackgroundHolder
 
 
+@warning_ignore("unused_signal") # Used by scripts inheriting this class
 signal transition_finished
 
 
