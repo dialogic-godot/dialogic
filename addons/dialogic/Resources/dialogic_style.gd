@@ -73,7 +73,7 @@ func get_layer_info(id:String) -> Dictionary:
 		if layer_resource.scene != null:
 			info.path = layer_resource.scene.resource_path
 		elif id == "":
-			info.path = DialogicUtil.get_default_layout_base().resource_path
+			info.path = DialogicStylesUtil.get_default_layout_base().resource_path
 
 		info.overrides = layer_resource.overrides.duplicate()
 

@@ -13,6 +13,7 @@ static func update() -> void:
 	update_directory('.dtl')
 	update_label_cache()
 	update_audio_channel_cache()
+	DialogicStylesUtil.update_style_directory()
 
 
 #region RESOURCE DIRECTORIES

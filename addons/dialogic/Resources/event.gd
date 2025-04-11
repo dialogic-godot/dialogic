@@ -443,6 +443,9 @@ func _get_icon() -> Resource:
 
 
 func set_default_color(value:Variant) -> void:
+	# Skip in running games
+	if not Engine.is_editor_hint():
+		return
 	dialogic_color_name = value
 	event_color = DialogicUtil.get_color(value)
 
