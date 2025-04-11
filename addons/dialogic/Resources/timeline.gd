@@ -127,11 +127,7 @@ func process() -> void:
 		## Now we process the event into a resource
 		## by checking on each event if it recognizes this string
 		var event_content: String = line_stripped
-		var event: DialogicEvent
-		for i in event_cache:
-			if i._test_event_string(event_content):
-				event = i.duplicate()
-				break
+		var event: DialogicEvent = event_from_string(event_content, event_cache)
 
 		event.empty_lines_above = empty_lines
 		# add the following lines until the event says it's full or there is an empty line
@@ -149,7 +145,7 @@ func process() -> void:
 			event_content += "\n"+following_line_stripped
 
 		event.event_node_as_text = event_content
-		await event._load_from_string(event_content)
+		event._load_from_string(event_content)
 
 		processed_events.append(event)
 		prev_was_opener = event.can_contain_events
@@ -180,3 +176,10 @@ func clean() -> void:
 			for con_out in event.get_signal_connection_list(sig.name):
 				con_out.signal.disconnect(con_out.callable)
 	unreference()
+
+
+static func event_from_string(event_content:String, event_cache:Array) -> DialogicEvent:
+	for i in event_cache:
+		if i._test_event_string(event_content):
+			return i.duplicate()
+	return DialogicTextEvent.new()

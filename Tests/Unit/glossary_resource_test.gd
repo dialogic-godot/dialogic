@@ -6,7 +6,7 @@ const NAME_ENTRY := "Example Name"
 const EXAMPLE_TITLE := "Example Title"
 const ALTERNATIVE_ENTRIES := ["A", "BE", "VERY LONG ENTRY"]
 
-const SAMPLE_ENTRY := {
+var SAMPLE_ENTRY := {
 	DialogicGlossary.TITLE_PROPERTY: EXAMPLE_TITLE,
 	DialogicGlossary.NAME_PROPERTY: NAME_ENTRY,
 	DialogicGlossary.ALTERNATIVE_PROPERTY: ALTERNATIVE_ENTRIES
@@ -18,7 +18,7 @@ const SAMPLE_ENTRY := {
 func test_add_entry() -> void:
 	var glossary: DialogicGlossary = DialogicGlossary.new()
 
-	assert(glossary.try_add_entry(SAMPLE_ENTRY), "Unable to add entry.")
+	assert(glossary.try_add_entry(SAMPLE_ENTRY.duplicate()), "Unable to add entry.")
 
 	const NAME_COUNTER := 1
 	var total_entry_count := ALTERNATIVE_ENTRIES.size() + NAME_COUNTER
@@ -36,7 +36,7 @@ func test_add_entry() -> void:
 func test_replace_entries() -> void:
 	var glossary: DialogicGlossary = DialogicGlossary.new()
 
-	assert(glossary.try_add_entry(SAMPLE_ENTRY), "Unable to add entry.")
+	assert(glossary.try_add_entry(SAMPLE_ENTRY.duplicate()), "Unable to add entry.")
 
 	const NEW_NAME := "NEW NAME"
 
@@ -55,7 +55,7 @@ func test_replace_entries() -> void:
 func test_remove_entry() -> void:
 	var glossary: DialogicGlossary = DialogicGlossary.new()
 
-	assert(glossary.try_add_entry(SAMPLE_ENTRY), "Unable to add entry.")
+	assert(glossary.try_add_entry(SAMPLE_ENTRY.duplicate()), "Unable to add entry.")
 
 	const NAME_COUNTER := 1
 	var total_entry_count := ALTERNATIVE_ENTRIES.size() + NAME_COUNTER
@@ -72,5 +72,5 @@ func test_remove_entry() -> void:
 func test_add_duplicates() -> void:
 	var glossary: DialogicGlossary = DialogicGlossary.new()
 
-	assert(glossary.try_add_entry(SAMPLE_ENTRY), "Unable to add entry.")
-	assert(not glossary.try_add_entry(SAMPLE_ENTRY), "Entry should not have been added.")
+	assert(glossary.try_add_entry(SAMPLE_ENTRY.duplicate()), "Unable to add entry.")
+	assert(not glossary.try_add_entry(SAMPLE_ENTRY.duplicate()), "Entry should not have been added.")

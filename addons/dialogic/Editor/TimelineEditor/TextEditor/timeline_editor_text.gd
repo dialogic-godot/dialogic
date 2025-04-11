@@ -4,7 +4,7 @@ extends CodeEdit
 ## Sub-Editor that allows editing timelines in a text format.
 
 @onready var timeline_editor := get_parent().get_parent()
-@onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
+@onready var code_completion_helper: Node = find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 var channel_regex := RegEx.create_from_string(r'audio +(?<channel>[\w-]{2,}|[\w]+)')
@@ -91,7 +91,6 @@ func _gui_input(event):
 	match event.as_text():
 		"Ctrl+K", "Ctrl+Slash":
 			toggle_comment()
-
 		# TODO clean this up when dropping 4.2 support
 		"Alt+Up":
 			if has_method("move_lines_up"):
@@ -107,6 +106,16 @@ func _gui_input(event):
 			play_from_here()
 		"Ctrl+Shift+B" when OS.get_name() == "macOS": # Play from here
 			play_from_here()
+		"Enter":
+			if get_code_completion_options():
+				return
+			for caret in range(get_caret_count()):
+				var line := get_line(get_caret_line(caret)).strip_edges()
+				var event_res := DialogicTimeline.event_from_string(line, DialogicResourceUtil.get_event_cache())
+				if event_res.can_contain_events:
+					insert_text_at_caret("\n"+"\t".repeat(get_indent_level(get_caret_line(caret))/4+1), caret)
+				else:
+					insert_text_at_caret("\n"+"\t".repeat(get_indent_level(get_caret_line(caret))/4), caret)
 		_:
 			return
 	get_viewport().set_input_as_handled()

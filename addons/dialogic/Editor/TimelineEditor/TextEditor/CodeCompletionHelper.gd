@@ -173,15 +173,16 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 
 # Helper that adds all characters as options
-func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, text_event_start:=false) -> void:
+func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, event:DialogicEvent=null) -> void:
 	for character in DialogicResourceUtil.get_character_directory():
 		var result: String = character
 		if " " in character:
 			result = '"'+character+'"'
-		if text_event_start and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():
-			result += ':'
+		if event and event is DialogicTextEvent and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():
+			result += ': '
+		elif event and event is DialogicCharacterEvent:
+			result += " "
 		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-
 
 # Helper that adds all timelines as options
 func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:

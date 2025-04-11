@@ -346,7 +346,7 @@ func _on_inheritance_index_pressed(index:int) -> void:
 
 
 func _on_start_styling_button_pressed() -> void:
-	var new_style := DialogicUtil.get_fallback_style().clone()
+	var new_style := DialogicStylesUtil.get_fallback_style().clone()
 
 	find_parent('EditorView').godot_file_dialog(
 		add_style_undoable.bind(new_style),

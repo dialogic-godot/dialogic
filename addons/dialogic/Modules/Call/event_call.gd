@@ -200,7 +200,7 @@ func check_arguments_and_update_warning() -> void:
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	var autoloads := DialogicUtil.get_autoload_suggestions()
 	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
 
@@ -209,9 +209,9 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'.', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("Node", "EditorIcons"))
 
 	elif (line_until_caret.ends_with(".") or symbol == "."):
-		var autoload_name := line_until_caret.split(" ")[-1].split(".")[0]
-		if autoload_name in autoloads:
-			var methods := DialogicUtil.get_autoload_method_suggestions("", autoload_name)
+		var some_autoload := line_until_caret.split(" ")[-1].split(".")[0]
+		if some_autoload in autoloads:
+			var methods := DialogicUtil.get_autoload_method_suggestions("", some_autoload)
 			for i in methods.keys():
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'(', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("MemberMethod", "EditorIcons"))
 

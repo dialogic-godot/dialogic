@@ -100,11 +100,10 @@ static func _update_autoload_subsystem_access() -> void:
 
 
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
-	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
+	if Engine.get_main_loop().has_meta('dialogic_indexers') and not force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
 
 	var indexers: Array[DialogicIndexer] = []
-
 	for file in listdir(DialogicUtil.get_module_path(''), false):
 		var possible_script: String = DialogicUtil.get_module_path(file).path_join("index.gd")
 		if ResourceLoader.exists(possible_script):
@@ -294,40 +293,6 @@ static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default
 			return dictionary[path]
 	return default
 
-#endregion
-
-
-
-#region STYLES
-################################################################################
-
-static func get_default_layout_base() -> PackedScene:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Base_Default/default_layout_base.tscn"))
-
-
-static func get_fallback_style() -> DialogicStyle:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Style_VN_Default/default_vn_style.tres"))
-
-
-static func get_default_style() -> DialogicStyle:
-	var default: String = ProjectSettings.get_setting('dialogic/layout/default_style', '')
-	if !ResourceLoader.exists(default):
-		return get_fallback_style()
-	return load(default)
-
-
-static func get_style_by_name(name:String) -> DialogicStyle:
-	if name.is_empty():
-		return get_default_style()
-
-	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
-	for style in styles:
-		if not ResourceLoader.exists(style):
-			continue
-		if load(style).name == name:
-			return load(style)
-
-	return get_default_style()
 #endregion
 
 
@@ -692,9 +657,9 @@ static func get_autoload_suggestions(filter:String="") -> Dictionary:
 
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('autoload/'):
-			var autoload: String = prop.name.trim_prefix('autoload/')
-			suggestions[autoload] = {'value': autoload, 'tooltip':autoload, 'editor_icon': ["Node", "EditorIcons"]}
-			if filter.begins_with(autoload):
+			var some_autoload: String = prop.name.trim_prefix('autoload/')
+			suggestions[some_autoload] = {'value': some_autoload, 'tooltip':some_autoload, 'editor_icon': ["Node", "EditorIcons"]}
+			if filter.begins_with(some_autoload):
 				suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
@@ -729,7 +694,7 @@ static func get_autoload_method_suggestions(filter:String, autoload_name:String)
 	return suggestions
 
 
-static func get_autoload_property_suggestions(filter:String, autoload_name:String) -> Dictionary:
+static func get_autoload_property_suggestions(_filter:String, autoload_name:String) -> Dictionary:
 	var suggestions := {}
 	var script := get_autoload_script_resource(autoload_name)
 	if script:
@@ -741,7 +706,7 @@ static func get_autoload_property_suggestions(filter:String, autoload_name:Strin
 	return suggestions
 
 
-static func get_audio_bus_suggestions(filter:= "") -> Dictionary:
+static func get_audio_bus_suggestions(_filter:= "") -> Dictionary:
 	var bus_name_list := {}
 	for i in range(AudioServer.bus_count):
 		if i == 0:
@@ -751,9 +716,7 @@ static func get_audio_bus_suggestions(filter:= "") -> Dictionary:
 	return bus_name_list
 
 
-static func get_audio_channel_suggestions(search_text:String) -> Dictionary:
-
-
+static func get_audio_channel_suggestions(_search_text:String) -> Dictionary:
 	var suggestions := {}
 	var channel_defaults := DialogicUtil.get_audio_channel_defaults()
 	var cached_names := DialogicResourceUtil.get_channel_list()

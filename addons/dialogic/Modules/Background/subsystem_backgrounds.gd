@@ -99,6 +99,12 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 	else:
 		new_viewport = null
 
+	# if there is still a transition going on, stop it now
+	for node in get_children():
+		if node is DialogicBackgroundTransition:
+			node.queue_free()
+
+
 	var trans_script: Script = load(DialogicResourceUtil.guess_special_resource("BackgroundTransition", transition_path, {"path":default_transition}).path)
 	var trans_node := Node.new()
 	trans_node.set_script(trans_script)
@@ -107,6 +113,7 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 	trans_node.time = fade_time
 
 	if old_viewport:
+		old_viewport.name = "OldBackground"
 		trans_node.prev_scene = old_viewport.get_meta('node', null)
 		trans_node.prev_texture = old_viewport.get_child(0).get_texture()
 		old_viewport.get_meta('node')._custom_fade_out(fade_time)
@@ -115,6 +122,7 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 		old_viewport.get_child(0).render_target_update_mode = SubViewport.UPDATE_ALWAYS
 		trans_node.transition_finished.connect(old_viewport.queue_free)
 	if new_viewport:
+		new_viewport.name = "NewBackground"
 		trans_node.next_scene = new_viewport.get_meta('node', null)
 		trans_node.next_texture = new_viewport.get_child(0).get_texture()
 		new_viewport.get_meta('node')._update_background(argument, fade_time)

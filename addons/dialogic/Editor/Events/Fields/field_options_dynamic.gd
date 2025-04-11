@@ -127,7 +127,7 @@ func change_to_empty() -> void:
 
 func validate() -> void:
 	if mode == Modes.ANY_VALID_STRING and validation_func:
-		var validation_result := validation_func.call(current_value)
+		var validation_result: Dictionary = validation_func.call(current_value)
 		current_value = validation_result.get('valid_text', current_value)
 		update_error_tooltip(validation_result.get('error_tooltip', ''))
 
@@ -152,7 +152,7 @@ func update_error_tooltip(text: String) -> void:
 func _on_Search_text_entered(new_text:String) -> void:
 	if mode == Modes.ANY_VALID_STRING:
 		if validation_func:
-			var validation_result := validation_func.call(new_text)
+			var validation_result: Dictionary = validation_func.call(new_text)
 			new_text = validation_result.get('valid_text', new_text)
 			update_error_tooltip(validation_result.get('error_tooltip', ''))
 
@@ -182,7 +182,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	if mode == Modes.ANY_VALID_STRING and !just_update:
 		if validation_func:
-			var validation_result := validation_func.call(new_text)
+			var validation_result: Dictionary = validation_func.call(new_text)
 			new_text = validation_result.get('valid_text', new_text)
 			update_error_tooltip(validation_result.get('error_tooltip', ''))
 
@@ -207,9 +207,9 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	for element in suggestions:
 		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
 			var curr_line_length: int = 0
-			curr_line_length = get_theme_font('font', 'Label').get_string_size(
+			curr_line_length = int(get_theme_font('font', 'Label').get_string_size(
 				element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')
-			).x
+			).x)
 
 			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
@@ -238,7 +238,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	var total_height: int = 0
 	for item in %Suggestions.item_count:
-		total_height += _line_height * DialogicUtil.get_editor_scale() + _v_separation
+		total_height += int(_line_height * DialogicUtil.get_editor_scale() + _v_separation)
 	total_height += _v_separation * 2
 	if total_height > _max_height:
 		line_length += %Suggestions.get_v_scroll_bar().get_minimum_size().x
@@ -254,7 +254,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.size.x = max(%PanelContainer.size.x, line_length)
 
 
-func suggestion_selected(index: int, position := Vector2(), button_index := MOUSE_BUTTON_LEFT) -> void:
+func suggestion_selected(index: int, _position := Vector2(), button_index := MOUSE_BUTTON_LEFT) -> void:
 	if button_index != MOUSE_BUTTON_LEFT:
 		return
 	if %Suggestions.is_item_disabled(index):
@@ -348,7 +348,7 @@ func _on_search_focus_exited() -> void:
 #region DRAG AND DROP
 ################################################################################
 
-func _can_drop_data(position:Vector2, data:Variant) -> bool:
+func _can_drop_data(_position:Vector2, data:Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
 		if valid_file_drop_extension:
 			if data.files[0].ends_with(valid_file_drop_extension):
@@ -358,7 +358,7 @@ func _can_drop_data(position:Vector2, data:Variant) -> bool:
 	return false
 
 
-func _drop_data(position:Vector2, data:Variant) -> void:
+func _drop_data(_position:Vector2, data:Variant) -> void:
 	var path := str(data.files[0])
 	if mode == Modes.IDENTIFIER:
 		path = DialogicResourceUtil.get_unique_identifier_by_path(path)
