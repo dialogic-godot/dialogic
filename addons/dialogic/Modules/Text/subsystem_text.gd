@@ -38,14 +38,15 @@ signal animation_textbox_hide
 ## Emitted when a new text starts. Use like [signal animation_textbox_show].
 signal animation_textbox_new_text
 
-@warning_ignore_start("unused_signal") # These are emitted by the NodeDialogText
 ## Emitted when a meta text on any DialogText node is hovered.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_hover_started(meta:Variant)
 ## Emitted when a meta text on any DialogText node is not hovered anymore.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_hover_ended(meta:Variant)
 ## Emitted when a meta text on any DialogText node is clicked.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_clicked(meta:Variant)
-@warning_ignore_restore("unused_signal")
 
 #endregion
 
