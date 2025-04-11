@@ -179,7 +179,7 @@ func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, event:Dialo
 		if " " in character:
 			result = '"'+character+'"'
 		if event and event is DialogicTextEvent and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():
-			result += ':'
+			result += ': '
 		elif event and event is DialogicCharacterEvent:
 			result += " "
 		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
