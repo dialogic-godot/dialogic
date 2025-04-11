@@ -4,7 +4,7 @@ extends CodeEdit
 ## Sub-Editor that allows editing timelines in a text format.
 
 @onready var timeline_editor := get_parent().get_parent()
-@onready var code_completion_helper: Node= find_parent('EditorsManager').get_node('CodeCompletionHelper')
+@onready var code_completion_helper: Node = find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
 var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 var channel_regex := RegEx.create_from_string(r'audio +(?<channel>[\w-]{2,}|[\w]+)')
