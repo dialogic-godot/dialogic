@@ -6,7 +6,7 @@ const NAME_ENTRY := "Example Name"
 const EXAMPLE_TITLE := "Example Title"
 const ALTERNATIVE_ENTRIES := ["A", "BE", "VERY LONG ENTRY"]
 
-const SAMPLE_ENTRY := {
+var SAMPLE_ENTRY := {
 	DialogicGlossary.TITLE_PROPERTY: EXAMPLE_TITLE,
 	DialogicGlossary.NAME_PROPERTY: NAME_ENTRY,
 	DialogicGlossary.ALTERNATIVE_PROPERTY: ALTERNATIVE_ENTRIES
