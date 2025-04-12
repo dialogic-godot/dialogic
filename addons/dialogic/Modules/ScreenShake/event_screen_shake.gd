@@ -18,7 +18,7 @@ var direction := Direction.HORIZONTAL
 var fade: float = 0.0
 ## The time the screen should shake for (excludes fade time).
 ## Leave at 0 to keep shaking until the next screen shake event.
-var duration: float = 0.0
+var duration: float = 10.0
 ## If true, the event will wait for completion before continuing
 ## (only if duration is greater than 0.0 or fade greater than 0.0 and amplitude is 0.0).
 var wait := false

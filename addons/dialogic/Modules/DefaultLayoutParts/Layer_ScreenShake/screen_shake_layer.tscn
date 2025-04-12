@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cdvx2jejg8xln"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gd" id="1_l682i"]
-[ext_resource type="Shader" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gdshader" id="2_7h78g"]
-[ext_resource type="Script" path="res://addons/dialogic/Modules/ScreenShake/node_screen_shaker.gd" id="3_uqmkn"]
+[ext_resource type="Script" uid="uid://pf00w14gv64m" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gd" id="1_l682i"]
+[ext_resource type="Shader" uid="uid://ckbeep0lno2h1" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gdshader" id="2_7h78g"]
+[ext_resource type="Script" uid="uid://bb1ano1eqhunf" path="res://addons/dialogic/Modules/ScreenShake/node_screen_shaker.gd" id="3_uqmkn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4u8q6"]
 shader = ExtResource("2_7h78g")
