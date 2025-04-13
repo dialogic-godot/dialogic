@@ -124,14 +124,22 @@ func _on_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index
 	match id:
 		TreeButtons.ADD_FOLDER:
 			var new_item := add_folder_item("Folder", item)
+			new_item.set_text(0, "NewFolder")
+			validate_name(new_item)
 			new_item.select(0)
 			new_item.set_meta("new", true)
+			await get_tree().process_frame
 			await get_tree().process_frame
 			edit_selected()
 		TreeButtons.ADD_VARIABLE:
 			var new_item := add_variable_item("Var", "", item)
-			new_item.select(0)
+			new_item.set_text(0, "NewVariable")
+			validate_name(new_item)
 			new_item.set_meta("new", true)
+			if item.get_child_count() > 1:
+				new_item.move_before(item.get_child(0))
+			new_item.select(0)
+			await get_tree().process_frame
 			await get_tree().process_frame
 			edit_selected()
 		TreeButtons.DELETE:
@@ -344,7 +352,6 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 ################################################################################
 
 func report_name_changes(item:TreeItem) -> void:
-
 	match item.get_meta('type'):
 		"VARIABLE":
 			if item.get_meta("new", false):
