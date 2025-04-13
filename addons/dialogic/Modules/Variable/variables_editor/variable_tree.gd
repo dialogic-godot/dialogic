@@ -5,6 +5,7 @@ enum TreeButtons {ADD_FOLDER, ADD_VARIABLE, DUPLICATE_FOLDER, DELETE, CHANGE_TYP
 
 @onready var editor: DialogicEditor = find_parent("VariablesEditor")
 
+var validation_regex := RegEx.create_from_string(r"[^\w]")
 
 #region INITIAL SETUP
 
@@ -160,8 +161,8 @@ func _on_item_edited() -> void:
 				0:
 					if item.get_text(0).is_empty():
 						item.set_text(0, item.get_metadata(0))
-
 					else:
+						validate_name(item)
 						if item.get_text(0) != item.get_metadata(0):
 							item.set_metadata(0, item.get_text(0))
 							report_name_changes(item)
@@ -169,7 +170,39 @@ func _on_item_edited() -> void:
 				2:
 					item.set_metadata(2, get_variable_item_default(item))
 		"FOLDER":
+			validate_name(item)
 			report_name_changes(item)
+
+
+func validate_name(item:TreeItem) -> void:
+	var item_name := item.get_text(0)
+	if not item_name.is_valid_identifier():
+		item_name = validation_regex.sub(item_name, "_", true)
+	if not item_name.is_valid_identifier():
+		item_name = "_"+item_name
+
+	var sibling_names := []
+
+	for i in item.get_parent().get_children():
+		if i == item:
+			continue
+		sibling_names.append(i.get_text(0))
+
+	if item_name in sibling_names:
+		var number_regex := RegEx.create_from_string(r"(?<=\w)\d+$")
+		var res := number_regex.search(item_name)
+		var x := 2
+		if res:
+			var number := res.get_string()
+			x = int(number)
+			item_name = item_name.trim_suffix(number)
+
+		while item_name + str(x) in sibling_names:
+			x += 1
+
+		item_name = item_name + str(x)
+
+	item.set_text(0, item_name)
 
 
 func adjust_variable_type(item:TreeItem, type:int, prev_value:Variant) -> void:
