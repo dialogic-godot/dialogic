@@ -325,12 +325,15 @@ func from_text(string:String) -> void:
 		else:
 			character = DialogicResourceUtil.get_character_resource(name)
 
-			if character == null and Engine.is_editor_hint() == false:
-				character = DialogicCharacter.new()
-				character.display_name = name
-				character.set_identifier(name)
-				if portrait:
-					character.color = Color(portrait)
+			if character == null:
+				if Engine.is_editor_hint() == false:
+					character = DialogicCharacter.new()
+					character.display_name = name
+					character.set_identifier(name)
+					if portrait:
+						character.color = Color(portrait)
+				else:
+					character_identifier = name
 
 	if not result:
 		return
