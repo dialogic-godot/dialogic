@@ -32,7 +32,7 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
-		if (not character) or (character and not character.portraits.has(portrait)):
+		if (not character and character_identifier.is_empty()) or (character and not character.portraits.has(portrait)):
 			portrait = ""
 			ui_update_needed.emit()
 
@@ -325,12 +325,15 @@ func from_text(string:String) -> void:
 		else:
 			character = DialogicResourceUtil.get_character_resource(name)
 
-			if character == null and Engine.is_editor_hint() == false:
-				character = DialogicCharacter.new()
-				character.display_name = name
-				character.set_identifier(name)
-				if portrait:
-					character.color = Color(portrait)
+			if character == null:
+				if Engine.is_editor_hint() == false:
+					character = DialogicCharacter.new()
+					character.display_name = name
+					character.set_identifier(name)
+					if portrait:
+						character.color = Color(portrait)
+				else:
+					character_identifier = name
 
 	if not result:
 		return
@@ -353,8 +356,8 @@ func is_string_full_event(string:String) -> bool:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"character"		: {"property": "character_identifier", "default": ""},
-		"portrait"		: {"property": "portrait", 					"default": ""},
+		"character"		: {"property": "character_identifier",	"default": ""},
+		"portrait"		: {"property": "portrait", 				"default": ""},
 	}
 #endregion
 
@@ -400,7 +403,7 @@ func build_event_editor() -> void:
 
 
 func should_show_portrait_selector() -> bool:
-	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+	return (character and not character.portraits.is_empty() and not character.portraits.size() == 1) or (character_identifier and not character)
 
 
 func do_any_characters_exist() -> bool:
@@ -408,7 +411,13 @@ func do_any_characters_exist() -> bool:
 
 
 func get_character_suggestions(search_text:String) -> Dictionary:
-	var suggestions := DialogicUtil.get_character_suggestions(search_text, character, true, false, editor_node)
+	var suggestions := {}
+	if not search_text and character_identifier and not character:
+		suggestions[character_identifier] = {
+			"value":character_identifier,
+			"tooltip": "A temporary character, created on the spot.",
+			"editor_icon":["GuiEllipsis", "EditorIcons"]}
+	suggestions.merge(DialogicUtil.get_character_suggestions(search_text, character, true, false, editor_node))
 	if search_text and not search_text in suggestions:
 		suggestions[search_text] = {
 			"value":search_text,
@@ -416,7 +425,10 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 			"editor_icon":["GuiEllipsis", "EditorIcons"]}
 	return suggestions
 
+
 func get_portrait_suggestions(search_text:String) -> Dictionary:
+	if not character and search_text:
+		return {search_text: {"value":search_text, "tooltip":"Portrait will be interpreted as color on temporary character.", "editor_icon":["PickerShapeCircle", "EditorIcons"]}}
 	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
 
 #endregion
