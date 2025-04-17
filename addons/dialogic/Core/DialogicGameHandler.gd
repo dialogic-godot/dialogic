@@ -194,8 +194,10 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 		scene.show()
 
 	if not scene.is_node_ready():
-		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
-		scene.ready.connect(start_timeline.bind(timeline, label_or_idx))
+		if not scene.ready.is_connected(clear.bind(ClearFlags.KEEP_VARIABLES)):
+			scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
+		if not scene.ready.is_connected(start_timeline.bind(timeline, label_or_idx)):
+			scene.ready.connect(start_timeline.bind(timeline, label_or_idx))
 	else:
 		start_timeline(timeline, label_or_idx)
 
