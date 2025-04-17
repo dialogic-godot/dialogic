@@ -77,7 +77,7 @@ func _notification(what:int) -> void:
 func load_timeline(resource:DialogicTimeline) -> void:
 	# In case another timeline is still loading
 	cancel_loading()
-
+	set_meta("loading_start", Time.get_unix_time_from_system())
 	clear_timeline_nodes()
 
 	if timeline_editor.current_resource.events.size() == 0:
@@ -85,12 +85,14 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	else:
 		await timeline_editor.current_resource.process()
 
+		print_time_since_loading("Processing ")
+
 		if timeline_editor.current_resource.events.size() == 0:
 			return
 
 		var data := resource.events
 		var page := 1
-		var batch_size := 10
+		var batch_size := 100
 		_batches = []
 		_building_timeline = true
 		while batch_events(data, batch_size, page).size() != 0:
@@ -101,6 +103,10 @@ func load_timeline(resource:DialogicTimeline) -> void:
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
 
+
+func print_time_since_loading(text:="Loading") -> void:
+	if has_meta("loading_start"):
+		print(text, " took %s" %(Time.get_unix_time_from_system()-get_meta("loading_start")))
 
 func is_loading_timeline() -> bool:
 	return _building_timeline
@@ -114,15 +120,16 @@ func cancel_loading() -> void:
 		_building_timeline = false
 
 
-func batch_events(array: Array, size: int, batch_number: int) -> Array:
-	return array.slice((batch_number - 1) * size, batch_number * size)
+func batch_events(array: Array, batch_size: int, batch_number: int) -> Array:
+	return array.slice((batch_number - 1) * batch_size, batch_number * batch_size)
 
 
 # a list of all events like choice and condition events (so they get connected to their end events)
 var opener_events_stack := []
 
-func load_batch(data:Array) -> void:
+func load_next_batch() -> void:
 	# Don't try to cast it to Array immedietly, as the item may have become null and will throw a useless error
+	print_time_since_loading("Batches remaining %s"%_batches.size())
 	var current_batch = _batches.pop_front()
 	if current_batch:
 		var current_batch_items: Array = current_batch
@@ -145,7 +152,7 @@ func _on_batch_loaded() -> void:
 		var progress: float = 1-(1.0/get_meta("batch_count")*len(_batches))
 		timeline_editor.set_progress(progress)
 		await get_tree().process_frame
-		load_batch(_batches)
+		load_next_batch()
 		return
 
 	# This hides the progress bar again
@@ -157,6 +164,9 @@ func _on_batch_loaded() -> void:
 				create_end_branch_event(%Timeline.get_child_count(), ev)
 
 	timeline_loaded.emit()
+	if has_meta("loading_start"):
+		print_time_since_loading("Loading %s"%len(timeline_editor.current_resource.events))
+		print("")
 
 	opener_events_stack = []
 	indent_events()
@@ -371,6 +381,9 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 ################################################################################
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
+	print("Loading ", event_resource.event_name, " Event")
+	var start_time := Time.get_unix_time_from_system()
+	var prev := start_time
 	if event_resource is DialogicEndBranchEvent:
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 
@@ -379,11 +392,14 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 			event_resource._load_from_string(event_resource['event_node_as_text'])
 
 	var block: Control = event_node.instantiate()
+	printt("Inst: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	prev = Time.get_unix_time_from_system()
 	block.resource = event_resource
 	event_resource.editor_node = block
 	event_resource._enter_visual_editor(timeline_editor)
 	block.content_changed.connect(something_changed)
-
+	printt("Enter: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	prev = Time.get_unix_time_from_system()
 	if event_resource.event_name == "Label":
 		block.content_changed.connect(update_content_list)
 	if event_resource.event_name == "Audio":
@@ -396,12 +412,14 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	else:
 		%Timeline.add_child(block)
 		%Timeline.move_child(block, at_index)
-
+	printt("Add: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	prev = Time.get_unix_time_from_system()
 	block.gui_input.connect(_on_event_block_gui_input.bind(block))
 
 	# Building editing part
 	block.build_editor(true, event_resource.expand_by_default)
-
+	printt("Build: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	prev = Time.get_unix_time_from_system()
 	if auto_select:
 		select_item(block, false)
 
@@ -409,6 +427,8 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	if indent:
 		indent_events()
 
+	printt("Inden: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	print(" ")
 	return block
 
 

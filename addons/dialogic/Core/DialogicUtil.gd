@@ -612,7 +612,11 @@ static func get_character_suggestions(_search_text:String, current_value:Dialogi
 
 	var character_directory := DialogicResourceUtil.get_character_directory()
 	for resource in character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon}
+		suggestions[resource] = {
+			'value': resource,
+			'tooltip': character_directory[resource],
+			'icon': icon,
+			}
 
 	return suggestions
 

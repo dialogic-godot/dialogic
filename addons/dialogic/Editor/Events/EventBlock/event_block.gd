@@ -173,7 +173,11 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.IMAGE_PREVIEW:		"res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn",
 	}
 
+
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
+	var debug := true
+
+	var start_time := Time.get_unix_time_from_system()
 	var current_body_container: HFlowContainer = null
 
 	if build_body and body_was_build:
@@ -186,11 +190,16 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		%BodyContent.add_child(current_body_container)
 		body_was_build = true
 
+	if debug: printt("","Preloop: ",  Time.get_unix_time_from_system()-start_time)
+
 	for p in resource.get_event_editor_info():
 		field_list.append({'node':null, 'location':p.location})
 		if p.has('condition'):
 			field_list[-1]['condition'] = p.condition
 
+		if debug: printt("","Element: ",  p.name, Time.get_unix_time_from_system()-start_time)
+		var element_start := Time.get_unix_time_from_system()
+		var prev := Time.get_unix_time_from_system()
 		if !build_body and p.location == 1:
 			continue
 		elif !build_header and p.location == 0:
@@ -242,7 +251,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.text = p.name
 			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 
-
+		if debug: printt("","","A: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		field_list[-1]['node'] = editor_node
 		### --------------------------------------------------------------------
 		# Some things need to be called BEFORE the field is added to the tree
@@ -254,11 +264,14 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 			editor_node._load_display_info(p.display_info)
 
+		if debug: printt("","","B: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		var location: Control = %HeaderContent
 		if p.location == 1:
 			location = current_body_container
 		location.add_child(editor_node)
-
+		if debug: printt("","","C: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		# Some things need to be called AFTER the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
 			# Only set the value if the field is visible
@@ -279,7 +292,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			# Apply autofocus
 			if resource.created_by_button and p.display_info.get('autofocus', false):
 				editor_node.call_deferred('take_autofocus')
-
+		if debug: printt("","","D: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 4. ADD LEFT AND RIGHT TEXT
 		var left_label: Label = null
@@ -298,7 +312,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			right_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(right_label)
 			location.move_child(right_label, editor_node.get_index()+1)
-
+		if debug: printt("","","E: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 5. REGISTER CONDITION
 		if p.has('condition'):
@@ -308,13 +323,20 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			if right_label:
 				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
 
+		if debug: printt("","","Z: ",  Time.get_unix_time_from_system()-prev)
+		if debug: printt("","","Full: ",  Time.get_unix_time_from_system()-element_start)
+
+	printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
 
 	if build_body:
 		if current_body_container.get_child_count() == 0:
 			expanded = false
 			%Body.visible = false
+	printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
 
 	recalculate_field_visibility()
+
+	printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
 
 
 func recalculate_field_visibility() -> void:

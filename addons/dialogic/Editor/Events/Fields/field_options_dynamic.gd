@@ -56,8 +56,20 @@ func _set_value(value:Variant) -> void:
 			_:
 				%Search.text = str(value)
 
+
 	%Search.visible = not collapse_when_empty or value
 	current_value = str(value)
+
+	## TODO FIGURE OUT A WAY TO MAKE COLORED ICONS EFFICIANT.
+	## This works, but slows down timeline opening to much.
+	#%Icon.modulate = Color.WHITE
+	#if suggestions_func:
+		#var suggestions: Dictionary = suggestions_func.call(current_value)
+		#for i in suggestions.values():
+			#if i.value == current_value:
+				#if i.has("icon_color"):
+					#%Icon.modulate = i.get("icon_color")
+				#break
 
 
 func _load_display_info(info:Dictionary) -> void:
@@ -198,7 +210,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 	if new_text and mode == Modes.ANY_VALID_STRING and not new_text in suggestions.keys():
 		%Suggestions.add_item(new_text, get_theme_icon('GuiScrollArrowRight', 'EditorIcons'))
-		%Suggestions.set_item_metadata(idx, new_text)
+		%Suggestions.set_item_metadata(idx, {"value":new_text})
 		line_length = get_theme_font('font', 'Label').get_string_size(
 				new_text, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')
 			).x + %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
@@ -219,10 +231,13 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 				%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
 				curr_line_length += %Suggestions.fixed_icon_size.x * %Suggestions.get_icon_scale() + _icon_margin * 2 + _h_separation
 
+			#if suggestions[element].has("icon_color"):
+				#%Suggestions.set_item_icon_modulate(idx, suggestions[element].get("icon_color"))
+
 			line_length = max(line_length, curr_line_length)
 
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
-			%Suggestions.set_item_metadata(idx, suggestions[element].value)
+			%Suggestions.set_item_metadata(idx, {"value":suggestions[element].value, "color": suggestions[element].get("icon_color", Color.WHITE)})
 			idx += 1
 
 	if not %Suggestions.visible:
@@ -262,11 +277,12 @@ func suggestion_selected(index: int, _position := Vector2(), button_index := MOU
 
 	%Search.text = %Suggestions.get_item_text(index)
 
-	if %Suggestions.get_item_metadata(index) == null:
+	if not %Suggestions.get_item_metadata(index):
 		current_value = ""
 
 	else:
-		current_value = %Suggestions.get_item_metadata(index)
+		current_value = %Suggestions.get_item_metadata(index).value
+		#%Icon.modulate = %Suggestions.get_item_metadata(index).get("color", Color.WHITE)
 
 	update_error_tooltip('')
 	hide_suggestions()
