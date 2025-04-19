@@ -172,6 +172,10 @@ func _on_close_requested() -> void:
 	broken_manager.close()
 
 
+func get_change_count() -> int:
+	return len(broken_manager.reference_changes)
+
+
 func update_indicator() -> void:
 	icon_button.get_child(0).visible = !broken_manager.reference_changes.is_empty()
 
