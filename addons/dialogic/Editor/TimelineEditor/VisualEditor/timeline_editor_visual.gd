@@ -48,13 +48,12 @@ func save_timeline() -> void:
 
 	# create a list of text versions of all the events with the right indent
 	var new_events := []
-	var indent := 0
 	for event in %Timeline.get_children():
 		if 'event_name' in event.resource:
 			event.resource.update_text_version()
 			new_events.append(event.resource)
 
-	if !timeline_editor.current_resource:
+	if not timeline_editor.current_resource:
 		return
 
 	timeline_editor.current_resource.events = new_events
@@ -308,9 +307,12 @@ func _on_content_item_clicked(label:String) -> void:
 
 
 func update_content_list() -> void:
+	if has_meta("updated_content_list"):
+		return
 	if not is_inside_tree():
 		return
 
+	print("update_content_list")
 	var channels: PackedStringArray = []
 	var labels: PackedStringArray = []
 
@@ -325,6 +327,10 @@ func update_content_list() -> void:
 
 	timeline_editor.editors_manager.sidebar.update_content_list(labels)
 	timeline_editor.update_audio_channel_cache(channels)
+
+	set_meta("updated_content_list", true)
+	await get_tree().process_frame
+	remove_meta("updated_content_list")
 
 
 #endregion
@@ -381,7 +387,8 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 ################################################################################
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
-	print("Loading ", event_resource.event_name, " Event")
+	var debug := false
+	if debug: print("Loading ", event_resource.event_name, " Event")
 	var start_time := Time.get_unix_time_from_system()
 	var prev := start_time
 	if event_resource is DialogicEndBranchEvent:
@@ -392,13 +399,13 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 			event_resource._load_from_string(event_resource['event_node_as_text'])
 
 	var block: Control = event_node.instantiate()
-	printt("Inst: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	if debug: printt("Inst: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
 	prev = Time.get_unix_time_from_system()
 	block.resource = event_resource
 	event_resource.editor_node = block
 	event_resource._enter_visual_editor(timeline_editor)
 	block.content_changed.connect(something_changed)
-	printt("Enter: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	if debug: printt("Enter: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
 	prev = Time.get_unix_time_from_system()
 	if event_resource.event_name == "Label":
 		block.content_changed.connect(update_content_list)
@@ -412,13 +419,13 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	else:
 		%Timeline.add_child(block)
 		%Timeline.move_child(block, at_index)
-	printt("Add: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	if debug: printt("Add: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
 	prev = Time.get_unix_time_from_system()
 	block.gui_input.connect(_on_event_block_gui_input.bind(block))
 
 	# Building editing part
 	block.build_editor(true, event_resource.expand_by_default)
-	printt("Build: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	if debug: printt("Build: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
 	prev = Time.get_unix_time_from_system()
 	if auto_select:
 		select_item(block, false)
@@ -427,8 +434,8 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	if indent:
 		indent_events()
 
-	printt("Inden: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
-	print(" ")
+	if debug: printt("Inden: ", Time.get_unix_time_from_system()-start_time, Time.get_unix_time_from_system()-prev)
+	if debug: print(" ")
 	return block
 
 
