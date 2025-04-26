@@ -70,7 +70,7 @@ var help_page_path := ""
 ## Is the event block created by a button?
 var created_by_button := false
 
-static var _editor_icon: Texture2D = null
+var _editor_icon_cache: Dictionary = {}
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
@@ -102,7 +102,8 @@ enum ValueType {
 	CUSTOM, BUTTON, LABEL, COLOR, AUDIO_PREVIEW, IMAGE_PREVIEW
 }
 ## List that stores the fields for the editor
-var editor_list: Array = []
+var editor_list: Array[Dictionary] = []
+static var _editor_list_cache := {}
 
 var this_folder: String = get_script().resource_path.get_base_dir()
 
@@ -435,16 +436,15 @@ func parse_shortcode_parameters(shortcode: String) -> Dictionary:
 ################################################################################
 
 func _get_icon() -> Resource:
-	if _editor_icon:
-		return _editor_icon
-	var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
-	# Check for both svg and png, but prefer svg if available
-	if ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
-		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
-	elif ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
-		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
-	_editor_icon = load(_icon_file_name)
-	return _editor_icon
+	if not event_name in _editor_icon_cache:
+		var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
+		# Check for both svg and png, but prefer svg if available
+		if ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
+			_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
+		elif ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
+			_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
+		_editor_icon_cache[event_name] = load(_icon_file_name)
+	return _editor_icon_cache[event_name]
 
 
 func set_default_color(value:Variant) -> void:
@@ -489,18 +489,17 @@ func _get_syntax_highlighting(_Highlighter:SyntaxHighlighter, dict:Dictionary, _
 ################################################################################
 
 func get_event_editor_info() -> Array:
-	if Engine.is_editor_hint() or true:
-		if editor_list != null:
-			editor_list.clear()
-		else:
-			editor_list = []
+	if not event_name in _editor_list_cache:
+		editor_list.clear()
 
 		if DialogicUtil.get_editor_setting('show_event_names', false):
 			add_header_label(event_name)
 		build_event_editor()
-		return editor_list
-	else:
-		return []
+
+		_editor_list_cache[event_name] = editor_list
+
+	return _editor_list_cache[event_name]
+
 
 
 ## to be overwritten by the sub_classes
@@ -519,10 +518,10 @@ func build_event_editor() -> void:
 func add_header_label(text:String, condition:= "") -> void:
 	editor_list.append({
 		"name" 			: "something",
-		"type" 			:+ TYPE_STRING,
+		"type" 			: TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
-		"field_type" : ValueType.LABEL,
+		"field_type" 	: ValueType.LABEL,
 		"display_info"  : {"text":text},
 		"condition" 	: condition
 		})
@@ -534,7 +533,7 @@ func add_header_edit(variable:String, editor_type := ValueType.LABEL, extra_info
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"field_type" : editor_type,
+		"field_type" 	: editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),
@@ -548,7 +547,7 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 		"type" 			: TYPE_STRING,
 		"location" 		: Location.HEADER,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"field_type" : ValueType.BUTTON,
+		"field_type" 	: ValueType.BUTTON,
 		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
 		"condition" 	: condition,
 	})
@@ -560,7 +559,7 @@ func add_body_edit(variable:String, editor_type := ValueType.LABEL, extra_info:=
 		"type" 			: typeof(get(variable)),
 		"location" 		: Location.BODY,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"field_type" : editor_type,
+		"field_type" 	: editor_type,
 		"display_info" 	: extra_info,
 		"left_text" 	: extra_info.get('left_text', ''),
 		"right_text" 	: extra_info.get('right_text', ''),

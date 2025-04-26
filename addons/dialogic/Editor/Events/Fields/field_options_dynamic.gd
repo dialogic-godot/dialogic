@@ -293,11 +293,10 @@ func suggestion_selected(index: int, _position := Vector2(), button_index := MOU
 
 
 func _input(event:InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if %Suggestions.visible:
-			if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()) and \
-				!%SelectButton.get_global_rect().has_point(get_global_mouse_position()):
-				hide_suggestions()
+	if %Suggestions.visible and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if not %Suggestions.get_global_rect().has_point(get_global_mouse_position()) and \
+			not %SelectButton.get_global_rect().has_point(get_global_mouse_position()):
+			hide_suggestions()
 
 
 func hide_suggestions() -> void:

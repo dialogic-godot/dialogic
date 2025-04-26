@@ -31,7 +31,7 @@ const indent_size := 22
 
 ## STATE
 # List that stores visibility conditions
-var field_list := []
+var field_list: Array[Dictionary] = []
 var current_indent_level := 1
 
 
@@ -123,6 +123,8 @@ func visual_select() -> void:
 
 
 func visual_deselect() -> void:
+	if not selected:
+		return
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
 	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
@@ -173,7 +175,7 @@ var FIELD_SCENES := {
 
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
-	var debug := false
+	var debug := true
 
 	var start_time := Time.get_unix_time_from_system()
 	var current_body_container: HFlowContainer = null
@@ -272,14 +274,15 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		prev = Time.get_unix_time_from_system()
 		# Some things need to be called AFTER the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
-			# Only set the value if the field is visible
-			#
-			# This prevents events with varied value types (event_setting, event_variable)
-			# from injecting incorrect types into hidden fields, which then throw errors
-			# in the console.
+			## Only set the value if the field is visible
+			##
+			## This prevents events with varied value types (event_setting, event_variable)
+			## from injecting incorrect types into hidden fields, which then throw errors
+			## in the console.
 			if p.has('condition') and not p.condition.is_empty():
-				if _evaluate_visibility_condition(p):
-					editor_node._set_value(resource.get(p.name))
+				editor_node.hide()
+				#if _evaluate_visibility_condition(p):
+					#editor_node._set_value(resource.get(p.name))
 			else:
 				editor_node._set_value(resource.get(p.name))
 
@@ -338,23 +341,40 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 func recalculate_field_visibility() -> void:
 	has_any_enabled_body_content = false
-	for p in field_list:
-		if !p.has('condition') or p.condition.is_empty():
-			if p.node != null:
-				p.node.show()
-			if p.location == 1:
+	for field in field_list:
+		if field.get("condition", "").is_empty() or _evaluate_visibility_condition(field):
+			if field.node:
+				if field.has("condition") and (not field.node.visible) and field.has("property"):
+					field.node._set_value(resource.get(field.property))
+
+				field.node.show()
+
+			if field.location == 1:
 				has_any_enabled_body_content = true
+
 		else:
-			if _evaluate_visibility_condition(p):
-				if p.node != null:
-					if p.node.visible == false and p.has("property"):
-						p.node._set_value(resource.get(p.property))
-					p.node.show()
-				if p.location == 1:
-					has_any_enabled_body_content = true
-			else:
-				if p.node != null:
-					p.node.hide()
+			if field.node != null:
+				field.node.hide()
+
+	#for p in field_list:
+		#if not p.has('condition') or p.condition.is_empty():
+			#if p.node != null:
+				#p.node.show()
+			#if p.location == 1:
+				#has_any_enabled_body_content = true
+		#
+		#else:
+			#if _evaluate_visibility_condition(p):
+				#if p.node != null:
+					#if p.node.visible == false and p.has("property"):
+						#p.node._set_value(resource.get(p.property))
+					#p.node.show()
+				#if p.location == 1:
+					#has_any_enabled_body_content = true
+			#else:
+				#if p.node != null:
+					#p.node.hide()
+
 	%ToggleBodyVisibilityButton.visible = has_any_enabled_body_content
 
 
@@ -365,16 +385,26 @@ func set_property(property_name:String, value:Variant) -> void:
 		end_node.parent_node_changed()
 
 
-func _evaluate_visibility_condition(p: Dictionary) -> bool:
-	var expr := Expression.new()
-	expr.parse(p.condition)
+func _evaluate_visibility_condition(field: Dictionary) -> bool:
+	#if
+	#
+	var expr: Expression
+	var cache: Dictionary = Engine.get_meta("dialogic_visibility_condition_cache", {})
+	if field.condition in cache:
+		expr = cache[field.condition]
+	else:
+		expr = Expression.new()
+		expr.parse(field.condition)
+		cache[field.condition] = expr
+		Engine.set_meta("dialogic_visibility_condition_cache", cache)
+
 	var result: bool
 	if expr.execute([], resource):
 		result = true
 	else:
 		result = false
 	if expr.has_execute_failed():
-		printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
+		printerr("[Dialogic] Failed executing visibility condition for '", field.get('property', 'unnamed'),"': " + expr.get_error_text())
 	return result
 
 
