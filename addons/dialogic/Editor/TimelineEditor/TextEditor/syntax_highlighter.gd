@@ -32,7 +32,8 @@ var text_event: DialogicTextEvent = null
 
 func _init() -> void:
 	update_colors()
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_base_control().theme_changed.connect(update_colors)
+	if DialogicUtil.get_dialogic_plugin():
+		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_base_control().theme_changed.connect(update_colors)
 
 
 func update_colors() -> void:

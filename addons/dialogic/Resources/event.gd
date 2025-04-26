@@ -484,7 +484,7 @@ func _get_syntax_highlighting(_Highlighter:SyntaxHighlighter, dict:Dictionary, _
 ################################################################################
 
 func get_event_editor_info() -> Array:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or true:
 		if editor_list != null:
 			editor_list.clear()
 		else:

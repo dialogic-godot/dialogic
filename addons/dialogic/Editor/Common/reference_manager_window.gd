@@ -39,8 +39,9 @@ func _ready() -> void:
 
 	hide()
 
-	get_parent().plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
-	get_parent().plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
+	if get_parent().plugin_reference:
+		get_parent().plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
+		get_parent().plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
 	get_parent().get_node('ResourceRenameWarning').confirmed.connect(open)
 
 

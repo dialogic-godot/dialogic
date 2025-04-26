@@ -6,7 +6,7 @@ extends Control
 var plugin_reference: EditorPlugin = null
 var editors_manager: Control = null
 
-var editor_file_dialog: EditorFileDialog
+var editor_file_dialog: ConfirmationDialog
 
 @onready var sidebar := %Sidebar as DialogicSidebar
 
@@ -25,7 +25,10 @@ func _ready() -> void:
 	button.pressed.connect(toggle_floating_window)
 
 	# File dialog
-	editor_file_dialog = EditorFileDialog.new()
+	if Engine.is_editor_hint():
+		editor_file_dialog = EditorFileDialog.new()
+	else:
+		editor_file_dialog = FileDialog.new()
 	add_child(editor_file_dialog)
 
 	var info_message := Label.new()
@@ -37,7 +40,9 @@ func _ready() -> void:
 	$SaveConfirmationDialog.add_button("No Saving Please!", true, "nosave")
 	$SaveConfirmationDialog.hide()
 	update_theme_additions()
-	EditorInterface.get_base_control().theme_changed.connect(update_theme_additions)
+
+	if Engine.is_editor_hint():
+		EditorInterface.get_base_control().theme_changed.connect(update_theme_additions)
 
 
 func _on_sidebar_toggled(sidebar_shown: bool) -> void:
@@ -200,13 +205,13 @@ func update_theme_additions() -> void:
 	new_theme.set_constant("separation", "DialogicMegaSeparator", 50)
 
 	new_theme.set_type_variation("DialogicTextEventTextEdit", "CodeEdit")
-	var editor_settings := plugin_reference.get_editor_interface().get_editor_settings()
+	var editor_settings := plugin_reference.get_editor_interface().get_editor_settings() if Engine.is_editor_hint() else null
 	var text_panel := DCSS.inline({
 				"border-radius": 8,
 				"background":
 				editor_settings.get_setting("text_editor/theme/highlighting/background_color").lerp(
 					editor_settings.get_setting("text_editor/theme/highlighting/text_color"), 0.05
-				),
+				) if editor_settings else Color.DIM_GRAY,
 				"padding": [8, 8],
 			})
 	text_panel.content_margin_bottom = 5
