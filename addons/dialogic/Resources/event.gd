@@ -70,6 +70,8 @@ var help_page_path := ""
 ## Is the event block created by a button?
 var created_by_button := false
 
+static var _editor_icon: Texture2D = null
+
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
 var editor_node: Control = null
@@ -199,7 +201,7 @@ func _get_property_original_translation(_property_name:String) -> String:
 ## Returns true if there is any translatable properties on this event.
 ## Overwrite [_get_translatable_properties()] to change this.
 func can_be_translated() -> bool:
-	return !_get_translatable_properties().is_empty()
+	return not _get_translatable_properties().is_empty()
 
 
 ## This is automatically called, no need to use this.
@@ -433,13 +435,16 @@ func parse_shortcode_parameters(shortcode: String) -> Dictionary:
 ################################################################################
 
 func _get_icon() -> Resource:
+	if _editor_icon:
+		return _editor_icon
 	var _icon_file_name := "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
 	# Check for both svg and png, but prefer svg if available
 	if ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
 		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
 	elif ResourceLoader.exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
 		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
-	return load(_icon_file_name)
+	_editor_icon = load(_icon_file_name)
+	return _editor_icon
 
 
 func set_default_color(value:Variant) -> void:
