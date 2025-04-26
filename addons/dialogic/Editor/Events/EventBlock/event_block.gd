@@ -19,8 +19,6 @@ var end_node: Node = null:
 
 ## FLAGS
 var selected := false
-# Whether the body is visible
-var expanded := true
 var body_was_build := false
 var has_any_enabled_body_content := false
 # Whether contained events (e.g. in choices) are visible
@@ -83,10 +81,10 @@ func initialize_ui() -> void:
 	%IconTexture.custom_minimum_size = %IconPanel.custom_minimum_size
 
 	var custom_style: StyleBoxFlat = %IconPanel.get_theme_stylebox('panel')
-	custom_style.set_corner_radius_all(5 * _scale)
+	custom_style.set_corner_radius_all(int(5 * _scale))
 
 	# Focus Mode
-	set_focus_mode(1) # Allowing this node to grab focus
+	set_focus_mode(FOCUS_CLICK) # Allowing this node to grab focus
 
 	# Separation on the header
 	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
@@ -109,7 +107,7 @@ func initialize_logic() -> void:
 
 	content_changed.connect(recalculate_field_visibility)
 
-	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button)
+	set_expanded(resource.expand_by_default or resource.created_by_button)
 
 #endregion
 
@@ -144,7 +142,7 @@ func set_warning(text:String= "") -> void:
 
 
 func set_indent(indent: int) -> void:
-	add_theme_constant_override("margin_left", indent_size * indent * DialogicUtil.get_editor_scale())
+	add_theme_constant_override("margin_left", int(indent_size * indent * DialogicUtil.get_editor_scale()))
 	current_indent_level = indent
 
 #endregion
@@ -175,7 +173,7 @@ var FIELD_SCENES := {
 
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
-	var debug := true
+	var debug := false
 
 	var start_time := Time.get_unix_time_from_system()
 	var current_body_container: HFlowContainer = null
@@ -326,17 +324,16 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		if debug: printt("","","Z: ",  Time.get_unix_time_from_system()-prev)
 		if debug: printt("","","Full: ",  Time.get_unix_time_from_system()-element_start)
 
-	printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
+	if debug: printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
 
 	if build_body:
 		if current_body_container.get_child_count() == 0:
-			expanded = false
 			%Body.visible = false
-	printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
+	if debug: printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
 
 	recalculate_field_visibility()
 
-	printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
+	if debug: printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
 
 
 func recalculate_field_visibility() -> void:
@@ -418,20 +415,28 @@ func _on_collapse_toggled(toggled:bool) -> void:
 
 
 func _on_ToggleBodyVisibility_toggled(button_pressed:bool) -> void:
-	if button_pressed and !body_was_build:
-		build_editor(false, true)
-	%ToggleBodyVisibilityButton.set_pressed_no_signal(button_pressed)
+	set_expanded(button_pressed)
 
-	if button_pressed:
+	if find_parent('VisualEditor') != null:
+		find_parent('VisualEditor').indent_events()
+
+
+func set_expanded(expanded:=true) -> void:
+	if expanded and not body_was_build:
+		build_editor(false, true)
+
+	%ToggleBodyVisibilityButton.set_pressed_no_signal(expanded)
+	if expanded:
 		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	else:
 		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 
-	expanded = button_pressed
-	%Body.visible = button_pressed
 
-	if find_parent('VisualEditor') != null:
-		find_parent('VisualEditor').indent_events()
+	%Body.visible = expanded
+
+
+func is_expanded() -> bool:
+	return %Body.visible
 
 
 func _on_EventNode_gui_input(event:InputEvent) -> void:
@@ -439,7 +444,7 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
 			if has_any_enabled_body_content:
-				_on_ToggleBodyVisibility_toggled(!expanded)
+				_on_ToggleBodyVisibility_toggled(!is_expanded())
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
