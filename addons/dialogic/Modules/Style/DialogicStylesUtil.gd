@@ -8,7 +8,7 @@ static var style_directory := {}
 ################################################################################
 
 static func update_style_directory() -> void:
-	return ProjectSettings.get_setting('dialogic/layout/style_directory', {})
+	style_directory = ProjectSettings.get_setting('dialogic/layout/style_directory', {})
 
 
 static func build_style_directory() -> void:
@@ -24,9 +24,11 @@ static func build_style_directory() -> void:
 			continue
 		# TODO this is bad
 		var resource: DialogicStyle = load(style_path)
-		style_directory[resource.name] = resource
-	ProjectSettings.set_setting('dialogic/layout/style_directory', style_directory)
-	ProjectSettings.save()
+		style_directory[resource.name] = style_path
+
+	if Engine.is_editor_hint():
+		ProjectSettings.set_setting('dialogic/layout/style_directory', style_directory)
+		ProjectSettings.save()
 
 
 static func get_default_style_path() -> String:
@@ -46,16 +48,16 @@ static func get_fallback_style() -> DialogicStyle:
 
 
 static func get_style_path(name_or_path:String) -> String:
-	var path := ""
+	print(style_directory)
 	if name_or_path.begins_with("res://"):
 		if not ResourceLoader.exists(name_or_path):
 			name_or_path = ""
 
 	if name_or_path in style_directory:
-		path = style_directory[name_or_path]
+		name_or_path = style_directory[name_or_path]
 
 	if not name_or_path:
-		path = get_default_style_path()
+		name_or_path = get_default_style_path()
 
 	if not name_or_path or not ResourceLoader.exists(name_or_path):
 		return get_fallback_style_path()
