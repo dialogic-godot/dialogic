@@ -426,13 +426,13 @@ func _can_drop_data(_position:Vector2, data:Variant) -> bool:
 	return data is TreeItem
 
 
-func _drop_data(_position:Vector2, item:Variant) -> void:
-	var to_item := get_item_at_position(position)
+func _drop_data(drop_position:Vector2, item:Variant) -> void:
+	var to_item := get_item_at_position(drop_position)
 
 	if !to_item:
 		return
 
-	var drop_section := get_drop_section_at_position(position)
+	var drop_section := get_drop_section_at_position(drop_position)
 	var parent: TreeItem = null
 	if (drop_section == 1 and to_item.get_meta('type') == "FOLDER") or to_item == get_root():
 		parent = to_item
