@@ -64,7 +64,7 @@ func parse_glossary(text: String) -> String:
 			if regex_options.is_empty():
 				continue
 
-			var pattern: String = '(?<=\\W|^)(?<!\\\\)(?<word>' + regex_options + ')(?!])(?=\\W|$)'
+			var pattern: String = r'(?<=\W|^)(?<!\\)(?<word>' + regex_options + r')(?!])(?=\W|$)'
 
 			if entry.get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)
@@ -78,7 +78,7 @@ func parse_glossary(text: String) -> String:
 				color = color_overrides[entry_key].to_html()
 
 			text = regex.sub(text,
-				'[url=' + entry_key + ']' +
+				'[url="' + entry_key + '"]' +
 				'[color=' + color + ']${word}[/color]' +
 				'[/url]',
 				true
