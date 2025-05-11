@@ -19,8 +19,8 @@ var default_portrait_scene: PackedScene = load(get_script().resource_path.get_ba
 ####################################################################################################
 
 func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	for character in dialogic.current_state_info.get('portraits', {}).keys():
-		remove_character(load(character))
+	for character_identifier in dialogic.current_state_info.get('portraits', {}).keys():
+		remove_character(DialogicResourceUtil.get_character_resource(character_identifier))
 	dialogic.current_state_info['portraits'] = {}
 
 
@@ -613,8 +613,8 @@ func is_character_joined(character: DialogicCharacter) -> bool:
 func get_joined_characters() -> Array[DialogicCharacter]:
 	var chars: Array[DialogicCharacter] = []
 
-	for char_path: String in dialogic.current_state_info.get('portraits', {}).keys():
-		chars.append(load(char_path))
+	for char_identifier: String in dialogic.current_state_info.get('portraits', {}).keys():
+		chars.append(DialogicResourceUtil.get_character_resource(char_identifier))
 
 	return chars
 
