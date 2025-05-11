@@ -274,10 +274,10 @@ func get_next_search_position(navigate_up := false) -> Vector2i:
 		search_from_line = get_caret_line()
 		search_from_column = get_caret_column()
 
-	var flags := get_meta("current_search_flags", 0)
+	var flags: int = get_meta("current_search_flags", 0)
 	if navigate_up:
 		flags = flags | SEARCH_BACKWARDS
-	print()
+
 	pos = search(get_meta("current_search"), flags, search_from_line, search_from_column)
 	return pos
 

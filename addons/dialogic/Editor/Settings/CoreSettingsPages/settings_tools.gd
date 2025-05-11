@@ -30,7 +30,6 @@ func execute_tool(method:Callable) -> void:
 
 	tool_thread = Thread.new()
 	tool_progress_mutex = Mutex.new()
-	print(method)
 	tool_thread.start(method)
 
 	await tool_finished_signal
@@ -39,7 +38,7 @@ func execute_tool(method:Callable) -> void:
 		button.disabled = false
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if (tool_thread and tool_thread.is_alive()) or %ToolProgress.value < 1:
 		if tool_progress_mutex: tool_progress_mutex.lock()
 		%ToolProgress.value = tool_progress
