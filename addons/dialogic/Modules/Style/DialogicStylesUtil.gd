@@ -48,7 +48,6 @@ static func get_fallback_style() -> DialogicStyle:
 
 
 static func get_style_path(name_or_path:String) -> String:
-	print(style_directory)
 	if name_or_path.begins_with("res://"):
 		if not ResourceLoader.exists(name_or_path):
 			name_or_path = ""
