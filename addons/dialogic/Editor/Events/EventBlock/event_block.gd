@@ -19,8 +19,6 @@ var end_node: Node = null:
 
 ## FLAGS
 var selected := false
-# Whether the body is visible
-var expanded := true
 var body_was_build := false
 var has_any_enabled_body_content := false
 # Whether contained events (e.g. in choices) are visible
@@ -33,7 +31,7 @@ const indent_size := 22
 
 ## STATE
 # List that stores visibility conditions
-var field_list := []
+var field_list: Array[Dictionary] = []
 var current_indent_level := 1
 
 
@@ -83,10 +81,10 @@ func initialize_ui() -> void:
 	%IconTexture.custom_minimum_size = %IconPanel.custom_minimum_size
 
 	var custom_style: StyleBoxFlat = %IconPanel.get_theme_stylebox('panel')
-	custom_style.set_corner_radius_all(5 * _scale)
+	custom_style.set_corner_radius_all(int(5 * _scale))
 
 	# Focus Mode
-	set_focus_mode(1) # Allowing this node to grab focus
+	set_focus_mode(FOCUS_CLICK) # Allowing this node to grab focus
 
 	# Separation on the header
 	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
@@ -109,7 +107,7 @@ func initialize_logic() -> void:
 
 	content_changed.connect(recalculate_field_visibility)
 
-	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button)
+	set_expanded(resource.expand_by_default or resource.created_by_button)
 
 #endregion
 
@@ -125,6 +123,8 @@ func visual_select() -> void:
 
 
 func visual_deselect() -> void:
+	if not selected:
+		return
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
 	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
@@ -144,7 +144,7 @@ func set_warning(text:String= "") -> void:
 
 
 func set_indent(indent: int) -> void:
-	add_theme_constant_override("margin_left", indent_size * indent * DialogicUtil.get_editor_scale())
+	add_theme_constant_override("margin_left", int(indent_size * indent * DialogicUtil.get_editor_scale()))
 	current_indent_level = indent
 
 #endregion
@@ -173,7 +173,11 @@ var FIELD_SCENES := {
 	DialogicEvent.ValueType.IMAGE_PREVIEW:		"res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn",
 	}
 
+
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
+	var debug := true
+
+	var start_time := Time.get_unix_time_from_system()
 	var current_body_container: HFlowContainer = null
 
 	if build_body and body_was_build:
@@ -186,11 +190,16 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		%BodyContent.add_child(current_body_container)
 		body_was_build = true
 
+	if debug: printt("","Preloop: ",  Time.get_unix_time_from_system()-start_time)
+
 	for p in resource.get_event_editor_info():
 		field_list.append({'node':null, 'location':p.location})
 		if p.has('condition'):
 			field_list[-1]['condition'] = p.condition
 
+		if debug: printt("","Element: ",  p.name, Time.get_unix_time_from_system()-start_time)
+		var element_start := Time.get_unix_time_from_system()
+		var prev := Time.get_unix_time_from_system()
 		if !build_body and p.location == 1:
 			continue
 		elif !build_header and p.location == 0:
@@ -242,7 +251,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.text = p.name
 			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 
-
+		if debug: printt("","","A: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		field_list[-1]['node'] = editor_node
 		### --------------------------------------------------------------------
 		# Some things need to be called BEFORE the field is added to the tree
@@ -254,21 +264,25 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 			editor_node._load_display_info(p.display_info)
 
+		if debug: printt("","","B: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		var location: Control = %HeaderContent
 		if p.location == 1:
 			location = current_body_container
 		location.add_child(editor_node)
-
+		if debug: printt("","","C: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		# Some things need to be called AFTER the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
-			# Only set the value if the field is visible
-			#
-			# This prevents events with varied value types (event_setting, event_variable)
-			# from injecting incorrect types into hidden fields, which then throw errors
-			# in the console.
+			## Only set the value if the field is visible
+			##
+			## This prevents events with varied value types (event_setting, event_variable)
+			## from injecting incorrect types into hidden fields, which then throw errors
+			## in the console.
 			if p.has('condition') and not p.condition.is_empty():
-				if _evaluate_visibility_condition(p):
-					editor_node._set_value(resource.get(p.name))
+				editor_node.hide()
+				#if _evaluate_visibility_condition(p):
+					#editor_node._set_value(resource.get(p.name))
 			else:
 				editor_node._set_value(resource.get(p.name))
 
@@ -279,7 +293,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			# Apply autofocus
 			if resource.created_by_button and p.display_info.get('autofocus', false):
 				editor_node.call_deferred('take_autofocus')
-
+		if debug: printt("","","D: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 4. ADD LEFT AND RIGHT TEXT
 		var left_label: Label = null
@@ -298,7 +313,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			right_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(right_label)
 			location.move_child(right_label, editor_node.get_index()+1)
-
+		if debug: printt("","","E: ",  Time.get_unix_time_from_system()-prev)
+		prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 5. REGISTER CONDITION
 		if p.has('condition'):
@@ -308,34 +324,57 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			if right_label:
 				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
 
+		if debug: printt("","","Z: ",  Time.get_unix_time_from_system()-prev)
+		if debug: printt("","","Full: ",  Time.get_unix_time_from_system()-element_start)
+
+	if debug: printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
 
 	if build_body:
 		if current_body_container.get_child_count() == 0:
-			expanded = false
 			%Body.visible = false
+	if debug: printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
 
 	recalculate_field_visibility()
+
+	if debug: printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
 
 
 func recalculate_field_visibility() -> void:
 	has_any_enabled_body_content = false
-	for p in field_list:
-		if !p.has('condition') or p.condition.is_empty():
-			if p.node != null:
-				p.node.show()
-			if p.location == 1:
+	for field in field_list:
+		if field.get("condition", "").is_empty() or _evaluate_visibility_condition(field):
+			if field.node:
+				if field.has("condition") and (not field.node.visible) and field.has("property"):
+					field.node._set_value(resource.get(field.property))
+
+				field.node.show()
+
+			if field.location == 1:
 				has_any_enabled_body_content = true
+
 		else:
-			if _evaluate_visibility_condition(p):
-				if p.node != null:
-					if p.node.visible == false and p.has("property"):
-						p.node._set_value(resource.get(p.property))
-					p.node.show()
-				if p.location == 1:
-					has_any_enabled_body_content = true
-			else:
-				if p.node != null:
-					p.node.hide()
+			if field.node != null:
+				field.node.hide()
+
+	#for p in field_list:
+		#if not p.has('condition') or p.condition.is_empty():
+			#if p.node != null:
+				#p.node.show()
+			#if p.location == 1:
+				#has_any_enabled_body_content = true
+		#
+		#else:
+			#if _evaluate_visibility_condition(p):
+				#if p.node != null:
+					#if p.node.visible == false and p.has("property"):
+						#p.node._set_value(resource.get(p.property))
+					#p.node.show()
+				#if p.location == 1:
+					#has_any_enabled_body_content = true
+			#else:
+				#if p.node != null:
+					#p.node.hide()
+
 	%ToggleBodyVisibilityButton.visible = has_any_enabled_body_content
 
 
@@ -346,16 +385,26 @@ func set_property(property_name:String, value:Variant) -> void:
 		end_node.parent_node_changed()
 
 
-func _evaluate_visibility_condition(p: Dictionary) -> bool:
-	var expr := Expression.new()
-	expr.parse(p.condition)
+func _evaluate_visibility_condition(field: Dictionary) -> bool:
+	#if
+	#
+	var expr: Expression
+	var cache: Dictionary = Engine.get_meta("dialogic_visibility_condition_cache", {})
+	if field.condition in cache:
+		expr = cache[field.condition]
+	else:
+		expr = Expression.new()
+		expr.parse(field.condition)
+		cache[field.condition] = expr
+		Engine.set_meta("dialogic_visibility_condition_cache", cache)
+
 	var result: bool
 	if expr.execute([], resource):
 		result = true
 	else:
 		result = false
 	if expr.has_execute_failed():
-		printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
+		printerr("[Dialogic] Failed executing visibility condition for '", field.get('property', 'unnamed'),"': " + expr.get_error_text())
 	return result
 
 
@@ -396,20 +445,28 @@ func _on_collapse_toggled(toggled:bool) -> void:
 
 
 func _on_ToggleBodyVisibility_toggled(button_pressed:bool) -> void:
-	if button_pressed and !body_was_build:
-		build_editor(false, true)
-	%ToggleBodyVisibilityButton.set_pressed_no_signal(button_pressed)
+	set_expanded(button_pressed)
 
-	if button_pressed:
+	if find_parent('VisualEditor') != null:
+		find_parent('VisualEditor').indent_events()
+
+
+func set_expanded(expanded:=true) -> void:
+	if expanded and not body_was_build:
+		build_editor(false, true)
+
+	%ToggleBodyVisibilityButton.set_pressed_no_signal(expanded)
+	if expanded:
 		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	else:
 		%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 
-	expanded = button_pressed
-	%Body.visible = button_pressed
 
-	if find_parent('VisualEditor') != null:
-		find_parent('VisualEditor').indent_events()
+	%Body.visible = expanded
+
+
+func is_expanded() -> bool:
+	return %Body.visible
 
 
 func _on_EventNode_gui_input(event:InputEvent) -> void:
@@ -417,7 +474,7 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
 			if has_any_enabled_body_content:
-				_on_ToggleBodyVisibility_toggled(!expanded)
+				_on_ToggleBodyVisibility_toggled(!is_expanded())
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
