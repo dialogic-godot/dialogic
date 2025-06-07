@@ -7,12 +7,20 @@ extends DialogicVisualEditorField
 ################################################################################
 
 func _ready() -> void:
-	add_theme_color_override("icon_normal_color", get_theme_color("disabled_font_color", "Editor"))
-	add_theme_color_override("icon_hover_color", get_theme_color("warning_color", "Editor"))
-	add_theme_color_override("icon_pressed_color", get_theme_color("icon_saturation", "Editor"))
-	add_theme_color_override("icon_hover_pressed_color", get_theme_color("warning_color", "Editor"))
-	add_theme_color_override("icon_focus_color", get_theme_color("disabled_font_color", "Editor"))
 	self.toggled.connect(_on_value_changed)
+
+
+# We do this because theme changes are costly and many of these nodes are never becoming visible at all
+func _on_visibility_changed() -> void:
+	if visible and not has_meta("did_theming"):
+		begin_bulk_theme_override()
+		add_theme_color_override("icon_normal_color", get_theme_color("disabled_font_color", "Editor"))
+		add_theme_color_override("icon_hover_color", get_theme_color("warning_color", "Editor"))
+		add_theme_color_override("icon_pressed_color", get_theme_color("icon_saturation", "Editor"))
+		add_theme_color_override("icon_hover_pressed_color", get_theme_color("warning_color", "Editor"))
+		add_theme_color_override("icon_focus_color", get_theme_color("disabled_font_color", "Editor"))
+		end_bulk_theme_override()
+		set_meta("did_theming", true)
 
 
 func _load_display_info(info:Dictionary) -> void:

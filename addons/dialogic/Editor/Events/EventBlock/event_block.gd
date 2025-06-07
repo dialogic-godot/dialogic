@@ -64,11 +64,13 @@ func initialize_ui() -> void:
 
 	# Expand Button
 	%ToggleBodyVisibilityButton.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
+	%ToggleBodyVisibilityButton.begin_bulk_theme_override()
 	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_normal_color", get_theme_color("contrast_color_2", "Editor"))
 	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_hover_color", get_theme_color("accent_color", "Editor"))
 	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_pressed_color", get_theme_color("contrast_color_2", "Editor"))
 	%ToggleBodyVisibilityButton.set("theme_override_colors/icon_hover_pressed_color", get_theme_color("accent_color", "Editor"))
 	%ToggleBodyVisibilityButton.add_theme_stylebox_override('hover_pressed', StyleBoxEmpty.new())
+	%ToggleBodyVisibilityButton.end_bulk_theme_override()
 
 	# Icon Panel
 	%IconPanel.tooltip_text = resource.event_name
@@ -153,31 +155,31 @@ func set_indent(indent: int) -> void:
 #region EVENT FIELDS
 ################################################################################
 
-var FIELD_SCENES := {
-	DialogicEvent.ValueType.MULTILINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_text_multiline.tscn",
-	DialogicEvent.ValueType.SINGLELINE_TEXT: 	"res://addons/dialogic/Editor/Events/Fields/field_text_singleline.tscn",
-	DialogicEvent.ValueType.FILE: 				"res://addons/dialogic/Editor/Events/Fields/field_file.tscn",
-	DialogicEvent.ValueType.BOOL: 				"res://addons/dialogic/Editor/Events/Fields/field_bool_check.tscn",
-	DialogicEvent.ValueType.BOOL_BUTTON: 		"res://addons/dialogic/Editor/Events/Fields/field_bool_button.tscn",
-	DialogicEvent.ValueType.CONDITION: 			"res://addons/dialogic/Editor/Events/Fields/field_condition.tscn",
-	DialogicEvent.ValueType.ARRAY: 				"res://addons/dialogic/Editor/Events/Fields/field_array.tscn",
-	DialogicEvent.ValueType.DICTIONARY: 		"res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn",
-	DialogicEvent.ValueType.DYNAMIC_OPTIONS: 	"res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn",
-	DialogicEvent.ValueType.FIXED_OPTIONS	: 	"res://addons/dialogic/Editor/Events/Fields/field_options_fixed.tscn",
-	DialogicEvent.ValueType.NUMBER: 			"res://addons/dialogic/Editor/Events/Fields/field_number.tscn",
-	DialogicEvent.ValueType.VECTOR2: 			"res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn",
-	DialogicEvent.ValueType.VECTOR3: 			"res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn",
-	DialogicEvent.ValueType.VECTOR4: 			"res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn",
-	DialogicEvent.ValueType.COLOR: 				"res://addons/dialogic/Editor/Events/Fields/field_color.tscn",
-	DialogicEvent.ValueType.AUDIO_PREVIEW: 		"res://addons/dialogic/Editor/Events/Fields/field_audio_preview.tscn",
-	DialogicEvent.ValueType.IMAGE_PREVIEW:		"res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn",
+static var FIELD_SCENES := {
+	DialogicEvent.ValueType.MULTILINE_TEXT: 	preload("res://addons/dialogic/Editor/Events/Fields/field_text_multiline.tscn"),
+	DialogicEvent.ValueType.SINGLELINE_TEXT: 	preload("res://addons/dialogic/Editor/Events/Fields/field_text_singleline.tscn"),
+	DialogicEvent.ValueType.FILE: 				preload("res://addons/dialogic/Editor/Events/Fields/field_file.tscn"),
+	DialogicEvent.ValueType.BOOL: 				preload("res://addons/dialogic/Editor/Events/Fields/field_bool_check.tscn"),
+	DialogicEvent.ValueType.BOOL_BUTTON: 		preload("res://addons/dialogic/Editor/Events/Fields/field_bool_button.tscn"),
+	DialogicEvent.ValueType.CONDITION: 			preload("res://addons/dialogic/Editor/Events/Fields/field_condition.tscn"),
+	DialogicEvent.ValueType.ARRAY: 				preload("res://addons/dialogic/Editor/Events/Fields/field_array.tscn"),
+	DialogicEvent.ValueType.DICTIONARY: 		preload("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn"),
+	DialogicEvent.ValueType.DYNAMIC_OPTIONS: 	preload("res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn"),
+	DialogicEvent.ValueType.FIXED_OPTIONS	: 	preload("res://addons/dialogic/Editor/Events/Fields/field_options_fixed.tscn"),
+	DialogicEvent.ValueType.NUMBER: 			preload("res://addons/dialogic/Editor/Events/Fields/field_number.tscn"),
+	DialogicEvent.ValueType.VECTOR2: 			preload("res://addons/dialogic/Editor/Events/Fields/field_vector2.tscn"),
+	DialogicEvent.ValueType.VECTOR3: 			preload("res://addons/dialogic/Editor/Events/Fields/field_vector3.tscn"),
+	DialogicEvent.ValueType.VECTOR4: 			preload("res://addons/dialogic/Editor/Events/Fields/field_vector4.tscn"),
+	DialogicEvent.ValueType.COLOR: 				preload("res://addons/dialogic/Editor/Events/Fields/field_color.tscn"),
+	DialogicEvent.ValueType.AUDIO_PREVIEW: 		preload("res://addons/dialogic/Editor/Events/Fields/field_audio_preview.tscn"),
+	DialogicEvent.ValueType.IMAGE_PREVIEW:		preload("res://addons/dialogic/Editor/Events/Fields/field_image_preview.tscn"),
 	}
 
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
-	var debug := true
+	#var debug := false
+	#var start_time := Time.get_unix_time_from_system()
 
-	var start_time := Time.get_unix_time_from_system()
 	var current_body_container: HFlowContainer = null
 
 	if build_body and body_was_build:
@@ -190,19 +192,19 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		%BodyContent.add_child(current_body_container)
 		body_was_build = true
 
-	if debug: printt("","Preloop: ",  Time.get_unix_time_from_system()-start_time)
+	#if debug: printt("","Preloop: ",  Time.get_unix_time_from_system()-start_time)
 
 	for p in resource.get_event_editor_info():
 		field_list.append({'node':null, 'location':p.location})
 		if p.has('condition'):
 			field_list[-1]['condition'] = p.condition
 
-		if debug: printt("","Element: ",  p.name, Time.get_unix_time_from_system()-start_time)
-		var element_start := Time.get_unix_time_from_system()
-		var prev := Time.get_unix_time_from_system()
-		if !build_body and p.location == 1:
+		#if debug: printt("","Element: ",  p.name, Time.get_unix_time_from_system()-start_time)
+		#var element_start := Time.get_unix_time_from_system()
+		#var prev := Time.get_unix_time_from_system()
+		if not build_body and p.location == 1:
 			continue
-		elif !build_header and p.location == 0:
+		elif not build_header and p.location == 0:
 			continue
 
 		### --------------------------------------------------------------------
@@ -212,14 +214,14 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		### LINEBREAK
 		if p.name == "linebreak":
 			field_list.remove_at(field_list.size()-1)
-			if !current_body_container.get_child_count():
+			if not current_body_container.get_child_count():
 				current_body_container.queue_free()
 			current_body_container = HFlowContainer.new()
 			%BodyContent.add_child(current_body_container)
 			continue
 
 		elif p.field_type in FIELD_SCENES:
-			editor_node = load(FIELD_SCENES[p.field_type]).instantiate()
+			editor_node = FIELD_SCENES[p.field_type].instantiate()
 
 		elif p.field_type == resource.ValueType.LABEL:
 			editor_node = Label.new()
@@ -251,27 +253,29 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.text = p.name
 			editor_node.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 
-		if debug: printt("","","A: ",  Time.get_unix_time_from_system()-prev)
-		prev = Time.get_unix_time_from_system()
+		#if debug: printt("","","A: ",  Time.get_unix_time_from_system()-prev)
+		#prev = Time.get_unix_time_from_system()
 		field_list[-1]['node'] = editor_node
+		editor_node.name = p.name.to_pascal_case()
 		### --------------------------------------------------------------------
 		# Some things need to be called BEFORE the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
 			editor_node.event_resource = resource
 
 			editor_node.property_name = p.name
+
 			field_list[-1]['property'] = p.name
 
 			editor_node._load_display_info(p.display_info)
 
-		if debug: printt("","","B: ",  Time.get_unix_time_from_system()-prev)
-		prev = Time.get_unix_time_from_system()
+		#if debug: printt("","","B: ",  Time.get_unix_time_from_system()-prev)
+		#prev = Time.get_unix_time_from_system()
 		var location: Control = %HeaderContent
 		if p.location == 1:
 			location = current_body_container
 		location.add_child(editor_node)
-		if debug: printt("","","C: ",  Time.get_unix_time_from_system()-prev)
-		prev = Time.get_unix_time_from_system()
+		#if debug: printt("","","C: ",  Time.get_unix_time_from_system()-prev)
+		#prev = Time.get_unix_time_from_system()
 		# Some things need to be called AFTER the field is added to the tree
 		if editor_node is DialogicVisualEditorField:
 			## Only set the value if the field is visible
@@ -293,28 +297,28 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			# Apply autofocus
 			if resource.created_by_button and p.display_info.get('autofocus', false):
 				editor_node.call_deferred('take_autofocus')
-		if debug: printt("","","D: ",  Time.get_unix_time_from_system()-prev)
-		prev = Time.get_unix_time_from_system()
+		#if debug: printt("","","D: ",  Time.get_unix_time_from_system()-prev)
+		#prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 4. ADD LEFT AND RIGHT TEXT
 		var left_label: Label = null
 		var right_label: Label = null
-		if !p.get('left_text', '').is_empty():
+		if not p.get('left_text', '').is_empty():
 			left_label = Label.new()
 			left_label.text = p.get('left_text')
 			left_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			left_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(left_label)
 			location.move_child(left_label, editor_node.get_index())
-		if !p.get('right_text', '').is_empty():
+		if not p.get('right_text', '').is_empty():
 			right_label = Label.new()
 			right_label.text = p.get('right_text')
 			right_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			right_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(right_label)
 			location.move_child(right_label, editor_node.get_index()+1)
-		if debug: printt("","","E: ",  Time.get_unix_time_from_system()-prev)
-		prev = Time.get_unix_time_from_system()
+		#if debug: printt("","","E: ",  Time.get_unix_time_from_system()-prev)
+		#prev = Time.get_unix_time_from_system()
 		### --------------------------------------------------------------------
 		### 5. REGISTER CONDITION
 		if p.has('condition'):
@@ -324,25 +328,27 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			if right_label:
 				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
 
-		if debug: printt("","","Z: ",  Time.get_unix_time_from_system()-prev)
-		if debug: printt("","","Full: ",  Time.get_unix_time_from_system()-element_start)
+		#if debug: printt("","","Z: ",  Time.get_unix_time_from_system()-prev)
+		#if debug: printt("","","Full: ",  Time.get_unix_time_from_system()-element_start)
 
-	if debug: printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
+	#if debug: printt("", "BlockB: ", Time.get_unix_time_from_system()-start_time)
 
 	if build_body:
 		if current_body_container.get_child_count() == 0:
 			%Body.visible = false
-	if debug: printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
+	#if debug: printt("", "BlockC: ", Time.get_unix_time_from_system()-start_time)
 
 	recalculate_field_visibility()
 
-	if debug: printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
+	#if debug: printt("", "BlockFull: ", Time.get_unix_time_from_system()-start_time)
 
 
 func recalculate_field_visibility() -> void:
 	has_any_enabled_body_content = false
 	for field in field_list:
-		if field.get("condition", "").is_empty() or _evaluate_visibility_condition(field):
+		if not field.node and has_any_enabled_body_content:
+			continue
+		if _evaluate_visibility_condition(field):
 			if field.node:
 				if field.has("condition") and (not field.node.visible) and field.has("property"):
 					field.node._set_value(resource.get(field.property))
@@ -356,25 +362,6 @@ func recalculate_field_visibility() -> void:
 			if field.node != null:
 				field.node.hide()
 
-	#for p in field_list:
-		#if not p.has('condition') or p.condition.is_empty():
-			#if p.node != null:
-				#p.node.show()
-			#if p.location == 1:
-				#has_any_enabled_body_content = true
-		#
-		#else:
-			#if _evaluate_visibility_condition(p):
-				#if p.node != null:
-					#if p.node.visible == false and p.has("property"):
-						#p.node._set_value(resource.get(p.property))
-					#p.node.show()
-				#if p.location == 1:
-					#has_any_enabled_body_content = true
-			#else:
-				#if p.node != null:
-					#p.node.hide()
-
 	%ToggleBodyVisibilityButton.visible = has_any_enabled_body_content
 
 
@@ -386,8 +373,9 @@ func set_property(property_name:String, value:Variant) -> void:
 
 
 func _evaluate_visibility_condition(field: Dictionary) -> bool:
-	#if
-	#
+	if field.get("condition", "").is_empty():
+		return true
+
 	var expr: Expression
 	var cache: Dictionary = Engine.get_meta("dialogic_visibility_condition_cache", {})
 	if field.condition in cache:
@@ -423,11 +411,9 @@ func _on_resource_ui_update_needed() -> void:
 			# This prevents events with varied value types (event_setting, event_variable)
 			# from injecting incorrect types into hidden fields, which then throw errors
 			# in the console.
-			if node_info.has('condition') and not node_info.condition.is_empty():
-				if _evaluate_visibility_condition(node_info):
-					node_info.node.set_value(resource.get(node_info.property))
-			else:
+			if _evaluate_visibility_condition(node_info):
 				node_info.node.set_value(resource.get(node_info.property))
+
 	recalculate_field_visibility()
 
 

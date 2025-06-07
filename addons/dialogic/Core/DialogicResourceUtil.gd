@@ -56,6 +56,10 @@ static func update_directory(extension:String) -> void:
 	set_directory(extension, directory)
 
 
+static func is_resource_in_directory(file_path:String) -> bool:
+	var directory := get_directory(file_path.get_extension())
+	return file_path in directory.values()
+
 static func add_resource_to_directory(file_path:String, directory:Dictionary) -> Dictionary:
 	var suggested_name := file_path.get_file().trim_suffix("."+file_path.get_extension())
 	var temp := suggested_name

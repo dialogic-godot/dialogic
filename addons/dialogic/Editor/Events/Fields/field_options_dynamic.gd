@@ -76,6 +76,9 @@ func _load_display_info(info:Dictionary) -> void:
 	valid_file_drop_extension = info.get('file_extension', '')
 	collapse_when_empty = info.get('collapse_when_empty', false)
 	suggestions_func = info.get('suggestions_func', suggestions_func)
+	if not suggestions_func.is_valid():
+		if event_resource.has_method(suggestions_func.get_method()):
+			suggestions_func = Callable(event_resource, suggestions_func.get_method())
 	validation_func = info.get('validation_func', validation_func)
 	empty_text = info.get('empty_text', '')
 	placeholder_text = info.get('placeholder', 'Select Resource')
@@ -97,6 +100,8 @@ func _autofocus() -> void:
 ################################################################################
 
 func _ready() -> void:
+	if not is_visible_in_tree():
+		return
 	var focus := get_theme_stylebox("focus", "LineEdit")
 	if has_theme_stylebox("focus", "DialogicEventEdit"):
 		focus = get_theme_stylebox('focus', 'DialogicEventEdit')
@@ -293,6 +298,8 @@ func suggestion_selected(index: int, _position := Vector2(), button_index := MOU
 
 
 func _input(event:InputEvent) -> void:
+	if not visible:
+		return
 	if %Suggestions.visible and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if not %Suggestions.get_global_rect().has_point(get_global_mouse_position()) and \
 			not %SelectButton.get_global_rect().has_point(get_global_mouse_position()):
