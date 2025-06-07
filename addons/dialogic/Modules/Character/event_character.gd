@@ -155,7 +155,7 @@ func _execute() -> void:
 			return
 
 		if set_portrait:
-			dialogic.Portraits.change_character_portrait(character, portrait, fade_animation, fade_length)
+			await dialogic.Portraits.change_character_portrait(character, portrait, fade_animation, fade_length)
 
 		dialogic.Portraits.change_character_extradata(character, extra_data)
 
