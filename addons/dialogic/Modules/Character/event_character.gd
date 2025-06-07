@@ -256,7 +256,8 @@ func to_text() -> String:
 
 func from_text(string:String) -> void:
 	# Load default character
-	character = DialogicResourceUtil.get_character_resource(character_identifier)
+	if character_identifier:
+		character = DialogicResourceUtil.get_character_resource(character_identifier)
 
 	var result := regex.search(string)
 
