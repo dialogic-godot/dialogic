@@ -99,7 +99,7 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 	## TODO use .merged after dropping 4.2 support
 	var audio_settings: Dictionary = DialogicUtil.get_audio_channel_defaults().get(channel_name, {})
 	audio_settings.merge(
-		{"volume":0, "audio_bus":"", "fade_length":0.0, "loop":false, "sync_channel":""}
+		{"volume":0, "audio_bus":"", "fade_length":0.0, "loop":true, "sync_channel":""}
 	)
 	audio_settings.merge(settings_overrides, true)
 
