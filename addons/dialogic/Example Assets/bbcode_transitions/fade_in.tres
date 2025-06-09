@@ -13,5 +13,5 @@ color_modulate = SubResource("Gradient_5w3vn")
 scale_enabled = false
 scale_pivot = Vector2(0, 0)
 position_enabled = false
-test_value = null
+test_value = -0.1
 metadata/_custom_type_script = "uid://wf7hpguw17ex"

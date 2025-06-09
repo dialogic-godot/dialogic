@@ -1,12 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cf3qks3v18xmr"]
+[gd_scene load_steps=4 format=3 uid="uid://cf3qks3v18xmr"]
 
 [ext_resource type="Script" uid="uid://cdxck874xobqh" path="res://addons/dialogic/Modules/Text/settings_text.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="3_s7xhj"]
-
-[sub_resource type="SVGTexture" id="SVGTexture_15d2e"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
-"
 
 [node name="DialogText" type="VBoxContainer"]
 anchors_preset = 15
@@ -181,7 +177,7 @@ text = "Custom BBCode Effects"
 [node name="HintTooltip5" parent="VBoxContainer/VBox/BBCodeEffectLabel" instance=ExtResource("3_s7xhj")]
 layout_mode = 2
 tooltip_text = "This is put before the text. Can be used to apply bbcode effects to all texts."
-texture = SubResource("SVGTexture_15d2e")
+texture = null
 hint_text = "Supply a list of bbcode effect resources (paths or uids) separated by comma."
 
 [node name="CustomBBCodeEffects" type="LineEdit" parent="VBoxContainer/VBox"]

@@ -23,8 +23,18 @@ var cache := []
 @export_group("Test", "test")
 @export_range(-0.1, 1.0, 0.1) var test_value := -0.1
 
+var was_skipped := false
+var was_reset := false
+
+
 func reset() -> void:
+	was_reset = true
+	was_skipped = false
 	cache.clear()
+
+
+func skip() -> void:
+	was_skipped = true
 
 
 func _process_custom_fx(char_fx: CharFXTransform) -> bool:
@@ -36,10 +46,19 @@ func _process_custom_fx(char_fx: CharFXTransform) -> bool:
 		if visible_characters == 0:
 			cache.clear()
 			return false
+		if was_reset:
+			if visible_characters != -1:
+				was_reset = false
+			else:
+				return false
 
-		if len(cache) < visible_characters:
+		if len(cache) < visible_characters or visible_characters == -1 or was_skipped:
 			if char_fx.range.x >= len(cache):
 				cache.append(char_fx.elapsed_time)
+
+		if was_skipped:
+			for i in range(len(cache)):
+				cache[i] = char_fx.elapsed_time-time
 
 		if len(cache) > char_fx.range.x:
 			char_age = char_fx.elapsed_time - cache[char_fx.range.x]

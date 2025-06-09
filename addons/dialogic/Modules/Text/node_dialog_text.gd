@@ -125,16 +125,18 @@ func continue_reveal() -> void:
 
 		custom_fx_update()
 	else:
-		finish_text()
+		finish_text(true)
 		# if the text finished organically, add a small input block
 		# this prevents accidental skipping when you expected the text to be longer
 		DialogicUtil.autoload().Inputs.block_input(ProjectSettings.get_setting('dialogic/text/advance_delay', 0.1))
 
 
 ## Reveals the entire text instantly.
-func finish_text() -> void:
+func finish_text(is_organic := false) -> void:
 	visible_ratio = 1
 	custom_fx_update()
+	if not is_organic:
+		custom_fx_skip()
 	DialogicUtil.autoload().Text.execute_effects(-1, self, true)
 	revealing = false
 	DialogicUtil.autoload().current_state = DialogicGameHandler.States.IDLE
@@ -175,7 +177,14 @@ func custom_fx_update() -> void:
 		if "visible_characters" in effect:
 			effect.visible_characters = visible_characters
 
+
 func custom_fx_reset() -> void:
 	for effect in custom_effects:
 		if effect.has_method("reset"):
 			effect.reset()
+
+
+func custom_fx_skip() -> void:
+	for effect in custom_effects:
+		if effect.has_method("skip"):
+			effect.skip()
