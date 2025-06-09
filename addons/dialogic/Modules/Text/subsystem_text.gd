@@ -381,8 +381,12 @@ func collect_text_effects() -> void:
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
 	parsed_text_effect_info.clear()
-	var rtl := RichTextLabel.new()
-	rtl.bbcode_enabled = true
+	var rtl: RichTextLabel = null
+	if get_tree().get_first_node_in_group("dialogic_dialog_text"):
+		rtl = get_tree().get_first_node_in_group("dialogic_dialog_text").duplicate()
+	else:
+		rtl = RichTextLabel.new()
+		rtl.bbcode_enabled = true
 	var position_correction := 0
 	var bbcode_correction := 0
 	for effect_match in text_effects_regex.search_all(text):

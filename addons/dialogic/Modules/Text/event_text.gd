@@ -133,7 +133,7 @@ func _execute() -> void:
 			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
 			var is_append: bool = split_text[section_idx][1]
 
-			final_text = segment
+			final_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+segment
 			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
 
 			await dialogic.Text.update_textbox(final_text, false)

@@ -1,0 +1,35 @@
+[gd_resource type="RichTextEffect" script_class="DialogicRichTextTransitionEffect" load_steps=6 format=3 uid="uid://dnxkgwncm1pt5"]
+
+[ext_resource type="Script" uid="uid://wf7hpguw17ex" path="res://addons/dialogic/Example Assets/bbcode_transitions/bbcode_transition_effect.gd" id="1_ur6c5"]
+
+[sub_resource type="Gradient" id="Gradient_ur6c5"]
+offsets = PackedFloat32Array(0, 0.5089058)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_5qe3f"]
+_limits = [-0.5, 0.51556605, 0.0, 1.0]
+_data = [Vector2(0, 0.0235914), 0.0, 0.0, 0, 0, Vector2(0.019656021, -0.2441923), 0.0, 0.0, 0, 0, Vector2(0.046683047, 0.17305207), 0.0, 0.0, 0, 0, Vector2(0.1081081, -0.23173726), 0.0, 0.0, 0, 0, Vector2(0.16216215, 0.12323183), 0.0, 0.0, 0, 0, Vector2(0.2997543, -0.16946197), 0.0, 0.0, 0, 0, Vector2(0.38329238, 0.042274), 0.0, 0.0, 0, 0, Vector2(0.46928746, -0.107186675), 0.0, 0.0, 0, 0, Vector2(0.5135135, 0.054729044), 0.0, 0.0, 0, 0, Vector2(0.66339064, -0.07604903), 0.0, 0.0, 0, 0, Vector2(0.86240786, 0.054729044), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 12
+
+[sub_resource type="Curve" id="Curve_ur6c5"]
+_limits = [-0.5, 0.51556605, 0.0, 1.0]
+_data = [Vector2(0, 0.042274), 0.0, 0.0, 0, 0, Vector2(0.051597048, -0.13209677), 0.0, 0.0, 0, 0, Vector2(0.09336609, 0.21041724), 0.0, 0.0, 0, 0, Vector2(0.14742014, -0.25664735), 0.0, 0.0, 0, 0, Vector2(0.22850122, 0.098321736), 0.0, 0.0, 0, 0, Vector2(0.31203932, -0.107186675), 0.0, 0.0, 0, 0, Vector2(0.44717443, 0.054729044), 0.0, 0.0, 0, 0, Vector2(0.5995086, -0.08227658), 0.0, 0.0, 0, 0, Vector2(0.8132678, 0.042274), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 10
+
+[sub_resource type="Curve" id="Curve_qelc7"]
+_data = [Vector2(0, 0.57688683), 0.0, 0.0, 0, 0, Vector2(0.14250615, 0.77311325), 0.0, 0.0, 0, 0, Vector2(0.2850123, 0.6443397), 0.0, 0.0, 0, 0, Vector2(0.41769046, 0.7976416), 0.0, 0.0, 0, 0, Vector2(0.5503686, 0.74245286), 0.0, 0.0, 0, 0, Vector2(0.6781328, 0.8712265), 0.0, 0.0, 0, 0, Vector2(0.79606885, 0.8528303), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[resource]
+script = ExtResource("1_ur6c5")
+bbcode = "shaky_in"
+time = 0.4
+color_modulate = SubResource("Gradient_ur6c5")
+scale_enabled = true
+scale_curve = SubResource("Curve_qelc7")
+scale_pivot = Vector2(0.5, 0.5)
+position_enabled = true
+position_x_curve = SubResource("Curve_5qe3f")
+position_y_curve = SubResource("Curve_ur6c5")
+test_value = -0.1
+metadata/_custom_type_script = "uid://wf7hpguw17ex"
