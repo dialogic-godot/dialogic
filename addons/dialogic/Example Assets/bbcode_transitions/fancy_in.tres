@@ -1,0 +1,35 @@
+[gd_resource type="RichTextEffect" script_class="DialogicRichTextTransitionEffect" load_steps=6 format=3 uid="uid://c8b884puc720d"]
+
+[ext_resource type="Script" uid="uid://wf7hpguw17ex" path="res://addons/dialogic/Example Assets/bbcode_transitions/bbcode_transition_effect.gd" id="1_n3lqs"]
+
+[sub_resource type="Gradient" id="Gradient_n3lqs"]
+offsets = PackedFloat32Array(0, 0.45292622)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_lhhwu"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.6666667, 0.86513996)
+colors = PackedColorArray(0.5208, 0.76631993, 0.93, 0, 0.5242275, 0.76595265, 0.93170327, 1, 0.5208, 0.76631993, 0.93, 0)
+
+[sub_resource type="Curve" id="Curve_lhhwu"]
+_data = [Vector2(0.002457004, 1), 0.0, -1.993977, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_4i73d"]
+_limits = [0.0, 1.5, 0.0, 1.0]
+_data = [Vector2(0, 0.6627359), 0.0, 1.7969435, 0, 0, Vector2(0.4987715, 1.0308962), -1.6188686, -1.6188686, 0, 0, Vector2(0.66093373, 1), -0.34929827, 0.0, 0, 0]
+point_count = 3
+
+[resource]
+script = ExtResource("1_n3lqs")
+bbcode = "fancy_in"
+time = 0.4
+color_modulate = SubResource("Gradient_n3lqs")
+color_replace = SubResource("Gradient_lhhwu")
+scale_enabled = true
+scale_curve = SubResource("Curve_4i73d")
+scale_pivot = Vector2(0.5, 0)
+position_enabled = true
+position_x_curve = SubResource("Curve_lhhwu")
+test_value = -0.1
+metadata/_custom_type_script = "uid://wf7hpguw17ex"
