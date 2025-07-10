@@ -205,7 +205,7 @@ func display_search_results(finds:Array[Dictionary]) -> void:
 ## Inspired by how godot highlights stuff in its search results
 func _custom_draw(item:TreeItem, rect:Rect2) -> void:
 	var text := item.get_text(2)
-	var find := item.get_metadata(0)
+	var find: Dictionary = item.get_metadata(0)
 
 	var font: Font = %ReferenceTree.get_theme_font("font")
 	var font_size: int = %ReferenceTree.get_theme_font_size("font_size")
