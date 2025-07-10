@@ -435,7 +435,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			else:
 				input = SpinBox.new()
 				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_info.name, property_changed))
-				if property_info.hint_string == 'int':
+				if property_info.hint_string == '':
 					input.step = 1
 					input.allow_greater = true
 					input.allow_lesser = true
