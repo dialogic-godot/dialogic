@@ -281,6 +281,18 @@ func end_timeline(skip_ending := false) -> void:
 	timeline_ended.emit()
 
 
+## Method to check if timeline exists.
+## @timeline can be either a loaded timeline resource or a path to a timeline file.
+func does_timeline_exist(timeline:Variant) -> bool:
+	if typeof(timeline) == TYPE_STRING:
+		if "://" in timeline and ResourceLoader.exists(timeline):
+			return load(timeline) is DialogicTimeline
+		else:
+			return DialogicResourceUtil.get_if_timeline_resource_exists(timeline)
+
+	return timeline is DialogicTimeline
+
+
 ## Handles the next event.
 func handle_next_event(_ignore_argument: Variant = "") -> void:
 	handle_event(current_event_idx+1)

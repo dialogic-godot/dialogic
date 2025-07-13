@@ -87,6 +87,15 @@ static func get_resource_from_identifier(identifier:String, extension:String) ->
 	return null
 
 
+## Returns a boolean that expresses whether the resource exists.
+## The expected extension is needed to use the right directory.
+static func get_resource_existence_from_identifier(identifier:String, extension:String) -> bool:
+	var value: Variant = get_directory(extension).get(identifier, '')
+	if typeof(value) == TYPE_STRING:
+		return ResourceLoader.exists(value)
+	return value is Resource
+
+
 ## Editor Only
 static func change_unique_identifier(file_path:String, new_identifier:String) -> void:
 	var directory := get_directory(file_path.get_extension())
@@ -323,6 +332,10 @@ static func get_character_directory() -> Dictionary:
 
 static func get_timeline_directory() -> Dictionary:
 	return get_directory('dtl')
+
+
+static func get_if_timeline_resource_exists(timeline_identifier:String) -> bool:
+	return get_resource_existence_from_identifier(timeline_identifier, 'dtl')
 
 
 static func get_timeline_resource(timeline_identifier:String) -> DialogicTimeline:
