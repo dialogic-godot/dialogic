@@ -41,6 +41,7 @@ func _ready() -> void:
 
 
 func reset() -> void:
+	set_process(false)
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 
