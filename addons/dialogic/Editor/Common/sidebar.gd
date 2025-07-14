@@ -391,7 +391,7 @@ func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> 
 
 
 func _on_resources_tree_item_collapsed(item:TreeItem) -> void:
-	var collapsed_info := DialogicUtil.get_editor_setting("resource_list_collapsed_info", [])
+	var collapsed_info: Array = DialogicUtil.get_editor_setting("resource_list_collapsed_info", [])
 	if item.get_text(0) in collapsed_info:
 		if not item.collapsed:
 			collapsed_info.erase(item.get_text(0))
