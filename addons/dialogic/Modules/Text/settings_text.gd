@@ -12,6 +12,8 @@ const _SETTING_TEXT_REVEAL_SKIPPABLE_DELAY 	:= 'dialogic/text/text_reveal_skip_d
 const _SETTING_TEXT_ADVANCE_DELAY 			:= 'dialogic/text/advance_delay'
 
 const _SETTING_AUTOCOLOR_NAMES 				:= 'dialogic/text/autocolor_names'
+const _SETTING_TEXT_PREFIX 					:= 'dialogic/text/dialog_text_prefix'
+const _SETTING_CUSTOM_BBCODE_EFFECTS 		:= 'dialogic/text/custom_bbcode_effects'
 const _SETTING_SPLIT_AT_NEW_LINES 			:= 'dialogic/text/split_at_new_lines'
 const _SETTING_SPLIT_AT_NEW_LINES_AS 		:= 'dialogic/text/split_at_new_lines_as'
 
@@ -44,6 +46,8 @@ func _ready() -> void:
 	%AdvanceDelay.value_changed.connect(_on_float_set.bind(_SETTING_TEXT_ADVANCE_DELAY))
 
 	%AutocolorNames.toggled.connect(_on_bool_set.bind(_SETTING_AUTOCOLOR_NAMES))
+	%TextPrefix.text_changed.connect(_on_string_set.bind(_SETTING_TEXT_PREFIX))
+	%CustomBBCodeEffects.text_changed.connect(_on_string_set.bind(_SETTING_CUSTOM_BBCODE_EFFECTS))
 
 	%NewEvents.toggled.connect(_on_bool_set.bind(_SETTING_SPLIT_AT_NEW_LINES))
 
@@ -69,6 +73,8 @@ func _refresh() -> void:
 	%AdvanceDelay.value = ProjectSettings.get_setting(_SETTING_TEXT_ADVANCE_DELAY, 0.1)
 
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting(_SETTING_AUTOCOLOR_NAMES, false)
+	%TextPrefix.text = ProjectSettings.get_setting(_SETTING_TEXT_PREFIX, "")
+	%CustomBBCodeEffects.text = ProjectSettings.get_setting(_SETTING_CUSTOM_BBCODE_EFFECTS, "")
 
 	%NewEvents.button_pressed = ProjectSettings.get_setting(_SETTING_SPLIT_AT_NEW_LINES, false)
 	%NewEventOption.select(ProjectSettings.get_setting(_SETTING_SPLIT_AT_NEW_LINES_AS, 0))
@@ -115,14 +121,18 @@ func _on_float_set(value:float, setting:String) -> void:
 	ProjectSettings.save()
 
 
+func _on_string_set(value:String, setting:String) -> void:
+	ProjectSettings.set_setting(setting, value)
+	ProjectSettings.save()
+
 #region BEHAVIOUR
 ################################################################################
 
-func _on_InputAction_value_changed(property_name:String, value:String) -> void:
+func _on_InputAction_value_changed(_property_name:String, value:String) -> void:
 	ProjectSettings.set_setting(_SETTING_INPUT_ACTION, value)
 	ProjectSettings.save()
 
-func suggest_actions(search:String) -> Dictionary:
+func suggest_actions(_search:String) -> Dictionary:
 	var suggs := {}
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('input/') and not prop.name.begins_with('input/ui_') :
