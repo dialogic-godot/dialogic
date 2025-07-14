@@ -9,7 +9,12 @@ extends Control
 @onready var name_label_box: PanelContainer = (%NameLabelPanel as PanelContainer)
 @onready var name_label_holder: HBoxContainer = $DialogText/NameLabelPositioner
 
-var node_to_point_at: Node = null
+var node_to_point_at: Node = null:
+	set(val):
+		node_to_point_at = val
+		base_position = get_speaker_canvas_position() + base_direction * safe_zone
+		position = base_position
+		
 var current_character: DialogicCharacter = null
 
 var max_width := 300
