@@ -109,7 +109,7 @@ func build_event_editor() -> void:
 		'file_extension': '.dtl',
 		'mode'			: 2,
 		'suggestions_func': get_timeline_suggestions,
-		'editor_icon'	: ["TripleBar", "EditorIcons"],
+		'icon'	: load("res://addons/dialogic/Editor/Images/Resources/timeline.svg"),
 		'empty_text'	: '(this timeline)',
 		'autofocus'		: true,
 		})

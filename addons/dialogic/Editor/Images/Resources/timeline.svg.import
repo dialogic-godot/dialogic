@@ -2,17 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bymlbr4o2m3jc"
-path="res://.godot/imported/add-timeline.svg-86961b528ebdf01f585931a15fea1755.ctex"
+uid="uid://j7ym07anlusi"
+path="res://.godot/imported/timeline.svg-4b0b3233c6ce249f8277502cd9b13eaf.ctex"
 metadata={
-"has_editor_variant": true,
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg"
-dest_files=["res://.godot/imported/add-timeline.svg-86961b528ebdf01f585931a15fea1755.ctex"]
+source_file="res://addons/dialogic/Editor/Images/Resources/timeline.svg"
+dest_files=["res://.godot/imported/timeline.svg-4b0b3233c6ce249f8277502cd9b13eaf.ctex"]
 
 [params]
 
@@ -40,5 +39,5 @@ process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
 svg/scale=1.0
-editor/scale_with_editor_scale=true
-editor/convert_colors_with_editor_theme=true
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
