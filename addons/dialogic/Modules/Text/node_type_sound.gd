@@ -42,6 +42,10 @@ func _ready() -> void:
 		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
 		get_parent().finished_revealing_text.connect(_on_finished_revealing_text)
 
+	if DialogicUtil.autoload():
+		var current_speaker = DialogicUtil.autoload().Text.get_current_speaker()
+		if current_speaker:
+			load_overwrite(current_speaker.custom_info.get('sound_moods', {}).get(current_speaker.current_mood, {}))
 
 func _on_started_revealing_text() -> void:
 	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
