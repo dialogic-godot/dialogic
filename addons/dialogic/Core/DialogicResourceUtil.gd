@@ -89,7 +89,7 @@ static func get_resource_from_identifier(identifier:String, extension:String) ->
 
 ## Returns a boolean that expresses whether the resource exists.
 ## The expected extension is needed to use the right directory.
-static func get_resource_existence_from_identifier(identifier:String, extension:String) -> bool:
+static func resource_exists_from_identifier(identifier:String, extension:String) -> bool:
 	var value: Variant = get_directory(extension).get(identifier, '')
 	if typeof(value) == TYPE_STRING:
 		return ResourceLoader.exists(value)
@@ -334,8 +334,8 @@ static func get_timeline_directory() -> Dictionary:
 	return get_directory('dtl')
 
 
-static func get_if_timeline_resource_exists(timeline_identifier:String) -> bool:
-	return get_resource_existence_from_identifier(timeline_identifier, 'dtl')
+static func timeline_resource_exists(timeline_identifier:String) -> bool:
+	return resource_exists_from_identifier(timeline_identifier, 'dtl')
 
 
 static func get_timeline_resource(timeline_identifier:String) -> DialogicTimeline:
