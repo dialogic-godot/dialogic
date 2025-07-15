@@ -356,8 +356,8 @@ func is_string_full_event(string:String) -> bool:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"character"		: {"property": "character_identifier", "default": ""},
-		"portrait"		: {"property": "portrait", 					"default": ""},
+		"character"		: {"property": "character_identifier", "default": "", "ext_file":true},
+		"portrait"		: {"property": "portrait", 				"default": ""},
 	}
 #endregion
 

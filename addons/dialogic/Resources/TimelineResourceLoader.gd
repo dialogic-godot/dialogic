@@ -44,3 +44,25 @@ func _load(path: String, _original_path: String, _use_sub_threads: bool, _cache_
 	var tml := DialogicTimeline.new()
 	tml.from_text(file.get_as_text())
 	return tml
+
+
+func _get_dependencies(path: String, _add_types: bool) -> PackedStringArray:
+	var deps := PackedStringArray()
+
+	var tml: DialogicTimeline = load(path)
+	tml.process()
+
+	for ev in tml.events:
+		deps += ev.get_dependencies()
+
+	var clean_deps := PackedStringArray()
+
+	for i in deps:
+		var clean := i
+		if clean.begins_with("res://"):
+			clean = ResourceUID.path_to_uid(clean)
+		if not clean.is_empty() and not clean in clean_deps:
+			clean_deps.append(clean)
+
+	print(clean_deps)
+	return clean_deps

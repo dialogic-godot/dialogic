@@ -95,7 +95,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
 		"timeline"		: {"property": "timeline_identifier", 	"default": null,
-							"suggestions": get_timeline_suggestions},
+							"suggestions": get_timeline_suggestions, "ext_file":true},
 		"label"			: {"property": "label_name", 		"default": ""},
 	}
 
