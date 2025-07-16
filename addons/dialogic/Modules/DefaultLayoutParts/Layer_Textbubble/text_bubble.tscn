@@ -79,6 +79,7 @@ offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+fit_content = true
 scroll_active = false
 visible_characters_behavior = 1
 script = ExtResource("3_syv35")
