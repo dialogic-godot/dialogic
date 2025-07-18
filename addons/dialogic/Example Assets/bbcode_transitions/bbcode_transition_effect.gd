@@ -72,12 +72,13 @@ func _process_custom_fx(char_fx: CharFXTransform) -> bool:
 		char_fx.color = char_fx.color.lerp(c, color_replace.sample(trans).a)
 	if color_modulate:
 		char_fx.color *= color_modulate.sample(trans)
-	var glyph_size := text_server.font_get_glyph_size(char_fx.font, Vector2i(16,1), char_fx.glyph_index)
-	if scale_enabled:
-		char_fx.transform = char_fx.transform.translated_local(scale_pivot*glyph_size*Vector2(1, -1)*(1-scale_curve.sample(trans)))
-		char_fx.transform = char_fx.transform.scaled_local(Vector2.ONE*scale_curve.sample(trans))
+	if char_fx.font.is_valid():
+		var glyph_size := text_server.font_get_glyph_size(char_fx.font, Vector2i(16,1), char_fx.glyph_index)
+		if scale_enabled:
+			char_fx.transform = char_fx.transform.translated_local(scale_pivot*glyph_size*Vector2(1, -1)*(1-scale_curve.sample(trans)))
+			char_fx.transform = char_fx.transform.scaled_local(Vector2.ONE*scale_curve.sample(trans))
 
-	if position_enabled:
-		char_fx.transform = char_fx.transform.translated_local(Vector2(position_x_curve.sample(trans), position_y_curve.sample(trans))*glyph_size)
+		if position_enabled:
+			char_fx.transform = char_fx.transform.translated_local(Vector2(position_x_curve.sample(trans), position_y_curve.sample(trans))*glyph_size)
 
 	return true
