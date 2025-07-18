@@ -61,19 +61,17 @@ func get_value() -> float:
 	return value
 
 
-func use_float_mode(value_step: float = 0.1) -> void:
-	#step = value_step
+func use_float_mode() -> void:
 	update_suffix("")
 	enforce_step = false
 
 
-func use_int_mode(value_step: float = 1) -> void:
-	#step = value_step
+func use_int_mode() -> void:
 	update_suffix("")
 	enforce_step = true
 
 
-func use_decibel_mode(value_step: float = step) -> void:
+func use_decibel_mode() -> void:
 	max = 6
 	update_suffix("dB")
 	min = -80
@@ -161,13 +159,16 @@ func _on_value_text_submitted(new_text: String, no_signal:= false) -> void:
 		new_text = "0.0"
 	if new_text.is_valid_float():
 		var temp: float = min(max(new_text.to_float(), min), max)
-		if !enforce_step:
+		if not enforce_step:
 			value = temp
 		else:
 			value = snapped(temp, step)
 	elif allow_string:
 		value = new_text
-	%Value.text = str(value).pad_decimals(len(str(float(step)-floorf(step)))-2)
+	%Value.text = str(value).pad_decimals(
+		max(
+			len(str(float(step)-floorf(step)))-2,
+			len(str(float(value)-floorf(value)))-2,))
 	if not no_signal:
 		value_changed.emit(property_name, value)
 	# Visually disable Up or Down arrow when limit is reached to better indicate a limit has been hit

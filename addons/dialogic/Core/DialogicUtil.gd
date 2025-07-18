@@ -463,6 +463,13 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.property_name = property_info['name']
 			input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
+		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I:
+			var vectorSize: String = type_string(typeof(value))[-2]
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
+			input.step = 1
+			input.property_name = property_info['name']
+			input.set_value(value)
+			input.value_changed.connect(DialogicUtil._on_export_vectori_submitted.bind(property_changed))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
@@ -529,6 +536,13 @@ static func _on_export_string_enum_submitted(value:int, property_name:String, li
 	callable.call(property_name, var_to_str(list[value]))
 
 static func _on_export_vector_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	callable.call(property_name, var_to_str(value))
+
+static func _on_export_vectori_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	match typeof(value):
+		TYPE_VECTOR2: value = Vector2i(value)
+		TYPE_VECTOR3: value = Vector3i(value)
+		TYPE_VECTOR4: value = Vector4i(value)
 	callable.call(property_name, var_to_str(value))
 
 static func _on_export_dict_submitted(property_name:String, value:Variant, callable: Callable) -> void:
