@@ -60,9 +60,8 @@ func _get_dependencies(path: String, _add_types: bool) -> PackedStringArray:
 	for i in deps:
 		var clean := i
 		if clean.begins_with("res://"):
-			clean = ResourceUID.path_to_uid(clean)
+			clean = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(clean))
 		if not clean.is_empty() and not clean in clean_deps:
 			clean_deps.append(clean)
 
-	print(clean_deps)
 	return clean_deps
