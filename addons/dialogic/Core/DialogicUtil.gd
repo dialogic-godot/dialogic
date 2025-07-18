@@ -435,15 +435,15 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			else:
 				input = SpinBox.new()
 				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_info.name, property_changed))
-				if property_info.hint_string == '':
-					input.step = 1
-					input.allow_greater = true
-					input.allow_lesser = true
-				elif ',' in property_info.hint_string:
+				if ',' in property_info.hint_string:
 					input.min_value = int(property_info.hint_string.get_slice(',', 0))
 					input.max_value = int(property_info.hint_string.get_slice(',', 1))
 					if property_info.hint_string.count(',') > 1:
 						input.step = int(property_info.hint_string.get_slice(',', 2))
+				else:
+					input.step = 1
+					input.allow_greater = true
+					input.allow_lesser = true
 				if value != null:
 					input.value = value
 		TYPE_FLOAT:
