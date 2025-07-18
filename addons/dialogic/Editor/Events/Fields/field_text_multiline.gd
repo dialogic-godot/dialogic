@@ -31,7 +31,7 @@ func _autofocus() -> void:
 #region SIGNAL METHODS
 ################################################################################
 
-func _on_text_changed(value := "") -> void:
+func _on_text_changed(_value := "") -> void:
 	value_changed.emit(property_name, self.text)
 
 #endregion

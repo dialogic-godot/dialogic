@@ -26,3 +26,9 @@ func _update_sub_component_text(value: Variant) -> void:
 	$X._on_value_text_submitted(str(value.x), true)
 	$Y._on_value_text_submitted(str(value.y), true)
 	$Z._on_value_text_submitted(str(value.z), true)
+
+
+func _on_step_changed(new_step:float) -> void:
+	$X.step = new_step
+	$Y.step = new_step
+	$Z.step = new_step

@@ -8,9 +8,18 @@
 offset_right = -908.0
 script = ExtResource("2_yksrc")
 
+[node name="X" parent="." index="0"]
+size_flags_horizontal = 1
+prefix = ""
+
+[node name="Y" parent="." index="1"]
+size_flags_horizontal = 1
+prefix = ""
+
 [node name="W" parent="." index="3" instance=ExtResource("3_1jogk")]
 layout_mode = 2
-step = 0.001
+size_flags_horizontal = 3
+enforce_step = false
 min = -9999.0
 max = 9999.0
-affix = "w:"
+prefix = "w"
