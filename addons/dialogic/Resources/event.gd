@@ -270,6 +270,21 @@ func _test_event_string(string:String) -> bool:
 		return is_valid_event(string.get_slice('#id:', 0))
 	return is_valid_event(string.strip_edges())
 
+
+func get_dependencies() -> PackedStringArray:
+	var deps := PackedStringArray()
+	var params := get_shortcode_parameters()
+	for i in params:
+		if params[i].has("ext_file"):
+			var path: String = get(params[i].property)
+			if path.begins_with("res://") or path.begins_with("uid://"):
+				deps.append(path)
+			elif i == "character":
+				deps.append(DialogicResourceUtil.get_resource_path_from_identifier(path, "dch"))
+			elif i == "timeline":
+				deps.append(DialogicResourceUtil.get_resource_path_from_identifier(path, "dtl"))
+	return deps
+
 #endregion
 
 

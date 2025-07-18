@@ -49,7 +49,7 @@ func _on_field_value_changed(property:String, value:Variant) -> void:
 
 
 func _update_property() -> void:
-	field.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
+	field.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")
 	button.icon = get_theme_icon("ExternalLink", "EditorIcons")
 
 	# Read the current value from the property.
