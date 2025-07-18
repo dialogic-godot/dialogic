@@ -50,15 +50,25 @@ func _get_dependencies(path:String, _add_type:bool) -> PackedStringArray:
 	var depends_on: PackedStringArray = []
 	var character: DialogicCharacter = load(path)
 	for p in character.portraits.values():
-		if 'path' in p and p.path:
-			depends_on.append(p.path)
+		if 'scene' in p and p.scene:
+			depends_on.append(p.scene)
+		for i in p.get("export_overrides", []):
+			if typeof(p.export_overrides[i]) == TYPE_STRING and "://" in p.export_overrides[i]:
+				depends_on.append(p.export_overrides[i].trim_prefix('"').trim_suffix('"'))
 	return depends_on
 
 
 func _rename_dependencies(path: String, renames: Dictionary) -> Error:
 	var character: DialogicCharacter = load(path)
-	for p in character.portraits:
-		if 'path' in character.portraits[p] and character.portraits[p].path in renames:
-			character.portraits[p].path = renames[character.portraits[p].path]
+	for p in character.portraits.values():
+		if 'scene' in p and p.scene in renames:
+			p.scene = renames[p.scene]
+
+		for i in p.get("export_overrides", []):
+			if typeof(p.export_overrides[i]) == TYPE_STRING and "://" in p.export_overrides[i]:
+				var i_path := str(p.export_overrides[i]).trim_prefix('"').trim_suffix('"')
+				if i_path in renames:
+					p.export_overrides[i] = '"'+renames[i_path]+'"'
+
 	ResourceSaver.save(character, path)
 	return OK
