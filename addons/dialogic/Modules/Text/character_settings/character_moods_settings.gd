@@ -218,6 +218,7 @@ func set_default_button(enabled:bool) -> void:
 
 func preview() -> void:
 	$Preview.load_overwrite(get_mood_info())
+	$Preview._on_started_revealing_text()
 	var preview_timer := Timer.new()
 	DialogicUtil.update_timer_process_callback(preview_timer)
 	add_child(preview_timer)

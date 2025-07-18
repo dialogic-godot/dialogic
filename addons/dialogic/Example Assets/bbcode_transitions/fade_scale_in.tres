@@ -1,0 +1,24 @@
+[gd_resource type="RichTextEffect" script_class="DialogicRichTextTransitionEffect" load_steps=4 format=3 uid="uid://hx8qyt5ry3h0"]
+
+[ext_resource type="Script" uid="uid://wf7hpguw17ex" path="res://addons/dialogic/Example Assets/bbcode_transitions/bbcode_transition_effect.gd" id="1_rsak6"]
+
+[sub_resource type="Gradient" id="Gradient_rsak6"]
+offsets = PackedFloat32Array(0, 0.6351706)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_oitc5"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(0.40294844, 1.0066038), -0.13865282, 0.0, 0, 0]
+point_count = 2
+
+[resource]
+script = ExtResource("1_rsak6")
+bbcode = "fade_scale_in"
+time = 0.30000000000000004
+color_modulate = SubResource("Gradient_rsak6")
+scale_enabled = true
+scale_curve = SubResource("Curve_oitc5")
+scale_pivot = Vector2(0.5, 0.5)
+position_enabled = false
+test_value = -0.1
+metadata/_custom_type_script = "uid://wf7hpguw17ex"

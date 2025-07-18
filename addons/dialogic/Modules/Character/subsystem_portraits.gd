@@ -661,19 +661,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 			continue
 
 		if just_joined:
-			ResourceLoader.load_threaded_request(speaker.get_identifier())
-
-			var load_status = ResourceLoader.load_threaded_get_status(speaker.get_identifier())
-			while load_status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-				await get_tree().process_frame
-				load_status = ResourceLoader.load_threaded_get_status(speaker.get_identifier())
-
-			if load_status == ResourceLoader.THREAD_LOAD_LOADED:
-				speaker = ResourceLoader.load_threaded_get(speaker.get_identifier())
-				_create_character_node(speaker, container)
-			else:
-				push_error('[Dialogic] Failed to load speaker "' + str(speaker.get_identifier()) + '".')
-				continue
+			_create_character_node(speaker, container)
 
 		elif portrait.is_empty():
 			continue

@@ -436,6 +436,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
 				input.property_name = property_info['name']
 				input.use_int_mode()
+
 				if ',' in property_info.hint_string:
 					input.min_value = int(property_info.hint_string.get_slice(',', 0))
 					input.max_value = int(property_info.hint_string.get_slice(',', 1))
@@ -445,6 +446,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 					input.step = 1
 					input.max_value = INF
 					input.min_value = -INF
+
 				if value != null:
 					input.set_value(value)
 				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_changed))
