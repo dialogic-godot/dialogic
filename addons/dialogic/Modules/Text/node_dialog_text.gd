@@ -54,9 +54,10 @@ func _ready() -> void:
 
 	var custom_bbcode_effects: Array = ProjectSettings.get_setting("dialogic/text/custom_bbcode_effects", "").split(",")
 	for i in custom_bbcode_effects:
-		var x : Resource = load(i.strip_edges())
-		if x is RichTextEffect:
-			custom_effects.append(x)
+		if ResourceLoader.exists(i.strip_edges()):
+			var x : Resource = load(i.strip_edges())
+			if x is RichTextEffect:
+				custom_effects.append(x)
 
 
 # this is called by the DialogicGameHandler to set text
