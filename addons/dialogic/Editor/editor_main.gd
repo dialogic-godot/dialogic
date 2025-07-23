@@ -122,6 +122,7 @@ func update_theme_additions() -> void:
 	side_panel.bg_color = get_theme_color("dark_color_2", "Editor")
 	side_panel.set_border_width_all(1)
 	side_panel.border_width_left = 0
+	side_panel.content_margin_left = 0
 	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	new_theme.set_stylebox("panel", "DialogicPanelB", side_panel)
 
