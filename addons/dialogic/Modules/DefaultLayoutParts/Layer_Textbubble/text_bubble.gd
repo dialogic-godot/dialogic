@@ -143,12 +143,19 @@ func _on_question_shown(info:Dictionary) -> void:
 	if !is_visible_in_tree():
 		return
 
-	await get_tree().process_frame
+	# Avoid choice_container's flickering(because some ticks will happen in 
+	# `await get_base_content_size()` which will make choice_container exist
+	# at its old position for several tens of milliseconds).
+	choice_container.modulate.a = 0
 
 	var content_size := await get_base_content_size()
 	content_size.y += choice_container.size.y
 	content_size.x = max(content_size.x, choice_container.size.x)
 	_resize_bubble(content_size)
+	
+	# Now, choice_container has changed to its new position, so we can make it
+	# actually show up.
+	choice_container.modulate.a = 1
 
 
 func get_base_content_size() -> Vector2:
