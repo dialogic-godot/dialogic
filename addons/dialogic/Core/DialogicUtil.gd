@@ -466,6 +466,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
+				input.show_editing_button = true
 				input.file_filter = property_info['hint_string']
 				input.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 				if property_info['hint'] == PROPERTY_HINT_DIR:
