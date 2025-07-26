@@ -52,6 +52,9 @@ func _ready() -> void:
 
 	%CollectTranslations.pressed.connect(collect_translations)
 	%CollectTranslations.icon = get_theme_icon("File", "EditorIcons")
+	
+	%UseTextFromCsvFiles.pressed.connect(update_text_based_on_csv_files)
+	%UseTextFromCsvFiles.icon = get_theme_icon("TextFile", "EditorIcons")
 
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 	%TransRemove.icon = get_theme_icon("Remove", "EditorIcons")
@@ -62,6 +65,114 @@ func _ready() -> void:
 
 	_verify_translation_file()
 
+func get_csv_translation_files() -> Array:
+	var csv_files := []
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
+
+	if translation_mode == TranslationModes.PER_TIMELINE:
+
+		for timeline_path: String in DialogicResourceUtil.list_resources_of_type('.csv'):
+
+			for file: String in DialogicUtil.listdir(timeline_path.get_base_dir()):
+				file = timeline_path.get_base_dir().path_join(file)
+
+				if file.ends_with('.csv'):
+
+					if not file in csv_files:
+						csv_files.append(file)
+
+	if translation_mode == TranslationModes.PER_PROJECT:
+		var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+
+		for file: String in DialogicUtil.listdir(translation_folder):
+			file = translation_folder.path_join(file)
+
+			if file.ends_with('.csv'):
+
+				if not file in csv_files:
+					csv_files.append(file)
+	
+	return csv_files
+	
+func get_translations_from_csv_for_locale(file_path : StringName, locale : String) -> Dictionary:
+	var translations = {}
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	
+	if file:
+		var header = file.get_csv_line()
+		if locale in header:
+			var locale_index = header.find(locale)
+			while not file.eof_reached():
+				var line = file.get_csv_line()
+				if line.size() > locale_index:
+					translations[line[0]] = line[locale_index]
+				
+	file.close()
+	
+	return translations
+
+func array_swap(array:Array, index_1:int, index_2:int) -> Array:
+	if array.size() > index_1 and array.size() > index_2:
+		var tmp = array[index_1]
+		array[index_1] = array[index_2]
+		array[index_2] = tmp
+	
+	return array
+
+func change_first_locale_in_csv_file(file_path : StringName, first_locale_key : String) -> void:
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	var lines = []
+	
+	if file:
+		var header:Array = file.get_csv_line()
+		
+		if first_locale_key in header:
+			
+			var locale_index = header.find(first_locale_key)
+			
+			if locale_index > 1:
+				array_swap(header, 1, locale_index)
+				lines.append(header)
+				
+				while not file.eof_reached():
+					var line:Array = file.get_csv_line()
+					
+					while line.size() <= locale_index:
+						line.append("")
+					
+					array_swap(line, 1, locale_index)
+					
+					lines.append(line)
+					
+				file.close()
+				
+				file = FileAccess.open(file_path, FileAccess.WRITE)
+				for line in lines:
+					file.store_csv_line(line)
+				
+	file.close()
+	
+	
+
+
+## First retrieve all translations for default locale
+## Update the CSV files if needed to make the default locale the first column
+## Call the update_csv_files function with update_text set to true to put the retrieved translations
+## for default locale in the timeline, character and gloassary files.
+func update_text_based_on_csv_files() -> void:
+	var translation_files = get_csv_translation_files()
+	
+	var translations = {}
+	
+	for file in translation_files:
+		translations.merge(get_translations_from_csv_for_locale(file, get_orig_locale()))
+	
+	for file in translation_files:
+		change_first_locale_in_csv_file(file, get_orig_locale())
+	
+	update_csv_files(true, translations)
 
 func _on_custom_action(action: String) -> void:
 	if action == "generate_new":
@@ -120,6 +231,7 @@ func _verify_translation_file() -> void:
 		and DirAccess.dir_exists_absolute(translation_folder))
 
 	%UpdateCsvFiles.disabled = not valid_translation_folder
+	%UseTextFromCsvFiles.disabled = not valid_translation_folder
 
 	var status_message := ""
 
@@ -183,7 +295,9 @@ func _handle_glossary_translation(
 	save_location_mode: SaveLocationModes,
 	translation_mode: TranslationModes,
 	translation_folder_path: String,
-	orig_locale: String) -> void:
+	orig_locale: String,
+	update_text: bool = false,
+	text_dict: Dictionary = {}) -> void:
 
 	var glossary_csv: DialogicCsvFile = null
 	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
@@ -223,7 +337,7 @@ func _handle_glossary_translation(
 				csv_data.updated_glossaries += 1
 
 		var glossary: DialogicGlossary = load(glossary_path)
-		glossary_csv.collect_lines_from_glossary(glossary)
+		glossary_csv.collect_lines_from_glossary(glossary, update_text, text_dict)
 		glossary_csv.add_translation_keys_to_glossary(glossary)
 		ResourceSaver.save(glossary)
 
@@ -257,19 +371,24 @@ class CsvUpdateData:
 	var new_glossary_entries := 0
 	var updated_glossary_entries := 0
 
-
-func update_csv_files() -> void:
-	_unique_locales = []
+func get_orig_locale():
+	
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
+	
+	if orig_locale.is_empty():
+		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
+	
+	return orig_locale
+
+func update_csv_files(update_text: bool = false, text_dict: Dictionary = {}) -> void:
+	_unique_locales = []
+	var orig_locale: String = get_orig_locale()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
 	var add_separator_lines: bool = ProjectSettings.get_setting('dialogic/translation/add_separator', false)
 
 	var csv_data := CsvUpdateData.new()
-
-	if orig_locale.is_empty():
-		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
 
 	ProjectSettings.set_setting('dialogic/translation/intern/save_mode', save_location_mode)
 	ProjectSettings.set_setting('dialogic/translation/intern/file_mode', translation_mode)
@@ -320,7 +439,7 @@ func update_csv_files() -> void:
 		timeline.process()
 
 		# Collect timeline into CSV.
-		csv_file.collect_lines_from_timeline(timeline)
+		csv_file.collect_lines_from_timeline(timeline, update_text, text_dict)
 
 		# in case new translation_id's were added, we save the timeline again
 		timeline.set_meta("timeline_not_saved", true)
@@ -337,14 +456,18 @@ func update_csv_files() -> void:
 		save_location_mode,
 		translation_mode,
 		translation_folder_path,
-		orig_locale
+		orig_locale,
+		update_text,
+		text_dict
 	)
 
 	_handle_character_names(
 		csv_data,
 		orig_locale,
 		translation_folder_path,
-		add_separator_lines
+		add_separator_lines,
+		update_text,
+		text_dict
 	)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
@@ -385,11 +508,13 @@ func _handle_character_names(
 		csv_data: CsvUpdateData,
 		original_locale: String,
 		translation_folder_path: String,
-		add_separator_lines: bool) -> void:
+		add_separator_lines: bool,
+		update_text: bool = false,
+		text_dict: Dictionary = {}) -> void:
 	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path,
 		 original_locale,
-		 add_separator_lines
+		 add_separator_lines,
 	)
 
 	var all_characters := {}
@@ -408,7 +533,7 @@ func _handle_character_names(
 
 		ResourceSaver.save(character)
 
-	character_name_csv.collect_lines_from_characters(all_characters)
+	character_name_csv.collect_lines_from_characters(all_characters, update_text, text_dict)
 	character_name_csv.update_csv_file_on_disk()
 
 

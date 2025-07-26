@@ -89,11 +89,15 @@ func _read_file_into_lines() -> void:
 ##
 ## If this is the character name CSV file, use this method to
 ## take previously collected characters from other [class DialogicCsvFile]s.
-func collect_lines_from_characters(characters: Dictionary) -> void:
+func collect_lines_from_characters(characters: Dictionary, update_text: bool = false, text_dict: Dictionary = {}) -> void:
 	for character: DialogicCharacter in characters.values():
 		# Add row for display names.
 		var name_property := DialogicCharacter.TranslatedProperties.NAME
 		var display_name_key: String = character.get_property_translation_key(name_property)
+		
+		if update_text and display_name_key in text_dict and text_dict[display_name_key]:
+			character.display_name = text_dict[display_name_key]
+		
 		var line_value: String = character.display_name
 		var array_line := PackedStringArray([display_name_key, line_value])
 		lines.append(array_line)
@@ -104,6 +108,11 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 			var nick_name_property := DialogicCharacter.TranslatedProperties.NICKNAMES
 			var nickname_string: String = ",".join(nicknames)
 			var nickname_name_line_key: String = character.get_property_translation_key(nick_name_property)
+			
+			if update_text and nickname_name_line_key in text_dict and text_dict[nickname_name_line_key]:
+				nickname_string = text_dict[nickname_name_line_key]
+				character.nicknames = nickname_string.split(",")
+			
 			var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
 			lines.append(nick_array_line)
 
@@ -226,10 +235,12 @@ func _sort_glossary_entry_property_keys(property_key_a: String, property_key_b: 
 
 	return value_a < value_b
 
+# We use a space after the comma to make it easier to read.
+var glossary_item_array_separator = ", "
 
 ## Collects properties from glossary entries from the given [param glossary] and
 ## adds them to the [member lines].
-func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
+func collect_lines_from_glossary(glossary: DialogicGlossary, update_text: bool = false, text_dict: Dictionary = {}) -> void:
 
 	for glossary_value: Variant in glossary.entries.values():
 
@@ -257,8 +268,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 			if item_value is Array:
 				var item_array := item_value as Array
-				# We use a space after the comma to make it easier to read.
-				item_value_str = " ,".join(item_array)
+				item_value_str = glossary_item_array_separator.join(item_array)
 
 			elif not item_value is String or item_value.is_empty():
 				continue
@@ -267,7 +277,15 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 				item_value_str = item_value
 
 			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, entry_key)
-
+			
+			if update_text and glossary_csv_key in text_dict and text_dict[glossary_csv_key]:
+				item_value_str = glossary_entry[entry_key]
+				
+				if item_value is Array:
+					glossary_entry[entry_key] = text_dict[glossary_csv_key].split(glossary_item_array_separator)
+				else:
+					glossary_entry[entry_key] = text_dict[glossary_csv_key]
+			
 			if (entry_key == DialogicGlossary.NAME_PROPERTY
 			or entry_key == DialogicGlossary.ALTERNATIVE_PROPERTY):
 				glossary.entries[glossary_csv_key] = entry_name_property
@@ -284,7 +302,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 ## Collects translatable events from the given [param timeline] and adds
 ## them to the [member lines].
-func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
+func collect_lines_from_timeline(timeline: DialogicTimeline, update_text: bool = false, text_dict: Dictionary = {}) -> void:
 	for event: DialogicEvent in timeline.events:
 
 		if event.can_be_translated():
@@ -292,12 +310,19 @@ func collect_lines_from_timeline(timeline: DialogicTimeline) -> void:
 			if event._translation_id.is_empty():
 				event.add_translation_id()
 				event.update_text_version()
+					
 
 			var properties: Array = event._get_translatable_properties()
 
 			for property: String in properties:
 				var line_key: String = event.get_property_translation_key(property)
+				
+				if update_text and line_key in text_dict and text_dict[line_key]:
+					event._set_property_original_translation(property, text_dict[line_key])
+					event.update_text_version()
+				
 				var line_value: String = event._get_property_original_translation(property)
+				
 				var array_line := PackedStringArray([line_key, line_value])
 				lines.append(array_line)
 
