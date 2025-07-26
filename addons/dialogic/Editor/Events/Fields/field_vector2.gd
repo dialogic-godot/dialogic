@@ -24,3 +24,8 @@ func _on_sub_value_changed(sub_component: String, value: float) -> void:
 func _update_sub_component_text(value: Variant) -> void:
 	$X._on_value_text_submitted(str(value.x), true)
 	$Y._on_value_text_submitted(str(value.y), true)
+
+
+func _on_step_changed(new_step:float) -> void:
+	$X.step = new_step
+	$Y.step = new_step
