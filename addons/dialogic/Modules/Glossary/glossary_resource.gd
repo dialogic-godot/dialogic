@@ -88,7 +88,7 @@ func _remove_entry_alias(entry_key: String) -> bool:
 	return true
 
 
-## Updates the glossary entry's name and related alias keys.
+## Updates the glossary entry's name.
 ## The [param old_entry_key] is the old unique name of the entry.
 ## The [param new_entry_key] is the new unique name of the entry.
 ##

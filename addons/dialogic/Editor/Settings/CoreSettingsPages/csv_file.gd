@@ -241,7 +241,11 @@ var glossary_item_array_separator = ", "
 ## Collects properties from glossary entries from the given [param glossary] and
 ## adds them to the [member lines].
 func collect_lines_from_glossary(glossary: DialogicGlossary, update_text: bool = false, text_dict: Dictionary = {}) -> void:
-
+	
+	var entry_keys_to_replace : Dictionary = {} # "old entry key": "new entry key"
+	var aliases_to_remove : Array = []
+	var aliases_to_add : Dictionary = {} # " "new alias": "entry key"
+	
 	for glossary_value: Variant in glossary.entries.values():
 
 		if glossary_value is String:
@@ -258,12 +262,12 @@ func collect_lines_from_glossary(glossary: DialogicGlossary, update_text: bool =
 
 		var entry_name_property: String = glossary_entry[DialogicGlossary.NAME_PROPERTY]
 
-		for entry_key: String in entry_property_keys:
+		for entry_property_key: String in entry_property_keys:
 			# Ignore private keys.
-			if entry_key.begins_with(DialogicGlossary.PRIVATE_PROPERTY_PREFIX):
+			if entry_property_key.begins_with(DialogicGlossary.PRIVATE_PROPERTY_PREFIX):
 				continue
 
-			var item_value: Variant = glossary_entry[entry_key]
+			var item_value: Variant = glossary_entry[entry_property_key]
 			var item_value_str := ""
 
 			if item_value is Array:
@@ -276,19 +280,55 @@ func collect_lines_from_glossary(glossary: DialogicGlossary, update_text: bool =
 			else:
 				item_value_str = item_value
 
-			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, entry_key)
-			
+			var glossary_csv_key := glossary._get_glossary_translation_key(entry_translation_id, entry_property_key)
+
 			if update_text and glossary_csv_key in text_dict and text_dict[glossary_csv_key]:
-				item_value_str = glossary_entry[entry_key]
 				
-				if item_value is Array:
-					glossary_entry[entry_key] = text_dict[glossary_csv_key].split(glossary_item_array_separator)
+				if entry_property_key == DialogicGlossary.ALTERNATIVE_PROPERTY:
+					aliases_to_remove.append_array(item_value)
+					var new_aliases_array = text_dict[glossary_csv_key].split(glossary_item_array_separator) as Array
+					
+					var new_aliases_array_dedup : Array = []
+					
+					for alias in new_aliases_array:
+						
+						var new_alias = alias
+						# It's possible that translations of two words could lead to the same key,
+						# we add a suffix in this case to avoid any issues
+						while new_alias in aliases_to_add:
+							new_alias += " (duplicate)"
+						while new_alias in entry_keys_to_replace.values():
+							new_alias += " (duplicate)"
+							
+						aliases_to_add[new_alias] = entry_name_property
+						
+						new_aliases_array_dedup.append(new_alias)
+					
+					item_value_str = glossary_item_array_separator.join(new_aliases_array_dedup)
+					glossary_entry[entry_property_key] = new_aliases_array_dedup
 				else:
-					glossary_entry[entry_key] = text_dict[glossary_csv_key]
+					item_value_str = text_dict[glossary_csv_key]
+					glossary_entry[entry_property_key] = text_dict[glossary_csv_key]
+				
+				if entry_property_key == DialogicGlossary.NAME_PROPERTY:
+					var new_entry_key : String = text_dict[glossary_csv_key]
+					
+					# It's possible that translations of two words could lead to the same key,
+					# we add a suffix in this case to avoid any issues
+					while new_entry_key in entry_keys_to_replace.values():
+						new_entry_key += " (duplicate)"
+					while new_entry_key in aliases_to_add:
+						new_entry_key += " (duplicate)"
+					
+					entry_keys_to_replace[entry_name_property] = new_entry_key
 			
-			if (entry_key == DialogicGlossary.NAME_PROPERTY
-			or entry_key == DialogicGlossary.ALTERNATIVE_PROPERTY):
-				glossary.entries[glossary_csv_key] = entry_name_property
+			if (entry_property_key == DialogicGlossary.NAME_PROPERTY
+			or entry_property_key == DialogicGlossary.ALTERNATIVE_PROPERTY):
+				var entry_key = entry_name_property
+				if entry_key in entry_keys_to_replace:
+					entry_key = entry_keys_to_replace[entry_key]
+				
+				glossary.entries[glossary_csv_key] = entry_key
 
 			var glossary_line := PackedStringArray([glossary_csv_key, item_value_str])
 
@@ -297,7 +337,24 @@ func collect_lines_from_glossary(glossary: DialogicGlossary, update_text: bool =
 		# New glossary item, if needed, add a separator.
 		if add_separator:
 			_append_empty()
-
+		
+		
+	if update_text:
+		for old_entry_key in entry_keys_to_replace:
+			var new_entry_key = entry_keys_to_replace[old_entry_key]
+			glossary.replace_entry_key(old_entry_key, new_entry_key)
+		
+		for old_alias in aliases_to_remove:
+			glossary._remove_entry_alias(old_alias)
+		
+		for new_alias in aliases_to_add:
+			
+			var entry_key = aliases_to_add[new_alias]
+			
+			if entry_key in entry_keys_to_replace:
+				entry_key = entry_keys_to_replace[entry_key]
+			
+			glossary._add_entry_key_alias(entry_key, new_alias)
 
 
 ## Collects translatable events from the given [param timeline] and adds
