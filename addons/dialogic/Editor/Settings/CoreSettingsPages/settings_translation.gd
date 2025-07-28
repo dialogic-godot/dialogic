@@ -415,6 +415,10 @@ func update_csv_files(update_text: bool = false, text_dict: Dictionary = {}) -> 
 
 	var current_timeline := _close_active_timeline()
 
+	var current_character : Resource = null
+	if update_text:
+		current_character = _close_active_character()
+	
 	var csv_per_project: DialogicCsvFile = null
 	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
 
@@ -493,6 +497,9 @@ func update_csv_files(update_text: bool = false, text_dict: Dictionary = {}) -> 
 		csv_per_project.update_csv_file_on_disk()
 
 	_silently_open_timeline(current_timeline)
+	
+	if update_text:
+		_silently_open_character(current_character)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
@@ -786,6 +793,15 @@ func _close_active_timeline() -> Resource:
 
 	return current_timeline
 
+func _close_active_character() -> Resource:
+	var character_node: DialogicEditor = settings_editor.editors_manager.editors['CharacterEditor']['node']
+	# We will close this character to ensure it will properly update.
+	# By saving this reference, we can open it again.
+	var current_character := character_node.current_resource
+	# Clean the current editor, this will also close the character.
+	settings_editor.editors_manager.clear_editor(character_node)
+
+	return current_character
 
 ## Opens the timeline resource into the Dialogic Editor.
 ## If the timeline is null, does nothing.
@@ -793,6 +809,11 @@ func _silently_open_timeline(timeline_to_open: Resource) -> void:
 	if timeline_to_open != null:
 		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
 
+## Opens the character resource into the Dialogic Editor.
+## If the character is null, does nothing.
+func _silently_open_character(character_to_open: Resource) -> void:
+	if character_to_open != null:
+		settings_editor.editors_manager.edit_resource(character_to_open, true, true)
 
 ## Checks [param locale] for unique locales that have not been added
 ## to the [_unique_locales] array yet.
