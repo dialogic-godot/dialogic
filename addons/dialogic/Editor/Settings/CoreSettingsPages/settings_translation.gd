@@ -129,10 +129,17 @@ func change_first_locale_in_csv_file(file_path : StringName, first_locale_key : 
 		var header:Array = file.get_csv_line()
 		
 		if first_locale_key in header:
+			# If the locale exists, we move it to the first column
 			
 			var locale_index = header.find(first_locale_key)
 			
-			if locale_index > 1:
+			if locale_index <= 1:
+				# If it's already the first column we have nothing to do
+				# (and if it is the column zero, the file is not usable ...)
+				file.close()
+				return
+				
+			else:
 				array_swap(header, 1, locale_index)
 				lines.append(header)
 				
@@ -145,13 +152,23 @@ func change_first_locale_in_csv_file(file_path : StringName, first_locale_key : 
 					array_swap(line, 1, locale_index)
 					
 					lines.append(line)
-					
-				file.close()
+		else:
+			# If the locale doesn't even exist, we create it
+			header.insert(1, first_locale_key)
+			lines.append(header)
 				
-				file = FileAccess.open(file_path, FileAccess.WRITE)
-				for line in lines:
-					file.store_csv_line(line)
+			while not file.eof_reached():
+				var line:Array = file.get_csv_line()
 				
+				line.insert(1, "")
+				lines.append(line)
+				
+		file.close()
+		
+		file = FileAccess.open(file_path, FileAccess.WRITE)
+		for line in lines:
+			file.store_csv_line(line)
+			
 	file.close()
 	
 	
@@ -161,16 +178,18 @@ func change_first_locale_in_csv_file(file_path : StringName, first_locale_key : 
 ## Update the CSV files if needed to make the default locale the first column
 ## Call the update_csv_files function with update_text set to true to put the retrieved translations
 ## for default locale in the timeline, character and gloassary files.
+##
+## If any translation is missing for selected default locale, it will use original text.
 func update_text_based_on_csv_files() -> void:
 	var translation_files = get_csv_translation_files()
 	
 	var translations = {}
 	
 	for file in translation_files:
-		translations.merge(get_translations_from_csv_for_locale(file, get_orig_locale()))
-	
-	for file in translation_files:
 		change_first_locale_in_csv_file(file, get_orig_locale())
+		
+	for file in translation_files:
+		translations.merge(get_translations_from_csv_for_locale(file, get_orig_locale()))
 	
 	update_csv_files(true, translations)
 
