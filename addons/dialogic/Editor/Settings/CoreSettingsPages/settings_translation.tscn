@@ -119,6 +119,7 @@ hint_text = "The locale of the language your timelines are written in."
 [node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
 unique_name_in_owner = true
 layout_mode = 2
+mode = 3
 
 [node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
 layout_mode = 2
