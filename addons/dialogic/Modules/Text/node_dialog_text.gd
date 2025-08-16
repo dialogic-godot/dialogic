@@ -52,7 +52,7 @@ func _ready() -> void:
 		textbox_root.hide()
 	text = ""
 
-	var custom_bbcode_effects: Array = ProjectSettings.get_setting("dialogic/text/custom_bbcode_effects", "").split(",")
+	var custom_bbcode_effects: Array = ProjectSettings.get_setting("dialogic/text/custom_bbcode_effects", "").split(",", false)
 	for i in custom_bbcode_effects:
 		var x : Resource = load(i.strip_edges())
 		if x is RichTextEffect:
