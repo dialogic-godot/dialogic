@@ -86,8 +86,8 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"scene" 		: {"property": "scene", 			"default": ""},
-		"arg" 			: {"property": "argument", 			"default": ""},
+		"scene" 		: {"property": "scene", 			"default": "", "ext_file":true},
+		"arg" 			: {"property": "argument", 			"default": "", "ext_file":true},
 		"fade" 			: {"property": "fade", 				"default": 0},
 		"transition"	: {"property": "transition",		"default": "",
 									"suggestions": get_transition_suggestions},

@@ -76,6 +76,13 @@ static func get_unique_identifier_by_path(file_path:String) -> String:
 	return ""
 
 
+static func get_resource_path_from_identifier(identifier:String, extension:String) -> String:
+	var value: Variant = get_directory(extension).get(identifier, '')
+	if value is String:
+		return value
+	return ""
+
+
 ## Returns the resource associated with the given unique identifier.
 ## The expected extension is needed to use the right directory.
 static func get_resource_from_identifier(identifier:String, extension:String) -> Resource:
