@@ -161,6 +161,7 @@ func _close() -> void:
 	for child in %SettingsContent.get_children():
 		if child.get_meta('section').has_method('_about_to_close'):
 			child.get_meta('section')._about_to_close()
+	DialogicUtil.clear_editor_settings_cache()
 
 
 func refresh() -> void:
