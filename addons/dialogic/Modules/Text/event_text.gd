@@ -130,7 +130,7 @@ func _execute() -> void:
 
 			dialogic.current_state_info['text_sub_idx'] = section_idx
 
-			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
+			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0], 0)
 			var is_append: bool = split_text[section_idx][1]
 
 			final_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+segment

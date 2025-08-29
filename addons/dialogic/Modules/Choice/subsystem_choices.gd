@@ -120,7 +120,7 @@ func get_current_question_info() -> Dictionary:
 			if not hide:
 				button_idx += 1
 
-		choice_info.text = dialogic.Text.parse_text(choice_info.text, true, true, false, true, false, false)
+		choice_info.text = dialogic.Text.parse_text(choice_info.text, 1)
 
 		choice_info.merge(choice_event.extra_data)
 

@@ -23,5 +23,5 @@ func _get_text_effects() -> Array[Dictionary]:
 
 func _get_text_modifiers() -> Array[Dictionary]:
 	return [
-		{'subsystem':'Expressions', 'method':"modifier_condition", 'command':'if', 'mode':-1},
+		{'subsystem':'Expressions', 'method':"modifier_condition", 'command':'if', 'mode':-1, "order":20},
 	]
