@@ -209,7 +209,7 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 ## @label_or_idx can be a label (string) or index (int) to skip to immediatly.
 func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
-	if typeof(timeline) == TYPE_STRING:
+	if typeof(timeline) in [TYPE_STRING, TYPE_STRING_NAME]:
 		#check the lookup table if it's not a full file name
 		if "://" in timeline:
 			timeline = load(timeline)
@@ -228,7 +228,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 		event.dialogic = self
 	current_event_idx = -1
 
-	if typeof(label_or_idx) == TYPE_STRING:
+	if typeof(label_or_idx) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if label_or_idx:
 			if has_subsystem('Jump'):
 				Jump.jump_to_label((label_or_idx as String))
@@ -246,7 +246,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 ## [param timeline_resource] can be either a path (string) or a loaded timeline (resource)
 func preload_timeline(timeline_resource:Variant) -> Variant:
 	# I think ideally this should be on a new thread, will test
-	if typeof(timeline_resource) == TYPE_STRING:
+	if typeof(timeline_resource) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if "://" in timeline_resource:
 			timeline_resource = load(timeline_resource)
 		else:
@@ -284,7 +284,7 @@ func end_timeline(skip_ending := false) -> void:
 ## Method to check if timeline exists.
 ## @timeline can be either a loaded timeline resource or a path to a timeline file.
 func timeline_exists(timeline:Variant) -> bool:
-	if typeof(timeline) == TYPE_STRING:
+	if typeof(timeline) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if "://" in timeline and ResourceLoader.exists(timeline):
 			return load(timeline) is DialogicTimeline
 		else:

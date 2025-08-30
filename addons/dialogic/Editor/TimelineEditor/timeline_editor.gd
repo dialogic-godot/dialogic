@@ -139,7 +139,8 @@ func toggle_editor_mode() -> void:
 			%VisualEditor.load_timeline(current_resource)
 			%VisualEditor.show()
 			%SwitchEditorMode.text = "Text Editor"
-			%VisualEditor.timeline_loaded.connect(_on_search_text_changed.bind(%Search.text), CONNECT_ONE_SHOT)
+			if not %VisualEditor.timeline_loaded.is_connected(_on_search_text_changed):
+				%VisualEditor.timeline_loaded.connect(_on_search_text_changed.bind(%Search.text), CONNECT_ONE_SHOT)
 	DialogicUtil.set_editor_setting('timeline_editor_mode', current_editor_mode)
 
 

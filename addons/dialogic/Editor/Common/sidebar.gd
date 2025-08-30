@@ -168,7 +168,7 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 	resource_tree.clear()
 
 	var character_items: Array = get_directory_items.call(character_directory, filter, load("res://addons/dialogic/Editor/Images/Resources/character.svg"), resources_list)
-	var timeline_items: Array = get_directory_items.call(timeline_directory, filter, get_theme_icon("TripleBar", "EditorIcons"), resources_list)
+	var timeline_items: Array = get_directory_items.call(timeline_directory, filter, load("res://addons/dialogic/Editor/Images/Resources/timeline.svg"), resources_list)
 	var all_items := character_items + timeline_items
 
 	# BUILD TREE

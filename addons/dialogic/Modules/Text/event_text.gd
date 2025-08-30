@@ -130,7 +130,7 @@ func _execute() -> void:
 
 			dialogic.current_state_info['text_sub_idx'] = section_idx
 
-			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0])
+			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0], 0)
 			var is_append: bool = split_text[section_idx][1]
 
 			final_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+segment
@@ -356,8 +356,8 @@ func is_string_full_event(string:String) -> bool:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"character"		: {"property": "character_identifier", "default": ""},
-		"portrait"		: {"property": "portrait", 					"default": ""},
+		"character"		: {"property": "character_identifier", "default": "", "ext_file":true},
+		"portrait"		: {"property": "portrait", 				"default": ""},
 	}
 #endregion
 

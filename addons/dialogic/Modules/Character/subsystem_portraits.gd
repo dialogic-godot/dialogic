@@ -31,26 +31,17 @@ func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	# Load Position Portraits
 	var portraits_info: Dictionary = dialogic.current_state_info.portraits.duplicate()
 	dialogic.current_state_info.portraits = {}
-	for character_path in portraits_info:
-		var character_info: Dictionary = portraits_info[character_path]
-		var character: DialogicCharacter = load(character_path)
-		var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
-
-		ResourceLoader.load_threaded_request(character_path)
-
-		var load_status := ResourceLoader.load_threaded_get_status(character_path)
-		while load_status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			await get_tree().process_frame
-			load_status = ResourceLoader.load_threaded_get_status(character_path)
-
-		if load_status == ResourceLoader.THREAD_LOAD_LOADED:
-			character = ResourceLoader.load_threaded_get(character_path)
+	for character_identifier in portraits_info:
+		var character_info: Dictionary = portraits_info[character_identifier]
+		var character: DialogicCharacter = DialogicResourceUtil.get_character_resource(character_identifier)
+		if character:
+			var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
 			add_character(character, container, character_info.portrait, character_info.position_id)
 			change_character_mirror(character, character_info.get('custom_mirror', false))
 			change_character_z_index(character, character_info.get('z_index', 0))
 			change_character_extradata(character, character_info.get('extra_data', ""))
 		else:
-			push_error('[Dialogic] Failed to load character "' + str(character_path) + '".')
+			push_error('[Dialogic] Failed to load character "' + str(character_identifier) + '".')
 
 	# Load Speaker Portrait
 	var speaker: Variant = dialogic.current_state_info.get("speaker", "")

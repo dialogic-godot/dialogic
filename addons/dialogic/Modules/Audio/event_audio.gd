@@ -131,7 +131,7 @@ func from_text(string:String) -> void:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_info
-		"path"		: {"property": "file_path", 	"default": "", "custom_stored":true},
+		"path"		: {"property": "file_path", 	"default": "", "custom_stored":true, "ext_file":true},
 		"channel"	: {"property": "channel_name", 	"default": "", "custom_stored":true},
 		"fade"		: {"property": "fade_length", 	"default": 0.0},
 		"volume"	: {"property": "volume", 		"default": 0.0},

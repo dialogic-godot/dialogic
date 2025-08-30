@@ -302,7 +302,7 @@ func get_shortcode_parameters() -> Dictionary:
 										{'value':Actions.JOIN},
 										'Leave':{'value':Actions.LEAVE},
 										'Update':{'value':Actions.UPDATE}}},
-		"character" 	: {"property": "character_identifier",	"default": "", "custom_stored":true,},
+		"character" 	: {"property": "character_identifier",	"default": "", "custom_stored":true, "ext_file":true},
 		"portrait" 		: {"property": "portrait", 				"default": "", "custom_stored":true,},
 		"transform" 	: {"property": "transform", 			"default": "center", "custom_stored":true,},
 
