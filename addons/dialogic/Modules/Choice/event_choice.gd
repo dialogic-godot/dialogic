@@ -130,15 +130,21 @@ func _get_translatable_properties() -> Array:
 	return ['text', 'disabled_text']
 
 
-func _get_property_original_translation(property:String) -> String:
-	match property:
+func _get_property_original_translation(property_name:String) -> String:
+	match property_name:
 		'text':
 			return text
 		'disabled_text':
 			return disabled_text
 	return ''
-#endregion
 
+func _set_property_original_translation(property_name:String, value:String) -> void:
+	match property_name:
+		'text':
+			text = value
+		'disabled_text':
+			disabled_text = value
+#endregion
 
 #region EDITOR REPRESENTATION
 ################################################################################

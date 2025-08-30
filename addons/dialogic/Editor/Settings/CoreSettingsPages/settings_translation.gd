@@ -52,6 +52,9 @@ func _ready() -> void:
 
 	%CollectTranslations.pressed.connect(collect_translations)
 	%CollectTranslations.icon = get_theme_icon("File", "EditorIcons")
+	
+	%UseTextFromCsvFiles.pressed.connect(update_text_based_on_csv_files)
+	%UseTextFromCsvFiles.icon = get_theme_icon("TextFile", "EditorIcons")
 
 	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 	%TransRemove.icon = get_theme_icon("Remove", "EditorIcons")
@@ -62,6 +65,133 @@ func _ready() -> void:
 
 	_verify_translation_file()
 
+func get_csv_translation_files() -> Array:
+	var csv_files := []
+	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
+
+	if translation_mode == TranslationModes.PER_TIMELINE:
+
+		for timeline_path: String in DialogicResourceUtil.list_resources_of_type('.csv'):
+
+			for file: String in DialogicUtil.listdir(timeline_path.get_base_dir()):
+				file = timeline_path.get_base_dir().path_join(file)
+
+				if file.ends_with('.csv'):
+
+					if not file in csv_files:
+						csv_files.append(file)
+
+	if translation_mode == TranslationModes.PER_PROJECT:
+		var translation_folder: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
+
+		for file: String in DialogicUtil.listdir(translation_folder):
+			file = translation_folder.path_join(file)
+
+			if file.ends_with('.csv'):
+
+				if not file in csv_files:
+					csv_files.append(file)
+	
+	return csv_files
+	
+func get_translations_from_csv_for_locale(file_path : StringName, locale : String) -> Dictionary:
+	var translations = {}
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	
+	if file:
+		var header = file.get_csv_line()
+		if locale in header:
+			var locale_index = header.find(locale)
+			while not file.eof_reached():
+				var line = file.get_csv_line()
+				if line.size() > locale_index:
+					translations[line[0]] = line[locale_index]
+				
+	file.close()
+	
+	return translations
+
+func array_swap(array:Array, index_1:int, index_2:int) -> Array:
+	if array.size() > index_1 and array.size() > index_2:
+		var tmp = array[index_1]
+		array[index_1] = array[index_2]
+		array[index_2] = tmp
+	
+	return array
+
+func change_first_locale_in_csv_file(file_path : StringName, first_locale_key : String) -> void:
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	var lines = []
+	
+	if file:
+		var header:Array = file.get_csv_line()
+		
+		if first_locale_key in header:
+			# If the locale exists, we move it to the first column
+			
+			var locale_index = header.find(first_locale_key)
+			
+			if locale_index <= 1:
+				# If it's already the first column we have nothing to do
+				# (and if it is the column zero, the file is not usable ...)
+				file.close()
+				return
+				
+			else:
+				array_swap(header, 1, locale_index)
+				lines.append(header)
+				
+				while not file.eof_reached():
+					var line:Array = file.get_csv_line()
+					
+					while line.size() <= locale_index:
+						line.append("")
+					
+					array_swap(line, 1, locale_index)
+					
+					lines.append(line)
+		else:
+			# If the locale doesn't even exist, we create it
+			header.insert(1, first_locale_key)
+			lines.append(header)
+				
+			while not file.eof_reached():
+				var line:Array = file.get_csv_line()
+				
+				line.insert(1, "")
+				lines.append(line)
+				
+		file.close()
+		
+		file = FileAccess.open(file_path, FileAccess.WRITE)
+		for line in lines:
+			file.store_csv_line(line)
+			
+	file.close()
+	
+	
+
+
+## First retrieve all translations for default locale
+## Update the CSV files if needed to make the default locale the first column
+## Call the update_csv_files function with update_text set to true to put the retrieved translations
+## for default locale in the timeline, character and gloassary files.
+##
+## If any translation is missing for selected default locale, it will use original text.
+func update_text_based_on_csv_files() -> void:
+	var translation_files = get_csv_translation_files()
+	
+	var translations = {}
+	
+	for file in translation_files:
+		change_first_locale_in_csv_file(file, get_orig_locale())
+		
+	for file in translation_files:
+		translations.merge(get_translations_from_csv_for_locale(file, get_orig_locale()))
+	
+	update_csv_files(true, translations)
 
 func _on_custom_action(action: String) -> void:
 	if action == "generate_new":
@@ -120,6 +250,7 @@ func _verify_translation_file() -> void:
 		and DirAccess.dir_exists_absolute(translation_folder))
 
 	%UpdateCsvFiles.disabled = not valid_translation_folder
+	%UseTextFromCsvFiles.disabled = not valid_translation_folder
 
 	var status_message := ""
 
@@ -183,7 +314,9 @@ func _handle_glossary_translation(
 	save_location_mode: SaveLocationModes,
 	translation_mode: TranslationModes,
 	translation_folder_path: String,
-	orig_locale: String) -> void:
+	orig_locale: String,
+	update_text: bool = false,
+	text_dict: Dictionary = {}) -> void:
 
 	var glossary_csv: DialogicCsvFile = null
 	var glossary_paths: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
@@ -223,7 +356,7 @@ func _handle_glossary_translation(
 				csv_data.updated_glossaries += 1
 
 		var glossary: DialogicGlossary = load(glossary_path)
-		glossary_csv.collect_lines_from_glossary(glossary)
+		glossary_csv.collect_lines_from_glossary(glossary, update_text, text_dict)
 		glossary_csv.add_translation_keys_to_glossary(glossary)
 		ResourceSaver.save(glossary)
 
@@ -257,10 +390,18 @@ class CsvUpdateData:
 	var new_glossary_entries := 0
 	var updated_glossary_entries := 0
 
-
-func update_csv_files() -> void:
-	_unique_locales = []
+func get_orig_locale():
+	
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
+	
+	if orig_locale.is_empty():
+		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
+	
+	return orig_locale
+
+func update_csv_files(update_text: bool = false, text_dict: Dictionary = {}) -> void:
+	_unique_locales = []
+	var orig_locale: String = get_orig_locale()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 	var translation_folder_path: String = ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://')
@@ -268,15 +409,16 @@ func update_csv_files() -> void:
 
 	var csv_data := CsvUpdateData.new()
 
-	if orig_locale.is_empty():
-		orig_locale = ProjectSettings.get_setting('internationalization/locale/fallback')
-
 	ProjectSettings.set_setting('dialogic/translation/intern/save_mode', save_location_mode)
 	ProjectSettings.set_setting('dialogic/translation/intern/file_mode', translation_mode)
 	ProjectSettings.set_setting('dialogic/translation/intern/translation_folder', translation_folder_path)
 
 	var current_timeline := _close_active_timeline()
 
+	var current_character : Resource = null
+	if update_text:
+		current_character = _close_active_character()
+	
 	var csv_per_project: DialogicCsvFile = null
 	var per_project_csv_path := translation_folder_path.path_join(DEFAULT_TIMELINE_CSV_NAME)
 
@@ -320,7 +462,7 @@ func update_csv_files() -> void:
 		timeline.process()
 
 		# Collect timeline into CSV.
-		csv_file.collect_lines_from_timeline(timeline)
+		csv_file.collect_lines_from_timeline(timeline, update_text, text_dict)
 
 		# in case new translation_id's were added, we save the timeline again
 		timeline.set_meta("timeline_not_saved", true)
@@ -337,20 +479,27 @@ func update_csv_files() -> void:
 		save_location_mode,
 		translation_mode,
 		translation_folder_path,
-		orig_locale
+		orig_locale,
+		update_text,
+		text_dict
 	)
 
 	_handle_character_names(
 		csv_data,
 		orig_locale,
 		translation_folder_path,
-		add_separator_lines
+		add_separator_lines,
+		update_text,
+		text_dict
 	)
 
 	if translation_mode == TranslationModes.PER_PROJECT:
 		csv_per_project.update_csv_file_on_disk()
 
 	_silently_open_timeline(current_timeline)
+	
+	if update_text:
+		_silently_open_character(current_character)
 
 	# Trigger reimport.
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
@@ -385,11 +534,13 @@ func _handle_character_names(
 		csv_data: CsvUpdateData,
 		original_locale: String,
 		translation_folder_path: String,
-		add_separator_lines: bool) -> void:
+		add_separator_lines: bool,
+		update_text: bool = false,
+		text_dict: Dictionary = {}) -> void:
 	var names_csv_path := translation_folder_path.path_join(DEFAULT_CHARACTER_CSV_NAME)
 	var character_name_csv: DialogicCsvFile = DialogicCsvFile.new(names_csv_path,
 		 original_locale,
-		 add_separator_lines
+		 add_separator_lines,
 	)
 
 	var all_characters := {}
@@ -408,7 +559,7 @@ func _handle_character_names(
 
 		ResourceSaver.save(character)
 
-	character_name_csv.collect_lines_from_characters(all_characters)
+	character_name_csv.collect_lines_from_characters(all_characters, update_text, text_dict)
 	character_name_csv.update_csv_file_on_disk()
 
 
@@ -642,6 +793,15 @@ func _close_active_timeline() -> Resource:
 
 	return current_timeline
 
+func _close_active_character() -> Resource:
+	var character_node: DialogicEditor = settings_editor.editors_manager.editors['CharacterEditor']['node']
+	# We will close this character to ensure it will properly update.
+	# By saving this reference, we can open it again.
+	var current_character := character_node.current_resource
+	# Clean the current editor, this will also close the character.
+	settings_editor.editors_manager.clear_editor(character_node)
+
+	return current_character
 
 ## Opens the timeline resource into the Dialogic Editor.
 ## If the timeline is null, does nothing.
@@ -649,6 +809,11 @@ func _silently_open_timeline(timeline_to_open: Resource) -> void:
 	if timeline_to_open != null:
 		settings_editor.editors_manager.edit_resource(timeline_to_open, true, true)
 
+## Opens the character resource into the Dialogic Editor.
+## If the character is null, does nothing.
+func _silently_open_character(character_to_open: Resource) -> void:
+	if character_to_open != null:
+		settings_editor.editors_manager.edit_resource(character_to_open, true, true)
 
 ## Checks [param locale] for unique locales that have not been added
 ## to the [_unique_locales] array yet.
