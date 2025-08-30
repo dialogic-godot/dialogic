@@ -1,4 +1,5 @@
 @tool
+@icon("uid://j7ym07anlusi")
 extends "res://addons/dialogic/Resources/dialogic_identifiable_resource.gd"
 class_name DialogicTimeline
 
