@@ -433,8 +433,10 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 					input.select(value)
 				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_info.name, property_changed))
 			else:
-				input = SpinBox.new()
-				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_info.name, property_changed))
+				input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
+				input.property_name = property_info['name']
+				input.use_int_mode()
+
 				if ',' in property_info.hint_string:
 					input.min_value = int(property_info.hint_string.get_slice(',', 0))
 					input.max_value = int(property_info.hint_string.get_slice(',', 1))
@@ -442,27 +444,38 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 						input.step = int(property_info.hint_string.get_slice(',', 2))
 				else:
 					input.step = 1
-					input.allow_greater = true
-					input.allow_lesser = true
+					input.max_value = INF
+					input.min_value = -INF
+
 				if value != null:
-					input.value = value
+					input.set_value(value)
+				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_changed))
 		TYPE_FLOAT:
-			input = SpinBox.new()
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
+			input.property_name = property_info['name']
+			input.use_float_mode()
 			input.step = 0.01
 			if ',' in property_info.hint_string:
 				input.min_value = float(property_info.hint_string.get_slice(',', 0))
 				input.max_value = float(property_info.hint_string.get_slice(',', 1))
 				if property_info.hint_string.count(',') > 1:
 					input.step = float(property_info.hint_string.get_slice(',', 2))
-			input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_info.name, property_changed))
 			if value != null:
-				input.value = value
+				input.set_value(value)
+			input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_changed))
 		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
 			var vectorSize: String = type_string(typeof(value))[-1]
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
 			input.property_name = property_info['name']
 			input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
+		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I:
+			var vectorSize: String = type_string(typeof(value))[-2]
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
+			input.step = 1
+			input.property_name = property_info['name']
+			input.set_value(value)
+			input.value_changed.connect(DialogicUtil._on_export_vectori_submitted.bind(property_changed))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
@@ -520,7 +533,7 @@ static func _on_export_color_submitted(color:Color, property_name:String, callab
 static func _on_export_int_enum_submitted(item:int, property_name:String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(item))
 
-static func _on_export_number_submitted(value:float, property_name:String, callable: Callable) -> void:
+static func _on_export_number_submitted(property_name:String, value:float, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
 static func _on_export_file_submitted(property_name:String, value:String, callable: Callable) -> void:
@@ -530,6 +543,13 @@ static func _on_export_string_enum_submitted(value:int, property_name:String, li
 	callable.call(property_name, var_to_str(list[value]))
 
 static func _on_export_vector_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	callable.call(property_name, var_to_str(value))
+
+static func _on_export_vectori_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	match typeof(value):
+		TYPE_VECTOR2: value = Vector2i(value)
+		TYPE_VECTOR3: value = Vector3i(value)
+		TYPE_VECTOR4: value = Vector4i(value)
 	callable.call(property_name, var_to_str(value))
 
 static func _on_export_dict_submitted(property_name:String, value:Variant, callable: Callable) -> void:
