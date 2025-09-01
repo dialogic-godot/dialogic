@@ -20,7 +20,6 @@ func open() -> void:
 	get_parent().popup_centered_ratio(0.5)
 	get_parent().mode = Window.MODE_WINDOWED
 	get_parent().grab_focus()
-	get_parent().grab_focus()
 
 
 func load_info(info:Dictionary, update_type:int) -> void:
