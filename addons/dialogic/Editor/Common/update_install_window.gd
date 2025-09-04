@@ -19,7 +19,6 @@ func _ready() -> void:
 func open() -> void:
 	get_parent().popup_centered_ratio(0.5)
 	get_parent().mode = Window.MODE_WINDOWED
-	get_parent().move_to_foreground()
 	get_parent().grab_focus()
 
 
@@ -108,7 +107,7 @@ func _on_update_manager_downdload_completed(result:int):
 func _on_resources_reimported(resources:Array) -> void:
 	if is_inside_tree():
 		await get_tree().process_frame
-		get_parent().move_to_foreground()
+		get_parent().grab_focus()
 
 
 func markdown_to_bbcode(text:String) -> String:
