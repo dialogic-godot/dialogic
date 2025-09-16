@@ -290,7 +290,7 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
-	var result := text.replace('\n', '\\\n')
+	var result := text.replace('\n', '\\\n').strip_edges(false).trim_suffix("\\")
 	result = result.replace(':', '\\:')
 	if result.is_empty():
 		result = "<Empty Text Event>"
