@@ -70,6 +70,21 @@ func get_shortcode_parameters() -> Dictionary:
 		"allow_empty"	: {"property": "allow_empty",	"default": false},
 	}
 
+
+func _get_translatable_properties() -> Array:
+	return ["text", "placeholder", "default"]
+
+
+func _get_property_original_translation(property_name:String) -> String:
+	match property_name:
+		"text":
+			return text
+		"placeholder":
+			return placeholder
+		"default":
+			return default
+	return ""
+
 ################################################################################
 ## 						EDITOR
 ################################################################################
