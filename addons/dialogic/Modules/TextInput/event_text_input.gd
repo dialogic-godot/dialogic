@@ -19,19 +19,21 @@ var default := ""
 var allow_empty := false
 
 
-################################################################################
-## 						EXECUTION
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
 	dialogic.Inputs.auto_skip.enabled = false
 	dialogic.current_state = DialogicGameHandler.States.WAITING
-	dialogic.TextInput.show_text_input(text, default, placeholder, allow_empty)
+	dialogic.TextInput.show_text_input(
+		get_property_translated("text"),
+		get_property_translated("default"),
+		get_property_translated("placeholder"), allow_empty)
 	dialogic.TextInput.input_confirmed.connect(_on_DialogicTextInput_input_confirmed, CONNECT_ONE_SHOT)
 
 
 func _on_DialogicTextInput_input_confirmed(input:String) -> void:
-	if !dialogic.has_subsystem('VAR'):
+	if not dialogic.has_subsystem('VAR'):
 		printerr('[Dialogic] The TextInput event needs the variable subsystem to be present.')
 		finish()
 		return
@@ -41,8 +43,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 	finish()
 
 
-################################################################################
-## 						SAVING/LOADING
+#region SETUP
 ################################################################################
 
 func _init() -> void:
@@ -52,8 +53,7 @@ func _init() -> void:
 	event_sorting_index = 6
 
 
-################################################################################
-## 						SAVING/LOADING
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -85,8 +85,8 @@ func _get_property_original_translation(property_name:String) -> String:
 			return default
 	return ""
 
-################################################################################
-## 						EDITOR
+
+#region EDITOR
 ################################################################################
 
 func build_event_editor() -> void:
@@ -101,7 +101,7 @@ func build_event_editor() -> void:
 	add_body_edit('allow_empty', ValueType.BOOL, {'left_text':'Allow empty:'})
 
 
-func get_var_suggestions(filter:String="") -> Dictionary:
+func get_var_suggestions(filter: String = "") -> Dictionary:
 	var suggestions := {}
 	if filter:
 		suggestions[filter] = {
