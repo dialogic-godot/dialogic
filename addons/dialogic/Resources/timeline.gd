@@ -7,10 +7,10 @@ class_name DialogicTimeline
 ## It can store them as text and load them from text too.
 
 
-
 var events: Array = []
 var events_processed := false
 var text_lines_indexed := {}
+var indent_format := "\t"
 
 
 func _get_extension() -> String:
@@ -34,6 +34,13 @@ func from_text(text:String) -> void:
 	events = text.split('\n', true)
 	events_processed = false
 
+	## Take an initial guess about the indentation format
+	## because the text editor needs it but doesn't call _process()
+	for ev in events:
+		indent_format = ev.substr(0, len(ev) - len(ev.strip_edges(true, false)))
+		if indent_format:
+			break
+
 
 ## Stores all events in their text format and returns them as a string
 func as_text() -> String:
@@ -50,8 +57,8 @@ func as_text() -> String:
 
 			if event != null:
 				for i in event.empty_lines_above:
-					result += "\t".repeat(indent)+"\n"
-				result += "\t".repeat(indent)+event.event_node_as_text.replace('\n', "\n"+"\t".repeat(indent)) + "\n"
+					result += indent_format.repeat(indent)+"\n"
+				result += indent_format.repeat(indent)+event.event_node_as_text.replace('\n', "\n"+indent_format.repeat(indent)) + "\n"
 			if event.can_contain_events:
 				indent += 1
 			if indent < 0:
@@ -87,6 +94,7 @@ func process() -> void:
 	var end_event := DialogicEndBranchEvent.new()
 
 	var prev_indent := ""
+	indent_format = ""
 	var processed_events := []
 	text_lines_indexed = {}
 
@@ -115,8 +123,14 @@ func process() -> void:
 
 		## Add an end event if the indent is smaller then previously
 		var indent: String = line.substr(0,len(line)-len(line_stripped))
+		if indent and ((not indent_format) or not (indent_format in indent)):
+			if not indent_format.is_empty():
+				printerr("Timeline contains varying indentation. Found {0} instead of expected {1}.".format([indent, indent_format]))
+			else:
+				indent_format = indent
 		if len(indent) < len(prev_indent):
-			for i in range(len(prev_indent)-len(indent)):
+			@warning_ignore("integer_division")
+			for i in range(len(prev_indent)/len(indent_format)-len(indent)/len(indent_format)):
 				processed_events.append(end_event.duplicate())
 		## Add an end event if the indent is the same but the previous was an opener
 		## (so for example choice that is empty)
@@ -132,7 +146,7 @@ func process() -> void:
 
 		event.empty_lines_above = empty_lines
 		# add the following lines until the event says it's full or there is an empty line
-		while !event.is_string_full_event(event_content):
+		while not event.is_string_full_event(event_content):
 			idx += 1
 			text_lines_indexed[idx] = len(processed_events)
 			if idx == len(lines):
@@ -152,12 +166,16 @@ func process() -> void:
 		prev_was_opener = event.can_contain_events
 		empty_lines = 0
 
-	if !prev_indent.is_empty():
+	if not prev_indent.is_empty():
 		for i in range(len(prev_indent)):
 			processed_events.append(end_event.duplicate())
 
 	events = processed_events
 	events_processed = true
+
+	if indent_format.is_empty():
+		indent_format = "\t"
+
 
 
 ## This method makes sure that all events in a timeline are correctly reset
