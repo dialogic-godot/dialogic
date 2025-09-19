@@ -449,6 +449,7 @@ func execute_effects(current_index:int, text_node:Control, skipping := false) ->
 		if current_index != -1 and current_index < parsed_text_effect_info[0]['index']:
 			return
 		var effect: Dictionary = parsed_text_effect_info.pop_front()
+		var callable: Callable = effect['execution_info']['callable']
 		if is_instance_valid(text_node):
 			await callable.call(text_node, skipping, effect['value'])
 
