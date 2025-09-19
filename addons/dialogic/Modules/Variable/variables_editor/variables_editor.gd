@@ -18,7 +18,7 @@ func _register() -> void:
 	alternative_text = "Create and edit dialogic variables and their default values"
 
 
-func _open(argument:Variant = null):
+func _open(_argument:Variant = null) -> void:
 	%ReferenceInfo.hide()
 	%Tree.load_info(ProjectSettings.get_setting('dialogic/variables', {}))
 
@@ -43,9 +43,13 @@ func _ready() -> void:
 func variable_renamed(old_name:String, new_name:String):
 	if old_name == new_name:
 		return
+	var count: int = editors_manager.reference_manager.get_change_count()
 	editors_manager.reference_manager.add_variable_ref_change(old_name, new_name)
-	%ReferenceInfo.show()
-
+	var new_count: int = editors_manager.reference_manager.get_change_count()
+	if count > new_count:
+		%ReferenceInfo.hide()
+	elif count < new_count:
+		%ReferenceInfo.show()
 
 func _on_reference_manager_pressed() -> void:
 	editors_manager.reference_manager.open()

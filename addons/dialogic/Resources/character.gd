@@ -1,4 +1,5 @@
 @tool
+@icon("uid://bbea0efx0ybu7")
 extends "res://addons/dialogic/Resources/dialogic_identifiable_resource.gd"
 class_name DialogicCharacter
 
@@ -139,21 +140,18 @@ func get_character_name() -> String:
 	else:
 		return "UnnamedCharacter"
 
-#
-### Sets the unique identifier-string of this resource.
-### In editor (if the resource is already saved) the identifier will be stored.
-### In game (if the resource is not stored) the resource will be temporarily registered.
-#func set_identifier(new_identifier:String) -> bool:
-	#if resource_path and Engine.is_editor_hint():
-		#DialogicResourceUtil.change_unique_identifier(resource_path, new_identifier)
-		#return true
-	#if not resource_path and not Engine.is_editor_hint():
-		#DialogicResourceUtil.register_runtime_resource(self, new_identifier, "dch")
-		#return true
-	#return false
-
 
 ## Returns the info of the given portrait.
 ## Uses the default portrait if the given portrait doesn't exist.
 func get_portrait_info(portrait_name:String) -> Dictionary:
 	return portraits.get(portrait_name, portraits.get(default_portrait, {}))
+
+
+## Helper method intended for a simplified creation of portraits at runtime.
+## For more complex needs, manually writing to the portraits dict is recommended.
+func add_portrait(name:String, image:String, scene:= "") -> void:
+	portraits[name] = {
+		"scene": scene,
+		"export_overrides": {
+			"image": image}
+		}

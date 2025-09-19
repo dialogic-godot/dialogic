@@ -164,13 +164,16 @@ func open() -> void:
 	DialogicResourceUtil.update_directory('dch')
 	DialogicResourceUtil.update_directory('dtl')
 	popup_centered_ratio(0.5)
-	move_to_foreground()
 	grab_focus()
 
 
 func _on_close_requested() -> void:
 	hide()
 	broken_manager.close()
+
+
+func get_change_count() -> int:
+	return len(broken_manager.reference_changes)
 
 
 func update_indicator() -> void:

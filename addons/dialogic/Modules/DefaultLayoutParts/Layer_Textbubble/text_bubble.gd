@@ -9,7 +9,12 @@ extends Control
 @onready var name_label_box: PanelContainer = (%NameLabelPanel as PanelContainer)
 @onready var name_label_holder: HBoxContainer = $DialogText/NameLabelPositioner
 
-var node_to_point_at: Node = null
+var node_to_point_at: Node = null:
+	set(val):
+		node_to_point_at = val
+		base_position = get_speaker_canvas_position() + base_direction * safe_zone
+		position = base_position
+		
 var current_character: DialogicCharacter = null
 
 var max_width := 300
@@ -36,6 +41,7 @@ func _ready() -> void:
 
 
 func reset() -> void:
+	set_process(false)
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 
@@ -106,7 +112,7 @@ func close() -> void:
 
 
 func _on_dialog_text_started_revealing_text() -> void:
-	_resize_bubble(get_base_content_size(), true)
+	_resize_bubble(await get_base_content_size(), true)
 
 
 func _resize_bubble(content_size:Vector2, popup:=false) -> void:
@@ -137,22 +143,40 @@ func _on_question_shown(info:Dictionary) -> void:
 	if !is_visible_in_tree():
 		return
 
-	await get_tree().process_frame
+	# Avoid choice_container's flickering(because some ticks will happen in 
+	# `await get_base_content_size()` which will make choice_container exist
+	# at its old position for several tens of milliseconds).
+	choice_container.modulate.a = 0
 
-	var content_size := get_base_content_size()
+	var content_size := await get_base_content_size()
 	content_size.y += choice_container.size.y
 	content_size.x = max(content_size.x, choice_container.size.x)
 	_resize_bubble(content_size)
+	
+	# Now, choice_container has changed to its new position, so we can make it
+	# actually show up.
+	choice_container.modulate.a = 1
 
 
 func get_base_content_size() -> Vector2:
 	var font: Font = text.get_theme_font(&"normal_font")
-	return font.get_multiline_string_size(
+	var text_width = font.get_multiline_string_size(
 		text.get_parsed_text(),
 		HORIZONTAL_ALIGNMENT_LEFT,
 		max_width,
 		text.get_theme_font_size(&"normal_font_size")
-		)
+		).x
+		
+	# Let text use content's width, and let text auto shrink height to its content.
+	text.size = Vector2(text_width, 0)
+	await get_tree().process_frame
+	
+	# Don't know why text.size.y != content's height,
+	# so we re-set text.size.y to 0 to let text shrink to its content again.
+	# Finally works this time.
+	text.size.y = 0
+	await get_tree().process_frame
+	return text.size
 
 
 func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEGIN, choices_button_path:="", maximum_choices:=5) -> void:

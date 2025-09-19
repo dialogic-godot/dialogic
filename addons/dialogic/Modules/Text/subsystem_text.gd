@@ -59,7 +59,7 @@ var text_already_read := false
 var text_effects := {}
 var parsed_text_effect_info: Array[Dictionary] = []
 var text_effects_regex := RegEx.new()
-enum TextModifierModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
+enum ParserModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
 enum TextTypes {DIALOG_TEXT, CHOICE_TEXT}
 var text_modifiers := []
 
@@ -73,6 +73,8 @@ var _letter_speed_absolute := false
 var _voice_synced_text := false
 
 var _autopauses := {}
+
+var parse_stack: Array[Dictionary] = []
 
 
 #region STATE
@@ -113,19 +115,55 @@ func post_install() -> void:
 #region MAIN METHODS
 ####################################################################################################
 
-## Applies modifiers, effects and coloring to the text
-func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if variables and dialogic.has_subsystem('VAR'):
-		text = dialogic.VAR.parse_variables(text)
-	if modifiers:
-		text = parse_text_modifiers(text, type)
-	if effects:
-		text = parse_text_effects(text)
-	if color_names:
-		text = color_character_names(text)
-	if glossary and dialogic.has_subsystem('Glossary'):
-		text = dialogic.Glossary.parse_glossary(text)
+## Applies modifiers, effects and coloring to the text. 
+## Utilizes the parse stack created and sorted in [method load_parse_stack()].
+func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
+	if parse_stack.is_empty():
+		load_parse_stack()
+	
+	for i in parse_stack:
+		if i.type != ParserModes.ALL and type != -1 and i.type != type:
+			continue
+		text = i.method.call(text)
+
 	return text
+
+
+## Creates and sorts a stack of methods that take a text and return it.
+## This includes: variables, text modifiers, text effects, autocolor names and the glossary.
+func load_parse_stack() -> void:
+	parse_stack.clear()
+	
+	if dialogic.has_subsystem('VAR'):
+		parse_stack.append(
+			{
+				"method":dialogic.VAR.parse_variables,
+				"type": ParserModes.ALL,
+				"order": 30,
+			})
+
+	parse_stack.append(
+		{
+			"method": parse_text_effects,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 50,
+		})
+	for i in text_modifiers:
+		parse_stack.append(i)
+	parse_stack.append(
+		{
+			"method": color_character_names,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 90,
+		})
+	parse_stack.append(
+		{
+			"method": dialogic.Glossary.parse_glossary,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 95,
+		})
+	
+	parse_stack.sort_custom(func(a,b):return a["order"] < b["order"])
 
 
 ## When an event updates the text spoken, this can adjust the state of
@@ -381,8 +419,12 @@ func collect_text_effects() -> void:
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
 	parsed_text_effect_info.clear()
-	var rtl := RichTextLabel.new()
-	rtl.bbcode_enabled = true
+	var rtl: RichTextLabel = null
+	if get_tree().get_first_node_in_group("dialogic_dialog_text"):
+		rtl = get_tree().get_first_node_in_group("dialogic_dialog_text").duplicate()
+	else:
+		rtl = RichTextLabel.new()
+		rtl.bbcode_enabled = true
 	var position_correction := 0
 	var bbcode_correction := 0
 	for effect_match in text_effects_regex.search_all(text):
@@ -407,7 +449,9 @@ func execute_effects(current_index:int, text_node:Control, skipping := false) ->
 		if current_index != -1 and current_index < parsed_text_effect_info[0]['index']:
 			return
 		var effect: Dictionary = parsed_text_effect_info.pop_front()
-		await (effect['execution_info']['callable'] as Callable).call(text_node, skipping, effect['value'])
+		var callable: Callable = effect['execution_info']['callable']
+		if is_instance_valid(text_node):
+			await callable.call(text_node, skipping, effect['value'])
 
 
 func collect_text_modifiers() -> void:
@@ -418,15 +462,8 @@ func collect_text_modifiers() -> void:
 				text_modifiers.append({'method':Callable(dialogic.get_subsystem(modifier.subsystem), modifier.method)})
 			elif modifier.has('node_path') and modifier.has('method'):
 				text_modifiers.append({'method':Callable(get_node(modifier.node_path), modifier.method)})
-			text_modifiers[-1]['mode'] = modifier.get('mode', TextModifierModes.TEXT_ONLY)
-
-
-func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
-	for mod in text_modifiers:
-		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode:
-			continue
-		text = mod.method.call(text)
-	return text
+			text_modifiers[-1]['type'] = modifier.get('mode', ParserModes.TEXT_ONLY)
+			text_modifiers[-1]['order'] = modifier.get('order', 40)
 
 
 #endregion

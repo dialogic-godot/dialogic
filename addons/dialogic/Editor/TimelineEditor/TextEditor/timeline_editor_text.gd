@@ -112,10 +112,11 @@ func _gui_input(event):
 			for caret in range(get_caret_count()):
 				var line := get_line(get_caret_line(caret)).strip_edges()
 				var event_res := DialogicTimeline.event_from_string(line, DialogicResourceUtil.get_event_cache())
+				var indent_format: String = timeline_editor.current_resource.indent_format
 				if event_res.can_contain_events:
-					insert_text_at_caret("\n"+"\t".repeat(get_indent_level(get_caret_line(caret))/4+1), caret)
+					insert_text_at_caret("\n"+indent_format.repeat(get_indent_level(get_caret_line(caret))/4+1), caret)
 				else:
-					insert_text_at_caret("\n"+"\t".repeat(get_indent_level(get_caret_line(caret))/4), caret)
+					insert_text_at_caret("\n"+indent_format.repeat(get_indent_level(get_caret_line(caret))/4), caret)
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -274,10 +275,10 @@ func get_next_search_position(navigate_up := false) -> Vector2i:
 		search_from_line = get_caret_line()
 		search_from_column = get_caret_column()
 
-	var flags := get_meta("current_search_flags", 0)
+	var flags: int = get_meta("current_search_flags", 0)
 	if navigate_up:
 		flags = flags | SEARCH_BACKWARDS
-	print()
+
 	pos = search(get_meta("current_search"), flags, search_from_line, search_from_column)
 	return pos
 
