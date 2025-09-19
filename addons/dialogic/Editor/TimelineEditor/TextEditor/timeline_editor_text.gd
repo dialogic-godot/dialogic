@@ -53,20 +53,20 @@ func save_timeline() -> void:
 
 	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
-	DialogicResourceUtil.update_directory('dtl')
+	if not DialogicResourceUtil.is_resource_in_directory(timeline_editor.current_resource.resource_path):
+		DialogicResourceUtil.update_directory('dtl')
 
 
-func text_timeline_to_array(text:String) -> Array:
+func text_timeline_to_array(timeline_text:String) -> Array:
 	# Parse the lines down into an array
 	var events := []
 
-	var lines := text.split('\n', true)
+	var lines := timeline_text.split('\n', true)
 	var idx := -1
 
 	while idx < len(lines)-1:
 		idx += 1
 		var line: String = lines[idx]
-		var line_stripped: String = line.strip_edges(true, true)
 		events.append(line)
 
 	return events
@@ -162,7 +162,7 @@ func toggle_comment() -> void:
 
 
 ## Allows dragging files into the editor
-func _can_drop_data(at_position:Vector2, data:Variant) -> bool:
+func _can_drop_data(_at_position:Vector2, data:Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
 		return true
 	return false
@@ -312,7 +312,6 @@ func replace(replace_text:String) -> void:
 func replace_all(replace_text:String) -> void:
 	begin_complex_operation()
 	var next_pos := get_next_search_position()
-	var counter := 0
 	while next_pos.y != -1:
 		insert_text("@@", next_pos.y, next_pos.x)
 		if get_meta("current_search_flags") & SEARCH_MATCH_CASE:
@@ -344,8 +343,8 @@ func _filter_code_completion_candidates(candidates:Array) -> Array:
 
 ## Called when code completion was activated
 ## Inserts the selected item
-func _confirm_code_completion(replace:bool) -> void:
-	code_completion_helper.confirm_code_completion(replace, self)
+func _confirm_code_completion(do_replace:bool) -> void:
+	code_completion_helper.confirm_code_completion(do_replace, self)
 
 
 ################################################################################
