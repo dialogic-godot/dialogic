@@ -195,6 +195,9 @@ func _get_translatable_properties() -> Array:
 func _get_property_original_translation(_property_name:String) -> String:
 	return ''
 
+## Overwrite if this events needs translation.
+func _set_property_original_translation(property_name:String, value:String) -> void:
+	pass
 
 ## Returns true if there is any translatable properties on this event.
 ## Overwrite [_get_translatable_properties()] to change this.
