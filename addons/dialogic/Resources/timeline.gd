@@ -81,6 +81,9 @@ func get_index_from_text_line(text:String, line) -> int:
 
 ## Method that loads all the event resources from the strings, if it wasn't done before
 func process() -> void:
+	if len(events) == 0:
+		return
+
 	if typeof(events[0]) == TYPE_STRING:
 		events_processed = false
 
