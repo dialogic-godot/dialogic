@@ -17,6 +17,7 @@ var text := ""
 ## it will play.
 var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
+## If a runtime-character is created, the portrait can instead be a color (hex or color name).
 var portrait := ""
 
 ### Helpers
@@ -24,7 +25,7 @@ var portrait := ""
 ## Used to set the character resource from the unique name identifier and vice versa
 var character_identifier: String:
 	get:
-		if character:
+		if character and not "{" in character_identifier:
 			var identifier := character.get_identifier()
 			if not identifier.is_empty():
 				return identifier
@@ -32,7 +33,7 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
-		if (not character) or (character and not character.portraits.has(portrait)):
+		if Engine.is_editor_hint() and ((not character) or (character and not character.portraits.has(portrait))):
 			portrait = ""
 			ui_update_needed.emit()
 
@@ -57,6 +58,11 @@ func _execute() -> void:
 		finish()
 		return
 
+	## If the speaker is provided as an expression, parse it now.
+	if "{" in character_identifier:
+		character = null
+		var character_name: String = dialogic.Expressions.execute_string(character_identifier)
+		get_or_create_character(character_name)
 
 	## Change Portrait and Active Speaker
 	if dialogic.has_subsystem("Portraits"):
@@ -284,7 +290,7 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
-	var result := text.replace('\n', '\\\n')
+	var result := text.replace('\n', '\\\n').strip_edges(false).trim_suffix("\\")
 	result = result.replace(':', '\\:')
 	if result.is_empty():
 		result = "<Empty Text Event>"
@@ -322,18 +328,12 @@ func from_text(string:String) -> void:
 
 		if name == '_':
 			character = null
+		elif "{" in name:
+			## If it's an expression, we load the character in _execute.
+			character_identifier = name
+			character = null
 		else:
-			character = DialogicResourceUtil.get_character_resource(name)
-
-			if character == null:
-				if Engine.is_editor_hint() == false:
-					character = DialogicCharacter.new()
-					character.display_name = name
-					character.set_identifier(name)
-					if portrait:
-						character.color = Color(portrait)
-				else:
-					character_identifier = name
+			get_or_create_character(name)
 
 	if not result:
 		return
@@ -341,6 +341,23 @@ func from_text(string:String) -> void:
 	text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges().trim_prefix('\\')
 	if text == '<Empty Text Event>':
 		text = ""
+
+
+func get_or_create_character(name:String) -> void:
+	character = DialogicResourceUtil.get_character_resource(name)
+
+	if character == null:
+		if Engine.is_editor_hint() == false:
+			character = DialogicCharacter.new()
+			character.display_name = name
+			character.set_identifier(name)
+			if portrait:
+				if "{" in portrait:
+					character.color = Color(dialogic.Expressions.execute_string(portrait))
+				else:
+					character.color = Color(portrait)
+		else:
+			character_identifier = name
 
 
 func is_valid_event(_string:String) -> bool:
