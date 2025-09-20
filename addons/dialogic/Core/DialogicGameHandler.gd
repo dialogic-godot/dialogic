@@ -138,6 +138,9 @@ var Portraits := preload("res://addons/dialogic/Modules/Character/subsystem_port
 var Save := preload("res://addons/dialogic/Modules/Save/subsystem_save.gd").new():
 	get: return get_subsystem("Save")
 
+var ScreenShake := preload("res://addons/dialogic/Modules/ScreenShake/subsystem_screen_shake.gd").new():
+	get: return get_subsystem("ScreenShake")
+
 var Settings := preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd").new():
 	get: return get_subsystem("Settings")
 
