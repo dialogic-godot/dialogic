@@ -683,6 +683,11 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 			character_node.hide()
 			if not container.is_visible_in_tree():
 				await get_tree().process_frame
+
+			# There is chance that the style changed (due to a speaker style) and thus the character node is gone now.
+			# In that case, just give up.
+			if not is_instance_valid(character_node):
+				return
 			character_node.show()
 			var join_animation: String = ProjectSettings.get_setting('dialogic/animations/join_default', "Fade In Up")
 			join_animation = DialogicPortraitAnimationUtil.guess_animation(join_animation, DialogicPortraitAnimationUtil.AnimationType.IN)

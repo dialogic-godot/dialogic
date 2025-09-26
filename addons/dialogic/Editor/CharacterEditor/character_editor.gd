@@ -371,7 +371,7 @@ func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary=
 
 func add_portrait_group() -> void:
 	var parent_item: TreeItem = %PortraitTree.get_root()
-	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
+	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0) and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent_item = %PortraitTree.get_selected()
 	var item: TreeItem = %PortraitTree.add_portrait_group("Group", parent_item)
 	item.set_meta('new', true)
