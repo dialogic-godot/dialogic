@@ -40,8 +40,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
-min_value = 0.0
-max_value = null
 
 [node name="Value_Panel" type="PanelContainer" parent="."]
 layout_mode = 2
