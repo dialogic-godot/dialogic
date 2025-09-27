@@ -33,7 +33,7 @@ func main_portrait_settings_update(_something=null, _value=null) -> void:
 	character_editor.something_changed()
 
 
-func default_portrait_changed(property:String, value:String) -> void:
+func default_portrait_changed(_property:String, value:String) -> void:
 	character_editor.current_resource.default_portrait = value
 	character_editor.update_default_portrait_star(value)
 
@@ -47,7 +47,7 @@ func _load_character(resource:DialogicCharacter) -> void:
 	loading = true
 	%DefaultPortraitPicker.set_value(resource.default_portrait)
 
-	%MainScale.value = 100*resource.scale
+	%MainScale.set_value(100*resource.scale)
 	%MainOffset.set_value(resource.offset)
 	%MainMirror.button_pressed = resource.mirror
 	loading = false
@@ -69,7 +69,7 @@ func _save_changes(resource:DialogicCharacter) -> DialogicCharacter:
 
 
 ## Get suggestions for DefaultPortraitPicker
-func suggest_portraits(search:String) -> Dictionary:
+func suggest_portraits(_search:String) -> Dictionary:
 	var suggestions := {}
 	for portrait in character_editor.get_updated_portrait_dict().keys():
 		suggestions[portrait] = {'value':portrait}
