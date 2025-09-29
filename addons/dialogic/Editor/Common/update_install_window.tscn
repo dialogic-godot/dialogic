@@ -282,7 +282,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_utju1")
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Be careful. This will delete the addons/dialogic folder and install the new version. Any custom changes in that folder will be lost.
-To be on the save side, use version control!"
+To be on the safe side, use version control!"
 autowrap_mode = 3
 
 [node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
