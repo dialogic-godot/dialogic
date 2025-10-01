@@ -89,6 +89,12 @@ func _get_property_original_translation(property_name:String) -> String:
 			return display_name
 	return ''
 
+func _set_property_original_translation(property_name:String, value:String) -> void:
+	match property_name:
+		'display_name':
+			display_name = value
+
+
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
