@@ -36,7 +36,7 @@ static func autoload() -> DialogicGameHandler:
 
 #region FILE SYSTEM
 ################################################################################
-static func listdir(path: String, files_only:= true, _throw_error:= true, full_file_path:= false, include_imports := false) -> Array:
+static func listdir(path: String, files_only := true, _throw_error := true, full_file_path := false, include_imports := false) -> Array:
 	var files: Array = []
 	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
@@ -61,7 +61,7 @@ static func listdir(path: String, files_only:= true, _throw_error:= true, full_f
 	return files
 
 
-static func get_module_path(name:String, builtin:=true) -> String:
+static func get_module_path(name: String, builtin := true) -> String:
 	if builtin:
 		return "res://addons/dialogic/Modules".path_join(name)
 	else:
@@ -82,11 +82,10 @@ static func _update_autoload_subsystem_access() -> void:
 	var subsystems_sorted := []
 
 	for indexer: DialogicIndexer in get_indexers(true, true):
-
 		for subsystem: Dictionary in indexer._get_subsystems().duplicate(true):
 			subsystems_sorted.append(subsystem)
 
-	subsystems_sorted.sort_custom(func (a: Dictionary, b: Dictionary) -> bool:
+	subsystems_sorted.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return a.name < b.name
 	)
 
@@ -120,7 +119,6 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	return indexers
 
 
-
 ## Turns a [param file_path] from `some_file.png` to `Some File`.
 static func pretty_name(file_path: String) -> String:
 	var _name := file_path.get_file().trim_suffix("." + file_path.get_extension())
@@ -135,7 +133,7 @@ static func pretty_name(file_path: String) -> String:
 #region EDITOR SETTINGS & COLORS
 ################################################################################
 
-static func set_editor_setting(setting:String, value:Variant) -> void:
+static func set_editor_setting(setting: String, value: Variant) -> void:
 	var cfg := ConfigFile.new()
 	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
 		cfg.load('user://dialogic/editor_settings.cfg')
@@ -147,7 +145,7 @@ static func set_editor_setting(setting:String, value:Variant) -> void:
 	cfg.save('user://dialogic/editor_settings.cfg')
 
 
-static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
+static func get_editor_setting(setting: String, default: Variant = null) -> Variant:
 	var cfg := ConfigFile.new()
 	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
 		return default
@@ -158,7 +156,7 @@ static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
 	return cfg.get_value('DES', setting, default)
 
 
-static func get_color_palette(default:bool = false) -> Dictionary:
+static func get_color_palette(default: bool = false) -> Dictionary:
 	var defaults := {
 		'Color1': Color('#3b8bf2'), # Blue
 		'Color2': Color('#00b15f'), # Green
@@ -175,7 +173,7 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 	return get_editor_setting('color_palette', defaults)
 
 
-static func get_color(value:String) -> Color:
+static func get_color(value: String) -> Color:
 	var colors := get_color_palette()
 	return colors[value]
 
@@ -188,7 +186,7 @@ static func is_physics_timer() -> bool:
 	return ProjectSettings.get_setting('dialogic/timer/process_in_physics', false)
 
 
-static func update_timer_process_callback(timer:Timer) -> void:
+static func update_timer_process_callback(timer: Timer) -> void:
 	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE
 
 #endregion
@@ -196,14 +194,14 @@ static func update_timer_process_callback(timer:Timer) -> void:
 
 #region MULTITWEEN
 ################################################################################
-static func multitween(tweened_value:Variant, item:Node, property:String, part:String) -> void:
-	var parts: Dictionary = item.get_meta(property+'_parts', {})
+static func multitween(tweened_value: Variant, item: Node, property: String, part: String) -> void:
+	var parts: Dictionary = item.get_meta(property + '_parts', {})
 	parts[part] = tweened_value
 
-	if not item.has_meta(property+'_base_value') and not 'base' in parts:
-		item.set_meta(property+'_base_value', item.get(property))
+	if not item.has_meta(property + '_base_value') and not 'base' in parts:
+		item.set_meta(property + '_base_value', item.get(property))
 
-	var final_value: Variant = parts.get('base', item.get_meta(property+'_base_value', item.get(property)))
+	var final_value: Variant = parts.get('base', item.get_meta(property + '_base_value', item.get(property)))
 
 	for key in parts:
 		if key == 'base':
@@ -212,7 +210,7 @@ static func multitween(tweened_value:Variant, item:Node, property:String, part:S
 			final_value += parts[key]
 
 	item.set(property, final_value)
-	item.set_meta(property+'_parts', parts)
+	item.set_meta(property + '_parts', parts)
 
 #endregion
 
@@ -221,7 +219,7 @@ static func multitween(tweened_value:Variant, item:Node, property:String, part:S
 ################################################################################
 
 static func get_next_translation_id() -> String:
-	ProjectSettings.set_setting('dialogic/translation/id_counter', ProjectSettings.get_setting('dialogic/translation/id_counter', 16)+1)
+	ProjectSettings.set_setting('dialogic/translation/id_counter', ProjectSettings.get_setting('dialogic/translation/id_counter', 16) + 1)
 	return '%x' % ProjectSettings.get_setting('dialogic/translation/id_counter', 16)
 
 #endregion
@@ -238,18 +236,18 @@ static func get_default_variables() -> Dictionary:
 
 
 # helper that converts a nested variable dictionary into an array with paths
-static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> Array:
+static func list_variables(dict: Dictionary, path := "", type := VarTypes.ANY) -> Array:
 	var array := []
 	for key in dict.keys():
 		if typeof(dict[key]) == TYPE_DICTIONARY:
-			array.append_array(list_variables(dict[key], path+key+".", type))
+			array.append_array(list_variables(dict[key], path + key + ".", type))
 		else:
 			if type == VarTypes.ANY or get_variable_value_type(dict[key]) == type:
-				array.append(path+key)
+				array.append(path + key)
 	return array
 
 
-static func get_variable_value_type(value:Variant) -> VarTypes:
+static func get_variable_value_type(value: Variant) -> VarTypes:
 	match typeof(value):
 		TYPE_STRING:
 			return VarTypes.STRING
@@ -262,7 +260,7 @@ static func get_variable_value_type(value:Variant) -> VarTypes:
 	return VarTypes.ANY
 
 
-static func get_variable_type(path:String, dict:Dictionary={}) -> VarTypes:
+static func get_variable_type(path: String, dict: Dictionary = {}) -> VarTypes:
 	if dict.is_empty():
 		dict = get_default_variables()
 	return get_variable_value_type(_get_value_in_dictionary(path, dict))
@@ -270,11 +268,11 @@ static func get_variable_type(path:String, dict:Dictionary={}) -> VarTypes:
 
 ## This will set a value in a dictionary (or a sub-dictionary based on the path)
 ## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
+static func _set_value_in_dictionary(path: String, dictionary: Dictionary, value):
 	if '.' in path:
 		var from := path.split('.')[0]
 		if from in dictionary.keys():
-			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
+			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from + "."), dictionary[from], value)
 	else:
 		if path in dictionary.keys():
 			dictionary[path] = value
@@ -283,11 +281,11 @@ static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 
 ## This will get a value in a dictionary (or a sub-dictionary based on the path)
 ## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
+static func _get_value_in_dictionary(path: String, dictionary: Dictionary, default = null) -> Variant:
 	if '.' in path:
 		var from := path.split('.')[0]
 		if from in dictionary.keys():
-			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
+			return _get_value_in_dictionary(path.trim_prefix(from + "."), dictionary[from], default)
 	else:
 		if path in dictionary.keys():
 			return dictionary[path]
@@ -299,7 +297,7 @@ static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default
 #region SCENE EXPORT OVERRIDES
 ################################################################################
 
-static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
+static func apply_scene_export_overrides(node: Node, export_overrides: Dictionary, apply := true) -> void:
 	var default_info := get_scene_export_defaults(node)
 	if !node.script:
 		return
@@ -318,13 +316,13 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 			node.apply_export_overrides()
 
 
-static func get_scene_export_defaults(node:Node) -> Dictionary:
+static func get_scene_export_defaults(node: Node) -> Dictionary:
 	if !node.script:
 		return {}
 
 	if Engine.get_main_loop().has_meta('dialogic_scene_export_defaults') and \
-			node.script.resource_path in Engine.get_main_loop().get_meta('dialogic_scene_export_defaults'):
-		return Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path]
+			node.scene_file_path in Engine.get_main_loop().get_meta('dialogic_scene_export_defaults'):
+		return Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.scene_file_path]
 
 	if !Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
@@ -333,14 +331,14 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
 			defaults[i['name']] = node.get(i['name'])
-	Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path] = defaults
+	Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.scene_file_path] = defaults
 	return defaults
 
 #endregion
 
 #region MAKE CUSTOM
 
-static func make_file_custom(original_file:String, target_folder:String, new_file_name := "", new_folder_name := "") -> String:
+static func make_file_custom(original_file: String, target_folder: String, new_file_name := "", new_folder_name := "") -> String:
 	if not ResourceLoader.exists(original_file):
 		push_error("[Dialogic] Unable to make file with invalid path custom!")
 		return ""
@@ -364,10 +362,9 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 	return target_file
 
 
-static func customize_file(original_file:String, target_file:String) -> String:
+static func customize_file(original_file: String, target_file: String) -> String:
 	#print("\nCUSTOMIZE FILE")
 	#printt(original_file, "->", target_file)
-
 	DirAccess.copy_absolute(original_file, target_file)
 
 	var file := FileAccess.open(target_file, FileAccess.READ)
@@ -385,7 +382,7 @@ static func customize_file(original_file:String, target_file:String) -> String:
 			file_text = file_text.replace(result.get_string("uid"), "")
 
 		# This regex also removes the UID referencing the original resource
-		var file_regex := r'(uid="[^"]*" )?\Qpath="'+base_path+r'\E(?<file>[^"]*)"'
+		var file_regex := r'(uid="[^"]*" )?\Qpath="' + base_path + r'\E(?<file>[^"]*)"'
 		result = RegEx.create_from_string(file_regex).search(file_text)
 		while result:
 			var found_file_name := result.get_string('file')
@@ -410,7 +407,7 @@ static func customize_file(original_file:String, target_file:String) -> String:
 #region INSPECTOR FIELDS
 ################################################################################
 
-static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, property_changed:Callable) -> Control:
+static func setup_script_property_edit_node(property_info: Dictionary, value: Variant, property_changed: Callable) -> Control:
 	var input: Control = null
 	match property_info['type']:
 		TYPE_BOOL:
@@ -445,7 +442,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				else:
 					input.step = 1
 					input.max_value = INF
-					input.min_value = -INF
+					input.min_value = - INF
 
 				if value != null:
 					input.set_value(value)
@@ -521,38 +518,38 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 	return input
 
 
-static func _on_export_input_text_submitted(text:String, property_name:String, callable: Callable) -> void:
+static func _on_export_input_text_submitted(text: String, property_name: String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(text))
 
-static func _on_export_bool_submitted(value:bool, property_name:String, callable: Callable) -> void:
+static func _on_export_bool_submitted(value: bool, property_name: String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
-static func _on_export_color_submitted(color:Color, property_name:String, callable: Callable) -> void:
+static func _on_export_color_submitted(color: Color, property_name: String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(color))
 
-static func _on_export_int_enum_submitted(item:int, property_name:String, callable: Callable) -> void:
+static func _on_export_int_enum_submitted(item: int, property_name: String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(item))
 
-static func _on_export_number_submitted(property_name:String, value:float, callable: Callable) -> void:
+static func _on_export_number_submitted(property_name: String, value: float, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
-static func _on_export_file_submitted(property_name:String, value:String, callable: Callable) -> void:
+static func _on_export_file_submitted(property_name: String, value: String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
-static func _on_export_string_enum_submitted(value:int, property_name:String, list:PackedStringArray, callable: Callable):
+static func _on_export_string_enum_submitted(value: int, property_name: String, list: PackedStringArray, callable: Callable):
 	callable.call(property_name, var_to_str(list[value]))
 
-static func _on_export_vector_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+static func _on_export_vector_submitted(property_name: String, value: Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
-static func _on_export_vectori_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+static func _on_export_vectori_submitted(property_name: String, value: Variant, callable: Callable) -> void:
 	match typeof(value):
 		TYPE_VECTOR2: value = Vector2i(value)
 		TYPE_VECTOR3: value = Vector3i(value)
 		TYPE_VECTOR4: value = Vector4i(value)
 	callable.call(property_name, var_to_str(value))
 
-static func _on_export_dict_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+static func _on_export_dict_submitted(property_name: String, value: Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
 #endregion
@@ -561,7 +558,7 @@ static func _on_export_dict_submitted(property_name:String, value:Variant, calla
 #region EVENT DEFAULTS
 ################################################################################
 
-static func get_custom_event_defaults(event_name:String) -> Dictionary:
+static func get_custom_event_defaults(event_name: String) -> Dictionary:
 	if Engine.is_editor_hint():
 		return ProjectSettings.get_setting('dialogic/event_default_overrides', {}).get(event_name, {})
 	else:
@@ -575,11 +572,11 @@ static func get_custom_event_defaults(event_name:String) -> Dictionary:
 #region CONVERSION
 ################################################################################
 
-static func str_to_bool(boolstring:String) -> bool:
+static func str_to_bool(boolstring: String) -> bool:
 	return true if boolstring == "true" else false
 
 
-static func logical_convert(value:Variant) -> Variant:
+static func logical_convert(value: Variant) -> Variant:
 	if typeof(value) == TYPE_STRING:
 		if value.is_valid_int():
 			return value.to_int()
@@ -605,16 +602,16 @@ static func str_to_hash_set(source: String) -> Dictionary:
 #endregion
 
 
-static func get_character_suggestions(_search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
+static func get_character_suggestions(_search_text: String, current_value: DialogicCharacter = null, allow_none := true, allow_all := false, editor_node: Node = null) -> Dictionary:
 	var suggestions := {}
 
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	if allow_none and current_value:
-		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+		suggestions['(No one)'] = {'value': '', 'editor_icon': ["GuiRadioUnchecked", "EditorIcons"]}
 
 	if allow_all:
-		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
+		suggestions['ALL'] = {'value': '--All--', 'tooltip': 'All currently joined characters leave', 'editor_icon': ["GuiEllipsis", "EditorIcons"]}
 
 	# Get characters in the current timeline and place them at the top of suggestions.
 	if editor_node:
@@ -638,19 +635,19 @@ static func get_character_suggestions(_search_text:String, current_value:Dialogi
 	return suggestions
 
 
-static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change") -> Dictionary:
+static func get_portrait_suggestions(search_text: String, character: DialogicCharacter, allow_empty := false, empty_text := "Don't Change") -> Dictionary:
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	var suggestions := {}
 
 	if allow_empty:
-		suggestions[empty_text] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+		suggestions[empty_text] = {'value': '', 'editor_icon': ["GuiRadioUnchecked", "EditorIcons"]}
 
 	if "{" in search_text:
-		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
+		suggestions[search_text] = {'value': search_text, 'editor_icon': ["Variant", "EditorIcons"]}
 
 	if character != null:
 		for portrait in character.portraits:
-			suggestions[portrait] = {'value':portrait, 'icon':icon}
+			suggestions[portrait] = {'value': portrait, 'icon': icon}
 
 	return suggestions
 
@@ -663,32 +660,32 @@ static func get_portrait_position_suggestions(search_text := "") -> Dictionary:
 	var suggestions := {}
 
 	if not search_text.is_empty():
-		suggestions[search_text] = {'value':search_text.strip_edges(), 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+		suggestions[search_text] = {'value': search_text.strip_edges(), 'editor_icon': ["GuiScrollArrowRight", "EditorIcons"]}
 
 	for position_id in setting.split(','):
-		suggestions[position_id.strip_edges()] = {'value':position_id.strip_edges(), 'icon':icon}
+		suggestions[position_id.strip_edges()] = {'value': position_id.strip_edges(), 'icon': icon}
 		if not search_text.is_empty() and position_id.strip_edges().begins_with(search_text):
 			suggestions.erase(search_text)
 
 	return suggestions
 
 
-static func get_autoload_suggestions(filter:String="") -> Dictionary:
+static func get_autoload_suggestions(filter: String = "") -> Dictionary:
 	var suggestions := {}
 
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('autoload/'):
 			var some_autoload: String = prop.name.trim_prefix('autoload/')
-			suggestions[some_autoload] = {'value': some_autoload, 'tooltip':some_autoload, 'editor_icon': ["Node", "EditorIcons"]}
+			suggestions[some_autoload] = {'value': some_autoload, 'tooltip': some_autoload, 'editor_icon': ["Node", "EditorIcons"]}
 			if filter.begins_with(some_autoload):
-				suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+				suggestions[filter] = {'value': filter, 'editor_icon': ["GuiScrollArrowRight", "EditorIcons"]}
 	return suggestions
 
 
-static func get_autoload_script_resource(autoload_name:String) -> Script:
+static func get_autoload_script_resource(autoload_name: String) -> Script:
 	var script: Script
-	if autoload_name and ProjectSettings.has_setting('autoload/'+autoload_name):
-		var loaded_autoload := load(ProjectSettings.get_setting('autoload/'+autoload_name).trim_prefix('*'))
+	if autoload_name and ProjectSettings.has_setting('autoload/' + autoload_name):
+		var loaded_autoload := load(ProjectSettings.get_setting('autoload/' + autoload_name).trim_prefix('*'))
 
 		if loaded_autoload is PackedScene:
 			var packed_scene: PackedScene = loaded_autoload
@@ -699,7 +696,7 @@ static func get_autoload_script_resource(autoload_name:String) -> Script:
 	return script
 
 
-static func get_autoload_method_suggestions(filter:String, autoload_name:String) -> Dictionary:
+static func get_autoload_method_suggestions(filter: String, autoload_name: String) -> Dictionary:
 	var suggestions := {}
 
 	var script := get_autoload_script_resource(autoload_name)
@@ -707,37 +704,37 @@ static func get_autoload_method_suggestions(filter:String, autoload_name:String)
 		for script_method in script.get_script_method_list():
 			if script_method.name.begins_with('@') or script_method.name.begins_with('_'):
 				continue
-			suggestions[script_method.name] = {'value': script_method.name, 'tooltip':script_method.name, 'editor_icon': ["Callable", "EditorIcons"]}
+			suggestions[script_method.name] = {'value': script_method.name, 'tooltip': script_method.name, 'editor_icon': ["Callable", "EditorIcons"]}
 
 	if not filter.is_empty():
-		suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+		suggestions[filter] = {'value': filter, 'editor_icon': ["GuiScrollArrowRight", "EditorIcons"]}
 
 	return suggestions
 
 
-static func get_autoload_property_suggestions(_filter:String, autoload_name:String) -> Dictionary:
+static func get_autoload_property_suggestions(_filter: String, autoload_name: String) -> Dictionary:
 	var suggestions := {}
 	var script := get_autoload_script_resource(autoload_name)
 	if script:
 		for property in script.get_script_property_list():
 			if property.name.ends_with('.gd') or property.name.begins_with('_'):
 				continue
-			suggestions[property.name] = {'value': property.name, 'tooltip':property.name, 'editor_icon': ["MemberProperty", "EditorIcons"]}
+			suggestions[property.name] = {'value': property.name, 'tooltip': property.name, 'editor_icon': ["MemberProperty", "EditorIcons"]}
 
 	return suggestions
 
 
-static func get_audio_bus_suggestions(_filter:= "") -> Dictionary:
+static func get_audio_bus_suggestions(_filter := "") -> Dictionary:
 	var bus_name_list := {}
 	for i in range(AudioServer.bus_count):
 		if i == 0:
-			bus_name_list[AudioServer.get_bus_name(i)] = {'value':''}
+			bus_name_list[AudioServer.get_bus_name(i)] = {'value': ''}
 		else:
-			bus_name_list[AudioServer.get_bus_name(i)] = {'value':AudioServer.get_bus_name(i)}
+			bus_name_list[AudioServer.get_bus_name(i)] = {'value': AudioServer.get_bus_name(i)}
 	return bus_name_list
 
 
-static func get_audio_channel_suggestions(_search_text:String) -> Dictionary:
+static func get_audio_channel_suggestions(_search_text: String) -> Dictionary:
 	var suggestions := {}
 	var channel_defaults := DialogicUtil.get_audio_channel_defaults()
 	var cached_names := DialogicResourceUtil.get_channel_list()
