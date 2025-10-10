@@ -305,7 +305,7 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 		return
 	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
-		if i['usage'] & PROPERTY_USAGE_EDITOR:
+		if i['usage'] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
 			if i['name'] in export_overrides:
 				if str_to_var(export_overrides[i['name']]) == null and typeof(node.get(i['name'])) == TYPE_STRING:
 					node.set(i['name'], export_overrides[i['name']])
@@ -331,7 +331,7 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 	var defaults := {}
 	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
-		if i['usage'] & PROPERTY_USAGE_EDITOR:
+		if i['usage'] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
 			defaults[i['name']] = node.get(i['name'])
 	Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path] = defaults
 	return defaults
@@ -425,7 +425,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_info.name, property_changed))
 			input.custom_minimum_size.x = get_editor_scale() * 50
 		TYPE_INT:
-			if property_info['hint'] & PROPERTY_HINT_ENUM:
+			if property_info['hint'] & PROPERTY_HINT_ENUM == PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
 				for x in property_info['hint_string'].split(','):
 					input.add_item(x.split(':')[0])
@@ -477,7 +477,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_vectori_submitted.bind(property_changed))
 		TYPE_STRING:
-			if property_info['hint'] & PROPERTY_HINT_FILE or property_info['hint'] & PROPERTY_HINT_DIR:
+			if property_info['hint'] & PROPERTY_HINT_FILE== PROPERTY_HINT_FILE  or property_info['hint'] & PROPERTY_HINT_DIR == PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
 				input.show_editing_button = true
 				input.file_filter = property_info['hint_string']
@@ -490,7 +490,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.set_value(value)
 				input.value_changed.connect(DialogicUtil._on_export_file_submitted.bind(property_changed))
-			elif property_info['hint'] & PROPERTY_HINT_ENUM:
+			elif property_info['hint'] & PROPERTY_HINT_ENUM == PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
 				var options: PackedStringArray = []
 				for x in property_info['hint_string'].split(','):
