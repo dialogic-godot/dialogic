@@ -343,9 +343,52 @@ func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging() and drag_allowed:
+			if not %TimelineArea.dragging and not get_viewport().gui_is_dragging() and drag_allowed:
 				sort_selection()
 				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, selected_items)
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	if %TimelineArea.dragging:
+		return %TimelineArea.drag_type == %TimelineArea.DragTypes.GENERATED_EVENT
+	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
+		match data.files[0].get_extension().to_lower():
+			"dch":
+				var chr := load(data.files[0])
+				var resource : DialogicEvent
+				if (chr as DialogicCharacter).portraits.is_empty():
+					resource = DialogicTextEvent.new()
+				else:
+					resource = DialogicCharacterEvent.new()
+				resource._load_custom_defaults()
+				resource.character = chr
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"dtl":
+				var resource := DialogicJumpEvent.new()
+				resource._load_custom_defaults()
+				resource.timeline = load(data.files[0])
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"mp3", "wav", "ogg":
+				var resource := DialogicAudioEvent.new()
+				resource._load_custom_defaults()
+				resource.file_path = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"png", "jpg", "jpeg":
+				var resource := DialogicBackgroundEvent.new()
+				resource._load_custom_defaults()
+				resource.argument = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"tscn":
+				var resource := DialogicBackgroundEvent.new()
+				resource._load_custom_defaults()
+				resource.scene = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+	return false
 
 
 ## Activated by TimelineArea drag_completed
@@ -353,8 +396,11 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 	if type == %TimelineArea.DragTypes.NEW_EVENT:
 		var resource: DialogicEvent = data.duplicate()
 		resource._load_custom_defaults()
-
 		add_event_undoable(resource, index)
+
+	elif type == %TimelineArea.DragTypes.GENERATED_EVENT:
+		add_event_undoable(data, index)
+		get_viewport().gui_cancel_drag()
 
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		if not (len(data) == 1 and data[0].get_index()+1 == index):

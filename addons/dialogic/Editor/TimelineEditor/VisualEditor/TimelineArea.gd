@@ -5,7 +5,7 @@ extends ScrollContainer
 # Manages the drawing of the event lines and event dragging.
 
 
-enum DragTypes {NOTHING, NEW_EVENT, EXISTING_EVENTS}
+enum DragTypes {NOTHING, NEW_EVENT, EXISTING_EVENTS, GENERATED_EVENT}
 
 var drag_type: DragTypes = DragTypes.NOTHING
 var drag_data: Variant
@@ -48,7 +48,7 @@ func _input(event:InputEvent) -> void:
 			finish_dragging()
 
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 	if !dragging:
 		return
 
@@ -59,9 +59,17 @@ func _process(delta:float) -> void:
 			if get_global_mouse_position().y > child.global_position.y+(child.size.y/2.0):
 				drag_to_position = child.get_index()+1
 				queue_redraw()
+				return
 			else:
 				drag_to_position = child.get_index()
 				queue_redraw()
+				return
+	if get_global_rect().has_point(get_global_mouse_position()):
+		var last_child := %Timeline.get_child(-1)
+		if get_global_mouse_position().y > last_child.global_position.y + last_child.size.y:
+			drag_to_position = %Timeline.get_child_count()
+			queue_redraw()
+			return
 
 
 func finish_dragging() -> void:
@@ -194,7 +202,7 @@ func _draw() -> void:
 #region SPACE BELOW
 ################################################################################
 
-func add_extra_scroll_area_to_timeline(fake_arg:Variant=null) -> void:
+func add_extra_scroll_area_to_timeline(_fake_arg:Variant=null) -> void:
 	if %Timeline.get_children().size() > 4:
 		%Timeline.custom_minimum_size.y = 0
 		%Timeline.size.y = 0
