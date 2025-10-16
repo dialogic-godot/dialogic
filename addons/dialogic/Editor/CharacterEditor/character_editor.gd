@@ -143,9 +143,8 @@ func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
 
-	DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
-	# NOTE: This check is required because up to 4.2 this signal is not exposed.
-	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
+	if Engine.is_editor_hint():
+		DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
 		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
 	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
