@@ -36,6 +36,7 @@ func _register() -> void:
 	add_character_button.shortcut.events.append(InputEventKey.new())
 	add_character_button.shortcut.events[0].keycode = KEY_2
 	add_character_button.shortcut.events[0].ctrl_pressed = true
+	add_character_button.shortcut.events[0].command_or_control_autoremap = true
 
 	## By default show the no character screen
 	$NoCharacterScreen.show()

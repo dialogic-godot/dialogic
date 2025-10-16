@@ -27,6 +27,8 @@ func _register() -> void:
 	add_timeline_button.shortcut.events.append(InputEventKey.new())
 	add_timeline_button.shortcut.events[0].keycode = KEY_1
 	add_timeline_button.shortcut.events[0].ctrl_pressed = true
+	add_timeline_button.shortcut.events[0].command_or_control_autoremap = true
+
 	# play timeline button
 	play_timeline_button = editors_manager.add_custom_button(
 		"Play Timeline",
@@ -35,7 +37,7 @@ func _register() -> void:
 	play_timeline_button.pressed.connect(play_timeline)
 	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
 	if OS.get_name() == "macOS":
-		play_timeline_button.tooltip_text = "Play the current timeline (CTRL+B)"
+		play_timeline_button.tooltip_text = "Play the current timeline (Command+B)"
 
 	%VisualEditor.load_event_buttons()
 
