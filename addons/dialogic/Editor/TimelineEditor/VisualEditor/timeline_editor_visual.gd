@@ -1060,10 +1060,10 @@ func _input(event:InputEvent) -> void:
 			_add_event_button_pressed(DialogicTextEvent.new(), true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Shift+T", "Ctrl+Alt+T", "Ctrl+Option+T", "Shift+Command+T", "Option+Command+T", "Option+Command+A":  # Add text event with current or previous character
+		"Ctrl+Shift+T", "Ctrl+Alt+T", "Shift+Command+T", "Option+Command+T":  # Add text event with current or previous character
 			get_viewport().set_input_as_handled()
 			var ev := DialogicTextEvent.new()
-			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T" or event.as_text() == "Ctrl+Option+T")
+			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T" or event.as_text() == "Option+Command+T")
 			_add_event_button_pressed(ev, true)
 
 		"Ctrl+E", "Command+E":  # Add character join event
