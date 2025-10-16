@@ -30,6 +30,7 @@ enum TranslatedProperties {
 
 var _translation_id := ""
 
+var current_mood := ""
 
 func _get_extension() -> String:
 	return "dch"
