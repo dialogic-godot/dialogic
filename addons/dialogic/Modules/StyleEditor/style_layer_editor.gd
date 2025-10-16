@@ -444,21 +444,21 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 	var current_subgroup := {}
 
 	for i in properties:
-		if i['usage'] & PROPERTY_USAGE_CATEGORY:
+		if i['usage'] & PROPERTY_USAGE_CATEGORY == PROPERTY_USAGE_CATEGORY:
 			continue
 
-		if (i['usage'] & PROPERTY_USAGE_GROUP):
+		if i['usage'] & PROPERTY_USAGE_GROUP == PROPERTY_USAGE_GROUP:
 			current_group = i
 			current_group['added'] = false
 			current_group['id'] = &'GROUP'
 			current_subgroup = {}
 
-		elif i['usage'] & PROPERTY_USAGE_SUBGROUP:
+		elif i['usage'] & PROPERTY_USAGE_SUBGROUP == PROPERTY_USAGE_SUBGROUP:
 			current_subgroup = i
 			current_subgroup['added'] = false
 			current_subgroup['id'] = &'SUBGROUP'
 
-		elif i['usage'] & PROPERTY_USAGE_EDITOR:
+		elif i['usage'] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
 			if current_group.get('name', '') == 'Private':
 				continue
 
