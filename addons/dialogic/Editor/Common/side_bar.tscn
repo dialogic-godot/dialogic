@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwe3r2tbh2og1"]
+[gd_scene load_steps=8 format=3 uid="uid://cwe3r2tbh2og1"]
 
 [ext_resource type="Script" uid="uid://myogqmakusx3" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
 [ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="2_54pks"]
 [ext_resource type="Texture2D" uid="uid://dx3o2ild56i76" path="res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" id="2_ilyps"]
+[ext_resource type="Script" uid="uid://4injjcial4s4" path="res://addons/dialogic/Editor/Common/sidebar_resource_tree.gd" id="4_4dik3"]
 
 [sub_resource type="Theme" id="Theme_pn0f4"]
 VBoxContainer/constants/separation = 4
@@ -104,6 +105,7 @@ layout_mode = 2
 [node name="OptionsPopup" type="Popup" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options"]
 unique_name_in_owner = true
 transparent_bg = true
+oversampling_override = 1.0
 position = Vector2i(890, 65)
 size = Vector2i(165, 101)
 visible = true
@@ -133,6 +135,7 @@ clip_text = true
 selected = 0
 item_count = 4
 popup/item_0/text = "No Grouping"
+popup/item_0/id = 0
 popup/item_1/text = "Type Grouping"
 popup/item_1/id = 1
 popup/item_2/text = "Folder Grouping"
@@ -157,6 +160,7 @@ size_flags_vertical = 3
 allow_rmb_select = true
 hide_root = true
 scroll_horizontal_enabled = false
+script = ExtResource("4_4dik3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 visible = false
@@ -173,6 +177,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 item_count = 1
 popup/item_0/text = "Alphabetical (All)"
+popup/item_0/id = 0
 
 [node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
 unique_name_in_owner = true
