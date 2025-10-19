@@ -341,18 +341,15 @@ func _on_variable_editor_pressed() -> void:
 
 
 func update_editor_warning() -> void:
-	if _value_type == VarValueType.STRING and operation != Operations.SET:
+	if _value_type == VarValueType.STRING and operation != Operations.SET and operation != Operations.ADD:
 		ui_update_warning.emit('You cannot do this operation with a string!')
 	elif operation != Operations.SET:
 		var type := DialogicUtil.get_variable_type(name)
 		if not type in [DialogicUtil.VarTypes.INT, DialogicUtil.VarTypes.FLOAT, DialogicUtil.VarTypes.ANY]:
-			ui_update_warning.emit('The selected variable is not a number!')
-		else:
-			ui_update_warning.emit('')
-	else:
-		ui_update_warning.emit('')
-
-
+			if not (type == DialogicUtil.VarTypes.STRING and operation == Operations.ADD and _value_type == VarValueType.STRING):
+				ui_update_warning.emit('The selected variable is not a number!')
+				return
+	ui_update_warning.emit('')
 
 ####################### CODE COMPLETION ########################################
 ################################################################################
