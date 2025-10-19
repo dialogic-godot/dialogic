@@ -89,14 +89,14 @@ func _execute() -> void:
 				VarValueType.NUMBER, VarValueType.BOOL, VarValueType.EXPRESSION, VarValueType.RANDOM_NUMBER:
 					interpreted_value = dialogic.VAR.get_variable(str(value))
 
-			if operation != Operations.SET and (not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float()):
+			if operation == Operations.SET:
+				result = interpreted_value
+			elif (typeof(original_value) ==  Variant.Type.TYPE_STRING and _value_type == VarValueType.STRING and interpreted_value and operation == Operations.ADD):
+				result = original_value + interpreted_value
+			elif not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float():
 				printerr("[Dialogic] Set Variable event failed because one value wasn't a float! [", original_value, ", ",interpreted_value,"]")
 				finish()
 				return
-
-			if operation == Operations.SET:
-				result = interpreted_value
-
 			else:
 				original_value = float(original_value)
 				interpreted_value = float(interpreted_value)
