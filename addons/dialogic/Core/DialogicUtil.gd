@@ -4,6 +4,9 @@ class_name DialogicUtil
 ## Script that container helper methods for both editor and game execution.
 ## Used whenever the same thing is needed in different parts of the plugin.
 
+
+static var editor_settings_cache := {}
+
 #region EDITOR
 
 ## This method should be used instead of EditorInterface.get_editor_scale(), because if you use that
@@ -148,6 +151,9 @@ static func set_editor_setting(setting:String, value:Variant) -> void:
 
 
 static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
+	if setting in editor_settings_cache:
+		return editor_settings_cache[setting]
+
 	var cfg := ConfigFile.new()
 	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
 		return default
@@ -155,7 +161,13 @@ static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
 	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
 		return default
 
+	if cfg.has_section_key('DES', setting):
+		editor_settings_cache[setting] = cfg.get_value('DES', setting, default)
 	return cfg.get_value('DES', setting, default)
+
+
+static func clear_editor_settings_cache() -> void:
+	editor_settings_cache.clear()
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
@@ -633,7 +645,11 @@ static func get_character_suggestions(_search_text:String, current_value:Dialogi
 
 	var character_directory := DialogicResourceUtil.get_character_directory()
 	for resource in character_directory.keys():
-		suggestions[resource] = {'value': resource, 'tooltip': character_directory[resource], 'icon': icon}
+		suggestions[resource] = {
+			'value': resource,
+			'tooltip': character_directory[resource],
+			'icon': icon,
+			}
 
 	return suggestions
 

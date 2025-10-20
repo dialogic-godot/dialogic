@@ -419,7 +419,7 @@ func build_event_editor() -> void:
 
 
 func should_show_portrait_selector() -> bool:
-	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+	return (character and not character.portraits.is_empty() and not character.portraits.size() == 1) or (character_identifier and not character)
 
 
 func do_any_characters_exist() -> bool:
@@ -427,7 +427,13 @@ func do_any_characters_exist() -> bool:
 
 
 func get_character_suggestions(search_text:String) -> Dictionary:
-	var suggestions := DialogicUtil.get_character_suggestions(search_text, character, true, false, editor_node)
+	var suggestions := {}
+	if not search_text and character_identifier and not character:
+		suggestions[character_identifier] = {
+			"value":character_identifier,
+			"tooltip": "A temporary character, created on the spot.",
+			"editor_icon":["GuiEllipsis", "EditorIcons"]}
+	suggestions.merge(DialogicUtil.get_character_suggestions(search_text, character, true, false, editor_node))
 	if search_text and not search_text in suggestions:
 		suggestions[search_text] = {
 			"value":search_text,
@@ -435,7 +441,10 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 			"editor_icon":["GuiEllipsis", "EditorIcons"]}
 	return suggestions
 
+
 func get_portrait_suggestions(search_text:String) -> Dictionary:
+	if not character and search_text:
+		return {search_text: {"value":search_text, "tooltip":"Portrait will be interpreted as color on temporary character.", "editor_icon":["PickerShapeCircle", "EditorIcons"]}}
 	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
 
 #endregion

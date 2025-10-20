@@ -13,7 +13,8 @@ func _ready() -> void:
 	%LoadingIcon.texture = editor_view.get_theme_icon("KeyTrackScale", "EditorIcons")
 	%InstallWarning.modulate = editor_view.get_theme_color("warning_color", "Editor")
 	%CloseButton.icon = editor_view.get_theme_icon("Close", "EditorIcons")
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
+	if DialogicUtil.get_dialogic_plugin():
+		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().resources_reimported.connect(_on_resources_reimported)
 
 
 func open() -> void:
