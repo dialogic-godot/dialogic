@@ -385,12 +385,16 @@ func _get_translatable_properties() -> Array:
 	return ['text']
 
 
-func _get_property_original_translation(property:String) -> String:
-	match property:
+func _get_property_original_translation(property_name:String) -> String:
+	match property_name:
 		'text':
 			return text
 	return ''
 
+func _set_property_original_translation(property_name:String, value:String) -> void:
+	match property_name:
+		'text':
+			text = value
 
 #endregion
 
