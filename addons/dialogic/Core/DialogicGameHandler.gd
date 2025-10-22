@@ -52,11 +52,8 @@ signal state_changed(new_state:States)
 var paused := false:
 	set(value):
 		paused = value
-
 		if paused:
-
 			for subsystem in get_children():
-
 				if subsystem is DialogicSubsystem:
 					(subsystem as DialogicSubsystem).pause()
 
@@ -64,7 +61,6 @@ var paused := false:
 
 		else:
 			for subsystem in get_children():
-
 				if subsystem is DialogicSubsystem:
 					(subsystem as DialogicSubsystem).resume()
 
@@ -369,49 +365,62 @@ func _cleanup_previous_event():
 #region SAVING & LOADING
 ################################################################################
 
+
 ## Returns a dictionary containing all necessary information to later recreate the same state with load_full_state.
 ## The [subsystem Save] subsystem might be more useful for you.
 ## However, this can be used to integrate the info into your own save system.
-func get_full_state() -> Dictionary:
+func get_full_state() -> DialogicSaveState:
+	var state := DialogicSaveState.new()
 	if current_timeline:
-		current_state_info['current_event_idx'] = current_event_idx
-		current_state_info['current_timeline'] = current_timeline.resource_path
+		state.event_index = current_event_idx
+		state.timeline = current_timeline.resource_path
 	else:
-		current_state_info['current_event_idx'] = -1
-		current_state_info['current_timeline'] = null
+		state.event_index = -1
+		state.timeline = "null"
 
 	for subsystem in get_children():
-		(subsystem as DialogicSubsystem).save_game_state()
+		#(subsystem as DialogicSubsystem).save_game_state()
+		var sub_state := (subsystem as DialogicSubsystem).get_state()
+		if sub_state:
+			state.subsystems[subsystem.name] = sub_state
 
-	return current_state_info.duplicate(true)
+	return state
 
 
 ## This method tries to load the state from the given [param state_info].
 ## Will automatically start a timeline and add a layout if a timeline was running when
 ## the dictionary was retrieved with [method get_full_state].
-func load_full_state(state_info:Dictionary) -> void:
+func load_full_state(state:DialogicSaveState) -> void:
 	clear()
-	current_state_info = state_info
-	## The Style subsystem needs to run first for others to load correctly.
+
+	for subsystem in get_children():
+		if subsystem.name in state.subsystems:
+			subsystem.unpack_state(state.subsystems[subsystem.name])
+
+
+
+	#current_state_info = state_info
+	### The Style subsystem needs to run first for others to load correctly.
 	var scene: Node = null
 	if has_subsystem('Styles'):
-		get_subsystem('Styles').load_game_state()
+		get_subsystem('Styles').load_state()
 		scene = self.Styles.get_layout_node()
+
 
 	var load_subsystems := func() -> void:
 		for subsystem in get_children():
 			if subsystem.name == 'Styles':
 				continue
-			(subsystem as DialogicSubsystem).load_game_state()
+			(subsystem as DialogicSubsystem).load_state()
 
 	if null != scene and not scene.is_node_ready():
 		scene.ready.connect(load_subsystems)
 	else:
 		await get_tree().process_frame
 		load_subsystems.call()
-
-	if current_state_info.get('current_timeline', null):
-		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
+#
+	if state.timeline:
+		start_timeline(state.timeline, state.event_index)
 	else:
 		end_timeline.call_deferred(true)
 #endregion

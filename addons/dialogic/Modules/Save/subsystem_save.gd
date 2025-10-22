@@ -111,6 +111,11 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 
 	set_latest_slot(slot_name)
 
+	if true:
+		var save_path := SAVE_SLOTS_DIR.path_join(slot_name).path_join('state.tres')
+		ResourceSaver.save(dialogic.get_full_state(), save_path)
+		return OK
+
 	var save_error := save_file(slot_name, 'state.txt', dialogic.get_full_state())
 
 	if save_error:
@@ -145,7 +150,15 @@ func load(slot_name := "") -> Error:
 	if set_latest_error:
 		push_error("[Dialogic Error]: Failed to store latest slot to global info. Error %d '%s'" % [set_latest_error, error_string(set_latest_error)])
 
-	var state: Dictionary = load_file(slot_name, 'state.txt', {})
+	if true:
+		var save_path := SAVE_SLOTS_DIR.path_join(slot_name).path_join('state.tres')
+		var state: DialogicSaveState = ResourceLoader.load(save_path)
+		dialogic.load_full_state(state)
+
+		return OK
+
+
+	var state: DialogicSaveState = load_file(slot_name, 'state.txt', {})
 	dialogic.load_full_state(state)
 
 	if state.is_empty():
@@ -173,16 +186,18 @@ func save_file(slot_name: String, file_name: String, data: Variant) -> Error:
 	if !has_slot(slot_name):
 		add_empty_slot(slot_name)
 
+
+	var save_path := SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name)
 	var encryption_password := get_encryption_password()
 	var file: FileAccess
 
 	if encryption_password.is_empty():
-		file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
+		file = FileAccess.open(save_path, FileAccess.WRITE)
 	else:
-		file = FileAccess.open_encrypted_with_pass(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE, encryption_password)
+		file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, encryption_password)
 
 	if file:
-		file.store_var(data)
+		file.store_var(data, true)
 		return OK
 	else:
 		var error := FileAccess.get_open_error()
@@ -208,7 +223,7 @@ func load_file(slot_name: String, file_name: String, default: Variant) -> Varian
 			file = FileAccess.open_encrypted_with_pass(path, FileAccess.READ, encryption_password)
 
 		if file:
-			return file.get_var()
+			return file.get_var(true)
 		else:
 			push_error(FileAccess.get_open_error())
 	return default
