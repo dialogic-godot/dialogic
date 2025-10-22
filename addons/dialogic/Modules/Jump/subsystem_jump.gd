@@ -3,6 +3,7 @@ extends DialogicSubsystem
 ## Subsystem that holds methods for jumping to specific labels, or return to the previous jump.
 
 
+#region SIGNALS
 @warning_ignore("unused_signal") # this is emitted from the jump event
 ## Emitted when a jump event switches from one timeline to another. Gives a dictionary witht the keys:
 ## [br]
@@ -38,18 +39,23 @@ signal returned_from_jump(info:Dictionary)
 ## `display_name_orig` | [type String]           | The untranslated display name. [br]
 ## `timeline`          | [type String]           | The identifier of the timeline we are in. [br]
 signal passed_label(info:Dictionary)
+#endregion
+
+@export_group("State")
+@export var jump_stack := []
+@export var last_label := ""
+
 
 #region STATE
 ####################################################################################################
 
 func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	dialogic.current_state_info['jump_stack'] = []
-	dialogic.current_state_info.erase("last_label")
+	jump_stack = []
+	last_label = ""
 
 
-func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
-	if not 'jump_stack' in dialogic.current_state_info:
-		dialogic.current_state_info['jump_stack'] = []
+func _load_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
+	pass
 
 #endregion
 
