@@ -17,6 +17,10 @@ extends DialogicSubsystem
 ## `same_scene`| [type bool]   | If the new background uses the same Godot scene. [br]
 signal background_changed(info: Dictionary)
 
+@export_group("State")
+@export var scene := ""
+@export var argument := ""
+
 ## The default background scene Dialogic will use.
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
 ## The default transition Dialogic will use.
@@ -31,8 +35,8 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	update_background()
 
 ## Loads the background state from the current state info.
-func load_game_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
-	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''), 0.0, default_transition, true)
+func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
+	update_background(scene, argument, 0.0, default_transition, true)
 
 #endregion
 
@@ -49,14 +53,14 @@ func load_game_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene := "", argument := "", fade_time := 0.0, transition_path:=default_transition, force := false) -> void:
+func update_background(new_scene := "", new_argument := "", fade_time := 0.0, transition_path:=default_transition, force := false) -> void:
 	var background_holder: DialogicNode_BackgroundHolder
 	if dialogic.has_subsystem('Styles'):
 		background_holder = dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 
-	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
+	var info := {'scene':new_scene, 'argument':new_scene, 'fade_time':fade_time, 'same_scene':false}
 	if background_holder == null:
 		background_changed.emit(info)
 		return
@@ -65,23 +69,23 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 	var bg_set := false
 
 	# First try just updating the existing scene.
-	if scene == dialogic.current_state_info.get('background_scene', ''):
+	if new_scene == scene:
 
-		if not force and argument == dialogic.current_state_info.get('background_argument', ''):
+		if not force and new_argument == argument:
 			return
 
 		for old_bg in background_holder.get_children():
-			if !old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
+			if not old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
 				continue
 
 			var prev_bg_node: DialogicBackground = old_bg.get_meta('node')
-			if prev_bg_node._should_do_background_update(argument):
-				prev_bg_node._update_background(argument, fade_time)
+			if prev_bg_node._should_do_background_update(new_argument):
+				prev_bg_node._update_background(new_argument, fade_time)
 				bg_set = true
 				info['same_scene'] = true
 
-	dialogic.current_state_info['background_scene'] = scene
-	dialogic.current_state_info['background_argument'] = argument
+	scene = new_scene
+	argument = new_argument
 
 	if bg_set:
 		background_changed.emit(info)
@@ -189,6 +193,6 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 ## Whether a background is set.
 func has_background() -> bool:
-	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
+	return not scene.is_empty() or argument.is_empty()
 
 #endregion
