@@ -49,7 +49,17 @@ signal meta_hover_ended(meta:Variant)
 signal meta_clicked(meta:Variant)
 
 #endregion
+#
+#class State extends SubsystemState:
+	#pass
 
+@export_group("State")
+@export var dialog_text := ""
+@export var dialog_text_parsed := ""
+@export var speaker_identifier := ""
+@export var textbox_visible := false
+@export var reveal_skippable := {'enabled':false, 'temp_enabled':false}
+@export var text_sub_index := -1
 
 # used to color names without searching for all characters each time
 var character_colors := {}
@@ -81,10 +91,14 @@ var parse_stack: Array[Dictionary] = []
 ####################################################################################################
 
 func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+	dialog_text = ""
+	dialog_text_parsed = ""
+	speaker_identifier = ""
+
+	#dialogic.current_state_info["speaker"] = ""
+	#dialogic.current_state_info["text"] = ""
 	update_dialog_text("", true)
 	update_name_label(null)
-	dialogic.current_state_info["speaker"] = ""
-	dialogic.current_state_info["text"] = ""
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
 
@@ -94,13 +108,13 @@ func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) ->
 			text_node.textbox_root.hide()
 
 
-func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
-	update_textbox(dialogic.current_state_info.get('text', ''), true)
-	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
-	var character: DialogicCharacter = get_current_speaker()
-
-	if character:
-		update_name_label(character)
+#func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
+	#update_textbox(dialogic.current_state_info.get('text', ''), true)
+	#update_dialog_text(dialogic.current_state_info.get('text', ''), true)
+	#var character: DialogicCharacter = get_current_speaker()
+#
+	#if character:
+		#update_name_label(character)
 
 
 func post_install() -> void:
@@ -109,18 +123,28 @@ func post_install() -> void:
 	collect_text_effects()
 	collect_text_modifiers()
 
+
+func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
+	update_textbox(dialog_text, true)
+	update_dialog_text(dialog_text, true)
+
+	var character: DialogicCharacter = get_current_speaker()
+	if character:
+		update_name_label(character)
+
+
 #endregion
 
 
 #region MAIN METHODS
 ####################################################################################################
 
-## Applies modifiers, effects and coloring to the text. 
+## Applies modifiers, effects and coloring to the text.
 ## Utilizes the parse stack created and sorted in [method load_parse_stack()].
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 	if parse_stack.is_empty():
 		load_parse_stack()
-	
+
 	for i in parse_stack:
 		if i.type != ParserModes.ALL and type != -1 and i.type != type:
 			continue
@@ -133,7 +157,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 ## This includes: variables, text modifiers, text effects, autocolor names and the glossary.
 func load_parse_stack() -> void:
 	parse_stack.clear()
-	
+
 	if dialogic.has_subsystem('VAR'):
 		parse_stack.append(
 			{
@@ -162,7 +186,7 @@ func load_parse_stack() -> void:
 			"type": ParserModes.TEXT_ONLY,
 			"order": 95,
 		})
-	
+
 	parse_stack.sort_custom(func(a,b):return a["order"] < b["order"])
 
 
@@ -175,7 +199,7 @@ func update_textbox(text: String, instant := false) -> void:
 	else:
 		await show_textbox(instant)
 
-		if !dialogic.current_state_info['text'].is_empty():
+		if not dialog_text.is_empty():
 			animation_textbox_new_text.emit()
 
 			if dialogic.Animations.is_animating():
@@ -188,12 +212,13 @@ func update_textbox(text: String, instant := false) -> void:
 func update_dialog_text(text: String, instant := false, additional := false) -> String:
 	update_text_speed()
 
-	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
+	if not instant:
+		dialogic.current_state = dialogic.States.REVEALING_TEXT
 
 	if additional:
-		dialogic.current_state_info['text'] += text
+		dialog_text += text
 	else:
-		dialogic.current_state_info['text'] = text
+		dialog_text = text
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		connect_meta_signals(text_node)
@@ -204,19 +229,18 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 				text_node.text = text
 
 			else:
-				var current_character := get_current_speaker()
-
-				if current_character:
-					var character_prefix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
-					var character_suffix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
+				var speaker := get_current_speaker()
+				if speaker:
+					var character_prefix: String = speaker.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
+					var character_suffix: String = speaker.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
 					text = character_prefix + text + character_suffix
 
 				text_node.reveal_text(text, additional)
 
-				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
+				if not text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
 
-			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
+			dialog_text_parsed = (text_node as RichTextLabel).get_parsed_text()
 
 	# Reset speed multiplier
 	update_text_speed(-1, false, 1)
@@ -231,25 +255,25 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 
 func _on_dialog_text_finished() -> void:
-	text_finished.emit({"text":dialogic.current_state_info["text"], "character":dialogic.current_state_info["speaker"]})
+	text_finished.emit({"text":dialog_text, "character":speaker_identifier})
 
 
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter):
 	var character_id := character.get_identifier() if character else ""
-	var current_character_id: String = dialogic.current_state_info.get("speaker", "")
+	#var current_character_id: String = dialogic.current_state_info.get("speaker", "")
 
-	if character_id != current_character_id:
+	if character_id != speaker_identifier:
 		speaker_updated.emit(character)
-		dialogic.current_state_info["speaker"] = character_id
+		speaker_identifier = character_id
 
 	var name_label_text := get_character_name_parsed(character)
 
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = name_label_text
 		if character:
-			if !'use_character_color' in name_label or name_label.use_character_color:
+			if not 'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
 		else:
 			name_label.self_modulate = Color(1,1,1,1)
@@ -290,7 +314,7 @@ func show_textbox(instant:=false) -> void:
 
 ## Instant skips the signal and thus possible animations
 func hide_textbox(instant:=false) -> void:
-	dialogic.current_state_info['text'] = ''
+	dialog_text = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
@@ -373,17 +397,17 @@ func update_text_speed(letter_speed: float = -1,
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
-	if !dialogic.current_state_info.has('text_reveal_skippable'):
-		dialogic.current_state_info['text_reveal_skippable'] = {'enabled':false, 'temp_enabled':false}
+	#if not dialogic.current_state_info.has('text_reveal_skippable'):
+		#dialogic.current_state_info['text_reveal_skippable'] = {'enabled':false, 'temp_enabled':false}
 
 	if temp:
-		dialogic.current_state_info['text_reveal_skippable']['temp_enabled'] = skippable
+		reveal_skippable.temp_enabled = skippable
 	else:
-		dialogic.current_state_info['text_reveal_skippable']['enabled'] = skippable
+		reveal_skippable.enabled = skippable
 
 
 func is_text_reveal_skippable() -> bool:
-	return dialogic.current_state_info['text_reveal_skippable']['enabled'] and dialogic.current_state_info['text_reveal_skippable'].get('temp_enabled', true)
+	return reveal_skippable.enabled and reveal_skippable.temp_enabled
 
 
 func skip_text_reveal() -> void:
@@ -498,12 +522,7 @@ func get_character_name_parsed(character:DialogicCharacter) -> String:
 ## Returns the [class DialogicCharacter] of the current speaker.
 ## If there is no current speaker or the speaker is not found, returns null.
 func get_current_speaker() -> DialogicCharacter:
-	var speaker_id: String = dialogic.current_state_info.get("speaker", "")
-
-	if speaker_id.is_empty():
-		return null
-
-	return DialogicResourceUtil.get_character_resource(speaker_id)
+	return DialogicResourceUtil.get_character_resource(speaker_identifier)
 
 
 func _update_user_speed(_user_speed:float) -> void:

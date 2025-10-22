@@ -19,6 +19,10 @@ extends DialogicSubsystem
 signal audio_started(info: Dictionary)
 
 
+@export_group("State")
+@export var info := {}
+
+
 ## Audio node for holding audio players
 var audio_node := Node.new()
 ## Sound node for holding sound players
@@ -36,14 +40,14 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 
 
 ## Loads the state on this subsystem from the current state info.
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func _load_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
 
 	# Pre Alpha 17 Converter
-	_convert_state_info()
+	#_convert_state_info()
 
-	var info: Dictionary = dialogic.current_state_info.get("audio", {})
+	#var info: Dictionary = dialogic.current_state_info.get("audio", {})
 
 	for channel_name in info.keys():
 		if info[channel_name].path.is_empty():
@@ -120,15 +124,15 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 			prev_audio_node.queue_free()
 
 	## Set state
-	if not dialogic.current_state_info.has('audio'):
-		dialogic.current_state_info['audio'] = {}
+	#if not dialogic.current_state_info.has('audio'):
+		#dialogic.current_state_info['audio'] = {}
 
 	if not path:
-		dialogic.current_state_info['audio'].erase(channel_name)
+		info.erase(channel_name)
 		return
 
-	dialogic.current_state_info['audio'][channel_name] = {'path':path, 'settings_overrides':settings_overrides}
-	audio_started.emit(dialogic.current_state_info['audio'][channel_name])
+	info[channel_name] = {'path':path, 'settings_overrides':settings_overrides}
+	audio_started.emit(info[channel_name])
 
 	var new_player := AudioStreamPlayer.new()
 	if channel_name:
@@ -236,49 +240,49 @@ func _on_audio_finished(player: AudioStreamPlayer, channel_name: String, path: S
 	if current_audio_channels.has(channel_name) and current_audio_channels[channel_name] == player:
 		current_audio_channels.erase(channel_name)
 	player.queue_free()
-	if dialogic.current_state_info.get('audio', {}).get(channel_name, {}).get('path', '') == path:
-		dialogic.current_state_info['audio'].erase(channel_name)
+	if info.get(channel_name, {}).get('path', '') == path:
+		info.erase(channel_name)
 
 #endregion
 
 
 #region Pre Alpha 17 Conversion
-
-func _convert_state_info() -> void:
-	var info: Dictionary = dialogic.current_state_info.get("music", {})
-	if info.is_empty():
-		return
-
-	var new_info := {}
-	if info.has("path"):
-		# Pre Alpha 16 Save Data Conversion
-		new_info['music'] = {
-			"path":info.path,
-			"settings_overrides": {
-				"volume":info.volume,
-				"audio_bus":info.audio_bus,
-				"loop":info.loop}
-				}
-
-	else:
-		# Pre Alpha 17 Save Data Conversion
-		for channel_id in info.keys():
-			if info[channel_id].is_empty():
-				continue
-
-			var channel_name = "music"
-			if channel_id > 0:
-				channel_name += str(channel_id + 1)
-			new_info[channel_name] = {
-				"path": info[channel_id].path,
-				"settings_overrides":{
-					'volume': info[channel_id].volume,
-					'audio_bus': info[channel_id].audio_bus,
-					'loop': info[channel_id].loop,
-					}
-				}
-
-	dialogic.current_state_info['audio'] = new_info
-	dialogic.current_state_info.erase('music')
+#
+#func _convert_state_info() -> void:
+	#var old_info: Dictionary = dialogic.current_state_info.get("music", {})
+	#if old_info.is_empty():
+		#return
+#
+	#var new_info := {}
+	#if old_info.has("path"):
+		## Pre Alpha 16 Save Data Conversion
+		#new_info['music'] = {
+			#"path":old_info.path,
+			#"settings_overrides": {
+				#"volume":old_info.volume,
+				#"audio_bus":old_info.audio_bus,
+				#"loop":old_info.loop}
+				#}
+#
+	#else:
+		## Pre Alpha 17 Save Data Conversion
+		#for channel_id in old_info.keys():
+			#if old_info[channel_id].is_empty():
+				#continue
+#
+			#var channel_name = "music"
+			#if channel_id > 0:
+				#channel_name += str(channel_id + 1)
+			#new_info[channel_name] = {
+				#"path": old_info[channel_id].path,
+				#"settings_overrides":{
+					#'volume': old_info[channel_id].volume,
+					#'audio_bus': old_info[channel_id].audio_bus,
+					#'loop': old_info[channel_id].loop,
+					#}
+				#}
+#
+	#info = new_info
+	##dialogic.current_state_info.erase('music')
 
 #endregion

@@ -49,7 +49,7 @@ signal advance
 ################################################################################
 
 func _clear_state() -> void:
-	dialogic.current_state_info.erase('text_sub_idx')
+	dialogic.Text.text_sub_index = -1
 	_disconnect_signals()
 
 
@@ -94,13 +94,13 @@ func _execute() -> void:
 
 	## Handle style changes
 	if dialogic.has_subsystem("Styles"):
-		var current_base_style: String = dialogic.current_state_info.get("base_style")
-		var current_style: String = dialogic.current_state_info.get("style", "")
+		var current_base_style: String = dialogic.Styles.base_style
+		var current_style: String = dialogic.Styles.style
 		var character_style: String = "" if not character else character.custom_info.get("style", "")
 
 		## Change back to base style, if another characters style is currently used
-		if (not character or character_style.is_empty()) and (current_base_style != current_style):
-			dialogic.Styles.change_style(dialogic.current_state_info.get("base_style", "Default"))
+		if character_style.is_empty() and current_base_style != current_style:
+			dialogic.Styles.change_style(current_base_style)
 			await dialogic.get_tree().process_frame
 
 		## Change to the characters style if this character has one
@@ -124,17 +124,17 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
+	#dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
 
-	var reveal_next_segment: bool = dialogic.current_state_info['text_sub_idx'] == -1
+	var reveal_next_segment: bool = dialogic.Text.text_sub_index == -1
 
-	for section_idx in range(min(max(0, dialogic.current_state_info['text_sub_idx']), len(split_text)-1), len(split_text)):
+	for section_idx in range(min(max(0, dialogic.Text.text_sub_index), len(split_text)-1), len(split_text)):
 		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
 
-			dialogic.current_state_info['text_sub_idx'] = section_idx
+			dialogic.Text.text_sub_index = section_idx
 
 			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0], 0)
 			var is_append: bool = split_text[section_idx][1]
