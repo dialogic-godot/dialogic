@@ -124,9 +124,6 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 			prev_audio_node.queue_free()
 
 	## Set state
-	#if not dialogic.current_state_info.has('audio'):
-		#dialogic.current_state_info['audio'] = {}
-
 	if not path:
 		info.erase(channel_name)
 		return

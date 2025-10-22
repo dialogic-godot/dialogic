@@ -88,7 +88,7 @@ func start() -> void:
 	if not is_enabled():
 		return
 
-	var parsed_text: String = DialogicUtil.autoload().current_state_info['text_parsed']
+	var parsed_text: String = DialogicUtil.autoload().Text.dialog_text_parsed
 	var delay := _calculate_autoadvance_delay(parsed_text)
 
 	await DialogicUtil.autoload().get_tree().process_frame

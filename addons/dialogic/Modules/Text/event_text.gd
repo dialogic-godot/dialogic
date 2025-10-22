@@ -124,8 +124,6 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	#dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
-
 	var reveal_next_segment: bool = dialogic.Text.text_sub_index == -1
 
 	for section_idx in range(min(max(0, dialogic.Text.text_sub_index), len(split_text)-1), len(split_text)):

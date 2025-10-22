@@ -95,8 +95,6 @@ func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) ->
 	dialog_text_parsed = ""
 	speaker_identifier = ""
 
-	#dialogic.current_state_info["speaker"] = ""
-	#dialogic.current_state_info["text"] = ""
 	update_dialog_text("", true)
 	update_name_label(null)
 
@@ -106,15 +104,6 @@ func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) ->
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.start_hidden:
 			text_node.textbox_root.hide()
-
-
-#func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
-	#update_textbox(dialogic.current_state_info.get('text', ''), true)
-	#update_dialog_text(dialogic.current_state_info.get('text', ''), true)
-	#var character: DialogicCharacter = get_current_speaker()
-#
-	#if character:
-		#update_name_label(character)
 
 
 func post_install() -> void:
@@ -262,7 +251,6 @@ func _on_dialog_text_finished() -> void:
 ## If a name changes, the [signal speaker_updated] signal is emitted.
 func update_name_label(character:DialogicCharacter):
 	var character_id := character.get_identifier() if character else ""
-	#var current_character_id: String = dialogic.current_state_info.get("speaker", "")
 
 	if character_id != speaker_identifier:
 		speaker_updated.emit(character)
@@ -397,9 +385,6 @@ func update_text_speed(letter_speed: float = -1,
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
-	#if not dialogic.current_state_info.has('text_reveal_skippable'):
-		#dialogic.current_state_info['text_reveal_skippable'] = {'enabled':false, 'temp_enabled':false}
-
 	if temp:
 		reveal_skippable.temp_enabled = skippable
 	else:
