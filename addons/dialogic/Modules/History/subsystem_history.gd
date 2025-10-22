@@ -98,12 +98,12 @@ func _on_save(info: Dictionary) -> void:
 		save_visited_history()
 
 
-func post_install() -> void:
+func _post_install() -> void:
 	save_visited_history_on_autosave = ProjectSettings.get_setting('dialogic/history/save_on_autosave', save_visited_history_on_autosave)
 	save_visited_history_on_save = ProjectSettings.get_setting('dialogic/history/save_on_save', save_visited_history_on_save)
 
 
-func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	if clear_flag != DialogicGameHandler.ClearFlags.FULL_CLEAR:
 		return
 

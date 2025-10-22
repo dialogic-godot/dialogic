@@ -90,7 +90,7 @@ var parse_stack: Array[Dictionary] = []
 #region STATE
 ####################################################################################################
 
-func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	dialog_text = ""
 	dialog_text_parsed = ""
 	speaker_identifier = ""
@@ -106,7 +106,7 @@ func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) ->
 			text_node.textbox_root.hide()
 
 
-func post_install() -> void:
+func _post_install() -> void:
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
 
 	collect_text_effects()

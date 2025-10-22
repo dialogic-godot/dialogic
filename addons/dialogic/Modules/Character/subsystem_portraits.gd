@@ -21,7 +21,7 @@ var default_portrait_scene: PackedScene = load(get_script().resource_path.get_ba
 #region STATE
 ####################################################################################################
 
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	for character_identifier in portraits.keys():
 		remove_character(DialogicResourceUtil.get_character_resource(character_identifier))
 	portraits = {}
@@ -44,21 +44,21 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 			push_error('[Dialogic] Failed to load character "' + str(character_identifier) + '".')
 
 	# Load Speaker Portrait
-	var speaker: Variant = dialogic.Text.speaker
+	var speaker: Variant = dialogic.Text.speaker_identifier
 	if speaker:
 		# TODO ??
-		dialogic.Text.speaker = ""
+		dialogic.Text.speaker_identifier = ""
 		change_speaker(DialogicResourceUtil.get_character_resource(speaker))
-	dialogic.Text.speaker = speaker
+	dialogic.Text.speaker_identifier = speaker
 
 
-func pause() -> void:
+func _pause() -> void:
 	for portrait in portraits.values():
 		if portrait.node.has_meta('animation_node'):
 			portrait.node.get_meta('animation_node').pause()
 
 
-func resume() -> void:
+func _resume() -> void:
 	for portrait in portraits.values():
 		if portrait.node.has_meta('animation_node'):
 			portrait.node.get_meta('animation_node').resume()

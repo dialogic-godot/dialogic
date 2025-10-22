@@ -28,13 +28,13 @@ signal variable_was_set(info:Dictionary)
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func _clear_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	# loading default variables
 	if not clear_flag & DialogicGameHandler.ClearFlags.KEEP_VARIABLES:
 		reset()
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
+func _load_state(load_flag:=LoadFlags.FULL_LOAD):
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
 	var_storage = merge_folder(var_storage, ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true))

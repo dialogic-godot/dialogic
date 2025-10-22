@@ -34,7 +34,7 @@ var current_audio_channels: Dictionary = {}
 ####################################################################################################
 
 ## Clears the state on this subsystem and stops all audio.
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	stop_all_channels()
 	stop_all_one_shot_sounds()
 
@@ -44,11 +44,6 @@ func _load_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
 
-	# Pre Alpha 17 Converter
-	#_convert_state_info()
-
-	#var info: Dictionary = dialogic.current_state_info.get("audio", {})
-
 	for channel_name in info.keys():
 		if info[channel_name].path.is_empty():
 			update_audio(channel_name)
@@ -57,7 +52,7 @@ func _load_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 
 ## Pauses playing audio.
-func pause() -> void:
+func _pause() -> void:
 	for child in audio_node.get_children():
 		child.stream_paused = true
 	for child in one_shot_audio_node.get_children():
@@ -65,7 +60,7 @@ func pause() -> void:
 
 
 ## Resumes playing audio.
-func resume() -> void:
+func _resume() -> void:
 	for child in audio_node.get_children():
 		child.stream_paused = false
 	for child in one_shot_audio_node.get_children():
@@ -74,7 +69,7 @@ func resume() -> void:
 
 func _on_dialogic_timeline_ended() -> void:
 	if not dialogic.Styles.get_layout_node():
-		clear_game_state()
+		_clear_state()
 
 #endregion
 
@@ -239,47 +234,5 @@ func _on_audio_finished(player: AudioStreamPlayer, channel_name: String, path: S
 	player.queue_free()
 	if info.get(channel_name, {}).get('path', '') == path:
 		info.erase(channel_name)
-
-#endregion
-
-
-#region Pre Alpha 17 Conversion
-#
-#func _convert_state_info() -> void:
-	#var old_info: Dictionary = dialogic.current_state_info.get("music", {})
-	#if old_info.is_empty():
-		#return
-#
-	#var new_info := {}
-	#if old_info.has("path"):
-		## Pre Alpha 16 Save Data Conversion
-		#new_info['music'] = {
-			#"path":old_info.path,
-			#"settings_overrides": {
-				#"volume":old_info.volume,
-				#"audio_bus":old_info.audio_bus,
-				#"loop":old_info.loop}
-				#}
-#
-	#else:
-		## Pre Alpha 17 Save Data Conversion
-		#for channel_id in old_info.keys():
-			#if old_info[channel_id].is_empty():
-				#continue
-#
-			#var channel_name = "music"
-			#if channel_id > 0:
-				#channel_name += str(channel_id + 1)
-			#new_info[channel_name] = {
-				#"path": old_info[channel_id].path,
-				#"settings_overrides":{
-					#'volume': old_info[channel_id].volume,
-					#'audio_bus': old_info[channel_id].audio_bus,
-					#'loop': old_info[channel_id].loop,
-					#}
-				#}
-#
-	#info = new_info
-	##dialogic.current_state_info.erase('music')
 
 #endregion

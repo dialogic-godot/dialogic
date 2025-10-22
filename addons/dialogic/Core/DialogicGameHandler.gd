@@ -55,14 +55,14 @@ var paused := false:
 		if paused:
 			for subsystem in get_children():
 				if subsystem is DialogicSubsystem:
-					(subsystem as DialogicSubsystem).pause()
+					(subsystem as DialogicSubsystem)._pause()
 
 			dialogic_paused.emit()
 
 		else:
 			for subsystem in get_children():
 				if subsystem is DialogicSubsystem:
-					(subsystem as DialogicSubsystem).resume()
+					(subsystem as DialogicSubsystem)._resume()
 
 			dialogic_resumed.emit()
 
@@ -336,7 +336,7 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
-				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
+				(subsystem as DialogicSubsystem)._clear_state(clear_flags)
 
 	var timeline := current_timeline
 
@@ -437,7 +437,7 @@ func _collect_subsystems() -> void:
 			subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
-		subsystem.post_install()
+		subsystem._post_install()
 
 
 ## Returns `true` if a subystem with the given [param subsystem_name] exists.

@@ -16,7 +16,7 @@ func _ready() -> void:
 	DialogicStylesUtil.update_style_directory()
 
 
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	style = ""
 	base_style = ""
 

@@ -23,8 +23,8 @@ var input_was_mouse_input := false
 var auto_skip: DialogicAutoSkip = null
 var auto_advance: DialogicAutoAdvance = null
 var manual_advance: DialogicManualAdvance = null
+
 @export_group("State")
-@export var auto_skip_info := {}
 @export var manual_advance_info := {
 	DialogicManualAdvance.ENABLED_STATE_KEY: true,
 	DialogicManualAdvance.DISABLED_UNTIL_NEXT_EVENT_STATE_KEY: false}
@@ -32,7 +32,7 @@ var manual_advance: DialogicManualAdvance = null
 #region SUBSYSTEM METHODS
 ################################################################################
 
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	if not is_node_ready():
 		await ready
 
@@ -40,25 +40,25 @@ func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) 
 	manual_advance.system_enabled = true
 
 
-func pause() -> void:
+func _pause() -> void:
 	auto_advance.autoadvance_timer.paused = true
 	input_block_timer.paused = true
 	set_process(false)
 
 
-func resume() -> void:
+func _resume() -> void:
 	auto_advance.autoadvance_timer.paused = false
 	input_block_timer.paused = false
 	var is_autoskip_timer_done := _auto_skip_timer_left > 0.0
-	set_process(!is_autoskip_timer_done)
+	set_process(not is_autoskip_timer_done)
 
 
-func post_install() -> void:
+func _post_install() -> void:
 	auto_skip = DialogicAutoSkip.new()
 	auto_advance = DialogicAutoAdvance.new()
 	manual_advance = DialogicManualAdvance.new()
 
-	dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
+	dialogic.Settings.connect_to_change("autoadvance_delay_modifier", auto_advance._update_autoadvance_delay_modifier)
 	auto_skip.toggled.connect(_on_autoskip_toggled)
 	auto_skip._init()
 	add_child(input_block_timer)
@@ -115,7 +115,7 @@ func _input(event:InputEvent) -> void:
 	if is_input_pressed(event):
 		if not event is InputEventMouse:
 			return
-		if get_tree().get_nodes_in_group('dialogic_input').any(func(node):return node.is_visible_in_tree()):
+		if get_tree().get_nodes_in_group("dialogic_input").any(func(node):return node.is_visible_in_tree()):
 			return
 		input_was_mouse_input = true
 		handle_input()
@@ -211,8 +211,8 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 
 
 func effect_autoadvance(_text_node: Control, _skipped:bool, argument:String) -> void:
-	if argument.ends_with('?'):
-		argument = argument.trim_suffix('?')
+	if argument.ends_with("?"):
+		argument = argument.trim_suffix("?")
 	else:
 		auto_advance.enabled_until_next_event = true
 

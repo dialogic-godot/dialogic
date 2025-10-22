@@ -49,7 +49,7 @@ signal passed_label(info:Dictionary)
 #region STATE
 ####################################################################################################
 
-func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	jump_stack = []
 	last_label = {}
 

@@ -31,7 +31,7 @@ var default_transition: String = get_script().resource_path.get_base_dir().path_
 ####################################################################################################
 
 ## Empties the current background state.
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_background()
 
 ## Loads the background state from the current state info.
@@ -158,10 +158,10 @@ func _on_transition_finished(background_node:DialogicNode_BackgroundHolder, tran
 
 ## Adds sub-viewport with the given background scene as child to
 ## Dialogic scene.
-func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
+func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
 	var v_con := SubViewportContainer.new()
 	var viewport := SubViewport.new()
-	var b_scene := scene.instantiate()
+	var b_scene := new_scene.instantiate()
 	if not b_scene is DialogicBackground:
 		printerr("[Dialogic] Given background scene was not of type DialogicBackground! Make sure the scene has a script that extends DialogicBackground.")
 		v_con.queue_free()
