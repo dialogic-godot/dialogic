@@ -10,7 +10,7 @@ signal close_requested
 ## Used for the history display
 var simple_history_enabled := false
 var simple_history_save := false
-var simple_history_content : Array[Dictionary] = []
+@export var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
 ## Whether to keep a history of every Dialogic event encountered.
@@ -19,7 +19,7 @@ var full_event_history_save := false
 
 ## The full history of all Dialogic events encountered.
 ## Requires [member full_event_history_enabled] to be true.
-var full_event_history_content: Array[DialogicEvent] = []
+@export var full_event_history_content: Array[String] = []
 
 ## Emitted if a new event has been inserted into the full event history.
 signal full_event_history_changed
@@ -104,44 +104,15 @@ func post_install() -> void:
 
 
 func clear_game_state(clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	if clear_flag == DialogicGameHandler.ClearFlags.FULL_CLEAR:
-		if simple_history_save:
-			simple_history_content = []
-			dialogic.current_state_info.erase("history_simple")
-		if full_event_history_save:
-			full_event_history_content = []
-			dialogic.current_state_info.erase("history_full")
+	if clear_flag != DialogicGameHandler.ClearFlags.FULL_CLEAR:
+		return
+
+	simple_history_content = []
+	full_event_history_content = []
 
 
-func load_game_state(load_flag := LoadFlags.FULL_LOAD) -> void:
-	if load_flag == LoadFlags.FULL_LOAD:
-		if simple_history_save and dialogic.current_state_info.has("history_simple"):
-			simple_history_content.assign(dialogic.current_state_info["history_simple"])
-
-		if full_event_history_save and dialogic.current_state_info.has("history_full"):
-			full_event_history_content = []
-
-			for event_text in dialogic.current_state_info["history_full"]:
-				var event: DialogicEvent
-				for i in DialogicResourceUtil.get_event_cache():
-					if i.is_valid_event(event_text):
-						event = i.duplicate()
-						break
-				event.from_text(event_text)
-				full_event_history_content.append(event)
-
-
-func save_game_state() -> void:
-	if simple_history_save:
-		dialogic.current_state_info["history_simple"] = Array(simple_history_content)
-	else:
-		dialogic.current_state_info.erase("history_simple")
-	if full_event_history_save:
-		dialogic.current_state_info["history_full"] = []
-		for event in full_event_history_content:
-			dialogic.current_state_info["history_full"].append(event.to_text())
-	else:
-		dialogic.current_state_info.erase("history_full")
+func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
+	pass
 
 
 func open_history() -> void:
@@ -158,9 +129,9 @@ func close_history() -> void:
 ####################################################################################################
 
 func store_simple_history_entry(text:String, event_type:String, extra_info := {}) -> void:
-	if !simple_history_enabled: return
-	extra_info['text'] = text
-	extra_info['event_type'] = event_type
+	if not simple_history_enabled: return
+	extra_info["text"] = text
+	extra_info["event_type"] = event_type
 	simple_history_content.append(extra_info)
 	simple_history_changed.emit()
 
@@ -176,8 +147,8 @@ func get_simple_history() -> Array:
 
 ## Called on each event.
 func store_full_event(event: DialogicEvent) -> void:
-	if !full_event_history_enabled: return
-	full_event_history_content.append(event)
+	if not full_event_history_enabled: return
+	full_event_history_content.append(event.to_text())
 	full_event_history_changed.emit()
 
 
@@ -206,7 +177,7 @@ func _get_event_key(event_index: int, timeline_path: String) -> String:
 
 ## Called if an event is marked as visited.
 func mark_event_as_visited(event_index := dialogic.current_event_idx, timeline := dialogic.current_timeline) -> void:
-	if !visited_event_history_enabled:
+	if not visited_event_history_enabled:
 		return
 
 	var event_key := _get_event_key(event_index, timeline.resource_path)
@@ -216,7 +187,7 @@ func mark_event_as_visited(event_index := dialogic.current_event_idx, timeline :
 
 ## Called on each event, but we filter for Text events.
 func _check_seen(event: DialogicEvent) -> void:
-	if !visited_event_history_enabled:
+	if not visited_event_history_enabled:
 		return
 
 	# At this point, we only care about Text events.
