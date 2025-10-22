@@ -22,20 +22,22 @@ signal variable_changed(info:Dictionary)
 @warning_ignore("unused_signal") # This is emitted from the variable event
 signal variable_was_set(info:Dictionary)
 
+@export_group("State")
+@export var var_storage := {}
 
 #region STATE
 ####################################################################################################
 
 func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	# loading default variables
-	if ! clear_flag & DialogicGameHandler.ClearFlags.KEEP_VARIABLES:
+	if not clear_flag & DialogicGameHandler.ClearFlags.KEEP_VARIABLES:
 		reset()
 
 
 func load_game_state(load_flag:=LoadFlags.FULL_LOAD):
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
-	dialogic.current_state_info['variables'] = merge_folder(dialogic.current_state_info['variables'], ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true))
+	var_storage = merge_folder(var_storage, ProjectSettings.get_setting('dialogic/variables', {}).duplicate(true))
 
 #endregion
 
@@ -75,7 +77,7 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 
 	# First assume this is a simple dialogic variable
 	if has(variable_name):
-		DialogicUtil._set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value)
+		DialogicUtil._set_value_in_dictionary(variable_name, var_storage, value)
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
 
@@ -133,7 +135,7 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 
 	# First assume this is just a single variable
-	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'])
+	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, var_storage)
 	if value != null:
 		return value
 
@@ -152,21 +154,21 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 ## Resets all variables or a specific variable to the value(s) defined in the variable editor
 func reset(variable:="") -> void:
 	if variable.is_empty():
-		dialogic.current_state_info['variables'] = ProjectSettings.get_setting("dialogic/variables", {}).duplicate(true)
+		var_storage = ProjectSettings.get_setting("dialogic/variables", {}).duplicate(true)
 	else:
-		DialogicUtil._set_value_in_dictionary(variable, dialogic.current_state_info['variables'], DialogicUtil._get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
+		DialogicUtil._set_value_in_dictionary(variable, var_storage, DialogicUtil._get_value_in_dictionary(variable, ProjectSettings.get_setting('dialogic/variables', {})))
 
 
 ## Returns true if a variable with the given path exists
 func has(variable:="") -> bool:
-	return DialogicUtil._get_value_in_dictionary(variable, dialogic.current_state_info['variables']) != null
+	return DialogicUtil._get_value_in_dictionary(variable, var_storage) != null
 
 
 
 ## Allows to set dialogic built-in variables
 func _set(property, value) -> bool:
 	property = str(property)
-	var vars: Dictionary = dialogic.current_state_info['variables']
+	var vars: Dictionary = var_storage
 	if property in vars.keys():
 		if typeof(vars[property]) != TYPE_DICTIONARY:
 			vars[property] = value
@@ -179,25 +181,25 @@ func _set(property, value) -> bool:
 ## Allows to get dialogic built-in variables
 func _get(property):
 	property = str(property)
-	if property in dialogic.current_state_info['variables'].keys():
-		if typeof(dialogic.current_state_info['variables'][property]) == TYPE_DICTIONARY:
-			return VariableFolder.new(dialogic.current_state_info['variables'][property], property, self)
+	if property in var_storage.keys():
+		if typeof(var_storage[property]) == TYPE_DICTIONARY:
+			return VariableFolder.new(var_storage[property], property, self)
 		else:
-			return DialogicUtil.logical_convert(dialogic.current_state_info['variables'][property])
+			return DialogicUtil.logical_convert(var_storage[property])
 
 
 func folders() -> Array:
 	var result := []
-	for i in dialogic.current_state_info['variables'].keys():
-		if dialogic.current_state_info['variables'][i] is Dictionary:
-			result.append(VariableFolder.new(dialogic.current_state_info['variables'][i], i, self))
+	for i in var_storage.keys():
+		if var_storage[i] is Dictionary:
+			result.append(VariableFolder.new(var_storage[i], i, self))
 	return result
 
 
 func variables(_absolute:=false) -> Array:
 	var result := []
-	for i in dialogic.current_state_info['variables'].keys():
-		if not dialogic.current_state_info['variables'][i] is Dictionary:
+	for i in var_storage.keys():
+		if not var_storage[i] is Dictionary:
 			result.append(i)
 	return result
 #endregion
@@ -250,7 +252,7 @@ class VariableFolder:
 	func _set(property:StringName, value:Variant) -> bool:
 		property = str(property)
 		if not value is VariableFolder:
-			DialogicUtil._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
+			DialogicUtil._set_value_in_dictionary(path+"."+property, outside.var_storage, value)
 		return true
 
 
