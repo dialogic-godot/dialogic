@@ -34,7 +34,7 @@ var current_timeline_events: Array = []
 var current_event_idx: int = 0
 ## Contains all information that subsystems consider relevant for
 ## the current situation
-var current_state_info: Dictionary = {}
+#var current_state_info: Dictionary = {}
 
 ## Current state (see [member States] enum).
 var current_state := States.IDLE:

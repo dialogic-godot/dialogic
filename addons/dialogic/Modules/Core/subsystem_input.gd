@@ -23,7 +23,11 @@ var input_was_mouse_input := false
 var auto_skip: DialogicAutoSkip = null
 var auto_advance: DialogicAutoAdvance = null
 var manual_advance: DialogicManualAdvance = null
-
+@export_group("State")
+@export var auto_skip_info := {}
+@export var manual_advance_info := {
+	DialogicManualAdvance.ENABLED_STATE_KEY: true,
+	DialogicManualAdvance.DISABLED_UNTIL_NEXT_EVENT_STATE_KEY: false}
 
 #region SUBSYSTEM METHODS
 ################################################################################
@@ -50,6 +54,10 @@ func resume() -> void:
 
 
 func post_install() -> void:
+	auto_skip = DialogicAutoSkip.new()
+	auto_advance = DialogicAutoAdvance.new()
+	manual_advance = DialogicManualAdvance.new()
+
 	dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
 	auto_skip.toggled.connect(_on_autoskip_toggled)
 	auto_skip._init()
@@ -137,9 +145,6 @@ func block_input(time:=0.1) -> void:
 
 
 func _ready() -> void:
-	auto_skip = DialogicAutoSkip.new()
-	auto_advance = DialogicAutoAdvance.new()
-	manual_advance = DialogicManualAdvance.new()
 
 	# We use the process method to count down the auto-start_autoskip_timer timer.
 	set_process(false)

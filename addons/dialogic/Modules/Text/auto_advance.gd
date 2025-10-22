@@ -167,7 +167,7 @@ func _on_toggled(enabled: bool) -> void:
 	# we will initiate the auto-advance mode.
 	if (enabled and !is_advancing()
 	and DialogicUtil.autoload().current_state == DialogicGameHandler.States.IDLE
-	and not DialogicUtil.autoload().current_state_info.get('text', '').is_empty()):
+	and not DialogicUtil.autoload().Text.dialog_text.is_empty()):
 		start()
 
 	# If auto-advance is disabled and we are auto-advancing,

@@ -82,7 +82,7 @@ func _execute() -> void:
 
 		var current_portrait: String = portrait
 		if portrait.is_empty():
-			current_portrait = dialogic.current_state_info["portraits"].get(character.get_identifier(), {}).get("portrait", "")
+			current_portrait = dialogic.Portraits.portraits.get(character.get_identifier(), {}).get("portrait", "")
 
 		var current_portrait_sound_mood: String = character.portraits.get(current_portrait, {}).get("sound_mood", "")
 		dialogic.Text.update_typing_sound_mood_from_character(character, current_portrait_sound_mood)
