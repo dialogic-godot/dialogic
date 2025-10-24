@@ -34,16 +34,14 @@ func execute_string(string:String, default: Variant = null, no_warning := false)
 
 	if expr.parse(string, autoload_names) != OK:
 		if not no_warning:
-			printerr('[Dialogic] Expression "', string, '" failed to parse.')
-			printerr('           ', expr.get_error_text())
+			printerr('[Dialogic] Expression "{0}" failed to parse: {1}'.format([string, expr.get_error_text()]))
 			dialogic.print_debug_moment()
 		return default
 
 	var result: Variant = expr.execute(autoloads, self)
 	if expr.has_execute_failed():
 		if not no_warning:
-			printerr('[Dialogic] Expression "', string, '" failed to parse.')
-			printerr('           ', expr.get_error_text())
+			printerr('[Dialogic] Expression "{0}" failed to parse: {1}'.format([string, expr.get_error_text()]))
 			dialogic.print_debug_moment()
 		return default
 	return result

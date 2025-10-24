@@ -29,12 +29,8 @@ enum ClearFlags {
 var current_timeline: DialogicTimeline = null
 ## Copy of the [member current_timeline]'s events.
 var current_timeline_events: Array = []
-
 ## Index of the event the timeline handling is currently at.
 var current_event_idx: int = 0
-## Contains all information that subsystems consider relevant for
-## the current situation
-#var current_state_info: Dictionary = {}
 
 ## Current state (see [member States] enum).
 var current_state := States.IDLE:
@@ -175,7 +171,7 @@ func _ready() -> void:
 ## -> returns the layout node
 func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
-	if not has_subsystem('Styles'):
+	if not has_subsystem("Styles"):
 		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label_or_idx)
@@ -183,7 +179,7 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 
 	# Otherwise make sure there is a style active.
 	var scene: Node = null
-	if !self.Styles.has_active_layout_node():
+	if not self.Styles.has_active_layout_node():
 		scene = self.Styles.load_style()
 	else:
 		scene = self.Styles.get_layout_node()
@@ -201,8 +197,8 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 
 
 ## Method to start a timeline without adding a layout scene.
-## @timeline can be either a loaded timeline resource or a path to a timeline file.
-## @label_or_idx can be a label (string) or index (int) to skip to immediatly.
+## [param timeline] can be either a loaded timeline resource or a path to a timeline file.
+## [param label_or_idx] can be a label (string) or index (int) to skip to immediatly.
 func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) in [TYPE_STRING, TYPE_STRING_NAME]:
@@ -226,7 +222,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	if typeof(label_or_idx) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if label_or_idx:
-			if has_subsystem('Jump'):
+			if has_subsystem("Jump"):
 				Jump.jump_to_label((label_or_idx as String))
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
@@ -267,7 +263,7 @@ func end_timeline(skip_ending := false) -> void:
 	await clear(ClearFlags.TIMELINE_INFO_ONLY)
 
 	if Styles.has_active_layout_node() and Styles.get_layout_node().is_inside_tree():
-		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
+		match ProjectSettings.get_setting("dialogic/layout/end_behaviour", 0):
 			0:
 				Styles.get_layout_node().get_parent().remove_child(Styles.get_layout_node())
 				Styles.get_layout_node().queue_free()
@@ -320,7 +316,7 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
 		current_timeline_events[event_index].event_finished.connect(handle_next_event)
 
-	set_meta('previous_event', current_timeline_events[event_index])
+	set_meta("previous_event", current_timeline_events[event_index])
 
 	current_timeline_events[event_index].execute(self)
 	event_handled.emit(current_timeline_events[event_index])
@@ -333,7 +329,7 @@ func handle_event(event_index:int) -> void:
 func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	_cleanup_previous_event()
 
-	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
+	if not clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
 				(subsystem as DialogicSubsystem)._clear_state(clear_flags)
@@ -352,8 +348,8 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 
 ## Cleanup after previous event (if any).
 func _cleanup_previous_event():
-	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent:
-		var event := get_meta('previous_event') as DialogicEvent
+	if has_meta("previous_event") and get_meta("previous_event") is DialogicEvent:
+		var event := get_meta("previous_event") as DialogicEvent
 		if event.event_finished.is_connected(handle_next_event):
 			event.event_finished.disconnect(handle_next_event)
 		event._clear_state()
@@ -397,19 +393,15 @@ func load_full_state(state:DialogicSaveState) -> void:
 		if subsystem.name in state.subsystems:
 			subsystem.unpack_state(state.subsystems[subsystem.name])
 
-
-
-	#current_state_info = state_info
 	### The Style subsystem needs to run first for others to load correctly.
 	var scene: Node = null
-	if has_subsystem('Styles'):
-		get_subsystem('Styles').load_state()
+	if has_subsystem("Styles"):
+		get_subsystem("Styles").load_state()
 		scene = self.Styles.get_layout_node()
-
 
 	var load_subsystems := func() -> void:
 		for subsystem in get_children():
-			if subsystem.name == 'Styles':
+			if subsystem.name == "Styles":
 				continue
 			(subsystem as DialogicSubsystem).load_state()
 
@@ -423,6 +415,7 @@ func load_full_state(state:DialogicSaveState) -> void:
 		start_timeline(state.timeline, state.event_index)
 	else:
 		end_timeline.call_deferred(true)
+
 #endregion
 
 
@@ -467,12 +460,18 @@ func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsyst
 #region HELPERS
 ################################################################################
 
-
-
 func print_debug_moment() -> void:
 	if not current_timeline:
 		return
 
-	printerr("\tAt event ", current_event_idx+1, " (",current_timeline_events[current_event_idx].event_name, ' Event) in timeline "', current_timeline.get_identifier(), '" (',current_timeline.resource_path,').')
+	printerr("\t> On line {line} of {timeline_identifier} ({timeline_path}) at event {event_idx} ({event_name} Event).".format(
+		{
+			"event_idx": current_event_idx+1,
+			"event_name":current_timeline_events[current_event_idx].event_name,
+			"timeline_identifier": current_timeline.get_identifier(),
+			"timeline_path":current_timeline.resource_path,
+			"line":current_timeline.get_text_line_from_index(current_event_idx+1)
+		}))
 	print("\n")
+
 #endregion

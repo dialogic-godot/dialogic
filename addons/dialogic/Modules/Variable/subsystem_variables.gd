@@ -145,9 +145,6 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 		if value != null:
 			return value
 
-	# If everything fails, tell the user and return the default
-	if not no_warning:
-		printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
 	return default
 
 

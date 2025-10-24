@@ -17,20 +17,6 @@ func _post_install() -> void:
 func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
 
-#
-## To be overriden by sub-classes
-## Fill in everything that should be loaded using the dialogic_game_handler.current_state_info
-## This is called when a save is loaded
-#func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
-	#pass
-
-#
-## To be overriden by sub-classes
-## Fill in everything that should be saved into the dialogic_game_handler.current_state_info
-## This is called when a save is saved
-#func save_game_state() -> void:
-	#pass
-
 
 # To be overriden by sub-classes
 func _pause() -> void:
