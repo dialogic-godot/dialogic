@@ -29,7 +29,6 @@ func _resume() -> void:
 
 
 func load_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
-	#unpack_state(state)
 	_load_state(load_flag)
 
 
@@ -38,7 +37,6 @@ func _load_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 
 
 func get_state() -> Dictionary:
-	#save_game_state()
 	return pack_state()
 
 

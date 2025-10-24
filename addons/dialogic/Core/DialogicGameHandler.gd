@@ -375,7 +375,6 @@ func get_full_state() -> DialogicSaveState:
 		state.timeline = "null"
 
 	for subsystem in get_children():
-		#(subsystem as DialogicSubsystem).save_game_state()
 		var sub_state := (subsystem as DialogicSubsystem).get_state()
 		if sub_state:
 			state.subsystems[subsystem.name] = sub_state
