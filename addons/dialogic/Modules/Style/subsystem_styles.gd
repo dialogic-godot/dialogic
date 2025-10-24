@@ -144,7 +144,7 @@ func create_layout(style_resource: DialogicStyle, parent: Node = null) -> Dialog
 ## we have to reload all info into the nodes of the new layout.
 func reload_current_info_into_new_style() -> void:
 	for subsystem in dialogic.get_children():
-		subsystem.load_game_state(LoadFlags.ONLY_DNODES)
+		subsystem._load_state(LoadFlags.ONLY_DNODES)
 
 
 ## Returns the style currently in use
