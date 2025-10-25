@@ -49,22 +49,18 @@ signal meta_hover_ended(meta:Variant)
 signal meta_clicked(meta:Variant)
 
 #endregion
-#
-#class State extends SubsystemState:
-	#pass
 
 @export_group("State")
 @export var dialog_text := ""
 @export var dialog_text_parsed := ""
 @export var speaker_identifier := ""
 @export var textbox_visible := false
-@export var reveal_skippable := {'enabled':false, 'temp_enabled':false}
+@export var reveal_skippable := {"enabled":false, "temp_enabled":false}
 @export var text_sub_index := -1
 
 # used to color names without searching for all characters each time
 var character_colors := {}
 var color_regex := RegEx.new()
-var text_already_read := false
 
 var text_effects := {}
 var parsed_text_effect_info: Array[Dictionary] = []
@@ -94,7 +90,9 @@ func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> voi
 	dialog_text = ""
 	dialog_text_parsed = ""
 	speaker_identifier = ""
+	textbox_visible = false
 
+	textbox_update_visibility(textbox_visible, true)
 	update_dialog_text("", true)
 	update_name_label(null)
 
@@ -114,7 +112,7 @@ func _post_install() -> void:
 
 
 func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
-	update_textbox(dialog_text, true)
+	textbox_update_visibility(textbox_visible, true)
 	update_dialog_text(dialog_text, true)
 
 	var character: DialogicCharacter = get_current_speaker()
@@ -182,11 +180,11 @@ func load_parse_stack() -> void:
 ## When an event updates the text spoken, this can adjust the state of
 ## the dialog text box.
 ## This method is async.
-func update_textbox(text: String, instant := false) -> void:
-	if text.is_empty():
-		await hide_textbox(instant)
-	else:
+func textbox_update_visibility(visible := true, instant := false) -> void:
+	if visible:
 		await show_textbox(instant)
+	else:
+		await hide_textbox(instant)
 
 		if not dialog_text.is_empty():
 			animation_textbox_new_text.emit()
@@ -249,19 +247,23 @@ func _on_dialog_text_finished() -> void:
 
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
-func update_name_label(character:DialogicCharacter):
+func update_name_label(character:DialogicCharacter, force := false):
 	var character_id := character.get_identifier() if character else ""
 
-	if character_id != speaker_identifier:
+	if force:
+		speaker_identifier = character_id
+	elif character_id != speaker_identifier:
 		speaker_updated.emit(character)
 		speaker_identifier = character_id
+	else:
+		return
 
 	var name_label_text := get_character_name_parsed(character)
 
-	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
+	for name_label in get_tree().get_nodes_in_group("dialogic_name_label"):
 		name_label.text = name_label_text
 		if character:
-			if not 'use_character_color' in name_label or name_label.use_character_color:
+			if not "use_character_color" in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
 		else:
 			name_label.self_modulate = Color(1,1,1,1)
@@ -497,7 +499,7 @@ func _ready() -> void:
 func get_character_name_parsed(character:DialogicCharacter) -> String:
 	if character:
 		var translated_display_name := character.get_display_name_translated()
-		if dialogic.has_subsystem('VAR'):
+		if dialogic.has_subsystem("VAR"):
 			return dialogic.VAR.parse_variables(translated_display_name)
 		else:
 			return translated_display_name
