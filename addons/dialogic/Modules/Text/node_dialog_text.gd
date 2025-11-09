@@ -54,7 +54,7 @@ func _ready() -> void:
 
 	var custom_bbcode_effects: Array = ProjectSettings.get_setting("dialogic/text/custom_bbcode_effects", "").split(",", false)
 	for i in custom_bbcode_effects:
-		var x : Resource = load(i.strip_edges())
+		var x: Resource = load(i.strip_edges())
 		if x is RichTextEffect:
 			custom_effects.append(x)
 
@@ -62,13 +62,13 @@ func _ready() -> void:
 # this is called by the DialogicGameHandler to set text
 
 func reveal_text(_text: String, keep_previous:=false) -> void:
-	if !enabled:
+	if not enabled:
 		return
-	show()
 
+	show()
 	custom_fx_reset()
 
-	if !keep_previous:
+	if not keep_previous:
 		text = _text
 		base_visible_characters = 0
 

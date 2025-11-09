@@ -86,6 +86,22 @@ var parse_stack: Array[Dictionary] = []
 #region STATE
 ####################################################################################################
 
+func _ready() -> void:
+	dialogic.event_handled.connect(hide_next_indicators)
+
+	_autopauses = {}
+	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
+	for i in autopause_data.keys():
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
+
+
+func _post_install() -> void:
+	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
+
+	collect_text_effects()
+	collect_text_modifiers()
+
+
 func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	dialog_text = ""
 	dialog_text_parsed = ""
@@ -104,13 +120,6 @@ func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> voi
 			text_node.textbox_root.hide()
 
 
-func _post_install() -> void:
-	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
-
-	collect_text_effects()
-	collect_text_modifiers()
-
-
 func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 	textbox_update_visibility(textbox_visible, true)
 	update_dialog_text(dialog_text, true)
@@ -119,11 +128,10 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 	if character:
 		update_name_label(character)
 
-
 #endregion
 
 
-#region MAIN METHODS
+#region TEXT PARSING
 ####################################################################################################
 
 ## Applies modifiers, effects and coloring to the text.
@@ -176,6 +184,11 @@ func load_parse_stack() -> void:
 
 	parse_stack.sort_custom(func(a,b):return a["order"] < b["order"])
 
+#endregion
+
+
+#region TEXTBOX
+################################################################################
 
 ## When an event updates the text spoken, this can adjust the state of
 ## the dialog text box.
@@ -192,6 +205,48 @@ func textbox_update_visibility(visible := true, instant := false) -> void:
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
 
+## instant skips the signal and thus possible animations
+func show_textbox(instant:=false) -> void:
+	var emitted := instant
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if not text_node.enabled:
+			continue
+		if not text_node.textbox_root.visible and not emitted:
+			animation_textbox_show.emit()
+			text_node.textbox_root.show()
+			if dialogic.Animations.is_animating():
+				await dialogic.Animations.finished
+			textbox_visibility_changed.emit(true)
+			emitted = true
+		else:
+			text_node.textbox_root.show()
+
+
+## Instant skips the signal and thus possible animations
+func hide_textbox(instant:=false) -> void:
+	dialog_text = ''
+	var emitted := instant
+	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
+		name_label.text = ""
+	if !emitted and !get_tree().get_nodes_in_group('dialogic_dialog_text').is_empty() and get_tree().get_nodes_in_group('dialogic_dialog_text')[0].textbox_root.visible:
+		animation_textbox_hide.emit()
+		if dialogic.Animations.is_animating():
+			await dialogic.Animations.finished
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.textbox_root.visible and !emitted:
+			textbox_visibility_changed.emit(false)
+			emitted = true
+		text_node.textbox_root.hide()
+
+
+func is_textbox_visible() -> bool:
+	return get_tree().get_nodes_in_group('dialogic_dialog_text').any(func(x): return x.textbox_root.visible)
+
+#endregion
+
+
+#region DIALOG TEXT
+################################################################################
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
@@ -244,6 +299,11 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 func _on_dialog_text_finished() -> void:
 	text_finished.emit({"text":dialog_text, "character":speaker_identifier})
 
+#endregion
+
+
+#region NAME LABEL
+################################################################################
 
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
@@ -269,60 +329,34 @@ func update_name_label(character:DialogicCharacter, force := false):
 			name_label.self_modulate = Color(1,1,1,1)
 
 
-func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:String) -> void:
-	if character.custom_info.get("sound_moods", {}).is_empty():
-		update_typing_sound_mood()
-	elif mood in character.custom_info.get("sound_moods", {}):
-		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
-	else:
-		var default_mood : String = character.custom_info.get("sound_mood_default", "")
-		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
-
-
-
-func update_typing_sound_mood(mood:Dictionary = {}) -> void:
-	for typing_sound in get_tree().get_nodes_in_group("dialogic_type_sounds"):
-		typing_sound.load_overwrite(mood)
-
-
-## instant skips the signal and thus possible animations
-func show_textbox(instant:=false) -> void:
-	var emitted := instant
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if not text_node.enabled:
-			continue
-		if not text_node.textbox_root.visible and not emitted:
-			animation_textbox_show.emit()
-			text_node.textbox_root.show()
-			if dialogic.Animations.is_animating():
-				await dialogic.Animations.finished
-			textbox_visibility_changed.emit(true)
-			emitted = true
+## Parses the character's display_name and returns the text that
+## should be rendered. Note that characters may have variables in their
+## name, therefore this function should be called to evaluate
+## any potential variables in a character's name.
+func get_character_name_parsed(character:DialogicCharacter) -> String:
+	if character:
+		var translated_display_name := character.get_display_name_translated()
+		if dialogic.has_subsystem("VAR"):
+			return dialogic.VAR.parse_variables(translated_display_name)
 		else:
-			text_node.textbox_root.show()
+			return translated_display_name
+	return ""
 
 
-## Instant skips the signal and thus possible animations
-func hide_textbox(instant:=false) -> void:
-	dialog_text = ''
-	var emitted := instant
-	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-		name_label.text = ""
-	if !emitted and !get_tree().get_nodes_in_group('dialogic_dialog_text').is_empty() and get_tree().get_nodes_in_group('dialogic_dialog_text')[0].textbox_root.visible:
-		animation_textbox_hide.emit()
-		if dialogic.Animations.is_animating():
-			await dialogic.Animations.finished
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if text_node.textbox_root.visible and !emitted:
-			textbox_visibility_changed.emit(false)
-			emitted = true
-		text_node.textbox_root.hide()
+## Returns the [class DialogicCharacter] of the current speaker.
+## If there is no current speaker or the speaker is not found, returns null.
+func get_current_speaker() -> DialogicCharacter:
+	return DialogicResourceUtil.get_character_resource(speaker_identifier)
 
 
-func is_textbox_visible() -> bool:
-	return get_tree().get_nodes_in_group('dialogic_dialog_text').any(func(x): return x.textbox_root.visible)
+#endregion
 
 
+#region NEXT INDICATOR
+################################################################################
+
+## Attempts to show next indicators. This depends on whether the current event is a question or autoadvance is on.
+## Whether the next indicator is shown in those situations can be toggled on the NextIndicator node.
 func show_next_indicators(question:=false, autoadvance:=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		if next_indicator.enabled:
@@ -333,26 +367,39 @@ func show_next_indicators(question:=false, autoadvance:=false) -> void:
 			next_indicator.hide()
 
 
+## Hides all next indactor nodes.
 func hide_next_indicators(_fake_arg :Variant= null) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		next_indicator.hide()
 
-
-## This method will sync the text speed to the voice audio clip length, if a
-## voice is playing.
-## For instance, if the voice is playing for four seconds, the text will finish
-## revealing after this time.
-## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
-## the reveal.
-func set_text_voice_synced(enabled: bool = true) -> void:
-	_voice_synced_text = enabled
-	update_text_speed()
+#endregion
 
 
-## Returns whether voice-synced text is enabled.
-func is_text_voice_synced() -> bool:
-	return _voice_synced_text
+#region TYPING SOUND MOOD
+################################################################################
 
+## Loads the given mood info on all TypeSound nodes.
+## An empty dictionary clears the mood on all the TypeSound nodes.
+func update_typing_sound_mood(mood := {}) -> void:
+	for typing_sound in get_tree().get_nodes_in_group("dialogic_type_sounds"):
+		typing_sound.load_overwrite(mood)
+
+
+## Loads the given mood from the given character on all TypeSound nodes (if it exists).
+func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:String) -> void:
+	if character.custom_info.get("sound_moods", {}).is_empty():
+		update_typing_sound_mood()
+	elif mood in character.custom_info.get("sound_moods", {}):
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
+	else:
+		var default_mood : String = character.custom_info.get("sound_mood_default", "")
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
+
+#endregion
+
+
+#region TEXT SPEED
+################################################################################
 
 ## Sets how fast text will be revealed.
 ## [br][br]
@@ -386,6 +433,43 @@ func update_text_speed(letter_speed: float = -1,
 			text_node.set_speed(letter_speed * _speed_multiplier * user_speed)
 
 
+func _update_user_speed(_user_speed:float) -> void:
+	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
+
+
+## This method will sync the text speed to the voice audio clip length, if a
+## voice is playing.
+## For instance, if the voice is playing for four seconds, the text will finish
+## revealing after this time.
+## This feature ignores Auto-Pauses on letters. Pauses via BBCode will desync
+## the reveal.
+func set_text_voice_synced(enabled: bool = true) -> void:
+	_voice_synced_text = enabled
+	update_text_speed()
+
+
+## Returns whether voice-synced text is enabled.
+func is_text_voice_synced() -> bool:
+	return _voice_synced_text
+
+#endregion
+
+
+#region TEXT REVEAL SKIPPING
+
+## Skips (instant finishes) the text reveal if it's going on right now.
+## Also stops voice lines, if they are happening.
+## Unless you want to force this, you should check is_text_reveal_skippable() before calling this.
+func skip_text_reveal() -> void:
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.is_visible_in_tree():
+			text_node.finish_text()
+	if dialogic.has_subsystem('Voice'):
+		dialogic.Voice.stop_audio()
+
+
+## Set whether text should be skippable. If [param temp] is true, what you set here will be reset on the next text event.
+## This allows temporarily disabeling the ability to skip the reveal.
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
 	if temp:
 		reveal_skippable.temp_enabled = skippable
@@ -393,16 +477,9 @@ func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
 		reveal_skippable.enabled = skippable
 
 
+## Returns `true` if the text reveal should be skippable right now.
 func is_text_reveal_skippable() -> bool:
 	return reveal_skippable.enabled and reveal_skippable.temp_enabled
-
-
-func skip_text_reveal() -> void:
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if text_node.is_visible_in_tree():
-			text_node.finish_text()
-	if dialogic.has_subsystem('Voice'):
-		dialogic.Voice.stop_audio()
 
 #endregion
 
@@ -480,61 +557,10 @@ func collect_text_modifiers() -> void:
 #endregion
 
 
-#region HELPERS & OTHER STUFF
-####################################################################################################
-
-func _ready() -> void:
-	dialogic.event_handled.connect(hide_next_indicators)
-
-	_autopauses = {}
-	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
-	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
-
-
-## Parses the character's display_name and returns the text that
-## should be rendered. Note that characters may have variables in their
-## name, therefore this function should be called to evaluate
-## any potential variables in a character's name.
-func get_character_name_parsed(character:DialogicCharacter) -> String:
-	if character:
-		var translated_display_name := character.get_display_name_translated()
-		if dialogic.has_subsystem("VAR"):
-			return dialogic.VAR.parse_variables(translated_display_name)
-		else:
-			return translated_display_name
-	return ""
-
-
-## Returns the [class DialogicCharacter] of the current speaker.
-## If there is no current speaker or the speaker is not found, returns null.
-func get_current_speaker() -> DialogicCharacter:
-	return DialogicResourceUtil.get_character_resource(speaker_identifier)
-
-
-func _update_user_speed(_user_speed:float) -> void:
-	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
-
-
-func connect_meta_signals(text_node: Node) -> void:
-	if not text_node.meta_clicked.is_connected(emit_meta_signal):
-		text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
-
-	if not text_node.meta_hover_started.is_connected(emit_meta_signal):
-		text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
-
-	if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
-		text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
-
-
-func emit_meta_signal(meta:Variant, sig:String) -> void:
-	emit_signal(sig, meta)
-
-#endregion
-
 #region AUTOCOLOR NAMES
 ################################################################################
 
+## Returns the text with [color=#.....] bbcode inserted around character names.
 func color_character_names(text:String) -> String:
 	if not ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
@@ -592,7 +618,28 @@ func sort_by_length(a:String, b:String) -> bool:
 	if a.length() > b.length():
 		return true
 	return false
-#endregion+
+
+#endregion
+
+
+#region META SIGNALS
+####################################################################################################
+
+func connect_meta_signals(text_node: Node) -> void:
+	if not text_node.meta_clicked.is_connected(emit_meta_signal):
+		text_node.meta_clicked.connect(emit_meta_signal.bind("meta_clicked"))
+
+	if not text_node.meta_hover_started.is_connected(emit_meta_signal):
+		text_node.meta_hover_started.connect(emit_meta_signal.bind("meta_hover_started"))
+
+	if not text_node.meta_hover_ended.is_connected(emit_meta_signal):
+		text_node.meta_hover_ended.connect(emit_meta_signal.bind("meta_hover_ended"))
+
+
+func emit_meta_signal(meta:Variant, sig:String) -> void:
+	emit_signal(sig, meta)
+
+#endregion
 
 
 #region DEFAULT TEXT EFFECTS & MODIFIERS
@@ -680,4 +727,5 @@ func modifier_autopauses(text:String) -> String:
 				text = text.insert(result.get_end()+offset, '[pause='+str(_autopauses[i])+']')
 				offset += len('[pause='+str(_autopauses[i])+']')
 	return text
+
 #endregion
