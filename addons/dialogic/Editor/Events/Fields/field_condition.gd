@@ -3,8 +3,8 @@ extends DialogicVisualEditorField
 
 ## Event block field for displaying conditions in either a simple or complex way.
 
-var _current_value1 :Variant = ""
-var _current_value2 :Variant = ""
+var _current_value1: Variant = ""
+var _current_value2: Variant = ""
 
 #region MAIN METHODS
 ################################################################################
@@ -21,7 +21,7 @@ func _set_value(value:Variant) -> void:
 
 
 
-func _autofocus():
+func _autofocus() -> void:
 	%Value1Variable.grab_focus()
 
 #endregion
@@ -56,7 +56,7 @@ func _ready() -> void:
 
 
 	for i in [%Value1Variable, %Value2Variable]:
-		i.get_suggestions_func = get_variable_suggestions
+		i.suggestions_func = get_variable_suggestions
 		i.value_changed.connect(something_changed)
 
 	%Value1Number.value_changed.connect(something_changed)
@@ -96,7 +96,7 @@ func value_type_changed(property:String, value_type:int, value_name:String) -> v
 	get_node('%'+value_name+'Text').hide()
 	get_node('%'+value_name+'Number').hide()
 	get_node('%'+value_name+'Bool').hide()
-	var current_val :Variant = ""
+	var current_val: Variant = ""
 	if '1' in value_name:
 		current_val = _current_value1
 	else:
@@ -189,16 +189,16 @@ func something_changed(fake_arg1=null, fake_arg2 = null):
 
 
 func is_too_complex(condition:String) -> bool:
-	return !(condition.is_empty()
-			or ' and ' in condition
-			or ' or ' in condition
-			or ' not ' in condition
-			or condition.count('==') != 1
-			or condition.count('>') != 1
-			or condition.count('<') != 1
-			or condition.count('<=') != 1
-			or condition.count('>=') != 1
-			or condition.count('!=') != 1)
+	if condition.strip_edges().is_empty():
+		return false
+
+	var comparison_count: int = 0
+	for i in ['==', '!=', '<=', '<', '>', '>=']:
+		comparison_count += condition.count(i)
+	if comparison_count == 1:
+		return false
+
+	return true
 
 
 ## Combines the info from the simple editor fields into a string condition
@@ -237,7 +237,7 @@ func _on_complex_editor_text_changed(new_text:String) -> void:
 
 func get_variable_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
-	var vars :Dictionary= ProjectSettings.get_setting('dialogic/variables', {})
+	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
@@ -264,4 +264,3 @@ func _on_value_1_variable_value_changed(property_name: Variant, value: Variant) 
 				%Value2Type.index_pressed(1)
 
 	something_changed()
-

@@ -1,0 +1,368 @@
+[gd_scene load_steps=7 format=3 uid="uid://chpb1mj03xjxv"]
+
+[ext_resource type="Script" uid="uid://b0bm772xo8n2j" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_translation.gd" id="1_dvmyi"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_k2lou"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_dq4j2"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="4_kvsma"]
+
+[sub_resource type="Image" id="Image_4jaem"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_xbph7"]
+image = SubResource("Image_4jaem")
+
+[node name="Translations" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -101.0
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dvmyi")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Basics" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="HBox/Basics"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Basics"
+
+[node name="VBox4" type="HBoxContainer" parent="HBox/Basics"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBox/Basics/VBox4"]
+layout_mode = 2
+text = "Enable translations"
+
+[node name="TransEnabled" type="CheckBox" parent="HBox/Basics/VBox4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator5" type="VSeparator" parent="HBox"]
+layout_mode = 2
+
+[node name="Testing" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title2" type="Label" parent="HBox/Testing"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Testing"
+
+[node name="VBox3" type="HBoxContainer" parent="HBox/Testing"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="HBox/Testing/VBox3"]
+layout_mode = 2
+text = "Testing locale"
+
+[node name="HintTooltip8" parent="HBox/Testing/VBox3" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Change this locale to test your game in a different language (only in-editor).
+Equivalent of the testing local project setting. "
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Change this locale to test your game in a different language (only in-editor).
+Equivalent of the testing local project setting. 
+
+Update dropdown list via \"Collect Translation\"."
+
+[node name="TestingLocale" parent="HBox/Testing/VBox3" instance=ExtResource("3_dq4j2")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="TranslationSettings" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TranslationSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsTitle" type="Label" parent="TranslationSettings/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Settings"
+
+[node name="Grid" type="GridContainer" parent="TranslationSettings/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="VBox" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox"]
+layout_mode = 2
+text = "Default locale"
+
+[node name="HintTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "The locale of the language your timelines are written in."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "The locale of the language your timelines are written in."
+
+[node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("3_dq4j2")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile"]
+layout_mode = 2
+text = "Translation folder"
+
+[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Choose a folder to let Dialogic save CSV files in.
+Also used when saving \"Inside Translation Folder\""
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Choose a folder to let Dialogic save CSV files in.
+Also used when saving \"Inside Translation Folder\""
+
+[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" instance=ExtResource("4_kvsma")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_mode = 2
+
+[node name="VBox2" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="OutputModeLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox2"]
+layout_mode = 2
+text = "Output mode"
+
+[node name="OutputModeTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox2" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Decides how many CSV files will be created.
+
+• \"Per Type\": Uses one CSV file for each type of resource: Timelines, characters, and glossaries.
+For example, 10 timelines will be combined into 1 CSV file.
+
+• \"Per File\": Uses one CSV file for each resource file.
+For example, 10 timelines will result in 10 CSV files.
+
+The \"Per File\" option utilises \"Output location\", in contrast, the \"Per Type\" will always use the Translation folder."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Decides how many CSV files will be created.
+
+• \"Per Type\": Uses one CSV file for each type of resource: Timelines, characters, and glossaries.
+For example, 10 timelines will be combined into 1 CSV file.
+
+• \"Per File\": Uses one CSV file for each resource file.
+For example, 10 timelines will result in 10 CSV files.
+
+The \"Per File\" option utilises \"Output location\", in contrast, the \"Per Type\" will always use the Translation folder."
+
+[node name="TransMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "Per Type"
+popup/item_0/id = 0
+popup/item_1/text = "Per File"
+popup/item_1/id = 1
+
+[node name="OutputLocation" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="OutputLocationLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/OutputLocation"]
+layout_mode = 2
+text = "Output location"
+
+[node name="OutputLocationTooltip" parent="TranslationSettings/VBoxContainer/Grid/OutputLocation" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Decides where to save the generated CSV files.
+
+• \"Inside Translation Folder\": Uses the \"Translation folder\".
+
+• \"Next To Timeline\": Places them in the resource type's folder.
+
+This button requires the \"Per File\" Output mode.
+A resource type can be: Timelines, characters, and glossaries."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Decides where to save the generated CSV files.
+
+• \"Inside Translation Folder\": Uses the \"Translation folder\".
+
+• \"Next To Timeline\": Places them in the resource type's folder.
+
+This button requires the \"Per File\" Output mode.
+A resource type can be: Timelines, characters, and glossaries."
+
+[node name="SaveLocationMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+item_count = 2
+selected = 0
+popup/item_0/text = "Inside Translation Folder"
+popup/item_0/id = 0
+popup/item_1/text = "Next to File"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="TranslationSettings/VBoxContainer/Grid"]
+visible = false
+layout_mode = 2
+
+[node name="AddSeparatorHBox" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid"]
+layout_mode = 2
+
+[node name="AddSeparatorLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/AddSeparatorHBox"]
+layout_mode = 2
+text = "Add Separator Lines"
+
+[node name="HintAddSeparatorEnabled" parent="TranslationSettings/VBoxContainer/Grid/AddSeparatorHBox" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Adds an empty line into per-project CSVs to differentiate between sections.
+
+For example, when a new glossary item or timeline starts, an empty line will be added."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Adds an empty line into per-project CSVs to differentiate between sections.
+
+For example, when a new glossary item or timeline starts, an empty line will be added."
+
+[node name="AddSeparatorEnabled" type="CheckBox" parent="TranslationSettings/VBoxContainer/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator6" type="VSeparator" parent="TranslationSettings"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TranslationSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TranslationSettings/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Title3" type="Label" parent="TranslationSettings/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Actions"
+
+[node name="Actions" type="GridContainer" parent="TranslationSettings/VBoxContainer2"]
+layout_mode = 2
+columns = 2
+
+[node name="UpdateCsvFiles" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Update CSV files"
+icon = SubResource("ImageTexture_xbph7")
+
+[node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "This button will scan all timelines and generate or update their CSV files.
+
+A Dialogic CSV file will be prefixed with \"dialogic_\".
+
+This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "This button will scan all timelines and generate or update their CSV files.
+
+A Dialogic CSV file will be prefixed with \"dialogic_\".
+
+This action will be disabled if the \"Translation folder\" is missing or has an invalid path."
+
+[node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Collect translations"
+icon = SubResource("ImageTexture_xbph7")
+
+[node name="HintTooltip6" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Godot imports CSV files as \".translation\" files.
+This buttons adds them to \"Project Settings -> Localization\".
+"
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Godot imports CSV files as \".translation\" files.
+This buttons adds them to \"Project Settings -> Localization\".
+"
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="TransRemove" type="Button" parent="TranslationSettings/VBoxContainer2/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Remove translations"
+icon = SubResource("ImageTexture_xbph7")
+
+[node name="HintTooltip7" parent="TranslationSettings/VBoxContainer2/Actions" instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Be very careful with this button!
+
+It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
+CSV and translation files prefixed with \"dialogic_\" are treated as Dialogic-related.
+
+Removes translation IDs (eg. #id:33) from timelines and characters."
+texture = SubResource("ImageTexture_xbph7")
+hint_text = "Be very careful with this button!
+
+It will try to delete any \".csv\" and \".translation\" files that are related to Dialogic.
+CSV and translation files prefixed with \"dialogic_\" are treated as Dialogic-related.
+
+Removes translation IDs (eg. #id:33) from timelines and characters."
+
+[node name="StatusMessage" type="Label" parent="TranslationSettings/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "⛔ Requires valid translation folder to translate character names and the project CSV file."
+autowrap_mode = 3
+
+[node name="UpdateConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Please Decide..."
+size = Vector2i(490, 200)
+ok_button_text = "Delete old & Generate new"
+dialog_text = "You have previously generated CSVs and translation files with different Translation Settings!
+
+Please consider to delete the old CSVs and then generate new changes."
+dialog_autowrap = true
+
+[node name="EraseConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+position = Vector2i(0, 36)
+size = Vector2i(500, 280)
+min_size = Vector2i(300, 70)
+ok_button_text = "DELETE ALL"
+dialog_text = "You are about to:
+-   Delete all CSVs prefixed with \"dialogic_\".
+-   Delete the related CSV import files.
+-   Delete the related translation files.
+-   Remove translation IDs from timelines and characters.
+-   Remove all \"dialogic\" prefixed translations from \"Project Settings -> Localization\".
+-   Remove the \"_translation_keys\" and \"entries\" starting with \"Glossary/\"."
+dialog_autowrap = true
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[connection signal="confirmed" from="UpdateConfirmationDialog" to="." method="_delete_and_update"]
+[connection signal="confirmed" from="EraseConfirmationDialog" to="." method="erase_translations"]

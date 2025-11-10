@@ -11,7 +11,7 @@ extends DialogicEvent
 ################################################################################
 
 func _execute() -> void:
-	if !dialogic.Jump.is_jump_stack_empty():
+	if not dialogic.Jump.is_jump_stack_empty():
 		dialogic.Jump.resume_from_last_jump()
 	else:
 		dialogic.end_timeline()
@@ -39,7 +39,7 @@ func to_text() -> String:
 	return "return"
 
 
-func from_text(string:String) -> void:
+func from_text(_string:String) -> void:
 	pass
 
 
@@ -53,14 +53,14 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_label('Return')
 
 
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
 

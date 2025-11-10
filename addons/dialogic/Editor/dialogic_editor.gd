@@ -8,6 +8,7 @@ extends Control
 signal resource_saved()
 signal resource_unsaved()
 
+@warning_ignore("unused_signal")# This is emitted from the Editors Manager
 signal opened
 
 var current_resource: Resource
@@ -41,7 +42,7 @@ func _get_title() -> String:
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)
-func _open_resource(resource:Resource) -> void:
+func _open_resource(_resource:Resource) -> void:
 	pass
 
 
@@ -51,7 +52,7 @@ func _save() -> void:
 
 
 ## Overwrite. Called when this editor is shown. (show() doesn't have to be called)
-func _open(extra_info:Variant = null) -> void:
+func _open(_extra_info:Variant = null) -> void:
 	pass
 
 

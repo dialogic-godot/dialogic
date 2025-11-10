@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwe3r2tbh2og1"]
+[gd_scene load_steps=7 format=3 uid="uid://cwe3r2tbh2og1"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
+[ext_resource type="Script" uid="uid://myogqmakusx3" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
+[ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="2_54pks"]
+[ext_resource type="Texture2D" uid="uid://dx3o2ild56i76" path="res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" id="2_ilyps"]
 
 [sub_resource type="Theme" id="Theme_pn0f4"]
 VBoxContainer/constants/separation = 4
@@ -20,24 +22,40 @@ theme = SubResource("Theme_pn0f4")
 split_offset = 100
 script = ExtResource("1_jnq65")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBoxHidden" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="OpenButton" type="Button" parent="VBoxHidden"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Show Sidebar"
+theme_override_constants/icon_max_width = 20
+icon = ExtResource("2_ilyps")
+flat = true
+icon_alignment = 1
+
+[node name="VBoxPrimary" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Margin" type="MarginContainer" parent="VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VSplitContainer" type="VSplitContainer" parent="VBox/Margin"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="VBox/Margin/VSplitContainer"]
+[node name="Margin" type="MarginContainer" parent="VBoxPrimary"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Logo" type="TextureRect" parent="VBox/Margin/VSplitContainer/VBox"]
+[node name="MainVSplit" type="VSplitContainer" parent="VBoxPrimary/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.623529)
 texture_filter = 6
@@ -46,49 +64,148 @@ layout_mode = 2
 expand_mode = 3
 stretch_mode = 4
 
-[node name="CurrentResource" type="Label" parent="VBox/Margin/VSplitContainer/VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+layout_mode = 2
+
+[node name="CurrentResource" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "No resource"
-horizontal_alignment = 1
-vertical_alignment = 1
-text_overrun_behavior = 1
+alignment = 1
+editable = false
 
-[node name="Search" type="LineEdit" parent="VBox/Margin/VSplitContainer/VBox"]
+[node name="CloseButton" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Hide Sidebar"
+text = "     "
+icon = ExtResource("2_54pks")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="HBoxSearchSort" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Filter Resources"
 placeholder_text = "Filter Resources"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="ResourcesList" type="ItemList" parent="VBox/Margin/VSplitContainer/VBox"]
+[node name="Options" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-same_column_width = true
 
-[node name="ContentListSection" type="VBoxContainer" parent="VBox/Margin/VSplitContainer"]
+[node name="OptionsPopup" type="Popup" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options"]
 unique_name_in_owner = true
+transparent_bg = true
+position = Vector2i(890, 65)
+size = Vector2i(165, 101)
+visible = true
+transparent = true
+
+[node name="OptionsPanel" type="PanelContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel"]
+layout_mode = 2
+
+[node name="GroupingOptions" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Grouping
+- None: No Grouping, sorted alphabetically
+- Type: Group by type (Characters/Timeilnes)
+- Folder: Group based on the parent folder name.
+- Path: Group based on folders."
+text_overrun_behavior = 1
+clip_text = true
+selected = 0
+item_count = 4
+popup/item_0/text = "No Grouping"
+popup/item_1/text = "Type Grouping"
+popup/item_1/id = 1
+popup/item_2/text = "Folder Grouping"
+popup/item_2/id = 2
+popup/item_3/text = "Path Grouping"
+popup/item_3/id = 3
+
+[node name="FolderColors" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Use Folder Colors"
+
+[node name="TrimFolderPaths" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Trim Folder Paths"
+
+[node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+allow_rmb_select = true
+hide_root = true
+scroll_horizontal_enabled = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Sort Order"
+vertical_alignment = 1
+
+[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 1
+popup/item_0/text = "Alphabetical (All)"
+
+[node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ContentList" type="ItemList" parent="VBox/Margin/VSplitContainer/ContentListSection"]
+[node name="ContentList" type="ItemList" parent="VBoxPrimary/Margin/MainVSplit/ContentListSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "Label events in your timeline will appear here, allowing you to jump to them."
 theme_override_styles/selected = SubResource("StyleBoxEmpty_gxwm6")
 theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_n8rql")
 allow_reselect = true
 same_column_width = true
 
-[node name="CurrentVersion" type="Button" parent="VBox"]
+[node name="CurrentVersion" type="Button" parent="VBoxPrimary"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Some Version"
 flat = true
 clip_text = true
 
-[connection signal="gui_input" from="VBox/Margin/VSplitContainer/VBox/Logo" to="." method="_on_logo_gui_input"]
-[connection signal="text_changed" from="VBox/Margin/VSplitContainer/VBox/Search" to="." method="_on_search_text_changed"]
-[connection signal="pressed" from="VBox/CurrentVersion" to="." method="_on_current_version_pressed"]
+[node name="RightClickMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(164, 100)
+
+[connection signal="dragged" from="VBoxPrimary/Margin/MainVSplit" to="." method="_on_main_v_split_dragged"]
+[connection signal="gui_input" from="VBoxPrimary/Margin/MainVSplit/VBox/Logo" to="." method="_on_logo_gui_input"]
+[connection signal="text_changed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_changed"]
+[connection signal="text_submitted" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Search" to="." method="_on_search_text_submitted"]
+[connection signal="pressed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options" to="." method="_on_options_pressed"]
+[connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/FolderColors" to="." method="_on_folder_colors_toggled"]
+[connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/TrimFolderPaths" to="." method="_on_trim_folder_paths_toggled"]
+[connection signal="id_pressed" from="RightClickMenu" to="." method="_on_right_click_menu_id_pressed"]

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://4e0kjekan5e7"]
+
+[ext_resource type="Script" uid="uid://o26ppdmyst02" path="res://addons/dialogic/Editor/Events/Fields/field_color.gd" id="1_l666a"]
+
+[node name="Field_Color" type="ColorPickerButton"]
+custom_minimum_size = Vector2(48, 0)
+offset_right = 64.0
+offset_bottom = 31.0
+theme_type_variation = &"DialogicEventEdit"
+text = " "
+color = Color(1, 1, 1, 1)
+script = ExtResource("1_l666a")

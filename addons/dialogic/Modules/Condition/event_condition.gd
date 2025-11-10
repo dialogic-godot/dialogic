@@ -7,10 +7,11 @@ extends DialogicEvent
 enum ConditionTypes {IF, ELIF, ELSE}
 
 ### Settings
-## condition type (see [ConditionTypes]). Defaults to if.
+
+## Condition type (see [ConditionTypes]). Defaults to if.
 var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
-var condition: String = ""
+var condition := ""
 
 
 ################################################################################
@@ -24,26 +25,14 @@ func _execute() -> void:
 
 	if condition.is_empty(): condition = "true"
 
-	var result :bool= dialogic.Expressions.execute_condition(condition)
+	var result: bool = dialogic.Expressions.execute_condition(condition)
 	if not result:
-		var idx :int= dialogic.current_event_idx
-		var ignore := 1
-		while true:
-			idx += 1
-			if not dialogic.current_timeline.get_event(idx) or ignore == 0:
-				break
-			elif dialogic.current_timeline.get_event(idx).can_contain_events:
-				ignore += 1
-			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
-				ignore -= 1
+		dialogic.current_event_idx = get_end_branch_index()
 
-		dialogic.current_event_idx = idx-1
 	finish()
 
 
-## only called if the previous event was an end-branch event
-## return true if this event should be executed if the previous event was an end-branch event
-func should_execute_this_branch() -> bool:
+func _is_branch_starter() -> bool:
 	return condition_type == ConditionTypes.IF
 
 
@@ -60,7 +49,7 @@ func _init() -> void:
 
 
 # return a control node that should show on the END BRANCH node
-func get_end_branch_control() -> Control:
+func _get_end_branch_control() -> Control:
 	return load(get_script().resource_path.get_base_dir().path_join('ui_condition_end.tscn')).instantiate()
 
 ################################################################################
@@ -103,7 +92,7 @@ func is_valid_event(string:String) -> bool:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_edit('condition_type', ValueType.FIXED_OPTIONS, {
 		'options': [
 			{
@@ -125,12 +114,12 @@ func build_event_editor():
 ####################### CODE COMPLETION ########################################
 ################################################################################
 
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	if (line.begins_with('if') or line.begins_with('elif')) and symbol == '{':
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', TextNode.syntax_highlighter.code_flow_color)
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', TextNode.syntax_highlighter.code_flow_color)

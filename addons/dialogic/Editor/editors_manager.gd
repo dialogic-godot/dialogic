@@ -7,21 +7,22 @@ signal resource_opened(resource)
 signal editor_changed(previous, current)
 
 ### References
-@onready var sidebar = $HSplit/Sidebar
-@onready var editors_holder = $HSplit/VBox/Editors
-@onready var toolbar = $HSplit/VBox/Toolbar
-@onready var tabbar = $HSplit/VBox/Toolbar/EditorTabBar
+@onready var hsplit := $HSplit
+@onready var sidebar := $HSplit/Sidebar
+@onready var editors_holder := $HSplit/VBox/Editors
+@onready var toolbar := $HSplit/VBox/Toolbar
+@onready var tabbar := $HSplit/VBox/Toolbar/EditorTabBar
 
 var reference_manager: Node:
 	get:
-		return get_node("../../ReferenceManager")
+		return get_node("../ReferenceManager")
 
 ## Information on supported resource extensions and registered editors
 var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null
 var editors := {}
 var supported_file_extensions := []
-var used_resources_cache : Array = []
+var used_resources_cache: Array = []
 
 
 ################################################################################
@@ -55,7 +56,7 @@ func _ready() -> void:
 
 	DialogicResourceUtil.update()
 
-	await get_parent().get_parent().ready
+	await get_parent().ready
 	await get_tree().process_frame
 
 	load_saved_state()
@@ -64,6 +65,8 @@ func _ready() -> void:
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
+
+	hsplit.set("theme_override_constants/separation", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
 
 func _add_editor(path:String) -> void:
@@ -117,7 +120,7 @@ func _on_editors_tab_changed(tab:int) -> void:
 func edit_resource(resource:Resource, save_previous:bool = true, silent:= false) -> void:
 	if not resource:
 		# The resource doesn't exists, show an error
-		print('[Dialogic] The resource you are trying to edit doesn\'t exists any more.')
+		print("[Dialogic] The resource you are trying to edit doesn't exist any more.")
 		return
 
 	if current_editor and save_previous:
@@ -166,7 +169,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	tabbar.current_tab = editor.get_index()
 
 	if editor.current_resource:
-		var text:String = editor.current_resource.resource_path.get_file()
+		var text: String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.UNSAVED:
 			text += "(*)"
 
@@ -198,7 +201,7 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 
 
 func _on_add_resource_dialog_accepted(path:String, callable:Callable) -> void:
-	var file_name :String= path.get_file().trim_suffix('.'+path.get_extension())
+	var file_name: String = path.get_file().trim_suffix('.'+path.get_extension())
 	for i in ['#','&','+',';','(',')','!','*','*','"',"'",'%', '$', ':','.',',']:
 		file_name = file_name.replace(i, '')
 	callable.call(path.trim_suffix(path.get_file()).path_join(file_name)+'.'+path.get_extension())
@@ -206,7 +209,8 @@ func _on_add_resource_dialog_accepted(path:String, callable:Callable) -> void:
 
 ## Called by the plugin.gd script on CTRL+S or Debug Game start
 func save_current_resource() -> void:
-	current_editor._save()
+	if current_editor:
+		current_editor._save()
 
 
 ## Change the resource state
@@ -276,5 +280,5 @@ func get_current_editor() -> DialogicEditor:
 	return current_editor
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	DialogicUtil.set_editor_setting('last_resources', used_resources_cache)

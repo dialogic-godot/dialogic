@@ -5,12 +5,12 @@ extends Window
 ## Other scripts can call the add_ref_change() method to register changes directly
 ##   or use the helpers add_variable_ref_change() and add_portrait_ref_change()
 
-@onready var editors_manager := get_node("../Margin/EditorsManager")
+@onready var editors_manager := get_node("../EditorsManager")
 @onready var broken_manager := get_node("Manager/Tabs/BrokenReferences")
 enum Where {EVERYWHERE, BY_CHARACTER, TEXTS_ONLY}
 enum Types {TEXT, VARIABLE, PORTRAIT, CHARACTER_NAME, TIMELINE_NAME}
 
-var icon_button :Button = null
+var icon_button: Button = null
 
 
 func _ready() -> void:
@@ -31,7 +31,7 @@ func _ready() -> void:
 
 	icon_button.add_child(dot)
 
-	var old_changes :Array = DialogicUtil.get_editor_setting('reference_changes', [])
+	var old_changes: Array = DialogicUtil.get_editor_setting('reference_changes', [])
 	if !old_changes.is_empty():
 		broken_manager.reference_changes = old_changes
 
@@ -54,27 +54,39 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 			if '<replace>' in old_name:
 				regexes = [old_name]
 			else:
-				regexes = ['(?<replace>'+old_name.replace('/', '\\/')+')']
+				regexes = [
+					r'(?<replace>%s)' % old_name.replace('/', '\\/')
+					]
 				if !case_sensitive:
 					regexes[0] = '(?i)'+regexes[0]
 				if whole_words:
 					regexes = ['\\b'+regexes[0]+'\\b']
 
 		Types.VARIABLE:
-			regexes = ['{(?<replace>\\s*'+old_name.replace('/', '\\/')+'\\s*)}', 'var\\s*=\\s*"(?<replace>\\s*'+old_name.replace('/', '\\/')+'\\s*)"']
+			regexes = [
+				r'{(?<replace>\s*%s\s*)}' 			% old_name.replace("/", "\\/"),
+				r'var\s*=\s*"(?<replace>\s*%s\s*)"' % old_name.replace("/", "\\/")
+				]
 			category_name = "Variables"
 
 		Types.PORTRAIT:
-			regexes = ['(?m)^[^:(]*\\((?<replace>'+old_name.replace('/', '\\/')+')\\)', '\\[\\s*portrait\\s*=(?<replace>\\s*'+old_name.replace('/', '\\/')+'\\s*)\\]']
+			regexes = [
+				r'(?m)^[^:(\n]*\((?<replace>%s)\)' 			% old_name.replace('/', '\\/'),
+				r'\[\s*portrait\s*=(?<replace>\s*%s\s*)\]' 	% old_name.replace('/', '\\/')
+				]
 			category_name = "Portraits by "+character_names[0]
 
 		Types.CHARACTER_NAME:
 			# for reference: ((join|leave|update) )?(?<replace>NAME)(?!\B)(?(1)|(?!([^:\n]|\\:)*(\n|$)))
-			regexes = ['((join|leave|update) )?(?<replace>'+old_name+')(?!\\B)(?(1)|(?!([^:\\n]|\\\\:)*(\\n|$)))']
+			regexes = [
+				r'((join|leave|update) )?(?<replace>%s)(?!\B)(?(1)|(?!([^:\n]|\\:)*(\n|$)))' % old_name
+				]
 			category_name = "Renamed Character Files"
 
 		Types.TIMELINE_NAME:
-			regexes = ['timeline ?= ?" ?(?<replace>'+old_name+') ?"']
+			regexes = [
+				r'timeline ?= ?" ?(?<replace>%s) ?"' % old_name
+				]
 			category_name = "Renamed Timeline Files"
 
 	if where != Where.BY_CHARACTER:
@@ -99,7 +111,9 @@ func add_ref_change(old_name:String, new_name:String, type:Types, where:=Where.T
 		'category':category_name,
 		'character_names':character_names,
 		'texts_only':where == Where.TEXTS_ONLY,
-		'type':type
+		'type':type,
+		'case_sensitive':case_sensitive,
+		'whole_words':whole_words,
 		})
 
 	update_indicator()
@@ -149,13 +163,16 @@ func open() -> void:
 	DialogicResourceUtil.update_directory('dch')
 	DialogicResourceUtil.update_directory('dtl')
 	popup_centered_ratio(0.5)
-	move_to_foreground()
 	grab_focus()
 
 
 func _on_close_requested() -> void:
 	hide()
 	broken_manager.close()
+
+
+func get_change_count() -> int:
+	return len(broken_manager.reference_changes)
 
 
 func update_indicator() -> void:

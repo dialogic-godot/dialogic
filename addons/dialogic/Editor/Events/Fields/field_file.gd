@@ -8,8 +8,8 @@ extends DialogicVisualEditorField
 
 @export var file_filter := ""
 @export var placeholder := ""
-@export var file_mode : EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
-var resource_icon:Texture:
+@export var file_mode: EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
+var resource_icon: Texture:
 	get:
 		return resource_icon
 	set(new_icon):
@@ -21,8 +21,9 @@ var resource_icon:Texture:
 			%Field.theme_type_variation = "LineEditWithIcon"
 
 var max_width := 200
-var current_value : String
-var hide_reset:bool = false
+var current_value: String
+var hide_reset := false
+var show_editing_button := false
 
 #endregion
 
@@ -35,6 +36,9 @@ func _ready() -> void:
 
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)
+
+	%EditButton.icon = get_theme_icon("Edit", "EditorIcons")
+	%EditButton.button_down.connect(_on_EditButton_pressed)
 
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%ClearButton.button_up.connect(clear_path)
@@ -49,13 +53,15 @@ func _load_display_info(info:Dictionary) -> void:
 	placeholder = info.get('placeholder', '')
 	resource_icon = info.get('icon', null)
 	await ready
+
 	if resource_icon == null and info.has('editor_icon'):
 		resource_icon = callv('get_theme_icon', info.editor_icon)
 
 
-func _set_value(value:Variant) -> void:
+func _set_value(value: Variant) -> void:
 	current_value = value
-	var text := value
+	var text: String = value
+
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
 		text = value.get_file()
 		%Field.tooltip_text = value
@@ -70,9 +76,13 @@ func _set_value(value:Variant) -> void:
 		%Field.custom_minimum_size.x = 0
 		%Field.expand_to_text_length = true
 
-	%Field.text = text
+	%EditButton.visible = show_editing_button and value
 
-	%ClearButton.visible = !value.is_empty() and !hide_reset
+	if not %Field.text == text:
+		value_changed.emit(property_name, current_value)
+		%Field.text = text
+
+	%ClearButton.visible = not value.is_empty() and not hide_reset
 
 
 #endregion
@@ -87,12 +97,17 @@ func _on_OpenButton_pressed() -> void:
 
 func _on_file_dialog_selected(path:String) -> void:
 	_set_value(path)
-	emit_signal("value_changed", property_name, path)
+	value_changed.emit(property_name, path)
+
+
+func _on_EditButton_pressed() -> void:
+	if ResourceLoader.exists(current_value):
+		EditorInterface.inspect_object(load(current_value), "", true)
 
 
 func clear_path() -> void:
 	_set_value("")
-	emit_signal("value_changed", property_name, "")
+	value_changed.emit(property_name, "")
 
 #endregion
 
@@ -100,16 +115,22 @@ func clear_path() -> void:
 #region DRAG AND DROP
 ################################################################################
 
-func _can_drop_data_fw(at_position: Vector2, data: Variant) -> bool:
+func _can_drop_data_fw(_at_position: Vector2, data: Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
+
 		if file_filter:
+
 			if '*.'+data.files[0].get_extension() in file_filter:
 				return true
+
 		else: return true
+
 	return false
 
-func _drop_data_fw(at_position: Vector2, data: Variant) -> void:
-	_on_file_dialog_selected(data.files[0])
+
+func _drop_data_fw(_at_position: Vector2, data: Variant) -> void:
+	var file: String = data.files[0]
+	_on_file_dialog_selected(file)
 
 #endregion
 
@@ -117,11 +138,15 @@ func _drop_data_fw(at_position: Vector2, data: Variant) -> void:
 #region VISUALS FOR FOCUS
 ################################################################################
 
-func _on_field_focus_entered():
+func _on_field_focus_entered() -> void:
 	$FocusStyle.show()
 
-func _on_field_focus_exited():
+
+func _on_field_focus_exited() -> void:
 	$FocusStyle.hide()
-	_on_file_dialog_selected(%Field.text)
+	var field_text: String = %Field.text
+	if current_value == field_text or (file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR and current_value.get_file() == field_text):
+		return
+	_on_file_dialog_selected(field_text)
 
 #endregion

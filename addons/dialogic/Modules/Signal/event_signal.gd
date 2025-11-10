@@ -41,6 +41,8 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 8
+	help_page_path = "https://docs.dialogic.pro/dialogic-signals.html#1-signal-event"
+
 
 
 ################################################################################
@@ -63,7 +65,7 @@ func get_shortcode_parameters() -> Dictionary:
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
+func build_event_editor() -> void:
 	add_header_label("Emit dialogic signal with argument")
 	add_header_label("(Dictionary in body)", 'argument_type == ArgumentTypes.DICTIONARY')
 	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, 'argument_type == ArgumentTypes.STRING')

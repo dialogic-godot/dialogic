@@ -2,9 +2,24 @@ extends DialogicSubsystem
 
 ## Subsystem that manages variables and allows to access them.
 
-## Emitted if a dialogic variable changes
+## Emitted if a dialogic variable changes, gives a dictionary with the following keys:[br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `variable`  | [type String] | The name of the variable that is getting changed. [br]
+## `new_value` | [type Variant]| The value that [variable] has after the change (the result). [br]
 signal variable_changed(info:Dictionary)
-## Emitted on any set variable event
+
+## Emitted on a set variable event, gives a dictionary with the following keys:[br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `variable`  | [type String] | The name of the variable that is getting changed. [br]
+## `orig_value`| [type Variant]| The value that [variable] had before. [br]
+## `new_value` | [type Variant]| The value that [variable] has after the change (the result). [br]
+## `value`     | [type Variant]| The value that the variable is changed by/to. [br]
+## `value_str` | [type String] | Whatever has been given as the value (not interpreted, so a variable is just a string).[br]
+@warning_ignore("unused_signal") # This is emitted from the variable event
 signal variable_was_set(info:Dictionary)
 
 
@@ -45,7 +60,7 @@ func parse_variables(text:String) -> String:
 
 	# Trying to extract the curly brackets from the text
 	var regex := RegEx.new()
-	regex.compile("(?<!\\\\)\\{(?<variable>([^{}]|\\{.*\\})*)\\}")
+	regex.compile(r"(?<!\\)\{(?<variable>([^{}]|\{[^}]*\})*)\}")
 
 	var parsed := text.replace('\\{', '{')
 	for result in regex.search_all(text):
@@ -69,16 +84,51 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 		var from := variable_name.get_slice('.', 0)
 		var variable := variable_name.trim_prefix(from+'.')
 
-		for a in get_autoloads():
-			if a.name == from:
-				a.set(variable, value)
-				return true
+		var autoloads := get_autoloads()
+		var object: Object = null
+		if from in autoloads:
+			object = autoloads[from]
+			while variable.count("."):
+				from = variable.get_slice('.', 0)
+				if from in object and object.get(from) is Object:
+					object = object.get(from)
+				variable = variable.trim_prefix(from+'.')
+
+		if object:
+			var sub_idx := ""
+			if '[' in variable:
+				sub_idx = variable.substr(variable.find('['))
+			variable = variable.trim_suffix(sub_idx)
+			sub_idx = sub_idx.trim_prefix('[').trim_suffix(']')
+
+			if variable in object:
+				match typeof(object.get(variable)):
+					TYPE_ARRAY:
+						if not sub_idx:
+							if typeof(value) == TYPE_ARRAY:
+								object.set(variable, value)
+								return true
+						elif sub_idx.is_valid_float():
+							object.get(variable).remove_at(int(sub_idx))
+							object.get(variable).insert(int(sub_idx), value)
+							return true
+					TYPE_DICTIONARY:
+						if not sub_idx:
+							if typeof(value) == TYPE_DICTIONARY:
+								object.set(variable, value)
+								return true
+						else:
+							object.get(variable).merge({str_to_var(sub_idx):value}, true)
+							return true
+					_:
+						object.set(variable, value)
+						return true
 
 	printerr("[Dialogic] Tried setting non-existant variable '"+variable_name+"'.")
 	return false
 
 
-func get_variable(variable_path:String, default: Variant = null) -> Variant:
+func get_variable(variable_path:String, default: Variant = null, no_warning := false) -> Variant:
 	if variable_path.begins_with('{') and variable_path.ends_with('}') and variable_path.count('{') == 1:
 		variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 
@@ -89,12 +139,13 @@ func get_variable(variable_path:String, default: Variant = null) -> Variant:
 
 	# Second assume this is an expression.
 	else:
-		value = dialogic.Expressions.execute_string(variable_path, null)
+		value = dialogic.Expressions.execute_string(variable_path, null, no_warning)
 		if value != null:
 			return value
 
 	# If everything fails, tell the user and return the default
-	printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
+	if not no_warning:
+		printerr("[Dialogic] Failed parsing variable/expression '"+variable_path+"'.")
 	return default
 
 
@@ -115,10 +166,10 @@ func has(variable:="") -> bool:
 ## Allows to set dialogic built-in variables
 func _set(property, value) -> bool:
 	property = str(property)
-	var variables: Dictionary = dialogic.current_state_info['variables']
-	if property in variables.keys():
-		if typeof(variables[property]) != TYPE_DICTIONARY:
-			variables[property] = value
+	var vars: Dictionary = dialogic.current_state_info['variables']
+	if property in vars.keys():
+		if typeof(vars[property]) != TYPE_DICTIONARY:
+			vars[property] = value
 			return true
 		if value is VariableFolder:
 			return true
@@ -143,7 +194,7 @@ func folders() -> Array:
 	return result
 
 
-func variables(absolute:=false) -> Array:
+func variables(_absolute:=false) -> Array:
 	var result := []
 	for i in dialogic.current_state_info['variables'].keys():
 		if not dialogic.current_state_info['variables'][i] is Dictionary:
@@ -154,10 +205,10 @@ func variables(absolute:=false) -> Array:
 #region HELPERS
 ################################################################################
 
-func get_autoloads() -> Array:
-	var autoloads := []
-	for c in get_tree().root.get_children():
-		autoloads.append(c)
+func get_autoloads() -> Dictionary:
+	var autoloads := {}
+	for node: Node in get_tree().root.get_children():
+		autoloads[node.name] = node
 	return autoloads
 
 
@@ -179,7 +230,7 @@ func merge_folder(new:Dictionary, defs:Dictionary) -> Dictionary:
 class VariableFolder:
 	var data := {}
 	var path := ""
-	var outside : DialogicSubsystem
+	var outside: DialogicSubsystem
 
 	func _init(_data:Dictionary, _path:String, _outside:DialogicSubsystem):
 		data = _data

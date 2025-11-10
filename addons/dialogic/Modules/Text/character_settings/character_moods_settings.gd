@@ -68,7 +68,7 @@ func update_mood_list(selected_name := "") -> void:
 	%MoodList.clear()
 
 	for mood in current_moods_info:
-		var idx :int = %MoodList.add_item(mood, get_theme_icon("AudioStreamPlayer", "EditorIcons"))
+		var idx: int = %MoodList.add_item(mood, get_theme_icon("AudioStreamPlayer", "EditorIcons"))
 		if mood == selected_name:
 			%MoodList.select(idx)
 			_on_mood_list_item_selected(idx)
@@ -218,6 +218,7 @@ func set_default_button(enabled:bool) -> void:
 
 func preview() -> void:
 	$Preview.load_overwrite(get_mood_info())
+	$Preview._on_started_revealing_text()
 	var preview_timer := Timer.new()
 	DialogicUtil.update_timer_process_callback(preview_timer)
 	add_child(preview_timer)

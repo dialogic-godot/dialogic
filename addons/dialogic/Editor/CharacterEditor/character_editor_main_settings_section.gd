@@ -5,10 +5,11 @@ extends Control
 ## Base class for all character editor main sections. Methods should be overriden.
 
 ## Emit this, if something changed
+@warning_ignore("unused_signal") # this is used by extending scripts
 signal changed
 
 ## Reference to the character editor, set when instantiated
-var character_editor:Control
+var character_editor: Control
 
 ## If not empty, a hint icon is added to the section title.
 var hint_text := ""
@@ -30,7 +31,7 @@ func _start_opened() -> bool:
 
 
 ## Overwrite to load all the information from the character into this section.
-func _load_character(resource:DialogicCharacter) -> void:
+func _load_character(_resource:DialogicCharacter) -> void:
 	pass
 
 

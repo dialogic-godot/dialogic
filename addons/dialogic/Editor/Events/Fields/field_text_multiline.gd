@@ -5,9 +5,6 @@ extends DialogicVisualEditorField
 
 @onready var code_completion_helper: Node = find_parent('EditorsManager').get_node('CodeCompletionHelper')
 
-var previous_width := 0
-var height_recalculation_queued := false
-
 
 #region MAIN METHODS
 ################################################################################
@@ -15,7 +12,6 @@ var height_recalculation_queued := false
 func _ready() -> void:
 	self.text_changed.connect(_on_text_changed)
 	self.syntax_highlighter = code_completion_helper.text_syntax_highlighter
-	resized.connect(_resized)
 
 
 func _load_display_info(info:Dictionary) -> void:
@@ -24,7 +20,6 @@ func _load_display_info(info:Dictionary) -> void:
 
 func _set_value(value:Variant) -> void:
 	self.text = str(value)
-	queue_height_recalculation()
 
 
 func _autofocus() -> void:
@@ -36,40 +31,8 @@ func _autofocus() -> void:
 #region SIGNAL METHODS
 ################################################################################
 
-func _on_text_changed(value := "") -> void:
+func _on_text_changed(_value := "") -> void:
 	value_changed.emit(property_name, self.text)
-	_request_code_completion(true)
-	queue_height_recalculation()
-
-
-func _resized() -> void:
-	if previous_width != size.x:
-		queue_height_recalculation()
-		previous_width = size.x
-
-#endregion
-
-
-#region HEIGHT CALCULATION
-################################################################################
-
-func queue_height_recalculation():
-	if !is_node_ready():
-		await _ready()
-		await get_tree().process_frame
-	if !height_recalculation_queued:
-		height_recalculation_queued = true
-		recalculate_height.call_deferred()
-
-
-## This shouldn't be necessary bug [fit_content_height] creates a crash.
-## TODO Remove again once https://github.com/godotengine/godot/issues/80546 is fixed.
-func recalculate_height() -> void:
-	height_recalculation_queued = false
-	var font :Font = get_theme_font("font")
-	var text_size = font.get_multiline_string_size(self.text+' ', HORIZONTAL_ALIGNMENT_LEFT, size.x, get_theme_font_size("font_size"))
-	custom_minimum_size.y = text_size.y+20+4*(floor(text_size.y/get_theme_font_size("font_size")))
-	self.scroll_vertical = 0
 
 #endregion
 

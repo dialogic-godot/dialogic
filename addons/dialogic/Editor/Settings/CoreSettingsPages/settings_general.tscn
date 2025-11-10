@@ -1,0 +1,234 @@
+[gd_scene load_steps=6 format=3 uid="uid://b873ho41sklv8"]
+
+[ext_resource type="Script" uid="uid://chb81lvjh47jr" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_general.gd" id="2"]
+[ext_resource type="Script" uid="uid://bo0dfmsyky1mm" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_tools.gd" id="2_3xeuv"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_kqhx5"]
+[ext_resource type="Script" uid="uid://vg4wbm0n64ws" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/tool_resave.gd" id="3_dbfvv"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_i7rug"]
+
+[node name="General" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SectionToolsTitle" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Tools"
+
+[node name="Tools" type="Node" parent="."]
+script = ExtResource("2_3xeuv")
+
+[node name="ResaveTool" type="Node" parent="Tools"]
+script = ExtResource("3_dbfvv")
+
+[node name="ToolButtons" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ToolProgress" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+max_value = 1.0
+value = 1.0
+
+[node name="HSeparator5" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SectionBehaviourTitle" type="Label" parent="HBoxContainer5"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Layout Node Behaviour"
+
+[node name="HintTooltip" parent="HBoxContainer5" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "The layout scene configured in the Layout editor is automatically 
+instanced when calling Dialogic.start(). Depending on your game, 
+you might want it to be deleted after the dialogue, be hidden 
+(as reinstancing often is wasting resources) or kept visible. "
+texture = null
+hint_text = "The layout scene configured in the Layout editor is automatically 
+instanced when calling Dialogic.start(). Depending on your game, 
+you might want it to be deleted after the dialogue, be hidden 
+(as reinstancing often is wasting resources) or kept visible. "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+text = "On timeline end"
+
+[node name="LayoutNodeEndBehaviour" type="OptionButton" parent="HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+fit_to_longest_item = false
+item_count = 3
+popup/item_0/text = "Delete Layout Node"
+popup/item_1/text = "Hide Layout Node"
+popup/item_1/id = 1
+popup/item_2/text = "Keep Layout Node"
+popup/item_2/id = 2
+
+[node name="HSeparator4" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer6/HBoxContainer4"]
+layout_mode = 2
+
+[node name="SectionExtensionsTitle" type="Label" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Extensions"
+
+[node name="HintTooltip" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Configure where dialogic looks for custom modules.
+
+You will have to restart the project to see the change take action."
+texture = null
+hint_text = "Configure where dialogic looks for custom modules.
+
+You will have to restart the project to see the change take action."
+
+[node name="Reload" type="Button" parent="HBoxContainer6/HBoxContainer4/HBoxContainer5"]
+layout_mode = 2
+text = "Reload"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer6/HBoxContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer6/HBoxContainer4/HBoxContainer"]
+layout_mode = 2
+text = "Extensions folder"
+
+[node name="ExtensionsFolderPicker" parent="HBoxContainer6/HBoxContainer4/HBoxContainer" instance=ExtResource("3_i7rug")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder = "res://addons/dialogic_additions/Events"
+file_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer6"]
+layout_mode = 2
+
+[node name="ExtensionsPanel" type="PanelContainer" parent="HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DialogicPanelA"
+
+[node name="VBox" type="VBoxContainer" parent="HBoxContainer6/ExtensionsPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer6/ExtensionsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6"]
+layout_mode = 2
+theme_type_variation = &"DialogicSubTitle"
+text = "Extension Creator "
+
+[node name="HintTooltip" parent="HBoxContainer6/ExtensionsPanel/VBox/HBoxContainer6" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Use the Exension Creator to quickly setup custom modules!"
+texture = null
+hint_text = "Use the Exension Creator to quickly setup custom modules!"
+
+[node name="CreateExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create New Extension"
+
+[node name="ExtensionCreator" type="VBoxContainer" parent="HBoxContainer6/ExtensionsPanel/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ExtensionCreatorOptions" type="GridContainer" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator"]
+layout_mode = 2
+columns = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
+layout_mode = 2
+text = "Name:"
+
+[node name="NameEdit" type="LineEdit" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. \"Print\", \"Item\", \"Door\", \"Quest\""
+
+[node name="ModeLabel" type="Label" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
+layout_mode = 2
+text = "Setup mode:"
+
+[node name="ExtensionMode" type="OptionButton" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/ExtensionCreatorOptions"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Event only"
+popup/item_1/text = "Event+Subsystem"
+popup/item_1/id = 1
+popup/item_2/text = "Subsystem only"
+popup/item_2/id = 2
+popup/item_3/text = "Complex"
+popup/item_3/id = 3
+
+[node name="SubmitExtensionButton" type="Button" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create"
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TimerTitle" type="Label" parent="HBoxContainer7"]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "Timer processing"
+
+[node name="HintTooltip" parent="HBoxContainer7" instance=ExtResource("2_kqhx5")]
+layout_mode = 2
+tooltip_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
+texture = null
+hint_text = "Change whether dialogics timers process in physics_process (frame-rate independent) or process."
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+layout_mode = 2
+text = "Process timers in physics_process"
+
+[node name="PhysicsTimerButton" type="CheckBox" parent="HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="item_selected" from="HBoxContainer3/LayoutNodeEndBehaviour" to="." method="_on_layout_node_end_behaviour_item_selected"]
+[connection signal="pressed" from="HBoxContainer6/HBoxContainer4/HBoxContainer5/Reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/CreateExtensionButton" to="." method="_on_create_extension_button_pressed"]
+[connection signal="pressed" from="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator/SubmitExtensionButton" to="." method="_on_submit_extension_button_pressed"]

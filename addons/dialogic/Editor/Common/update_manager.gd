@@ -11,13 +11,13 @@ enum DownloadResult {SUCCESS, FAILURE}
 enum ReleaseState {ALPHA, BETA, STABLE}
 
 const REMOTE_RELEASES_URL := "https://api.github.com/repos/dialogic-godot/dialogic/releases"
-const TEMP_FILE_NAME = "user://temp.zip"
+const TEMP_FILE_NAME := "user://temp.zip"
 
-var current_version : String = ""
+var current_version := ""
 var update_info: Dictionary
 var current_info: Dictionary
 
-var version_indicator :Button
+var version_indicator: Button
 
 func _ready() -> void:
 	request_update_check()
@@ -43,14 +43,14 @@ func _on_UpdateCheck_request_completed(result:int, response_code:int, headers:Pa
 		return
 
 	# Work out the next version from the releases information on GitHub
-	var response :Variant= JSON.parse_string(body.get_string_from_utf8())
+	var response: Variant = JSON.parse_string(body.get_string_from_utf8())
 	if typeof(response) != TYPE_ARRAY: return
 
 
 	var current_release_info := get_release_tag_info(get_current_version())
 
 	# GitHub releases are in order of creation, not order of version
-	var versions :Array = (response as Array).filter(compare_versions.bind(current_release_info))
+	var versions: Array = (response as Array).filter(compare_versions.bind(current_release_info))
 	if versions.size() > 0:
 		update_info = versions[0]
 		update_check_completed.emit(UpdateCheckResult.UPDATE_AVAILABLE)
@@ -92,13 +92,13 @@ func get_release_tag_info(release_tag:String) -> Dictionary:
 	release_tag = release_tag.substr(0, release_tag.find('('))
 	release_tag = release_tag.to_lower()
 
-	var regex := RegEx.create_from_string('(?<major>\\d+\\.\\d+)(-(?<state>alpha|beta)-)?(?(2)(?<stateversion>\\d*)|\\.(?<minor>\\d*))?')
+	var regex := RegEx.create_from_string(r"(?<major>\d+\.\d+)(-(?<state>alpha|beta)-)?(?(2)(?<stateversion>\d*)|\.(?<minor>\d*))?")
 
 	var result: RegExMatch = regex.search(release_tag)
 	if !result:
 		return {}
 
-	var info:Dictionary = {'tag':release_tag}
+	var info: Dictionary = {'tag':release_tag}
 	info['major'] = float(result.get_string('major'))
 	info['minor'] = int(result.get_string('minor'))
 
@@ -141,7 +141,7 @@ func _on_DownloadRequest_completed(result:int, response_code:int, headers:Packed
 	zip_reader.open(TEMP_FILE_NAME)
 	var files: PackedStringArray = zip_reader.get_files()
 
-	var base_path = files[0].path_join('addons/')
+	var base_path: String = files[0].path_join('addons/')
 	for path in files:
 		if not "dialogic/" in path:
 			continue
@@ -162,14 +162,14 @@ func _on_DownloadRequest_completed(result:int, response_code:int, headers:Packed
 ######################	SOME UI MANAGEMENT #####################################
 ################################################################################
 
-func setup_version_indicator():
+func setup_version_indicator() -> void:
 	version_indicator = %Sidebar.get_node('%CurrentVersion')
 	version_indicator.pressed.connect($Window/UpdateInstallWindow.open)
 	version_indicator.text = get_current_version()
 
 
 func _on_update_check_completed(result:int):
-	var result_color : Color
+	var result_color: Color
 	match result:
 		UpdateCheckResult.UPDATE_AVAILABLE:
 			result_color = version_indicator.get_theme_color("warning_color", "Editor")
@@ -188,5 +188,3 @@ func _on_update_check_completed(result:int):
 	version_indicator.add_theme_color_override('font_hover_color', result_color.lightened(0.5))
 	version_indicator.add_theme_color_override('font_pressed_color', result_color)
 	version_indicator.add_theme_color_override('font_focus_color', result_color)
-
-

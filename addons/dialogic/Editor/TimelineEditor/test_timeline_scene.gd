@@ -2,7 +2,7 @@ extends Control
 
 func _ready() -> void:
 	print("[Dialogic] Testing scene was started.")
-	if !ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
+	if not ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 
@@ -14,18 +14,19 @@ func _ready() -> void:
 			scene.position = get_viewport_rect().size/2.0
 
 	randomize()
-	var current_timeline: String = DialogicUtil.get_editor_setting('current_timeline_path', null)
-	if !current_timeline:
+	var current_timeline: String = DialogicUtil.get_editor_setting("current_timeline_path", "")
+	var start_from_index: int = DialogicUtil.get_editor_setting("play_from_index", -1)
+	if not current_timeline:
 		get_tree().quit()
-	DialogicUtil.autoload().start(current_timeline)
+	DialogicUtil.autoload().start(current_timeline, start_from_index)
 	DialogicUtil.autoload().timeline_ended.connect(get_tree().quit)
-	DialogicUtil.autoload().signal_event.connect(recieve_event_signal)
-	DialogicUtil.autoload().text_signal.connect(recieve_text_signal)
+	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
+	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
 
-func recieve_event_signal(argument:String) -> void:
+func receive_event_signal(argument:Variant) -> void:
 	print("[Dialogic] Encountered a signal event: ", argument)
 
-func recieve_text_signal(argument:String) -> void:
+func receive_text_signal(argument:String) -> void:
 	print("[Dialogic] Encountered a signal in text: ", argument)
 
 func _input(event:InputEvent) -> void:
@@ -40,5 +41,4 @@ func _input(event:InputEvent) -> void:
 		var is_auto_skip_enabled := auto_skip.enabled
 
 		auto_skip.disable_on_unread_text = false
-		auto_skip.enabled = !is_auto_skip_enabled
-
+		auto_skip.enabled = not is_auto_skip_enabled

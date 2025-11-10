@@ -1,17 +1,17 @@
 [gd_scene load_steps=10 format=3 uid="uid://ysqbusmy0qma"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.gd" id="1_8smxc"]
+[ext_resource type="Script" uid="uid://cvgok7bxva5e2" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.gd" id="1_8smxc"]
 [ext_resource type="Theme" uid="uid://cqst728xxipcw" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="2_x0fhp"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/TimelineArea.gd" id="3_sap1x"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventBlock/event_right_click_menu.gd" id="4_ugiq6"]
+[ext_resource type="Script" uid="uid://b6ka2avnh1u55" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/TimelineArea.gd" id="3_sap1x"]
+[ext_resource type="Script" uid="uid://n1knm2ohcehu" path="res://addons/dialogic/Editor/Events/EventBlock/event_right_click_menu.gd" id="4_ugiq6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plab4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6gqu8"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dov6v"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jujwh"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -24,7 +24,7 @@ border_width_right = 2
 border_width_bottom = 2
 corner_detail = 1
 
-[sub_resource type="Image" id="Image_y3447"]
+[sub_resource type="Image" id="Image_3temo"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -33,8 +33,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_vg181"]
-image = SubResource("Image_y3447")
+[sub_resource type="ImageTexture" id="ImageTexture_xe7d2"]
+image = SubResource("Image_3temo")
 
 [node name="TimelineVisualEditor" type="MarginContainer"]
 anchors_preset = 15
@@ -70,27 +70,32 @@ size_flags_vertical = 3
 [node name="EventPopupMenu" type="PopupMenu" parent="View/TimelineArea"]
 unique_name_in_owner = true
 size = Vector2i(165, 124)
-theme_override_styles/panel = SubResource("StyleBoxFlat_plab4")
-theme_override_styles/hover = SubResource("StyleBoxFlat_dov6v")
-item_count = 6
-item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_vg181")
-item_0/id = 0
-item_1/text = ""
+theme_override_styles/panel = SubResource("StyleBoxFlat_6gqu8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jujwh")
+item_count = 9
+item_0/text = "Duplicate"
+item_0/icon = SubResource("ImageTexture_xe7d2")
 item_1/id = -1
 item_1/separator = true
-item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_vg181")
+item_2/text = "Documentation"
+item_2/icon = SubResource("ImageTexture_xe7d2")
 item_2/id = 2
-item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_vg181")
+item_3/text = "Open Code"
+item_3/icon = SubResource("ImageTexture_xe7d2")
 item_3/id = 3
-item_4/text = ""
 item_4/id = -1
 item_4/separator = true
-item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_vg181")
+item_5/text = "Move up"
+item_5/icon = SubResource("ImageTexture_xe7d2")
 item_5/id = 5
+item_6/text = "Move down"
+item_6/icon = SubResource("ImageTexture_xe7d2")
+item_6/id = 6
+item_7/id = -1
+item_7/separator = true
+item_8/text = "Delete"
+item_8/icon = SubResource("ImageTexture_xe7d2")
+item_8/id = 8
 script = ExtResource("4_ugiq6")
 
 [node name="RightSidebar" type="ScrollContainer" parent="View"]
@@ -107,5 +112,5 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 
 [connection signal="drag_completed" from="View/TimelineArea" to="." method="_on_timeline_area_drag_completed"]
-[connection signal="index_pressed" from="View/TimelineArea/EventPopupMenu" to="." method="_on_event_popup_menu_index_pressed"]
+[connection signal="id_pressed" from="View/TimelineArea/EventPopupMenu" to="." method="_on_event_popup_menu_id_pressed"]
 [connection signal="resized" from="View/RightSidebar" to="." method="_on_right_sidebar_resized"]

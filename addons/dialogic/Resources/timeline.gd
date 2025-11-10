@@ -1,17 +1,24 @@
 @tool
-extends Resource
+@icon("uid://j7ym07anlusi")
+extends "res://addons/dialogic/Resources/dialogic_identifiable_resource.gd"
 class_name DialogicTimeline
 
 ## Resource that defines a list of events.
 ## It can store them as text and load them from text too.
 
+
 var events: Array = []
-var events_processed: bool = false
+var events_processed := false
+var text_lines_indexed := {}
+var indent_format := "\t"
 
 
-## Method used for printing timeline resources identifiably
-func _to_string() -> String:
-	return "[DialogicTimeline:{file}]".format({"file":resource_path})
+func _get_extension() -> String:
+	return "dtl"
+
+
+func _get_resource_name() -> String:
+	return "DialogicTimeline"
 
 
 ## Helper method
@@ -27,15 +34,22 @@ func from_text(text:String) -> void:
 	events = text.split('\n', true)
 	events_processed = false
 
+	## Take an initial guess about the indentation format
+	## because the text editor needs it but doesn't call _process()
+	for ev in events:
+		indent_format = ev.substr(0, len(ev) - len(ev.strip_edges(true, false)))
+		if indent_format:
+			break
+
 
 ## Stores all events in their text format and returns them as a string
 func as_text() -> String:
-	var result: String = ""
+	var result := ""
 
 	if events_processed:
 		var indent := 0
 		for idx in range(0, len(events)):
-			var event = events[idx]
+			var event: DialogicEvent = events[idx]
 
 			if event.event_name == 'End Branch':
 				indent -= 1
@@ -43,8 +57,8 @@ func as_text() -> String:
 
 			if event != null:
 				for i in event.empty_lines_above:
-					result += "\t".repeat(indent)+"\n"
-				result += "\t".repeat(indent)+event.event_node_as_text.replace('\n', "\n"+"\t".repeat(indent)) + "\n"
+					result += indent_format.repeat(indent)+"\n"
+				result += indent_format.repeat(indent)+event.event_node_as_text.replace('\n', "\n"+indent_format.repeat(indent)) + "\n"
 			if event.can_contain_events:
 				indent += 1
 			if indent < 0:
@@ -58,8 +72,18 @@ func as_text() -> String:
 	return result.strip_edges()
 
 
+## Returns the index of the event that corresponds to a specific line
+func get_index_from_text_line(text:String, line) -> int:
+	from_text(text)
+	process()
+	return text_lines_indexed[line]
+
+
 ## Method that loads all the event resources from the strings, if it wasn't done before
 func process() -> void:
+	if len(events) == 0:
+		return
+
 	if typeof(events[0]) == TYPE_STRING:
 		events_processed = false
 
@@ -73,7 +97,9 @@ func process() -> void:
 	var end_event := DialogicEndBranchEvent.new()
 
 	var prev_indent := ""
+	indent_format = ""
 	var processed_events := []
+	text_lines_indexed = {}
 
 	# this is needed to add an end branch event even to empty conditions/choices
 	var prev_was_opener := false
@@ -83,6 +109,7 @@ func process() -> void:
 	var empty_lines := 0
 	while idx < len(lines)-1:
 		idx += 1
+		text_lines_indexed[idx] = len(processed_events)
 
 		# make sure we are using the string version, in case this was already converted
 		var line := ""
@@ -92,15 +119,21 @@ func process() -> void:
 			line = lines[idx].event_node_as_text
 
 		## Ignore empty lines, but record them in @empty_lines
-		var line_stripped :String = line.strip_edges(true, false)
+		var line_stripped: String = line.strip_edges(true, false)
 		if line_stripped.is_empty():
 			empty_lines += 1
 			continue
 
 		## Add an end event if the indent is smaller then previously
 		var indent: String = line.substr(0,len(line)-len(line_stripped))
+		if indent and ((not indent_format) or not (indent_format in indent)):
+			if not indent_format.is_empty():
+				printerr("Timeline contains varying indentation. Found {0} instead of expected {1}.".format([indent, indent_format]))
+			else:
+				indent_format = indent
 		if len(indent) < len(prev_indent):
-			for i in range(len(prev_indent)-len(indent)):
+			@warning_ignore("integer_division")
+			for i in range(len(prev_indent)/len(indent_format)-len(indent)/len(indent_format)):
 				processed_events.append(end_event.duplicate())
 		## Add an end event if the indent is the same but the previous was an opener
 		## (so for example choice that is empty)
@@ -112,47 +145,50 @@ func process() -> void:
 		## Now we process the event into a resource
 		## by checking on each event if it recognizes this string
 		var event_content: String = line_stripped
-		var event: DialogicEvent
-		for i in event_cache:
-			if i._test_event_string(event_content):
-				event = i.duplicate()
-				break
+		var event: DialogicEvent = event_from_string(event_content, event_cache)
 
 		event.empty_lines_above = empty_lines
-		# add the following lines until the event says it's full, there is an empty line or the indent changes
-		while !event.is_string_full_event(event_content):
+		# add the following lines until the event says it's full or there is an empty line
+		while not event.is_string_full_event(event_content):
 			idx += 1
+			text_lines_indexed[idx] = len(processed_events)
 			if idx == len(lines):
 				break
-			var following_line: String = lines[idx]
-			var following_line_stripped: String = following_line.strip_edges(true, false)
-			var following_line_indent: String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+
+			var following_line_stripped: String = lines[idx].strip_edges(true, false)
+
 			if following_line_stripped.is_empty():
 				break
-			if following_line_indent != indent:
-				idx -= 1
-				break
+
 			event_content += "\n"+following_line_stripped
 
-		event._load_from_string(event_content)
 		event.event_node_as_text = event_content
+		event._load_from_string(event_content)
 
 		processed_events.append(event)
 		prev_was_opener = event.can_contain_events
 		empty_lines = 0
 
-	if !prev_indent.is_empty():
+	if not prev_indent.is_empty():
 		for i in range(len(prev_indent)):
 			processed_events.append(end_event.duplicate())
 
 	events = processed_events
 	events_processed = true
 
+	if indent_format.is_empty():
+		indent_format = "\t"
+
+
 
 ## This method makes sure that all events in a timeline are correctly reset
 func clean() -> void:
 	if not events_processed:
 		return
+	reference()
+	# This is necessary because otherwise INTERNAL GODOT ONESHOT CONNECTIONS
+	# are disconnected before they can disconnect themselves.
+	await Engine.get_main_loop().process_frame
 
 	for event:DialogicEvent in events:
 		for con_in in event.get_incoming_connections():
@@ -161,3 +197,11 @@ func clean() -> void:
 		for sig in event.get_signal_list():
 			for con_out in event.get_signal_connection_list(sig.name):
 				con_out.signal.disconnect(con_out.callable)
+	unreference()
+
+
+static func event_from_string(event_content:String, event_cache:Array) -> DialogicEvent:
+	for i in event_cache:
+		if i._test_event_string(event_content):
+			return i.duplicate()
+	return DialogicTextEvent.new()

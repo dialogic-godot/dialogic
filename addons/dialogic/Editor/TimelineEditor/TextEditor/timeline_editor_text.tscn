@@ -1,17 +1,17 @@
 [gd_scene load_steps=2 format=3 uid="uid://defdeav8rli6o"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
+[ext_resource type="Script" uid="uid://dshp0vy2xrxv" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
 
 [node name="TimelineTextEditor" type="CodeEdit"]
 offset_top = 592.0
 offset_right = 1024.0
 offset_bottom = 600.0
-theme_override_constants/line_spacing = 10
 wrap_mode = 1
-highlight_current_line = true
-draw_tabs = true
 minimap_draw = true
 caret_blink = true
+highlight_current_line = true
+draw_tabs = true
+symbol_lookup_on_click = true
 line_folding = true
 gutters_draw_line_numbers = true
 gutters_draw_fold_gutter = true

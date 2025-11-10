@@ -4,18 +4,48 @@ extends DialogicSubsystem
 
 #region SIGNALS
 
+## Emitted when a text event is reached or a new text section is about to be shown.
+## Gives a dictionary with the following keys: [br]
+## [br]
+## Key         |   Value Type  | Value [br]
+## ----------- | ------------- | ----- [br]
+## `text`      | [type String] | The text that is being displayed. [br]
+## `character` | [type DialogicCharacter]  | The character that says this text. [br]
+## `portrait`  | [type String] | The name of the portrait the character will use. [br]
+## `append`    | [type bool]   | Whether the text will be appended to the previous text. [br]
+@warning_ignore("unused_signal") # This is emitted by the text event.
 signal about_to_show_text(info:Dictionary)
+## Emitted when a text event (or a new text section) starts displaying.
+## This will be AFTER the textox animation, while [signal about_to_show_text] is before.
+## Gives a dictionary with the same values as [signal about_to_show_text]
+@warning_ignore("unused_signal") # This is emitted by the text event.
+signal text_started(info:Dictionary)
+## When the text has finished revealing.
+## Gives a dictionary with the keys text and character.
 signal text_finished(info:Dictionary)
+## Emitted when the speaker changes.
 signal speaker_updated(character:DialogicCharacter)
+## Emitted when the textbox is shown or hidden.
 signal textbox_visibility_changed(visible:bool)
 
-signal animation_textbox_new_text
+## Emitted when the textbox appears.
+## Use this together with the Animations subsystem to implement animations.
+## If you start an animation and want dialogic to wait for it to finish before showing text,
+## call Dialogic.Animations.start_animating() and then Dialogic.animation_finished() once it's done.
 signal animation_textbox_show
+## Emitted when the textbox is hiding. Use like [signal animation_textbox_show].
 signal animation_textbox_hide
+## Emitted when a new text starts. Use like [signal animation_textbox_show].
+signal animation_textbox_new_text
 
-# forwards of the dialog_text signals of all present dialog_text nodes
-signal meta_hover_ended(meta:Variant)
+## Emitted when a meta text on any DialogText node is hovered.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_hover_started(meta:Variant)
+## Emitted when a meta text on any DialogText node is not hovered anymore.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
+signal meta_hover_ended(meta:Variant)
+## Emitted when a meta text on any DialogText node is clicked.
+@warning_ignore("unused_signal") # These are emitted by the NodeDialogText
 signal meta_clicked(meta:Variant)
 
 #endregion
@@ -29,7 +59,7 @@ var text_already_read := false
 var text_effects := {}
 var parsed_text_effect_info: Array[Dictionary] = []
 var text_effects_regex := RegEx.new()
-enum TextModifierModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
+enum ParserModes {ALL=-1, TEXT_ONLY=0, CHOICES_ONLY=1}
 enum TextTypes {DIALOG_TEXT, CHOICE_TEXT}
 var text_modifiers := []
 
@@ -44,15 +74,17 @@ var _voice_synced_text := false
 
 var _autopauses := {}
 
+var parse_stack: Array[Dictionary] = []
+
 
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
-	update_dialog_text('', true)
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+	update_dialog_text("", true)
 	update_name_label(null)
-	dialogic.current_state_info['speaker'] = ""
-	dialogic.current_state_info['text'] = ''
+	dialogic.current_state_info["speaker"] = ""
+	dialogic.current_state_info["text"] = ""
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
 
@@ -62,19 +94,20 @@ func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> 
 			text_node.textbox_root.hide()
 
 
-func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
+func load_game_state(_load_flag:=LoadFlags.FULL_LOAD) -> void:
 	update_textbox(dialogic.current_state_info.get('text', ''), true)
 	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
-	var character: DialogicCharacter = null
-	if dialogic.current_state_info.get('speaker', ""):
-		character = load(dialogic.current_state_info.get('speaker', ""))
+	var character: DialogicCharacter = get_current_speaker()
 
 	if character:
 		update_name_label(character)
 
 
-func post_install():
+func post_install() -> void:
 	dialogic.Settings.connect_to_change('text_speed', _update_user_speed)
+
+	collect_text_effects()
+	collect_text_modifiers()
 
 #endregion
 
@@ -82,19 +115,55 @@ func post_install():
 #region MAIN METHODS
 ####################################################################################################
 
-## Applies modifiers, effects and coloring to the text
-func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT, variables := true, glossary := true, modifiers:= true, effects:= true, color_names:= true) -> String:
-	if variables and dialogic.has_subsystem('VAR'):
-		text = dialogic.VAR.parse_variables(text)
-	if modifiers:
-		text = parse_text_modifiers(text, type)
-	if effects:
-		text = parse_text_effects(text)
-	if color_names:
-		text = color_names(text)
-	if glossary and dialogic.has_subsystem('Glossary'):
-		text = dialogic.Glossary.parse_glossary(text)
+## Applies modifiers, effects and coloring to the text. 
+## Utilizes the parse stack created and sorted in [method load_parse_stack()].
+func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
+	if parse_stack.is_empty():
+		load_parse_stack()
+	
+	for i in parse_stack:
+		if i.type != ParserModes.ALL and type != -1 and i.type != type:
+			continue
+		text = i.method.call(text)
+
 	return text
+
+
+## Creates and sorts a stack of methods that take a text and return it.
+## This includes: variables, text modifiers, text effects, autocolor names and the glossary.
+func load_parse_stack() -> void:
+	parse_stack.clear()
+	
+	if dialogic.has_subsystem('VAR'):
+		parse_stack.append(
+			{
+				"method":dialogic.VAR.parse_variables,
+				"type": ParserModes.ALL,
+				"order": 30,
+			})
+
+	parse_stack.append(
+		{
+			"method": parse_text_effects,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 50,
+		})
+	for i in text_modifiers:
+		parse_stack.append(i)
+	parse_stack.append(
+		{
+			"method": color_character_names,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 90,
+		})
+	parse_stack.append(
+		{
+			"method": dialogic.Glossary.parse_glossary,
+			"type": ParserModes.TEXT_ONLY,
+			"order": 95,
+		})
+	
+	parse_stack.sort_custom(func(a,b):return a["order"] < b["order"])
 
 
 ## When an event updates the text spoken, this can adjust the state of
@@ -119,9 +188,12 @@ func update_textbox(text: String, instant := false) -> void:
 func update_dialog_text(text: String, instant := false, additional := false) -> String:
 	update_text_speed()
 
-
 	if !instant: dialogic.current_state = dialogic.States.REVEALING_TEXT
-	dialogic.current_state_info['text'] = text
+
+	if additional:
+		dialogic.current_state_info['text'] += text
+	else:
+		dialogic.current_state_info['text'] = text
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		connect_meta_signals(text_node)
@@ -132,6 +204,13 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 				text_node.text = text
 
 			else:
+				var current_character := get_current_speaker()
+
+				if current_character:
+					var character_prefix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
+					var character_suffix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
+					text = character_prefix + text + character_suffix
+
 				text_node.reveal_text(text, additional)
 
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
@@ -139,11 +218,12 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
+	# Reset speed multiplier
+	update_text_speed(-1, false, 1)
 	# Reset Auto-Advance temporarily and the No-Skip setting:
-	update_text_speed(-1, false, 1, -1)
 	dialogic.Inputs.auto_advance.enabled_until_next_event = false
 	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.set_manualadvance(true, true)
+	dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
 	set_text_reveal_skippable(true, true)
 
@@ -151,39 +231,43 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 
 func _on_dialog_text_finished() -> void:
-	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['speaker']})
+	text_finished.emit({"text":dialogic.current_state_info["text"], "character":dialogic.current_state_info["speaker"]})
 
 
 ## Updates the visible name on all name labels nodes.
 ## If a name changes, the [signal speaker_updated] signal is emitted.
-func update_name_label(character:DialogicCharacter) -> void:
-	var character_path := character.resource_path if character else ""
-	var current_character_path: String = dialogic.current_state_info.get('character', "")
+func update_name_label(character:DialogicCharacter):
+	var character_id := character.get_identifier() if character else ""
+	var current_character_id: String = dialogic.current_state_info.get("speaker", "")
 
-	if character_path != current_character_path:
-		dialogic.current_state_info['speaker'] = character_path
+	if character_id != current_character_id:
 		speaker_updated.emit(character)
+		dialogic.current_state_info["speaker"] = character_id
+
+	var name_label_text := get_character_name_parsed(character)
 
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-
+		name_label.text = name_label_text
 		if character:
-			var translated_display_name := character.get_display_name_translated()
-
-			if dialogic.has_subsystem('VAR'):
-				name_label.text = dialogic.VAR.parse_variables(translated_display_name)
-			else:
-				name_label.text = translated_display_name
-
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
-
 		else:
-			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
 
 
+func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:String) -> void:
+	if character.custom_info.get("sound_moods", {}).is_empty():
+		update_typing_sound_mood()
+	elif mood in character.custom_info.get("sound_moods", {}):
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
+	else:
+		var default_mood : String = character.custom_info.get("sound_mood_default", "")
+		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
+
+
+
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
-	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
+	for typing_sound in get_tree().get_nodes_in_group("dialogic_type_sounds"):
 		typing_sound.load_overwrite(mood)
 
 
@@ -191,7 +275,9 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 func show_textbox(instant:=false) -> void:
 	var emitted := instant
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if !text_node.textbox_root.visible and !emitted:
+		if not text_node.enabled:
+			continue
+		if not text_node.textbox_root.visible and not emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
 			if dialogic.Animations.is_animating():
@@ -255,13 +341,16 @@ func is_text_voice_synced() -> bool:
 
 
 ## Sets how fast text will be revealed.
-##
-## [param absolute] will force test to display at the given speed, regardless
+## [br][br]
+## [param letter_speed] is the speed a single text character takes to appear
+## on the textbox.
+## [br][br]
+## [param absolute] will force text to display at the given speed, regardless
 ## of the user's text speed setting.
-##
+## [br][br]
 ## [param _speed_multiplier] adjusts the speed of the text, if set to -1,
 ## the value won't be updated and the current value will persist.
-##
+## [br][br]
 ## [param _user_speed] adjusts the speed of the text, if set to -1, the
 ## project setting 'text_speed' will be used.operator
 func update_text_speed(letter_speed: float = -1,
@@ -278,9 +367,9 @@ func update_text_speed(letter_speed: float = -1,
 
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if absolute:
-			text_node.lspeed = letter_speed
+			text_node.set_speed(letter_speed)
 		else:
-			text_node.lspeed = letter_speed * _speed_multiplier * user_speed
+			text_node.set_speed(letter_speed * _speed_multiplier * user_speed)
 
 
 func set_text_reveal_skippable(skippable:= true, temp:=false) -> void:
@@ -330,8 +419,12 @@ func collect_text_effects() -> void:
 ## Use get_parsed_text_effects() after calling this to get all effect information
 func parse_text_effects(text:String) -> String:
 	parsed_text_effect_info.clear()
-	var rtl := RichTextLabel.new()
-	rtl.bbcode_enabled = true
+	var rtl: RichTextLabel = null
+	if get_tree().get_first_node_in_group("dialogic_dialog_text"):
+		rtl = get_tree().get_first_node_in_group("dialogic_dialog_text").duplicate()
+	else:
+		rtl = RichTextLabel.new()
+		rtl.bbcode_enabled = true
 	var position_correction := 0
 	var bbcode_correction := 0
 	for effect_match in text_effects_regex.search_all(text):
@@ -356,7 +449,9 @@ func execute_effects(current_index:int, text_node:Control, skipping := false) ->
 		if current_index != -1 and current_index < parsed_text_effect_info[0]['index']:
 			return
 		var effect: Dictionary = parsed_text_effect_info.pop_front()
-		await (effect['execution_info']['callable'] as Callable).call(text_node, skipping, effect['value'])
+		var callable: Callable = effect['execution_info']['callable']
+		if is_instance_valid(text_node):
+			await callable.call(text_node, skipping, effect['value'])
 
 
 func collect_text_modifiers() -> void:
@@ -367,15 +462,8 @@ func collect_text_modifiers() -> void:
 				text_modifiers.append({'method':Callable(dialogic.get_subsystem(modifier.subsystem), modifier.method)})
 			elif modifier.has('node_path') and modifier.has('method'):
 				text_modifiers.append({'method':Callable(get_node(modifier.node_path), modifier.method)})
-			text_modifiers[-1]['mode'] = modifier.get('mode', TextModifierModes.TEXT_ONLY)
-
-
-func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
-	for mod in text_modifiers:
-		if mod.mode != TextModifierModes.ALL and type != -1 and  type != mod.mode:
-			continue
-		text = mod.method.call(text)
-	return text
+			text_modifiers[-1]['type'] = modifier.get('mode', ParserModes.TEXT_ONLY)
+			text_modifiers[-1]['order'] = modifier.get('order', 40)
 
 
 #endregion
@@ -384,23 +472,41 @@ func parse_text_modifiers(text:String, type:int=TextTypes.DIALOG_TEXT) -> String
 #region HELPERS & OTHER STUFF
 ####################################################################################################
 
-func _ready():
-	collect_character_names()
-	collect_text_effects()
-	collect_text_modifiers()
+func _ready() -> void:
 	dialogic.event_handled.connect(hide_next_indicators)
 
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
 	for i in autopause_data.keys():
-		_autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?!([\\w\\s]*!?[\\]\\}]|$))')] = autopause_data[i]
+		_autopauses[RegEx.create_from_string(r"(?<!(\[|\{))["+i+r"](?!([^{}\[\]]*[\]\}]|$))")] = autopause_data[i]
 
 
+## Parses the character's display_name and returns the text that
+## should be rendered. Note that characters may have variables in their
+## name, therefore this function should be called to evaluate
+## any potential variables in a character's name.
+func get_character_name_parsed(character:DialogicCharacter) -> String:
+	if character:
+		var translated_display_name := character.get_display_name_translated()
+		if dialogic.has_subsystem('VAR'):
+			return dialogic.VAR.parse_variables(translated_display_name)
+		else:
+			return translated_display_name
+	return ""
+
+
+## Returns the [class DialogicCharacter] of the current speaker.
+## If there is no current speaker or the speaker is not found, returns null.
 func get_current_speaker() -> DialogicCharacter:
-	return (load(dialogic.current_state_info.get('speaker', "")) as DialogicCharacter)
+	var speaker_id: String = dialogic.current_state_info.get("speaker", "")
+
+	if speaker_id.is_empty():
+		return null
+
+	return DialogicResourceUtil.get_character_resource(speaker_id)
 
 
-func _update_user_speed(user_speed:float) -> void:
+func _update_user_speed(_user_speed:float) -> void:
 	update_text_speed(_pure_letter_speed, _letter_speed_absolute)
 
 
@@ -423,9 +529,11 @@ func emit_meta_signal(meta:Variant, sig:String) -> void:
 #region AUTOCOLOR NAMES
 ################################################################################
 
-func color_names(text:String) -> String:
-	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
+func color_character_names(text:String) -> String:
+	if not ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
 		return text
+
+	collect_character_names()
 
 	var counter := 0
 	for result in color_regex.search_all(text):
@@ -438,34 +546,53 @@ func color_names(text:String) -> String:
 
 func collect_character_names() -> void:
 	#don't do this at all if we're not using autocolor names to begin with
-	if !ProjectSettings.get_setting('dialogic/text/autocolor_names', false):
+	if not ProjectSettings.get_setting("dialogic/text/autocolor_names", false):
 		return
 
 	character_colors = {}
 
-	for dch_path in DialogicResourceUtil.list_resources_of_type('.dch'):
-		var character := (load(dch_path) as DialogicCharacter)
+	for dch_identifier in DialogicResourceUtil.get_character_directory():
+		var character := (DialogicResourceUtil.get_character_resource(dch_identifier) as DialogicCharacter)
 
 		if character.display_name:
-			character_colors[character.display_name] = character.color
+			if "{" in character.display_name and "}" in character.display_name:
+				character_colors[dialogic.VAR.parse_variables(character.display_name)] = character.color
+			else:
+				character_colors[character.display_name] = character.color
 
 		for nickname in character.get_nicknames_translated():
+			nickname = nickname.strip_edges()
+			if nickname:
+				if "{" in nickname and "}" in nickname:
+					character_colors[dialogic.VAR.parse_variables(nickname)] = character.color
+				else:
+					character_colors[nickname] = character.color
 
-			if nickname.strip_edges():
-				character_colors[nickname.strip_edges()] = character.color
-
-	if dialogic.has_subsystem('Glossary'):
+	if dialogic.has_subsystem("Glossary"):
 		dialogic.Glossary.color_overrides.merge(character_colors, true)
 
-	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
+	var sorted_keys := character_colors.keys()
+	sorted_keys.sort_custom(sort_by_length)
 
-#endregion
+	var character_names := ""
+	for key in sorted_keys:
+		character_names += r"\Q" + key + r"\E|"
+
+	character_names = character_names.trim_suffix("|")
+	color_regex.compile(r"(?<=\W|^)(?<name>" + character_names + r")(?=\W|$)")
+
+
+func sort_by_length(a:String, b:String) -> bool:
+	if a.length() > b.length():
+		return true
+	return false
+#endregion+
 
 
 #region DEFAULT TEXT EFFECTS & MODIFIERS
 ################################################################################
 
-func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_pause(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 
@@ -476,27 +603,26 @@ func effect_pause(text_node:Control, skipped:bool, argument:String) -> void:
 	var text_speed: float = dialogic.Settings.get_setting('text_speed', 1)
 
 	if argument:
-
 		if argument.ends_with('!'):
 			await get_tree().create_timer(float(argument.trim_suffix('!'))).timeout
 
-		elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-			await get_tree().create_timer(float(argument) * _speed_multiplier * dialogic.Settings.get_setting('text_speed', 1)).timeout
+		elif _speed_multiplier != 0 and text_speed != 0:
+			await get_tree().create_timer(float(argument) * _speed_multiplier * text_speed).timeout
 
-	elif _speed_multiplier != 0 and dialogic.Settings.get_setting('text_speed', 1) != 0:
-		await get_tree().create_timer(0.5 * _speed_multiplier*dialogic.Settings.get_setting('text_speed', 1)).timeout
+	elif _speed_multiplier != 0 and text_speed != 0:
+		await get_tree().create_timer(0.5 * _speed_multiplier * text_speed).timeout
 
 
-func effect_speed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_speed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
-		update_text_speed(-1, false, float(argument), -1)
+		update_text_speed(-1, false, float(argument))
 	else:
-		update_text_speed(-1, false, 1, -1)
+		update_text_speed(-1, false, 1)
 
 
-func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_lspeed(_text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
 	if argument:
@@ -508,25 +634,26 @@ func effect_lspeed(text_node:Control, skipped:bool, argument:String) -> void:
 		update_text_speed()
 
 
-func effect_signal(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_signal(_text_node:Control, _skipped:bool, argument:String) -> void:
 	dialogic.text_signal.emit(argument)
 
 
-func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
+func effect_mood(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument.is_empty(): return
-	if dialogic.current_state_info.get('speaker', ""):
+	if get_current_speaker():
 		update_typing_sound_mood(
-			load(dialogic.current_state_info.speaker).custom_info.get('sound_moods', {}).get(argument, {}))
+			get_current_speaker().custom_info.get('sound_moods', {}).get(argument, {}))
 
 
-var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\<[^\\[\\>]+(\\/[^\\>]*)\\>")
+var modifier_select_regex := RegEx.create_from_string(r"(?<!\\)\<[^\>]+(\/[^\>]*)\>")
+var modifier_select_split_regex := RegEx.create_from_string(r"(\[[^\]]*\]|[^\/]|\/\/)+")
 func modifier_random_selection(text:String) -> String:
-	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		var string: String= replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
-		string = string.replace('//', '<slash>')
-		var list: PackedStringArray= string.split('/')
-		var item: String= list[randi()%len(list)]
-		item = item.replace('<slash>', '/')
+	for replace_mod_match: RegExMatch in modifier_select_regex.search_all(text):
+		var string: String = replace_mod_match.get_string().trim_prefix("<").trim_suffix(">")
+		var options := []
+		for split: RegExMatch in modifier_select_split_regex.search_all(string):
+			options.append(split.get_string())
+		var item: String = options.pick_random()
 		text = text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return text
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dganirw26brfb"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_editor.gd" id="1"]
+[ext_resource type="Script" uid="uid://c1virlyy8gl7" path="res://addons/dialogic/Editor/Settings/settings_editor.gd" id="1"]
 
 [node name="Settings" type="HSplitContainer"]
 anchors_preset = 15

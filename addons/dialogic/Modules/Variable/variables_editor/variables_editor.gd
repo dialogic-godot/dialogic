@@ -18,17 +18,17 @@ func _register() -> void:
 	alternative_text = "Create and edit dialogic variables and their default values"
 
 
-func _open(argument:Variant = null):
+func _open(_argument:Variant = null) -> void:
 	%ReferenceInfo.hide()
 	%Tree.load_info(ProjectSettings.get_setting('dialogic/variables', {}))
 
 
-func _save():
+func _save() -> void:
 	ProjectSettings.set_setting('dialogic/variables', %Tree.get_info())
 	ProjectSettings.save()
 
 
-func _close():
+func _close() -> void:
 	_save()
 
 
@@ -37,30 +37,25 @@ func _close():
 func _ready() -> void:
 	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+
 #region RENAMING
 
 func variable_renamed(old_name:String, new_name:String):
+	if old_name == new_name:
+		return
+	var count: int = editors_manager.reference_manager.get_change_count()
 	editors_manager.reference_manager.add_variable_ref_change(old_name, new_name)
-	%ReferenceInfo.show()
+	var new_count: int = editors_manager.reference_manager.get_change_count()
+	if count > new_count:
+		%ReferenceInfo.hide()
+	elif count < new_count:
+		%ReferenceInfo.show()
 
-
-func group_renamed(old_name:String, new_name:String, group_data:Dictionary):
-	for i in group_data:
-		if group_data[i] is Dictionary:
-			group_renamed(old_name+'.'+i, new_name+'.'+i, group_data[i])
-		else:
-			editors_manager.reference_manager.add_variable_ref_change(old_name+'.'+i, new_name+'.'+i)
-	%ReferenceInfo.show()
-
-
-func _on_reference_manager_pressed():
+func _on_reference_manager_pressed() -> void:
 	editors_manager.reference_manager.open()
+	%ReferenceInfo.hide()
 
 #endregion
-
-
-func _on_documentation_pressed() -> void:
-	OS.shell_open("https://dialogic-docs.coppolaemilio.com/variables.html")
 
 
 func _on_search_text_changed(new_text: String) -> void:

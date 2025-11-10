@@ -1,0 +1,6 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Dialogic 1 Repository
+    url: https://github.com/dialogic-godot/dialogic-1/issues
+    about: Please post anything related to Dialogc 1.x (Godot 3.x) on the Dialogic 1 Repository!
+

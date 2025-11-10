@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b32paf0ll6um8"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Modules/Character/default_portrait.gd" id="1_wn77n"]
+[ext_resource type="Script" uid="uid://cork0heubbx7f" path="res://addons/dialogic/Modules/Character/default_portrait.gd" id="1_wn77n"]
 
 [node name="DefaultPortrait" type="Node2D"]
 script = ExtResource("1_wn77n")

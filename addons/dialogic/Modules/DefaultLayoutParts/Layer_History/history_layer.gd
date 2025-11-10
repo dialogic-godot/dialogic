@@ -9,9 +9,9 @@ extends DialogicLayoutLayer
 @export var font_use_global_size: bool = true
 @export var font_custom_size: int = 15
 @export var font_use_global_fonts: bool = true
-@export_file('*.ttf') var font_custom_normal: String = ""
-@export_file('*.ttf') var font_custom_bold: String = ""
-@export_file('*.ttf') var font_custom_italics: String = ""
+@export_file('*.ttf', '*.tres') var font_custom_normal: String = ""
+@export_file('*.ttf', '*.tres') var font_custom_bold: String = ""
+@export_file('*.ttf', '*.tres') var font_custom_italics: String = ""
 
 @export_subgroup('Buttons')
 @export var show_open_button: bool = true
@@ -53,8 +53,8 @@ func get_history_log() -> VBoxContainer:
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	Dialogic.History.open_requested.connect(_on_show_history_pressed)
-	Dialogic.History.close_requested.connect(_on_hide_history_pressed)
+	DialogicUtil.autoload().History.open_requested.connect(_on_show_history_pressed)
+	DialogicUtil.autoload().History.close_requested.connect(_on_hide_history_pressed)
 
 
 func _apply_export_overrides() -> void:

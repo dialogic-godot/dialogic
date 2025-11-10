@@ -7,7 +7,7 @@ extends DialogicLayoutLayer
 @export_group("Text")
 @export_subgroup('Font')
 @export var font_use_global: bool = true
-@export_file('*.ttf') var font_custom: String = ""
+@export_file('*.ttf', '*.tres') var font_custom: String = ""
 @export_subgroup('Size')
 @export var font_size_use_global: bool = true
 @export var font_size_custom: int = 16
@@ -31,12 +31,18 @@ extends DialogicLayoutLayer
 @export var boxes_v_separation: int = 10
 @export var boxes_fill_width: bool = true
 @export var boxes_min_size: Vector2 = Vector2()
+@export var boxes_offset: Vector2 = Vector2()
 
 @export_group('Sounds')
 @export_range(-80, 24, 0.01) var sounds_volume: float = -10
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_pressed: String = "res://addons/dialogic/Example Assets/sound-effects/typing1.wav"
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_hover: String = "res://addons/dialogic/Example Assets/sound-effects/typing2.wav"
 @export_file("*.wav", "*.ogg", "*.mp3") var sounds_focus: String = "res://addons/dialogic/Example Assets/sound-effects/typing4.wav"
+
+@export_group('Choices')
+@export_subgroup('Behavior')
+@export var maximum_choices: int = 10
+@export_file('*.tscn') var choices_custom_button: String = ""
 
 func get_choices() -> VBoxContainer:
 	return $Choices
@@ -95,19 +101,37 @@ func _apply_export_overrides() -> void:
 	if ResourceLoader.exists(boxes_stylebox_focused):
 		layer_theme.set_stylebox(&'focus', &'Button', load(boxes_stylebox_focused) as StyleBox)
 
-	get_choices().add_theme_constant_override(&"separation", boxes_v_separation)
+	var choices : Control = get_choices()
+	choices.add_theme_constant_override(&"separation", boxes_v_separation)
+	self.position = boxes_offset
 
-	for child: Node in get_choices().get_children():
-		if not child is DialogicNode_ChoiceButton:
-			continue
-		var choice: DialogicNode_ChoiceButton = child as DialogicNode_ChoiceButton
+	# replace choice buttons and apply settings
+	for child: Node in choices.get_children():
+		if child is DialogicNode_ChoiceButton:
+			child.queue_free()
+
+	var choices_button: PackedScene = null
+	if not choices_custom_button.is_empty():
+		if ResourceLoader.exists(choices_custom_button):
+			choices_button = (load(choices_custom_button) as PackedScene)
+		else:
+			printerr("[Dialogic] Unable to load custom choice button from ", choices_custom_button)
+
+	for i in range(0, maximum_choices):
+		var new_choice : DialogicNode_ChoiceButton
+		if choices_button != null:
+			new_choice = (choices_button.instantiate() as DialogicNode_ChoiceButton)
+		else:
+			new_choice = DialogicNode_ChoiceButton.new()
+		choices.add_child(new_choice)
 
 		if boxes_fill_width:
-			choice.size_flags_horizontal = Control.SIZE_FILL
+			new_choice.size_flags_horizontal = Control.SIZE_FILL
 		else:
-			choice.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			new_choice.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 
-		choice.custom_minimum_size = boxes_min_size
+		new_choice.custom_minimum_size = boxes_min_size
+
 
 	set(&'theme', layer_theme)
 

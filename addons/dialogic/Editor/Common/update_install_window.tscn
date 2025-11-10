@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://vv3m5m68fwg7"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
+[ext_resource type="Script" uid="uid://cskkip1wso0pu" path="res://addons/dialogic/Editor/Common/update_install_window.gd" id="1_p1pbx"]
 [ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_20ke0"]
 
 [sub_resource type="Gradient" id="Gradient_lt7uf"]
@@ -282,7 +282,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_utju1")
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Be careful. This will delete the addons/dialogic folder and install the new version. Any custom changes in that folder will be lost.
-To be on the save side, use version control!"
+To be on the safe side, use version control!"
 autowrap_mode = 3
 
 [node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
@@ -290,9 +290,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 
+[node name="Close" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/Close"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Panel/Refresh" to="." method="_on_refresh_pressed"]
 [connection signal="meta_clicked" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/Content" to="." method="_on_content_meta_clicked"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Restart" to="." method="_on_restart_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_entered"]
 [connection signal="mouse_exited" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_mouse_exited"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/VBox/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/HBox/Install" to="." method="_on_install_pressed"]
+[connection signal="pressed" from="VBoxContainer/Close/CloseButton" to="." method="_on_close_button_pressed"]

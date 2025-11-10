@@ -5,17 +5,17 @@ extends Control
 ## Should be connected to a (probably contained) label, a line edit and a button to work.
 
 ## The LineEdit to use.
-@export_node_path var input_line_edit:NodePath
+@export_node_path var input_line_edit: NodePath
 ## The Label to use.
-@export_node_path var text_label:NodePath
+@export_node_path var text_label: NodePath
 ## The Button to use.
-@export_node_path var confirmation_button:NodePath
+@export_node_path var confirmation_button: NodePath
 
 # This is set by the subsystem and used as a confirmation check.
-var _allow_empty : bool = false
+var _allow_empty := false
 
 
-func _ready():
+func _ready() -> void:
 	add_to_group('dialogic_text_input')
 	if confirmation_button:
 		get_node(confirmation_button).pressed.connect(_on_confirmation_button_pressed)

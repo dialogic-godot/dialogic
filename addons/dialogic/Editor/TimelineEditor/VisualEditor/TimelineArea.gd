@@ -7,10 +7,14 @@ extends ScrollContainer
 
 enum DragTypes {NOTHING, NEW_EVENT, EXISTING_EVENTS}
 
-var drag_type : DragTypes = DragTypes.NOTHING
-var drag_data : Variant
-var drag_to_position := 0
+var drag_type: DragTypes = DragTypes.NOTHING
+var drag_data: Variant
+var drag_to_position := 0:
+	set(value):
+		drag_to_position = value
+		drag_to_position_updated = true
 var dragging := false
+var drag_to_position_updated := false
 
 
 signal drag_completed(type, index, data)
@@ -33,6 +37,7 @@ func start_dragging(type:DragTypes, data:Variant) -> void:
 	dragging = true
 	drag_type = type
 	drag_data = data
+	drag_to_position_updated = false
 
 
 func _input(event:InputEvent) -> void:
@@ -59,9 +64,9 @@ func _process(delta:float) -> void:
 				queue_redraw()
 
 
-func finish_dragging():
+func finish_dragging() -> void:
 	dragging = false
-	if get_global_rect().has_point(get_global_mouse_position()):
+	if drag_to_position_updated and get_global_rect().has_point(get_global_mouse_position()):
 		drag_completed.emit(drag_type, drag_to_position, drag_data)
 	else:
 		drag_canceled.emit()
@@ -74,16 +79,15 @@ func finish_dragging():
 ################################################################################
 
 func _draw() -> void:
-	var _scale := DialogicUtil.get_editor_scale()
-	var line_width := 5 * _scale
-	var horizontal_line_length := 100*_scale
+	var line_width := 5 * DialogicUtil.get_editor_scale()
+	var horizontal_line_length := 100 * DialogicUtil.get_editor_scale()
 	var color_multiplier := Color(1,1,1,0.25)
 	var selected_color_multiplier := Color(1,1,1,1)
 
 
 	## Draw Event Lines
 	for idx in range($Timeline.get_child_count()):
-		var block : Control = $Timeline.get_child(idx)
+		var block: Control = $Timeline.get_child(idx)
 
 		if not "resource" in block:
 			continue
