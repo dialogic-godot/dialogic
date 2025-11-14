@@ -1,3 +1,4 @@
+@tool
 @icon("node_dialog_text_icon.svg")
 class_name DialogicNode_DialogText
 extends RichTextLabel
@@ -10,6 +11,7 @@ signal finished_revealing_text()
 enum Alignment {LEFT, CENTER, RIGHT}
 
 @export var enabled := true
+@export var identifier := "main"
 @export var alignment := Alignment.LEFT
 @export var textbox_root: Node = self
 
@@ -64,7 +66,7 @@ func _ready() -> void:
 func reveal_text(_text: String, keep_previous:=false) -> void:
 	if not enabled:
 		return
-
+	
 	show()
 	custom_fx_reset()
 

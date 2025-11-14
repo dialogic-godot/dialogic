@@ -51,12 +51,16 @@ signal meta_clicked(meta:Variant)
 #endregion
 
 @export_group("State")
+## The current dialog text. Use [method update_dialog_text] to change it.
 @export var dialog_text := ""
+## The current dialog text but with variables, modifiers and effects parsed. 
 @export var dialog_text_parsed := ""
+## The identifier of the current speaker.
 @export var speaker_identifier := ""
 @export var textbox_visible := false
 @export var reveal_skippable := {"enabled":false, "temp_enabled":false}
 @export var text_sub_index := -1
+@export var active_textbox := ""
 
 # used to color names without searching for all characters each time
 var character_colors := {}
@@ -190,10 +194,15 @@ func load_parse_stack() -> void:
 #region TEXTBOX
 ################################################################################
 
+## Returns all currently present textbox nodes with the given [param identifier] or all if [param identifier] is empty. 
+func get_textboxes(identifier:="") -> Array[DialogicNode_DialogText]:
+	return get_tree().get_nodes_in_group("dialogic_dialog_text").filter(func(x): return x.identifier == identifier or identifier.is_empty() if "identifier" in x else false)
+
+
 ## When an event updates the text spoken, this can adjust the state of
 ## the dialog text box.
 ## This method is async.
-func textbox_update_visibility(visible := true, instant := false) -> void:
+func textbox_update_visibility(visible := true, instant := false, identifier:=active_textbox) -> void:
 	if visible:
 		await show_textbox(instant)
 	else:
@@ -205,10 +214,11 @@ func textbox_update_visibility(visible := true, instant := false) -> void:
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
 
+
 ## instant skips the signal and thus possible animations
-func show_textbox(instant:=false) -> void:
+func show_textbox(instant:=false, identifier:=active_textbox) -> void:
 	var emitted := instant
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+	for text_node in get_textboxes(identifier):
 		if not text_node.enabled:
 			continue
 		if not text_node.textbox_root.visible and not emitted:
@@ -223,24 +233,24 @@ func show_textbox(instant:=false) -> void:
 
 
 ## Instant skips the signal and thus possible animations
-func hide_textbox(instant:=false) -> void:
+func hide_textbox(instant:=false, identifier:=active_textbox) -> void:
 	dialog_text = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
-	if !emitted and !get_tree().get_nodes_in_group('dialogic_dialog_text').is_empty() and get_tree().get_nodes_in_group('dialogic_dialog_text')[0].textbox_root.visible:
+	if not emitted and not get_textboxes(identifier).is_empty() and get_textboxes(identifier)[0].textbox_root.visible:
 		animation_textbox_hide.emit()
 		if dialogic.Animations.is_animating():
 			await dialogic.Animations.finished
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+	for text_node in get_textboxes(identifier):
 		if text_node.textbox_root.visible and !emitted:
 			textbox_visibility_changed.emit(false)
 			emitted = true
 		text_node.textbox_root.hide()
 
 
-func is_textbox_visible() -> bool:
-	return get_tree().get_nodes_in_group('dialogic_dialog_text').any(func(x): return x.textbox_root.visible)
+func is_textbox_visible(identifier:="") -> bool:
+	return get_textboxes(identifier).any(func(x): return x.textbox_root.visible)
 
 #endregion
 
