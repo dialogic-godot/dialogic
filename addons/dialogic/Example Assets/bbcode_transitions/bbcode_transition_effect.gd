@@ -2,10 +2,10 @@
 class_name DialogicRichTextTransitionEffect
 extends RichTextEffect
 
-## A custom richt text effect class, that allows to easily animate letters when revealed. 
+## A custom richt text effect class, that allows to easily animate letters when revealed.
 ## The DialogicNode_DialogText node correctly updates the [member visible_characters] and calls the [method reset] and [method skip].
 ## You can simply create a resource of this, edit it in the inspector and add it's path/uid to
-## dialogics custom bbcode effects setting. 
+## dialogics custom bbcode effects setting.
 
 ## Controlled by the DialogText node.
 var visible_characters := -1

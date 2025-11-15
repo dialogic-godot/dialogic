@@ -53,11 +53,11 @@ signal meta_clicked(meta:Variant)
 @export_group("State")
 ## The current dialog text. Use [method update_dialog_text] to change it.
 @export var dialog_text := ""
-## The current dialog text but with variables, modifiers and effects parsed. 
+## The current dialog text but with variables, modifiers and effects parsed.
 @export var dialog_text_parsed := ""
 ## The identifier of the current speaker.
 @export var speaker_identifier := ""
-@export var textbox_visible := false
+#@export var textbox_visible := false
 @export var reveal_skippable := {"enabled":false, "temp_enabled":false}
 @export var text_sub_index := -1
 @export var active_textbox := ""
@@ -110,27 +110,33 @@ func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> voi
 	dialog_text = ""
 	dialog_text_parsed = ""
 	speaker_identifier = ""
-	textbox_visible = false
+	active_textbox = ""
 
-	textbox_update_visibility(textbox_visible, true)
+	textbox_reset_visibility("")
 	update_dialog_text("", true)
 	update_name_label(null)
 
 	set_text_reveal_skippable(ProjectSettings.get_setting('dialogic/text/initial_text_reveal_skippable', true))
 
-	# TODO check whether this can happen on the node directly
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if text_node.start_hidden:
-			text_node.textbox_root.hide()
-
 
 func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
-	textbox_update_visibility(textbox_visible, true)
+	var extra_state := get_extra_state()
+	var textbox_visiblity: Dictionary = extra_state.get("textbox_visibility", {})
+	for identifier in textbox_visiblity:
+		textbox_update_visibility(textbox_visiblity[identifier], true, identifier)
+
 	update_dialog_text(dialog_text, true)
 
 	var character: DialogicCharacter = get_current_speaker()
 	if character:
-		update_name_label(character)
+		update_name_label(character, true)
+
+
+func _pack_extra_state() -> Dictionary:
+	var textbox_visiblity: Dictionary[String, bool] = {}
+	for i in get_textboxes(""):
+		textbox_visiblity[i.identifier] = i.textbox_root.visible
+	return {"textbox_visibility": textbox_visiblity}
 
 #endregion
 
@@ -194,8 +200,8 @@ func load_parse_stack() -> void:
 #region TEXTBOX
 ################################################################################
 
-## Returns all currently present textbox nodes with the given [param identifier] or all if [param identifier] is empty. 
-func get_textboxes(identifier:="") -> Array[DialogicNode_DialogText]:
+## Returns all currently present textbox nodes with the given [param identifier] or all if [param identifier] is empty.
+func get_textboxes(identifier:="") -> Array[Node]:
 	return get_tree().get_nodes_in_group("dialogic_dialog_text").filter(func(x): return x.identifier == identifier or identifier.is_empty() if "identifier" in x else false)
 
 
@@ -204,15 +210,25 @@ func get_textboxes(identifier:="") -> Array[DialogicNode_DialogText]:
 ## This method is async.
 func textbox_update_visibility(visible := true, instant := false, identifier:=active_textbox) -> void:
 	if visible:
-		await show_textbox(instant)
+		await show_textbox(instant, identifier)
 	else:
-		await hide_textbox(instant)
+		await hide_textbox(instant, identifier)
 
 		if not dialog_text.is_empty():
 			animation_textbox_new_text.emit()
 
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
+
+
+func textbox_handle_auto_visibility(text: String, identifier:=active_textbox) -> void:
+	if get_textboxes(identifier) and get_textboxes(identifier)[0].auto_visibility:
+		await textbox_update_visibility(not text.is_empty(), false, identifier)
+
+
+func textbox_reset_visibility(identifier:=active_textbox) -> void:
+	for node:DialogicNode_DialogText in get_textboxes(identifier):
+		node.textbox_root.visible = not node.start_hidden
 
 
 ## instant skips the signal and thus possible animations
@@ -224,17 +240,16 @@ func show_textbox(instant:=false, identifier:=active_textbox) -> void:
 		if not text_node.textbox_root.visible and not emitted:
 			animation_textbox_show.emit()
 			text_node.textbox_root.show()
-			if dialogic.Animations.is_animating():
-				await dialogic.Animations.finished
-			textbox_visibility_changed.emit(true)
-			emitted = true
 		else:
 			text_node.textbox_root.show()
+	if dialogic.Animations.is_animating():
+		await dialogic.Animations.finished
+		textbox_visibility_changed.emit(true)
+		emitted = true
 
 
 ## Instant skips the signal and thus possible animations
 func hide_textbox(instant:=false, identifier:=active_textbox) -> void:
-	dialog_text = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
@@ -261,7 +276,7 @@ func is_textbox_visible(identifier:="") -> bool:
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all revieling.
 ## If additional is true, the previous text will be kept.
-func update_dialog_text(text: String, instant := false, additional := false) -> String:
+func update_dialog_text(text: String, instant := false, additional := false, textbox_identifier := active_textbox) -> String:
 	update_text_speed()
 
 	if not instant:
@@ -272,7 +287,7 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 	else:
 		dialog_text = text
 
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+	for text_node in get_textboxes(textbox_identifier):
 		connect_meta_signals(text_node)
 
 		if text_node.enabled and (text_node == text_node.textbox_root or text_node.textbox_root.is_visible_in_tree()):
