@@ -26,15 +26,24 @@ func _enter_tree() -> void:
 	add_dialogic_default_action()
 	
 	# Setup main editor view
+	# Use call_deferred to ensure editor_main_screen is ready in Godot 4.5+
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
 	editor_view.hide()
-	get_editor_interface().get_editor_main_screen().add_child(editor_view)
+	call_deferred("_add_main_panel_to_editor", editor_view)
 	_make_visible(false)
-
+	
 	# Setup inspector plugin
 	inspector_plugin = load("res://addons/dialogic/Editor/Inspector/inspector_plugin.gd").new()
 	add_inspector_plugin(inspector_plugin)
+
+
+## Helper function to safely add main panel to editor interface
+## Deferred to ensure editor_main_screen is ready in Godot 4.5+
+func _add_main_panel_to_editor(panel: Control) -> void:
+	var main_screen := get_editor_interface().get_editor_main_screen()
+	if main_screen:
+		main_screen.add_child(panel)
 
 
 ## Called when the plugin is deactivated in the editor.
@@ -44,19 +53,11 @@ func _exit_tree() -> void:
 		if editor_view.get_parent():
 			editor_view.get_parent().remove_child(editor_view)
 		editor_view.queue_free()
-
+	
 	if inspector_plugin:
 		remove_inspector_plugin(inspector_plugin)
 
 #endregion
-
-
-#region PLUGIN_INFO
-################################################################################
-
-func _has_main_screen() -> bool:
-	return true
-
 
 func _get_plugin_name() -> String:
 	return PLUGIN_NAME
