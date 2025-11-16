@@ -19,37 +19,30 @@ func _init() -> void:
 #region ACTIVATION & EDITOR SETUP
 ################################################################################
 
-## Activation & Editor Setup
-func _enable_plugin() -> void:
-	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
-	add_dialogic_default_action()
-
-
-func _disable_plugin() -> void:
-	remove_autoload_singleton(PLUGIN_NAME)
-
-
+## Called when the plugin is activated in the editor.
+## Sets up the main editor interface and inspector plugin.
 func _enter_tree() -> void:
+	# Add default input action for Dialogic
+	add_dialogic_default_action()
+	
+	# Setup main editor view
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
 	editor_view.hide()
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
+	# Setup inspector plugin
 	inspector_plugin = load("res://addons/dialogic/Editor/Inspector/inspector_plugin.gd").new()
 	add_inspector_plugin(inspector_plugin)
 
-	# Auto-update the singleton path for alpha users
-	# TODO remove at some point during beta or later
-	if not ProjectSettings.has_setting("autoload/"+PLUGIN_NAME) or not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, ""):
-		if ProjectSettings.has_setting("autoload/"+PLUGIN_NAME):
-			remove_autoload_singleton(PLUGIN_NAME)
-		add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 
-
+## Called when the plugin is deactivated in the editor.
+## Cleans up the editor interface.
 func _exit_tree() -> void:
 	if editor_view:
-		remove_control_from_bottom_panel(editor_view)
+		if editor_view.get_parent():
+			editor_view.get_parent().remove_child(editor_view)
 		editor_view.queue_free()
 
 	if inspector_plugin:
