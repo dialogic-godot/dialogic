@@ -32,7 +32,7 @@ layout_mode = 2
 mode = 1
 step = 1.0
 min_value = 0.0
-max_value = 100.0
+max_value = 999.0
 suffix = "%"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
