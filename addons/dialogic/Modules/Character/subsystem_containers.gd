@@ -10,6 +10,7 @@ var transform_regex := r"(?<part>position|pos|size|siz|rotation|rot)\W*=(?<value
 @export_group("State")
 @export var container_info := {}
 
+var debug_draw := false
 
 #region STATE
 ####################################################################################################
@@ -284,3 +285,15 @@ func reset_container(container:DialogicNode_PortraitContainer, time := 0.0, twee
 		rotate_container(container, container.get_meta(&'default_rotation'), false, tween, time)
 	if container.has_meta(&'default_size'):
 		resize_container(container, vector_to_str(container.get_meta(&'default_size')), false, tween, time)
+
+
+func enable_debug() -> void:
+	debug_draw = true
+	for n in get_tree().get_nodes_in_group(&'dialogic_portrait_con_position'):
+		n.debug_draw = true
+
+
+func disable_debug() -> void:
+	debug_draw = false
+	for n in get_tree().get_nodes_in_group(&'dialogic_portrait_con_position'):
+		n.debug_draw = false
