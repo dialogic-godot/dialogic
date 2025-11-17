@@ -34,9 +34,19 @@ var default_transition: String = get_script().resource_path.get_base_dir().path_
 func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_background()
 
+
 ## Loads the background state from the current state info.
 func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 	update_background(scene, argument, 0.0, default_transition, true)
+
+	if get_background_node():
+		get_background_node()._load_state(get_extra_state())
+
+
+func _pack_extra_state() -> Dictionary:
+	if get_background_node():
+		return get_background_node()._get_state()
+	return {}
 
 #endregion
 
@@ -194,5 +204,12 @@ func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHo
 ## Whether a background is set.
 func has_background() -> bool:
 	return not scene.is_empty() or argument.is_empty()
+
+
+func get_background_node() -> DialogicBackground:
+	var background_holder := get_tree().get_first_node_in_group("dialogic_background_holders")
+	if not background_holder or background_holder.get_child_count() == 0:
+		return null
+	return background_holder.get_child(-1).get_child(0).get_child(0)
 
 #endregion
