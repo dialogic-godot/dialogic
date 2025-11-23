@@ -25,7 +25,7 @@ func test_set_invalid_current_speaker() -> void:
 ## We ensure valid speaker paths return a valid [class DialogicCharacter] and
 ## the path is set correctly.
 func test_set_valid_current_speaker() -> void:
-	DialogicUtil.autoload().Text.speaker = VALID_SPEAKER_PATH
+	DialogicUtil.autoload().Text.speaker_identifier = VALID_SPEAKER_PATH
 	var current_speaker := DialogicUtil.autoload().Text.get_current_speaker()
 
 	assert(not current_speaker == null, "Valid speaker must be valid, but is invalid.")
