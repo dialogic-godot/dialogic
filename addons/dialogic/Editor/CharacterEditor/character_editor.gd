@@ -81,11 +81,11 @@ func _open_resource(resource:Resource) -> void:
 
 
 ## Called when the character is opened.
-func _open(extra_info:Variant="") -> void:
-	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
-		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
+func _open(_extra_info:Variant="") -> void:
+	if not ProjectSettings.get_setting("dialogic/portraits/default_portrait", "").is_empty():
+		def_portrait_path = ProjectSettings.get_setting("dialogic/portraits/default_portrait", "")
 	else:
-		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
+		def_portrait_path = DialogicUtil.get_module_path("Character").path_join("default_portrait.tscn")
 
 	if current_resource == null:
 		$NoCharacterScreen.show()
@@ -102,7 +102,7 @@ func _clear() -> void:
 
 
 func _save() -> void:
-	if ! visible or not current_resource:
+	if not visible or not current_resource:
 		return
 
 	## Portrait list
@@ -115,7 +115,7 @@ func _save() -> void:
 
 	ResourceSaver.save(current_resource, current_resource.resource_path)
 	current_resource_state = ResourceStates.SAVED
-	DialogicResourceUtil.update_directory('dch')
+	DialogicResourceUtil.update_directory("dch")
 
 
 ## Saves a new empty character to the given path
@@ -149,7 +149,7 @@ func _ready() -> void:
 	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
 		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
-	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
+	$NoCharacterScreen.color = get_theme_color("dark_color_3", "Editor")
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
 
@@ -342,8 +342,9 @@ func import_portraits_from_folder(path:String) -> void:
 			prefix = prefix.substr(0, len(prefix)-1)
 
 	for file in files:
-		%PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
+		var item : TreeItem = %PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
 			{'scene':"",'export_overrides':{'image':var_to_str(path.path_join(file))}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+		item.set_meta('new', true)
 
 	## Handle selection
 	if parent.get_child_count():

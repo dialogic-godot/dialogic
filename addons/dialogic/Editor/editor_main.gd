@@ -126,6 +126,20 @@ func update_theme_additions() -> void:
 	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	new_theme.set_stylebox("panel", "DialogicPanelB", side_panel)
 
+	new_theme.set_type_variation("DialogicTabs", "TabBar")
+	new_theme.set_color("icon_selected_color", "DialogicTabs", get_theme_color("accent_color", "Editor"))
+	var selected_tab: StyleBoxFlat = get_theme_stylebox("tab_selected", "TabBar").duplicate()
+	selected_tab.bg_color = get_theme_color("background", "Editor")
+	new_theme.set_stylebox("tab_selected", "DialogicTabs", selected_tab)
+	var unselected_tab: StyleBoxFlat = get_theme_stylebox("tab_unselected", "TabBar").duplicate()
+	unselected_tab.bg_color = get_theme_color("disabled_bg_color", "Editor")
+	new_theme.set_stylebox("tab_unselected", "DialogicTabs", unselected_tab)
+
+	new_theme.set_type_variation("DialogicSidebarList", "ItemList")
+	var stylebox: StyleBoxFlat = get_theme_stylebox("panel", "ItemList").duplicate()
+	stylebox.bg_color = get_theme_color("disabled_bg_color", "Editor")
+	new_theme.set_stylebox("panel", "DialogicSidebarList", stylebox)
+
 	new_theme.set_type_variation("DialogicEventEdit", "Control")
 	var edit_panel := StyleBoxFlat.new()
 	edit_panel.draw_center = true

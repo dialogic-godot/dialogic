@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cefv8yoo8q7k6" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
 [ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_scwcl"]
 [ext_resource type="PackedScene" uid="uid://cwe3r2tbh2og1" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_lp6hj"]
-[ext_resource type="Script" uid="uid://1m3sqaws1hin" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
+[ext_resource type="Script" uid="uid://bw8h3ayf1wty" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
 [ext_resource type="Texture2D" uid="uid://bbea0efx0ybu7" path="res://addons/dialogic/Editor/Images/Resources/character.svg" id="6_8yp76"]
 [ext_resource type="Texture2D" uid="uid://b5xwnxdb7064n" path="res://addons/dialogic/Modules/Glossary/icon.svg" id="7_45ytg"]
 [ext_resource type="Texture2D" uid="uid://1mccycya6eua" path="res://addons/dialogic/Modules/StyleEditor/styles_icon.svg" id="8_jj1i6"]
@@ -27,16 +27,15 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_drcn6"]
 image = SubResource("Image_4esak")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bs7k"]
-content_margin_left = 8.0
-content_margin_top = 8.0
-content_margin_right = 8.0
-content_margin_bottom = 8.0
-bg_color = Color(0.1155, 0.132, 0.1595, 1)
-corner_detail = 1
-anti_aliasing = false
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mevaw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.083385, 0.083385, 0.083385, 1)
+corner_detail = 4
 
-[node name="EditorView" type="ScrollContainer"]
+[node name="EditorView" type="ScrollContainer" unique_id=527718150]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -46,13 +45,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_x88ov")
 
-[node name="EditorsManager" type="Control" parent="."]
+[node name="EditorsManager" type="Control" parent="." unique_id=726745334]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_pe2tl")
 
-[node name="HSplit" type="HSplitContainer" parent="EditorsManager"]
+[node name="HSplit" type="HSplitContainer" parent="EditorsManager" unique_id=1862970082]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -64,27 +63,29 @@ size_flags_vertical = 3
 theme_override_constants/separation = 0
 split_offset = 150
 
-[node name="Sidebar" parent="EditorsManager/HSplit" instance=ExtResource("3_lp6hj")]
+[node name="Sidebar" parent="EditorsManager/HSplit" unique_id=127288618 instance=ExtResource("3_lp6hj")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 split_offset = 0
 
-[node name="VBox" type="VBoxContainer" parent="EditorsManager/HSplit"]
+[node name="VBox" type="VBoxContainer" parent="EditorsManager/HSplit" unique_id=916641281]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Toolbar" type="HBoxContainer" parent="EditorsManager/HSplit/VBox"]
+[node name="Toolbar" type="HBoxContainer" parent="EditorsManager/HSplit/VBox" unique_id=2109927900]
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
 alignment = 2
 script = ExtResource("4_6cx8s")
 
-[node name="EditorTabBar" type="TabBar" parent="EditorsManager/HSplit/VBox/Toolbar"]
+[node name="EditorTabBar" type="TabBar" parent="EditorsManager/HSplit/VBox/Toolbar" unique_id=673110181]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+theme_type_variation = &"DialogicTabs"
+current_tab = 0
 tab_count = 7
 tab_0/icon = ExtResource("2_scwcl")
 tab_1/title = "Timeline"
@@ -100,21 +101,21 @@ tab_5/icon = ExtResource("9_k4reh")
 tab_6/title = "Settings"
 tab_6/icon = SubResource("ImageTexture_drcn6")
 
-[node name="CustomButtons" type="HBoxContainer" parent="EditorsManager/HSplit/VBox/Toolbar"]
+[node name="CustomButtons" type="HBoxContainer" parent="EditorsManager/HSplit/VBox/Toolbar" unique_id=1969159100]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Editors" type="PanelContainer" parent="EditorsManager/HSplit/VBox"]
+[node name="Editors" type="PanelContainer" parent="EditorsManager/HSplit/VBox" unique_id=778224692]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CodeCompletionHelper" type="Node" parent="EditorsManager"]
+[node name="CodeCompletionHelper" type="Node" parent="EditorsManager" unique_id=889473293]
 script = ExtResource("11_fyce4")
 
-[node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
+[node name="SaveConfirmationDialog" type="AcceptDialog" parent="." unique_id=1656131872]
 size = Vector2i(207, 100)
 
-[node name="ResourceRenameWarning" type="AcceptDialog" parent="."]
+[node name="ResourceRenameWarning" type="AcceptDialog" parent="." unique_id=1864378282]
 title = "Dialogic resource renamed!"
 initial_position = 5
 size = Vector2i(494, 135)
@@ -122,7 +123,7 @@ ok_button_text = "Show Unique Identifiers"
 dialog_text = "You renamed a dialogic resource. This does NOT automatically rename the unique identifier for this resource. Consider checking in the Reference Manager if the identifiers are still the way you want them."
 dialog_autowrap = true
 
-[node name="ReferenceManager" type="Window" parent="."]
+[node name="ReferenceManager" type="Window" parent="." unique_id=1791431854]
 disable_3d = true
 title = "Reference Manager"
 initial_position = 2
@@ -133,25 +134,25 @@ content_scale_mode = 1
 content_scale_aspect = 4
 script = ExtResource("10_xbkrt")
 
-[node name="Manager" parent="ReferenceManager" instance=ExtResource("10_l1rf8")]
-theme_override_styles/panel = SubResource("StyleBoxFlat_5bs7k")
+[node name="Manager" parent="ReferenceManager" unique_id=2056767427 instance=ExtResource("10_l1rf8")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_mevaw")
 
-[node name="UpdateManager" type="Node" parent="."]
+[node name="UpdateManager" type="Node" parent="." unique_id=1593337720]
 script = ExtResource("14_l6b1p")
 
-[node name="Window" type="Window" parent="UpdateManager"]
+[node name="Window" type="Window" parent="UpdateManager" unique_id=747529250]
 title = "Dialogic Update Checker"
 initial_position = 2
 size = Vector2i(600, 400)
 visible = false
 wrap_controls = true
 
-[node name="UpdateInstallWindow" parent="UpdateManager/Window" instance=ExtResource("15_cu4xj")]
+[node name="UpdateInstallWindow" parent="UpdateManager/Window" unique_id=414956262 instance=ExtResource("15_cu4xj")]
 
-[node name="UpdateCheckRequest" type="HTTPRequest" parent="UpdateManager"]
+[node name="UpdateCheckRequest" type="HTTPRequest" parent="UpdateManager" unique_id=400999238]
 timeout = 5.0
 
-[node name="DownloadRequest" type="HTTPRequest" parent="UpdateManager"]
+[node name="DownloadRequest" type="HTTPRequest" parent="UpdateManager" unique_id=781671016]
 
 [connection signal="close_requested" from="ReferenceManager" to="ReferenceManager" method="_on_close_requested"]
 [connection signal="downdload_completed" from="UpdateManager" to="UpdateManager/Window/UpdateInstallWindow" method="_on_update_manager_downdload_completed"]
