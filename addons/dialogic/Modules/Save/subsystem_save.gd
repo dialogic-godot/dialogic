@@ -73,6 +73,8 @@ var autosave_time := 60:
 		autosave_timer.wait_time = timer_time
 
 
+var _debug_save_as_tres := false
+
 #region STATE
 ####################################################################################################
 
@@ -111,7 +113,7 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 
 	set_latest_slot(slot_name)
 
-	if true:
+	if _debug_save_as_tres:
 		var save_path := SAVE_SLOTS_DIR.path_join(slot_name).path_join('state.tres')
 		ResourceSaver.save(dialogic.get_full_state(), save_path)
 		return OK
@@ -150,18 +152,17 @@ func load(slot_name := "") -> Error:
 	if set_latest_error:
 		push_error("[Dialogic Error]: Failed to store latest slot to global info. Error %d '%s'" % [set_latest_error, error_string(set_latest_error)])
 
-	if true:
+	if _debug_save_as_tres:
 		var save_path := SAVE_SLOTS_DIR.path_join(slot_name).path_join('state.tres')
-		var state: DialogicSaveState = ResourceLoader.load(save_path)
-		dialogic.load_full_state(state)
-
+		var tres_state: DialogicSaveState = ResourceLoader.load(save_path)
+		dialogic.load_full_state(tres_state)
 		return OK
 
 
 	var state: DialogicSaveState = load_file(slot_name, 'state.txt', {})
 	dialogic.load_full_state(state)
 
-	if state.is_empty():
+	if not state:
 		return FAILED
 	else:
 		return OK
