@@ -353,7 +353,8 @@ func build_event_editor() -> void:
 				'value': Actions.UPDATE,
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
 			}
-		]
+		],
+		"tooltip": "Switch the action: Join/Leave/Update."
 	})
 	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
 			{'placeholder'		: 'Character',
@@ -389,7 +390,8 @@ func build_event_editor() -> void:
 			'suggestions_func' 	: get_fade_suggestions,
 			'editor_icon' 			: ["Animation", "EditorIcons"],
 			'placeholder' 			: 'Default',
-			'enable_pretty_name' 	: true},
+			'enable_pretty_name' 	: true,
+			'tooltip'				: "Choose the fading to use when changing to a different portrait."},
 			'should_show_fade_options()')
 	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s', "min":0},
 			'should_show_fade_options() and !fade_animation.is_empty()')
@@ -399,7 +401,8 @@ func build_event_editor() -> void:
 			'suggestions_func' 	: get_animation_suggestions,
 			'editor_icon' 			: ["Animation", "EditorIcons"],
 			'placeholder' 			: 'Default',
-			'enable_pretty_name' 	: true},
+			'enable_pretty_name' 	: true,
+			'tooltip'				: "Plays an animation on this character."},
 			'should_show_animation_options()')
 	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s', "min":0},
 			'should_show_animation_options() and !animation_name.is_empty()')
@@ -408,18 +411,18 @@ func build_event_editor() -> void:
 	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1, "min":1},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
-	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:', "min":0},
+	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:', "min":0, "tooltip": "When changing the characters position, this is how fast it will happen."},
 			"should_show_transform_options()")
-	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:"}, 'should_show_transform_options() and transform_time > 0')
-	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:"}, 'should_show_transform_options() and transform_time > 0')
+	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"Trans:", "tooltip":"The transition type to use for moving the character to its new position."}, 'should_show_transform_options() and transform_time > 0')
+	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"Ease:", "tooltip":"The easing to use for moving the character to its new position."}, 'should_show_transform_options() and transform_time > 0')
 
 	add_body_edit('set_z_index', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'Change Z-Index'}, "character != null and action == Actions.UPDATE")
-	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z-index:', 'mode':1},
+	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z-index:', 'mode':1, "tooltip": "The Z-Index controls the visual order of characters. Higher z-index makes a character appear further in front."},
 			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
 	add_body_edit('set_mirrored', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'Change Mirroring'}, "character != null and action == Actions.UPDATE")
-	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:'},
+	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'Mirrored:', "tooltip": "Mirrors the character. This applies on top of the mirroring of the portrait and the position container."},
 			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
-	add_body_edit('extra_data', ValueType.SINGLELINE_TEXT, {'left_text':'Extra Data:'}, 'action != Actions.LEAVE')
+	add_body_edit('extra_data', ValueType.SINGLELINE_TEXT, {'left_text':'Extra Data:', "tooltip": "Data that is given to the portrait. To be used on custom portrait scenes."}, 'action != Actions.LEAVE')
 
 
 func should_show_transform_options() -> bool:
@@ -449,7 +452,7 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var empty_text := "Don't Change"
 	if action == Actions.JOIN:
-		empty_text = "Default portrait"
+		empty_text = "Default"
 	return DialogicUtil.get_portrait_suggestions(search_text, character, true, empty_text)
 
 

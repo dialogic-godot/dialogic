@@ -45,6 +45,7 @@ func _load_display_info(info: Dictionary) -> void:
 				enforce_step = true
 				step = info[option]
 			'hide_step_button': %Spin.hide()
+			'tooltip': tooltip_text = info[option]
 
 	mode = info.get('mode', mode)
 
