@@ -62,6 +62,21 @@ func _set_extra_data(_data: String) -> void:
 
 #endregion
 
+
+#region SAVE/LOAD
+################################################################################
+
+## To be overwritten. Called by the [subsystem Portrait] when a save is created.
+func _get_state() -> Dictionary:
+	return {}
+
+
+## To be overwritten. Called by the [subsystem Portrait] when a save is loaded. [param _state] is whatever was returned by [method _get_state] previously.
+func _load_state(_state:Dictionary) -> void:
+	pass
+
+
+
 #region HIGHLIGHT OVERRIDES
 ################################################################################
 

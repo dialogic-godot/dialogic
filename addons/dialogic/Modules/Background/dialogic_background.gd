@@ -1,5 +1,5 @@
-extends Node
 class_name DialogicBackground
+extends Node
 
 ## This is the base class for dialogic backgrounds.
 ## Extend it and override it's methods when you create a custom background.
@@ -36,3 +36,10 @@ func _custom_fade_in(_time:float) -> bool:
 func _custom_fade_out(_time:float) -> bool:
 	return false
 
+
+func _get_state() -> Dictionary:
+	return {}
+
+
+func _load_state(_state:Dictionary) -> void:
+	pass

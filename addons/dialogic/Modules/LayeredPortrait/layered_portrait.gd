@@ -250,3 +250,15 @@ func _get_covered_rect() -> Rect2:
 	var needed_rect := _find_largest_coverage_rect()
 
 	return needed_rect
+
+
+func _get_state() -> Dictionary:
+	var sprite_visibilities := {}
+	for i in _find_sprites_recursively(self):
+		sprite_visibilities[get_path_to(i)] = i.visible
+	return sprite_visibilities
+
+
+func _load_state(state:Dictionary) -> void:
+	for i in _find_sprites_recursively(self):
+		i.visible = state.get(get_path_to(i), false)

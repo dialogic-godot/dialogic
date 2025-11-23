@@ -12,7 +12,7 @@ var _is_animating := false
 #region MAIN METHODS
 ####################################################################################################
 
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	stop_animation()
 
 
