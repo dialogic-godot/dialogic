@@ -372,7 +372,7 @@ func get_full_state() -> DialogicSaveState:
 		state.timeline = current_timeline.resource_path
 	else:
 		state.event_index = -1
-		state.timeline = "null"
+		state.timeline = ""
 
 	for subsystem in get_children():
 		var sub_state := (subsystem as DialogicSubsystem).get_state()
@@ -387,6 +387,10 @@ func get_full_state() -> DialogicSaveState:
 ## the dictionary was retrieved with [method get_full_state].
 func load_full_state(state:DialogicSaveState) -> void:
 	clear()
+
+	if state == null:
+		printerr("[Dialogic] Attempted to load state, but given state was [null].")
+		return
 
 	for subsystem in get_children():
 		if subsystem.name in state.subsystems:

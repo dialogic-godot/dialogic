@@ -24,7 +24,13 @@ func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> v
 func _load_state(load_flag := LoadFlags.FULL_LOAD) -> void:
 	if load_flag == LoadFlags.ONLY_DNODES:
 		return
-	load_style(style)
+
+	if get_extra_state().get("active_layout", false):
+		load_style(style)
+
+
+func _pack_extra_state() -> Dictionary:
+	return {"active_layout":has_active_layout_node()}
 
 #endregion
 
