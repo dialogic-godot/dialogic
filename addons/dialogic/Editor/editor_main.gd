@@ -299,11 +299,15 @@ func godot_file_dialog(
 
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection.callable)
+	for connection in editor_file_dialog.files_selected.get_connections():
+		editor_file_dialog.files_selected.disconnect(connection.callable)
 	for connection in editor_file_dialog.dir_selected.get_connections():
 		editor_file_dialog.dir_selected.disconnect(connection.callable)
 
 	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.FILE_MODE_SAVE_FILE:
 		editor_file_dialog.file_selected.connect(callable)
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_FILES:
+		editor_file_dialog.files_selected.connect(callable)
 	elif mode == EditorFileDialog.FILE_MODE_OPEN_DIR:
 		editor_file_dialog.dir_selected.connect(callable)
 	elif mode == EditorFileDialog.FILE_MODE_OPEN_ANY:

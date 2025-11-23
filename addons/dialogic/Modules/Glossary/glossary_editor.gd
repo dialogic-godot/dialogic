@@ -61,13 +61,13 @@ func _open(_argument: Variant = null) -> void:
 	%GlossaryList.clear()
 	var idx := 0
 	for file: String in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
-
-		if ResourceLoader.exists(file):
-			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
+		var path := ResourceUID.uid_to_path(file) if file.begins_with("uid:") else file
+		if ResourceLoader.exists(path):
+			%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
 		else:
-			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileDead', 'EditorIcons'))
+			%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileDead', 'EditorIcons'))
 
-		%GlossaryList.set_item_tooltip(idx, file)
+		%GlossaryList.set_item_tooltip(idx, path)
 		idx += 1
 
 	%EntryList.clear()
@@ -140,14 +140,20 @@ func create_new_glossary_file(path:String) -> void:
 
 
 func _on_load_glossary_file_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(load_glossary_file, '*.tres', EditorFileDialog.FILE_MODE_OPEN_FILE, 'Select glossary resource')
+	find_parent('EditorView').godot_file_dialog(load_glossary_files, '*.tres', EditorFileDialog.FILE_MODE_OPEN_FILES, 'Select glossary resource')
 
 
-func load_glossary_file(path:String) -> void:
+func load_glossary_files(paths:Array[String]) -> void:
+	for i in paths:
+		load_glossary_file(i)
+
+
+func load_glossary_file(file:String) -> void:
 	var list: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 
-	if not path in list:
-		list.append(path)
+	if not file in list:
+		list.append(ResourceUID.path_to_uid(file))
+		var path := ResourceUID.uid_to_path(file) if file.begins_with("uid:") else file
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
 		ProjectSettings.save()
 		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
