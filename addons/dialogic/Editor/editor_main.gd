@@ -140,6 +140,9 @@ func update_theme_additions() -> void:
 	stylebox.bg_color = get_theme_color("disabled_bg_color", "Editor")
 	new_theme.set_stylebox("panel", "DialogicSidebarList", stylebox)
 
+	new_theme.set_type_variation("DialogicSidebarTree", "Tree")
+	new_theme.set_stylebox("panel", "DialogicSidebarTree", stylebox)
+
 	new_theme.set_type_variation("DialogicEventEdit", "Control")
 	var edit_panel := StyleBoxFlat.new()
 	edit_panel.draw_center = true
