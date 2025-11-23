@@ -1073,6 +1073,7 @@ func _input(event:InputEvent) -> void:
 		"Ctrl+Shift+E", "Shift+Command+E":  # Add character update event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.UPDATE
+			ev.character = get_previous_character()
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
 
