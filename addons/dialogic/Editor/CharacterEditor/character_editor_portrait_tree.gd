@@ -16,6 +16,7 @@ func _ready() -> void:
 
 func clear_tree() -> void:
 	clear()
+	update_left_item_margin(false)
 	current_group_nodes = {}
 
 
@@ -41,6 +42,7 @@ func add_portrait_group(goup_name := "Group", parent_item: TreeItem = get_root()
 		item.set_meta('previous_name', get_full_item_name(item))
 	else:
 		item.set_meta('previous_name', previous_name)
+	update_left_item_margin(true)
 	return item
 
 
@@ -75,6 +77,12 @@ func _on_item_mouse_selected(pos: Vector2, mouse_button_index: int) -> void:
 		$PortraitRightClickMenu.set_item_disabled(1, get_selected().get_metadata(0).has('group'))
 		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 
+
+func update_left_item_margin(margin_on:bool) -> void:
+	if not margin_on:
+		add_theme_constant_override("item_margin", 0)
+	else:
+		remove_theme_constant_override("item_margin")
 
 ################################################################################
 ##					DRAG AND DROP

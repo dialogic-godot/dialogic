@@ -12,7 +12,7 @@ var _revalidate_channel_names := false
 
 func _ready() -> void:
 	%TypeSoundBus.item_selected.connect(_on_type_sound_bus_item_selected)
-	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("normal", "RichTextLabel"))
 
 
 func _refresh() -> void:

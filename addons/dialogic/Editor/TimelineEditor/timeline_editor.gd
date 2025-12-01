@@ -62,7 +62,7 @@ func _get_title() -> String:
 
 
 func _get_icon() -> Texture:
-	return get_theme_icon("TripleBar", "EditorIcons")
+	return preload("uid://j7ym07anlusi")
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)

@@ -508,6 +508,10 @@ func _on_grouping_changed(idx: int) -> void:
 		group_mode = (id as GroupMode)
 		DialogicUtil.set_editor_setting("sidebar_group_mode", id)
 		update_resource_list()
+		if id == GroupMode.NONE:
+			%ResourceTree.add_theme_constant_override("item_margin", 0)
+		else:
+			%ResourceTree.remove_theme_constant_override("item_margin")
 
 	%FolderColors.disabled = group_mode != GroupMode.PATH
 	%TrimFolderPaths.disabled = group_mode != GroupMode.PATH

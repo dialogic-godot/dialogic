@@ -565,14 +565,12 @@ func report_name_change(item: TreeItem) -> void:
 
 #region Preview
 func update_preview(force := false, ignore_settings_reload := false) -> void:
-	printt("LOL", force, ignore_settings_reload)
 	%ScenePreviewWarning.hide()
 
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
-		#print(current_portrait_data)
 
 		if not force and current_previewed_scene != null \
 			and scene_file_path == current_portrait_data.get('scene') \
@@ -585,7 +583,6 @@ func update_preview(force := false, ignore_settings_reload := false) -> void:
 
 			for node in %RealPreviewPivot.get_children():
 				node.queue_free()
-				print("remove")
 
 			current_previewed_scene = null
 			current_scene_path = ""
