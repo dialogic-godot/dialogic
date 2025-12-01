@@ -84,7 +84,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	var drag_item := get_item_at_position(at_position)
 	if not drag_item:
 		return null
-	
+
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+drag_item.get_text(0)

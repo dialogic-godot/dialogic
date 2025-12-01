@@ -63,13 +63,13 @@ func modifier_condition(text:String) -> String:
 			insert = find.get_string("truetext")
 		else:
 			insert = find.get_string("falsetext")
-		
+
 		# Avoid double spaces at the insert position if the insert is empty.
 		if not insert.strip_edges() and " "+find.get_string()+" " in text:
 			text = text.replace(find.get_string()+" ", insert.strip_edges())
 		else:
 			text = text.replace(find.get_string(), insert.strip_edges())
-		
+
 	return text
 #endregion
 

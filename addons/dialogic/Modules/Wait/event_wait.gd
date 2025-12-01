@@ -37,7 +37,7 @@ func _execute() -> void:
 	if DialogicUtil.is_physics_timer():
 		_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	_tween.tween_callback(_on_finish).set_delay(final_wait_time)
-	
+
 	if skippable:
 		dialogic.Inputs.dialogic_action.connect(_on_finish)
 
@@ -45,10 +45,10 @@ func _execute() -> void:
 func _on_finish() -> void:
 	if is_instance_valid(_tween):
 		_tween.kill()
-	
+
 	if skippable:
 		dialogic.Inputs.dialogic_action.disconnect(_on_finish)
-	
+
 	if dialogic.Animations.is_animating():
 		dialogic.Animations.stop_animation()
 	dialogic.current_state = dialogic.States.IDLE
