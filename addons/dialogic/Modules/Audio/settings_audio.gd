@@ -166,6 +166,7 @@ func add_channel_defaults(channel_name: String, volume: float, audio_bus: String
 	info.audio_bus.set_value(audio_bus)
 
 	info.delete.icon = get_theme_icon(&"Remove", &"EditorIcons")
+	info.delete.pressed.connect(_on_remove_channel_defaults_pressed.bind(len(channel_defaults)))
 
 	channel_defaults[len(channel_defaults)] = info
 	return info['channel_name']
