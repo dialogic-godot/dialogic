@@ -8,6 +8,8 @@ var current_group_nodes := {}
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Rename', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Duplicate', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(2, get_theme_icon('Remove', 'EditorIcons'))

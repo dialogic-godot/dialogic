@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cqy73hshqqgga"]
+[gd_scene load_steps=21 format=3 uid="uid://cqy73hshqqgga"]
 
 [ext_resource type="Script" uid="uid://bl3vudjf3wn2x" path="res://addons/dialogic/Editor/HomePage/home_page.gd" id="1_6g38w"]
 [ext_resource type="Texture2D" uid="uid://cvmlp5nxb2rer" path="res://addons/dialogic/Editor/HomePage/icon_bg.png" id="1_ed1g1"]
@@ -101,16 +101,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="DPITexture" id="DPITexture_ipcwk"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 9 5.5-5.5L8 1h7v7l-2.5-2.5L7 11zm7 6H4a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3h2a1 1 0 0 1 0 2H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2a1 1 0 0 1 2 0v2a3 3 0 0 1-3 3z\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
-}
 
 [node name="HomePage" type="TextureRect" unique_id=1709118815]
 self_modulate = Color(1, 1, 1, 0.2)
@@ -367,4 +357,3 @@ grow_vertical = 0
 tooltip_text = "Check it out!"
 theme_override_styles/normal = SubResource("StyleBoxFlat_ckyhx")
 theme_override_styles/hover = SubResource("StyleBoxFlat_l1doy")
-icon = SubResource("DPITexture_ipcwk")

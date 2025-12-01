@@ -25,6 +25,9 @@ func _register() -> void:
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	var add_glossary_icon_path: String = self.get_script().get_path().get_base_dir() + "/add-glossary.svg"
 	var add_glossary_icon := load(add_glossary_icon_path)
 	%AddGlossaryFile.icon = add_glossary_icon

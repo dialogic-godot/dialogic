@@ -35,6 +35,9 @@ func _close() -> void:
 #endregion
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
 
