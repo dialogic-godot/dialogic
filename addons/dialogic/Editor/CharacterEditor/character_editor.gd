@@ -160,7 +160,6 @@ func _ready() -> void:
 
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 
-	%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 
 	set_portrait_settings_position(DialogicUtil.get_editor_setting('portrait_settings_position', true))
 
@@ -261,15 +260,20 @@ func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 		current_resource_state = ResourceStates.UNSAVED
 
 
-func _on_main_settings_collapse_toggled(button_pressed:bool) -> void:
-	%MainSettingsTitle.visible = !button_pressed
-	%MainSettingsScroll.visible = !button_pressed
-	if button_pressed:
-		%MainSettings.hide()
-		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
-	else:
-		%MainSettings.show()
-		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+
+func hide_main_settings() -> void:
+	%MainSettings.hide()
+	%MainSettingsHidden.show()
+	%MainSettingsPanel.size_flags_horizontal = SIZE_SHRINK_BEGIN
+	%MainHSplit.collapsed = true
+
+
+func show_main_settings() -> void:
+	%MainSettings.show()
+	%MainSettingsHidden.hide()
+	%MainSettingsPanel.size_flags_horizontal = SIZE_EXPAND_FILL
+	%MainHSplit.collapsed = false
+
 
 
 func _on_switch_portrait_settings_position_pressed() -> void:
@@ -561,12 +565,14 @@ func report_name_change(item: TreeItem) -> void:
 
 #region Preview
 func update_preview(force := false, ignore_settings_reload := false) -> void:
+	printt("LOL", force, ignore_settings_reload)
 	%ScenePreviewWarning.hide()
 
 	if selected_item and is_instance_valid(selected_item) and selected_item.get_metadata(0) != null and !selected_item.get_metadata(0).has('group'):
 		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
+		#print(current_portrait_data)
 
 		if not force and current_previewed_scene != null \
 			and scene_file_path == current_portrait_data.get('scene') \
@@ -579,6 +585,7 @@ func update_preview(force := false, ignore_settings_reload := false) -> void:
 
 			for node in %RealPreviewPivot.get_children():
 				node.queue_free()
+				print("remove")
 
 			current_previewed_scene = null
 			current_scene_path = ""

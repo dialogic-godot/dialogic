@@ -11,7 +11,7 @@ VBoxContainer/constants/separation = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n8rql"]
 
-[node name="SideBar" type="VSplitContainer"]
+[node name="SideBar" type="VSplitContainer" unique_id=2147312719]
 custom_minimum_size = Vector2(100, 130)
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,40 +22,40 @@ theme = SubResource("Theme_pn0f4")
 split_offset = 100
 script = ExtResource("1_jnq65")
 
-[node name="VBoxHidden" type="VBoxContainer" parent="."]
+[node name="VBoxHidden" type="VBoxContainer" parent="." unique_id=1396498534]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="OpenButton" type="Button" parent="VBoxHidden"]
+[node name="OpenButton" type="Button" parent="VBoxHidden" unique_id=369751133]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 tooltip_text = "Show Sidebar"
+theme_type_variation = &"FlatButton"
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("2_ilyps")
-flat = true
 icon_alignment = 1
 
-[node name="VBoxPrimary" type="VBoxContainer" parent="."]
+[node name="VBoxPrimary" type="VBoxContainer" parent="." unique_id=1558929037]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Margin" type="MarginContainer" parent="VBoxPrimary"]
+[node name="Margin" type="MarginContainer" parent="VBoxPrimary" unique_id=1596446475]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MainVSplit" type="VSplitContainer" parent="VBoxPrimary/Margin"]
+[node name="MainVSplit" type="VSplitContainer" parent="VBoxPrimary/Margin" unique_id=1702485898]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit" unique_id=1385357176]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Logo" type="TextureRect" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+[node name="Logo" type="TextureRect" parent="VBoxPrimary/Margin/MainVSplit/VBox" unique_id=453723625]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.623529)
 texture_filter = 6
@@ -64,10 +64,10 @@ layout_mode = 2
 expand_mode = 3
 stretch_mode = 4
 
-[node name="HBox" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox" unique_id=1668516587]
 layout_mode = 2
 
-[node name="CurrentResource" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
+[node name="CurrentResource" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox" unique_id=1910256965]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -75,20 +75,20 @@ text = "No resource"
 alignment = 1
 editable = false
 
-[node name="CloseButton" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox"]
+[node name="CloseButton" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBox" unique_id=1923259694]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Hide Sidebar"
+theme_type_variation = &"FlatButton"
 text = "     "
 icon = ExtResource("2_54pks")
-flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="HBoxSearchSort" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+[node name="HBoxSearchSort" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox" unique_id=1443527643]
 layout_mode = 2
 
-[node name="Search" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
+[node name="Search" type="LineEdit" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort" unique_id=1418007267]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -97,11 +97,12 @@ placeholder_text = "Filter Resources"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="Options" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort"]
+[node name="Options" type="Button" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort" unique_id=2024021311]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"FlatButton"
 
-[node name="OptionsPopup" type="Popup" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options"]
+[node name="OptionsPopup" type="Popup" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options" unique_id=994634086]
 unique_name_in_owner = true
 transparent_bg = true
 oversampling_override = 1.0
@@ -110,7 +111,7 @@ size = Vector2i(171, 115)
 visible = true
 transparent = true
 
-[node name="OptionsPanel" type="PanelContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup"]
+[node name="OptionsPanel" type="PanelContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup" unique_id=1884099990]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -118,10 +119,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel"]
+[node name="VBox" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel" unique_id=1779871709]
 layout_mode = 2
 
-[node name="GroupingOptions" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+[node name="GroupingOptions" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox" unique_id=2137054181]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Grouping
@@ -142,17 +143,17 @@ popup/item_2/id = 2
 popup/item_3/text = "Path Grouping"
 popup/item_3/id = 3
 
-[node name="FolderColors" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+[node name="FolderColors" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox" unique_id=819848800]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Use Folder Colors"
 
-[node name="TrimFolderPaths" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox"]
+[node name="TrimFolderPaths" type="CheckBox" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox" unique_id=351710723]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Trim Folder Paths"
 
-[node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+[node name="ResourceTree" type="Tree" parent="VBoxPrimary/Margin/MainVSplit/VBox" unique_id=1139313970]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -161,30 +162,30 @@ allow_rmb_select = true
 hide_root = true
 scroll_horizontal_enabled = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox" unique_id=1830618389]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer" unique_id=1074883248]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Sort Order"
 vertical_alignment = 1
 
-[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer"]
+[node name="SortOption" type="OptionButton" parent="VBoxPrimary/Margin/MainVSplit/VBox/HBoxContainer" unique_id=52959188]
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 1
 popup/item_0/text = "Alphabetical (All)"
 popup/item_0/id = 0
 
-[node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit"]
+[node name="ContentListSection" type="VBoxContainer" parent="VBoxPrimary/Margin/MainVSplit" unique_id=1084567656]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ContentList" type="ItemList" parent="VBoxPrimary/Margin/MainVSplit/ContentListSection"]
+[node name="ContentList" type="ItemList" parent="VBoxPrimary/Margin/MainVSplit/ContentListSection" unique_id=1201210195]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -195,14 +196,14 @@ theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_n8rql")
 allow_reselect = true
 same_column_width = true
 
-[node name="CurrentVersion" type="Button" parent="VBoxPrimary"]
+[node name="CurrentVersion" type="Button" parent="VBoxPrimary" unique_id=310290076]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Some Version"
 flat = true
 clip_text = true
 
-[node name="RightClickMenu" type="PopupMenu" parent="."]
+[node name="RightClickMenu" type="PopupMenu" parent="." unique_id=1562800275]
 unique_name_in_owner = true
 size = Vector2i(164, 100)
 

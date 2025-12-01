@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cefv8yoo8q7k6" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
 [ext_resource type="Texture2D" uid="uid://dybg3l5pwetne" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="2_scwcl"]
 [ext_resource type="PackedScene" uid="uid://cwe3r2tbh2og1" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_lp6hj"]
-[ext_resource type="Script" uid="uid://bw8h3ayf1wty" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
+[ext_resource type="Script" uid="uid://1m3sqaws1hin" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
 [ext_resource type="Texture2D" uid="uid://bbea0efx0ybu7" path="res://addons/dialogic/Editor/Images/Resources/character.svg" id="6_8yp76"]
 [ext_resource type="Texture2D" uid="uid://b5xwnxdb7064n" path="res://addons/dialogic/Modules/Glossary/icon.svg" id="7_45ytg"]
 [ext_resource type="Texture2D" uid="uid://1mccycya6eua" path="res://addons/dialogic/Modules/StyleEditor/styles_icon.svg" id="8_jj1i6"]

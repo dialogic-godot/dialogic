@@ -291,6 +291,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			left_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(left_label)
 			location.move_child(left_label, editor_node.get_index())
+
 		if !p.get('right_text', '').is_empty():
 			right_label = Label.new()
 			right_label.text = p.get('right_text')
