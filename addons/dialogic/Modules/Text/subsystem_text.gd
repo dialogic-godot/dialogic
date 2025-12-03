@@ -115,12 +115,12 @@ func post_install() -> void:
 #region MAIN METHODS
 ####################################################################################################
 
-## Applies modifiers, effects and coloring to the text. 
+## Applies modifiers, effects and coloring to the text.
 ## Utilizes the parse stack created and sorted in [method load_parse_stack()].
 func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 	if parse_stack.is_empty():
 		load_parse_stack()
-	
+
 	for i in parse_stack:
 		if i.type != ParserModes.ALL and type != -1 and i.type != type:
 			continue
@@ -133,7 +133,7 @@ func parse_text(text:String, type:int=TextTypes.DIALOG_TEXT) -> String:
 ## This includes: variables, text modifiers, text effects, autocolor names and the glossary.
 func load_parse_stack() -> void:
 	parse_stack.clear()
-	
+
 	if dialogic.has_subsystem('VAR'):
 		parse_stack.append(
 			{
@@ -162,7 +162,7 @@ func load_parse_stack() -> void:
 			"type": ParserModes.TEXT_ONLY,
 			"order": 95,
 		})
-	
+
 	parse_stack.sort_custom(func(a,b):return a["order"] < b["order"])
 
 

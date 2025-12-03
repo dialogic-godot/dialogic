@@ -126,6 +126,23 @@ func update_theme_additions() -> void:
 	side_panel.border_color = get_theme_color("contrast_color_2", "Editor")
 	new_theme.set_stylebox("panel", "DialogicPanelB", side_panel)
 
+	new_theme.set_type_variation("DialogicTabs", "TabBar")
+	new_theme.set_color("icon_selected_color", "DialogicTabs", get_theme_color("accent_color", "Editor"))
+	var selected_tab: StyleBoxFlat = get_theme_stylebox("tab_selected", "TabBar").duplicate()
+	selected_tab.bg_color = get_theme_color("background", "Editor")
+	new_theme.set_stylebox("tab_selected", "DialogicTabs", selected_tab)
+	var unselected_tab: StyleBoxFlat = get_theme_stylebox("tab_unselected", "TabBar").duplicate()
+	unselected_tab.bg_color = get_theme_color("disabled_bg_color", "Editor")
+	new_theme.set_stylebox("tab_unselected", "DialogicTabs", unselected_tab)
+
+	new_theme.set_type_variation("DialogicSidebarList", "ItemList")
+	var stylebox: StyleBoxFlat = get_theme_stylebox("panel", "ItemList").duplicate()
+	stylebox.bg_color = get_theme_color("disabled_bg_color", "Editor")
+	new_theme.set_stylebox("panel", "DialogicSidebarList", stylebox)
+
+	new_theme.set_type_variation("DialogicSidebarTree", "Tree")
+	new_theme.set_stylebox("panel", "DialogicSidebarTree", stylebox)
+
 	new_theme.set_type_variation("DialogicEventEdit", "Control")
 	var edit_panel := StyleBoxFlat.new()
 	edit_panel.draw_center = true
@@ -282,11 +299,15 @@ func godot_file_dialog(
 
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection.callable)
+	for connection in editor_file_dialog.files_selected.get_connections():
+		editor_file_dialog.files_selected.disconnect(connection.callable)
 	for connection in editor_file_dialog.dir_selected.get_connections():
 		editor_file_dialog.dir_selected.disconnect(connection.callable)
 
 	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.FILE_MODE_SAVE_FILE:
 		editor_file_dialog.file_selected.connect(callable)
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_FILES:
+		editor_file_dialog.files_selected.connect(callable)
 	elif mode == EditorFileDialog.FILE_MODE_OPEN_DIR:
 		editor_file_dialog.dir_selected.connect(callable)
 	elif mode == EditorFileDialog.FILE_MODE_OPEN_ANY:

@@ -5,107 +5,106 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_bx557"]
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="4_xfyvc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m57ns"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 0.365, 0.365, 1)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_detail = 1
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uaowc"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.120869994, 0.120869994, 0.120869994, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
 
-[node name="Audio" type="VBoxContainer"]
+[node name="Audio" type="VBoxContainer" unique_id=1763173638]
 offset_right = 121.0
 offset_bottom = 58.0
 script = ExtResource("1_2iyyr")
+metadata/_edit_use_anchors_ = true
 
-[node name="TypingSoundsTitle" type="Label" parent="."]
+[node name="TypingSoundsTitle" type="Label" parent="." unique_id=931327441]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Typing Sounds"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=261764909]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer2"]
+[node name="Label" type="Label" parent="HBoxContainer2" unique_id=990590737]
 layout_mode = 2
 text = "Audio Bus"
 
-[node name="HintTooltip" parent="HBoxContainer2" instance=ExtResource("2_o1ban")]
+[node name="HintTooltip" parent="HBoxContainer2" unique_id=1790306263 instance=ExtResource("2_o1ban")]
 layout_mode = 2
 texture = null
 hint_text = "The default audio bus used by TypeSound nodes."
 
-[node name="TypeSoundBus" type="OptionButton" parent="HBoxContainer2"]
+[node name="TypeSoundBus" type="OptionButton" parent="HBoxContainer2" unique_id=165208436]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=1576353018]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer3"]
+[node name="Label" type="Label" parent="HBoxContainer3" unique_id=1905040672]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Audio Channel Defaults"
 
-[node name="HintTooltip" parent="HBoxContainer3" instance=ExtResource("2_o1ban")]
+[node name="HintTooltip" parent="HBoxContainer3" unique_id=1745113040 instance=ExtResource("2_o1ban")]
 layout_mode = 2
 texture = null
 hint_text = "Default settings for named audio channels."
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=163375319]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_m57ns")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uaowc")
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1432516074]
 layout_mode = 2
 
-[node name="AudioChannelDefaults" type="GridContainer" parent="Panel/VBox"]
+[node name="AudioChannelDefaults" type="GridContainer" parent="Panel/VBox" unique_id=368815258]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
 
-[node name="AudioChannelDefaultRow" type="HBoxContainer" parent="Panel/VBox"]
+[node name="AudioChannelDefaultRow" type="HBoxContainer" parent="Panel/VBox" unique_id=130720431]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="channel_name" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("3_bx557")]
+[node name="channel_name" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=1199959321 instance=ExtResource("3_bx557")]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter Channel Name"
 mode = 3
 
-[node name="volume" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("4_xfyvc")]
+[node name="volume" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=1857806081 instance=ExtResource("4_xfyvc")]
 layout_mode = 2
 mode = 2
-min = -80.0
-max = 6.0
+min_value = -80.0
+max_value = 6.0
 suffix = "dB"
 
-[node name="audio_bus" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("3_bx557")]
+[node name="audio_bus" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=729124528 instance=ExtResource("3_bx557")]
 layout_mode = 2
 placeholder_text = "Master"
 mode = 2
 
-[node name="fade_length" parent="Panel/VBox/AudioChannelDefaultRow" instance=ExtResource("4_xfyvc")]
+[node name="fade_length" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=147565177 instance=ExtResource("4_xfyvc")]
 layout_mode = 2
-mode = 0
 enforce_step = false
-min = 0.0
 
-[node name="loop" type="CheckButton" parent="Panel/VBox/AudioChannelDefaultRow"]
+[node name="loop" type="CheckButton" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=1642154633]
 layout_mode = 2
 
-[node name="delete" type="Button" parent="Panel/VBox/AudioChannelDefaultRow"]
+[node name="delete" type="Button" parent="Panel/VBox/AudioChannelDefaultRow" unique_id=1097661994]
 layout_mode = 2
+theme_type_variation = &"FlatButton"
 
-[node name="Add" type="Button" parent="Panel/VBox"]
+[node name="Add" type="Button" parent="Panel/VBox" unique_id=180028041]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Add channel"

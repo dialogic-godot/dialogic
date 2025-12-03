@@ -62,7 +62,7 @@ func _get_title() -> String:
 
 
 func _get_icon() -> Texture:
-	return get_theme_icon("TripleBar", "EditorIcons")
+	return preload("uid://j7ym07anlusi")
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)
@@ -185,6 +185,9 @@ func update_audio_channel_cache(list:PackedStringArray) -> void:
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 
 	# switch editor mode button
