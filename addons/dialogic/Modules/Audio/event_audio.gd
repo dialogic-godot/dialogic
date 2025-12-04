@@ -1,9 +1,9 @@
 @tool
+class_name DialogicAudioEvent
+extends DialogicEvent
 ## Event that can play audio on a channel. The channel can be prededinfed
 ## (with default settings defined in the settings) or created on the spot.
 ## If no channel is given will play as a One-Shot SFX.
-class_name DialogicAudioEvent
-extends DialogicEvent
 
 ### Settings
 
