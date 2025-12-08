@@ -22,6 +22,9 @@ signal drag_canceled()
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	resized.connect(add_extra_scroll_area_to_timeline)
 	%Timeline.child_entered_tree.connect(add_extra_scroll_area_to_timeline)
 
