@@ -86,6 +86,10 @@ func _ready() -> void:
 	%MainVSplit.split_offset = DialogicUtil.get_editor_setting("sidebar_v_split", 0)
 	group_mode = DialogicUtil.get_editor_setting("sidebar_group_mode", 0)
 	%GroupingOptions.select(%GroupingOptions.get_item_index(group_mode))
+	if %GroupingOptions.get_item_id(%GroupingOptions.selected) == GroupMode.NONE:
+		%ResourceTree.add_theme_constant_override("item_margin", 0)
+	else:
+		%ResourceTree.remove_theme_constant_override("item_margin")
 
 	%FolderColors.button_pressed = DialogicUtil.get_editor_setting("sidebar_use_folder_colors", true)
 	%TrimFolderPaths.button_pressed = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths", true)
