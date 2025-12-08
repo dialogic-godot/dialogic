@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ysqbusmy0qma" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.tscn" id="2_qs7vc"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_yqd26"]
 [ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
+[ext_resource type="Texture2D" uid="uid://bymlbr4o2m3jc" path="res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg" id="5_u2118"]
 [ext_resource type="Script" uid="uid://b35hvsvrvjjl4" path="res://addons/dialogic/Editor/TimelineEditor/shortcut_popup.gd" id="6_rfuk0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boacm"]
@@ -12,14 +13,6 @@ content_margin_top = 6.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
 bg_color = Color(0.153, 0.153, 0.153, 1)
-corner_detail = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_suoo8"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.083385, 0.083385, 0.083385, 1)
 corner_detail = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bvbc"]
@@ -219,14 +212,12 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="NoTimelineScreen" type="PanelContainer" parent="." unique_id=946023967]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_suoo8")
 
 [node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen" unique_id=1698409400]
 layout_mode = 2
@@ -244,7 +235,9 @@ autowrap_mode = 3
 
 [node name="CreateTimelineButton" type="Button" parent="NoTimelineScreen/CenterContainer/VBoxContainer" unique_id=1761424501]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Create New Timeline"
+icon = ExtResource("5_u2118")
 
 [node name="ShortcutsPanel" type="PanelContainer" parent="." unique_id=1337371675]
 unique_name_in_owner = true

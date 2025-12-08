@@ -149,7 +149,7 @@ func _ready() -> void:
 	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
 		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
-	$NoCharacterScreen.color = get_theme_color("dark_color_3", "Editor")
+	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
 

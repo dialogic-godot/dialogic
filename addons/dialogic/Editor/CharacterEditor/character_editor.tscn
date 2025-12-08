@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dlskc36c5hrwv"]
+[gd_scene load_steps=9 format=3 uid="uid://dlskc36c5hrwv"]
 
 [ext_resource type="Script" uid="uid://cwhe7tpe75oh7" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_uhhqs"]
 [ext_resource type="Script" uid="uid://deliic6d8vajo" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_portrait_tree.gd" id="2_vad0i"]
 [ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="3_2ogmx"]
 [ext_resource type="Texture2D" uid="uid://dx3o2ild56i76" path="res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" id="4_wg7ys"]
+[ext_resource type="Texture2D" uid="uid://my600mb32ydt" path="res://addons/dialogic/Editor/Images/Toolbar/add-character.svg" id="6_2ogmx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es2rd"]
 
@@ -409,8 +410,7 @@ visible = false
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="NoCharacterScreen" type="ColorRect" parent="." unique_id=2122222002]
-visible = false
+[node name="NoCharacterScreen" type="PanelContainer" parent="." unique_id=190821474]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -418,15 +418,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-color = Color(0, 0, 0, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="NoCharacterScreen" unique_id=1885703718]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="NoCharacterScreen/CenterContainer" unique_id=135127017]
 custom_minimum_size = Vector2(250, 0)
@@ -441,7 +435,9 @@ autowrap_mode = 3
 
 [node name="CreateCharacterButton" type="Button" parent="NoCharacterScreen/CenterContainer/VBoxContainer" unique_id=1496778365]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Create New Character"
+icon = ExtResource("6_2ogmx")
 
 [connection signal="pressed" from="Scroll/VBox/MainHSplit/MainSettingsPanel/MainSettings/HBoxContainer/CloseButton" to="." method="hide_main_settings"]
 [connection signal="pressed" from="Scroll/VBox/MainHSplit/MainSettingsPanel/MainSettingsHidden/OpenButton" to="." method="show_main_settings"]
