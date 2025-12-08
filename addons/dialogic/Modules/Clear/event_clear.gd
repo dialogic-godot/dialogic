@@ -15,8 +15,7 @@ var clear_music := true
 var clear_portrait_positions := true
 var clear_background := true
 
-################################################################################
-## 						EXECUTE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -62,9 +61,10 @@ func _execute() -> void:
 
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -73,9 +73,10 @@ func _init() -> void:
 	event_category = "Other"
 	event_sorting_index = 2
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -95,9 +96,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"style"		: {"property": "clear_style", 		"default": true},
 	}
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -114,3 +116,5 @@ func build_event_editor() -> void:
 	add_body_edit('clear_music', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_music.svg"), 'tooltip':'Clear Audio'})
 	add_body_edit('clear_style', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_style.svg"), 'tooltip':'Clear Style'})
 	add_body_edit('clear_portrait_positions', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Clear/clear_positions.svg"), 'tooltip':'Clear Portrait Positions'})
+
+#endregion
