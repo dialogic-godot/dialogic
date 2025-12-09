@@ -16,7 +16,7 @@ extends DialogicSubsystem
 @warning_ignore("unused_signal") # This is emitted by the text event.
 signal about_to_show_text(info:Dictionary)
 ## Emitted when a text event (or a new text section) starts displaying.
-## This will be AFTER the textox animation, while [signal about_to_show_text] is before.
+## This will be AFTER the textbox animation, while [signal about_to_show_text] is before.
 ## Gives a dictionary with the same values as [signal about_to_show_text]
 @warning_ignore("unused_signal") # This is emitted by the text event.
 signal text_started(info:Dictionary)
