@@ -10,6 +10,9 @@ var label_regex := RegEx.create_from_string('label +(?<name>[^\n]+)')
 var channel_regex := RegEx.create_from_string(r'audio +(?<channel>[\w-]{2,}|[\w]+)')
 
 func _ready() -> void:
+	if get_parent() is SubViewport or owner.get_parent() is SubViewport:
+		return
+
 	await find_parent('EditorView').ready
 	syntax_highlighter = code_completion_helper.syntax_highlighter
 	timeline_editor.editors_manager.sidebar.content_item_activated.connect(_on_content_item_clicked)

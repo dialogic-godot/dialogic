@@ -12,9 +12,7 @@ var name := ""
 var display_name := ""
 
 
-
-################################################################################
-## 						EXECUTE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -29,8 +27,7 @@ func _execute() -> void:
 	finish()
 
 
-################################################################################
-## 						INITIALIZE
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -38,14 +35,16 @@ func _init() -> void:
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 3
+	help_page_path = "https://docs.dialogic.pro/jump-event.html"
 
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon_label.png'))
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 func to_text() -> String:
 	if display_name.is_empty():
@@ -89,26 +88,34 @@ func _get_property_original_translation(property_name:String) -> String:
 			return display_name
 	return ''
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#endregion
+
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
 	add_header_edit('name', ValueType.SINGLELINE_TEXT, {'left_text':'Label', 'autofocus':true})
 	add_body_edit('display_name', ValueType.SINGLELINE_TEXT, {'left_text':'Display Name:'})
 
+#endregion
 
-####################### CODE COMPLETION ########################################
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'label', 'label ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	dict[line.find('label')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
 	dict[line.find('label')+5] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
 	return dict
+
+#endregion

@@ -5,16 +5,17 @@ extends DialogicEvent
 ## Event that does nothing right now.
 
 
-################################################################################
-## 						EXECUTE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
 	pass
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -23,9 +24,10 @@ func _init() -> void:
 	event_category = "Other"
 	event_sorting_index = 0
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
 	return "glossary"
@@ -34,9 +36,13 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 	}
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#endregion
+
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
 	pass
+
+#endregion

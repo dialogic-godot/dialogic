@@ -42,6 +42,8 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 	dialogic.current_state = DialogicGameHandler.States.IDLE
 	finish()
 
+#endregion
+
 
 #region SETUP
 ################################################################################
@@ -51,6 +53,8 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 6
+
+#endregion
 
 
 #region SAVING/LOADING
@@ -85,6 +89,8 @@ func _get_property_original_translation(property_name:String) -> String:
 			return default
 	return ""
 
+#endregion
+
 
 #region EDITOR
 ################################################################################
@@ -111,3 +117,5 @@ func get_var_suggestions(filter: String = "") -> Dictionary:
 	for var_path in DialogicUtil.list_variables(vars, "", DialogicUtil.VarTypes.STRING):
 		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions
+
+#endregion

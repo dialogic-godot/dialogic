@@ -175,6 +175,9 @@ func clear_timeline_nodes() -> void:
 ################################################################################
 
 func _ready() -> void:
+	if get_parent() is SubViewport or owner.get_parent() is SubViewport:
+		return
+
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
 	batch_loaded.connect(_on_batch_loaded)

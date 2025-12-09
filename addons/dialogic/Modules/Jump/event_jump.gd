@@ -32,8 +32,7 @@ var timeline_identifier := "":
 			ui_update_needed.emit()
 
 
-################################################################################
-## 						EXECUTION
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
@@ -48,9 +47,10 @@ func _execute() -> void:
 		else:
 			dialogic.start_timeline(dialogic.current_timeline)
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -58,14 +58,16 @@ func _init() -> void:
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 4
+	help_page_path = "https://docs.dialogic.pro/jump-event.html"
 
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon_jump.png'))
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 func to_text() -> String:
 	var result := "jump "
@@ -99,9 +101,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"label"			: {"property": "label_name", 		"default": ""},
 	}
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -139,8 +142,10 @@ func get_label_suggestions(_filter:String="") -> Dictionary:
 			suggestions["{"+var_path+"}"] = {'value':"{"+var_path+"}", 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
 	return suggestions
 
+#endregion
 
-####################### CODE COMPLETION ########################################
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
@@ -156,11 +161,15 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'jump', 'jump ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	dict[line.find('jump')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
 	dict[line.find('jump')+4] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
 	return dict
+
+#endregion

@@ -95,8 +95,8 @@ var character_identifier: String:
 
 var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<transform>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
 
-################################################################################
-## 						EXECUTION
+
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
@@ -191,6 +191,8 @@ func _execute() -> void:
 
 	finish()
 
+#endregion
+
 
 #region INITIALIZE
 ###############################################################################
@@ -200,12 +202,14 @@ func _init() -> void:
 	set_default_color('Color2')
 	event_category = "Main"
 	event_sorting_index = 2
+	help_page_path = "https://docs.dialogic.pro/event-character.html"
 
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
 #endregion
+
 
 #region SAVING, LOADING, DEFAULTS
 ################################################################################
@@ -331,8 +335,8 @@ func is_valid_event(string:String) -> bool:
 
 #endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -475,8 +479,10 @@ func get_animation_suggestions(search_text:String='') -> Dictionary:
 func get_fade_suggestions(search_text:String='') -> Dictionary:
 	return DialogicPortraitAnimationUtil.get_suggestions(search_text, fade_animation, "Default", DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
 
+#endregion
 
-####################### CODE COMPLETION ########################################
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
@@ -553,8 +559,10 @@ func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'leave', 'leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'update', 'update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
@@ -582,3 +590,5 @@ func list_to_suggestions(list:Array) -> Dictionary:
 			accum[value.label]["text_alt"] = [value.label.to_lower()]
 			return accum,
 		{})
+
+#endregion

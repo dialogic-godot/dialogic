@@ -11,8 +11,7 @@ extends DialogicEvent
 var style_name := ""
 
 
-################################################################################
-## 						EXECUTE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -21,9 +20,10 @@ func _execute() -> void:
 	await dialogic.get_tree().process_frame
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -32,9 +32,10 @@ func _init() -> void:
 	event_category = "Visuals"
 	event_sorting_index = 1
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
 	return "style"
@@ -46,9 +47,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"name" 		: {"property": "style_name", "default": "", 'suggestions':get_style_suggestions},
 	}
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -69,3 +71,5 @@ func get_style_suggestions(_filter := "") -> Dictionary:
 		var style: DialogicStyle = load(i)
 		suggestions[style.name] = {'value': style.name, 'editor_icon': ["PopupMenu", "EditorIcons"]}
 	return suggestions
+
+#endregion

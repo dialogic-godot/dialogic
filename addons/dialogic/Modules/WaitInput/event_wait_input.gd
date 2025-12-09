@@ -6,8 +6,8 @@ extends DialogicEvent
 
 var hide_textbox := true
 
-################################################################################
-## 						EXECUTE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -18,8 +18,10 @@ func _execute() -> void:
 	await dialogic.Inputs.dialogic_action
 	finish()
 
-################################################################################
-## 						INITIALIZE
+#endregion
+
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -28,9 +30,10 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 12
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -46,3 +49,5 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor() -> void:
 	add_header_label('Wait for input')
 	add_body_edit('hide_textbox', ValueType.BOOL, {'left_text':'Hide text box:'})
+
+#endregion
