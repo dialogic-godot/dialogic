@@ -29,6 +29,7 @@ func _init() -> void:
 	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 12
+	collapse_on_create = true
 
 #endregion
 

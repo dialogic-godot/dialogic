@@ -109,7 +109,7 @@ func initialize_logic() -> void:
 
 	content_changed.connect(recalculate_field_visibility)
 
-	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button)
+	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button and not resource.collapse_on_create)
 
 #endregion
 

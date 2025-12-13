@@ -36,6 +36,7 @@ func _init() -> void:
 	event_category = "Flow"
 	event_sorting_index = 3
 	help_page_path = "https://docs.dialogic.pro/jump-event.html"
+	collapse_on_create = true
 
 
 func _get_icon() -> Resource:
