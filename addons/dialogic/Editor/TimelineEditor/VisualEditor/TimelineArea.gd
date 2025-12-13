@@ -29,7 +29,7 @@ func _ready() -> void:
 	%Timeline.child_entered_tree.connect(add_extra_scroll_area_to_timeline)
 
 	# This prevents the view to turn black if you are editing this scene in Godot
-	if find_parent('EditorView'):
+	if find_parent("EditorView"):
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 
 
@@ -51,7 +51,7 @@ func _input(event:InputEvent) -> void:
 			finish_dragging()
 
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 	if !dragging:
 		return
 
@@ -87,7 +87,6 @@ func _draw() -> void:
 	var color_multiplier := Color(1,1,1,0.25)
 	var selected_color_multiplier := Color(1,1,1,1)
 
-
 	## Draw Event Lines
 	for idx in range($Timeline.get_child_count()):
 		var block: Control = $Timeline.get_child(idx)
@@ -104,8 +103,8 @@ func _draw() -> void:
 		if not (block.has_any_enabled_body_content or block.resource.can_contain_events):
 			continue
 
-		var icon_panel_height: int = block.get_node('%IconPanel').size.y
-		var rect_position: Vector2 = block.get_node('%IconPanel').global_position+Vector2(0,1)*block.get_node('%IconPanel').size+Vector2(0,-4)
+		var icon_panel_height: int = block.get_node("%IconPanel").size.y
+		var rect_position: Vector2 = block.get_node("%IconPanel").global_position+Vector2(0,1)*block.get_node("%IconPanel").size+Vector2(0,-4)
 		var color: Color = block.resource.event_color
 
 		if block.is_selected() or block.end_node and block.end_node.is_selected():
@@ -144,7 +143,7 @@ func _draw() -> void:
 			var group_starter := true
 			if idx != 0:
 				var block_above := $Timeline.get_child(idx-1)
-				if block_above.resource.event_name == block.resource.event_name:
+				if block_above.resource.event_name == block.resource.event_name and block_above.current_indent_level == block.current_indent_level:
 					group_starter = false
 				if block_above.resource is DialogicEndBranchEvent and block_above.parent_node.resource.event_name == block.resource.event_name:
 					group_starter = false
@@ -152,24 +151,28 @@ func _draw() -> void:
 			## Draw small horizontal line on any event in group
 			draw_rect(Rect2(
 					rect_position.x-global_position.x-line_width,
-					rect_position.y-global_position.y-icon_panel_height/2,
+					rect_position.y-global_position.y-icon_panel_height/2.0,
 					line_width,
 					line_width),
 					group_color)
 
 			if group_starter:
 				## Find the last event in the group (or that events END BRANCH)
+				var target_indent: int = block.current_indent_level-1
 				var sub_idx := idx
 				var group_end_idx := idx
 				while sub_idx < $Timeline.get_child_count()-1:
 					sub_idx += 1
-					if $Timeline.get_child(sub_idx).current_indent_level == block.current_indent_level-1:
+					if $Timeline.get_child(sub_idx).current_indent_level == target_indent:
 						group_end_idx = sub_idx-1
+						break
+					if sub_idx + 1 == $Timeline.get_child_count():
+						group_end_idx = sub_idx
 						break
 
 				var end_node := $Timeline.get_child(group_end_idx)
 
-				var offset := Vector2(-2*line_width, -icon_panel_height/2)
+				var offset := Vector2(-2*line_width, -icon_panel_height/2.0)
 				var v_length: float = end_node.global_position.y - rect_position.y + icon_panel_height
 
 				## Draw vertical line
@@ -197,7 +200,7 @@ func _draw() -> void:
 #region SPACE BELOW
 ################################################################################
 
-func add_extra_scroll_area_to_timeline(fake_arg:Variant=null) -> void:
+func add_extra_scroll_area_to_timeline(_fake_arg:Variant=null) -> void:
 	if %Timeline.get_children().size() > 4:
 		%Timeline.custom_minimum_size.y = 0
 		%Timeline.size.y = 0
