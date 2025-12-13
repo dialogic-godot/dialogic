@@ -39,12 +39,9 @@ func _enter_tree() -> void:
 	inspector_plugin = load("res://addons/dialogic/Editor/Inspector/inspector_plugin.gd").new()
 	add_inspector_plugin(inspector_plugin)
 
-	# Auto-update the singleton path for alpha users
-	# TODO remove at some point during beta or later
-	if not ProjectSettings.has_setting("autoload/"+PLUGIN_NAME) or not "Core" in ProjectSettings.get_setting("autoload/"+PLUGIN_NAME, ""):
-		if ProjectSettings.has_setting("autoload/"+PLUGIN_NAME):
-			remove_autoload_singleton(PLUGIN_NAME)
+	if not ProjectSettings.has_setting("autoload/"+PLUGIN_NAME):
 		add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
+		print("[Dialogic] Dialogic was enabled, but autoload singleton was missing. It was automatically added again.")
 
 
 func _exit_tree() -> void:
