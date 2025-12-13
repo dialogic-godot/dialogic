@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://de6yhw4r8jqb3"]
+[gd_scene format=3 uid="uid://de6yhw4r8jqb3"]
 
 [ext_resource type="Script" uid="uid://q24lthmavkvn" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
 [ext_resource type="Script" uid="uid://cefv8yoo8q7k6" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
@@ -36,6 +36,7 @@ bg_color = Color(0.083385, 0.083385, 0.083385, 1)
 corner_detail = 4
 
 [node name="EditorView" type="ScrollContainer" unique_id=708605923]
+auto_translate_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,6 +44,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+tooltip_auto_translate_mode = 2
 script = ExtResource("1_x88ov")
 
 [node name="EditorsManager" type="Control" parent="." unique_id=1465650293]
@@ -61,12 +63,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
+split_offsets = PackedInt32Array(150)
 split_offset = 150
 
 [node name="Sidebar" parent="EditorsManager/HSplit" unique_id=93560475 instance=ExtResource("3_lp6hj")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+split_offsets = PackedInt32Array(0)
 split_offset = 0
 
 [node name="VBox" type="VBoxContainer" parent="EditorsManager/HSplit" unique_id=1819816398]
@@ -74,6 +78,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Toolbar" type="HBoxContainer" parent="EditorsManager/HSplit/VBox" unique_id=757941712]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
