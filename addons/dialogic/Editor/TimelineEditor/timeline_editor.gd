@@ -20,7 +20,7 @@ func _register() -> void:
 	# add timeline button
 	var add_timeline_button: Button = editors_manager.add_icon_button(
 		load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg"),
-		"Add Timeline",
+		"New Timeline",
 		self)
 	add_timeline_button.pressed.connect(_on_create_timeline_button_pressed)
 	add_timeline_button.shortcut = Shortcut.new()

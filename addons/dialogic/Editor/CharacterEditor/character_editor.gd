@@ -29,7 +29,7 @@ func _register() -> void:
 	## Add an "add character" button
 	var add_character_button: Button = editors_manager.add_icon_button(
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
-			'Add Character',
+			'New Character',
 			self)
 	add_character_button.pressed.connect(_on_create_character_button_pressed)
 	add_character_button.shortcut = Shortcut.new()
@@ -315,26 +315,26 @@ func setup_portrait_list_tab() -> void:
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
 		import_portraits_from_folder, "*.svg, *.png",
-		EditorFileDialog.FILE_MODE_OPEN_DIR)
+		EditorFileDialog.FILE_MODE_OPEN_FILES, "Import Images From Folder")
 
 
-func import_portraits_from_folder(path:String) -> void:
+func import_portraits_from_folder(files:Array) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected() != parent and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent = %PortraitTree.get_selected()
-
-	var dir := DirAccess.open(path)
-	dir.list_dir_begin()
-	var file_name: String = dir.get_next()
-	var files := []
-	while file_name != "":
-		if not dir.current_is_dir():
-			var file_lower := file_name.to_lower()
-			if '.svg' in file_lower or '.png' in file_lower:
-				if not '.import' in file_lower:
-					files.append(file_name)
-		file_name = dir.get_next()
+#
+	#var dir := DirAccess.open(path)
+	#dir.list_dir_begin()
+	#var file_name: String = dir.get_next()
+	#var files := []
+	#while file_name != "":
+		#if not dir.current_is_dir():
+			#var file_lower := file_name.to_lower()
+			#if '.svg' in file_lower or '.png' in file_lower:
+				#if not '.import' in file_lower:
+					#files.append(file_name)
+		#file_name = dir.get_next()
 
 	var prefix: String = files[0]
 	for file in files:
@@ -347,7 +347,7 @@ func import_portraits_from_folder(path:String) -> void:
 
 	for file in files:
 		var item : TreeItem = %PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
-			{'scene':"",'export_overrides':{'image':var_to_str(path.path_join(file))}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+			{'scene':"",'export_overrides':{'image':var_to_str(file)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
 		item.set_meta('new', true)
 
 	## Handle selection

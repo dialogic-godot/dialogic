@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dlskc36c5hrwv"]
+[gd_scene format=3 uid="uid://dlskc36c5hrwv"]
 
 [ext_resource type="Script" uid="uid://cwhe7tpe75oh7" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_uhhqs"]
@@ -160,19 +160,19 @@ text = "Portraits"
 [node name="AddPortraitButton" type="Button" parent="Scroll/VBox/MainHSplit/Split/HBoxContainer/MarginContainer/PortraitListSection/Portraits/Title" unique_id=1343539624]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Add portrait"
+tooltip_text = "Add Empty Portrait"
 theme_type_variation = &"FlatButton"
 
 [node name="AddPortraitGroupButton" type="Button" parent="Scroll/VBox/MainHSplit/Split/HBoxContainer/MarginContainer/PortraitListSection/Portraits/Title" unique_id=554125997]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Add Group"
+tooltip_text = "Add Portrait Group"
 theme_type_variation = &"FlatButton"
 
 [node name="ImportPortraitsButton" type="Button" parent="Scroll/VBox/MainHSplit/Split/HBoxContainer/MarginContainer/PortraitListSection/Portraits/Title" unique_id=423626215]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Import images from folder"
+tooltip_text = "Import Images as Portraits"
 theme_type_variation = &"FlatButton"
 
 [node name="PortraitListTools" type="HBoxContainer" parent="Scroll/VBox/MainHSplit/Split/HBoxContainer/MarginContainer/PortraitListSection/Portraits" unique_id=1864279451]
@@ -411,6 +411,7 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="NoCharacterScreen" type="PanelContainer" parent="." unique_id=190821474]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
