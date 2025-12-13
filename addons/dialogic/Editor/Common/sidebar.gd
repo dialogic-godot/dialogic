@@ -20,6 +20,9 @@ enum GroupMode {
 }
 var group_mode: GroupMode = GroupMode.TYPE
 
+var custom_right_click_options := {}
+
+
 
 func _ready() -> void:
 	if owner != null and owner.get_parent() is SubViewport:
@@ -60,17 +63,18 @@ func _ready() -> void:
 	)
 
 	## RIGHT CLICK MENU
-	%RightClickMenu.clear()
-	%RightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Remove From List", 1)
-	%RightClickMenu.add_separator()
-	%RightClickMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
-	%RightClickMenu.add_separator()
-	%RightClickMenu.add_icon_item(
+	%RightClickItemMenu.clear()
+	%RightClickItemMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Remove From List", 1)
+	%RightClickItemMenu.add_separator()
+	%RightClickItemMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
+	%RightClickItemMenu.add_separator()
+	%RightClickItemMenu.add_icon_item(
 		get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2
 	)
-	%RightClickMenu.add_icon_item(
+	%RightClickItemMenu.add_icon_item(
 		get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3
 	)
+
 
 	## SORT MENU
 	%GroupingOptions.set_item_icon(0, get_theme_icon("AnimationTrackGroup", "EditorIcons"))
@@ -82,6 +86,16 @@ func _ready() -> void:
 	await get_tree().process_frame
 	if DialogicUtil.get_editor_setting("sidebar_collapsed", false):
 		_hide_sidebar()
+
+	%RightClickNoItemMenu.clear()
+	custom_right_click_options.clear()
+	var idx := 0
+	for i in find_parent("EditorView").get_node("%Toolbar").get_children():
+		if not i is Button: continue
+		if not "new" in i.tooltip_text.to_lower(): continue
+		%RightClickNoItemMenu.add_icon_item(i.icon, i.tooltip_text, idx)
+		custom_right_click_options[idx] = {"button":i}
+		idx += 1
 
 	%MainVSplit.split_offset = DialogicUtil.get_editor_setting("sidebar_v_split", 0)
 	group_mode = DialogicUtil.get_editor_setting("sidebar_group_mode", 0)
@@ -390,8 +404,8 @@ func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> 
 
 		MOUSE_BUTTON_RIGHT:
 			if resource_tree.get_selected().get_metadata(0):
-				%RightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
-				%RightClickMenu.set_meta("item_clicked", resource_tree.get_selected())
+				%RightClickItemMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
+				%RightClickItemMenu.set_meta("item_clicked", resource_tree.get_selected())
 
 
 func _on_resources_tree_item_collapsed(item:TreeItem) -> void:
@@ -424,21 +438,21 @@ func remove_item_from_list(item: TreeItem) -> void:
 func _on_right_click_menu_id_pressed(id: int) -> void:
 	match id:
 		1:  # REMOVE ITEM FROM LIST
-			remove_item_from_list(%RightClickMenu.get_meta("item_clicked"))
+			remove_item_from_list(%RightClickItemMenu.get_meta("item_clicked"))
 		2:  # OPEN IN FILESYSTEM
 			EditorInterface.get_file_system_dock().navigate_to_path(
-				%RightClickMenu.get_meta("item_clicked").get_metadata(0)
+				%RightClickItemMenu.get_meta("item_clicked").get_metadata(0)
 			)
 		3:  # OPEN IN EXTERNAL EDITOR
 			OS.shell_open(
 				ProjectSettings.globalize_path(
-					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
+					%RightClickItemMenu.get_meta("item_clicked").get_metadata(0)
 				)
 			)
 		4:  # COPY IDENTIFIER
 			DisplayServer.clipboard_set(
 				DialogicResourceUtil.get_unique_identifier_by_path(
-					%RightClickMenu.get_meta("item_clicked").get_metadata(0)
+					%RightClickItemMenu.get_meta("item_clicked").get_metadata(0)
 				)
 			)
 #endregion
@@ -535,3 +549,13 @@ func _on_trim_folder_paths_toggled(toggled_on: bool) -> void:
 
 func _on_main_v_split_dragged(offset: int) -> void:
 	DialogicUtil.set_editor_setting("sidebar_v_split", offset)
+
+
+func _on_resource_tree_empty_clicked(click_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index == MOUSE_BUTTON_RIGHT:
+		%RightClickNoItemMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
+
+
+
+func _on_right_click_no_item_menu_id_pressed(id: int) -> void:
+	custom_right_click_options[id].button.pressed.emit()
