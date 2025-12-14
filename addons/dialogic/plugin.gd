@@ -2,14 +2,16 @@
 extends EditorPlugin
 
 ## Preload the main panel scene
-const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
+const MainPanel := preload("uid://de6yhw4r8jqb3")
 const PLUGIN_NAME := "Dialogic"
 const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
-const PLUGIN_ICON_PATH := "res://addons/dialogic/Editor/Images/plugin-icon.svg"
+const PLUGIN_ICON_PATH := "uid://dybg3l5pwetne"
+const PLUGIN_INSPECTOR_PATH := "uid://bok1je25mskp7"
 
 ## References used by various other scripts to quickly reference these things
 var editor_view: Control  # the root of the dialogic editor
 var inspector_plugin: EditorInspectorPlugin = null
+
 
 ## Initialization
 func _init() -> void:
@@ -21,7 +23,6 @@ func _init() -> void:
 
 ## Activation & Editor Setup
 func _enable_plugin() -> void:
-	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
 	add_dialogic_default_action()
 
 
@@ -30,23 +31,19 @@ func _disable_plugin() -> void:
 
 
 func _enter_tree() -> void:
+	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
+
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
 	EditorInterface.get_editor_main_screen().add_child(editor_view)
-	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
-	inspector_plugin = load("res://addons/dialogic/Editor/Inspector/inspector_plugin.gd").new()
+	inspector_plugin = load(PLUGIN_INSPECTOR_PATH).new()
 	add_inspector_plugin(inspector_plugin)
-
-	if not ProjectSettings.has_setting("autoload/"+PLUGIN_NAME):
-		add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
-		print("[Dialogic] Dialogic was enabled, but autoload singleton was missing. It was automatically added again.")
 
 
 func _exit_tree() -> void:
 	if editor_view:
-		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()
 
 	if inspector_plugin:
