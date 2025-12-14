@@ -139,7 +139,7 @@ func _draw() -> void:
 							color)
 
 		if block.resource.wants_to_group:
-			var group_color: Color = block.resource.event_color*color_multiplier
+			var group_color: Color = block.resource.event_color*color_multiplier*0.7
 			var group_starter := true
 			if idx != 0:
 				var block_above := $Timeline.get_child(idx-1)
