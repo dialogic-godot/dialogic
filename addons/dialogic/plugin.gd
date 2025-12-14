@@ -32,7 +32,7 @@ func _disable_plugin() -> void:
 func _enter_tree() -> void:
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
-	editor_view.hide()
+	EditorInterface.get_editor_main_screen().add_child(editor_view)
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
@@ -82,7 +82,7 @@ func _make_visible(visible:bool) -> void:
 
 	if editor_view.get_parent() is Window:
 		if visible:
-			get_editor_interface().set_main_screen_editor("Script")
+			EditorInterface.set_main_screen_editor("Script")
 			editor_view.show()
 			editor_view.get_parent().grab_focus()
 	else:
@@ -127,7 +127,7 @@ func _editor_view_and_manager_exist() -> bool:
 ## Special Setup/Updates
 ## Methods that adds a dialogic_default_action if non exists
 func add_dialogic_default_action() -> void:
-	if ProjectSettings.has_setting('input/dialogic_default_action'):
+	if ProjectSettings.has_setting("input/dialogic_default_action"):
 		return
 
 	var input_enter: InputEventKey = InputEventKey.new()
@@ -143,7 +143,7 @@ func add_dialogic_default_action() -> void:
 	var input_controller: InputEventJoypadButton = InputEventJoypadButton.new()
 	input_controller.button_index = JOY_BUTTON_A
 
-	ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
+	ProjectSettings.set_setting("input/dialogic_default_action", {"deadzone":0.5, "events":[input_enter, input_left_click, input_space, input_x, input_controller]})
 	ProjectSettings.save()
 
 # Create cache when project is compiled
