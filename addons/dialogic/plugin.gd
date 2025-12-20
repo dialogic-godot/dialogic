@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 ## Preload the main panel scene
-const MainPanel := preload("uid://de6yhw4r8jqb3")
+const MainPanel: PackedScene = preload("uid://de6yhw4r8jqb3")
 const PLUGIN_NAME := "Dialogic"
 const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
 const PLUGIN_ICON_PATH := "uid://dybg3l5pwetne"
