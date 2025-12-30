@@ -67,12 +67,19 @@ func _process(_delta:float) -> void:
 				drag_to_position = child.get_index()
 				queue_redraw()
 				return
+	
 	if get_global_rect().has_point(get_global_mouse_position()):
-		var last_child := %Timeline.get_child(-1)
-		if get_global_mouse_position().y > last_child.global_position.y + last_child.size.y:
-			drag_to_position = %Timeline.get_child_count()
+		if %Timeline.get_child_count():
+			var last_child := %Timeline.get_child(-1)
+			if get_global_mouse_position().y > last_child.global_position.y + last_child.size.y:
+				drag_to_position = %Timeline.get_child_count()
+				queue_redraw()
+				return
+		else:
+			drag_to_position = 0
 			queue_redraw()
 			return
+
 
 
 func finish_dragging() -> void:
@@ -196,7 +203,10 @@ func _draw() -> void:
 	if dragging and get_global_rect().has_point(get_global_mouse_position()):
 		var height: int = 0
 		if drag_to_position == %Timeline.get_child_count():
-			height = %Timeline.get_child(-1).global_position.y+%Timeline.get_child(-1).size.y-global_position.y-(line_width/2.0)
+			if drag_to_position == 0:
+				height = 0
+			else:
+				height = %Timeline.get_child(-1).global_position.y+%Timeline.get_child(-1).size.y-global_position.y-(line_width/2.0)
 		else:
 			height = %Timeline.get_child(drag_to_position).global_position.y-global_position.y-(line_width/2.0)
 
