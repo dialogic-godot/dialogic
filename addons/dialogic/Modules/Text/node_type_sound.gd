@@ -92,7 +92,7 @@ func _on_continued_revealing_text(new_character:String) -> void:
 	audio_player.stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, current_overwrite_data.get('sounds', sounds).size() - 1)]
 
 	#choose a random pitch and volume
-	audio_player.pitch_scale = max(0, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
+	audio_player.pitch_scale = max(0.0001, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
 	audio_player.volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
 
 	#play the sound

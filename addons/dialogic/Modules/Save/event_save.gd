@@ -12,8 +12,7 @@ extends DialogicEvent
 var slot_name := ""
 
 
-################################################################################
-## 						INITIALIZE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -26,9 +25,10 @@ func _execute() -> void:
 		dialogic.Save.save(slot_name)
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
@@ -41,9 +41,10 @@ func _init() -> void:
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -56,10 +57,13 @@ func get_shortcode_parameters() -> Dictionary:
 		"slot"		: {"property": "slot_name", "default": "Default"},
 	}
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
 	add_header_edit('slot_name', ValueType.SINGLELINE_TEXT, {'left_text':'Save to slot'})
+
+#endregion

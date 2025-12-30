@@ -98,6 +98,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			page += 1
 		set_meta("batch_count", len(_batches))
 		batch_loaded.emit()
+
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
 
@@ -175,6 +176,9 @@ func clear_timeline_nodes() -> void:
 ################################################################################
 
 func _ready() -> void:
+	if get_parent() is SubViewport or owner.get_parent() is SubViewport:
+		return
+
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
 	batch_loaded.connect(_on_batch_loaded)
@@ -936,6 +940,8 @@ func indent_events() -> void:
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
 
+	var current_contain_events := []
+
 	for block in event_list:
 		if (not "resource" in block):
 			continue
@@ -943,38 +949,39 @@ func indent_events() -> void:
 		if (not currently_hidden) and block.resource.can_contain_events and block.end_node and block.collapsed:
 			currently_hidden = true
 			hidden_until = block.end_node
-			hidden_count = 0
 		elif currently_hidden and block == hidden_until:
-			block.update_hidden_events_indicator(hidden_count)
 			currently_hidden = false
 			hidden_until = null
 		elif currently_hidden:
 			block.hide()
-			hidden_count += 1
 		else:
 			block.show()
-			if block.resource is DialogicEndBranchEvent:
-				block.update_hidden_events_indicator(0)
+
 
 		delayed_indent = 0
-
-		if block.resource.can_contain_events:
-			delayed_indent = 1
-
 		if block.resource.wants_to_group:
 			indent += 1
 
-		elif block.resource is DialogicEndBranchEvent:
+		if block.resource is DialogicEndBranchEvent:
 			block.parent_node_changed()
 			delayed_indent -= 1
 			if block.parent_node.resource.wants_to_group:
 				delayed_indent -= 1
+			if block.parent_node.resource.can_contain_events:
+				var contained : Array = current_contain_events.pop_back()
+				contained[0].contained_events = contained[1]
+		if current_contain_events:
+			current_contain_events[-1][1].append(block.resource)
+		if block.resource.can_contain_events:
+			delayed_indent = 1
+			current_contain_events.append([block, []])
 
 		if indent >= 0:
-			block.set_indent(indent)
+			block.set_indent.call_deferred(indent)
 		else:
-			block.set_indent(0)
+			block.set_indent.call_deferred(0)
 		indent += delayed_indent
+
 
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -999,8 +1006,8 @@ func _on_event_popup_menu_id_pressed(id:int) -> void:
 			OS.shell_open(item.resource.help_page_path)
 
 	elif id == 3:
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
-		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
+		EditorInterface.set_main_screen_editor('Script')
+		EditorInterface.edit_script(item.resource.get_script(), 1, 1)
 	elif id == 4 or id == 5:
 		if id == 4:
 			offset_blocks_by_index(selected_items, -1)
@@ -1102,42 +1109,43 @@ func _input(event:InputEvent) -> void:
 
 	## Some shortcuts should always work
 	match event.as_text():
-		"Ctrl+T": # Add text event
+		"Ctrl+T", "Command+T":  # Add text event
 			_add_event_button_pressed(DialogicTextEvent.new(), true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Shift+T", "Ctrl+Alt+T", "Ctrl+Option+T": # Add text event with current or previous character
+		"Ctrl+Shift+T", "Ctrl+Alt+T", "Shift+Command+T", "Option+Command+T":  # Add text event with current or previous character
 			get_viewport().set_input_as_handled()
 			var ev := DialogicTextEvent.new()
-			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T" or event.as_text() == "Ctrl+Option+T")
+			ev.character = get_previous_character(event.as_text() == "Ctrl+Alt+T" or event.as_text() == "Option+Command+T")
 			_add_event_button_pressed(ev, true)
 
-		"Ctrl+E": # Add character join event
+		"Ctrl+E", "Command+E":  # Add character join event
 			_add_event_button_pressed(DialogicCharacterEvent.new(), true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Shift+E": # Add character update event
+		"Ctrl+Shift+E", "Shift+Command+E":  # Add character update event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.UPDATE
+			ev.character = get_previous_character()
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Alt+E", "Ctrl+Option+E": # Add character leave event
+		"Ctrl+Alt+E", "Ctrl+Option+E", "Option+Command+E":  # Add character leave event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.LEAVE
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+J": # Add jump event
+		"Ctrl+J", "Command+J":  # Add jump event
 			_add_event_button_pressed(DialogicJumpEvent.new(), true)
 			get_viewport().set_input_as_handled()
-		"Ctrl+L": # Add label event
+		"Ctrl+L", "Command+L":  # Add label event
 			_add_event_button_pressed(DialogicLabelEvent.new(), true)
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+F6" when OS.get_name() != "macOS": # Play from here
+		"Ctrl+F6" when OS.get_name() != "macOS":  # Play from here
 			play_from_here()
-		"Ctrl+Shift+B" when OS.get_name() == "macOS": # Play from here
+		"Ctrl+Shift+B" when OS.get_name() == "macOS":  # Play from here
 			play_from_here()
 
 	## Some shortcuts should be disabled when writing text.
@@ -1146,12 +1154,12 @@ func _input(event:InputEvent) -> void:
 		return
 
 	match event.as_text():
-		"Ctrl+Z": # UNDO
+		"Ctrl+Z", "Command+Z":  # UNDO
 			TimelineUndoRedo.undo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Shift+Z", "Ctrl+Y": # REDO
+		"Ctrl+Shift+Z", "Ctrl+Y", "Shift+Command+Z", "Command+Y":  # REDO
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_viewport().set_input_as_handled()
@@ -1183,22 +1191,22 @@ func _input(event:InputEvent) -> void:
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 
-		"Ctrl+A": # select all
+		"Ctrl+A", "Command+A":  # select all
 			if (len(selected_items) != 0):
 				select_all_items()
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+Shift+A": # deselect all
+		"Ctrl+Shift+A", "Shift+Command+A":  # deselect all
 			if (len(selected_items) != 0):
 				deselect_all_items()
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+C":
+		"Ctrl+C", "Command+C":
 			select_events_indexed(get_events_indexed(selected_items))
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+V":
+		"Ctrl+V", "Command+V":
 			var events_list := get_clipboard_data()
 			var paste_position := 0
 			if selected_items:
@@ -1213,7 +1221,7 @@ func _input(event:InputEvent) -> void:
 				get_viewport().set_input_as_handled()
 
 
-		"Ctrl+X":
+		"Ctrl+X", "Command+X":
 			var events_indexed := get_events_indexed(selected_items)
 			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
 			TimelineUndoRedo.add_do_method(cut_events_indexed.bind(events_indexed))
@@ -1221,7 +1229,7 @@ func _input(event:InputEvent) -> void:
 			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 
-		"Ctrl+D":
+		"Ctrl+D", "Command+D":
 			duplicate_selected()
 			get_viewport().set_input_as_handled()
 

@@ -32,13 +32,13 @@ var text_event: DialogicTextEvent = null
 
 func _init() -> void:
 	update_colors()
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_base_control().theme_changed.connect(update_colors)
+	EditorInterface.get_base_control().theme_changed.connect(update_colors)
 
 
 func update_colors() -> void:
 	if not DialogicUtil.get_dialogic_plugin():
 		return
-	var editor_settings: EditorSettings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
+	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
 	normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 

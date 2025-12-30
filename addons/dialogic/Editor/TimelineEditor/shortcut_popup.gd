@@ -5,16 +5,16 @@ extends PanelContainer
 var shortcuts := [
 
 	{"shortcut":"Ctrl+T", 			"text":"Add Text event", "editor":"VisualEditor"},
-	{"shortcut":"Ctrl+Shift+T", 	"text":"Add Text event with current character", "editor":"VisualEditor"},
-	{"shortcut":"Ctrl+Alt/Opt+T", 	"text":"Add Text event with previous character", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Shift+T", "text":"Add Text event with current character", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Alt+T", 	"text":"Add Text event with previous character", "editor":"VisualEditor"},
 	{"shortcut":"Ctrl+E", 			"text":"Add Character join event", "editor":"VisualEditor"},
-	{"shortcut":"Ctrl+Shift+E", 	"text":"Add Character update event", "editor":"VisualEditor"},
-	{"shortcut":"Ctrl+Alt/Opt+E", 	"text":"Add Character leave event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Shift+E", "text":"Add Character update event", "editor":"VisualEditor"},
+	{"shortcut":"Ctrl+Alt+E", 	"text":"Add Character leave event", "editor":"VisualEditor"},
 	{"shortcut":"Ctrl+J", 			"text":"Add Jump event", "editor":"VisualEditor"},
 	{"shortcut":"Ctrl+L", 			"text":"Add Label event", "editor":"VisualEditor"},
 	{},
-	{"shortcut":"Alt/Opt+Up", 		"text":"Move selected events/lines up"},
-	{"shortcut":"Alt/Opt+Down", 	"text":"Move selected events/lines down"},
+	{"shortcut":"Alt+Up", 		"text":"Move selected events/lines up"},
+	{"shortcut":"Alt+Down", 	"text":"Move selected events/lines down"},
 	{},
 	{"shortcut":"Ctrl+F", 			"text":"Search"},
 	{"shortcut":"Ctrl+R", 			"text":"Replace"},
@@ -42,9 +42,29 @@ var shortcuts := [
 	{},
 ]
 
+func _process_shortcuts_for_platform(shortcuts: Array) -> Array:
+	var formatted = []
+	for shortcut in shortcuts:
+		if not (shortcut is Dictionary and "shortcut" in shortcut):
+			continue
+
+		var shortcut_text = shortcut["shortcut"]
+
+		if OS.has_feature("macos"):
+			shortcut_text = shortcut_text.replace("Ctrl", "Command")
+			shortcut_text = shortcut_text.replace("Alt", "Opt")
+
+		var entry = shortcut.duplicate()
+		entry["shortcut"] = shortcut_text
+		formatted.append(entry)
+
+	return formatted
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	%CloseShortcutPanel.icon = get_theme_icon("Close", "EditorIcons")
 	get_theme_stylebox("panel").bg_color = get_theme_color("dark_color_3", "Editor")
 
@@ -54,7 +74,7 @@ func reload_shortcuts() -> void:
 		i.queue_free()
 
 	var is_text_editor: bool = %TextEditor.visible
-	for i in shortcuts:
+	for i in _process_shortcuts_for_platform(shortcuts):
 		if i.is_empty():
 			%ShortcutList.add_child(HSeparator.new())
 			%ShortcutList.add_child(HSeparator.new())

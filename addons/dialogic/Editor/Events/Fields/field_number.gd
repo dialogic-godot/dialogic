@@ -35,6 +35,7 @@ func _ready() -> void:
 
 func _load_display_info(info: Dictionary) -> void:
 
+	mode = info.get('mode', mode)
 	for option in info.keys():
 		match option:
 			'min': min_value = info[option]
@@ -45,8 +46,10 @@ func _load_display_info(info: Dictionary) -> void:
 				enforce_step = true
 				step = info[option]
 			'hide_step_button': %Spin.hide()
+			'tooltip': tooltip_text = info[option]
 
-	mode = info.get('mode', mode)
+
+
 
 func _set_value(new_value: Variant) -> void:
 	_on_value_text_submitted(str(new_value), true)
@@ -69,6 +72,7 @@ func use_float_mode() -> void:
 func use_int_mode() -> void:
 	update_suffix("")
 	enforce_step = true
+	step = 1.0
 
 
 func use_decibel_mode() -> void:

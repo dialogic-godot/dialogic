@@ -20,13 +20,15 @@ func _register() -> void:
 	# add timeline button
 	var add_timeline_button: Button = editors_manager.add_icon_button(
 		load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg"),
-		"Add Timeline",
+		"New Timeline",
 		self)
 	add_timeline_button.pressed.connect(_on_create_timeline_button_pressed)
 	add_timeline_button.shortcut = Shortcut.new()
 	add_timeline_button.shortcut.events.append(InputEventKey.new())
 	add_timeline_button.shortcut.events[0].keycode = KEY_1
 	add_timeline_button.shortcut.events[0].ctrl_pressed = true
+	add_timeline_button.shortcut.events[0].command_or_control_autoremap = true
+
 	# play timeline button
 	play_timeline_button = editors_manager.add_custom_button(
 		"Play Timeline",
@@ -35,7 +37,7 @@ func _register() -> void:
 	play_timeline_button.pressed.connect(play_timeline)
 	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
 	if OS.get_name() == "macOS":
-		play_timeline_button.tooltip_text = "Play the current timeline (CTRL+B)"
+		play_timeline_button.tooltip_text = "Play the current timeline (Command+B)"
 
 	%VisualEditor.load_event_buttons()
 
@@ -60,7 +62,7 @@ func _get_title() -> String:
 
 
 func _get_icon() -> Texture:
-	return get_theme_icon("TripleBar", "EditorIcons")
+	return preload("uid://j7ym07anlusi")
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)
@@ -114,7 +116,7 @@ func play_timeline(index := -1) -> void:
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
 	DialogicUtil.set_editor_setting('play_from_index', index)
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
+	EditorInterface.play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
 
 ## Method to switch from visual to text editor (and vice versa). Connected to the button in the sidebar.
@@ -183,6 +185,9 @@ func update_audio_channel_cache(list:PackedStringArray) -> void:
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 
 	# switch editor mode button

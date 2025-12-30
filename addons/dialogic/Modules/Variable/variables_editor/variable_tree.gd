@@ -12,6 +12,9 @@ var undo := UndoRedo.new()
 #region INITIAL SETUP
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	set_column_title(0, "Name")
 	set_column_title(1, "")
 	set_column_title(2, "Default Value")

@@ -1,35 +1,19 @@
-[gd_scene load_steps=12 format=3 uid="uid://crce0na84rhfd"]
+[gd_scene load_steps=11 format=3 uid="uid://crce0na84rhfd"]
 
 [ext_resource type="Script" uid="uid://x21vral0xsxy" path="res://addons/dialogic/Editor/TimelineEditor/timeline_editor.gd" id="1_4aceh"]
 [ext_resource type="PackedScene" uid="uid://ysqbusmy0qma" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.tscn" id="2_qs7vc"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_yqd26"]
 [ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
+[ext_resource type="Texture2D" uid="uid://bymlbr4o2m3jc" path="res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg" id="5_u2118"]
 [ext_resource type="Script" uid="uid://b35hvsvrvjjl4" path="res://addons/dialogic/Editor/TimelineEditor/shortcut_popup.gd" id="6_rfuk0"]
 
-[sub_resource type="Image" id="Image_6bv6r"]
-data = {
-"data": PackedByteArray(255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 92, 92, 127, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 255, 255, 92, 92, 127, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 92, 92, 127, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 92, 92, 127, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 231, 255, 90, 90, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 90, 90, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 42, 255, 90, 90, 0, 255, 94, 94, 0, 255, 91, 91, 42, 255, 93, 93, 233, 255, 92, 92, 232, 255, 93, 93, 41, 255, 90, 90, 0, 255, 94, 94, 0, 255, 91, 91, 42, 255, 93, 93, 233, 255, 92, 92, 232, 255, 92, 92, 0, 255, 92, 92, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 45, 255, 93, 93, 44, 255, 91, 91, 0, 255, 91, 91, 42, 255, 91, 91, 42, 255, 93, 93, 0, 255, 91, 91, 45, 255, 93, 93, 44, 255, 91, 91, 0, 255, 91, 91, 42, 255, 91, 91, 42, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 45, 255, 92, 92, 235, 255, 92, 92, 234, 255, 89, 89, 43, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 45, 255, 92, 92, 235, 255, 92, 92, 234, 255, 89, 89, 43, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 91, 91, 0, 255, 92, 92, 0, 255, 92, 92, 0, 255, 92, 92, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 91, 91, 59, 255, 92, 92, 61, 255, 92, 92, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 91, 91, 59, 255, 92, 92, 61, 255, 92, 92, 0, 255, 92, 92, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0, 255, 93, 93, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id="ImageTexture_u2118"]
-image = SubResource("Image_6bv6r")
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boacm"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 0.365, 0.365, 1)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_detail = 1
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.153, 0.153, 0.153, 1)
+corner_detail = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bvbc"]
 content_margin_left = 0.0
@@ -62,7 +46,7 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.1021275, 0.1021275, 0.1021275, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -70,7 +54,7 @@ corner_radius_bottom_left = 20
 shadow_color = Color(0, 0, 0, 0.407843)
 shadow_size = 15
 
-[node name="Timeline" type="Control"]
+[node name="Timeline" type="Control" unique_id=1399625419]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,7 +63,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4aceh")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="." unique_id=2012771665]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,16 +71,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBox" type="HBoxContainer" parent="VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBox" unique_id=1260141226]
 layout_mode = 2
 
-[node name="TimelineName" type="Label" parent="VBox/HBox"]
+[node name="TimelineName" type="Label" parent="VBox/HBox" unique_id=622508015]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicTitle"
 text = "Cool Name"
 
-[node name="NameTooltip" parent="VBox/HBox" instance=ExtResource("2_yqd26")]
+[node name="NameTooltip" parent="VBox/HBox" unique_id=1349061077 instance=ExtResource("2_yqd26")]
 layout_mode = 2
 tooltip_text = "This unique identifier is based on the file name. You can change it in the Reference Manager.
 This is what you should use in a jump event to reference this timeline.
@@ -108,7 +92,7 @@ This is what you should use in a jump event to reference this timeline.
 
 You can also use this name in Dialogic.start()."
 
-[node name="SwitchEditorMode" type="Button" parent="VBox/HBox"]
+[node name="SwitchEditorMode" type="Button" parent="VBox/HBox" unique_id=603937071]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -116,17 +100,14 @@ size_flags_horizontal = 10
 size_flags_vertical = 4
 tooltip_text = "Switch between Text Editor and Visual Editor"
 text = "Text editor"
-icon = SubResource("ImageTexture_u2118")
 
-[node name="Shortcuts" type="Button" parent="VBox/HBox"]
+[node name="Shortcuts" type="Button" parent="VBox/HBox" unique_id=2100210955]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 4
 tooltip_text = "Shortcuts"
-icon = SubResource("ImageTexture_u2118")
 
-[node name="VisualEditor" parent="VBox" instance=ExtResource("2_qs7vc")]
+[node name="VisualEditor" parent="VBox" unique_id=180379404 instance=ExtResource("2_qs7vc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -135,134 +116,130 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="TextEditor" parent="VBox" instance=ExtResource("3_up2bn")]
+[node name="TextEditor" parent="VBox" unique_id=549665443 instance=ExtResource("3_up2bn")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SearchReplaceSection" type="PanelContainer" parent="VBox"]
+[node name="SearchReplaceSection" type="PanelContainer" parent="VBox" unique_id=1281623941]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_boacm")
 
-[node name="VBox" type="VBoxContainer" parent="VBox/SearchReplaceSection"]
+[node name="VBox" type="VBoxContainer" parent="VBox/SearchReplaceSection" unique_id=1959572677]
 layout_mode = 2
 
-[node name="SearchSection" type="HBoxContainer" parent="VBox/SearchReplaceSection/VBox"]
+[node name="SearchSection" type="HBoxContainer" parent="VBox/SearchReplaceSection/VBox" unique_id=1478521663]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Search" type="LineEdit" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="Search" type="LineEdit" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=1400332039]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search"
 
-[node name="SearchLabel" type="Label" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="SearchLabel" type="Label" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=572772626]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="SearchUp" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="SearchUp" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=1514288672]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_u2118")
 flat = true
 
-[node name="SearchDown" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="SearchDown" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=551668884]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_u2118")
 flat = true
 
-[node name="MatchCase" type="CheckBox" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="MatchCase" type="CheckBox" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=1325822471]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Match Case"
 
-[node name="WholeWords" type="CheckBox" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="WholeWords" type="CheckBox" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=1151656282]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Whole Words"
 
-[node name="SearchClose" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection"]
+[node name="SearchClose" type="Button" parent="VBox/SearchReplaceSection/VBox/SearchSection" unique_id=1436416108]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_u2118")
 flat = true
 
-[node name="ReplaceSection" type="HBoxContainer" parent="VBox/SearchReplaceSection/VBox"]
+[node name="ReplaceSection" type="HBoxContainer" parent="VBox/SearchReplaceSection/VBox" unique_id=1564699628]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ReplaceText" type="LineEdit" parent="VBox/SearchReplaceSection/VBox/ReplaceSection"]
+[node name="ReplaceText" type="LineEdit" parent="VBox/SearchReplaceSection/VBox/ReplaceSection" unique_id=541694051]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Replace"
 
-[node name="ReplaceButton" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection"]
+[node name="ReplaceButton" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection" unique_id=1020319160]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Replace"
 
-[node name="ReplaceAllButton" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection"]
+[node name="ReplaceAllButton" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection" unique_id=930344677]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Replace All"
 
-[node name="ReplaceGlobal" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection"]
+[node name="ReplaceGlobal" type="Button" parent="VBox/SearchReplaceSection/VBox/ReplaceSection" unique_id=1607571003]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Replace in all timelines"
-icon = SubResource("ImageTexture_u2118")
 
-[node name="ProgressSection" type="HBoxContainer" parent="VBox"]
+[node name="ProgressSection" type="HBoxContainer" parent="VBox" unique_id=1180293206]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="VBox/ProgressSection"]
+[node name="ProgressBar" type="ProgressBar" parent="VBox/ProgressSection" unique_id=438257383]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.001
 
-[node name="ProgressLabel" type="Label" parent="VBox/ProgressSection"]
+[node name="ProgressLabel" type="Label" parent="VBox/ProgressSection" unique_id=47735292]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="NoTimelineScreen" type="PanelContainer" parent="."]
-visible = false
+[node name="NoTimelineScreen" type="PanelContainer" parent="." unique_id=946023967]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_boacm")
 
-[node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen"]
+[node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen" unique_id=1698409400]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NoTimelineScreen/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NoTimelineScreen/CenterContainer" unique_id=924805915]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="NoTimelineScreen/CenterContainer/VBoxContainer" unique_id=1176427325]
 layout_mode = 2
 text = "No timeline opened. 
 Create a timeline or double-click one in the file system dock."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="CreateTimelineButton" type="Button" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
+[node name="CreateTimelineButton" type="Button" parent="NoTimelineScreen/CenterContainer/VBoxContainer" unique_id=1761424501]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Create New Timeline"
+icon = ExtResource("5_u2118")
 
-[node name="ShortcutsPanel" type="PanelContainer" parent="."]
+[node name="ShortcutsPanel" type="PanelContainer" parent="." unique_id=1337371675]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -274,29 +251,28 @@ theme = SubResource("Theme_feml8")
 theme_override_styles/panel = SubResource("StyleBoxFlat_j85ew")
 script = ExtResource("6_rfuk0")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ShortcutsPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ShortcutsPanel" unique_id=188461459]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ShortcutsPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ShortcutsPanel/VBoxContainer" unique_id=597036390]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ShortcutsPanel/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="ShortcutsPanel/VBoxContainer/HBoxContainer" unique_id=1369839077]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"DialogicSectionBig"
 text = "Shortcuts "
 
-[node name="CloseShortcutPanel" type="Button" parent="ShortcutsPanel/VBoxContainer/HBoxContainer"]
+[node name="CloseShortcutPanel" type="Button" parent="ShortcutsPanel/VBoxContainer/HBoxContainer" unique_id=1545322699]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_u2118")
 flat = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ShortcutsPanel/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ShortcutsPanel/VBoxContainer" unique_id=1111362694]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ShortcutList" type="GridContainer" parent="ShortcutsPanel/VBoxContainer/ScrollContainer"]
+[node name="ShortcutList" type="GridContainer" parent="ShortcutsPanel/VBoxContainer/ScrollContainer" unique_id=1630519120]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 11

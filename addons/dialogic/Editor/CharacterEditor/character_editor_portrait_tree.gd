@@ -8,6 +8,8 @@ var current_group_nodes := {}
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
 	$PortraitRightClickMenu.set_item_icon(0, get_theme_icon('Rename', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(1, get_theme_icon('Duplicate', 'EditorIcons'))
 	$PortraitRightClickMenu.set_item_icon(2, get_theme_icon('Remove', 'EditorIcons'))
@@ -16,6 +18,7 @@ func _ready() -> void:
 
 func clear_tree() -> void:
 	clear()
+	update_left_item_margin(false)
 	current_group_nodes = {}
 
 
@@ -41,6 +44,7 @@ func add_portrait_group(goup_name := "Group", parent_item: TreeItem = get_root()
 		item.set_meta('previous_name', get_full_item_name(item))
 	else:
 		item.set_meta('previous_name', previous_name)
+	update_left_item_margin(true)
 	return item
 
 
@@ -76,6 +80,12 @@ func _on_item_mouse_selected(pos: Vector2, mouse_button_index: int) -> void:
 		$PortraitRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 
 
+func update_left_item_margin(margin_on:bool) -> void:
+	if not margin_on:
+		add_theme_constant_override("item_margin", 0)
+	else:
+		remove_theme_constant_override("item_margin")
+
 ################################################################################
 ##					DRAG AND DROP
 ################################################################################
@@ -84,7 +94,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	var drag_item := get_item_at_position(at_position)
 	if not drag_item:
 		return null
-	
+
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+drag_item.get_text(0)
