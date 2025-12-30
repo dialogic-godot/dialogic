@@ -98,6 +98,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			page += 1
 		set_meta("batch_count", len(_batches))
 		batch_loaded.emit()
+
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
 
@@ -175,6 +176,9 @@ func clear_timeline_nodes() -> void:
 ################################################################################
 
 func _ready() -> void:
+	if get_parent() is SubViewport or owner.get_parent() is SubViewport:
+		return
+
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
 	batch_loaded.connect(_on_batch_loaded)
@@ -890,6 +894,8 @@ func indent_events() -> void:
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
 
+	var current_contain_events := []
+
 	for block in event_list:
 		if (not "resource" in block):
 			continue
@@ -897,38 +903,39 @@ func indent_events() -> void:
 		if (not currently_hidden) and block.resource.can_contain_events and block.end_node and block.collapsed:
 			currently_hidden = true
 			hidden_until = block.end_node
-			hidden_count = 0
 		elif currently_hidden and block == hidden_until:
-			block.update_hidden_events_indicator(hidden_count)
 			currently_hidden = false
 			hidden_until = null
 		elif currently_hidden:
 			block.hide()
-			hidden_count += 1
 		else:
 			block.show()
-			if block.resource is DialogicEndBranchEvent:
-				block.update_hidden_events_indicator(0)
+
 
 		delayed_indent = 0
-
-		if block.resource.can_contain_events:
-			delayed_indent = 1
-
 		if block.resource.wants_to_group:
 			indent += 1
 
-		elif block.resource is DialogicEndBranchEvent:
+		if block.resource is DialogicEndBranchEvent:
 			block.parent_node_changed()
 			delayed_indent -= 1
 			if block.parent_node.resource.wants_to_group:
 				delayed_indent -= 1
+			if block.parent_node.resource.can_contain_events:
+				var contained : Array = current_contain_events.pop_back()
+				contained[0].contained_events = contained[1]
+		if current_contain_events:
+			current_contain_events[-1][1].append(block.resource)
+		if block.resource.can_contain_events:
+			delayed_indent = 1
+			current_contain_events.append([block, []])
 
 		if indent >= 0:
-			block.set_indent(indent)
+			block.set_indent.call_deferred(indent)
 		else:
-			block.set_indent(0)
+			block.set_indent.call_deferred(0)
 		indent += delayed_indent
+
 
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -953,8 +960,8 @@ func _on_event_popup_menu_id_pressed(id:int) -> void:
 			OS.shell_open(item.resource.help_page_path)
 
 	elif id == 3:
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
-		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
+		EditorInterface.set_main_screen_editor('Script')
+		EditorInterface.edit_script(item.resource.get_script(), 1, 1)
 	elif id == 4 or id == 5:
 		if id == 4:
 			offset_blocks_by_index(selected_items, -1)

@@ -218,7 +218,7 @@ func update_theme_additions() -> void:
 	new_theme.set_constant("separation", "DialogicMegaSeparator", 50)
 
 	new_theme.set_type_variation("DialogicTextEventTextEdit", "CodeEdit")
-	var editor_settings := plugin_reference.get_editor_interface().get_editor_settings()
+	var editor_settings := EditorInterface.get_editor_settings()
 	var text_panel := DCSS.inline({
 				"border-radius": 8,
 				"background":
@@ -273,7 +273,7 @@ func swap_to_floating_window() -> void:
 	window.disable_3d = true
 	window.wrap_controls = true
 	window.popup_centered()
-	plugin_reference.get_editor_interface().set_main_screen_editor("2D")
+	EditorInterface.set_main_screen_editor("2D")
 
 
 ## Removes the main control from the window node and adds it to it's grandparent
@@ -284,7 +284,7 @@ func swap_to_embedded_editor() -> void:
 
 	var window := get_parent()
 	get_parent().remove_child(self)
-	plugin_reference.get_editor_interface().set_main_screen_editor("Dialogic")
+	EditorInterface.set_main_screen_editor("Dialogic")
 	window.get_parent().add_child(self)
 	window.queue_free()
 

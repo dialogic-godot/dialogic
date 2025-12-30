@@ -64,7 +64,13 @@ func _open(_argument: Variant = null) -> void:
 	%GlossaryList.clear()
 	var idx := 0
 	for file: String in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
-		var path := ResourceUID.uid_to_path(file) if file.begins_with("uid:") else file
+		## TODO REMOVE WHEN DROPPING 4.4 support
+		var path := ""
+		if Engine.get_version_info().hex >= 0x040500:
+			path = ResourceUID.call("uid_to_path", file) if file.begins_with("uid:") else file
+		else:
+			path = file
+
 		if ResourceLoader.exists(path):
 			%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
 		else:
@@ -155,8 +161,15 @@ func load_glossary_file(file:String) -> void:
 	var list: Array = ProjectSettings.get_setting('dialogic/glossary/glossary_files', [])
 
 	if not file in list:
-		list.append(ResourceUID.path_to_uid(file))
-		var path := ResourceUID.uid_to_path(file) if file.begins_with("uid:") else file
+		## TODO REMOVE WHEN DROPPING 4.4 support
+		var path := ""
+		if Engine.get_version_info().hex >= 0x040300:
+			path = ResourceUID.call("uid_to_path", file) if file.begins_with("uid:") else file
+			list.append(ResourceUID.call("path_to_uid",path))
+		else:
+			path = file
+			list.append(path)
+
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
 		ProjectSettings.save()
 		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))

@@ -31,7 +31,7 @@ func load_info(info:Dictionary) -> void:
 		%Image.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 		%Panel.self_modulate = get_theme_color("property_color_z", "Editor")
 	elif info.preview_image[0].ends_with('scn'):
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_previewer().queue_resource_preview(info.preview_image[0], self, 'set_scene_preview', null)
+		EditorInterface.get_resource_previewer().queue_resource_preview(info.preview_image[0], self, 'set_scene_preview', null)
 	elif ResourceLoader.exists(info.preview_image[0]):
 		%Image.texture = load(info.preview_image[0])
 	elif info.preview_image[0].is_valid_html_color():

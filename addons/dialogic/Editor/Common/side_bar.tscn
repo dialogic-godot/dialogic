@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwe3r2tbh2og1"]
+[gd_scene format=3 uid="uid://cwe3r2tbh2og1"]
 
 [ext_resource type="Script" uid="uid://myogqmakusx3" path="res://addons/dialogic/Editor/Common/sidebar.gd" id="1_jnq65"]
 [ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="2_54pks"]
@@ -19,6 +19,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_pn0f4")
+split_offsets = PackedInt32Array(100)
 split_offset = 100
 script = ExtResource("1_jnq65")
 
@@ -106,7 +107,7 @@ theme_type_variation = &"FlatButton"
 unique_name_in_owner = true
 transparent_bg = true
 oversampling_override = 1.0
-position = Vector2i(890, 65)
+position = Vector2i(812, 65)
 size = Vector2i(171, 115)
 visible = true
 transparent = true
@@ -157,7 +158,7 @@ text = "Trim Folder Paths"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"DialogicSidebarTree"
+theme_type_variation = &"TreeSecondary"
 allow_rmb_select = true
 hide_root = true
 scroll_horizontal_enabled = false
@@ -190,7 +191,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Label events in your timeline will appear here, allowing you to jump to them."
-theme_type_variation = &"DialogicSidebarList"
+theme_type_variation = &"ItemListSecondary"
 theme_override_styles/selected = SubResource("StyleBoxEmpty_gxwm6")
 theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_n8rql")
 allow_reselect = true
@@ -199,11 +200,16 @@ same_column_width = true
 [node name="CurrentVersion" type="Button" parent="VBoxPrimary" unique_id=2110656799]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Some Version"
 flat = true
 clip_text = true
 
-[node name="RightClickMenu" type="PopupMenu" parent="." unique_id=1188370902]
+[node name="RightClickItemMenu" type="PopupMenu" parent="." unique_id=1188370902]
+unique_name_in_owner = true
+size = Vector2i(164, 100)
+
+[node name="RightClickNoItemMenu" type="PopupMenu" parent="." unique_id=2120335967]
 unique_name_in_owner = true
 size = Vector2i(164, 100)
 
@@ -214,4 +220,6 @@ size = Vector2i(164, 100)
 [connection signal="pressed" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options" to="." method="_on_options_pressed"]
 [connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/FolderColors" to="." method="_on_folder_colors_toggled"]
 [connection signal="toggled" from="VBoxPrimary/Margin/MainVSplit/VBox/HBoxSearchSort/Options/OptionsPopup/OptionsPanel/VBox/TrimFolderPaths" to="." method="_on_trim_folder_paths_toggled"]
-[connection signal="id_pressed" from="RightClickMenu" to="." method="_on_right_click_menu_id_pressed"]
+[connection signal="empty_clicked" from="VBoxPrimary/Margin/MainVSplit/VBox/ResourceTree" to="." method="_on_resource_tree_empty_clicked"]
+[connection signal="id_pressed" from="RightClickItemMenu" to="." method="_on_right_click_menu_id_pressed"]
+[connection signal="id_pressed" from="RightClickNoItemMenu" to="." method="_on_right_click_no_item_menu_id_pressed"]

@@ -30,7 +30,7 @@ func _init() -> void:
 	button.pressed.connect(_on_button_pressed, CONNECT_DEFERRED)
 
 
-func _on_field_value_changed(property:String, value:Variant) -> void:
+func _on_field_value_changed(_property:String, value:Variant) -> void:
 	# Ignore the signal if the property is currently being updated.
 	if updating:
 		return
@@ -69,7 +69,7 @@ func _update_property() -> void:
 	updating = false
 
 
-func get_timeline_suggestions(filter:String) -> Dictionary:
+func get_timeline_suggestions(_filter:String) -> Dictionary:
 	var suggestions := {}
 	var timeline_directory := DialogicResourceUtil.get_timeline_directory()
 	for identifier in  timeline_directory.keys():

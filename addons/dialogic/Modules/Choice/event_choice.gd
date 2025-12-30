@@ -54,6 +54,7 @@ func _init() -> void:
 	event_sorting_index = 0
 	can_contain_events = true
 	wants_to_group = true
+	collapse_on_create = true
 
 
 # return a control node that should show on the END BRANCH node
