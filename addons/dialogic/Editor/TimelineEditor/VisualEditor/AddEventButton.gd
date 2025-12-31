@@ -15,8 +15,6 @@ extends Button
 
 
 func _ready() -> void:
-	tooltip_text = visible_name
-
 	custom_minimum_size = Vector2(get_theme_font("font", "Label").get_string_size(text).x+35,30) * DialogicUtil.get_editor_scale()
 
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))

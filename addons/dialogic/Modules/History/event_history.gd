@@ -34,6 +34,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "History"
+	event_description = "Perform an action on the simple history."
 	set_default_color('Color9')
 	event_category = "Other"
 	event_sorting_index = 20

@@ -199,6 +199,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Character"
+	event_description = "Allows joining or leaving a character or updating its portrait, position, mirroring, z-index or animation."
 	set_default_color('Color2')
 	event_category = "Main"
 	event_sorting_index = 2

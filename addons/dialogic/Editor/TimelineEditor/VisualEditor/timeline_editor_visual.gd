@@ -221,7 +221,7 @@ func load_event_buttons() -> void:
 	var sections := {}
 
 	for event_script in scripts:
-		var event_resource: Variant
+		var event_resource: DialogicEvent
 
 		if typeof(event_script) == TYPE_STRING:
 			event_resource = load(event_script).new()
@@ -237,6 +237,7 @@ func load_event_buttons() -> void:
 		var button: Button = button_scene.instantiate()
 		button.resource = event_resource
 		button.visible_name = event_resource.event_name
+		button.tooltip_text = event_resource.event_name + "\n" + event_resource.event_description
 		button.event_icon = event_resource._get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name

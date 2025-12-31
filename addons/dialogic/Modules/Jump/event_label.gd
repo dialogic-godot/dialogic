@@ -32,6 +32,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Label"
+	event_description = "Provides a point to jump to with the jump event. Can be used to split a timeline into sections."
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 3

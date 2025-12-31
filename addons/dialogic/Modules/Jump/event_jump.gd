@@ -55,6 +55,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Jump"
+	event_description = "Allows going to another timeline or jumping to a label event in this timeline."
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 4
