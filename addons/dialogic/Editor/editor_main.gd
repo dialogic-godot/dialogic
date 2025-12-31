@@ -19,8 +19,12 @@ func _ready() -> void:
 
 	## REFERENCES
 	editors_manager = $EditorsManager
-	var button: Button = editors_manager.add_icon_button(
-		get_theme_icon("MakeFloating", "EditorIcons"), "Make floating"
+	var button: Button = editors_manager.add_button(
+		get_theme_icon("MakeFloating", "EditorIcons"), 
+		"",
+		"Make the dialogic editor floating.",
+		null,
+		editors_manager.ButtonPlacement.TOOLBAR_MAIN
 	)
 	button.pressed.connect(toggle_floating_window)
 
@@ -53,16 +57,17 @@ func _on_sidebar_toggled(sidebar_shown: bool) -> void:
 
 
 func update_theme_additions() -> void:
+	var scale := DialogicUtil.get_editor_scale()
 	add_theme_stylebox_override("panel", DCSS.inline({
 		"background": get_theme_color("base_color", "Editor"),
 		"padding":
-		[5 * DialogicUtil.get_editor_scale(), 5 * DialogicUtil.get_editor_scale()],
+		[5 * scale, 5 * scale],
 		}))
 	var holder_panel := (DCSS.inline({
 		"border-radius": 5,
 		"background": get_theme_color("dark_color_2", "Editor"),
 		"padding":
-		[5 * DialogicUtil.get_editor_scale(), 5 * DialogicUtil.get_editor_scale()],
+		[5 * scale, 5 * scale],
 		}))
 
 	holder_panel.border_width_top = 0

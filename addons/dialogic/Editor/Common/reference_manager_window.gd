@@ -19,7 +19,12 @@ func _ready() -> void:
 
 	$Manager.theme = owner.get_theme()
 
-	icon_button = editors_manager.add_icon_button(get_theme_icon("Unlinked", "EditorIcons"), 'Reference Manager')
+	icon_button = editors_manager.add_button(
+		get_theme_icon("Unlinked", "EditorIcons"),
+		"",
+		"Reference Manager",
+		null,
+		editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER)
 	icon_button.pressed.connect(open)
 
 	var dot := Sprite2D.new()

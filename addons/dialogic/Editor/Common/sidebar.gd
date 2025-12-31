@@ -148,12 +148,14 @@ func _hide_sidebar() -> void:
 
 
 func _on_editors_resource_opened(_resource: Resource) -> void:
+	%ContentListSection.hide()
 	update_resource_list()
 
 
 func _on_editors_editor_changed(_previous: DialogicEditor, current: DialogicEditor) -> void:
-	%ContentListSection.visible = current.current_resource is DialogicTimeline
 	update_resource_list()
+	%ContentListSection.hide()
+	update_content_list()
 
 
 ## Cleans resources that have been deleted from the resource list
@@ -486,34 +488,30 @@ func _on_search_text_submitted(_new_text: String) -> void:
 
 #region CONTENT LIST
 
-func update_content_list(list: PackedStringArray) -> void:
+func update_content_list() -> void:
+	var current_resource: Resource = editors_manager.get_current_editor().current_resource
+	if not current_resource is DialogicTimeline:
+		%ContentListSection.hide()
+		return
+	
+	var current_labels := DialogicResourceUtil.get_label_cache().get(current_resource.get_identifier(), [])
+	if current_labels.is_empty():
+		%ContentListSection.hide()
+		return
+	
 	var prev_selected := ""
 	if %ContentList.is_anything_selected():
 		prev_selected = %ContentList.get_item_text(%ContentList.get_selected_items()[0])
 	%ContentList.clear()
 	%ContentList.add_item("~ Top")
-	for i in list:
+	for i in current_labels:
 		if i.is_empty():
 			continue
 		%ContentList.add_item(i)
 		if i == prev_selected:
 			%ContentList.select(%ContentList.item_count - 1)
-	if list.is_empty():
-		return
-
-	var current_resource: Resource = editors_manager.get_current_editor().current_resource
-
-	var timeline_directory := DialogicResourceUtil.get_timeline_directory()
-	var label_directory := DialogicResourceUtil.get_label_cache()
-	if current_resource != null:
-		for i in timeline_directory:
-			if timeline_directory[i] == current_resource.resource_path:
-				label_directory[i] = list
-
-	# also always store the current timelines labels for easy access
-	label_directory[""] = list
-
-	DialogicResourceUtil.set_label_cache(label_directory)
+	
+	%ContentListSection.show()
 
 #endregion
 
@@ -563,3 +561,20 @@ func _on_resource_tree_empty_clicked(click_position: Vector2, mouse_button_index
 
 func _on_right_click_no_item_menu_id_pressed(id: int) -> void:
 	custom_right_click_options[id].button.pressed.emit()
+
+
+
+func add_button(icon: Texture, label:String, tooltip: String, placement:int) -> Button:
+	var button := Button.new()
+	button.icon = icon
+	button.text = label
+	button.tooltip_text = tooltip
+	button.theme_type_variation = "FlatButton"
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	
+	match placement:
+		editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER:
+			%LeftTools.add_child(button)
+		editors_manager.ButtonPlacement.SIDEBAR_RIGHT_OF_FILTER:
+			%RightTools.add_child(button)
+	return button

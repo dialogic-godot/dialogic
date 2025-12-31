@@ -195,6 +195,12 @@ func _ready() -> void:
 	load_event_buttons()
 	_on_right_sidebar_resized()
 	_initialized = true
+	
+	TimelineUndoRedo.version_changed.connect(_on_undoredo_changed)
+
+
+func _on_undoredo_changed() -> void:
+	update_content_list()
 
 
 func load_event_buttons() -> void:
@@ -292,12 +298,16 @@ func load_event_buttons() -> void:
 
 func _on_content_item_clicked(label:String) -> void:
 	if label == "~ Top":
+		selected_items = []
+		select_item(%Timeline.get_child(0))
 		%TimelineArea.scroll_vertical = 0
 		return
 
 	for event in %Timeline.get_children():
 		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
 			if event.resource.name == label:
+				selected_items = []
+				select_item(event)
 				scroll_to_piece(event.get_index())
 				return
 
@@ -317,8 +327,8 @@ func update_content_list() -> void:
 		if 'event_name' in event.resource and event.resource is DialogicAudioEvent:
 			if not event.resource.channel_name in channels:
 				channels.append(event.resource.channel_name)
-
-	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+	
+	timeline_editor.update_label_cache(labels)
 	timeline_editor.update_audio_channel_cache(channels)
 
 
