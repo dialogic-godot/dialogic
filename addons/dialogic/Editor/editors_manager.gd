@@ -187,6 +187,7 @@ func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 
 	editor._clear()
 
+
 ## Shows a file selector. Calls [accept_callable] once accepted
 func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", title = "New resource", default_name = "new_character", mode = EditorFileDialog.FILE_MODE_SAVE_FILE) -> void:
 	find_parent('EditorView').godot_file_dialog(

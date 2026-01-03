@@ -137,25 +137,25 @@ static func pretty_name(file_path: String) -> String:
 
 static func set_editor_setting(setting:String, value:Variant) -> void:
 	var cfg := ConfigFile.new()
-	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
-		cfg.load('user://dialogic/editor_settings.cfg')
+	if FileAccess.file_exists("user://dialogic/editor_settings.cfg"):
+		cfg.load("user://dialogic/editor_settings.cfg")
 
-	cfg.set_value('DES', setting, value)
+	cfg.set_value("DES", setting, value)
 
-	if !DirAccess.dir_exists_absolute('user://dialogic'):
-		DirAccess.make_dir_absolute('user://dialogic')
-	cfg.save('user://dialogic/editor_settings.cfg')
+	if not DirAccess.dir_exists_absolute("user://dialogic"):
+		DirAccess.make_dir_absolute("user://dialogic")
+	cfg.save("user://dialogic/editor_settings.cfg")
 
 
 static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
 	var cfg := ConfigFile.new()
-	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
+	if not FileAccess.file_exists("user://dialogic/editor_settings.cfg"):
 		return default
 
-	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
+	if not cfg.load("user://dialogic/editor_settings.cfg") == OK:
 		return default
 
-	return cfg.get_value('DES', setting, default)
+	return cfg.get_value("DES", setting, default)
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
