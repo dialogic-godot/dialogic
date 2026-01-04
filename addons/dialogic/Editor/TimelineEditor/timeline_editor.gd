@@ -18,10 +18,11 @@ func _register() -> void:
 	# register editor
 	editors_manager.register_resource_editor('dtl', self)
 	# add timeline button
-	var add_timeline_button: Button = editors_manager.add_icon_button(
+	var add_timeline_button: Button = editors_manager.add_button(
 		load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg"),
+		"",
 		"New Timeline",
-		self)
+		self, editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER)
 	add_timeline_button.pressed.connect(_on_create_timeline_button_pressed)
 	add_timeline_button.shortcut = Shortcut.new()
 	add_timeline_button.shortcut.events.append(InputEventKey.new())
@@ -30,14 +31,16 @@ func _register() -> void:
 	add_timeline_button.shortcut.events[0].command_or_control_autoremap = true
 
 	# play timeline button
-	play_timeline_button = editors_manager.add_custom_button(
-		"Play Timeline",
+	play_timeline_button = editors_manager.add_button(
 		get_theme_icon("PlayScene", "EditorIcons"),
-		self)
+		"Play Timeline",
+		"Play the current timeline {0}".format("(Command+B)" if OS.get_name() == "macOS" else "(CTRL+F5)"),
+		self,
+		editors_manager.ButtonPlacement.TOOLBAR_MAIN)
 	play_timeline_button.pressed.connect(play_timeline)
-	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
-	if OS.get_name() == "macOS":
-		play_timeline_button.tooltip_text = "Play the current timeline (Command+B)"
+	#play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
+	#if OS.get_name() == "macOS":
+		#play_timeline_button.tooltip_text = "Play the current timeline (Command+B)"
 
 	%VisualEditor.load_event_buttons()
 
@@ -168,6 +171,22 @@ func new_timeline(path:String) -> void:
 	EditorInterface.get_resource_filesystem().update_file(new_timeline.resource_path)
 	DialogicResourceUtil.update_directory('dtl')
 	editors_manager.edit_resource(new_timeline)
+
+
+func update_label_cache(list:PackedStringArray) -> void:
+	var timeline_directory := DialogicResourceUtil.get_timeline_directory()
+	var label_directory := DialogicResourceUtil.get_label_cache()
+	if current_resource != null:
+		for i in timeline_directory:
+			if timeline_directory[i] == current_resource.resource_path:
+				label_directory[i] = list
+
+	# also always store the current timelines labels for easy access
+	label_directory[""] = list
+
+	DialogicResourceUtil.set_label_cache(label_directory)
+	editors_manager.sidebar.update_content_list()
+
 
 
 func update_audio_channel_cache(list:PackedStringArray) -> void:

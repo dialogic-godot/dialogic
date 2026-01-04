@@ -195,7 +195,7 @@ func update_content_list() -> void:
 	var labels: PackedStringArray = []
 	for i in label_regex.search_all(text):
 		labels.append(i.get_string('name'))
-	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+	timeline_editor.update_label_cache(labels)
 
 	var channels: PackedStringArray = []
 	for i in channel_regex.search_all(text):

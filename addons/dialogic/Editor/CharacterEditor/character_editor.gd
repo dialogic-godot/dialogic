@@ -27,10 +27,11 @@ func _register() -> void:
 	editors_manager.register_resource_editor("dch", self)
 
 	## Add an "add character" button
-	var add_character_button: Button = editors_manager.add_icon_button(
+	var add_character_button: Button = editors_manager.add_button(
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
-			'New Character',
-			self)
+			"",
+			"New Character",
+			self, editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER)
 	add_character_button.pressed.connect(_on_create_character_button_pressed)
 	add_character_button.shortcut = Shortcut.new()
 	add_character_button.shortcut.events.append(InputEventKey.new())
