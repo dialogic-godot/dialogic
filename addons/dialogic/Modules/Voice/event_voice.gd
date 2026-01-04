@@ -44,6 +44,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Voice"
+	event_description = "Allows setting an audio file that will be played along the next text event."
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 5

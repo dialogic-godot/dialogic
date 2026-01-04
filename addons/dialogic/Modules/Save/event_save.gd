@@ -33,6 +33,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Save"
+	event_description = "Performs a save to a save slot using Dialogics built-in saving API."
 	set_default_color('Color6')
 	event_category = "Other"
 	event_sorting_index = 0

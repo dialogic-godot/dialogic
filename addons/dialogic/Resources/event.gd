@@ -50,7 +50,8 @@ var empty_lines_above: int = 0
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+## The description that is displayed in the editor tooltip.
+var event_description := ""
 ## The event color that event node will take in the editor
 var event_color := Color("FBB13C"):
 	get:

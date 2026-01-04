@@ -23,6 +23,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Return"
+	event_description = "Returns to the last jump event or ends the timeline (if no jump happened before)."
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 5

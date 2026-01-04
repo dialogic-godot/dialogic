@@ -49,6 +49,7 @@ func _is_branch_starter() -> bool:
 
 func _init() -> void:
 	event_name = "Choice"
+	event_description = "Shows a clickable option. Should be grouped together with other choices. Contains events that are played when chosen. Can have a condition."
 	set_default_color('Color3')
 	event_category = "Flow"
 	event_sorting_index = 0

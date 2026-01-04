@@ -391,6 +391,10 @@ func _on_resources_tree_item_activated() -> void:
 func _on_resources_tree_item_clicked(_pos: Vector2, mouse_button_index: int) -> void:
 	match mouse_button_index:
 		MOUSE_BUTTON_LEFT:
+			while Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				if get_viewport().gui_is_dragging():
+					return
+				await get_tree().physics_frame
 			var selected_item := resource_tree.get_selected()
 			if selected_item == null:
 				return

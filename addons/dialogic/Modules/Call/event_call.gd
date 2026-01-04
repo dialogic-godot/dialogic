@@ -70,6 +70,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Call"
+	event_description = "Calls a method on an autoload script or scene."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 10

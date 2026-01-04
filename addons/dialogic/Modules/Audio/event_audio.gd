@@ -1,9 +1,9 @@
 @tool
+class_name DialogicAudioEvent
+extends DialogicEvent
 ## Event that can play audio on a channel. The channel can be prededinfed
 ## (with default settings defined in the settings) or created on the spot.
 ## If no channel is given will play as a One-Shot SFX.
-class_name DialogicAudioEvent
-extends DialogicEvent
 
 ### Settings
 
@@ -74,6 +74,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Audio"
+	event_description = "Plays an audio file (sound effect or music) on one of the audio layers (configured in the settings)."
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 2

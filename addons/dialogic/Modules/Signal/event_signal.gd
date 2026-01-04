@@ -39,6 +39,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Signal"
+	event_description = "Emits the Dialogic.signal_event signal with a given argument. You can react to this signal in your code by connecting to it."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 8

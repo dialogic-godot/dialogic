@@ -26,6 +26,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Wait for Input"
+	event_description = "Waits until the next advance input action."
 	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 12

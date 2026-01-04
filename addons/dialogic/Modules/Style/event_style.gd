@@ -28,6 +28,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Change Style"
+	event_description = "Changes to one of the styles configured in the style editor."
 	set_default_color('Color8')
 	event_category = "Visuals"
 	event_sorting_index = 1

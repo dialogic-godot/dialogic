@@ -63,6 +63,7 @@ func _on_finish() -> void:
 
 func _init() -> void:
 	event_name = "Wait"
+	event_description = "Waits a given amount of time. Can hide the textbox and be skippable."
 	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 11
