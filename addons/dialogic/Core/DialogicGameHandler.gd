@@ -187,7 +187,7 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 
 	# Otherwise make sure there is a style active.
 	var scene: Node = null
-	if !self.Styles.has_active_layout_node():
+	if not self.Styles.has_active_layout_node():
 		scene = self.Styles.load_style()
 	else:
 		scene = self.Styles.get_layout_node()

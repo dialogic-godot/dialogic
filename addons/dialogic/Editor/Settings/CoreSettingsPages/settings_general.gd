@@ -165,7 +165,7 @@ func load_game_state(load_flag:=LoadFlags.FULL_LOAD) -> void:
 	%ExtensionCreator.hide()
 	%CreateExtensionButton.show()
 
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 	force_event_button_list_reload()
 
 

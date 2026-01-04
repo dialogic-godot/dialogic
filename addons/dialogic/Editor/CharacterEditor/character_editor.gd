@@ -27,10 +27,11 @@ func _register() -> void:
 	editors_manager.register_resource_editor("dch", self)
 
 	## Add an "add character" button
-	var add_character_button: Button = editors_manager.add_icon_button(
+	var add_character_button: Button = editors_manager.add_button(
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
-			'Add Character',
-			self)
+			"",
+			"New Character",
+			self, editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER)
 	add_character_button.pressed.connect(_on_create_character_button_pressed)
 	add_character_button.shortcut = Shortcut.new()
 	add_character_button.shortcut.events.append(InputEventKey.new())
@@ -81,11 +82,11 @@ func _open_resource(resource:Resource) -> void:
 
 
 ## Called when the character is opened.
-func _open(extra_info:Variant="") -> void:
-	if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
-		def_portrait_path = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
+func _open(_extra_info:Variant="") -> void:
+	if not ProjectSettings.get_setting("dialogic/portraits/default_portrait", "").is_empty():
+		def_portrait_path = ProjectSettings.get_setting("dialogic/portraits/default_portrait", "")
 	else:
-		def_portrait_path = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
+		def_portrait_path = DialogicUtil.get_module_path("Character").path_join("default_portrait.tscn")
 
 	if current_resource == null:
 		$NoCharacterScreen.show()
@@ -102,7 +103,7 @@ func _clear() -> void:
 
 
 func _save() -> void:
-	if ! visible or not current_resource:
+	if not visible or not current_resource:
 		return
 
 	## Portrait list
@@ -115,7 +116,7 @@ func _save() -> void:
 
 	ResourceSaver.save(current_resource, current_resource.resource_path)
 	current_resource_state = ResourceStates.SAVED
-	DialogicResourceUtil.update_directory('dch')
+	DialogicResourceUtil.update_directory("dch")
 
 
 ## Saves a new empty character to the given path
@@ -149,7 +150,7 @@ func _ready() -> void:
 	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
 		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
-	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
+	$NoCharacterScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
 
@@ -160,7 +161,6 @@ func _ready() -> void:
 
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
 
-	%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 
 	set_portrait_settings_position(DialogicUtil.get_editor_setting('portrait_settings_position', true))
 
@@ -261,15 +261,20 @@ func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 		current_resource_state = ResourceStates.UNSAVED
 
 
-func _on_main_settings_collapse_toggled(button_pressed:bool) -> void:
-	%MainSettingsTitle.visible = !button_pressed
-	%MainSettingsScroll.visible = !button_pressed
-	if button_pressed:
-		%MainSettings.hide()
-		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
-	else:
-		%MainSettings.show()
-		%MainSettingsCollapse.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+
+func hide_main_settings() -> void:
+	%MainSettings.hide()
+	%MainSettingsHidden.show()
+	%MainSettingsPanel.size_flags_horizontal = SIZE_SHRINK_BEGIN
+	%MainHSplit.collapsed = true
+
+
+func show_main_settings() -> void:
+	%MainSettings.show()
+	%MainSettingsHidden.hide()
+	%MainSettingsPanel.size_flags_horizontal = SIZE_EXPAND_FILL
+	%MainHSplit.collapsed = false
+
 
 
 func _on_switch_portrait_settings_position_pressed() -> void:
@@ -311,26 +316,26 @@ func setup_portrait_list_tab() -> void:
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
 		import_portraits_from_folder, "*.svg, *.png",
-		EditorFileDialog.FILE_MODE_OPEN_DIR)
+		EditorFileDialog.FILE_MODE_OPEN_FILES, "Import Images From Folder")
 
 
-func import_portraits_from_folder(path:String) -> void:
+func import_portraits_from_folder(files:Array) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected() != parent and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent = %PortraitTree.get_selected()
-
-	var dir := DirAccess.open(path)
-	dir.list_dir_begin()
-	var file_name: String = dir.get_next()
-	var files := []
-	while file_name != "":
-		if not dir.current_is_dir():
-			var file_lower := file_name.to_lower()
-			if '.svg' in file_lower or '.png' in file_lower:
-				if not '.import' in file_lower:
-					files.append(file_name)
-		file_name = dir.get_next()
+#
+	#var dir := DirAccess.open(path)
+	#dir.list_dir_begin()
+	#var file_name: String = dir.get_next()
+	#var files := []
+	#while file_name != "":
+		#if not dir.current_is_dir():
+			#var file_lower := file_name.to_lower()
+			#if '.svg' in file_lower or '.png' in file_lower:
+				#if not '.import' in file_lower:
+					#files.append(file_name)
+		#file_name = dir.get_next()
 
 	var prefix: String = files[0]
 	for file in files:
@@ -342,8 +347,9 @@ func import_portraits_from_folder(path:String) -> void:
 			prefix = prefix.substr(0, len(prefix)-1)
 
 	for file in files:
-		%PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
-			{'scene':"",'export_overrides':{'image':var_to_str(path.path_join(file))}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+		var item : TreeItem = %PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
+			{'scene':"",'export_overrides':{'image':var_to_str(file)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
+		item.set_meta('new', true)
 
 	## Handle selection
 	if parent.get_child_count():

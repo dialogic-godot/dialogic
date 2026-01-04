@@ -12,7 +12,7 @@ var _revalidate_channel_names := false
 
 func _ready() -> void:
 	%TypeSoundBus.item_selected.connect(_on_type_sound_bus_item_selected)
-	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+	$Panel.add_theme_stylebox_override('panel', get_theme_stylebox("normal", "RichTextLabel"))
 
 
 func _refresh() -> void:
@@ -166,6 +166,7 @@ func add_channel_defaults(channel_name: String, volume: float, audio_bus: String
 	info.audio_bus.set_value(audio_bus)
 
 	info.delete.icon = get_theme_icon(&"Remove", &"EditorIcons")
+	info.delete.pressed.connect(_on_remove_channel_defaults_pressed.bind(len(channel_defaults)))
 
 	channel_defaults[len(channel_defaults)] = info
 	return info['channel_name']

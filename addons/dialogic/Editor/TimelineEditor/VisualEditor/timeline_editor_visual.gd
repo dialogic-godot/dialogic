@@ -98,6 +98,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			page += 1
 		set_meta("batch_count", len(_batches))
 		batch_loaded.emit()
+
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
 
@@ -175,6 +176,9 @@ func clear_timeline_nodes() -> void:
 ################################################################################
 
 func _ready() -> void:
+	if get_parent() is SubViewport or owner.get_parent() is SubViewport:
+		return
+
 	event_node = load("res://addons/dialogic/Editor/Events/EventBlock/event_block.tscn")
 
 	batch_loaded.connect(_on_batch_loaded)
@@ -191,6 +195,12 @@ func _ready() -> void:
 	load_event_buttons()
 	_on_right_sidebar_resized()
 	_initialized = true
+	
+	TimelineUndoRedo.version_changed.connect(_on_undoredo_changed)
+
+
+func _on_undoredo_changed() -> void:
+	update_content_list()
 
 
 func load_event_buttons() -> void:
@@ -217,7 +227,7 @@ func load_event_buttons() -> void:
 	var sections := {}
 
 	for event_script in scripts:
-		var event_resource: Variant
+		var event_resource: DialogicEvent
 
 		if typeof(event_script) == TYPE_STRING:
 			event_resource = load(event_script).new()
@@ -233,6 +243,7 @@ func load_event_buttons() -> void:
 		var button: Button = button_scene.instantiate()
 		button.resource = event_resource
 		button.visible_name = event_resource.event_name
+		button.tooltip_text = event_resource.event_name + "\n" + event_resource.event_description
 		button.event_icon = event_resource._get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
@@ -287,12 +298,16 @@ func load_event_buttons() -> void:
 
 func _on_content_item_clicked(label:String) -> void:
 	if label == "~ Top":
+		selected_items = []
+		select_item(%Timeline.get_child(0))
 		%TimelineArea.scroll_vertical = 0
 		return
 
 	for event in %Timeline.get_children():
 		if 'event_name' in event.resource and event.resource is DialogicLabelEvent:
 			if event.resource.name == label:
+				selected_items = []
+				select_item(event)
 				scroll_to_piece(event.get_index())
 				return
 
@@ -312,8 +327,8 @@ func update_content_list() -> void:
 		if 'event_name' in event.resource and event.resource is DialogicAudioEvent:
 			if not event.resource.channel_name in channels:
 				channels.append(event.resource.channel_name)
-
-	timeline_editor.editors_manager.sidebar.update_content_list(labels)
+	
+	timeline_editor.update_label_cache(labels)
 	timeline_editor.update_audio_channel_cache(channels)
 
 
@@ -343,9 +358,52 @@ func _on_event_block_gui_input(event: InputEvent, item: Node) -> void:
 
 	if len(selected_items) > 0 and event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if !%TimelineArea.dragging and !get_viewport().gui_is_dragging() and drag_allowed:
+			if not %TimelineArea.dragging and not get_viewport().gui_is_dragging() and drag_allowed:
 				sort_selection()
 				%TimelineArea.start_dragging(%TimelineArea.DragTypes.EXISTING_EVENTS, selected_items)
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	if %TimelineArea.dragging:
+		return %TimelineArea.drag_type == %TimelineArea.DragTypes.GENERATED_EVENT
+	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
+		match data.files[0].get_extension().to_lower():
+			"dch":
+				var chr := load(data.files[0])
+				var resource : DialogicEvent
+				if (chr as DialogicCharacter).portraits.is_empty():
+					resource = DialogicTextEvent.new()
+				else:
+					resource = DialogicCharacterEvent.new()
+				resource._load_custom_defaults()
+				resource.character = chr
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"dtl":
+				var resource := DialogicJumpEvent.new()
+				resource._load_custom_defaults()
+				resource.timeline = load(data.files[0])
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"mp3", "wav", "ogg":
+				var resource := DialogicAudioEvent.new()
+				resource._load_custom_defaults()
+				resource.file_path = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"png", "jpg", "jpeg":
+				var resource := DialogicBackgroundEvent.new()
+				resource._load_custom_defaults()
+				resource.argument = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+			"tscn":
+				var resource := DialogicBackgroundEvent.new()
+				resource._load_custom_defaults()
+				resource.scene = data.files[0]
+				%TimelineArea.start_dragging(%TimelineArea.DragTypes.GENERATED_EVENT, resource)
+				return true
+	return false
 
 
 ## Activated by TimelineArea drag_completed
@@ -353,8 +411,11 @@ func _on_timeline_area_drag_completed(type:int, index:int, data:Variant) -> void
 	if type == %TimelineArea.DragTypes.NEW_EVENT:
 		var resource: DialogicEvent = data.duplicate()
 		resource._load_custom_defaults()
-
 		add_event_undoable(resource, index)
+
+	elif type == %TimelineArea.DragTypes.GENERATED_EVENT:
+		add_event_undoable(data, index)
+		get_viewport().gui_cancel_drag()
 
 	elif type == %TimelineArea.DragTypes.EXISTING_EVENTS:
 		if not (len(data) == 1 and data[0].get_index()+1 == index):
@@ -890,6 +951,8 @@ func indent_events() -> void:
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
 
+	var current_contain_events := []
+
 	for block in event_list:
 		if (not "resource" in block):
 			continue
@@ -897,38 +960,39 @@ func indent_events() -> void:
 		if (not currently_hidden) and block.resource.can_contain_events and block.end_node and block.collapsed:
 			currently_hidden = true
 			hidden_until = block.end_node
-			hidden_count = 0
 		elif currently_hidden and block == hidden_until:
-			block.update_hidden_events_indicator(hidden_count)
 			currently_hidden = false
 			hidden_until = null
 		elif currently_hidden:
 			block.hide()
-			hidden_count += 1
 		else:
 			block.show()
-			if block.resource is DialogicEndBranchEvent:
-				block.update_hidden_events_indicator(0)
+
 
 		delayed_indent = 0
-
-		if block.resource.can_contain_events:
-			delayed_indent = 1
-
 		if block.resource.wants_to_group:
 			indent += 1
 
-		elif block.resource is DialogicEndBranchEvent:
+		if block.resource is DialogicEndBranchEvent:
 			block.parent_node_changed()
 			delayed_indent -= 1
 			if block.parent_node.resource.wants_to_group:
 				delayed_indent -= 1
+			if block.parent_node.resource.can_contain_events:
+				var contained : Array = current_contain_events.pop_back()
+				contained[0].contained_events = contained[1]
+		if current_contain_events:
+			current_contain_events[-1][1].append(block.resource)
+		if block.resource.can_contain_events:
+			delayed_indent = 1
+			current_contain_events.append([block, []])
 
 		if indent >= 0:
-			block.set_indent(indent)
+			block.set_indent.call_deferred(indent)
 		else:
-			block.set_indent(0)
+			block.set_indent.call_deferred(0)
 		indent += delayed_indent
+
 
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -953,8 +1017,8 @@ func _on_event_popup_menu_id_pressed(id:int) -> void:
 			OS.shell_open(item.resource.help_page_path)
 
 	elif id == 3:
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor('Script')
-		find_parent('EditorView').plugin_reference.get_editor_interface().edit_script(item.resource.get_script(), 1, 1)
+		EditorInterface.set_main_screen_editor('Script')
+		EditorInterface.edit_script(item.resource.get_script(), 1, 1)
 	elif id == 4 or id == 5:
 		if id == 4:
 			offset_blocks_by_index(selected_items, -1)
@@ -1073,6 +1137,7 @@ func _input(event:InputEvent) -> void:
 		"Ctrl+Shift+E", "Shift+Command+E":  # Add character update event
 			var ev := DialogicCharacterEvent.new()
 			ev.action = DialogicCharacterEvent.Actions.UPDATE
+			ev.character = get_previous_character()
 			_add_event_button_pressed(ev, true)
 			get_viewport().set_input_as_handled()
 

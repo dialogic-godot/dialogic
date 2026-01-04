@@ -12,8 +12,7 @@ enum Actions {CLEAR, PAUSE, RESUME}
 var action := Actions.PAUSE
 
 
-################################################################################
-## 						EXECUTION
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
@@ -27,20 +26,23 @@ func _execute() -> void:
 
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "History"
+	event_description = "Performs an action on the simple history."
 	set_default_color('Color9')
 	event_category = "Other"
 	event_sorting_index = 20
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -53,8 +55,10 @@ func get_shortcode_parameters() -> Dictionary:
 								"suggestions": func(): return {"Clear":{'value':0, 'text_alt':['clear']}, "Pause":{'value':1, 'text_alt':['pause']}, "Resume":{'value':2, 'text_alt':['resume', 'start']}}},
 	}
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#endregion
+
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -74,3 +78,5 @@ func build_event_editor() -> void:
 			},
 		]
 		})
+
+#endregion

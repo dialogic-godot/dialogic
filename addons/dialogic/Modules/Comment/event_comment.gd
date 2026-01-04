@@ -11,28 +11,30 @@ extends DialogicEvent
 var text := ""
 
 
-################################################################################
-## 						EXECUTE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
 	print("[Dialogic Comment] #",  text)
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Comment"
+	event_description = "Has no effect on gameplay, but can help organize your timeline."
 	set_default_color('Color9')
 	event_category = "Helpers"
 	event_sorting_index = 0
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text() -> String:
@@ -48,18 +50,23 @@ func is_valid_event(string:String) -> bool:
 		return true
 	return false
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
 	add_header_edit('text', ValueType.SINGLELINE_TEXT, {'left_text':'#', 'autofocus':true})
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, _line:String) -> Dictionary:
 	dict[0] = {'color':event_color.lerp(Highlighter.normal_color, 0.3)}
 	return dict
+
+#endregion

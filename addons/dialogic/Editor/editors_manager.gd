@@ -23,6 +23,7 @@ var previous_editor: DialogicEditor = null
 var editors := {}
 var supported_file_extensions := []
 var used_resources_cache: Array = []
+enum ButtonPlacement {TOOLBAR_MAIN, SIDEBAR_LEFT_OF_FILTER, SIDEBAR_RIGHT_OF_FILTER}
 
 
 ################################################################################
@@ -63,8 +64,8 @@ func _ready() -> void:
 	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
 	sidebar.update_resource_list(used_resources_cache)
 
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().files_moved.connect(_on_file_moved)
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_file_system_dock().file_removed.connect(_on_file_removed)
+	EditorInterface.get_file_system_dock().files_moved.connect(_on_file_moved)
+	EditorInterface.get_file_system_dock().file_removed.connect(_on_file_removed)
 
 	hsplit.set("theme_override_constants/separation", get_theme_constant("base_margin", "Editor") * DialogicUtil.get_editor_scale())
 
@@ -89,18 +90,17 @@ func register_simple_editor(editor:DialogicEditor) -> void:
 	editors[editor.name] = {'node': editor,  'buttons':[]}
 
 
-## Call to add an icon button. These buttons are always visible.
-func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor=null) -> Node:
-	var button: Button = toolbar.add_icon_button(icon, tooltip)
+## Call to add a button.
+func add_button(icon:Texture, label:String, tooltip:String, editor:DialogicEditor=null, placement = ButtonPlacement.TOOLBAR_MAIN) -> Node:
+	var button: Button
+	match placement:
+		ButtonPlacement.TOOLBAR_MAIN:
+			button = toolbar.add_button(icon, label, tooltip, placement)
+		ButtonPlacement.SIDEBAR_LEFT_OF_FILTER, ButtonPlacement.SIDEBAR_RIGHT_OF_FILTER:
+			button = sidebar.add_button(icon, label, tooltip, placement)
+	
 	if editor != null:
 		editors[editor.name]['buttons'].append(button)
-	return button
-
-
-## Call to add a custom action button. Only visible if editor is visible.
-func add_custom_button(label:String, icon:Texture, editor:DialogicEditor) -> Node:
-	var button: Button = toolbar.add_custom_button(label, icon)
-	editors[editor.name]['buttons'].append(button)
 	return button
 
 
@@ -186,6 +186,7 @@ func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 		editor._save()
 
 	editor._clear()
+
 
 ## Shows a file selector. Calls [accept_callable] once accepted
 func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", title = "New resource", default_name = "new_character", mode = EditorFileDialog.FILE_MODE_SAVE_FILE) -> void:

@@ -1,9 +1,9 @@
 @tool
+class_name DialogicAudioEvent
+extends DialogicEvent
 ## Event that can play audio on a channel. The channel can be prededinfed
 ## (with default settings defined in the settings) or created on the spot.
 ## If no channel is given will play as a One-Shot SFX.
-class_name DialogicAudioEvent
-extends DialogicEvent
 
 ### Settings
 
@@ -47,8 +47,8 @@ var set_sync_channel := false
 var regex := RegEx.create_from_string(r'(?:audio)\s*(?<channel>[\w-]{2,}|[\w]*)?\s*(")?(?<file_path>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(?:\s*\[(?<shortcode>.*)\])?')
 var channel_name_regex := RegEx.create_from_string(r'(?<dash_only>^-$)|(?<invalid>[^\w-]{1})')
 
-################################################################################
-## 						EXECUTE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -66,12 +66,15 @@ func _execute() -> void:
 
 	finish()
 
-################################################################################
-## 						INITIALIZE
+#endregion
+
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Audio"
+	event_description = "Plays an audio file (sound effect or music) on one of the audio layers (configured in the settings)."
 	set_default_color('Color7')
 	event_category = "Audio"
 	event_sorting_index = 2
@@ -80,8 +83,10 @@ func _init() -> void:
 func _get_icon() -> Resource:
 	return load(this_folder.path_join('icon_music.png'))
 
-################################################################################
-## 						SAVING/LOADING
+#endregion
+
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text () -> String:
@@ -253,11 +258,10 @@ func _sound_from_text(string:String) -> void:
 		loop = str_to_var(data['loop'])
 	update_text_version()
 
-
 #endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -353,9 +357,10 @@ func get_audio_channel_suggestions(filter:String) -> Dictionary:
 func get_sync_audio_channel_suggestions(filter:="") -> Dictionary:
 	return DialogicUtil.get_audio_channel_suggestions(filter)
 
+#endregion
 
 
-####################### CODE COMPLETION ########################################
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
@@ -380,8 +385,10 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'audio', 'audio ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
@@ -395,3 +402,5 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 		dict = Highlighter.color_shortcode_content(dict, line, result.get_start("shortcode"), 0, event_color)
 
 	return dict
+
+#endregion

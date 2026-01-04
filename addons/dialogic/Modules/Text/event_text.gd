@@ -277,6 +277,7 @@ func _on_auto_skip_enable(enabled: bool) -> void:
 
 func _init() -> void:
 	event_name = "Text"
+	event_description = "Displays text. Can be said by a character. Can contain all kinds of bbcode, text effects or variables."
 	set_default_color('Color1')
 	event_category = "Main"
 	event_sorting_index = 0

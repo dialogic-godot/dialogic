@@ -6,8 +6,7 @@ extends DialogicEvent
 
 
 
-################################################################################
-## 						EXECUTION
+#region EXECUTION
 ################################################################################
 
 func _execute() -> void:
@@ -16,24 +15,28 @@ func _execute() -> void:
 	else:
 		dialogic.end_timeline()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Return"
+	event_description = "Returns to the last jump event or ends the timeline (if no jump happened before)."
 	set_default_color('Color4')
 	event_category = "Flow"
 	event_sorting_index = 5
+	help_page_path = "https://docs.dialogic.pro/jump-event.html"
 
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon_return.svg'))
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 func to_text() -> String:
 	return "return"
@@ -48,26 +51,33 @@ func is_valid_event(string:String) -> bool:
 		return true
 	return false
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
 	add_header_label('Return')
 
+#endregion
 
-####################### CODE COMPLETION ########################################
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'return', 'return\n', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
 	dict[line.find('return')] = {"color":event_color.lerp(Highlighter.normal_color, 0.3)}
 	dict[line.find('return')+6] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
 	return dict
+
+#endregion

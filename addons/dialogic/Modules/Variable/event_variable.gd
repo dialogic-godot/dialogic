@@ -68,8 +68,8 @@ var random_max: int = 100
 var _suppress_default_value := false
 
 
-################################################################################
-## 						EXECUTE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -126,21 +126,24 @@ func _execute() -> void:
 
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Set Variable"
+	event_description = "Changes a dialogic variable or a variable from an autoload."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 0
 	help_page_path = "https://docs.dialogic.pro/variables.html#23-set-variable-event"
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text() -> String:
@@ -223,9 +226,10 @@ func from_text(string:String) -> void:
 func is_valid_event(string:String) -> bool:
 	return string.begins_with('set')
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -351,7 +355,10 @@ func update_editor_warning() -> void:
 				return
 	ui_update_warning.emit('')
 
-####################### CODE COMPLETION ########################################
+#endregion
+
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
@@ -377,8 +384,10 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'set', 'set ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
@@ -387,3 +396,5 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"', line.find('set'))
 	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', line.find('set'))
 	return dict
+
+#endregion

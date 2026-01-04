@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://defdeav8rli6o"]
+[gd_scene load_steps=3 format=3 uid="uid://defdeav8rli6o"]
 
 [ext_resource type="Script" uid="uid://dshp0vy2xrxv" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
 
-[node name="TimelineTextEditor" type="CodeEdit"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e7ajs"]
+
+[node name="TimelineTextEditor" type="CodeEdit" unique_id=249524425]
 offset_top = 592.0
 offset_right = 1024.0
 offset_bottom = 600.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e7ajs")
 wrap_mode = 1
 minimap_draw = true
 caret_blink = true
@@ -22,7 +25,7 @@ auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource("1_1kbx2")
 
-[node name="UpdateTimer" type="Timer" parent="."]
+[node name="UpdateTimer" type="Timer" parent="." unique_id=2015408251]
 one_shot = true
 
 [connection signal="code_completion_requested" from="." to="." method="_on_code_completion_requested"]

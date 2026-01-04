@@ -65,16 +65,19 @@ func _execute() -> void:
 
 #endregion
 
+
 #region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Background"
+	event_description = "Shows or hides a background image or scene."
 	set_default_color('Color8')
 	event_category = "Visuals"
 	event_sorting_index = 0
 
 #endregion
+
 
 #region SAVE & LOAD
 ################################################################################
@@ -93,8 +96,8 @@ func get_shortcode_parameters() -> Dictionary:
 									"suggestions": get_transition_suggestions},
 	}
 
-
 #endregion
+
 
 #region EDITOR REPRESENTATION
 ################################################################################

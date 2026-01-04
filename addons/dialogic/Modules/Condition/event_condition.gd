@@ -14,8 +14,7 @@ var condition_type := ConditionTypes.IF
 var condition := ""
 
 
-################################################################################
-## 						EXECUTE
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -35,13 +34,15 @@ func _execute() -> void:
 func _is_branch_starter() -> bool:
 	return condition_type == ConditionTypes.IF
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Condition"
+	event_description = "Allows playing the contained events only if the condition is true."
 	set_default_color('Color3')
 	event_category = "Flow"
 	event_sorting_index = 1
@@ -52,8 +53,10 @@ func _init() -> void:
 func _get_end_branch_control() -> Control:
 	return load(get_script().resource_path.get_base_dir().path_join('ui_condition_end.tscn')).instantiate()
 
-################################################################################
-## 						SAVING/LOADING
+#endregion
+
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text() -> String:
@@ -87,9 +90,10 @@ func is_valid_event(string:String) -> bool:
 		return true
 	return false
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -110,8 +114,10 @@ func build_event_editor() -> void:
 		], 'disabled':true})
 	add_header_edit('condition', ValueType.CONDITION, {}, 'condition_type != %s'%ConditionTypes.ELSE)
 
+#endregion
 
-####################### CODE COMPLETION ########################################
+
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
@@ -124,8 +130,10 @@ func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', TextNode.syntax_highlighter.code_flow_color)
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', TextNode.syntax_highlighter.code_flow_color)
 
+#endregion
 
-#################### SYNTAX HIGHLIGHTING #######################################
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 
@@ -135,3 +143,5 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 	dict[line.find(word)+len(word)] = {"color":Highlighter.normal_color}
 	dict = Highlighter.color_condition(dict, line)
 	return dict
+
+#endregion

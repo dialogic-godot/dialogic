@@ -16,8 +16,8 @@ var skippable := false
 
 var _tween: Tween
 
-################################################################################
-## 						EXECUTE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -37,7 +37,7 @@ func _execute() -> void:
 	if DialogicUtil.is_physics_timer():
 		_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	_tween.tween_callback(_on_finish).set_delay(final_wait_time)
-	
+
 	if skippable:
 		dialogic.Inputs.dialogic_action.connect(_on_finish)
 
@@ -45,30 +45,33 @@ func _execute() -> void:
 func _on_finish() -> void:
 	if is_instance_valid(_tween):
 		_tween.kill()
-	
+
 	if skippable:
 		dialogic.Inputs.dialogic_action.disconnect(_on_finish)
-	
+
 	if dialogic.Animations.is_animating():
 		dialogic.Animations.stop_animation()
 	dialogic.current_state = dialogic.States.IDLE
 
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Wait"
+	event_description = "Waits a given amount of time. Can hide the textbox and be skippable."
 	set_default_color('Color5')
 	event_category = "Flow"
 	event_sorting_index = 11
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -83,9 +86,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"skippable" :  {"property": "skippable", 	"default": false},
 	}
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -94,3 +98,5 @@ func build_event_editor() -> void:
 	add_header_label('second', 'time == 1')
 	add_body_edit('hide_text', ValueType.BOOL, {'left_text':'Hide text box:'})
 	add_body_edit('skippable', ValueType.BOOL, {'left_text':'Skippable:'})
+
+#endregion

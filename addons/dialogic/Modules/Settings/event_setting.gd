@@ -38,8 +38,8 @@ var mode := Modes.SET
 ## This is only used when initializing the event_variable.
 var _suppress_default_value: bool = false
 
-################################################################################
-## 						INITIALIZE
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -62,13 +62,15 @@ func _execute() -> void:
 					dialogic.Settings.set(name, dialogic.VAR.get_variable(value))
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Setting"
+	event_description = "Advanced: Changes a setting from the Settings subsystem."
 	set_default_color('Color9')
 	event_category = "Helpers"
 	event_sorting_index = 2
@@ -77,9 +79,10 @@ func _init() -> void:
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
+#endregion
 
-################################################################################
-## 						SAVING/LOADING
+
+#region SAVING/LOADING
 ################################################################################
 
 func to_text() -> String:
@@ -140,9 +143,10 @@ func from_text(string:String) -> void:
 func is_valid_event(string:String) -> bool:
 	return string.begins_with('setting')
 
+#endregion
 
-################################################################################
-## 						EDITOR REPRESENTATION
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -208,9 +212,10 @@ func get_value_suggestions(_filter:String) -> Dictionary:
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
+#endregion
 
 
-####################### CODE COMPLETION ########################################
+#region CODE COMPLETION
 ################################################################################
 
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
@@ -231,7 +236,10 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
 	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'setting', 'setting ', event_color)
 
-#################### SYNTAX HIGHLIGHTING #######################################
+#endregion
+
+
+#region SYNTAX HIGHLIGHTING
 ################################################################################
 
 func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
@@ -241,3 +249,5 @@ func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, li
 	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"')
 	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}')
 	return dict
+
+#endregion
