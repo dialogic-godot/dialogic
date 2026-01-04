@@ -34,7 +34,7 @@ func _register() -> void:
 	play_timeline_button = editors_manager.add_button(
 		get_theme_icon("PlayScene", "EditorIcons"),
 		"Play Timeline",
-		"Play the current timeline {0}".format("(Command+B)" if OS.get_name() == "macOS" else "(CTRL+F5)"),
+		"Play the current timeline {0}".format(["(Command+B)" if OS.get_name() == "macOS" else "(CTRL+F5)"]),
 		self,
 		editors_manager.ButtonPlacement.TOOLBAR_MAIN)
 	play_timeline_button.pressed.connect(play_timeline)
