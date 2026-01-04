@@ -17,9 +17,9 @@ var selected_item: TreeItem
 var def_portrait_path: String = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 
 
-######### EDITOR STUFF and LOADING/SAVING ######################################
+#region EDITOR STUFF and LOADING/SAVING
+################################################################################
 
-#region Resource Logic
 ## Method is called once editors manager is ready to accept registers.
 func _register() -> void:
 	## Makes the editor open this when a .dch file is selected.
@@ -138,9 +138,9 @@ func new_character(path: String) -> void:
 #endregion
 
 
-######### INTERFACE ############################################################
+#region INTERFACE
+################################################################################
 
-#region Interface
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
@@ -232,15 +232,15 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 		_on_section_button_pressed(button)
 
 
-func get_settings_section_by_name(name:String, main:=true) -> Node:
+func get_settings_section_by_name(section_name:String, main:=true) -> Node:
 	var parent := %MainSettingsSections
 	if not main:
 		parent = %PortraitSettingsSection
 
-	if parent.has_node(name):
-		return parent.get_node(name)
-	elif parent.has_node(name+"BOX/"+name):
-		return parent.get_node(name+"BOX/"+name)
+	if parent.has_node(section_name):
+		return parent.get_node(section_name)
+	elif parent.has_node(section_name+"BOX/"+section_name):
+		return parent.get_node(section_name+"BOX/"+section_name)
 	else:
 		return null
 
@@ -259,10 +259,9 @@ func _on_section_button_pressed(button:Button) -> void:
 		section_header.get_parent().get_child(section_header.get_index()+2).visible = section_header.get_parent().get_child(section_header.get_index()+1).visible
 
 
-func something_changed(fake_argument = "", fake_arg2 = null) -> void:
+func something_changed(_fake_argument = "", _fake_arg2 = null) -> void:
 	if not loading:
 		current_resource_state = ResourceStates.UNSAVED
-
 
 
 func hide_main_settings() -> void:
@@ -277,7 +276,6 @@ func show_main_settings() -> void:
 	%MainSettingsHidden.hide()
 	%MainSettingsPanel.size_flags_horizontal = SIZE_EXPAND_FILL
 	%MainHSplit.collapsed = false
-
 
 
 func _on_switch_portrait_settings_position_pressed() -> void:
@@ -561,9 +559,10 @@ func report_name_change(item: TreeItem) -> void:
 
 #endregion
 
-########### PREVIEW ############################################################
 
-#region Preview
+#region PREVIEW
+################################################################################
+
 func update_preview(force := false, ignore_settings_reload := false) -> void:
 	%ScenePreviewWarning.hide()
 
@@ -693,6 +692,7 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 	update_preview(false, true)
 
 #endregion
+
 
 ## Open the reference manager
 func _on_reference_manger_button_pressed() -> void:

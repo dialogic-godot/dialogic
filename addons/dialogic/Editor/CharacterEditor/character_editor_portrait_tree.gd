@@ -86,8 +86,9 @@ func update_left_item_margin(margin_on:bool) -> void:
 	else:
 		remove_theme_constant_override("item_margin")
 
-################################################################################
-##					DRAG AND DROP
+
+
+#region DRAG AND DROP
 ################################################################################
 
 func _get_drag_data(at_position: Vector2) -> Variant:
@@ -156,3 +157,5 @@ func copy_branch_or_item(item: TreeItem, new_parent: TreeItem) -> TreeItem:
 	for child in item.get_children():
 		copy_branch_or_item(child, new_item)
 	return new_item
+
+#endregion

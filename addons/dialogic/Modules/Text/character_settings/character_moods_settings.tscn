@@ -5,28 +5,22 @@
 [ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/field_number.tscn" id="3_yjcns"]
 [ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_yscws"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y7t05"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vv4dt"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
 bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40fkd"]
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(1, 1, 1, 0.0588235)
-border_width_left = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[node name="Typing Sounds" type="VBoxContainer" unique_id=640122489]
+[node name="Typing Sounds" type="PanelContainer" unique_id=368458129]
+self_modulate = Color(0.38170326, 0.38170323, 0.38170323, 1)
 offset_right = 443.0
-offset_bottom = 144.0
+offset_bottom = 397.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vv4dt")
 script = ExtResource("1_3px07")
 
 [node name="VBox" type="VBoxContainer" parent="." unique_id=1736388576]
@@ -35,9 +29,7 @@ theme_override_constants/separation = 0
 
 [node name="ListPanel" type="PanelContainer" parent="VBox" unique_id=1562827715]
 unique_name_in_owner = true
-self_modulate = Color(0.083385, 0.083385, 0.083385, 1)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_y7t05")
 
 [node name="Vbox" type="VBoxContainer" parent="VBox/ListPanel" unique_id=1991868687]
 layout_mode = 2
@@ -87,7 +79,6 @@ layout_mode = 2
 [node name="Settings" type="PanelContainer" parent="VBox" unique_id=44966764]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_40fkd")
 
 [node name="Grid" type="GridContainer" parent="VBox/Settings" unique_id=1230303108]
 layout_mode = 2
