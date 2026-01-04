@@ -134,7 +134,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Set Variable"
-	event_description = "Change a dialogic variable or a variable from an autoload."
+	event_description = "Changes a dialogic variable or a variable from an autoload."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 0

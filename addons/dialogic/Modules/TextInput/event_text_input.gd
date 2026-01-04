@@ -50,7 +50,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 
 func _init() -> void:
 	event_name = "Text Input"
-	event_description = "Show a text input field and store it to a dialogic variable."
+	event_description = "Shows a text input field and stores it to a dialogic variable."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 6
