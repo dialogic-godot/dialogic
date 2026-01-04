@@ -54,7 +54,10 @@ func set_portrait_data(data:Dictionary) -> void:
 ################################################################################
 
 func _ready() -> void:
-	%ListPanel.self_modulate = get_theme_color("base_color", "Editor")
+	if get_parent() is SubViewport:
+		return
+
+	%ListPanel.self_modulate = get_theme_color("background", "Editor")
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 	%Delete.icon = get_theme_icon("Remove", "EditorIcons")
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")

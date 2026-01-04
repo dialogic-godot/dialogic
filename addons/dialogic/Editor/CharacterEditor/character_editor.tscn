@@ -89,8 +89,6 @@ layout_mode = 2
 tooltip_text = "Hide Main Settings"
 theme_type_variation = &"FlatButton"
 text = "     "
-icon_alignment = 1
-expand_icon = true
 
 [node name="MainSettingsScroll" type="ScrollContainer" parent="Scroll/VBox/MainHSplit/MainSettingsPanel/MainSettings" unique_id=802937484]
 unique_name_in_owner = true
@@ -118,7 +116,6 @@ size_flags_vertical = 3
 tooltip_text = "Show Main Settings"
 theme_type_variation = &"FlatButton"
 theme_override_constants/icon_max_width = 20
-icon_alignment = 1
 
 [node name="Split" type="HSplitContainer" parent="Scroll/VBox/MainHSplit" unique_id=203063071]
 layout_mode = 2

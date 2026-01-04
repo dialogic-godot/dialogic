@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnkck3hocbkk5"]
+[gd_scene format=3 uid="uid://bnkck3hocbkk5"]
 
 [ext_resource type="Script" uid="uid://c0nilv2pybryh" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.gd" id="1_3e1i1"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_cxfqm"]
@@ -31,7 +31,7 @@ text = "Display Name"
 layout_mode = 2
 tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
 texture = null
-hint_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
+hint_text = "This name will be displayed on the name label. If you want it to change, you can use a dialogic variable. E.g.: {Player.Name}"
 
 [node name="DisplayName" type="HBoxContainer" parent="." unique_id=1051746999]
 layout_mode = 2
