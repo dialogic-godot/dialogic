@@ -13,29 +13,44 @@ extends DialogicEvent
 var scene := ""
 ## The argument that is passed to the background scene.
 ## For the default scene it's the path to the image to show.
-var argument := "":
-	set(value):
-		if argument != value:
-			argument = value
-			ui_update_needed.emit()
+var argument := ""
 ## The time the fade animation will take. Leave at 0 for instant change.
 var fade: float = 0.0
 ## Name of the transition to use.
 var transition := ""
+## If `true` will wait for the duration of the transition before continuing.
+var await_transition := false
 
 ## Helpers for visual editor
-enum ArgumentTypes {IMAGE, CUSTOM}
-var _arg_type := ArgumentTypes.IMAGE :
+enum ArgumentTypes {IMAGE, COLOR, STRING}
+var _arg_type := ArgumentTypes.IMAGE:
 	get:
 		if argument.begins_with("res://"):
 			return ArgumentTypes.IMAGE
+		elif argument.begins_with("#") and argument.is_valid_html_color():
+			return ArgumentTypes.COLOR
 		else:
 			return _arg_type
 	set(value):
-		if value == ArgumentTypes.CUSTOM:
-			if argument.begins_with("res://"):
+		if value == ArgumentTypes.STRING:
+			if not argument.begins_with(" "):
 				argument = " "+argument
+		elif value == ArgumentTypes.COLOR:
+			if not (argument.is_valid_html_color() and argument.begins_with("#")):
+				argument = "#"+Color.BLACK.to_html()
+		elif value == ArgumentTypes.IMAGE:
+			if not argument.begins_with(" res://"):
+				argument = "res://"
+
 		_arg_type = value
+
+var _color_arg := Color():
+	get():
+		return Color.from_string(argument, Color.BLACK)
+	set(c):
+		_color_arg = c
+		if _arg_type == ArgumentTypes.COLOR:
+			argument = "#"+c.to_html()
 
 enum SceneTypes {DEFAULT, CUSTOM}
 var _scene_type := SceneTypes.DEFAULT :
@@ -60,6 +75,9 @@ func _execute() -> void:
 		final_fade_duration = min(fade, time_per_event)
 
 	dialogic.Backgrounds.update_background(scene, argument, final_fade_duration, transition)
+
+	if await_transition:
+		await dialogic.get_tree().create_timer(final_fade_duration).timeout
 
 	finish()
 
@@ -94,6 +112,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"fade" 			: {"property": "fade", 				"default": 0},
 		"transition"	: {"property": "transition",		"default": "",
 									"suggestions": get_transition_suggestions},
+		"wait": 		{"property": "await_transition",	"default": false}
 	}
 
 #endregion
@@ -112,12 +131,12 @@ func build_event_editor() -> void:
 				'icon': ["GuiRadioUnchecked", "EditorIcons"]
 			},
 			{
-				'label': 'Custom Scene',
+				'label': 'Scene',
 				'value': SceneTypes.CUSTOM,
 				'icon': ["PackedScene", "EditorIcons"]
 			}
 		]})
-	add_header_label("with image", "_scene_type == SceneTypes.DEFAULT")
+	#add_header_label("from file", "_scene_type == SceneTypes.DEFAULT")
 	add_header_edit("scene", ValueType.FILE,
 			{'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Custom scene",
@@ -132,22 +151,28 @@ func build_event_editor() -> void:
 				'icon': ["Image", "EditorIcons"]
 			},
 			{
+				'label': 'Color',
+				'value': ArgumentTypes.COLOR,
+				'icon': ["Color", "EditorIcons"]
+			},
+			{
 				'label': 'Custom Argument',
-				'value': ArgumentTypes.CUSTOM,
+				'value': ArgumentTypes.STRING,
 				'icon': ["String", "EditorIcons"]
 			}
-		], "symbol_only": true}, "_scene_type == SceneTypes.CUSTOM")
+		], "symbol_only": true})
 	add_header_edit('argument', ValueType.FILE,
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 			'placeholder': "No Image",
 			'editor_icon': ["Image", "EditorIcons"],
 			},
-			'_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT')
-	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.CUSTOM')
+			'_arg_type == ArgumentTypes.IMAGE')
+	add_header_edit('_color_arg', ValueType.COLOR, {}, '_arg_type == ArgumentTypes.COLOR')
+	add_header_edit('argument', ValueType.SINGLELINE_TEXT, {}, '_arg_type == ArgumentTypes.STRING')
 
 	add_body_edit("argument", ValueType.IMAGE_PREVIEW, {'left_text':'Preview:'},
-		'(_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT) and !argument.is_empty()')
-	add_body_line_break('(_arg_type == ArgumentTypes.IMAGE or _scene_type == SceneTypes.DEFAULT) and !argument.is_empty()')
+		'(_arg_type == ArgumentTypes.IMAGE) and !argument.is_empty()')
+	add_body_line_break('(_arg_type == ArgumentTypes.IMAGE) and !argument.is_empty()')
 
 	add_body_edit("transition", ValueType.DYNAMIC_OPTIONS,
 			{'left_text':'Transition:',
@@ -155,6 +180,7 @@ func build_event_editor() -> void:
 			'suggestions_func':get_transition_suggestions,
 			'editor_icon':["PopupMenu", "EditorIcons"]})
 	add_body_edit("fade", ValueType.NUMBER, {'left_text':'Fade time:'})
+	add_body_edit("await_transition", ValueType.BOOL, {'left_text':'Await Fade:', "tooltip":"If true, will wait for the duration of the transition before continuing."})
 
 
 func get_transition_suggestions(_filter:String="") -> Dictionary:
