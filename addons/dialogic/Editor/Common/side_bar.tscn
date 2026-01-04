@@ -98,6 +98,7 @@ placeholder_text = "Filter Resources"
 caret_blink = true
 caret_blink_interval = 0.5
 
+
 [node name="RightTools" type="HBoxContainer" parent="VBoxPrimary/Margin/MainVSplit/VBox/Tools/HBox" unique_id=803895286]
 unique_name_in_owner = true
 layout_mode = 2
