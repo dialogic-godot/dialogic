@@ -34,6 +34,11 @@ var texture_rect: TextureRect
 			get_node('Texture').size = _texture_size
 			get_node('Texture').position = -_texture_size
 
+@export var indicator_offset := Vector2(0,0):
+	set(_indicator_offset):
+		indicator_offset = _indicator_offset
+		if has_node('Texture'):
+			texture_rect.position = indicator_offset
 
 var tween: Tween
 
