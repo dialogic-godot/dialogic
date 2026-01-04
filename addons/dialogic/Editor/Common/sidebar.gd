@@ -58,14 +58,15 @@ func _ready() -> void:
 	%Options.icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
 	
 	var grouping_menu := PopupMenu.new()
-	grouping_menu.hide_on_item_selection = false
+	#grouping_menu.hide_on_item_selection = false
+	grouping_menu.hide_on_checkable_item_selection = false
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("AnimationTrackList", "EditorIcons"), "None", 0)
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("Folder", "EditorIcons"), "By Type", 1)
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("FolderBrowse", "EditorIcons"), "By Folder", 2)
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("AnimationTrackGroup", "EditorIcons"), "By Path", 3)
 	
 	var options_popup: PopupMenu = %Options.get_popup()
-	options_popup.hide_on_item_selection = false
+	options_popup.hide_on_checkable_item_selection = false
 	options_popup.add_submenu_node_item("Grouping", grouping_menu)
 	options_popup.add_check_item("Use Folder Colors", 11)
 	options_popup.add_check_item("Trim Folder Paths", 12)
@@ -558,6 +559,7 @@ func _on_resource_list_options_id_pressed(id:int) -> void:
 func _on_grouping_changed(id: int) -> void:
 	if not (GroupMode as Dictionary).values().has(id):
 		return
+	
 	group_mode = (id as GroupMode)
 	DialogicUtil.set_editor_setting("sidebar_group_mode", id)
 	reload_resource_list_from_grouping()
@@ -577,7 +579,10 @@ func reload_resource_list_from_grouping() -> void:
 		grouping_menu.set_item_checked(index, grouping_menu.get_item_id(index) == group_mode)
 	popup.set_item_disabled(popup.get_item_index(11), group_mode != GroupMode.PATH)
 	popup.set_item_disabled(popup.get_item_index(12), group_mode != GroupMode.PATH)
-
+	
+	var index := grouping_menu.get_item_index(group_mode)
+	popup.set_item_icon(0, grouping_menu.get_item_icon(index))
+	
 
 func list_all() -> void:
 	var character_directory: Dictionary = DialogicResourceUtil.get_character_directory()
