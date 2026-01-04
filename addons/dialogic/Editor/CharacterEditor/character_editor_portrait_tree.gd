@@ -105,10 +105,16 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys():
+		return true
 	return data is TreeItem
 
 
 func _drop_data(at_position: Vector2, item: Variant) -> void:
+	if item is Dictionary:
+		owner.import_portraits_from_file_list(item.files)
+		return
+
 	var to_item := get_item_at_position(at_position)
 	if to_item:
 		var test_item := to_item

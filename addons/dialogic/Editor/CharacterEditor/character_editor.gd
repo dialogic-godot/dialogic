@@ -126,7 +126,7 @@ func new_character(path: String) -> void:
 		path += ".dch"
 	var resource := DialogicCharacter.new()
 	resource.resource_path = path
-	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
+	resource.display_name = path.get_file().trim_suffix("."+path.get_extension()).capitalize()
 	resource.color = Color(1,1,1,1)
 	resource.default_portrait = ""
 	resource.custom_info = {}
@@ -153,6 +153,9 @@ func _ready() -> void:
 	$NoCharacterScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
+
+	%CloseButton.icon = get_theme_icon("Back", "EditorIcons")
+	%OpenButton.icon = get_theme_icon("Forward", "EditorIcons")
 
 	_on_fit_preview_toggle_toggled(DialogicUtil.get_editor_setting('character_preview_fit', true))
 	%PreviewLabel.add_theme_color_override("font_color", get_theme_color("readonly_color", "Editor"))
@@ -315,27 +318,15 @@ func setup_portrait_list_tab() -> void:
 
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
-		import_portraits_from_folder, "*.svg, *.png",
+		import_portraits_from_file_list, "*.svg, *.png",
 		EditorFileDialog.FILE_MODE_OPEN_FILES, "Import Images From Folder")
 
 
-func import_portraits_from_folder(files:Array) -> void:
+func import_portraits_from_file_list(files:Array) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected() != parent and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent = %PortraitTree.get_selected()
-#
-	#var dir := DirAccess.open(path)
-	#dir.list_dir_begin()
-	#var file_name: String = dir.get_next()
-	#var files := []
-	#while file_name != "":
-		#if not dir.current_is_dir():
-			#var file_lower := file_name.to_lower()
-			#if '.svg' in file_lower or '.png' in file_lower:
-				#if not '.import' in file_lower:
-					#files.append(file_name)
-		#file_name = dir.get_next()
 
 	var prefix: String = files[0]
 	for file in files:
@@ -346,10 +337,18 @@ func import_portraits_from_folder(files:Array) -> void:
 				break
 			prefix = prefix.substr(0, len(prefix)-1)
 
+	if len(files) == 1:
+		prefix = prefix.get_base_dir()+"/"
+
 	for file in files:
-		var item : TreeItem = %PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
-			{'scene':"",'export_overrides':{'image':var_to_str(file)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
-		item.set_meta('new', true)
+		if not file.get_extension() in ["tscn", "scn", "png", "webp", "jpg", "jpeg", "svg"]:
+			continue
+		var portrait_name: String = file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()).capitalize()
+		var scene: String = file if file.get_extension() in ["tscn", "scn"] else ""
+		var export_overrides: Dictionary = {"image":var_to_str(file)} if file.get_extension() in ["png", "webp", "jpg", "jpeg", "svg"] else {}
+		var item : TreeItem = %PortraitTree.add_portrait_item(portrait_name,
+			{"scene":scene,"export_overrides":export_overrides, "scale":1, "offset":Vector2(), "mirror":false}, parent)
+		item.set_meta("new", true)
 
 	## Handle selection
 	if parent.get_child_count():
