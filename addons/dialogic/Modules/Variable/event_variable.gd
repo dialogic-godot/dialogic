@@ -36,7 +36,7 @@ var name := "":
 var operation := Operations.SET:
 	set(value):
 		operation = value
-		if operation != Operations.SET and _value_type == VarValueType.STRING:
+		if not (operation == Operations.SET or operation == Operations.ADD) and _value_type == VarValueType.STRING:
 			_value_type = VarValueType.NUMBER
 			ui_update_needed.emit()
 		update_editor_warning()
@@ -73,56 +73,59 @@ var _suppress_default_value := false
 ################################################################################
 
 func _execute() -> void:
-	if name:
-		var original_value: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
+	if not name:
+		finish()
+		return
 
-		if value != null and (original_value != null or (operation == Operations.SET and "[" in name)):
+	var original_value: Variant = dialogic.VAR.get_variable(name, null, operation == Operations.SET and "[" in name)
 
-			var interpreted_value: Variant
-			var result: Variant
+	if value != null and (original_value != null or (operation == Operations.SET and "[" in name)):
 
-			match _value_type:
-				VarValueType.STRING:
-					interpreted_value = dialogic.VAR.get_variable('"' + value + '"')
-				VarValueType.VARIABLE:
-					interpreted_value = dialogic.VAR.get_variable('{' + value + '}')
-				VarValueType.NUMBER, VarValueType.BOOL, VarValueType.EXPRESSION, VarValueType.RANDOM_NUMBER:
-					interpreted_value = dialogic.VAR.get_variable(str(value))
+		var interpreted_value: Variant
+		var result: Variant
 
-			if operation == Operations.SET:
-				result = interpreted_value
-			elif (DialogicUtil.get_variable_type(name) == DialogicUtil.VarTypes.STRING and _value_type == VarValueType.STRING and interpreted_value and operation == Operations.ADD):
-				result = original_value + interpreted_value
-			elif not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float():
-				printerr("[Dialogic] Set Variable event failed because one value wasn't a float! [", original_value, ", ",interpreted_value,"]")
-				finish()
-				return
-			else:
-				original_value = float(original_value)
-				interpreted_value = float(interpreted_value)
+		match _value_type:
+			VarValueType.STRING:
+				interpreted_value = dialogic.VAR.get_variable('"' + value + '"')
+			VarValueType.VARIABLE:
+				interpreted_value = dialogic.VAR.get_variable('{' + value + '}')
+			VarValueType.NUMBER, VarValueType.BOOL, VarValueType.EXPRESSION, VarValueType.RANDOM_NUMBER:
+				interpreted_value = dialogic.VAR.get_variable(str(value))
 
-				match operation:
-					Operations.ADD:
-						result = original_value + interpreted_value
-					Operations.SUBSTRACT:
-						result = original_value - interpreted_value
-					Operations.MULTIPLY:
-						result = original_value * interpreted_value
-					Operations.DIVIDE:
-						result = original_value / interpreted_value
-
-			dialogic.VAR.set_variable(name, result)
-			dialogic.VAR.variable_was_set.emit(
-				{
-					'variable' : name,
-					'value' : interpreted_value,
-					'value_str' : value,
-					'orig_value' : original_value,
-					'new_value' : result,
-				})
-
+		if operation == Operations.SET:
+			result = interpreted_value
+		elif (operation == Operations.ADD and DialogicUtil.get_variable_type(name) == DialogicUtil.VarTypes.STRING and _value_type == VarValueType.STRING and interpreted_value):
+			result = original_value + interpreted_value
+		elif not str(original_value).is_valid_float() or not str(interpreted_value).is_valid_float():
+			printerr("[Dialogic] Set Variable event failed because one value wasn't a float! [", original_value, ", ",interpreted_value,"]")
+			finish()
+			return
 		else:
-			printerr("[Dialogic] Set Variable event failed because one value wasn't set!")
+			original_value = float(original_value)
+			interpreted_value = float(interpreted_value)
+
+			match operation:
+				Operations.ADD:
+					result = original_value + interpreted_value
+				Operations.SUBSTRACT:
+					result = original_value - interpreted_value
+				Operations.MULTIPLY:
+					result = original_value * interpreted_value
+				Operations.DIVIDE:
+					result = original_value / interpreted_value
+
+		dialogic.VAR.set_variable(name, result)
+		dialogic.VAR.variable_was_set.emit(
+			{
+				'variable' : name,
+				'value' : interpreted_value,
+				'value_str' : value,
+				'orig_value' : original_value,
+				'new_value' : result,
+			})
+
+	else:
+		printerr("[Dialogic] Set Variable event failed because one value wasn't set!")
 
 	finish()
 
