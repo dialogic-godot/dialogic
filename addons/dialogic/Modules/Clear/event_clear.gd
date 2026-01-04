@@ -69,7 +69,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Clear"
-	event_description = "Clears current state like text, background, portraits, style and audio."
+	event_description = "Clears current state like text, background, portraits, style or audio."
 	set_default_color('Color9')
 	event_category = "Other"
 	event_sorting_index = 2

@@ -26,7 +26,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Comment"
-	event_description = "A comment has no effect on gameplay, but can help organize your timeline."
+	event_description = "Has no effect on gameplay, but can help organize your timeline."
 	set_default_color('Color9')
 	event_category = "Helpers"
 	event_sorting_index = 0
