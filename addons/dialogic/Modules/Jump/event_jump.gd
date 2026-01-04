@@ -134,10 +134,12 @@ func get_timeline_suggestions(_filter:String= "") -> Dictionary:
 
 func get_label_suggestions(_filter:String="") -> Dictionary:
 	var suggestions := {}
-	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
+	suggestions['at the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons'], "tooltip":"Starts the timeline from the beginning."}
 	if timeline_identifier in DialogicResourceUtil.get_label_cache().keys():
 		for label in DialogicResourceUtil.get_label_cache()[timeline_identifier]:
 			suggestions[label] = {'value': label, 'tooltip':label, 'editor_icon': ["ArrowRight", "EditorIcons"]}
+	if len(suggestions) == 1:
+		suggestions["No label events found."] = {'value': "NOTHING", 'tooltip':"By adding label events to this timeline you can jump directly to them.", "disabled":true,}
 	if _filter.begins_with("{"):
 		for var_path in DialogicUtil.list_variables(DialogicUtil.get_default_variables()):
 			suggestions["{"+var_path+"}"] = {'value':"{"+var_path+"}", 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}

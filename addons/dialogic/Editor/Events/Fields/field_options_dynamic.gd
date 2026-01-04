@@ -222,6 +222,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 			line_length = max(line_length, curr_line_length)
 
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
+			%Suggestions.set_item_disabled(idx, suggestions[element].get("disabled", false))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 			idx += 1
 
