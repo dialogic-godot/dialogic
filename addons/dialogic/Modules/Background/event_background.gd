@@ -29,8 +29,10 @@ var _arg_type := ArgumentTypes.IMAGE:
 			return ArgumentTypes.IMAGE
 		elif argument.begins_with("#") and argument.is_valid_html_color():
 			return ArgumentTypes.COLOR
-		else:
+		elif argument.is_empty():
 			return _arg_type
+		else:
+			return ArgumentTypes.STRING
 	set(value):
 		if value == ArgumentTypes.STRING:
 			if not argument.begins_with(" "):
@@ -156,11 +158,11 @@ func build_event_editor() -> void:
 				'icon': ["Color", "EditorIcons"]
 			},
 			{
-				'label': 'Custom Argument',
+				'label': 'Argument',
 				'value': ArgumentTypes.STRING,
 				'icon': ["String", "EditorIcons"]
 			}
-		], "symbol_only": true})
+		]})
 	add_header_edit('argument', ValueType.FILE,
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 			'placeholder': "No Image",
