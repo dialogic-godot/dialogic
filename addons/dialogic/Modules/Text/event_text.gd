@@ -67,12 +67,10 @@ func _execute() -> void:
 	## Change Portrait and Active Speaker
 	if dialogic.has_subsystem("Portraits"):
 		if character:
-
 			dialogic.Portraits.change_speaker(character, portrait)
 
 			if portrait and dialogic.Portraits.is_character_joined(character):
 				dialogic.Portraits.change_character_portrait(character, portrait)
-
 		else:
 			dialogic.Portraits.change_speaker(null)
 
