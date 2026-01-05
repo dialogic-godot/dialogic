@@ -252,7 +252,7 @@ func _on_choice_selected(choice_info := {}) -> void:
 		return
 
 	if dialogic.has_subsystem('History'):
-		var all_choices: Array = last_question_info['choices']["text"]
+		var all_choices: Array = last_question_info['choices'].map(func(x): return x["text"])
 		if dialogic.has_subsystem('VAR'):
 			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(choice_info.text), "Choice", {'all_choices': all_choices})
 		else:
