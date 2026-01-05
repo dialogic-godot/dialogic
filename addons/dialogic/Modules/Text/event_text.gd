@@ -124,23 +124,39 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	dialogic.current_state_info['text_sub_idx'] = dialogic.current_state_info.get('text_sub_idx', -1)
+	dialogic.current_state_info["text_sub_idx"] = dialogic.current_state_info.get("text_sub_idx", -1)
 
-	var reveal_next_segment: bool = dialogic.current_state_info['text_sub_idx'] == -1
+	var reveal_next_segment: bool = dialogic.current_state_info["text_sub_idx"] == -1
 
-	for section_idx in range(min(max(0, dialogic.current_state_info['text_sub_idx']), len(split_text)-1), len(split_text)):
-		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
+	for section_idx in range(min(max(0, dialogic.current_state_info["text_sub_idx"]), len(split_text)-1), len(split_text)):
+		dialogic.Inputs.block_input(ProjectSettings.get_setting("dialogic/text/text_reveal_skip_delay", 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
 
-			dialogic.current_state_info['text_sub_idx'] = section_idx
+			dialogic.current_state_info["text_sub_idx"] = section_idx
 
-			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0], 0)
+			var section_text: String = split_text[section_idx][0]
 			var is_append: bool = split_text[section_idx][1]
 
-			final_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+segment
-			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+			if character:
+				var character_prefix: String = character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
+				var character_suffix: String = character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
+
+				if len(split_text) == 1 or section_idx == 0 or not is_append:
+					section_text = character_prefix + section_text
+				if len(split_text) == 1 or section_idx == len(split_text)-1 or not split_text[section_idx+1][1]:
+					section_text = section_text + character_suffix
+
+			if len(split_text) == 1 or section_idx == 0 or not is_append:
+				section_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+section_text
+
+			final_text = dialogic.Text.parse_text(section_text, 0)
+
+			if final_text.is_empty():
+				continue
+
+			dialogic.Text.about_to_show_text.emit({"text":final_text, "character":character, "portrait":portrait, "append": is_append})
 
 			await dialogic.Text.update_textbox(final_text, false)
 
@@ -148,7 +164,7 @@ func _execute() -> void:
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-			dialogic.Text.text_started.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+			dialogic.Text.text_started.emit({"text":final_text, "character":character, "portrait":portrait, "append": is_append})
 
 			_mark_as_read(character_name_text, final_text)
 
