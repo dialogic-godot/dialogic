@@ -12,6 +12,7 @@ var premade_style_parts := {}
 
 @onready var StyleList: ItemList = %StyleList
 
+
 #region EDITOR MANAGEMENT
 ################################################################################
 
@@ -41,6 +42,8 @@ func _close() -> void:
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
 	collect_styles()
 
 	setup_ui()
@@ -124,8 +127,9 @@ func realize_style() -> void:
 
 	select_style(current_style)
 
-
 #endregion
+
+
 #region USER INTERFACE
 ################################################################################
 
@@ -146,6 +150,7 @@ func setup_ui() -> void:
 	StyleList.set_drag_forwarding(_on_stylelist_drag, _on_stylelist_can_drop, _on_style_list_drop)
 	%StyleView.hide()
 	%NoStyleView.show()
+
 
 func load_style_list() -> void:
 	var latest: String = DialogicUtil.get_editor_setting('latest_layout_style', 'Default')
@@ -329,12 +334,10 @@ func _on_make_default_button_pressed() -> void:
 
 
 func _on_test_style_button_pressed() -> void:
-	var dialogic_plugin := DialogicUtil.get_dialogic_plugin()
-
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_test_style', current_style.name)
 
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
+	EditorInterface.play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 	await get_tree().create_timer(3).timeout
 	DialogicUtil.set_editor_setting('current_test_style', '')
 
@@ -357,11 +360,11 @@ func _on_start_styling_button_pressed() -> void:
 
 #endregion
 
-func _on_stylelist_drag(vector:Vector2) -> Variant:
+func _on_stylelist_drag(_vector:Vector2) -> Variant:
 	return null
 
 
-func _on_stylelist_can_drop(at_position: Vector2, data: Variant) -> bool:
+func _on_stylelist_can_drop(_at_position: Vector2, data: Variant) -> bool:
 	if not data is Dictionary:
 		return false
 	if not data.get('type', 's') == 'files':
@@ -374,7 +377,7 @@ func _on_stylelist_can_drop(at_position: Vector2, data: Variant) -> bool:
 
 	return false
 
-func _on_style_list_drop(at_position: Vector2, data: Variant) -> void:
+func _on_style_list_drop(_at_position: Vector2, data: Variant) -> void:
 	for file in data.files:
 		var style := load(file)
 		if style is DialogicStyle:

@@ -18,6 +18,9 @@ var _minimum_tree_item_height: int
 
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	# Styling
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
@@ -276,7 +279,6 @@ func make_layout_custom(target_folder:String) -> void:
 	%LayerTree.get_root().select(0)
 	make_layer_custom(target_folder, "custom_" + current_style.name.to_snake_case())
 
-
 	var base_layer_info := current_style.get_layer_info("")
 	var target_path: String = base_layer_info.path
 
@@ -314,7 +316,7 @@ func make_layout_custom(target_folder:String) -> void:
 	load_style_layer_list()
 
 	%LayerTree.get_root().select(0)
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 
 
@@ -527,10 +529,10 @@ func _on_layer_tree_layer_moved(from: int, to: int) -> void:
 	move_layer(from, to)
 
 
-func _on_layer_tree_button_clicked(item: TreeItem, column: int, id: int, mouse_button_index: int) -> void:
+func _on_layer_tree_button_clicked(item: TreeItem, _column: int, _id: int, _mouse_button_index: int) -> void:
 	if ResourceLoader.exists(item.get_meta('scene')):
-		find_parent('EditorView').plugin_reference.get_editor_interface().open_scene_from_path(item.get_meta('scene'))
-		find_parent('EditorView').plugin_reference.get_editor_interface().set_main_screen_editor("2D")
+		EditorInterface.open_scene_from_path(item.get_meta('scene'))
+		EditorInterface.set_main_screen_editor("2D")
 
 
 #region Helpers

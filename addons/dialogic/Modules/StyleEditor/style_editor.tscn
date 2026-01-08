@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cx6h3tck10s1g"]
+[gd_scene format=3 uid="uid://cx6h3tck10s1g"]
 
 [ext_resource type="Script" uid="uid://n7kjhd6h41ec" path="res://addons/dialogic/Modules/StyleEditor/style_editor.gd" id="1_gy14f"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_g4mnt"]
@@ -6,30 +6,6 @@
 [ext_resource type="Script" uid="uid://orsplfberna" path="res://addons/dialogic/Modules/StyleEditor/Components/style_layer_tree.gd" id="4_kpoqn"]
 [ext_resource type="Script" uid="uid://i2qxk6l78uax" path="res://addons/dialogic/Modules/StyleEditor/Components/style_browser_window.gd" id="5_qbwx0"]
 [ext_resource type="PackedScene" uid="uid://cs381i3h7sveq" path="res://addons/dialogic/Modules/StyleEditor/Components/style_browser.tscn" id="6_p6lia"]
-
-[sub_resource type="Image" id="Image_3rxjh"]
-data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id="ImageTexture_f5xt2"]
-image = SubResource("Image_3rxjh")
-
-[sub_resource type="Image" id="Image_yj7mc"]
-data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id="ImageTexture_xtj53"]
-image = SubResource("Image_yj7mc")
 
 [sub_resource type="Theme" id="Theme_l6tyr"]
 
@@ -42,7 +18,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="Image" id="Image_3jl8n"]
+[sub_resource type="Image" id="Image_i40ox"]
 data = {
 "data": PackedByteArray(0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255),
 "format": "RGBA8",
@@ -52,9 +28,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_yr3tj"]
-image = SubResource("Image_3jl8n")
+image = SubResource("Image_i40ox")
 
-[node name="StyleEditor" type="HSplitContainer"]
+[node name="StyleEditor" type="HSplitContainer" unique_id=1865892929]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -62,26 +38,28 @@ offset_right = -3.0
 offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offsets = PackedInt32Array(150)
+split_offset = 150
 script = ExtResource("1_gy14f")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=59972207]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 theme_type_variation = &"DialogicPanelA"
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=201626716]
 layout_mode = 2
 
-[node name="Title" type="HBoxContainer" parent="Panel/VBox"]
+[node name="Title" type="HBoxContainer" parent="Panel/VBox" unique_id=153100260]
 layout_mode = 2
 
-[node name="StyleListTitle" type="Label" parent="Panel/VBox/Title"]
+[node name="StyleListTitle" type="Label" parent="Panel/VBox/Title" unique_id=1425741460]
 layout_mode = 2
 theme_type_variation = &"DialogicSubTitle"
 text = "Styles"
 
-[node name="HintTooltip" parent="Panel/VBox/Title" instance=ExtResource("2_g4mnt")]
+[node name="HintTooltip" parent="Panel/VBox/Title" unique_id=1197251385 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
 tooltip_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
@@ -95,21 +73,19 @@ When one style is selected as default dialogic will use that style when calling 
 You can change the style with the Change Style event, by setting a style on a character or by calling
 Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
 
-[node name="StyleButtons" type="HBoxContainer" parent="Panel/VBox"]
+[node name="StyleButtons" type="HBoxContainer" parent="Panel/VBox" unique_id=1676966194]
 layout_mode = 2
 alignment = 2
 
-[node name="AddButton" type="MenuButton" parent="Panel/VBox/StyleButtons"]
+[node name="AddButton" type="MenuButton" parent="Panel/VBox/StyleButtons" unique_id=307379993]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add layout-style"
-icon = SubResource("ImageTexture_f5xt2")
 switch_on_hover = true
 item_count = 5
 popup/item_0/text = "ADD STYLE"
 popup/item_0/id = 0
 popup/item_0/disabled = true
-popup/item_1/text = ""
 popup/item_1/id = 0
 popup/item_1/separator = true
 popup/item_2/text = "Premade Style"
@@ -119,110 +95,103 @@ popup/item_3/id = 1
 popup/item_4/text = "Custom Style"
 popup/item_4/id = 2
 
-[node name="DuplicateButton" type="Button" parent="Panel/VBox/StyleButtons"]
+[node name="DuplicateButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1749418768]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Duplicate style"
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="RemoveButton" type="Button" parent="Panel/VBox/StyleButtons"]
+[node name="RemoveButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1881793634]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Remove style from list"
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="MakeDefaultButton" type="Button" parent="Panel/VBox/StyleButtons"]
+[node name="MakeDefaultButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1399827181]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Make Default"
 toggle_mode = true
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="StyleList" type="ItemList" parent="Panel/VBox"]
+[node name="StyleList" type="ItemList" parent="Panel/VBox" unique_id=2118684691]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 item_count = 1
 item_0/text = "Style"
-item_0/icon = SubResource("ImageTexture_xtj53")
 
-[node name="StyleView" type="VBoxContainer" parent="."]
+[node name="StyleView" type="VBoxContainer" parent="." unique_id=58859596]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBox" type="HBoxContainer" parent="StyleView"]
+[node name="HBox" type="HBoxContainer" parent="StyleView" unique_id=1954125117]
 layout_mode = 2
 theme = SubResource("Theme_l6tyr")
 theme_override_constants/separation = 0
 
-[node name="LayoutStyleName" type="LineEdit" parent="StyleView/HBox"]
+[node name="LayoutStyleName" type="LineEdit" parent="StyleView/HBox" unique_id=2025778654]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicTitle"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tixgs")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_tixgs")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_tixgs")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tixgs")
 text = "Style"
 expand_to_text_length = true
 
-[node name="EditNameButton" type="Button" parent="StyleView/HBox"]
+[node name="EditNameButton" type="Button" parent="StyleView/HBox" unique_id=1140843184]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Edit Name"
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="InheritanceButton" type="MenuButton" parent="StyleView/HBox"]
+[node name="InheritanceButton" type="MenuButton" parent="StyleView/HBox" unique_id=2041438982]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Inherits VN Style"
-icon = SubResource("ImageTexture_f5xt2")
 icon_alignment = 2
 item_count = 1
 popup/item_0/text = "Clear Inheritance"
 popup/item_0/id = 0
 
-[node name="TestStyleButton" type="Button" parent="StyleView/HBox"]
+[node name="TestStyleButton" type="Button" parent="StyleView/HBox" unique_id=978527389]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 tooltip_text = "Play current timeline with this style"
 text = "Test Style"
-icon = SubResource("ImageTexture_f5xt2")
 
-[node name="PanelContainer" type="PanelContainer" parent="StyleView"]
+[node name="PanelContainer" type="PanelContainer" parent="StyleView" unique_id=203654864]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"DialogicPanelB"
 
-[node name="StyleEditor" type="HSplitContainer" parent="StyleView/PanelContainer"]
+[node name="StyleEditor" type="HSplitContainer" parent="StyleView/PanelContainer" unique_id=564533084]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("3_iih7c")
 
-[node name="LayerPanel" type="PanelContainer" parent="StyleView/PanelContainer/StyleEditor"]
+[node name="LayerPanel" type="PanelContainer" parent="StyleView/PanelContainer/StyleEditor" unique_id=1604975924]
 layout_mode = 2
 theme_type_variation = &"DialogicPanelA"
 
-[node name="VBox" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel"]
+[node name="VBox" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel" unique_id=308885233]
 layout_mode = 2
 
-[node name="Title" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox"]
+[node name="Title" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=899281465]
 layout_mode = 2
 
-[node name="LayerListTitle" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title"]
+[node name="LayerListTitle" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title" unique_id=1679594011]
 layout_mode = 2
 theme_type_variation = &"DialogicSubTitle"
 text = "Layers"
 
-[node name="HintTooltip" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title" instance=ExtResource("2_g4mnt")]
+[node name="HintTooltip" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title" unique_id=838086490 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
 tooltip_text = "Each layer is a scene and settings that will be applied to that scene.
 A layer can either be a premade scene or a scene you've made yourself."
@@ -230,21 +199,19 @@ texture = null
 hint_text = "Each layer is a scene and settings that will be applied to that scene.
 A layer can either be a premade scene or a scene you've made yourself."
 
-[node name="LayerButtons" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox"]
+[node name="LayerButtons" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=1391203904]
 layout_mode = 2
 alignment = 2
 
-[node name="AddLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons"]
+[node name="AddLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=737538969]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add Layer"
-icon = SubResource("ImageTexture_f5xt2")
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "ADD LAYER"
 popup/item_0/id = 1
 popup/item_0/disabled = true
-popup/item_1/text = ""
 popup/item_1/id = 1
 popup/item_1/separator = true
 popup/item_2/text = "Premade Layer"
@@ -252,17 +219,15 @@ popup/item_2/id = 1
 popup/item_3/text = "Custom Layer"
 popup/item_3/id = 0
 
-[node name="ReplaceLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons"]
+[node name="ReplaceLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=718635805]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Replace Layer"
-icon = SubResource("ImageTexture_f5xt2")
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "REPLACE LAYER"
 popup/item_0/id = 0
 popup/item_0/disabled = true
-popup/item_1/text = ""
 popup/item_1/id = 0
 popup/item_1/separator = true
 popup/item_2/text = "Premade Layer"
@@ -270,17 +235,15 @@ popup/item_2/id = 0
 popup/item_3/text = "Custom Layer"
 popup/item_3/id = 1
 
-[node name="MakeCustomButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons"]
+[node name="MakeCustomButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=1332622384]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Make Custom"
-icon = SubResource("ImageTexture_f5xt2")
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "MAKE CUSTOM"
 popup/item_0/id = 3
 popup/item_0/disabled = true
-popup/item_1/text = ""
 popup/item_1/id = 0
 popup/item_1/separator = true
 popup/item_2/text = "Current Layer"
@@ -288,98 +251,95 @@ popup/item_2/id = 0
 popup/item_3/text = "Full Layout"
 popup/item_3/id = 2
 
-[node name="DeleteLayerButton" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons"]
+[node name="DeleteLayerButton" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=22217721]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete Layer (no undo!)"
 disabled = true
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="LayerTree" type="Tree" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox"]
+[node name="LayerTree" type="Tree" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=1030914327]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/icon_max_width = 32
 allow_rmb_select = true
 hide_folding = true
 enable_recursive_folding = false
 drop_mode_flags = 2
 script = ExtResource("4_kpoqn")
 
-[node name="LayerSettings" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor"]
+[node name="LayerSettings" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor" unique_id=175949248]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LayerInfoHeader" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings"]
+[node name="LayerInfoHeader" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings" unique_id=272324170]
 layout_mode = 2
 
-[node name="LayerName" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader"]
+[node name="LayerName" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader" unique_id=1636322144]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicTitle"
 text = "Default Layout Base"
 
-[node name="ExpandLayerInfo" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader"]
+[node name="ExpandLayerInfo" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader" unique_id=1214843466]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("ImageTexture_f5xt2")
 flat = true
 
-[node name="LayerInfoBody" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings"]
+[node name="LayerInfoBody" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings" unique_id=213564350]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody"]
+[node name="HBox" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody" unique_id=652654877]
 layout_mode = 2
 
-[node name="Panel" type="PanelContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox"]
+[node name="Panel" type="PanelContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox" unique_id=1439032215]
 show_behind_parent = true
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0nh8y")
 
-[node name="SmallLayerPreview" type="TextureRect" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Panel"]
+[node name="SmallLayerPreview" type="TextureRect" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Panel" unique_id=904243246]
 unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("ImageTexture_yr3tj")
 expand_mode = 3
 stretch_mode = 6
 
-[node name="Info" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox"]
+[node name="Info" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox" unique_id=1518764040]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info" unique_id=1194897865]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SmallLayerScene" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/HBoxContainer"]
+[node name="SmallLayerScene" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/HBoxContainer" unique_id=1288282465]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 tooltip_text = "res://addons/dialogic/Modules/LayoutStuff/Base_Default/default_layout_base.tscn"
 text = "default_layout_base.tscn"
 
-[node name="SmallLayerAuthor" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/HBoxContainer"]
+[node name="SmallLayerAuthor" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/HBoxContainer" unique_id=370641078]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.603922)
 layout_mode = 2
 theme_type_variation = &"DialogicHintText"
 text = "Dialogic"
 
-[node name="Description" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info"]
+[node name="Description" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info" unique_id=67311332]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/Description"]
+[node name="Label" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/Description" unique_id=374930628]
 layout_mode = 2
 theme_type_variation = &"DialogicHintText2"
 text = "Info:"
 
-[node name="SmallLayerDescription" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/Description"]
+[node name="SmallLayerDescription" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoBody/HBox/Info/Description" unique_id=313383482]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -389,34 +349,35 @@ text = "A very simple base for layouts."
 autowrap_mode = 3
 text_overrun_behavior = 4
 
-[node name="LayerSettingsTabs" type="TabContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings"]
+[node name="LayerSettingsTabs" type="TabContainer" parent="StyleView/PanelContainer/StyleEditor/LayerSettings" unique_id=1672451737]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Margin" type="Control" parent="StyleView"]
+[node name="Margin" type="Control" parent="StyleView" unique_id=1960890042]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="NoStyleView" type="VBoxContainer" parent="."]
+[node name="NoStyleView" type="VBoxContainer" parent="." unique_id=27824738]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="NoStyleView"]
+[node name="Label" type="Label" parent="NoStyleView" unique_id=1373945060]
 layout_mode = 2
 text = "You have not set up any styles yet. Dialogic will use a fallback style."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="StartStylingButton" type="Button" parent="NoStyleView"]
+[node name="StartStylingButton" type="Button" parent="NoStyleView" unique_id=1752866801]
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Make a custom style from a variation of the fallback."
 text = "Make my own!"
 
-[node name="StyleBrowserWindow" type="Window" parent="."]
+[node name="StyleBrowserWindow" type="Window" parent="." unique_id=1444985267]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Style Browser"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
@@ -426,7 +387,7 @@ transient = true
 popup_window = true
 script = ExtResource("5_qbwx0")
 
-[node name="StyleBrowser" parent="StyleBrowserWindow" instance=ExtResource("6_p6lia")]
+[node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
 unique_name_in_owner = true
 
 [connection signal="pressed" from="Panel/VBox/StyleButtons/DuplicateButton" to="." method="_on_duplicate_button_pressed"]

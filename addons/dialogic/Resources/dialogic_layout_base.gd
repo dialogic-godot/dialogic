@@ -31,7 +31,7 @@ func get_layers() -> Array:
 func apply_export_overrides() -> void:
 	_apply_export_overrides()
 	for child in get_children():
-		if child.has_method('_apply_export_overrides'):
+		if child.has_method("_apply_export_overrides"):
 			child._apply_export_overrides()
 
 
@@ -44,8 +44,8 @@ func get_global_setting(setting:StringName, default:Variant) -> Variant:
 	if str(setting).to_lower() in self:
 		return get(setting.to_lower())
 
-	if 'global_'+str(setting) in self:
-		return get('global_'+str(setting))
+	if "global_"+str(setting) in self:
+		return get("global_"+str(setting))
 
 	return default
 
