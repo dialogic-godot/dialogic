@@ -34,10 +34,10 @@ func _ready() -> void:
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
 
-	if bus == "Master":
-		bus = ProjectSettings.get_setting("dialogic/audio/type_sound_bus", "Master")
+	if not Engine.is_editor_hint() and get_parent() is DialogicNode_DialogText:
+		if bus == "Master":
+			bus = ProjectSettings.get_setting("dialogic/audio/type_sound_bus", "Master")
 
-	if !Engine.is_editor_hint() and get_parent() is DialogicNode_DialogText:
 		get_parent().started_revealing_text.connect(_on_started_revealing_text)
 		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
 		get_parent().finished_revealing_text.connect(_on_finished_revealing_text)

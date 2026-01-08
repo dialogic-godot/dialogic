@@ -17,9 +17,9 @@ var selected_item: TreeItem
 var def_portrait_path: String = DialogicUtil.get_module_path('Character').path_join('default_portrait.tscn')
 
 
-######### EDITOR STUFF and LOADING/SAVING ######################################
+#region EDITOR STUFF and LOADING/SAVING
+################################################################################
 
-#region Resource Logic
 ## Method is called once editors manager is ready to accept registers.
 func _register() -> void:
 	## Makes the editor open this when a .dch file is selected.
@@ -126,7 +126,7 @@ func new_character(path: String) -> void:
 		path += ".dch"
 	var resource := DialogicCharacter.new()
 	resource.resource_path = path
-	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
+	resource.display_name = path.get_file().trim_suffix("."+path.get_extension()).capitalize()
 	resource.color = Color(1,1,1,1)
 	resource.default_portrait = ""
 	resource.custom_info = {}
@@ -138,9 +138,9 @@ func new_character(path: String) -> void:
 #endregion
 
 
-######### INTERFACE ############################################################
+#region INTERFACE
+################################################################################
 
-#region Interface
 func _ready() -> void:
 	if get_parent() is SubViewport:
 		return
@@ -153,6 +153,9 @@ func _ready() -> void:
 	$NoCharacterScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	$NoCharacterScreen.show()
 	setup_portrait_list_tab()
+
+	%CloseButton.icon = get_theme_icon("Back", "EditorIcons")
+	%OpenButton.icon = get_theme_icon("Forward", "EditorIcons")
 
 	_on_fit_preview_toggle_toggled(DialogicUtil.get_editor_setting('character_preview_fit', true))
 	%PreviewLabel.add_theme_color_override("font_color", get_theme_color("readonly_color", "Editor"))
@@ -229,15 +232,15 @@ func add_settings_section(edit:Control, parent:Node) ->  void:
 		_on_section_button_pressed(button)
 
 
-func get_settings_section_by_name(name:String, main:=true) -> Node:
+func get_settings_section_by_name(section_name:String, main:=true) -> Node:
 	var parent := %MainSettingsSections
 	if not main:
 		parent = %PortraitSettingsSection
 
-	if parent.has_node(name):
-		return parent.get_node(name)
-	elif parent.has_node(name+"BOX/"+name):
-		return parent.get_node(name+"BOX/"+name)
+	if parent.has_node(section_name):
+		return parent.get_node(section_name)
+	elif parent.has_node(section_name+"BOX/"+section_name):
+		return parent.get_node(section_name+"BOX/"+section_name)
 	else:
 		return null
 
@@ -256,10 +259,9 @@ func _on_section_button_pressed(button:Button) -> void:
 		section_header.get_parent().get_child(section_header.get_index()+2).visible = section_header.get_parent().get_child(section_header.get_index()+1).visible
 
 
-func something_changed(fake_argument = "", fake_arg2 = null) -> void:
+func something_changed(_fake_argument = "", _fake_arg2 = null) -> void:
 	if not loading:
 		current_resource_state = ResourceStates.UNSAVED
-
 
 
 func hide_main_settings() -> void:
@@ -274,7 +276,6 @@ func show_main_settings() -> void:
 	%MainSettingsHidden.hide()
 	%MainSettingsPanel.size_flags_horizontal = SIZE_EXPAND_FILL
 	%MainHSplit.collapsed = false
-
 
 
 func _on_switch_portrait_settings_position_pressed() -> void:
@@ -315,27 +316,15 @@ func setup_portrait_list_tab() -> void:
 
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
-		import_portraits_from_folder, "*.svg, *.png",
+		import_portraits_from_file_list, "*.svg, *.png",
 		EditorFileDialog.FILE_MODE_OPEN_FILES, "Import Images From Folder")
 
 
-func import_portraits_from_folder(files:Array) -> void:
+func import_portraits_from_file_list(files:Array) -> void:
 	var parent: TreeItem = %PortraitTree.get_root()
 
 	if %PortraitTree.get_selected() and %PortraitTree.get_selected() != parent and %PortraitTree.get_selected().get_metadata(0).has('group'):
 		parent = %PortraitTree.get_selected()
-#
-	#var dir := DirAccess.open(path)
-	#dir.list_dir_begin()
-	#var file_name: String = dir.get_next()
-	#var files := []
-	#while file_name != "":
-		#if not dir.current_is_dir():
-			#var file_lower := file_name.to_lower()
-			#if '.svg' in file_lower or '.png' in file_lower:
-				#if not '.import' in file_lower:
-					#files.append(file_name)
-		#file_name = dir.get_next()
 
 	var prefix: String = files[0]
 	for file in files:
@@ -346,10 +335,18 @@ func import_portraits_from_folder(files:Array) -> void:
 				break
 			prefix = prefix.substr(0, len(prefix)-1)
 
+	if len(files) == 1:
+		prefix = prefix.get_base_dir()+"/"
+
 	for file in files:
-		var item : TreeItem = %PortraitTree.add_portrait_item(file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()),
-			{'scene':"",'export_overrides':{'image':var_to_str(file)}, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent)
-		item.set_meta('new', true)
+		if not file.get_extension() in ["tscn", "scn", "png", "webp", "jpg", "jpeg", "svg"]:
+			continue
+		var portrait_name: String = file.trim_prefix(prefix).trim_suffix('.'+file.get_extension()).capitalize()
+		var scene: String = file if file.get_extension() in ["tscn", "scn"] else ""
+		var export_overrides: Dictionary = {"image":var_to_str(file)} if file.get_extension() in ["png", "webp", "jpg", "jpeg", "svg"] else {}
+		var item : TreeItem = %PortraitTree.add_portrait_item(portrait_name,
+			{"scene":scene,"export_overrides":export_overrides, "scale":1, "offset":Vector2(), "mirror":false}, parent)
+		item.set_meta("new", true)
 
 	## Handle selection
 	if parent.get_child_count():
@@ -562,9 +559,10 @@ func report_name_change(item: TreeItem) -> void:
 
 #endregion
 
-########### PREVIEW ############################################################
 
-#region Preview
+#region PREVIEW
+################################################################################
+
 func update_preview(force := false, ignore_settings_reload := false) -> void:
 	%ScenePreviewWarning.hide()
 
@@ -694,6 +692,7 @@ func _on_fit_preview_toggle_toggled(button_pressed):
 	update_preview(false, true)
 
 #endregion
+
 
 ## Open the reference manager
 func _on_reference_manger_button_pressed() -> void:

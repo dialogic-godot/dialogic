@@ -15,8 +15,8 @@ func _init() -> void:
 func _get_title() -> String:
 	return "Typing Sounds"
 
-################################################################################
-##					COMMUNICATION WITH EDITOR
+
+#region COMMUNICATION WITH EDITOR
 ################################################################################
 
 func _load_character(character:DialogicCharacter):
@@ -48,19 +48,22 @@ func set_portrait_data(data:Dictionary) -> void:
 	if character_editor.selected_item and is_instance_valid(character_editor.selected_item):
 		character_editor.selected_item.set_metadata(0, data)
 
+#endregion
 
-################################################################################
-##					OWN STUFF
+
+#region OWN STUFF
 ################################################################################
 
 func _ready() -> void:
-	%ListPanel.self_modulate = get_theme_color("base_color", "Editor")
+	if get_parent() is SubViewport:
+		return
+
+	self_modulate = get_theme_color("dark_color_1", "Editor")
 	%Add.icon = get_theme_icon("Add", "EditorIcons")
 	%Delete.icon = get_theme_icon("Remove", "EditorIcons")
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")
 	%Play.icon = get_theme_icon("Play", "EditorIcons")
 	%Default.icon = get_theme_icon("NonFavorite", "EditorIcons")
-
 	%NameWarning.texture = get_theme_icon("StatusWarning", "EditorIcons")
 
 
@@ -229,3 +232,5 @@ func preview() -> void:
 		await preview_timer.timeout
 
 	preview_timer.queue_free()
+
+#endregion
