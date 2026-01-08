@@ -86,8 +86,9 @@ func update_left_item_margin(margin_on:bool) -> void:
 	else:
 		remove_theme_constant_override("item_margin")
 
-################################################################################
-##					DRAG AND DROP
+
+
+#region DRAG AND DROP
 ################################################################################
 
 func _get_drag_data(at_position: Vector2) -> Variant:
@@ -105,10 +106,16 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys():
+		return true
 	return data is TreeItem
 
 
 func _drop_data(at_position: Vector2, item: Variant) -> void:
+	if item is Dictionary:
+		owner.import_portraits_from_file_list(item.files)
+		return
+
 	var to_item := get_item_at_position(at_position)
 	if to_item:
 		var test_item := to_item
@@ -150,3 +157,5 @@ func copy_branch_or_item(item: TreeItem, new_parent: TreeItem) -> TreeItem:
 	for child in item.get_children():
 		copy_branch_or_item(child, new_item)
 	return new_item
+
+#endregion

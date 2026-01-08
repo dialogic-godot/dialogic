@@ -195,7 +195,7 @@ func _ready() -> void:
 	load_event_buttons()
 	_on_right_sidebar_resized()
 	_initialized = true
-	
+
 	TimelineUndoRedo.version_changed.connect(_on_undoredo_changed)
 
 
@@ -327,7 +327,7 @@ func update_content_list() -> void:
 		if 'event_name' in event.resource and event.resource is DialogicAudioEvent:
 			if not event.resource.channel_name in channels:
 				channels.append(event.resource.channel_name)
-	
+
 	timeline_editor.update_label_cache(labels)
 	timeline_editor.update_audio_channel_cache(channels)
 
@@ -691,13 +691,7 @@ func select_item(item: Node, multi_possible:bool = true) -> void:
 	if item == null:
 		return
 
-	if Input.is_key_pressed(KEY_CTRL) and multi_possible:
-		# deselect the item if it is selected
-		if _is_item_selected(item):
-			selected_items.erase(item)
-		else:
-			selected_items.append(item)
-	elif Input.is_key_pressed(KEY_SHIFT) and multi_possible:
+	if Input.is_key_pressed(KEY_SHIFT) and multi_possible:
 		if len(selected_items) == 0:
 			selected_items = [item]
 		else:
@@ -711,6 +705,12 @@ func select_item(item: Node, multi_possible:bool = true) -> void:
 
 				if index == goal_idx:
 					break
+	elif Input.is_key_pressed(KEY_CTRL) and multi_possible:
+		# deselect the item if it is selected
+		if _is_item_selected(item):
+			selected_items.erase(item)
+		else:
+			selected_items.append(item)
 	else:
 		if len(selected_items) == 1:
 			if _is_item_selected(item):

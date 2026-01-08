@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://kdpp3mibml33"]
+[gd_scene format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" uid="uid://dbegwhxegm271" path="res://addons/dialogic/Editor/Events/Fields/field_number.gd" id="1_0jdnn"]
 [ext_resource type="Texture2D" uid="uid://dh1ycbmw8anqh" path="res://addons/dialogic/Editor/Images/Interactable/increment_icon.svg" id="3_v5cne"]
@@ -30,7 +30,7 @@ content_margin_bottom = 6.0
 bg_color = Color(0.94, 0.94, 0.94, 0)
 border_color = Color(0, 0, 0, 0)
 
-[node name="Field_Number" type="HBoxContainer"]
+[node name="Field_Number" type="HBoxContainer" unique_id=724455253]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -41,16 +41,16 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_0jdnn")
 
-[node name="Value_Panel" type="PanelContainer" parent="."]
+[node name="Value_Panel" type="PanelContainer" parent="." unique_id=571684938]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"DialogicEventEdit"
 
-[node name="Layout" type="HBoxContainer" parent="Value_Panel"]
+[node name="Layout" type="HBoxContainer" parent="Value_Panel" unique_id=905640067]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Prefix" type="RichTextLabel" parent="Value_Panel/Layout"]
+[node name="Prefix" type="RichTextLabel" parent="Value_Panel/Layout" unique_id=1747277733]
 unique_name_in_owner = true
 visible = false
 clip_contents = false
@@ -72,7 +72,7 @@ shortcut_keys_enabled = false
 drag_and_drop_selection_enabled = false
 text_direction = 1
 
-[node name="Value" type="LineEdit" parent="Value_Panel/Layout"]
+[node name="Value" type="LineEdit" parent="Value_Panel/Layout" unique_id=1339360196]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -85,7 +85,7 @@ text = "0"
 expand_to_text_length = true
 virtual_keyboard_type = 3
 
-[node name="Suffix" type="RichTextLabel" parent="Value_Panel/Layout"]
+[node name="Suffix" type="RichTextLabel" parent="Value_Panel/Layout" unique_id=1306629312]
 unique_name_in_owner = true
 visible = false
 clip_contents = false
@@ -106,13 +106,13 @@ shortcut_keys_enabled = false
 drag_and_drop_selection_enabled = false
 text_direction = 1
 
-[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout"]
+[node name="Spin" type="VBoxContainer" parent="Value_Panel/Layout" unique_id=614686235]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -6
 alignment = 1
 
-[node name="Increment" type="Button" parent="Value_Panel/Layout/Spin"]
+[node name="Increment" type="Button" parent="Value_Panel/Layout/Spin" unique_id=1014774233]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
@@ -130,7 +130,7 @@ icon = ExtResource("3_v5cne")
 flat = true
 vertical_icon_alignment = 2
 
-[node name="Decrement" type="Button" parent="Value_Panel/Layout/Spin"]
+[node name="Decrement" type="Button" parent="Value_Panel/Layout/Spin" unique_id=439554030]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3

@@ -3,8 +3,6 @@
 [ext_resource type="Script" uid="uid://cwhe7tpe75oh7" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_uhhqs"]
 [ext_resource type="Script" uid="uid://deliic6d8vajo" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_portrait_tree.gd" id="2_vad0i"]
-[ext_resource type="Texture2D" uid="uid://bff65e82555qr" path="res://addons/dialogic/Editor/Images/Pieces/close-icon.svg" id="3_2ogmx"]
-[ext_resource type="Texture2D" uid="uid://dx3o2ild56i76" path="res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" id="4_wg7ys"]
 [ext_resource type="Texture2D" uid="uid://my600mb32ydt" path="res://addons/dialogic/Editor/Images/Toolbar/add-character.svg" id="6_2ogmx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es2rd"]
@@ -91,9 +89,6 @@ layout_mode = 2
 tooltip_text = "Hide Main Settings"
 theme_type_variation = &"FlatButton"
 text = "     "
-icon = ExtResource("3_2ogmx")
-icon_alignment = 1
-expand_icon = true
 
 [node name="MainSettingsScroll" type="ScrollContainer" parent="Scroll/VBox/MainHSplit/MainSettingsPanel/MainSettings" unique_id=802937484]
 unique_name_in_owner = true
@@ -121,8 +116,6 @@ size_flags_vertical = 3
 tooltip_text = "Show Main Settings"
 theme_type_variation = &"FlatButton"
 theme_override_constants/icon_max_width = 20
-icon = ExtResource("4_wg7ys")
-icon_alignment = 1
 
 [node name="Split" type="HSplitContainer" parent="Scroll/VBox/MainHSplit" unique_id=203063071]
 layout_mode = 2

@@ -7,8 +7,10 @@ signal choice_selected(info:Dictionary)
 ## Emitted when a set of choices is reached and shown.
 ## Info includes the keys 'choices' (an array of dictionaries with infos on all the choices).
 signal question_shown(info:Dictionary)
+## Emitted when a question was reached that has no usable choice (all hidden or disabled).
+signal invalid_question_reached
 
-## Contains information on the latest question.
+## Contains information on the latest question. See [method get_current_question_info] for info on content.
 var last_question_info := {}
 
 ## The delay between the text finishing revealing and the choices appearing
@@ -31,7 +33,8 @@ enum HotkeyBehaviour {NONE, NUMBERS}
 ## Will add some hotkeys to the choices if different then HotkeyBehaviour.NONE.
 var hotkey_behaviour := HotkeyBehaviour.NONE
 
-
+enum InvalidChoiceBehaviour {NOTHING, AUTO_SKIP}
+var invalid_choice_behaviour := InvalidChoiceBehaviour.AUTO_SKIP
 ### INTERNALS
 
 ## Used to block choices from being clicked for a couple of seconds (if delay is set in settings).
@@ -81,12 +84,13 @@ func hide_all_choices() -> void:
 ##		{'event_index':10, 'button_index':1, 'disabled':false, 'text':"My Choice", 'visible':true},
 ##		{'event_index':15, 'button_index':2, 'disabled':false, 'text':"My Choice2", 'visible':true},
 ##	]
+## 'invalid':false # is true if all choices are either invisible or disabled
+## }
 func get_current_question_info() -> Dictionary:
 	var question_info := {'choices':[]}
 
 	var button_idx := 1
-	last_question_info = {'choices':[]}
-
+	var any_valid := false
 	for choice_index in get_current_choice_indexes():
 		var event: DialogicEvent = dialogic.current_timeline_events[choice_index]
 
@@ -102,6 +106,7 @@ func get_current_question_info() -> Dictionary:
 		var condition: String = choice_event.condition
 
 		if condition.is_empty() or dialogic.Expressions.execute_condition(choice_event.condition):
+			any_valid = true
 			choice_info['disabled'] = false
 			choice_info['text'] = choice_event.get_property_translated('text')
 			choice_info['visible'] = true
@@ -128,8 +133,8 @@ func get_current_question_info() -> Dictionary:
 			choice_info['visited_before'] = dialogic.History.has_event_been_visited(choice_index)
 
 		question_info['choices'].append(choice_info)
-		last_question_info['choices'].append(choice_info['text'])
 
+	question_info["invalid"] = not any_valid
 	return question_info
 
 
@@ -137,6 +142,7 @@ func get_current_question_info() -> Dictionary:
 func show_current_question(instant:=true) -> void:
 	hide_all_choices()
 	_choice_blocker.stop()
+	last_question_info = get_current_question_info()
 
 	if !instant and (reveal_delay != 0 or reveal_by_input):
 		if reveal_delay != 0:
@@ -164,6 +170,7 @@ func show_current_question(instant:=true) -> void:
 
 		node._load_info(choice)
 
+
 		if choice.button_index == 1 and autofocus_first_choice:
 			node.grab_focus()
 
@@ -188,9 +195,25 @@ func show_current_question(instant:=true) -> void:
 
 	_choice_blocker.start(block_delay)
 	question_shown.emit(question_info)
+	if question_info.invalid:
+		invalid_question_reached.emit()
+		printerr("[Dialogic] An invalid question was reached (all choices disabled or invisible).")
+		dialogic.print_debug_moment()
+		if invalid_choice_behaviour == InvalidChoiceBehaviour.AUTO_SKIP:
+			skip_question()
 
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
+
+
+## Skips to the end of the current question.
+func skip_question() -> void:
+	if not last_question_info:
+		return
+	hide_all_choices()
+	dialogic.current_state = dialogic.States.IDLE
+	dialogic.current_event_idx = dialogic.current_timeline.get_event(last_question_info.choices[0].event_index).get_end_branch_index()-1
+	dialogic.handle_next_event()
 
 
 func focus_choice(button_index:int) -> void:
@@ -221,7 +244,6 @@ func get_choice_button(button_index:int) -> DialogicNode_ChoiceButton:
 		if node.choice_index > 0:
 			idx = node.choice_index
 		idx += 1
-
 	return null
 
 
@@ -230,7 +252,7 @@ func _on_choice_selected(choice_info := {}) -> void:
 		return
 
 	if dialogic.has_subsystem('History'):
-		var all_choices: Array = dialogic.Choices.last_question_info['choices']
+		var all_choices: Array = last_question_info['choices'].map(func(x): return x["text"])
 		if dialogic.has_subsystem('VAR'):
 			dialogic.History.store_simple_history_entry(dialogic.VAR.parse_variables(choice_info.text), "Choice", {'all_choices': all_choices})
 		else:

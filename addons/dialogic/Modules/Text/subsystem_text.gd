@@ -204,13 +204,6 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 				text_node.text = text
 
 			else:
-				var current_character := get_current_speaker()
-
-				if current_character:
-					var character_prefix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
-					var character_suffix: String = current_character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
-					text = character_prefix + text + character_suffix
-
 				text_node.reveal_text(text, additional)
 
 				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
@@ -218,14 +211,15 @@ func update_dialog_text(text: String, instant := false, additional := false) -> 
 
 			dialogic.current_state_info['text_parsed'] = (text_node as RichTextLabel).get_parsed_text()
 
-	# Reset speed multiplier
-	update_text_speed(-1, false, 1)
-	# Reset Auto-Advance temporarily and the No-Skip setting:
-	dialogic.Inputs.auto_advance.enabled_until_next_event = false
-	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.manual_advance.disabled_until_next_event = false
+	if not additional:
+		# Reset speed multiplier
+		update_text_speed(-1, false, 1)
+		# Reset Auto-Advance temporarily and the No-Skip setting:
+		dialogic.Inputs.auto_advance.enabled_until_next_event = false
+		dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
+		dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
-	set_text_reveal_skippable(true, true)
+		set_text_reveal_skippable(true, true)
 
 	return text
 
