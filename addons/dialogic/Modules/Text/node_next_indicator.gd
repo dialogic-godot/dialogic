@@ -34,6 +34,11 @@ var texture_rect: TextureRect
 			get_node('Texture').size = _texture_size
 			get_node('Texture').position = -_texture_size
 
+@export var indicator_offset := Vector2(0, 0):
+	set(_indicator_offset):
+		indicator_offset = _indicator_offset
+		if has_node('Texture'):
+			texture_rect.position = indicator_offset
 
 var tween: Tween
 
@@ -52,7 +57,7 @@ func _ready() -> void:
 		texture_rect = icon
 
 	texture_rect.texture = texture
-
+	
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 
@@ -60,6 +65,10 @@ func _ready() -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		play_animation(animation, 1.0)
+
+		if indicator_offset != Vector2.ZERO:
+			texture_rect.position = indicator_offset
+
 
 
 func play_animation(current_animation: int, time:float) -> void:
