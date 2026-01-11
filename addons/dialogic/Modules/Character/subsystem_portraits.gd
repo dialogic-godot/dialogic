@@ -118,19 +118,17 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 		previous_portrait = character_node.get_child(-1)
 
 	# Check if the scene is the same as the currently loaded scene.
-	if not previous_portrait == null and previous_portrait.get_meta('scene', '') == scene_path:
+	if previous_portrait != null and previous_portrait.get_meta("scene", "") == scene_path:
 		# Also check if the scene supports changing to the given portrait.
 		if previous_portrait is DialogicPortrait:
+			for i in previous_portrait.get_property_list():
+				if i.name.begins_with("state_"):
+					copy_state_vars[i.name] = previous_portrait.get(i.name)
 			if previous_portrait._should_do_portrait_update(character, portrait):
 				portrait_node = previous_portrait
-				info['same_scene'] = true
+				info["same_scene"] = true
 
-				for i in previous_portrait.get_property_list():
-					if i.name.begins_with("state_"):
-						copy_state_vars[i.name] = previous_portrait.get(i.name)
-
-	else:
-
+	if portrait_node == null:
 		if ResourceLoader.exists(scene_path):
 			ResourceLoader.load_threaded_request(scene_path)
 
