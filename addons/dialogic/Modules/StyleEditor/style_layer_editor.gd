@@ -247,7 +247,6 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 
 
 func make_layer_custom(target_folder:String, custom_name := "") -> void:
-
 	var original_file: String = current_style.get_layer_info(current_layer_id).path
 	var custom_new_folder := ""
 
@@ -287,6 +286,9 @@ func make_layout_custom(target_folder:String) -> void:
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
 
+	var pckd_scn := PackedScene.new()
+	pckd_scn.take_over_path(target_path)
+
 	# Load layers
 	for layer_id in current_style.get_layer_inherited_list():
 		var layer_info := current_style.get_layer_inherited_info(layer_id)
@@ -303,15 +305,14 @@ func make_layout_custom(target_folder:String) -> void:
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides, false)
 
-	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
-	pckd_scn.take_over_path(target_path)
 	ResourceSaver.save(pckd_scn, target_path)
 
-	current_style.base_scene = load(target_path)
-	current_style.inherits = null
-	current_style.layers = []
+	current_style.clear()
+	current_style.set_layer_scene("", target_path)
 	current_style.changed.emit()
+
+	ResourceSaver.save(current_style)
 
 	load_style_layer_list()
 
