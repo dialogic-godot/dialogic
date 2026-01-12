@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="icon.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/mnt/Kirika/Git/dialogic/addons/dialogic/Modules/ScreenShake/icon.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview10"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:showpageshadow="false"
+     inkscape:zoom="12.75"
+     inkscape:cx="27.058824"
+     inkscape:cy="12.431373"
+     inkscape:window-width="1920"
+     inkscape:window-height="997"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     fill="#e0e0e0"
+     id="g6"
+     style="fill:#ffffff;fill-opacity:1"
+     transform="matrix(0.71428571,0,0,0.71428571,2.2857143,2.2857143)"
+     inkscape:export-filename="/mnt/Kirika/Git/dialogic/addons/dialogic/Modules/ScreenShake/icon.png"
+     inkscape:export-xdpi="192"
+     inkscape:export-ydpi="192">
+    <circle
+       cx="8"
+       cy="8"
+       r="2"
+       id="circle2"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       d="M 7,3.5 H 6 L 8,1 10,3.5 H 9 v 2 H 7 Z M 12.5,7 V 6 L 15,8 12.5,10 V 9 h -2 V 7 Z M 9,12.5 h 1 L 8,15 6,12.5 h 1 v -2 H 9 Z M 3.5,9 v 1 L 1,8 3.5,6 v 1 h 2 v 2 z"
+       id="path4"
+       style="fill:#ffffff;fill-opacity:1"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccc" />
+  </g>
+</svg>

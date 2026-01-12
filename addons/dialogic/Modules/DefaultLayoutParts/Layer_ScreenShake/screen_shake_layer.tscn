@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdvx2jejg8xln"]
+
+[ext_resource type="Script" uid="uid://pf00w14gv64m" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gd" id="1_l682i"]
+[ext_resource type="Shader" uid="uid://ckbeep0lno2h1" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_ScreenShake/screen_shake_layer.gdshader" id="2_7h78g"]
+[ext_resource type="Script" uid="uid://bb1ano1eqhunf" path="res://addons/dialogic/Modules/ScreenShake/node_screen_shaker.gd" id="3_uqmkn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4u8q6"]
+shader = ExtResource("2_7h78g")
+shader_parameter/amplitude_x = 0.0
+shader_parameter/frequency_x = 0.0
+shader_parameter/phase_x = 0.0
+shader_parameter/time_x = 0.0
+shader_parameter/amplitude_y = 0.0
+shader_parameter/frequency_y = 0.0
+shader_parameter/phase_y = 0.0
+shader_parameter/time_y = 0.0
+shader_parameter/clear_color = Color(0, 0, 0, 1)
+
+[node name="ScreenShakeLayer" type="Control"]
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l682i")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="DialogicNode_ScreenShaker" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4u8q6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_uqmkn")

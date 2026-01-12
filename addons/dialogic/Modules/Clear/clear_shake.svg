@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="23"
+   height="22"
+   viewBox="0 0 11.5 11"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="clear_shake.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/mnt/Kirika/Git/dialogic/addons/dialogic/Modules/ScreenShake/icon.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview10"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:showpageshadow="false"
+     inkscape:zoom="12.75"
+     inkscape:cx="27.137255"
+     inkscape:cy="12.431373"
+     inkscape:window-width="1920"
+     inkscape:window-height="997"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     fill="#e0e0e0"
+     id="g6"
+     style="fill:#ffffff;fill-opacity:1"
+     transform="matrix(0.625,0,0,0.625,0.25,0.75)"
+     inkscape:export-filename="/mnt/Kirika/Git/dialogic/addons/dialogic/Modules/ScreenShake/icon.png"
+     inkscape:export-xdpi="192"
+     inkscape:export-ydpi="192">
+    <circle
+       cx="8"
+       cy="8"
+       r="2"
+       id="circle2"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       d="M 7,3.5 H 6 L 8,1 10,3.5 H 9 v 2 H 7 Z M 12.5,7 V 6 L 15,8 12.5,10 V 9 h -2 V 7 Z M 9,12.5 h 1 L 8,15 6,12.5 h 1 v -2 H 9 Z M 3.5,9 v 1 L 1,8 3.5,6 v 1 h 2 v 2 z"
+       id="path4"
+       style="fill:#ffffff;fill-opacity:1"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccc" />
+  </g>
+  <path
+     style="fill:none;stroke:#ff4596;stroke-width:1.06;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0.236785;stroke-opacity:1;stroke-miterlimit:4"
+     id="path2789"
+     sodipodi:type="arc"
+     sodipodi:cx="6.5186405"
+     sodipodi:cy="7.4909124"
+     sodipodi:rx="2.3864853"
+     sodipodi:ry="2.3864853"
+     sodipodi:start="3.5600983"
+     sodipodi:end="2.1454842"
+     sodipodi:arc-type="arc"
+     sodipodi:open="true"
+     d="M 4.3381154,6.5210555 A 2.3864853,2.3864853 0 0 1 6.6733007,5.1094439 2.3864853,2.3864853 0 0 1 8.8062918,6.8112331 2.3864853,2.3864853 0 0 1 7.9485336,9.4015977 2.3864853,2.3864853 0 0 1 5.2214119,9.4940376" />
+  <path
+     style="fill:none;stroke:#ff4596;stroke-width:1.06;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0.236785;stroke-opacity:1;stroke-miterlimit:4"
+     d="M 4.1763494,4.4857086 V 6.607029 L 6.14299,6.4965435"
+     id="path2845"
+     sodipodi:nodetypes="ccc" />
+</svg>
