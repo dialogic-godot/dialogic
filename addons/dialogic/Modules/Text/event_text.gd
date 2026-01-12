@@ -33,7 +33,7 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
-		if Engine.is_editor_hint() and ((not character) or (character and not character.portraits.has(portrait))):
+		if Engine.is_editor_hint() and ((not character) or (character and not portrait in character.portraits)) and not (not character and (character_identifier or character_identifier.begins_with("{"))):
 			portrait = ""
 			ui_update_needed.emit()
 
@@ -434,7 +434,8 @@ func build_event_editor() -> void:
 
 
 func should_show_portrait_selector() -> bool:
-	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+	return (character and not character.portraits.is_empty() and not character.portraits.size() == 1) or \
+		(not character and (character_identifier.begins_with("{") or not character_identifier.is_empty()))
 
 
 func do_any_characters_exist() -> bool:
@@ -450,8 +451,9 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 			"editor_icon":["GuiEllipsis", "EditorIcons"]}
 	return suggestions
 
+
 func get_portrait_suggestions(search_text:String) -> Dictionary:
-	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change", true)
 
 #endregion
 

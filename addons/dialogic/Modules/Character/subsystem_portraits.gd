@@ -661,7 +661,9 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 
 		elif portrait.is_empty():
 			continue
-
+		if portrait.is_empty():
+			if is_character_joined(speaker):
+				portrait = dialogic.current_state_info.portraits[speaker.get_identifier()].get("portrait", "")
 		if portrait.is_empty():
 			portrait = speaker.default_portrait
 

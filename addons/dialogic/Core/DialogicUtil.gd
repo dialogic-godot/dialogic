@@ -638,7 +638,7 @@ static func get_character_suggestions(_search_text:String, current_value:Dialogi
 	return suggestions
 
 
-static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change") -> Dictionary:
+static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change", allow_anything:=false) -> Dictionary:
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	var suggestions := {}
 
@@ -646,6 +646,9 @@ static func get_portrait_suggestions(search_text:String, character:DialogicChara
 		suggestions[empty_text] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 
 	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
+
+	elif allow_anything and search_text:
 		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 
 	if character != null:
