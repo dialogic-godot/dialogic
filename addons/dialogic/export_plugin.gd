@@ -1,5 +1,4 @@
 extends EditorExportPlugin
-class_name DialogicExportPlugin
 
 
 const IGNORED_PATHS = [

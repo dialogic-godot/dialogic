@@ -7,11 +7,12 @@ const PLUGIN_NAME := "Dialogic"
 const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
 const PLUGIN_ICON_PATH := "uid://dybg3l5pwetne"
 const PLUGIN_INSPECTOR_PATH := "uid://bok1je25mskp7"
+const EDITOR_EXPORT := "uid://daxhncrord5lp"
 
 ## References used by various other scripts to quickly reference these things
 var editor_view: Control  # the root of the dialogic editor
 var inspector_plugin: EditorInspectorPlugin = null
-var export_plugin: DialogicExportPlugin
+
 
 ## Initialization
 func _init() -> void:
@@ -38,7 +39,7 @@ func _enter_tree() -> void:
 	EditorInterface.get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 	
-	export_plugin = DialogicExportPlugin.new()
+	var export_plugin = load(EDITOR_EXPORT).new()
 	add_export_plugin(export_plugin)
 
 	inspector_plugin = load(PLUGIN_INSPECTOR_PATH).new()
