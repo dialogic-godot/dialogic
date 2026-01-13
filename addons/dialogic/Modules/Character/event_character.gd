@@ -26,6 +26,7 @@ var animation_name := ""
 var animation_length: float = 0.5
 ## How often the animation is repeated. Only for Update events.
 var animation_repeats: int = 1
+var repeat_forever: bool = false
 ## If true, the events waits for the animation to finish before the next event starts.
 var animation_wait := false
 
@@ -175,15 +176,17 @@ func _execute() -> void:
 				var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 				var time_for_repetitions: float = time_per_event / animation_repeats
 				final_animation_length = time_for_repetitions
-
+			
 			var animation := dialogic.Portraits.animate_character(
 				character,
 				animation_name,
 				final_animation_length,
 				final_animation_repetitions,
+				false,
+				repeat_forever
 			)
 
-			if animation_wait:
+			if animation_wait and !repeat_forever:
 				dialogic.current_state = DialogicGameHandler.States.ANIMATING
 				await animation.finished
 				dialogic.current_state = DialogicGameHandler.States.IDLE
@@ -315,6 +318,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"length"		: {"property": "animation_length", 			"default": 0.5},
 		"wait" 			: {"property": "animation_wait", 			"default": false},
 		"repeat"		: {"property": "animation_repeats", 		"default": 1},
+		"repeat_forever"		: {"property": "repeat_forever", 		"default": false},
 
 		"z_index" 		: {"property": "z_index", 						"default": 0},
 		"mirrored"		: {"property": "mirrored", 						"default": false},
@@ -414,6 +418,8 @@ func build_event_editor() -> void:
 	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1, "min":1},
+			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
+	add_body_edit('repeat_forever', ValueType.BOOL, {'left_text':'Repeat Forever:'},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_line_break()
 	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:', "min":0, "tooltip": "When changing the characters position, this is how fast it will happen."},

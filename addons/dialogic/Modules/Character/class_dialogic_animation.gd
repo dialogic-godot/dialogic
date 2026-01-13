@@ -22,6 +22,7 @@ var base_scale: Vector2
 
 ## Used to repeate the animation for a number of times.
 var repeats: int
+var repeat_forever : bool = false
 
 ## If `true`, the animation will be reversed.
 ## This must be implemented by each animation or it will have no effect.
@@ -43,7 +44,7 @@ func animate() -> void:
 func finished_one_loop() -> void:
 	repeats -= 1
 
-	if repeats > 0:
+	if repeats > 0 or repeat_forever:
 		animate()
 
 	else:
