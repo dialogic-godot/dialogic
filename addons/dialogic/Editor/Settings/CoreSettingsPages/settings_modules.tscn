@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://o7ljiritpgap"]
+[gd_scene format=3 uid="uid://o7ljiritpgap"]
 
 [ext_resource type="Script" uid="uid://bcu347pvraog6" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_modules.gd" id="1_l2hk0"]
 
@@ -39,7 +39,7 @@ border_width_right = 2
 border_width_bottom = 2
 corner_detail = 1
 
-[node name="ModuleManagement" type="HSplitContainer"]
+[node name="ModuleManagement" type="HSplitContainer" unique_id=538174781]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -53,25 +53,25 @@ short_info = "Here you can manage modules:
 - change event defaults
 - hide events from the event list"
 
-[node name="Overview" type="VBoxContainer" parent="."]
+[node name="Overview" type="VBoxContainer" parent="." unique_id=584770025]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Overview"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Overview" unique_id=2065308431]
 layout_mode = 2
 size_flags_horizontal = 3
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="HBox" type="HBoxContainer" parent="Overview/ScrollContainer"]
+[node name="HBox" type="HBoxContainer" parent="Overview/ScrollContainer" unique_id=308601580]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 2
 
-[node name="Filter_Events" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_Events" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=1770970323]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Events"
@@ -81,7 +81,7 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Filter_Subsystems" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_Subsystems" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=899699063]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Subsystems"
@@ -91,7 +91,7 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Filter_EffectsAndModifiers" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_EffectsAndModifiers" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=1831330531]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Text Effects and Modifiers"
@@ -101,7 +101,7 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Filter_Styles" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_Styles" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=442872763]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Preset Style Scenes"
@@ -111,7 +111,7 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Filter_Settings" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_Settings" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=788315383]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Settings Pages"
@@ -120,7 +120,7 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Filter_Editors" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Filter_Editors" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=2115117454]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Include Editors"
@@ -129,32 +129,33 @@ text = "0"
 flat = true
 icon_alignment = 2
 
-[node name="Search" type="LineEdit" parent="Overview/ScrollContainer/HBox"]
+[node name="Search" type="LineEdit" parent="Overview/ScrollContainer/HBox" unique_id=1749645592]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 placeholder_text = "Search"
 clear_button_enabled = true
 
-[node name="Refresh" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Refresh" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=1919233634]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Refresh"
 
-[node name="Collapse" type="Button" parent="Overview/ScrollContainer/HBox"]
+[node name="Collapse" type="Button" parent="Overview/ScrollContainer/HBox" unique_id=1713654816]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Collapse All"
 toggle_mode = true
 
-[node name="Tree" type="Tree" parent="Overview"]
+[node name="Tree" type="Tree" parent="Overview" unique_id=2002333500]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"TreeSecondary"
 allow_reselect = true
 hide_root = true
 
-[node name="Scroll" type="ScrollContainer" parent="."]
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=280174295]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -163,32 +164,32 @@ size_flags_stretch_ratio = 0.75
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="Settings" type="VBoxContainer" parent="Scroll"]
+[node name="Settings" type="VBoxContainer" parent="Scroll" unique_id=770304559]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBox" type="HBoxContainer" parent="Scroll/Settings"]
+[node name="HBox" type="HBoxContainer" parent="Scroll/Settings" unique_id=1522881579]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Scroll/Settings/HBox"]
+[node name="Icon" type="TextureRect" parent="Scroll/Settings/HBox" unique_id=26017225]
 unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 3
 
-[node name="Title" type="Label" parent="Scroll/Settings/HBox"]
+[node name="Title" type="Label" parent="Scroll/Settings/HBox" unique_id=1323694018]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicSubTitle"
 
-[node name="ExternalLink" type="Button" parent="Scroll/Settings/HBox"]
+[node name="ExternalLink" type="Button" parent="Scroll/Settings/HBox" unique_id=488553913]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 icon = SubResource("ImageTexture_lce2m")
 flat = true
 
-[node name="VisibilityToggle" type="Button" parent="Scroll/Settings/HBox"]
+[node name="VisibilityToggle" type="Button" parent="Scroll/Settings/HBox" unique_id=1399656633]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -197,25 +198,25 @@ button_pressed = true
 icon = SubResource("ImageTexture_137g7")
 flat = true
 
-[node name="EventDefaultsPanel" type="PanelContainer" parent="Scroll/Settings"]
+[node name="EventDefaultsPanel" type="PanelContainer" parent="Scroll/Settings" unique_id=1538662659]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_315cl")
 
-[node name="VBox" type="VBoxContainer" parent="Scroll/Settings/EventDefaultsPanel"]
+[node name="VBox" type="VBoxContainer" parent="Scroll/Settings/EventDefaultsPanel" unique_id=909920434]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Scroll/Settings/EventDefaultsPanel/VBox"]
+[node name="Title" type="Label" parent="Scroll/Settings/EventDefaultsPanel/VBox" unique_id=404311626]
 layout_mode = 2
 text = "Edit event defaults:"
 
-[node name="EventDefaults" type="GridContainer" parent="Scroll/Settings/EventDefaultsPanel/VBox"]
+[node name="EventDefaults" type="GridContainer" parent="Scroll/Settings/EventDefaultsPanel/VBox" unique_id=1002365879]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 3
 
-[node name="GeneralInfo" type="Label" parent="Scroll/Settings"]
+[node name="GeneralInfo" type="Label" parent="Scroll/Settings" unique_id=15394927]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DialogicHintText2"

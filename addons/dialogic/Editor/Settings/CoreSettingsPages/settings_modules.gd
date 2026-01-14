@@ -42,7 +42,7 @@ func _on_refresh_pressed() -> void:
 	load_modules_tree()
 
 
-func filters_updated(fake_arg:Variant) -> void:
+func filters_updated(_fake_arg:Variant) -> void:
 	load_modules_tree()
 
 
@@ -62,8 +62,6 @@ func _on_search_text_changed(new_text:String) -> void:
 	for filter in [%Filter_Events, %Filter_Subsystems, %Filter_Editors, %Filter_EffectsAndModifiers, %Filter_Settings, %Filter_Styles]:
 		filter.text = ""
 		filter.set_meta("counter", 0)
-
-	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
 
 	for child in %Tree.get_root().get_children():
 		if new_text.to_lower() in child.get_text(0).to_lower() or new_text.is_empty():
@@ -103,7 +101,8 @@ func load_modules_tree() -> void:
 	%Tree.clear()
 	var root: TreeItem = %Tree.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
-	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+	var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', DialogicUtil.SETTING_HIDDEN_BUTTONS_DEFAULT)
+
 	var indexers := DialogicUtil.get_indexers()
 	for i in indexers:
 		var module_item: TreeItem = %Tree.create_item(root)
@@ -120,10 +119,10 @@ func load_modules_tree() -> void:
 				if cached_event.get_script().resource_path == ev:
 					event_item.set_text(0, cached_event.event_name + " Event")
 					event_item.set_icon_modulate(0, cached_event.event_color)
-					var hidden: bool = cached_event.event_name in hidden_events
-					event_item.set_metadata(0, {'type':'Event', 'event':cached_event, 'hidden':hidden})
+					var is_hidden: bool = cached_event.event_name in hidden_events
+					event_item.set_metadata(0, {'type':'Event', 'event':cached_event, 'hidden':is_hidden})
 					event_item.add_button(0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"), 0, false, "Toggle Event Button Visibility")
-					if hidden:
+					if is_hidden:
 						event_item.set_button(0, 0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"))
 			event_item.set_meta('filter_button', %Filter_Events)
 			event_item.visible = %Filter_Events.button_pressed
@@ -194,7 +193,7 @@ func load_modules_tree() -> void:
 	if %Tree.get_root().get_child_count(): %Tree.set_selected(%Tree.get_root().get_child(0), 0)
 
 
-func _on_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
+func _on_tree_button_clicked(item:TreeItem, _column:int, id:int, _mouse_button_index:int) -> void:
 	match item.get_metadata(0)['type']:
 		'Module':
 			item.collapsed = false
@@ -270,7 +269,7 @@ func _on_tree_item_selected() -> void:
 			'Settings':
 				%GeneralInfo.text = "Settings pages provide settings that are usually used by subsystems, events and dialogic nodes."
 			# -------------------------------------------------
-			'_':
+			_:
 				%GeneralInfo.text = ""
 
 

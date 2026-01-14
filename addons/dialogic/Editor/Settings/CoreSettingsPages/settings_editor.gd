@@ -66,23 +66,26 @@ func reload_section_list():
 	%SectionList.create_item()
 	var cached_events := DialogicResourceUtil.get_event_cache()
 	var sections := []
-	var section_order: Array = DialogicUtil.get_editor_setting(_SETTING_EVENT_SECTION_ODER, ['Main', 'Logic', 'Flow', 'Audio', 'Visuals','Other', 'Helper'])
+	var section_order: Array = DialogicUtil.get_editor_setting(_SETTING_EVENT_SECTION_ODER,
+		DialogicUtil.SETTING_BUTTON_SECTION_ORDER).duplicate()
+	sections = section_order
 	for ev in cached_events:
-		if !ev.event_category in sections:
+		if not ev.event_category in sections:
 			sections.append(ev.event_category)
-			var item: TreeItem = %SectionList.create_item(null)
-			item.set_text(0, ev.event_category)
-			item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
-			item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
-			if ev.event_category in section_order:
-
-				item.move_before(item.get_parent().get_child(min(section_order.find(ev.event_category),item.get_parent().get_child_count()-1)))
+	for sec in sections:
+		var item: TreeItem = %SectionList.create_item(null)
+		var empty_category := cached_events.filter(func(x:DialogicEvent): return x.event_category == sec).is_empty()
+		item.set_text(0, sec + (" (Empty)" if empty_category else ""))
+		item.add_button(0, get_theme_icon("ArrowUp", "EditorIcons"))
+		item.add_button(0, get_theme_icon("ArrowDown", "EditorIcons"))
+			#if ev.event_category in section_order:
+				#item.move_before(item.get_parent().get_child(min(section_order.find(ev.event_category),item.get_parent().get_child_count()-1)))
 
 	%SectionList.get_root().get_child(0).set_button_disabled(0, 0, true)
 	%SectionList.get_root().get_child(-1).set_button_disabled(0, 1, true)
 
 
-func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_index):
+func _on_section_list_button_clicked(item:TreeItem, _column, id, _mouse_button_index):
 	if id == 0:
 		item.move_before(item.get_parent().get_child(item.get_index()-1))
 	else:
@@ -112,12 +115,23 @@ func _on_section_list_button_clicked(item:TreeItem, column, id, mouse_button_ind
 func update_color_palette() -> void:
 	for child in %Colors.get_children():
 		child.queue_free()
+
+	var color_users := {}
+	for event:DialogicEvent in DialogicResourceUtil.get_event_cache():
+		if not event.dialogic_color_name:
+			continue
+		if not event.dialogic_color_name in color_users:
+			color_users[event.dialogic_color_name] = []
+		color_users[event.dialogic_color_name].append(event.event_name)
+
 	for color in DialogicUtil.get_color_palette():
 		var button := ColorPickerButton.new()
 		button.custom_minimum_size = Vector2(50 ,50) * DialogicUtil.get_editor_scale()
 		%Colors.add_child(button)
 		button.color = DialogicUtil.get_color(color)
 		button.popup_closed.connect(_on_palette_color_popup_closed)
+		if color in color_users:
+			button.tooltip_text = "Used by " + str(color_users[color])
 
 
 func _on_palette_color_popup_closed() -> void:
