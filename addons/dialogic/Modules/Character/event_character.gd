@@ -186,7 +186,7 @@ func _execute() -> void:
 				repeat_forever
 			)
 
-			if animation_wait and !repeat_forever:
+			if animation_wait and not repeat_forever:
 				dialogic.current_state = DialogicGameHandler.States.ANIMATING
 				await animation.finished
 				dialogic.current_state = DialogicGameHandler.States.IDLE
@@ -415,12 +415,12 @@ func build_event_editor() -> void:
 			'should_show_animation_options()')
 	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'Length:', 'suffix':'s', "min":0},
 			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
-			'should_show_animation_options() and !animation_name.is_empty()')
-	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1, "min":1},
-			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
 	add_body_edit('repeat_forever', ValueType.BOOL, {'left_text':'Repeat Forever:'},
 			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
+	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'Repeat:', 'mode':1, "min":1},
+			'should_show_animation_options() and !animation_name.is_empty() and action == %s and not repeat_forever' %Actions.UPDATE)
+	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'Await end:'},
+			'should_show_animation_options() and !animation_name.is_empty() and not repeat_forever')
 	add_body_line_break()
 	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'Movement duration:', "min":0, "tooltip": "When changing the characters position, this is how fast it will happen."},
 			"should_show_transform_options()")
