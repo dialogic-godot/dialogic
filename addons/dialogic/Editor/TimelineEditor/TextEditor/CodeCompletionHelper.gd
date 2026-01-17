@@ -73,7 +73,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 	# make sure shortcode event references are loaded
 	if mode == Modes.FULL_HIGHLIGHTING:
-		var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', [])
+		var hidden_events: Array = DialogicUtil.get_editor_setting('hidden_event_buttons', DialogicUtil.SETTING_HIDDEN_BUTTONS_DEFAULT)
 		if shortcode_events.is_empty():
 			for event in DialogicResourceUtil.get_event_cache():
 				if event.get_shortcode() != 'default_shortcode':

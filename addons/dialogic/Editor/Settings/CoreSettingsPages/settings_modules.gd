@@ -263,7 +263,7 @@ func _on_tree_item_selected() -> void:
 				%Icon.texture = metadata.event._get_icon()
 				if not metadata.event.disable_editor_button:
 					%VisibilityToggle.show()
-					%VisibilityToggle.button_pressed = !metadata.event.event_name in DialogicUtil.get_editor_setting("hidden_event_buttons", [])
+					%VisibilityToggle.button_pressed = !metadata.event.event_name in DialogicUtil.get_editor_setting("hidden_event_buttons", DialogicUtil.SETTING_HIDDEN_BUTTONS_DEFAULT)
 					if %VisibilityToggle.button_pressed:
 						%VisibilityToggle.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 					else:
@@ -310,7 +310,7 @@ func _on_external_link_pressed() -> void:
 
 func change_event_visibility(event:DialogicEvent, visibility:bool) -> void:
 	if event:
-		var list: Array= DialogicUtil.get_editor_setting("hidden_event_buttons", [])
+		var list: Array= DialogicUtil.get_editor_setting("hidden_event_buttons", DialogicUtil.SETTING_HIDDEN_BUTTONS_DEFAULT)
 		if visibility:
 			list.erase(event.event_name)
 		else:
