@@ -71,8 +71,9 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Setting"
 	event_description = "Advanced: Changes a setting from the Settings subsystem."
+	event_sorting_index = 15
 	set_default_color('Color9')
-	event_category = "Helpers"
+	event_category = "Other"
 	event_sorting_index = 2
 
 

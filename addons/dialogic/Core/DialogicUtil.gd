@@ -136,7 +136,7 @@ static func pretty_name(file_path: String) -> String:
 ################################################################################
 
 const SETTING_HIDDEN_BUTTONS_DEFAULT := ["Setting", "History", "Save"]
-const SETTING_BUTTON_SECTION_ORDER := ["Main", "Flow", "Audio", "Visuals", "Logic", "Other", "Helpers"]
+const SETTING_BUTTON_SECTION_ORDER := ["Main", "Flow", "Audio", "Visuals", "Logic", "Other"]
 
 static func set_editor_setting(setting:String, value:Variant) -> void:
 	var cfg := ConfigFile.new()
