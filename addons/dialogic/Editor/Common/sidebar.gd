@@ -53,10 +53,10 @@ func _ready() -> void:
 	%Logo.texture = load("res://addons/dialogic/Editor/Images/dialogic-logo.svg")
 	%Logo.custom_minimum_size.y = 30 * editor_scale
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
-	
-	## RESOURCE LIST OPTIONS MENU 
+
+	## RESOURCE LIST OPTIONS MENU
 	%Options.icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
-	
+
 	var grouping_menu := PopupMenu.new()
 	#grouping_menu.hide_on_item_selection = false
 	grouping_menu.hide_on_checkable_item_selection = false
@@ -64,7 +64,7 @@ func _ready() -> void:
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("Folder", "EditorIcons"), "By Type", 1)
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("FolderBrowse", "EditorIcons"), "By Folder", 2)
 	grouping_menu.add_icon_radio_check_item(get_theme_icon("AnimationTrackGroup", "EditorIcons"), "By Path", 3)
-	
+
 	var options_popup: PopupMenu = %Options.get_popup()
 	options_popup.hide_on_checkable_item_selection = false
 	options_popup.add_submenu_node_item("Grouping", grouping_menu)
@@ -72,7 +72,7 @@ func _ready() -> void:
 	options_popup.add_check_item("Trim Folder Paths", 12)
 	options_popup.add_item("List All", 21)
 	options_popup.add_item("Clear List", 22)
-	
+
 	grouping_menu.id_pressed.connect(_on_grouping_changed)
 	options_popup.id_pressed.connect(_on_resource_list_options_id_pressed)
 
@@ -91,7 +91,7 @@ func _ready() -> void:
 	%RightClickItemMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
 	%RightClickItemMenu.add_separator()
 	%RightClickItemMenu.add_icon_item(
-		get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2
+		get_theme_icon("ShowInFileSystem", "EditorIcons"), "Show in FileSystem", 2
 	)
 	%RightClickItemMenu.add_icon_item(
 		get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3
@@ -112,7 +112,7 @@ func _ready() -> void:
 		idx += 1
 
 	%MainVSplit.split_offset = DialogicUtil.get_editor_setting("sidebar_v_split", 0)
-	
+
 	group_mode = DialogicUtil.get_editor_setting("sidebar_group_mode", GroupMode.TYPE)
 	grouping_menu.set_item_checked(grouping_menu.get_item_index(group_mode), true)
 	options_popup.set_item_checked(options_popup.get_item_index(11), DialogicUtil.get_editor_setting("sidebar_use_folder_colors", true))
@@ -508,12 +508,12 @@ func update_content_list() -> void:
 	if not current_resource is DialogicTimeline:
 		%ContentListSection.hide()
 		return
-	
+
 	var current_labels := DialogicResourceUtil.get_label_cache().get(current_resource.get_identifier(), [])
 	if current_labels.is_empty():
 		%ContentListSection.hide()
 		return
-	
+
 	var prev_selected := ""
 	if %ContentList.is_anything_selected():
 		prev_selected = %ContentList.get_item_text(%ContentList.get_selected_items()[0])
@@ -525,7 +525,7 @@ func update_content_list() -> void:
 		%ContentList.add_item(i)
 		if i == prev_selected:
 			%ContentList.select(%ContentList.item_count - 1)
-	
+
 	%ContentListSection.show()
 
 #endregion
@@ -535,7 +535,7 @@ func update_content_list() -> void:
 func _on_resource_list_options_id_pressed(id:int) -> void:
 	var popup: PopupMenu = %Options.get_popup()
 	var index := popup.get_item_index(id)
-	
+
 	match id:
 		11: # Folder Colors
 			popup.toggle_item_checked(index)
@@ -559,7 +559,7 @@ func _on_resource_list_options_id_pressed(id:int) -> void:
 func _on_grouping_changed(id: int) -> void:
 	if not (GroupMode as Dictionary).values().has(id):
 		return
-	
+
 	group_mode = (id as GroupMode)
 	DialogicUtil.set_editor_setting("sidebar_group_mode", id)
 	reload_resource_list_from_grouping()
@@ -567,33 +567,33 @@ func _on_grouping_changed(id: int) -> void:
 
 func reload_resource_list_from_grouping() -> void:
 	update_resource_list()
-	
+
 	if group_mode == GroupMode.NONE:
 		%ResourceTree.add_theme_constant_override("item_margin", 0)
 	else:
 		%ResourceTree.remove_theme_constant_override("item_margin")
-	
+
 	var popup: PopupMenu = %Options.get_popup()
 	var grouping_menu := popup.get_item_submenu_node(0)
 	for index in range(grouping_menu.item_count):
 		grouping_menu.set_item_checked(index, grouping_menu.get_item_id(index) == group_mode)
 	popup.set_item_disabled(popup.get_item_index(11), group_mode != GroupMode.PATH)
 	popup.set_item_disabled(popup.get_item_index(12), group_mode != GroupMode.PATH)
-	
+
 	var index := grouping_menu.get_item_index(group_mode)
 	popup.set_item_icon(0, grouping_menu.get_item_icon(index))
-	
+
 
 func list_all() -> void:
 	var character_directory: Dictionary = DialogicResourceUtil.get_character_directory()
 	var timeline_directory: Dictionary = DialogicResourceUtil.get_timeline_directory()
-	
+
 	var resource_list := []
 	for i in character_directory:
 		resource_list.append(character_directory[i])
 	for i in timeline_directory:
 		resource_list.append(timeline_directory[i])
-	
+
 	DialogicUtil.set_editor_setting("last_resources", resource_list)
 
 #endregion
@@ -621,7 +621,7 @@ func add_button(icon: Texture, label:String, tooltip: String, placement:int) -> 
 	button.tooltip_text = tooltip
 	button.theme_type_variation = "FlatButton"
 	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	
+
 	match placement:
 		editors_manager.ButtonPlacement.SIDEBAR_LEFT_OF_FILTER:
 			%LeftTools.add_child(button)

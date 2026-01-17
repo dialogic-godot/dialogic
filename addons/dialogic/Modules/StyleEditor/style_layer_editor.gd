@@ -382,7 +382,6 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_subgroup_name = ""
 
 			&"SUBGROUP":
-
 				# add separator
 				if current_subgroup_name:
 					current_grid.add_child(HSeparator.new())

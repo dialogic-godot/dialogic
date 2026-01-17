@@ -8,15 +8,15 @@ extends DialogicEvent
 ### Settings
 
 ## The path to the sound file.
-var file_path := "":
+@export_file var file_path := "":
 	set(value):
 		if file_path != value:
 			file_path = value
 			ui_update_needed.emit()
 ## The volume the sound will be played at.
-var volume: float = 0
+@export var volume: float = 0
 ## The audio bus to play the sound on.
-var audio_bus := "Master"
+@export var audio_bus := "Master"
 
 
 #region EXECUTE

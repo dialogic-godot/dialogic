@@ -7,16 +7,16 @@ extends DialogicEvent
 ### Settings
 
 ## The name of the autoload to call the method on.
-var autoload_name := ""
+@export var autoload_name := ""
 ## The name of the method to call on the given autoload.
-var method := "":
+@export var method := "":
 	set(value):
 		method = value
 		if Engine.is_editor_hint():
 			update_argument_info()
 			check_arguments_and_update_warning()
 ## A list of arguments to give to the call.
-var arguments := []:
+@export var arguments := []:
 	set(value):
 		arguments = value
 		if Engine.is_editor_hint():

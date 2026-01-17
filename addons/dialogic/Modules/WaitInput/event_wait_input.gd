@@ -4,7 +4,7 @@ extends DialogicEvent
 
 ## Event that waits for input before continuing.
 
-var hide_textbox := true
+@export var hide_textbox := true
 
 
 #region EXECUTE
