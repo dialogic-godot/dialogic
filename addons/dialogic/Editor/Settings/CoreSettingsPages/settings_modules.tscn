@@ -185,6 +185,7 @@ text = "Audio"
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+tooltip_text = "Toggle Event Button Visibility"
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 button_pressed = true
