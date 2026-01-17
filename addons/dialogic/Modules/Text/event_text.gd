@@ -11,14 +11,14 @@ extends DialogicEvent
 ## This is the content of the text event.
 ## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
-var text := ""
+@export var text := ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
 ## The DialogicNode_NameLabel will show the characters display_name. If a typing sound is setup,
 ## it will play.
-var character: DialogicCharacter = null
+@export var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
 ## If a runtime-character is created, the portrait can instead be a color (hex or color name).
-var portrait := ""
+@export var portrait := ""
 
 ### Helpers
 

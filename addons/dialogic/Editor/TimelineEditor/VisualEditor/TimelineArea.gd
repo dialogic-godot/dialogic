@@ -67,7 +67,7 @@ func _process(_delta:float) -> void:
 				drag_to_position = child.get_index()
 				queue_redraw()
 				return
-	
+
 	if get_global_rect().has_point(get_global_mouse_position()):
 		if %Timeline.get_child_count():
 			var last_child := %Timeline.get_child(-1)
