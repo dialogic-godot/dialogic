@@ -9,9 +9,9 @@ enum ConditionTypes {IF, ELIF, ELSE}
 ### Settings
 
 ## Condition type (see [ConditionTypes]). Defaults to if.
-var condition_type := ConditionTypes.IF
+@export var condition_type := ConditionTypes.IF
 ## The condition as a string. Will be executed as an Expression.
-var condition := ""
+@export var condition := ""
 
 
 #region EXECUTE
@@ -89,6 +89,14 @@ func is_valid_event(string:String) -> bool:
 	if string.strip_edges() in ['if', 'elif', 'else'] or (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')):
 		return true
 	return false
+
+
+## Only here to allow setting defaults in the module settings
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name 	: property_info
+		"condition" 	: {"property": "condition", 			"default": ""},
+	}
 
 #endregion
 

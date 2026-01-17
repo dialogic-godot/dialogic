@@ -1017,6 +1017,7 @@ func _on_event_popup_menu_id_pressed(id:int) -> void:
 	elif id == 3:
 		EditorInterface.set_main_screen_editor('Script')
 		EditorInterface.edit_script(item.resource.get_script(), 1, 1)
+
 	elif id == 4 or id == 5:
 		if id == 4:
 			offset_blocks_by_index(selected_items, -1)

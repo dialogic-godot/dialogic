@@ -8,7 +8,7 @@ extends DialogicEvent
 ### Settings
 
 ## Content of the comment.
-var text := ""
+@export var text := ""
 
 
 #region EXECUTE

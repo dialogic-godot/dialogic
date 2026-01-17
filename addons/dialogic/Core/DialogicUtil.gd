@@ -512,6 +512,11 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.property_name = property_info["name"]
 			input.set_value(value)
 			input.value_changed.connect(_on_export_dict_submitted.bind(property_changed))
+		TYPE_ARRAY:
+			input = load("res://addons/dialogic/Editor/Events/Fields/field_array.tscn").instantiate()
+			input.property_name = property_info["name"]
+			input.set_value(value)
+			input.value_changed.connect(_on_export_array_submitted.bind(property_changed))
 		TYPE_OBJECT:
 			input = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 			input.hint_text = "Objects/Resources as settings are currently not supported. \nUse @export_file('*.extension') instead and load the resource once needed."
@@ -556,6 +561,9 @@ static func _on_export_vectori_submitted(property_name:String, value:Variant, ca
 	callable.call(property_name, var_to_str(value))
 
 static func _on_export_dict_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	callable.call(property_name, var_to_str(value))
+
+static func _on_export_array_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
 #endregion

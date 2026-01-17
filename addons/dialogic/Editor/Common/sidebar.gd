@@ -91,7 +91,7 @@ func _ready() -> void:
 	%RightClickItemMenu.add_icon_item(get_theme_icon("ActionCopy", "EditorIcons"), "Copy Identifier", 4)
 	%RightClickItemMenu.add_separator()
 	%RightClickItemMenu.add_icon_item(
-		get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", 2
+		get_theme_icon("ShowInFileSystem", "EditorIcons"), "Show in FileSystem", 2
 	)
 	%RightClickItemMenu.add_icon_item(
 		get_theme_icon("ExternalLink", "EditorIcons"), "Open in External Program", 3

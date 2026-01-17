@@ -16,7 +16,7 @@ enum SettingValueType {
 }
 
 ## The name of the setting to save to.
-var name := ""
+@export var name := ""
 var _value_type := 0 :
 	get:
 		return _value_type
@@ -30,9 +30,9 @@ var _value_type := 0 :
 					value = 0
 			ui_update_needed.emit()
 
-var value: Variant = ""
+@export var value: Variant = ""
 
-var mode := Modes.SET
+@export var mode := Modes.SET
 
 ## Used to suppress _value_type from overwriting value with a default value when the type changes
 ## This is only used when initializing the event_variable.
