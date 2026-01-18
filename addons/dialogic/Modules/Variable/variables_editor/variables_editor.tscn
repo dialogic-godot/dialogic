@@ -173,10 +173,11 @@ text = "How to use variables"
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"FlatButton"
-text = "Read the Docs"
+text = "Online Docs"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Info" unique_id=2046774878]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/text_highlight_h_padding = 3
 theme_override_constants/text_highlight_v_padding = 1
 bbcode_enabled = true
@@ -194,7 +195,6 @@ If you need to access a variables value from a script, you can do so like this:
 You can create variable groups with [img]res://addons/dialogic/Editor/Images/Pieces/add-folder.svg[/img]. To access a variable in a group use it's \"path\" like so: 
 [code][color=web_gray][color=turquoise]{MyGroup.MyVariable}[/color] # in some text
 [code]print([color=goldenrod]Dialogic[/color].[color=olive_drab]VAR[/color].[color=turquoise]MyGroup[/color].[color=turquoise]MyVariable[/color])[/code] # in a script[/color][/code]"
-fit_content = true
 
 [connection signal="text_changed" from="PanelContainer/Editor/Search" to="." method="_on_search_text_changed"]
 [connection signal="button_clicked" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_button_clicked"]
