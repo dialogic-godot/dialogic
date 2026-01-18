@@ -159,10 +159,11 @@ func _hide_sidebar() -> void:
 
 func _on_editors_resource_opened(_resource: Resource) -> void:
 	%ContentListSection.hide()
+
 	update_resource_list()
 
 
-func _on_editors_editor_changed(_previous: DialogicEditor, current: DialogicEditor) -> void:
+func _on_editors_editor_changed(_previous: DialogicEditor, _current: DialogicEditor) -> void:
 	update_resource_list()
 	%ContentListSection.hide()
 	update_content_list()
@@ -509,7 +510,7 @@ func update_content_list() -> void:
 		%ContentListSection.hide()
 		return
 
-	var current_labels := DialogicResourceUtil.get_label_cache().get(current_resource.get_identifier(), [])
+	var current_labels: Array = DialogicResourceUtil.get_label_cache().get(current_resource.get_identifier(), [])
 	if current_labels.is_empty():
 		%ContentListSection.hide()
 		return
@@ -603,7 +604,7 @@ func _on_main_v_split_dragged(offset: int) -> void:
 	DialogicUtil.set_editor_setting("sidebar_v_split", offset)
 
 
-func _on_resource_tree_empty_clicked(click_position: Vector2, mouse_button_index: int) -> void:
+func _on_resource_tree_empty_clicked(_click_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		%RightClickNoItemMenu.popup_on_parent(Rect2(get_global_mouse_position(), Vector2()))
 
