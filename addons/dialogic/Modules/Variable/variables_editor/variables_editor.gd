@@ -40,6 +40,7 @@ func _ready() -> void:
 
 	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+	%Documentation.icon = get_theme_icon("ExternalLink", "EditorIcons")
 
 #region RENAMING
 
@@ -63,3 +64,7 @@ func _on_reference_manager_pressed() -> void:
 
 func _on_search_text_changed(new_text: String) -> void:
 	%Tree.filter(new_text)
+
+
+func _on_documentation_pressed() -> void:
+	OS.shell_open("https://docs.dialogic.pro/variables.html")

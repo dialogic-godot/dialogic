@@ -1,13 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://6tdle4y5o03o"]
+[gd_scene format=3 uid="uid://6tdle4y5o03o"]
 
 [ext_resource type="Script" uid="uid://d1yoykg323a5p" path="res://addons/dialogic/Modules/Variable/variables_editor/variables_editor.gd" id="2"]
 [ext_resource type="Script" uid="uid://deduielq1r0r" path="res://addons/dialogic/Modules/Variable/variables_editor/variable_tree.gd" id="2_1i17i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bhct"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
 bg_color = Color(0.337, 0.62, 1, 0.2)
 border_width_left = 2
 border_width_top = 2
@@ -52,38 +52,45 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offsets = PackedInt32Array(12)
+split_offset = 12
 script = ExtResource("2")
 
-[node name="Editor" type="VBoxContainer" parent="." unique_id=1875027373]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1972038904]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DialogicPanelA"
+
+[node name="Editor" type="VBoxContainer" parent="PanelContainer" unique_id=1875027373]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBox" type="HBoxContainer" parent="Editor" unique_id=522266499]
+[node name="HBox" type="HBoxContainer" parent="PanelContainer/Editor" unique_id=522266499]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Editor/HBox" unique_id=2042431687]
+[node name="Title" type="Label" parent="PanelContainer/Editor/HBox" unique_id=2042431687]
 layout_mode = 2
 theme_type_variation = &"DialogicSubTitle"
 text = "Variables"
 
-[node name="Search" type="LineEdit" parent="Editor/HBox" unique_id=2112236003]
+[node name="Search" type="LineEdit" parent="PanelContainer/Editor" unique_id=2112236003]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Filter"
+placeholder_text = "Filter Variables"
 
-[node name="Tree" type="Tree" parent="Editor" unique_id=913318958]
+[node name="Tree" type="Tree" parent="PanelContainer/Editor" unique_id=913318958]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"DialogicPanelB"
+theme_type_variation = &"TreeSecondary"
 theme_override_constants/button_margin = 4
 theme_override_constants/draw_guides = 1
 columns = 3
 column_titles_visible = true
 script = ExtResource("2_1i17i")
 
-[node name="ChangeTypePopup" type="PanelContainer" parent="Editor/Tree" unique_id=782708767]
+[node name="ChangeTypePopup" type="PanelContainer" parent="PanelContainer/Editor/Tree" unique_id=782708767]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(0.1021275, 0.1021275, 0.1021275, 1)
@@ -95,62 +102,63 @@ offset_bottom = 190.0
 theme = SubResource("Theme_17j6i")
 theme_override_styles/panel = SubResource("StyleBoxFlat_ncgqs")
 
-[node name="HBox" type="HBoxContainer" parent="Editor/Tree/ChangeTypePopup" unique_id=133785951]
+[node name="HBox" type="HBoxContainer" parent="PanelContainer/Editor/Tree/ChangeTypePopup" unique_id=133785951]
 layout_mode = 2
 
-[node name="String" type="Button" parent="Editor/Tree/ChangeTypePopup/HBox" unique_id=592609856]
+[node name="String" type="Button" parent="PanelContainer/Editor/Tree/ChangeTypePopup/HBox" unique_id=592609856]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 tooltip_text = "String (Any text)"
 toggle_mode = true
 icon_alignment = 1
 
-[node name="Float" type="Button" parent="Editor/Tree/ChangeTypePopup/HBox" unique_id=304875364]
+[node name="Float" type="Button" parent="PanelContainer/Editor/Tree/ChangeTypePopup/HBox" unique_id=304875364]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 tooltip_text = "Float (Number with Decimals)"
 toggle_mode = true
 icon_alignment = 1
 
-[node name="Int" type="Button" parent="Editor/Tree/ChangeTypePopup/HBox" unique_id=1830794936]
+[node name="Int" type="Button" parent="PanelContainer/Editor/Tree/ChangeTypePopup/HBox" unique_id=1830794936]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 tooltip_text = "Int (Integer)"
 toggle_mode = true
 icon_alignment = 1
 
-[node name="Bool" type="Button" parent="Editor/Tree/ChangeTypePopup/HBox" unique_id=586558133]
+[node name="Bool" type="Button" parent="PanelContainer/Editor/Tree/ChangeTypePopup/HBox" unique_id=586558133]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 tooltip_text = "Bool (True/False flag)"
 toggle_mode = true
 icon_alignment = 1
 
-[node name="RightClickMenu" type="PopupMenu" parent="Editor/Tree" unique_id=567109241]
+[node name="RightClickMenu" type="PopupMenu" parent="PanelContainer/Editor/Tree" unique_id=567109241]
 unique_name_in_owner = true
 size = Vector2i(67, 35)
 item_count = 1
 item_0/text = "Copy"
 item_0/id = 0
 
-[node name="ReferenceInfo" type="HBoxContainer" parent="Editor" unique_id=307117089]
+[node name="ReferenceInfo" type="HBoxContainer" parent="PanelContainer/Editor" unique_id=307117089]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Editor/ReferenceInfo" unique_id=1059085735]
+[node name="Label" type="Label" parent="PanelContainer/Editor/ReferenceInfo" unique_id=1059085735]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.83, 0.78, 0.62, 1)
 text = "You've made some changes to existing variables! Use the reference manager to check if something broke."
 autowrap_mode = 3
 
-[node name="ReferenceManager" type="Button" parent="Editor/ReferenceInfo" unique_id=1766978997]
+[node name="ReferenceManager" type="Button" parent="PanelContainer/Editor/ReferenceInfo" unique_id=1766978997]
 layout_mode = 2
 text = "Reference Manager"
 
 [node name="Info" type="VBoxContainer" parent="." unique_id=227696553]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
 
 [node name="HBox" type="HBoxContainer" parent="Info" unique_id=362730822]
 layout_mode = 2
@@ -161,19 +169,37 @@ size_flags_horizontal = 3
 theme_type_variation = &"DialogicSection"
 text = "How to use variables"
 
-[node name="Documentation" type="LinkButton" parent="Info/HBox" unique_id=965398298]
+[node name="Documentation" type="Button" parent="Info/HBox" unique_id=754140705]
+unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"FlatButton"
 text = "Read the Docs"
-uri = "https://docs.dialogic.pro/variables.html"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Info" unique_id=2046774878]
 layout_mode = 2
-text = "Variables are good way to keep track of all kinds of things during your game. Dialogic has an easy-to-use and beginner friendly variable system built in. However Dialogic allows to use outside variables (of Autoload Singletons) just as easily. You can also access the Dialogic variables from outside scripts."
+theme_override_constants/text_highlight_h_padding = 3
+theme_override_constants/text_highlight_v_padding = 1
+bbcode_enabled = true
+text = "Variables are a good way to keep track of all kinds of things during your game: The player name, their health or the state of the world, their relationships, quests, etc. 
+
+Setup the variables and their defaults in this editor and then change them during timelines with the [b]Set Variable[/b] event.
+
+You can use variables in conditions on the [b]Condition[/b] and [b]Choice[/b] events or as expressions in texts: 
+[color=web_gray][code]Hi I'm [color=turquoise]{PlayerName}[/color].[/code][/color]
+
+If you need to access a variables value from a script, you can do so like this:
+[color=web_gray][code]print([color=goldenrod]Dialogic[/color].[color=olive_drab]VAR[/color].[color=turquoise]MyVariable[/color])
+[color=goldenrod]Dialogic[/color].[color=olive_drab]VAR[/color].[color=turquoise]AnotherVariable[/color] = 42[/code][/color]
+
+You can create variable groups with [img]res://addons/dialogic/Editor/Images/Pieces/add-folder.svg[/img]. To access a variable in a group use it's \"path\" like so: 
+[code][color=web_gray][color=turquoise]{MyGroup.MyVariable}[/color] # in some text
+[code]print([color=goldenrod]Dialogic[/color].[color=olive_drab]VAR[/color].[color=turquoise]MyGroup[/color].[color=turquoise]MyVariable[/color])[/code] # in a script[/color][/code]"
 fit_content = true
 
-[connection signal="text_changed" from="Editor/HBox/Search" to="." method="_on_search_text_changed"]
-[connection signal="button_clicked" from="Editor/Tree" to="Editor/Tree" method="_on_button_clicked"]
-[connection signal="gui_input" from="Editor/Tree" to="Editor/Tree" method="_on_gui_input"]
-[connection signal="item_edited" from="Editor/Tree" to="Editor/Tree" method="_on_item_edited"]
-[connection signal="id_pressed" from="Editor/Tree/RightClickMenu" to="Editor/Tree" method="_on_right_click_menu_id_pressed"]
-[connection signal="pressed" from="Editor/ReferenceInfo/ReferenceManager" to="." method="_on_reference_manager_pressed"]
+[connection signal="text_changed" from="PanelContainer/Editor/Search" to="." method="_on_search_text_changed"]
+[connection signal="button_clicked" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_button_clicked"]
+[connection signal="gui_input" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_gui_input"]
+[connection signal="item_edited" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_item_edited"]
+[connection signal="id_pressed" from="PanelContainer/Editor/Tree/RightClickMenu" to="PanelContainer/Editor/Tree" method="_on_right_click_menu_id_pressed"]
+[connection signal="pressed" from="PanelContainer/Editor/ReferenceInfo/ReferenceManager" to="." method="_on_reference_manager_pressed"]
+[connection signal="pressed" from="Info/HBox/Documentation" to="." method="_on_documentation_pressed"]
