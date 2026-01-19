@@ -92,6 +92,7 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 		old_viewport = background_holder.get_meta('current_viewport', null)
 
 	var new_viewport: SubViewportContainer
+
 	if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
 		new_viewport = add_background_node(load(scene), background_holder)
 	elif argument:
@@ -175,7 +176,16 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	viewport.transparent_bg = true
 	viewport.disable_3d = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
+
+	if parent.get_parent().get("bg_texture_filter") != null and parent.get_parent().bg_texture_filter > -1:
+		viewport.canvas_item_default_texture_filter = parent.get_parent().bg_texture_filter
+	else:
+		viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
+
+	if parent.get_parent().get("bg_texture_repeat") != null and parent.get_parent().bg_texture_repeat > -1:
+		viewport.canvas_item_default_texture_repeat = parent.get_parent().bg_texture_repeat
+	else:
+		viewport.canvas_item_default_texture_repeat = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_repeat")
 
 	viewport.add_child(b_scene)
 	b_scene.viewport = viewport

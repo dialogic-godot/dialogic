@@ -428,13 +428,17 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_info.name, property_changed))
 			input.custom_minimum_size.x = get_editor_scale() * 50
 		TYPE_INT:
-			if property_info['hint'] & PROPERTY_HINT_ENUM == PROPERTY_HINT_ENUM:
+			if property_info["hint"] & PROPERTY_HINT_ENUM == PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
-				for x in property_info['hint_string'].split(','):
-					input.add_item(x.split(':')[0])
-				if value != null:
-					input.select(value)
-				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_info.name, property_changed))
+				var idx := 0
+				for x in property_info["hint_string"].split(","):
+					input.add_item(x.split(":")[0])
+					var id := int(x.split(":")[1])
+					input.set_item_metadata(idx, id)
+					if value == id:
+						input.select(idx)
+					idx += 1
+				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_info.name, property_changed, input))
 			else:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
 				input.property_name = property_info['name']
@@ -538,8 +542,8 @@ static func _on_export_bool_submitted(value:bool, property_name:String, callable
 static func _on_export_color_submitted(color:Color, property_name:String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(color))
 
-static func _on_export_int_enum_submitted(item:int, property_name:String, callable: Callable) -> void:
-	callable.call(property_name, var_to_str(item))
+static func _on_export_int_enum_submitted(item:int, property_name:String, callable: Callable, option_button:OptionButton) -> void:
+	callable.call(property_name, var_to_str(option_button.get_item_metadata(item)))
 
 static func _on_export_number_submitted(property_name:String, value:float, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
@@ -565,6 +569,23 @@ static func _on_export_dict_submitted(property_name:String, value:Variant, calla
 
 static func _on_export_array_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
+
+static func set_property_edit_node_value(node:Control, value:Variant) -> void:
+	if node is CheckBox:
+		node.button_pressed = value
+	elif node is LineEdit:
+		node.text = value
+	elif node.has_method("set_value"):
+		node.set_value(value)
+	elif node is ColorPickerButton:
+		node.color = value
+	elif node is OptionButton:
+		for i in range(node.item_count):
+			if node.get_item_metadata(i) == value:
+				node.select(i)
+	elif node is SpinBox:
+		node.value = value
+
 
 #endregion
 
