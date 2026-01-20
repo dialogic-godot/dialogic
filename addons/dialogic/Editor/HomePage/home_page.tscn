@@ -292,7 +292,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_es88k")
 bbcode_enabled = true
-text = "[center]Welcome to dialogic, a plugin that lets you easily create stories and dialogs for your game!
+text = "[center]Welcome to Dialogic, a plugin that lets you easily create stories and dialogs for your game!
 
 If you are new, start by creating a timeline or character!"
 fit_content = true
