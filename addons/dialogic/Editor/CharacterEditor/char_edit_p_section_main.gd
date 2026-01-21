@@ -28,7 +28,7 @@ func _load_portrait_data(data:Dictionary) -> void:
 func _on_open_scene_button_pressed() -> void:
 	var data: Dictionary = selected_item.get_metadata(0)
 	if ResourceLoader.exists(data.get("scene", "")):
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().open_scene_from_path(data.get("scene", ""))
+		EditorInterface.open_scene_from_path(data.get("scene", ""))
 		await get_tree().process_frame
 		EditorInterface.set_main_screen_editor("2D")
 

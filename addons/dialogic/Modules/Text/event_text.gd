@@ -11,14 +11,14 @@ extends DialogicEvent
 ## This is the content of the text event.
 ## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
-var text := ""
+@export var text := ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
 ## The DialogicNode_NameLabel will show the characters display_name. If a typing sound is setup,
 ## it will play.
-var character: DialogicCharacter = null
+@export var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
 ## If a runtime-character is created, the portrait can instead be a color (hex or color name).
-var portrait := ""
+@export var portrait := ""
 
 ### Helpers
 
@@ -33,7 +33,7 @@ var character_identifier: String:
 	set(value):
 		character_identifier = value
 		character = DialogicResourceUtil.get_character_resource(value)
-		if Engine.is_editor_hint() and ((not character) or (character and not character.portraits.has(portrait))):
+		if Engine.is_editor_hint() and ((not character) or (character and not portrait in character.portraits)) and not (not character and (character_identifier or character_identifier.begins_with("{"))):
 			portrait = ""
 			ui_update_needed.emit()
 
@@ -67,12 +67,10 @@ func _execute() -> void:
 	## Change Portrait and Active Speaker
 	if dialogic.has_subsystem("Portraits"):
 		if character:
-
 			dialogic.Portraits.change_speaker(character, portrait)
 
 			if portrait and dialogic.Portraits.is_character_joined(character):
 				dialogic.Portraits.change_character_portrait(character, portrait)
-
 		else:
 			dialogic.Portraits.change_speaker(null)
 
@@ -134,11 +132,27 @@ func _execute() -> void:
 
 			dialogic.Text.text_sub_index = section_idx
 
-			var segment: String = dialogic.Text.parse_text(split_text[section_idx][0], 0)
+			var section_text: String = split_text[section_idx][0]
 			var is_append: bool = split_text[section_idx][1]
 
-			final_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+segment
-			dialogic.Text.about_to_show_text.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+			if character:
+				var character_prefix: String = character.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
+				var character_suffix: String = character.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
+
+				if len(split_text) == 1 or section_idx == 0 or not is_append:
+					section_text = character_prefix + section_text
+				if len(split_text) == 1 or section_idx == len(split_text)-1 or not split_text[section_idx+1][1]:
+					section_text = section_text + character_suffix
+
+			if len(split_text) == 1 or section_idx == 0 or not is_append:
+				section_text = ProjectSettings.get_setting("dialogic/text/dialog_text_prefix", "")+section_text
+
+			final_text = dialogic.Text.parse_text(section_text, 0)
+
+			if final_text.is_empty():
+				continue
+
+			dialogic.Text.about_to_show_text.emit({"text":final_text, "character":character, "portrait":portrait, "append": is_append})
 
 			await dialogic.Text.textbox_handle_auto_visibility(final_text)
 
@@ -146,7 +160,7 @@ func _execute() -> void:
 			_try_play_current_line_voice()
 			final_text = dialogic.Text.update_dialog_text(final_text, false, is_append)
 
-			dialogic.Text.text_started.emit({'text':final_text, 'character':character, 'portrait':portrait, 'append': is_append})
+			dialogic.Text.text_started.emit({"text":final_text, "character":character, "portrait":portrait, "append": is_append})
 
 			_mark_as_read(character_name_text, final_text)
 
@@ -275,6 +289,7 @@ func _on_auto_skip_enable(enabled: bool) -> void:
 
 func _init() -> void:
 	event_name = "Text"
+	event_description = "Displays text. Can be said by a character. Can contain all kinds of bbcode, text effects or variables."
 	set_default_color('Color1')
 	event_category = "Main"
 	event_sorting_index = 0
@@ -417,7 +432,8 @@ func build_event_editor() -> void:
 
 
 func should_show_portrait_selector() -> bool:
-	return character and not character.portraits.is_empty() and not character.portraits.size() == 1
+	return (character and not character.portraits.is_empty() and not character.portraits.size() == 1) or \
+		(not character and (character_identifier.begins_with("{") or not character_identifier.is_empty()))
 
 
 func do_any_characters_exist() -> bool:
@@ -433,8 +449,9 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 			"editor_icon":["GuiEllipsis", "EditorIcons"]}
 	return suggestions
 
+
 func get_portrait_suggestions(search_text:String) -> Dictionary:
-	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change")
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, "Don't change", true)
 
 #endregion
 

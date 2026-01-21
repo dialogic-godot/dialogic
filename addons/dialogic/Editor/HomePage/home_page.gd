@@ -12,6 +12,9 @@ func _get_icon() -> Texture:
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	self_modulate = get_theme_color("font_color", "Editor")
 	self_modulate.a = 0.2
 

@@ -14,7 +14,7 @@ var node_to_point_at: Node = null:
 		node_to_point_at = val
 		base_position = get_speaker_canvas_position() + base_direction * safe_zone
 		position = base_position
-		
+
 var current_character: DialogicCharacter = null
 
 var max_width := 300
@@ -143,7 +143,7 @@ func _on_question_shown(info:Dictionary) -> void:
 	if !is_visible_in_tree():
 		return
 
-	# Avoid choice_container's flickering(because some ticks will happen in 
+	# Avoid choice_container's flickering(because some ticks will happen in
 	# `await get_base_content_size()` which will make choice_container exist
 	# at its old position for several tens of milliseconds).
 	choice_container.modulate.a = 0
@@ -152,7 +152,7 @@ func _on_question_shown(info:Dictionary) -> void:
 	content_size.y += choice_container.size.y
 	content_size.x = max(content_size.x, choice_container.size.x)
 	_resize_bubble(content_size)
-	
+
 	# Now, choice_container has changed to its new position, so we can make it
 	# actually show up.
 	choice_container.modulate.a = 1
@@ -166,11 +166,11 @@ func get_base_content_size() -> Vector2:
 		max_width,
 		text.get_theme_font_size(&"normal_font_size")
 		).x
-		
+
 	# Let text use content's width, and let text auto shrink height to its content.
 	text.size = Vector2(text_width, 0)
 	await get_tree().process_frame
-	
+
 	# Don't know why text.size.y != content's height,
 	# so we re-set text.size.y to 0 to let text shrink to its content again.
 	# Finally works this time.
@@ -192,7 +192,7 @@ func add_choice_container(node:Container, alignment:=FlowContainer.ALIGNMENT_BEG
 
 	if node is HFlowContainer:
 		(node as HFlowContainer).alignment = alignment
-	
+
 	var choices_button: PackedScene = null
 	if not choices_button_path.is_empty():
 		if ResourceLoader.exists(choices_button_path):

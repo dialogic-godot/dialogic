@@ -32,13 +32,13 @@ var text_event: DialogicTextEvent = null
 
 func _init() -> void:
 	update_colors()
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_base_control().theme_changed.connect(update_colors)
+	EditorInterface.get_base_control().theme_changed.connect(update_colors)
 
 
 func update_colors() -> void:
 	if not DialogicUtil.get_dialogic_plugin():
 		return
-	var editor_settings: EditorSettings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
+	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
 	normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	translation_id_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 
@@ -181,8 +181,12 @@ func color_region(dict:Dictionary, color:Color, line:String, start:String, end:S
 	if end.is_empty():
 		region_regex.compile(r"(?<!\\)"+start+".*")
 	else:
-		r"(?<!\\){([^{}]|({[^}]*}))*}"
-		region_regex.compile(r"(?<!\\)"+start+"([^"+start+end+"]|("+start+"[^"+end+"]*"+end+"))*"+end)
+		if start != end:
+			r"(?<!\\){([^{}]|({[^}]*}))*}" # example for { }
+			region_regex.compile(r"(?<!\\)"+start+"([^"+start+end+"]|("+start+"[^"+end+"]*"+end+"))*"+end)
+		else:
+			r"(?<!\\)'([^'])*'" # example for ' '
+			region_regex.compile(r"(?<!\\)"+start+"([^"+end+"])*"+end)
 	if to <= from:
 		to = len(line)-1
 	for region in region_regex.search_all(line.substr(from, to-from+2)):

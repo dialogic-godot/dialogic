@@ -22,16 +22,18 @@ class_name DialogicStyle
 }
 
 
-
-
 func _init(_name := "") -> void:
 	if not _name.is_empty():
 		name = _name
 
 
-
 #region BASE METHODS
 # These methods are local, meaning they do NOT take inheritance into account.
+
+func clear() -> void:
+	layer_list = []
+	layer_info = {"" : DialogicStyleLayer.new()}
+	inherits = null
 
 
 ## Returns the amount of layers (the base layer is not included).

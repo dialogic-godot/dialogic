@@ -353,7 +353,7 @@ func update_csv_files() -> void:
 	_silently_open_timeline(current_timeline)
 
 	# Trigger reimport.
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 	var status_message := "Events   created {new_events}   found {updated_events}
 		Names  created {new_names}   found {updated_names}
@@ -575,7 +575,7 @@ func erase_translations() -> void:
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(translation_files))
 	ProjectSettings.save()
 
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 	var status_message := "Timelines cleaned {cleaned_timelines}
 		Events cleaned {cleaned_events}
@@ -597,7 +597,7 @@ func erase_translations() -> void:
 	_silently_open_timeline(current_timeline)
 
 	# Trigger reimport.
-	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+	EditorInterface.get_resource_filesystem().scan_sources()
 
 	# Clear the internal settings.
 	ProjectSettings.clear('dialogic/translation/intern/save_mode')

@@ -5,6 +5,8 @@ var parent_resource: DialogicEvent = null
 
 
 func _ready() -> void:
+	$AddElif.icon = get_theme_icon("Add", "EditorIcons")
+	$AddElse.icon = get_theme_icon("Add", "EditorIcons")
 	$AddElif.button_up.connect(add_elif)
 	$AddElse.button_up.connect(add_else)
 

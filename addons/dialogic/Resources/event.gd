@@ -50,7 +50,8 @@ var empty_lines_above: int = 0
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+## The description that is displayed in the editor tooltip.
+var event_description := ""
 ## The event color that event node will take in the editor
 var event_color := Color("FBB13C"):
 	get:
@@ -63,8 +64,10 @@ var dialogic_color_name: = ""
 var event_sorting_index: int = 0
 ## If true the event will not have a button in the visual editor sidebar
 var disable_editor_button := false
-## If false the event will hide it's body by default. Recommended for most events
+## If false the event will hide its body by default (when loaded). Recommended for most events
 var expand_by_default := false
+## If true the event will hide its body when created. It's false by default, meaning when added the event is expanded.
+var collapse_on_create := false
 ## The URL to open when right_click>Documentation is selected
 var help_page_path := ""
 ## Is the event block created by a button?

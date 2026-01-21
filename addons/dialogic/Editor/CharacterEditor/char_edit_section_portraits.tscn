@@ -47,7 +47,7 @@ size_flags_horizontal = 8
 mode = 1
 step = 1.0
 min_value = 0.0
-max_value = 100.0
+max_value = 999.0
 suffix = "%"
 
 [node name="Label2" type="Label" parent="."]

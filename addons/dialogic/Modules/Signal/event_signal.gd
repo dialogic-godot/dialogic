@@ -9,13 +9,14 @@ extends DialogicEvent
 ### Settings
 
 enum ArgumentTypes {STRING, DICTIONARY}
-var argument_type := ArgumentTypes.STRING
-
+## The type of argument to be given with the signal.
+@export var argument_type := ArgumentTypes.STRING
 ## The argument that will be provided with the signal.
-var argument: Variant = ""
+@export var argument: Variant = ""
 
-################################################################################
-## 						EXECUTE
+
+
+#region EXECUTE
 ################################################################################
 
 func _execute() -> void:
@@ -31,22 +32,24 @@ func _execute() -> void:
 		dialogic.emit_signal('signal_event', argument)
 	finish()
 
+#endregion
 
-################################################################################
-## 						INITIALIZE
+
+#region INITIALIZE
 ################################################################################
 
 func _init() -> void:
 	event_name = "Signal"
+	event_description = "Emits the Dialogic.signal_event signal with a given argument. You can react to this signal in your code by connecting to it."
 	set_default_color('Color6')
 	event_category = "Logic"
 	event_sorting_index = 8
 	help_page_path = "https://docs.dialogic.pro/dialogic-signals.html#1-signal-event"
 
+#endregion
 
 
-################################################################################
-## 						SAVING/LOADING
+#region SAVING/LOADING
 ################################################################################
 
 func get_shortcode() -> String:
@@ -61,8 +64,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"arg"		: {"property": "argument", "default": ""}
 	}
 
-################################################################################
-## 						EDITOR REPRESENTATION
+#endregion
+
+
+#region EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor() -> void:
@@ -81,3 +86,5 @@ func build_event_editor() -> void:
 		]})
 	add_body_line_break('argument_type == ArgumentTypes.DICTIONARY')
 	add_body_edit('argument', ValueType.DICTIONARY, {'left_text': 'Dictionary'},'argument_type == ArgumentTypes.DICTIONARY')
+
+#endregion

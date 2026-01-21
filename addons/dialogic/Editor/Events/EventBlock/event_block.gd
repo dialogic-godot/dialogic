@@ -26,7 +26,6 @@ var has_any_enabled_body_content := false
 # Whether contained events (e.g. in choices) are visible
 var collapsed := false
 
-
 ## CONSTANTS
 const icon_size := 28
 const indent_size := 22
@@ -35,6 +34,8 @@ const indent_size := 22
 # List that stores visibility conditions
 var field_list := []
 var current_indent_level := 1
+var contained_events := []
+
 
 
 #region UI AND LOGIC INITIALIZATION
@@ -57,7 +58,7 @@ func initialize_ui() -> void:
 
 	add_theme_constant_override("margin_bottom", DialogicUtil.get_editor_setting("event_block_margin", 0) * _scale)
 
-	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
+	%PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 
 	# Warning Icon
 	%Warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
@@ -82,7 +83,7 @@ func initialize_ui() -> void:
 	%IconPanel.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
 	%IconTexture.custom_minimum_size = %IconPanel.custom_minimum_size
 
-	var custom_style: StyleBoxFlat = %IconPanel.get_theme_stylebox('panel')
+	var custom_style: StyleBoxFlat = %IconPanel.get_theme_stylebox("panel")
 	custom_style.set_corner_radius_all(5 * _scale)
 
 	# Focus Mode
@@ -93,23 +94,25 @@ func initialize_ui() -> void:
 
 	# Collapse Button
 	%ToggleChildrenVisibilityButton.toggled.connect(_on_collapse_toggled)
-	%ToggleChildrenVisibilityButton.icon = get_theme_icon("Collapse", "EditorIcons")
+	%ToggleChildrenVisibilityButton.icon = get_theme_icon("ExpandTree", "EditorIcons")
 	%ToggleChildrenVisibilityButton.hide()
 
 	%Body.add_theme_constant_override("margin_left", icon_size * _scale)
 
 	visual_deselect()
+	update_contain_ui()
+
 
 
 func initialize_logic() -> void:
-	resized.connect(get_parent().get_parent().queue_redraw)
+	resized.connect(func(): await get_tree().process_frame;get_parent().get_parent().queue_redraw())
 
 	resource.ui_update_needed.connect(_on_resource_ui_update_needed)
 	resource.ui_update_warning.connect(set_warning)
 
 	content_changed.connect(recalculate_field_visibility)
 
-	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button)
+	_on_ToggleBodyVisibility_toggled(resource.expand_by_default or resource.created_by_button and not resource.collapse_on_create)
 
 #endregion
 
@@ -118,17 +121,17 @@ func initialize_logic() -> void:
 ################################################################################
 
 func visual_select() -> void:
-	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
+	%PanelContainer.add_theme_stylebox_override("panel", load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
 	selected = true
 	%IconPanel.self_modulate = resource.event_color
 	%IconTexture.modulate = get_theme_color("icon_saturation", "Editor")
 
 
 func visual_deselect() -> void:
-	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
+	%PanelContainer.add_theme_stylebox_override("panel", load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
 	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.1)
-	%IconTexture.modulate = get_theme_color('font_color', 'Label')
+	%IconTexture.modulate = get_theme_color("font_color", "Label")
 
 
 func is_selected() -> bool:
@@ -136,7 +139,7 @@ func is_selected() -> bool:
 
 
 func set_warning(text:String= "") -> void:
-	if !text.is_empty():
+	if not text.is_empty():
 		%Warning.show()
 		%Warning.tooltip_text = text
 	else:
@@ -146,6 +149,46 @@ func set_warning(text:String= "") -> void:
 func set_indent(indent: int) -> void:
 	add_theme_constant_override("margin_left", indent_size * indent * DialogicUtil.get_editor_scale())
 	current_indent_level = indent
+	post_indent_update()
+
+
+func post_indent_update() -> void:
+	%ToggleChildrenVisibilityButton.visible = end_node and contained_events
+	update_contain_ui()
+
+
+func update_contain_ui():
+	if end_node and ((contained_events and collapsed) or (not contained_events and not collapsed)):
+		add_theme_constant_override("margin_bottom", 30)
+	else:
+		add_theme_constant_override("margin_bottom", 0)
+
+
+func _draw() -> void:
+	if selected and end_node and not contained_events and not collapsed:
+		draw_string(
+			get_theme_default_font(),
+			Vector2(
+				%HeaderContent.global_position.x-global_position.x,
+				%VBox.global_position.y-global_position.y+%VBox.size.y + get_theme_default_font_size()+10),
+			"Add Events Here",
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			get_theme_default_font_size(), get_theme_color("font_placeholder_color", "Editor"))
+
+	if end_node and contained_events and collapsed:
+		var start_pos := Vector2(
+				%HeaderContent.global_position.x-global_position.x,
+				%VBox.global_position.y-global_position.y+%VBox.size.y+10)
+		var offset := Vector2()
+		var stylebox := StyleBoxFlat.new()
+		stylebox.set_corner_radius_all(4)
+		stylebox.bg_color = get_theme_color("disabled_bg_color", "Editor")
+		for i:DialogicEvent in contained_events:
+			if i is DialogicEndBranchEvent: continue
+			draw_style_box(stylebox, Rect2(start_pos+offset, Vector2(25,25)))
+			draw_texture_rect(i._get_icon(), Rect2(start_pos+offset, Vector2(25,25)), false, get_theme_color("font_placeholder_color", "Editor").lerp(i.event_color, 0.5))
+			offset += Vector2(28, 0)
 
 #endregion
 
@@ -291,6 +334,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			left_label.add_theme_color_override('font_color', resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.8))
 			location.add_child(left_label)
 			location.move_child(left_label, editor_node.get_index())
+
 		if !p.get('right_text', '').is_empty():
 			right_label = Label.new()
 			right_label.text = p.get('right_text')
@@ -314,13 +358,15 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			expanded = false
 			%Body.visible = false
 
+	update_contain_ui()
+
 	recalculate_field_visibility()
 
 
 func recalculate_field_visibility() -> void:
 	has_any_enabled_body_content = false
 	for p in field_list:
-		if !p.has('condition') or p.condition.is_empty():
+		if not p.has("condition") or p.condition.is_empty():
 			if p.node != null:
 				p.node.show()
 			if p.location == 1:
@@ -355,7 +401,7 @@ func _evaluate_visibility_condition(p: Dictionary) -> bool:
 	else:
 		result = false
 	if expr.has_execute_failed():
-		printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
+		printerr("[Dialogic] Failed executing visibility condition for '",p.get("property", "unnamed"),"': " + expr.get_error_text())
 	return result
 
 
@@ -368,13 +414,13 @@ func get_field_node(property_name:String) -> Node:
 
 func _on_resource_ui_update_needed() -> void:
 	for node_info in field_list:
-		if node_info.node and node_info.node.has_method('set_value'):
+		if node_info.node and node_info.node.has_method("set_value"):
 			# Only set the value if the field is visible
 			#
 			# This prevents events with varied value types (event_setting, event_variable)
 			# from injecting incorrect types into hidden fields, which then throw errors
 			# in the console.
-			if node_info.has('condition') and not node_info.condition.is_empty():
+			if node_info.has("condition") and not node_info.condition.is_empty():
 				if _evaluate_visibility_condition(node_info):
 					node_info.node.set_value(resource.get(node_info.property))
 			else:
@@ -387,16 +433,17 @@ func _on_resource_ui_update_needed() -> void:
 
 func _on_collapse_toggled(toggled:bool) -> void:
 	collapsed = toggled
-	var timeline_editor: Node = find_parent('VisualEditor')
+	var timeline_editor: Node = find_parent("VisualEditor")
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 		# consider to make it "public" or add a public helper function
 		timeline_editor.indent_events()
+	%ToggleChildrenVisibilityButton.icon = get_theme_icon("ExpandTree", "EditorIcons") if toggled else get_theme_icon("CollapseTree", "EditorIcons")
 
 
 
 func _on_ToggleBodyVisibility_toggled(button_pressed:bool) -> void:
-	if button_pressed and !body_was_build:
+	if button_pressed and not body_was_build:
 		build_editor(false, true)
 	%ToggleBodyVisibilityButton.set_pressed_no_signal(button_pressed)
 
@@ -408,8 +455,15 @@ func _on_ToggleBodyVisibility_toggled(button_pressed:bool) -> void:
 	expanded = button_pressed
 	%Body.visible = button_pressed
 
-	if find_parent('VisualEditor') != null:
-		find_parent('VisualEditor').indent_events()
+
+	await get_tree().process_frame
+	await get_tree().process_frame
+	queue_redraw()
+
+	if find_parent("TimelineArea") != null:
+		find_parent("TimelineArea").queue_redraw()
+
+
 
 
 func _on_EventNode_gui_input(event:InputEvent) -> void:

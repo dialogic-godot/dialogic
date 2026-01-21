@@ -9,6 +9,8 @@ var item: TreeItem = null
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
 	hide()
 	%Character.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	%Character.suggestions_func = get_character_suggestions

@@ -9,17 +9,17 @@ enum ElseActions {HIDE=0, DISABLE=1, DEFAULT=2}
 
 ### Settings
 ## The text that is displayed on the choice button.
-var text := ""
+@export var text := ""
 ## If not empty this condition will determine if this choice is active.
-var condition := ""
+@export var condition := ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
-var else_action := ElseActions.DEFAULT
+@export var else_action := ElseActions.DEFAULT
 ## The text that is displayed if [condition] is false and [else_action] is Disable.
 ## If empty [text] will be used for disabled button as well.
-var disabled_text := ""
+@export var disabled_text := ""
 ## A dictionary that can be filled with arbitrary information
 ## This can then be interpreted by a custom choice layer
-var extra_data := {}
+@export var extra_data := {}
 
 
 ## UI helper
@@ -34,8 +34,8 @@ var regex := RegEx.create_from_string(r'- (?<text>(?>\\\||(?(?=.*\|)[^|]|(?!\[if
 
 func _execute() -> void:
 	if dialogic.Choices.is_question(dialogic.current_event_idx):
-		dialogic.Choices.show_current_question(false)
 		dialogic.current_state = dialogic.States.AWAITING_CHOICE
+		dialogic.Choices.show_current_question(false)
 
 
 func _is_branch_starter() -> bool:
@@ -49,11 +49,13 @@ func _is_branch_starter() -> bool:
 
 func _init() -> void:
 	event_name = "Choice"
+	event_description = "Shows a clickable option. Should be grouped together with other choices. Contains events that are played when chosen. Can have a condition."
 	set_default_color('Color3')
 	event_category = "Flow"
 	event_sorting_index = 0
 	can_contain_events = true
 	wants_to_group = true
+	collapse_on_create = true
 
 
 # return a control node that should show on the END BRANCH node

@@ -9,6 +9,8 @@ func _ready() -> void:
 	%TabB.text = "Unique Identifiers"
 	%TabB.icon = get_theme_icon("CryptoKey", "EditorIcons")
 
+	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+
 	owner.get_parent().visibility_changed.connect(func(): if is_visible_in_tree(): open())
 
 	%RenameNotification.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))

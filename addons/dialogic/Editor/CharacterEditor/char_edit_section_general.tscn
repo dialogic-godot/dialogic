@@ -1,21 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnkck3hocbkk5"]
+[gd_scene format=3 uid="uid://bnkck3hocbkk5"]
 
 [ext_resource type="Script" uid="uid://c0nilv2pybryh" path="res://addons/dialogic/Editor/CharacterEditor/char_edit_section_general.gd" id="1_3e1i1"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_cxfqm"]
 
-[sub_resource type="Image" id="Image_ywoka"]
-data = {
-"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 44, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 94, 94, 234, 255, 95, 95, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id="ImageTexture_hx3oq"]
-image = SubResource("Image_ywoka")
-
-[node name="General" type="GridContainer"]
+[node name="General" type="GridContainer" unique_id=1851637759]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,83 +18,84 @@ theme_override_constants/v_separation = 6
 columns = 2
 script = ExtResource("1_3e1i1")
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="." unique_id=1894751349]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label2" type="Label" parent="HBox"]
+[node name="Label2" type="Label" parent="HBox" unique_id=390789841]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Display Name"
 
-[node name="HintTooltip" parent="HBox" instance=ExtResource("2_cxfqm")]
+[node name="HintTooltip" parent="HBox" unique_id=2005979450 instance=ExtResource("2_cxfqm")]
 layout_mode = 2
 tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
-texture = SubResource("ImageTexture_hx3oq")
-hint_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
+texture = null
+hint_text = "This name will be displayed on the name label. If you want it to change, you can use a dialogic variable. E.g.: {Player.Name}"
 
-[node name="DisplayName" type="HBoxContainer" parent="."]
+[node name="DisplayName" type="HBoxContainer" parent="." unique_id=1051746999]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DisplayNameLineEdit" type="LineEdit" parent="DisplayName"]
+[node name="DisplayNameLineEdit" type="LineEdit" parent="DisplayName" unique_id=1885833416]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="HintTooltip4" parent="DisplayName" instance=ExtResource("2_cxfqm")]
+[node name="HintTooltip4" parent="DisplayName" unique_id=598606526 instance=ExtResource("2_cxfqm")]
 layout_mode = 2
 tooltip_text = "This color can be used on the name label and for occurences of the characters name in text (autocolor names)."
-texture = SubResource("ImageTexture_hx3oq")
+texture = null
 hint_text = "This color can be used on the name label and for occurences of the characters name in text (autocolor names)."
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="DisplayName"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="DisplayName" unique_id=1061485751]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
+theme_type_variation = &"FlatButton"
 color = Color(1, 1, 1, 1)
 edit_alpha = false
 
-[node name="HBox2" type="HBoxContainer" parent="."]
+[node name="HBox2" type="HBoxContainer" parent="." unique_id=2113659797]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label3" type="Label" parent="HBox2"]
+[node name="Label3" type="Label" parent="HBox2" unique_id=1585220068]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Nicknames"
 
-[node name="HintTooltip2" parent="HBox2" instance=ExtResource("2_cxfqm")]
+[node name="HintTooltip2" parent="HBox2" unique_id=1893234037 instance=ExtResource("2_cxfqm")]
 layout_mode = 2
 tooltip_text = "If autocolor names is enabled, these will be colored in the characters color as well."
-texture = SubResource("ImageTexture_hx3oq")
+texture = null
 hint_text = "If autocolor names is enabled, these will be colored in the characters color as well."
 
-[node name="NicknameLineEdit" type="LineEdit" parent="."]
+[node name="NicknameLineEdit" type="LineEdit" parent="." unique_id=888809208]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="HBox3" type="HBoxContainer" parent="."]
+[node name="HBox3" type="HBoxContainer" parent="." unique_id=734718932]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label4" type="Label" parent="HBox3"]
+[node name="Label4" type="Label" parent="HBox3" unique_id=921032409]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Description"
 
-[node name="HintTooltip3" parent="HBox3" instance=ExtResource("2_cxfqm")]
+[node name="HintTooltip3" parent="HBox3" unique_id=629870151 instance=ExtResource("2_cxfqm")]
 layout_mode = 2
 tooltip_text = "No effect, just for you."
-texture = SubResource("ImageTexture_hx3oq")
+texture = null
 hint_text = "No effect, just for you."
 
-[node name="DescriptionTextEdit" type="TextEdit" parent="."]
+[node name="DescriptionTextEdit" type="TextEdit" parent="." unique_id=1368503580]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 65)
 layout_mode = 2

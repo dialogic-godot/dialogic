@@ -16,7 +16,7 @@ extends DialogicSubsystem
 @warning_ignore("unused_signal") # This is emitted by the text event.
 signal about_to_show_text(info:Dictionary)
 ## Emitted when a text event (or a new text section) starts displaying.
-## This will be AFTER the textox animation, while [signal about_to_show_text] is before.
+## This will be AFTER the textbox animation, while [signal about_to_show_text] is before.
 ## Gives a dictionary with the same values as [signal about_to_show_text]
 @warning_ignore("unused_signal") # This is emitted by the text event.
 signal text_started(info:Dictionary)
@@ -296,12 +296,6 @@ func update_dialog_text(text: String, instant := false, additional := false, tex
 				text_node.text = text
 
 			else:
-				var speaker := get_current_speaker()
-				if speaker:
-					var character_prefix: String = speaker.custom_info.get(DialogicCharacterPrefixSuffixSection.PREFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_PREFIX)
-					var character_suffix: String = speaker.custom_info.get(DialogicCharacterPrefixSuffixSection.SUFFIX_CUSTOM_KEY, DialogicCharacterPrefixSuffixSection.DEFAULT_SUFFIX)
-					text = character_prefix + text + character_suffix
-
 				text_node.reveal_text(text, additional)
 
 				if not text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
@@ -309,14 +303,15 @@ func update_dialog_text(text: String, instant := false, additional := false, tex
 
 			dialog_text_parsed = (text_node as RichTextLabel).get_parsed_text()
 
-	# Reset speed multiplier
-	update_text_speed(-1, false, 1)
-	# Reset Auto-Advance temporarily and the No-Skip setting:
-	dialogic.Inputs.auto_advance.enabled_until_next_event = false
-	dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
-	dialogic.Inputs.manual_advance.disabled_until_next_event = false
+	if not additional:
+		# Reset speed multiplier
+		update_text_speed(-1, false, 1)
+		# Reset Auto-Advance temporarily and the No-Skip setting:
+		dialogic.Inputs.auto_advance.enabled_until_next_event = false
+		dialogic.Inputs.auto_advance.override_delay_for_current_event = -1
+		dialogic.Inputs.manual_advance.disabled_until_next_event = false
 
-	set_text_reveal_skippable(true, true)
+		set_text_reveal_skippable(true, true)
 
 	return text
 
