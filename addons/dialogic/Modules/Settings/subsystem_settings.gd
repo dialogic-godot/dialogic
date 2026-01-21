@@ -19,7 +19,7 @@ var _connections := {}
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
+func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	_reload_settings()
 
 
