@@ -250,12 +250,14 @@ func update_name_label(character:DialogicCharacter):
 
 
 func update_typing_sound_mood_from_character(character:DialogicCharacter, mood:String) -> void:
+	character.current_mood = mood
 	if character.custom_info.get("sound_moods", {}).is_empty():
 		update_typing_sound_mood()
 	elif mood in character.custom_info.get("sound_moods", {}):
 		update_typing_sound_mood(character.custom_info.get("sound_moods", {})[mood])
 	else:
 		var default_mood : String = character.custom_info.get("sound_mood_default", "")
+		character.current_mood = default_mood
 		update_typing_sound_mood(character.custom_info.get("sound_moods", {}).get(default_mood, {}))
 
 
