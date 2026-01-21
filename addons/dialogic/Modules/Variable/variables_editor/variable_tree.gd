@@ -64,18 +64,18 @@ func add_variable_item(item_name:String, value:Variant, parent:TreeItem) -> Tree
 	item.set_text(0, item_name)
 	item.set_editable(0, true)
 	item.set_metadata(0, item_name)
-	item.set_icon(0, load(DialogicUtil.get_module_path('Variable').path_join("variable.svg")))
+	item.set_icon(0, load(DialogicUtil.get_module_path("Variable").path_join("variable.svg")))
 
-	var folder_color: Color = parent.get_meta('color', Color.TRANSPARENT)
+	var folder_color: Color = parent.get_meta("color", Color.TRANSPARENT)
 	folder_color.a *= 0.5
 	item.set_custom_bg_color(0, folder_color.lerp(get_theme_color("background", "Editor"), 0.5))
 
-	item.add_button(1, get_theme_icon("String", "EditorIcons"), TreeButtons.CHANGE_TYPE)
+	item.add_button(1, get_theme_icon("String", "EditorIcons"), TreeButtons.CHANGE_TYPE, false, "Change Type")
 	set_variable_value(item, DialogicUtil.get_variable_value_type(value), value)
 	item.set_editable(2, true)
-	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE)
+	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE, false, "Delete Variable")
 
-	item.set_meta('prev_path', get_item_path(item))
+	item.set_meta("prev_path", get_item_path(item))
 	return item
 
 
@@ -119,10 +119,10 @@ func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
 	item.set_custom_bg_color(2, folder_color)
 	item.set_meta('color', folder_color)
 
-	item.add_button(2, load(self.get_script().get_path().get_base_dir().get_base_dir() + "/add-variable.svg"), TreeButtons.ADD_VARIABLE)
-	item.add_button(2, load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg"), TreeButtons.ADD_FOLDER)
-	item.add_button(2, get_theme_icon("Duplicate", "EditorIcons"), TreeButtons.DUPLICATE_FOLDER, item == get_root())
-	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE, item == get_root())
+	item.add_button(2, load(self.get_script().get_path().get_base_dir().get_base_dir() + "/add-variable.svg"), TreeButtons.ADD_VARIABLE, false, "Add Variable")
+	item.add_button(2, load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg"), TreeButtons.ADD_FOLDER, false, "Add Group")
+	item.add_button(2, get_theme_icon("Duplicate", "EditorIcons"), TreeButtons.DUPLICATE_FOLDER, item == get_root(), "Duplicate Group")
+	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE, item == get_root(), "Delete Group")
 
 	return item
 
