@@ -637,13 +637,16 @@ static func str_to_hash_set(source: String) -> Dictionary:
 #endregion
 
 
-static func get_character_suggestions(_search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
+static func get_character_suggestions(search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
 	var suggestions := {}
 
 	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	if allow_none and current_value:
 		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	
+	if "{" in search_text:
+		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 
 	if allow_all:
 		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}

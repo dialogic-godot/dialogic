@@ -81,6 +81,8 @@ var character_identifier: String:
 	get:
 		if character_identifier == '--All--':
 			return '--All--'
+		elif character_identifier.begins_with("{"):
+			return character_identifier
 		if character:
 			var identifier := character.get_identifier()
 			if not identifier.is_empty():
@@ -100,6 +102,9 @@ var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name
 ################################################################################
 
 func _execute() -> void:
+	if character_identifier.begins_with("{"):
+		character = DialogicResourceUtil.get_character_resource(dialogic.Expressions.execute_string(character_identifier))
+		
 	if not character and not character_identifier == "--All--":
 		finish()
 		return
@@ -111,7 +116,9 @@ func _execute() -> void:
 		var max_time: float = dialogic.Inputs.auto_skip.time_per_event
 		final_animation_length = min(max_time, animation_length)
 		final_position_move_time = min(max_time, transform_time)
-
+	
+	if portrait.begins_with("{"):
+		portrait = str(dialogic.Expressions.execute_string(portrait))
 
 	# JOIN -------------------------------------
 	if action == Actions.JOIN:
@@ -200,14 +207,14 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Character"
 	event_description = "Allows joining or leaving a character or updating its portrait, position, mirroring, z-index or animation."
-	set_default_color('Color2')
+	set_default_color("Color2")
 	event_category = "Main"
 	event_sorting_index = 2
 	help_page_path = "https://docs.dialogic.pro/event-character.html"
 
 
 func _get_icon() -> Resource:
-	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
+	return load(self.get_script().get_path().get_base_dir().path_join("icon.svg"))
 
 #endregion
 
@@ -227,18 +234,23 @@ func to_text() -> String:
 	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
 
 	# CHARACTER IDENTIFIER
-	if action == Actions.LEAVE and character_identifier == '--All--':
+	if action == Actions.LEAVE and character_identifier == "--All--":
 		result_string += "--All--"
-	elif character:
-		var name := character.get_character_name()
+	if character or character_identifier.begins_with("{"):
+		if character:
+			var name := character.get_character_name()
 
-		if name.count(" ") > 0:
-			name = '"' + name + '"'
+			if name.count(" ") > 0:
+				name = '"' + name + '"'
 
-		result_string += name
+			result_string += name
+		
+		else:
+			result_string += character_identifier
+		
 
 		# PORTRAIT
-		if portrait.strip_edges() != default_values.get('portrait', ''):
+		if portrait.strip_edges() != default_values.get("portrait", ""):
 			if action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
 				result_string += " (" + portrait + ")"
 
@@ -266,19 +278,21 @@ func from_text(string:String) -> void:
 	var result := regex.search(string)
 
 	# ACTION
-	match result.get_string('type'):
+	match result.get_string("type"):
 		"join": action = Actions.JOIN
 		"leave": action = Actions.LEAVE
 		"update": action = Actions.UPDATE
 
 	# CHARACTER
-	var given_name := result.get_string('name').strip_edges()
-	var given_portrait := result.get_string('portrait').strip_edges()
-	var given_transform := result.get_string('transform').strip_edges()
+	var given_name := result.get_string("name").strip_edges()
+	var given_portrait := result.get_string("portrait").strip_edges()
+	var given_transform := result.get_string("transform").strip_edges()
 
 	if given_name:
 		if action == Actions.LEAVE and given_name == "--All--":
 			character_identifier = '--All--'
+		if given_name.begins_with("{"):
+			character_identifier = given_name.strip_edges()
 		else:
 			character = DialogicResourceUtil.get_character_resource(given_name)
 
@@ -443,7 +457,7 @@ func should_show_fade_options() -> bool:
 
 
 func should_show_portrait_selector() -> bool:
-	return character and len(character.portraits) > 1 and action != Actions.LEAVE
+	return ((character and len(character.portraits) > 1) or character_identifier.begins_with("{")) and action != Actions.LEAVE
 
 
 func has_no_portraits() -> bool:
@@ -458,7 +472,8 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var empty_text := "Don't Change"
 	if action == Actions.JOIN:
 		empty_text = "Default"
-	return DialogicUtil.get_portrait_suggestions(search_text, character, true, empty_text)
+	
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, empty_text, character_identifier.begins_with("{"))
 
 
 func get_position_suggestions(search_text:String='') -> Dictionary:
