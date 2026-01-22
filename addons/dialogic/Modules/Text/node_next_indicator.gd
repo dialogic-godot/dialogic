@@ -44,7 +44,7 @@ var tween: Tween
 
 func _ready() -> void:
 	add_to_group('dialogic_next_indicator')
-
+	gui_input.connect(_on_gui_input)
 	# Creating TextureRect if missing
 	if not texture_rect:
 		var icon := TextureRect.new()
@@ -61,6 +61,9 @@ func _ready() -> void:
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 
+
+func _on_gui_input(event: InputEvent) -> void:
+	Dialogic.Inputs.handle_node_gui_input(event)
 
 func _on_visibility_changed() -> void:
 	if visible:
