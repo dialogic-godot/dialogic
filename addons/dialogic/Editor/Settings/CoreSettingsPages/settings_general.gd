@@ -2,7 +2,7 @@
 extends DialogicSettingsPage
 
 ## Settings tab that holds genreal dialogic settings.
-
+const DIALOGIC_RESERVED_WORDS = ["Animations", "Audio", "Background", "Choice", "Expressoins", "Glossary", "History", "Jump", "PortraitContainers", "Portrait", "Save", "Styles", "Text", "TextInput", "Voice", "VAR"]
 
 func _get_title() -> String:
 	return "General"
@@ -22,6 +22,7 @@ func _ready() -> void:
 	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
 	%PhysicsTimerButton.toggled.connect(_on_physics_timer_button_toggled)
 
+	%NameEdit.text_changed.connect(_on_name_edit_changed)
 
 	# Extension creator
 	%ExtensionCreator.hide()
@@ -66,7 +67,7 @@ func _on_create_extension_button_pressed() -> void:
 func _on_submit_extension_button_pressed() -> void:
 	if %NameEdit.text.is_empty():
 		return
-
+	
 	var extensions_folder: String = ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
 
 	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
@@ -175,3 +176,13 @@ func force_event_button_list_reload() -> void:
 
 func _on_reload_pressed() -> void:
 	DialogicUtil._update_autoload_subsystem_access()
+
+
+func _on_name_edit_changed(new_text: String) -> void:
+		if new_text in DIALOGIC_RESERVED_WORDS:
+			%WarningMessage.text = str("[color=yellow]Warning: Extension ",new_text," is the same as an existing subsystem. \
+			If you do not intend to override the base subsystem, choose a new name.")
+			%WarningMessage.visible = true
+		else:
+			%WarningMessage.visible = false
+			

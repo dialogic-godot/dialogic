@@ -66,6 +66,9 @@ var paused := false:
 ## By default this timeline only contains a clear event.
 var dialog_ending_timeline: DialogicTimeline
 
+## Flag to identify if current timeline is network enabled
+var is_mp_timeline : bool = false
+
 ## Emitted when [member paused] changes to `true`.
 signal dialogic_paused
 ## Emitted when [member paused] changes to `false`.
@@ -165,6 +168,15 @@ func _ready() -> void:
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
+@rpc("any_peer", "call_local")
+# This allows Dialogic to be easily multiplayer compatible
+# 	as its an RPC call, we have to use a string
+
+
+func start_mp(timeline : String) -> void:
+	is_mp_timeline = true
+	start(timeline)
+
 
 ## Method to start a timeline AND ensure that a layout scene is present.
 ## For argument info, checkout [method start_timeline].
@@ -448,6 +460,15 @@ func get_subsystem(subsystem_name:String) -> DialogicSubsystem:
 
 ## Adds a subsystem node with the given [param subsystem_name] and [param script_path].
 func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsystem:
+	var existing_subsystem_node = get_node_or_null(subsystem_name)
+	
+	# If two Subsystem have the same name, we override the existing one with the new one
+	if is_instance_valid(existing_subsystem_node):
+		existing_subsystem_node.set_script(load(script_path))
+		existing_subsystem_node.dialogic = self
+		existing_subsystem_node._ready()
+		return existing_subsystem_node
+	
 	var node: Node = Node.new()
 	node.name = subsystem_name
 	node.set_script(load(script_path))
