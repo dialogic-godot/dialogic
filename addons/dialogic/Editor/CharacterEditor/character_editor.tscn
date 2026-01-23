@@ -88,7 +88,6 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Hide Main Settings"
 theme_type_variation = &"FlatButton"
-text = "     "
 
 [node name="MainSettingsScroll" type="ScrollContainer" parent="Scroll/VBox/MainHSplit/MainSettingsPanel/MainSettings" unique_id=802937484]
 unique_name_in_owner = true
@@ -268,7 +267,7 @@ position = Vector2(13, 17)
 
 [node name="RealPreviewPivot" type="Sprite2D" parent="Scroll/VBox/MainHSplit/Split/RightSection2/RightSection/PortraitPreviewSection/ClipRect/Node2D" unique_id=1422961354]
 unique_name_in_owner = true
-position = Vector2(329, 287)
+position = Vector2(325.5, 286)
 
 [node name="ScenePreviewWarning" type="Label" parent="Scroll/VBox/MainHSplit/Split/RightSection2/RightSection/PortraitPreviewSection" unique_id=1589232067]
 unique_name_in_owner = true

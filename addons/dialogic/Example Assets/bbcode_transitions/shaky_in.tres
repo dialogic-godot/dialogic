@@ -1,4 +1,4 @@
-[gd_resource type="RichTextEffect" script_class="DialogicRichTextTransitionEffect" load_steps=6 format=3 uid="uid://dnxkgwncm1pt5"]
+[gd_resource type="RichTextEffect" script_class="DialogicRichTextTransitionEffect" format=3 uid="uid://dnxkgwncm1pt5"]
 
 [ext_resource type="Script" uid="uid://wf7hpguw17ex" path="res://addons/dialogic/Example Assets/bbcode_transitions/bbcode_transition_effect.gd" id="1_ur6c5"]
 
@@ -31,5 +31,4 @@ scale_pivot = Vector2(0.5, 0.5)
 position_enabled = true
 position_x_curve = SubResource("Curve_5qe3f")
 position_y_curve = SubResource("Curve_ur6c5")
-test_value = -0.1
 metadata/_custom_type_script = "uid://wf7hpguw17ex"
