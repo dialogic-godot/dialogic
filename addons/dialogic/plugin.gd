@@ -38,7 +38,7 @@ func _enter_tree() -> void:
 	editor_view.plugin_reference = self
 	EditorInterface.get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
-	
+
 	var export_plugin : EditorExportPlugin = load(EDITOR_EXPORT_PLUGIN).new()
 	add_export_plugin(export_plugin)
 
