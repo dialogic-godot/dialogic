@@ -8,8 +8,10 @@ extends DialogicEvent
 ### Settings
 
 ## Used to identify the label. Duplicate names in a timeline will mean it always chooses the first.
-var name := ""
-var display_name := ""
+@export var name := ""
+## Translatable property you could use in game.
+## Will be passed to [signal Dialogic.Jump.passed_label] signal and the last one can be retreived with [method Dialogic.Jump.get_last_label_name].
+@export var display_name := ""
 
 
 #region EXECUTE

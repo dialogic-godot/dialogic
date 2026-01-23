@@ -11,14 +11,14 @@ extends DialogicEvent
 ## This is the content of the text event.
 ## It is supposed to be displayed by a DialogicNode_DialogText node.
 ## That means you can use bbcode, but also some custom commands.
-var text := ""
+@export var text := ""
 ## If this is not null, the given character (as a resource) will be associated with this event.
 ## The DialogicNode_NameLabel will show the characters display_name. If a typing sound is setup,
 ## it will play.
-var character: DialogicCharacter = null
+@export var character: DialogicCharacter = null
 ## If a character is set, this setting can change the portrait of that character.
 ## If a runtime-character is created, the portrait can instead be a color (hex or color name).
-var portrait := ""
+@export var portrait := ""
 
 ### Helpers
 
@@ -49,7 +49,7 @@ signal advance
 ################################################################################
 
 func _clear_state() -> void:
-	dialogic.current_state_info.erase('text_sub_idx')
+	dialogic.Text.text_sub_index = -1
 	_disconnect_signals()
 
 
@@ -80,7 +80,7 @@ func _execute() -> void:
 
 		var current_portrait: String = portrait
 		if portrait.is_empty():
-			current_portrait = dialogic.current_state_info["portraits"].get(character.get_identifier(), {}).get("portrait", "")
+			current_portrait = dialogic.Portraits.portraits.get(character.get_identifier(), {}).get("portrait", "")
 
 		var current_portrait_sound_mood: String = character.portraits.get(current_portrait, {}).get("sound_mood", "")
 		dialogic.Text.update_typing_sound_mood_from_character(character, current_portrait_sound_mood)
@@ -92,13 +92,13 @@ func _execute() -> void:
 
 	## Handle style changes
 	if dialogic.has_subsystem("Styles"):
-		var current_base_style: String = dialogic.current_state_info.get("base_style")
-		var current_style: String = dialogic.current_state_info.get("style", "")
+		var current_base_style: String = dialogic.Styles.base_style
+		var current_style: String = dialogic.Styles.style
 		var character_style: String = "" if not character else character.custom_info.get("style", "")
 
 		## Change back to base style, if another characters style is currently used
-		if (not character or character_style.is_empty()) and (current_base_style != current_style):
-			dialogic.Styles.change_style(dialogic.current_state_info.get("base_style", "Default"))
+		if character_style.is_empty() and current_base_style != current_style:
+			dialogic.Styles.change_style(current_base_style)
 			await dialogic.get_tree().process_frame
 
 		## Change to the characters style if this character has one
@@ -122,17 +122,15 @@ func _execute() -> void:
 		split_text.append([i.get_string().trim_prefix('[n]').trim_prefix('[n+]')])
 		split_text[-1].append(i.get_string().begins_with('[n+]'))
 
-	dialogic.current_state_info["text_sub_idx"] = dialogic.current_state_info.get("text_sub_idx", -1)
+	var reveal_next_segment: bool = dialogic.Text.text_sub_index == -1
 
-	var reveal_next_segment: bool = dialogic.current_state_info["text_sub_idx"] == -1
-
-	for section_idx in range(min(max(0, dialogic.current_state_info["text_sub_idx"]), len(split_text)-1), len(split_text)):
-		dialogic.Inputs.block_input(ProjectSettings.get_setting("dialogic/text/text_reveal_skip_delay", 0.1))
+	for section_idx in range(min(max(0, dialogic.Text.text_sub_index), len(split_text)-1), len(split_text)):
+		dialogic.Inputs.block_input(ProjectSettings.get_setting('dialogic/text/text_reveal_skip_delay', 0.1))
 
 		if reveal_next_segment:
 			dialogic.Text.hide_next_indicators()
 
-			dialogic.current_state_info["text_sub_idx"] = section_idx
+			dialogic.Text.text_sub_index = section_idx
 
 			var section_text: String = split_text[section_idx][0]
 			var is_append: bool = split_text[section_idx][1]
@@ -156,7 +154,7 @@ func _execute() -> void:
 
 			dialogic.Text.about_to_show_text.emit({"text":final_text, "character":character, "portrait":portrait, "append": is_append})
 
-			await dialogic.Text.update_textbox(final_text, false)
+			await dialogic.Text.textbox_handle_auto_visibility(final_text)
 
 			state = States.REVEALING
 			_try_play_current_line_voice()

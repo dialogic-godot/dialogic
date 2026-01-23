@@ -29,12 +29,8 @@ enum ClearFlags {
 var current_timeline: DialogicTimeline = null
 ## Copy of the [member current_timeline]'s events.
 var current_timeline_events: Array = []
-
 ## Index of the event the timeline handling is currently at.
 var current_event_idx: int = 0
-## Contains all information that subsystems consider relevant for
-## the current situation
-var current_state_info: Dictionary = {}
 
 ## Current state (see [member States] enum).
 var current_state := States.IDLE:
@@ -52,21 +48,17 @@ signal state_changed(new_state:States)
 var paused := false:
 	set(value):
 		paused = value
-
 		if paused:
-
 			for subsystem in get_children():
-
 				if subsystem is DialogicSubsystem:
-					(subsystem as DialogicSubsystem).pause()
+					(subsystem as DialogicSubsystem)._pause()
 
 			dialogic_paused.emit()
 
 		else:
 			for subsystem in get_children():
-
 				if subsystem is DialogicSubsystem:
-					(subsystem as DialogicSubsystem).resume()
+					(subsystem as DialogicSubsystem)._resume()
 
 			dialogic_resumed.emit()
 
@@ -179,7 +171,7 @@ func _ready() -> void:
 ## -> returns the layout node
 func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 	# If we don't have a style subsystem, default to just start_timeline()
-	if not has_subsystem('Styles'):
+	if not has_subsystem("Styles"):
 		printerr("[Dialogic] You called Dialogic.start() but the Styles subsystem is missing!")
 		clear(ClearFlags.KEEP_VARIABLES)
 		start_timeline(timeline, label_or_idx)
@@ -205,8 +197,8 @@ func start(timeline:Variant, label_or_idx:Variant="") -> Node:
 
 
 ## Method to start a timeline without adding a layout scene.
-## @timeline can be either a loaded timeline resource or a path to a timeline file.
-## @label_or_idx can be a label (string) or index (int) to skip to immediatly.
+## [param timeline] can be either a loaded timeline resource or a path to a timeline file.
+## [param label_or_idx] can be a label (string) or index (int) to skip to immediatly.
 func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline) in [TYPE_STRING, TYPE_STRING_NAME]:
@@ -230,7 +222,7 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	if typeof(label_or_idx) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if label_or_idx:
-			if has_subsystem('Jump'):
+			if has_subsystem("Jump"):
 				Jump.jump_to_label((label_or_idx as String))
 	elif typeof(label_or_idx) == TYPE_INT:
 		if label_or_idx >-1:
@@ -271,7 +263,7 @@ func end_timeline(skip_ending := false) -> void:
 	await clear(ClearFlags.TIMELINE_INFO_ONLY)
 
 	if Styles.has_active_layout_node() and Styles.get_layout_node().is_inside_tree():
-		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
+		match ProjectSettings.get_setting("dialogic/layout/end_behaviour", 0):
 			0:
 				Styles.get_layout_node().get_parent().remove_child(Styles.get_layout_node())
 				Styles.get_layout_node().queue_free()
@@ -324,7 +316,7 @@ func handle_event(event_index:int) -> void:
 	if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
 		current_timeline_events[event_index].event_finished.connect(handle_next_event)
 
-	set_meta('previous_event', current_timeline_events[event_index])
+	set_meta("previous_event", current_timeline_events[event_index])
 
 	current_timeline_events[event_index].execute(self)
 	event_handled.emit(current_timeline_events[event_index])
@@ -337,10 +329,10 @@ func handle_event(event_index:int) -> void:
 func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	_cleanup_previous_event()
 
-	if !clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
+	if not clear_flags & ClearFlags.TIMELINE_INFO_ONLY:
 		for subsystem in get_children():
 			if subsystem is DialogicSubsystem:
-				(subsystem as DialogicSubsystem).clear_game_state(clear_flags)
+				(subsystem as DialogicSubsystem)._clear_state(clear_flags)
 
 	var timeline := current_timeline
 
@@ -356,8 +348,8 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 
 ## Cleanup after previous event (if any).
 func _cleanup_previous_event():
-	if has_meta('previous_event') and get_meta('previous_event') is DialogicEvent:
-		var event := get_meta('previous_event') as DialogicEvent
+	if has_meta("previous_event") and get_meta("previous_event") is DialogicEvent:
+		var event := get_meta("previous_event") as DialogicEvent
 		if event.event_finished.is_connected(handle_next_event):
 			event.event_finished.disconnect(handle_next_event)
 		event._clear_state()
@@ -369,51 +361,64 @@ func _cleanup_previous_event():
 #region SAVING & LOADING
 ################################################################################
 
+
 ## Returns a dictionary containing all necessary information to later recreate the same state with load_full_state.
 ## The [subsystem Save] subsystem might be more useful for you.
 ## However, this can be used to integrate the info into your own save system.
-func get_full_state() -> Dictionary:
+func get_full_state() -> DialogicSaveState:
+	var state := DialogicSaveState.new()
 	if current_timeline:
-		current_state_info['current_event_idx'] = current_event_idx
-		current_state_info['current_timeline'] = current_timeline.resource_path
+		state.event_index = current_event_idx
+		state.timeline = current_timeline.resource_path
 	else:
-		current_state_info['current_event_idx'] = -1
-		current_state_info['current_timeline'] = null
+		state.event_index = -1
+		state.timeline = ""
 
 	for subsystem in get_children():
-		(subsystem as DialogicSubsystem).save_game_state()
+		var sub_state := (subsystem as DialogicSubsystem).get_state()
+		if sub_state:
+			state.subsystems[subsystem.name] = sub_state
 
-	return current_state_info.duplicate(true)
+	return state
 
 
 ## This method tries to load the state from the given [param state_info].
 ## Will automatically start a timeline and add a layout if a timeline was running when
 ## the dictionary was retrieved with [method get_full_state].
-func load_full_state(state_info:Dictionary) -> void:
+func load_full_state(state:DialogicSaveState) -> void:
 	clear()
-	current_state_info = state_info
-	## The Style subsystem needs to run first for others to load correctly.
+
+	if state == null:
+		printerr("[Dialogic] Attempted to load state, but given state was [null].")
+		return
+
+	for subsystem in get_children():
+		if subsystem.name in state.subsystems:
+			subsystem.unpack_state(state.subsystems[subsystem.name])
+
+	### The Style subsystem needs to run first for others to load correctly.
 	var scene: Node = null
-	if has_subsystem('Styles'):
-		get_subsystem('Styles').load_game_state()
+	if has_subsystem("Styles"):
+		get_subsystem("Styles").load_state()
 		scene = self.Styles.get_layout_node()
 
 	var load_subsystems := func() -> void:
 		for subsystem in get_children():
-			if subsystem.name == 'Styles':
+			if subsystem.name == "Styles":
 				continue
-			(subsystem as DialogicSubsystem).load_game_state()
+			(subsystem as DialogicSubsystem).load_state()
 
 	if null != scene and not scene.is_node_ready():
 		scene.ready.connect(load_subsystems)
 	else:
 		await get_tree().process_frame
 		load_subsystems.call()
-
-	if current_state_info.get('current_timeline', null):
-		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
+#
+	if state.timeline:
+		start_timeline(state.timeline, state.event_index)
 	else:
 		end_timeline.call_deferred(true)
+
 #endregion
 
 
@@ -428,7 +433,7 @@ func _collect_subsystems() -> void:
 			subsystem_nodes.push_back(subsystem_node)
 
 	for subsystem in subsystem_nodes:
-		subsystem.post_install()
+		subsystem._post_install()
 
 
 ## Returns `true` if a subystem with the given [param subsystem_name] exists.
@@ -458,12 +463,18 @@ func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsyst
 #region HELPERS
 ################################################################################
 
-
-
 func print_debug_moment() -> void:
 	if not current_timeline:
 		return
 
-	printerr("\tAt event ", current_event_idx+1, " (",current_timeline_events[current_event_idx].event_name, ' Event) in timeline "', current_timeline.get_identifier(), '" (',current_timeline.resource_path,').')
+	printerr("\t> On line {line} of {timeline_identifier} ({timeline_path}) at event {event_idx} ({event_name} Event).".format(
+		{
+			"event_idx": current_event_idx+1,
+			"event_name":current_timeline_events[current_event_idx].event_name,
+			"timeline_identifier": current_timeline.get_identifier(),
+			"timeline_path":current_timeline.resource_path,
+			"line":current_timeline.get_text_line_from_index(current_event_idx+1)
+		}))
 	print("\n")
+
 #endregion

@@ -138,7 +138,7 @@ func finish() -> void:
 
 ## Called before executing the next event or before clear(any flags) / load_full_state().
 ##
-## Should be overridden if the event stores temporary state into dialogic.current_state_info
+## Should be overridden if the event stores temporary state somewhere (e.g. on a subsystem)
 ## or some other cleanup is needed before another event can run.
 func _clear_state() -> void:
 	pass

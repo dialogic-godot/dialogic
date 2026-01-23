@@ -8,9 +8,9 @@ extends DialogicEvent
 ### Settings
 
 ## The timeline to jump to, if null then it's the current one. This setting should be a dialogic timeline resource.
-var timeline: DialogicTimeline
-## If not empty, the event will try to find a Label event with this set as name. Empty by default..
-var label_name := ""
+@export var timeline: DialogicTimeline
+## If not empty, the event will try to find a Label event with this set as name. Otherwise the given timeline will start from the beginning.
+@export var label_name := ""
 
 
 ### Helpers

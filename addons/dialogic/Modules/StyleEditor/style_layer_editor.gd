@@ -382,7 +382,6 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_subgroup_name = ""
 
 			&"SUBGROUP":
-
 				# add separator
 				if current_subgroup_name:
 					current_grid.add_child(HSeparator.new())
@@ -496,23 +495,9 @@ func set_export_override(property_name:String, value:String = "") -> void:
 func _on_export_override_reset(property_name:String) -> void:
 	current_style.remove_layer_setting(current_layer_id, property_name)
 	customization_editor_info[property_name]["reset"].disabled = true
-	set_customization_value(property_name, customization_editor_info[property_name]["orig"])
-
-
-func set_customization_value(property_name:String, value:Variant) -> void:
 	var node: Node = customization_editor_info[property_name]["node"]
-	if node is CheckBox:
-		node.button_pressed = value
-	elif node is LineEdit:
-		node.text = value
-	elif node.has_method("set_value"):
-		node.set_value(value)
-	elif node is ColorPickerButton:
-		node.color = value
-	elif node is OptionButton:
-		node.select(value)
-	elif node is SpinBox:
-		node.value = value
+	DialogicUtil.set_property_edit_node_value(node, customization_editor_info[property_name]["orig"])
+
 
 #endregion
 

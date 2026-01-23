@@ -18,7 +18,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="Image" id="Image_i40ox"]
+[sub_resource type="Image" id="Image_3rxjh"]
 data = {
 "data": PackedByteArray(0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255),
 "format": "RGBA8",
@@ -28,7 +28,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_yr3tj"]
-image = SubResource("Image_i40ox")
+image = SubResource("Image_3rxjh")
 
 [node name="StyleEditor" type="HSplitContainer" unique_id=1865892929]
 anchors_preset = 15

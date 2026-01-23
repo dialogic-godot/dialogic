@@ -8,37 +8,38 @@ enum Actions {JOIN, LEAVE, UPDATE}
 ### Settings
 
 ## The type of action of this event (JOIN/LEAVE/UPDATE). See [Actions].
-var action :=  Actions.JOIN
+@export var action :=  Actions.JOIN
 ## The character that will join/leave/update.
-var character: DialogicCharacter = null
+@export var character: DialogicCharacter = null
 ## For Join/Update, this will be the portrait of the character that is shown.
 ## Not used on Leave.
 ## If empty, the default portrait will be used.
-var portrait := ""
+@export var portrait := ""
 ## The index of the position this character should move to
-var transform := "center"
+@export var transform := "center"
 
 ## Name of the animation script (extending DialogicAnimation).
 ## On Join/Leave empty (default) will fallback to the animations set in the settings.
 ## On Update empty will mean no animation.
-var animation_name := ""
+@export var animation_name := ""
 ## Length of the animation.
-var animation_length: float = 0.5
+@export var animation_length: float = 0.5
 ## How often the animation is repeated. Only for Update events.
-var animation_repeats: int = 1
-var repeat_forever: bool = false
+@export var animation_repeats: int = 1
+@export var repeat_forever: bool = false
+
 ## If true, the events waits for the animation to finish before the next event starts.
-var animation_wait := false
+@export var animation_wait := false
 
 ## The fade animation to use. If left empty, the default cross-fade animation AND time will be used.
-var fade_animation := ""
-var fade_length := 0.5
+@export var fade_animation := ""
+@export var fade_length := 0.5
 
 ## For Update only. If bigger then 0, the portrait will tween to the
 ## new position (if changed) in this time (in seconds).
-var transform_time: float = 0.0
-var transform_ease := Tween.EaseType.EASE_IN_OUT
-var transform_trans := Tween.TransitionType.TRANS_SINE
+@export var transform_time: float = 0.0
+@export var transform_ease := Tween.EaseType.EASE_IN_OUT
+@export var transform_trans := Tween.TransitionType.TRANS_SINE
 
 var ease_options := [
 		{'label': 'In', 	 'value': Tween.EASE_IN},
@@ -63,11 +64,11 @@ var trans_options := [
 		]
 
 ## The z_index that the portrait should have.
-var z_index: int = 0
+@export var z_index: int = 0
 ## If true, the portrait will be set to mirrored.
-var mirrored := false
+@export var mirrored := false
 ## If set, will be passed to the portrait scene.
-var extra_data := ""
+@export var extra_data := ""
 
 
 ### Helpers

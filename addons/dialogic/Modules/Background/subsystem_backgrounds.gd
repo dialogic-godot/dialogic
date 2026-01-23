@@ -17,6 +17,10 @@ extends DialogicSubsystem
 ## `same_scene`| [type bool]   | If the new background uses the same Godot scene. [br]
 signal background_changed(info: Dictionary)
 
+@export_group("State")
+@export var scene := ""
+@export var argument := ""
+
 ## The default background scene Dialogic will use.
 var default_background_scene: PackedScene = load(get_script().resource_path.get_base_dir().path_join('DefaultBackgroundScene/default_background.tscn'))
 ## The default transition Dialogic will use.
@@ -27,12 +31,22 @@ var default_transition: String = get_script().resource_path.get_base_dir().path_
 ####################################################################################################
 
 ## Empties the current background state.
-func clear_game_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	update_background()
 
+
 ## Loads the background state from the current state info.
-func load_game_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
-	update_background(dialogic.current_state_info.get('background_scene', ''), dialogic.current_state_info.get('background_argument', ''), 0.0, default_transition, true)
+func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
+	update_background(scene, argument, 0.0, default_transition, true)
+
+	if get_background_node():
+		get_background_node()._load_state(get_extra_state())
+
+
+func _pack_extra_state() -> Dictionary:
+	if get_background_node():
+		return get_background_node()._get_state()
+	return {}
 
 #endregion
 
@@ -49,14 +63,14 @@ func load_game_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 ## and use the same scene.
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
-func update_background(scene := "", argument := "", fade_time := 0.0, transition_path:=default_transition, force := false) -> void:
+func update_background(new_scene := "", new_argument := "", fade_time := 0.0, transition_path:=default_transition, force := false) -> void:
 	var background_holder: DialogicNode_BackgroundHolder
 	if dialogic.has_subsystem('Styles'):
 		background_holder = dialogic.Styles.get_first_node_in_layout('dialogic_background_holders')
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 
-	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
+	var info := {'scene':new_scene, 'argument':new_scene, 'fade_time':fade_time, 'same_scene':false}
 	if background_holder == null:
 		background_changed.emit(info)
 		return
@@ -65,23 +79,23 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 	var bg_set := false
 
 	# First try just updating the existing scene.
-	if scene == dialogic.current_state_info.get('background_scene', ''):
+	if new_scene == scene:
 
-		if not force and argument == dialogic.current_state_info.get('background_argument', ''):
+		if not force and new_argument == argument:
 			return
 
 		for old_bg in background_holder.get_children():
-			if !old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
+			if not old_bg.has_meta('node') or not old_bg.get_meta('node') is DialogicBackground:
 				continue
 
 			var prev_bg_node: DialogicBackground = old_bg.get_meta('node')
-			if prev_bg_node._should_do_background_update(argument):
-				prev_bg_node._update_background(argument, fade_time)
+			if prev_bg_node._should_do_background_update(new_argument):
+				prev_bg_node._update_background(new_argument, fade_time)
 				bg_set = true
 				info['same_scene'] = true
 
-	dialogic.current_state_info['background_scene'] = scene
-	dialogic.current_state_info['background_argument'] = argument
+	scene = new_scene
+	argument = new_argument
 
 	if bg_set:
 		background_changed.emit(info)
@@ -92,6 +106,7 @@ func update_background(scene := "", argument := "", fade_time := 0.0, transition
 		old_viewport = background_holder.get_meta('current_viewport', null)
 
 	var new_viewport: SubViewportContainer
+
 	if scene.ends_with('.tscn') and ResourceLoader.exists(scene):
 		new_viewport = add_background_node(load(scene), background_holder)
 	elif argument:
@@ -154,10 +169,10 @@ func _on_transition_finished(background_node:DialogicNode_BackgroundHolder, tran
 
 ## Adds sub-viewport with the given background scene as child to
 ## Dialogic scene.
-func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
+func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHolder) -> SubViewportContainer:
 	var v_con := SubViewportContainer.new()
 	var viewport := SubViewport.new()
-	var b_scene := scene.instantiate()
+	var b_scene := new_scene.instantiate()
 	if not b_scene is DialogicBackground:
 		printerr("[Dialogic] Given background scene was not of type DialogicBackground! Make sure the scene has a script that extends DialogicBackground.")
 		v_con.queue_free()
@@ -175,7 +190,16 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 	viewport.transparent_bg = true
 	viewport.disable_3d = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
+
+	if parent.get_parent().get("bg_texture_filter") != null and parent.get_parent().bg_texture_filter > -1:
+		viewport.canvas_item_default_texture_filter = parent.get_parent().bg_texture_filter
+	else:
+		viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
+
+	if parent.get_parent().get("bg_texture_repeat") != null and parent.get_parent().bg_texture_repeat > -1:
+		viewport.canvas_item_default_texture_repeat = parent.get_parent().bg_texture_repeat
+	else:
+		viewport.canvas_item_default_texture_repeat = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_repeat")
 
 	viewport.add_child(b_scene)
 	b_scene.viewport = viewport
@@ -189,6 +213,13 @@ func add_background_node(scene:PackedScene, parent:DialogicNode_BackgroundHolder
 
 ## Whether a background is set.
 func has_background() -> bool:
-	return !dialogic.current_state_info.get('background_scene', '').is_empty() or !dialogic.current_state_info.get('background_argument','').is_empty()
+	return not scene.is_empty() or argument.is_empty()
+
+
+func get_background_node() -> DialogicBackground:
+	var background_holder := get_tree().get_first_node_in_group("dialogic_background_holders")
+	if not background_holder or background_holder.get_child_count() == 0:
+		return null
+	return background_holder.get_child(-1).get_child(0).get_child(0)
 
 #endregion
