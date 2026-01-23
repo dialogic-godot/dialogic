@@ -2,7 +2,7 @@
 extends DialogicSettingsPage
 
 ## Settings tab that holds genreal dialogic settings.
-const DIALOGIC_RESERVED_WORDS = ["Animations", "Audio", "Background", "Choice", "Expressoins", "Glossary", "History", "Jump", "PortraitContainers", "Portrait", "Save", "Styles", "Text", "TextInput", "Voice", "VAR"]
+var DIALOGIC_RESERVED_WORDS : Array[String] = []
 
 func _get_title() -> String:
 	return "General"
@@ -26,6 +26,11 @@ func _ready() -> void:
 
 	# Extension creator
 	%ExtensionCreator.hide()
+	
+	# Grab subsystems that exist for later use
+	for prop in Dialogic.get_script().get_script_property_list():
+		if prop.class_name == 'Node':
+			DIALOGIC_RESERVED_WORDS.push_back(prop.name)
 
 
 func _refresh() -> void:

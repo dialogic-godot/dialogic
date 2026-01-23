@@ -66,9 +66,6 @@ var paused := false:
 ## By default this timeline only contains a clear event.
 var dialog_ending_timeline: DialogicTimeline
 
-## Flag to identify if current timeline is network enabled
-var is_mp_timeline : bool = false
-
 ## Emitted when [member paused] changes to `true`.
 signal dialogic_paused
 ## Emitted when [member paused] changes to `false`.
@@ -168,15 +165,6 @@ func _ready() -> void:
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
-@rpc("any_peer", "call_local")
-# This allows Dialogic to be easily multiplayer compatible
-# 	as its an RPC call, we have to use a string
-
-
-func start_mp(timeline : String) -> void:
-	is_mp_timeline = true
-	start(timeline)
-
 
 ## Method to start a timeline AND ensure that a layout scene is present.
 ## For argument info, checkout [method start_timeline].
