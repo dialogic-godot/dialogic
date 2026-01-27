@@ -432,11 +432,12 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input = OptionButton.new()
 				var idx := 0
 				for x in property_info["hint_string"].split(","):
-					input.add_item(x.split(":")[0])
-					var id := int(x.split(":")[1])
+					input.add_item((Array(x.split(":"))[0] if ":" in x else x).capitalize())
+					var id := int(Array(x.split(":"))[1] if ":" in x else idx)
 					input.set_item_metadata(idx, id)
 					if value == id:
 						input.select(idx)
+
 					idx += 1
 				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_info.name, property_changed, input))
 			else:

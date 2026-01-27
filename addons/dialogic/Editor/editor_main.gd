@@ -20,7 +20,7 @@ func _ready() -> void:
 	## REFERENCES
 	editors_manager = $EditorsManager
 	var button: Button = editors_manager.add_button(
-		get_theme_icon("MakeFloating", "EditorIcons"), 
+		get_theme_icon("MakeFloating", "EditorIcons"),
 		"",
 		"Make the dialogic editor floating.",
 		null,
