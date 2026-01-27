@@ -259,7 +259,7 @@ func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
 
 ## Animates the node with the given animation.
 ## Is used both on the character node (most animations) and the portrait nodes (cross-fade animations)
-func _animate_node(node: Node, animation_path: String, length: float, repeats := 1, is_reversed := false) -> DialogicAnimation:
+func _animate_node(node: Node, animation_path: String, length: float, repeats := 1, is_reversed := false, repeat_forever := false) -> DialogicAnimation:
 	if node.has_meta('animation_node') and is_instance_valid(node.get_meta('animation_node')):
 		node.get_meta('animation_node').queue_free()
 
@@ -272,6 +272,7 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 	anim_node.base_scale = node.scale
 	anim_node.time = length
 	anim_node.repeats = repeats
+	anim_node.repeat_forever = repeat_forever
 	anim_node.is_reversed = is_reversed
 
 	add_child(anim_node)
@@ -529,15 +530,16 @@ func change_character_extradata(character:DialogicCharacter, extra_data:="") -> 
 
 
 ## Starts the given animation on the given character. Only works with joined characters
-func animate_character(character: DialogicCharacter, animation_path: String, length: float, repeats := 1, is_reversed := false) -> DialogicAnimation:
+func animate_character(character: DialogicCharacter, animation_path: String, length: float, repeats := 1, is_reversed := false, repeat_forever := false) -> DialogicAnimation:
 	if not is_character_joined(character):
 		return null
-
+	
 	animation_path = DialogicPortraitAnimationUtil.guess_animation(animation_path)
 
 	var character_node: Node = character_nodes[character.get_identifier()]
+	
+	return _animate_node(character_node, animation_path, length, repeats, is_reversed, repeat_forever)
 
-	return _animate_node(character_node, animation_path, length, repeats, is_reversed)
 
 
 ## Moves the given character to the given position. Only works with joined characters
