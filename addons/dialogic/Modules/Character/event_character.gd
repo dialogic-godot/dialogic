@@ -177,7 +177,7 @@ func _execute() -> void:
 				var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
 				var time_for_repetitions: float = time_per_event / animation_repeats
 				final_animation_length = time_for_repetitions
-			
+
 			var animation := dialogic.Portraits.animate_character(
 				character,
 				animation_name,

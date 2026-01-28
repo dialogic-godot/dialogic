@@ -143,6 +143,7 @@ func build_event_editor() -> void:
 			{'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Custom scene",
 			'editor_icon': ["PackedScene", "EditorIcons"],
+			"type": "BackgroundScene, Background, Scene, Asset",
 			}, '_scene_type == SceneTypes.CUSTOM')
 	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
 		'left_text' : 'with',
@@ -167,6 +168,7 @@ func build_event_editor() -> void:
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 			'placeholder': "No Image",
 			'editor_icon': ["Image", "EditorIcons"],
+			"type":"BackgroundImage, Background, Image, Asset",
 			},
 			'_arg_type == ArgumentTypes.IMAGE')
 	add_header_edit('_color_arg', ValueType.COLOR, {}, '_arg_type == ArgumentTypes.COLOR')

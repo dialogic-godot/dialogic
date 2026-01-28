@@ -139,6 +139,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 file_filter = "*.ogg, *.mp3, *.wav"
 file_mode = 3
+type = "MoodSounds, SFX, Audio, Asset"
 
 [node name="Label2" type="Label" parent="VBox/Settings/Grid" unique_id=784538409]
 layout_mode = 2

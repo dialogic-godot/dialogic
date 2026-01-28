@@ -20,6 +20,9 @@ var resource_icon: Texture:
 		else:
 			%Field.theme_type_variation = "LineEditWithIcon"
 
+## This type is used to store/restore the latest folder for a specific type of resource.
+## E.g. could be "portrait", or "background".
+@export var type := ""
 var max_width := 200
 var current_value: String
 var hide_reset := false
@@ -32,6 +35,9 @@ var show_editing_button := false
 ################################################################################
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	$FocusStyle.add_theme_stylebox_override('panel', get_theme_stylebox('focus', 'DialogicEventEdit'))
 
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
@@ -56,6 +62,8 @@ func _load_display_info(info:Dictionary) -> void:
 
 	if resource_icon == null and info.has('editor_icon'):
 		resource_icon = callv('get_theme_icon', info.editor_icon)
+
+	type = info.get("type", "")
 
 
 func _set_value(value: Variant) -> void:
@@ -92,7 +100,14 @@ func _set_value(value: Variant) -> void:
 ################################################################################
 
 func _on_OpenButton_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(_on_file_dialog_selected, file_filter, file_mode, "Open "+ property_name)
+	find_parent('EditorView').godot_file_dialog(
+		_on_file_dialog_selected, file_filter, file_mode,
+		"Open "+ property_name,
+		"",
+		false,
+		"",
+		current_value.get_base_dir() if current_value else type)
+	%OpenButton.release_focus()
 
 
 func _on_file_dialog_selected(path:String) -> void:

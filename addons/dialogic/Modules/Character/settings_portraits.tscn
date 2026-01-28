@@ -1,76 +1,77 @@
-[gd_scene load_steps=5 format=3 uid="uid://cp463rpri5j8a"]
+[gd_scene format=3 uid="uid://cp463rpri5j8a"]
 
 [ext_resource type="Script" uid="uid://c3hdycwp0hrdm" path="res://addons/dialogic/Modules/Character/settings_portraits.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_dce78"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="3_m06d8"]
 
-[node name="Portraits" type="VBoxContainer"]
+[node name="Portraits" type="VBoxContainer" unique_id=1954601376]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("2")
 
-[node name="PositionsTitle" type="HBoxContainer" parent="."]
+[node name="PositionsTitle" type="HBoxContainer" parent="." unique_id=1523636043]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Title2" type="Label" parent="PositionsTitle"]
+[node name="Title2" type="Label" parent="PositionsTitle" unique_id=703928959]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Position Suggestions"
 
-[node name="HintTooltip" parent="PositionsTitle" instance=ExtResource("2_dce78")]
+[node name="HintTooltip" parent="PositionsTitle" unique_id=412383604 instance=ExtResource("2_dce78")]
 layout_mode = 2
 tooltip_text = "You can change the position names that will be suggested in the timeline editor here."
 texture = null
 hint_text = "You can change the position names that will be suggested in the timeline editor here."
 
-[node name="PositionSuggestions" type="LineEdit" parent="."]
+[node name="PositionSuggestions" type="LineEdit" parent="." unique_id=1681130689]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="DefaultSceneTitle" type="HBoxContainer" parent="."]
+[node name="DefaultSceneTitle" type="HBoxContainer" parent="." unique_id=1181319103]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Title2" type="Label" parent="DefaultSceneTitle"]
+[node name="Title2" type="Label" parent="DefaultSceneTitle" unique_id=315505376]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Default Portrait Scene"
 
-[node name="HintTooltip" parent="DefaultSceneTitle" instance=ExtResource("2_dce78")]
+[node name="HintTooltip" parent="DefaultSceneTitle" unique_id=1554717510 instance=ExtResource("2_dce78")]
 layout_mode = 2
 tooltip_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
 texture = null
 hint_text = "If this is set, this scene will be what is used by default for any portrait that has no scene specified"
 
-[node name="DefaultScene" type="HBoxContainer" parent="."]
+[node name="DefaultScene" type="HBoxContainer" parent="." unique_id=1909539535]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="DefaultScene"]
+[node name="Label" type="Label" parent="DefaultScene" unique_id=1388635955]
 layout_mode = 2
 text = "Scene"
 
-[node name="CustomPortraitScene" parent="DefaultScene" instance=ExtResource("3_m06d8")]
+[node name="CustomPortraitScene" parent="DefaultScene" unique_id=1313821058 instance=ExtResource("3_m06d8")]
 unique_name_in_owner = true
 layout_mode = 2
 file_filter = "*.tscn, *.scn; PortraitScene"
 placeholder = "Default Scene"
+type = "PortraitScene, Scene, Asset"
 
-[node name="Animations2" type="HBoxContainer" parent="."]
+[node name="Animations2" type="HBoxContainer" parent="." unique_id=1742271673]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Title2" type="Label" parent="Animations2"]
+[node name="Title2" type="Label" parent="Animations2" unique_id=232872443]
 layout_mode = 2
 theme_type_variation = &"DialogicSettingsSection"
 text = "Default Animations"
 
-[node name="HintTooltip" parent="Animations2" instance=ExtResource("2_dce78")]
+[node name="HintTooltip" parent="Animations2" unique_id=1687327108 instance=ExtResource("2_dce78")]
 layout_mode = 2
 tooltip_text = "These settings are used for Leave and Join events if no animation is selected.
 
@@ -82,67 +83,67 @@ hint_text = "These settings are used for Leave and Join events if no animation i
 The Cross-Fade will play if the portrait of a character changes and 
 no animation is set."
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="." unique_id=491358848]
 layout_mode = 2
 columns = 2
 
-[node name="DefaultJoinLabel" type="Label" parent="GridContainer"]
+[node name="DefaultJoinLabel" type="Label" parent="GridContainer" unique_id=1013897155]
 layout_mode = 2
 text = "Join"
 
-[node name="DefaultIn" type="HBoxContainer" parent="GridContainer"]
+[node name="DefaultIn" type="HBoxContainer" parent="GridContainer" unique_id=468129922]
 layout_mode = 2
 
-[node name="JoinDefault" parent="GridContainer/DefaultIn" instance=ExtResource("3")]
+[node name="JoinDefault" parent="GridContainer/DefaultIn" unique_id=400337685 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 mode = 1
 
-[node name="JoinDefaultLength" type="SpinBox" parent="GridContainer/DefaultIn"]
+[node name="JoinDefaultLength" type="SpinBox" parent="GridContainer/DefaultIn" unique_id=1591748355]
 unique_name_in_owner = true
 layout_mode = 2
 step = 0.1
 
-[node name="JoinDefaultWait" type="CheckButton" parent="GridContainer/DefaultIn"]
+[node name="JoinDefaultWait" type="CheckButton" parent="GridContainer/DefaultIn" unique_id=1896561078]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Wait:"
 
-[node name="DefaultOutLabel" type="Label" parent="GridContainer"]
+[node name="DefaultOutLabel" type="Label" parent="GridContainer" unique_id=241530495]
 layout_mode = 2
 text = "Leave"
 
-[node name="DefaultOut" type="HBoxContainer" parent="GridContainer"]
+[node name="DefaultOut" type="HBoxContainer" parent="GridContainer" unique_id=1423399968]
 layout_mode = 2
 
-[node name="LeaveDefault" parent="GridContainer/DefaultOut" instance=ExtResource("3")]
+[node name="LeaveDefault" parent="GridContainer/DefaultOut" unique_id=3736201 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 mode = 1
 
-[node name="LeaveDefaultLength" type="SpinBox" parent="GridContainer/DefaultOut"]
+[node name="LeaveDefaultLength" type="SpinBox" parent="GridContainer/DefaultOut" unique_id=1729765321]
 unique_name_in_owner = true
 layout_mode = 2
 step = 0.1
 
-[node name="LeaveDefaultWait" type="CheckButton" parent="GridContainer/DefaultOut"]
+[node name="LeaveDefaultWait" type="CheckButton" parent="GridContainer/DefaultOut" unique_id=1959487893]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Wait:"
 
-[node name="CrossFadeLabel" type="Label" parent="GridContainer"]
+[node name="CrossFadeLabel" type="Label" parent="GridContainer" unique_id=929591050]
 layout_mode = 2
 text = "Cross-Fade"
 
-[node name="DefaultCrossFade" type="HBoxContainer" parent="GridContainer"]
+[node name="DefaultCrossFade" type="HBoxContainer" parent="GridContainer" unique_id=1996950398]
 layout_mode = 2
 
-[node name="CrossFadeDefault" parent="GridContainer/DefaultCrossFade" instance=ExtResource("3")]
+[node name="CrossFadeDefault" parent="GridContainer/DefaultCrossFade" unique_id=62586132 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 mode = 1
 
-[node name="CrossFadeDefaultLength" type="SpinBox" parent="GridContainer/DefaultCrossFade"]
+[node name="CrossFadeDefaultLength" type="SpinBox" parent="GridContainer/DefaultCrossFade" unique_id=1816566703]
 unique_name_in_owner = true
 layout_mode = 2
 step = 0.1
