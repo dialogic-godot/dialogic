@@ -278,8 +278,8 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 				func(x, y):
 					return x.get_slice("/", x.get_slice_count("/")-1) < y.get_slice("/", y.get_slice_count("/")-1)
 					)
-			var use_folder_colors : bool = DialogicUtil.get_editor_setting("sidebar_use_folder_colors")
-			var trim_folder_paths : bool = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths")
+			var use_folder_colors : bool = DialogicUtil.get_editor_setting("sidebar_use_folder_colors", true)
+			var trim_folder_paths : bool = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths", true)
 			var folder_colors: Dictionary = ProjectSettings.get_setting("file_customization/folder_colors", {})
 
 			for dir in sorted_dir_keys:
