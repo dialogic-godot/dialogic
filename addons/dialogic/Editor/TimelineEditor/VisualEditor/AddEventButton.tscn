@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://depcrpeh3f4rv"]
+[gd_scene format=3 uid="uid://depcrpeh3f4rv"]
 
 [ext_resource type="Script" uid="uid://dofrrscd4c61l" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
+
+[sub_resource type="Theme" id="Theme_7ohuy"]
+resource_local_to_scene = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx31r"]
 content_margin_left = 4.0
@@ -30,12 +33,13 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="AddEventButton" type="Button"]
-custom_minimum_size = Vector2(44, 30)
+[node name="AddEventButton" type="Button" unique_id=1564302678]
+custom_minimum_size = Vector2(35, 30)
 offset_right = 97.0
 offset_bottom = 42.0
 tooltip_text = "S"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme = SubResource("Theme_7ohuy")
+theme_override_colors/font_color = Color(1, 1, 1, 0.75)
 theme_override_styles/normal = SubResource("StyleBoxFlat_qx31r")
 theme_override_styles/hover = SubResource("StyleBoxFlat_n1o16")
 alignment = 0

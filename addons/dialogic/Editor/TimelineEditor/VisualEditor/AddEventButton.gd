@@ -15,11 +15,20 @@ extends Button
 
 
 func _ready() -> void:
+	if get_parent() is SubViewport:
+		return
+
 	custom_minimum_size = Vector2(get_theme_font("font", "Label").get_string_size(text).x+35,30) * DialogicUtil.get_editor_scale()
 
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
 	apply_base_button_style()
+
+	var tooltip_box := StyleBoxFlat.new()
+	tooltip_box.bg_color = get_theme_color("background", "Editor")
+	tooltip_box.set_border_width_all(1)
+	tooltip_box.border_width_left = 5 * DialogicUtil.get_editor_scale()
+	theme.set_stylebox("panel", "TooltipPanel", tooltip_box)
 
 
 func apply_base_button_style() -> void:
@@ -39,6 +48,9 @@ func set_color(color:Color) -> void:
 	style = get_theme_stylebox('hover', 'Button')
 	style.border_color = color
 	add_theme_stylebox_override('hover', style)
+	var tooltip_box : StyleBoxFlat = theme.get_stylebox("panel", "TooltipPanel")
+	tooltip_box.border_color = color
+	theme.set_stylebox("panel", "TooltipPanel", tooltip_box)
 
 
 func toggle_name(on:= false) -> void:
@@ -59,3 +71,11 @@ func toggle_name(on:= false) -> void:
 
 func _on_button_down() -> void:
 	find_parent('VisualEditor').get_node('%TimelineArea').start_dragging(1, resource)
+
+func _make_custom_tooltip(for_text: String) -> Object:
+	var rtl := RichTextLabel.new()
+	rtl.bbcode_enabled = true
+	rtl.text = "[b]{0}[/b]\n{1}".format(Array(for_text.split("\n", false, 2)))
+	rtl.fit_content = true
+	rtl.custom_minimum_size.x = 300*DialogicUtil.get_editor_scale()
+	return rtl
