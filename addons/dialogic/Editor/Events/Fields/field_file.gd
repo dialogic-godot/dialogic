@@ -86,9 +86,7 @@ func _set_value(value: Variant) -> void:
 
 	%EditButton.visible = show_editing_button and value
 
-	if not %Field.text == text:
-		value_changed.emit(property_name, current_value)
-		%Field.text = text
+	%Field.text = text
 
 	%ClearButton.visible = not value.is_empty() and not hide_reset
 
