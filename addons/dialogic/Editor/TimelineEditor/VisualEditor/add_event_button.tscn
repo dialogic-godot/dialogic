@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://depcrpeh3f4rv"]
 
-[ext_resource type="Script" uid="uid://dofrrscd4c61l" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
+[ext_resource type="Script" uid="uid://dofrrscd4c61l" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/add_event_button.gd" id="1_s43sc"]
 
 [sub_resource type="Theme" id="Theme_7ohuy"]
 resource_local_to_scene = true
