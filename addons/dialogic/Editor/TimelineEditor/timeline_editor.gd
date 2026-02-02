@@ -114,8 +114,6 @@ func _input(event: InputEvent) -> void:
 func play_timeline(index := -1) -> void:
 	_save()
 
-	var dialogic_plugin := DialogicUtil.get_dialogic_plugin()
-
 	# Save the current opened timeline
 	DialogicUtil.set_editor_setting('current_timeline_path', current_resource.resource_path)
 	DialogicUtil.set_editor_setting('play_from_index', index)

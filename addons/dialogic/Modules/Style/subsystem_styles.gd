@@ -82,7 +82,7 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 		else:
 			parent = previous_layout.get_parent()
 
-			previous_layout.get_parent().remove_child(previous_layout)
+			parent.remove_child(previous_layout)
 			previous_layout.queue_free()
 
 	# if this is another style:

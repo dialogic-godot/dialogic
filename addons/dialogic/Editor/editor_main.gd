@@ -20,7 +20,7 @@ func _ready() -> void:
 	## REFERENCES
 	editors_manager = $EditorsManager
 	var button: Button = editors_manager.add_button(
-		get_theme_icon("MakeFloating", "EditorIcons"), 
+		get_theme_icon("MakeFloating", "EditorIcons"),
 		"",
 		"Make the dialogic editor floating.",
 		null,
@@ -299,7 +299,8 @@ func godot_file_dialog(
 		window_title := "Save",
 		current_file_name := "New_File",
 		saving_something := false,
-		extra_message: String = ""
+		extra_message: String = "",
+		current_dir := "",
 		) -> EditorFileDialog:
 
 	for connection in editor_file_dialog.file_selected.get_connections():
@@ -325,6 +326,30 @@ func godot_file_dialog(
 	editor_file_dialog.title = window_title
 	editor_file_dialog.current_file = current_file_name
 	editor_file_dialog.disable_overwrite_warning = !saving_something
+
+	## This system allows storing context-based "last used" folders.
+	## Mainly useful to provide the best folder when clicking on an empty file field.
+	## E.g. a field can be setup as "Background, Image, Asset" and will try to take
+	## the first stored folder. These are stored in the dialogic editor settings.
+	var custom_current_dir := false
+	if current_dir:
+		editor_file_dialog.current_dir = ""
+		if current_dir.begins_with("res://"):
+			editor_file_dialog.current_dir = current_dir
+		else:
+			custom_current_dir = true
+			for type in current_dir.split(","):
+				editor_file_dialog.current_dir = DialogicUtil.get_editor_setting("latest_dir_"+type.strip_edges(), "")
+				if editor_file_dialog.current_dir != "res://":
+					break
+	@warning_ignore("incompatible_ternary")
+	editor_file_dialog.set_meta("current_dir_type", current_dir if custom_current_dir else "")
+
+	if custom_current_dir:
+		editor_file_dialog.file_selected.connect(_on_file_dialog_selected)
+		editor_file_dialog.files_selected.connect(_on_file_dialog_selected)
+		editor_file_dialog.dir_selected.connect(_on_file_dialog_selected)
+
 	if extra_message:
 		editor_file_dialog.get_meta("info_message_label").show()
 		editor_file_dialog.get_meta("info_message_label").text = extra_message
@@ -334,3 +359,15 @@ func godot_file_dialog(
 
 
 	return editor_file_dialog
+
+
+func _on_file_dialog_selected(file:Variant) -> void:
+	var dir_types: String = editor_file_dialog.get_meta("current_dir_type", "")
+	if not dir_types:
+		return
+	var new_path := ""
+	if file is String:
+		new_path = file.get_base_dir()
+
+	for type in dir_types.split(","):
+		DialogicUtil.set_editor_setting("latest_dir_"+type.strip_edges(), new_path)

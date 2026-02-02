@@ -269,7 +269,8 @@ func build_event_editor() -> void:
 			'left_text'		: 'Play',
 			'file_filter' 	: "*.mp3, *.ogg, *.wav; Supported Audio Files",
 			'placeholder' 	: "Nothing",
-			'editor_icon' 	: ["AudioStreamMP3", "EditorIcons"]})
+			'editor_icon' 	: ["AudioStreamMP3", "EditorIcons"],
+			"type": "Audio, Asset"})
 	add_header_edit('file_path', ValueType.AUDIO_PREVIEW)
 
 	add_header_edit('channel_name', ValueType.DYNAMIC_OPTIONS, {

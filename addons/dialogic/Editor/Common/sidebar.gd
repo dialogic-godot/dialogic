@@ -278,8 +278,8 @@ func update_resource_list(resources_list: PackedStringArray = []) -> void:
 				func(x, y):
 					return x.get_slice("/", x.get_slice_count("/")-1) < y.get_slice("/", y.get_slice_count("/")-1)
 					)
-			var use_folder_colors : bool = DialogicUtil.get_editor_setting("sidebar_use_folder_colors")
-			var trim_folder_paths : bool = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths")
+			var use_folder_colors : bool = DialogicUtil.get_editor_setting("sidebar_use_folder_colors", true)
+			var trim_folder_paths : bool = DialogicUtil.get_editor_setting("sidebar_trim_folder_paths", true)
 			var folder_colors: Dictionary = ProjectSettings.get_setting("file_customization/folder_colors", {})
 
 			for dir in sorted_dir_keys:
@@ -505,6 +505,10 @@ func _on_search_text_submitted(_new_text: String) -> void:
 #region CONTENT LIST
 
 func update_content_list() -> void:
+	if not editors_manager.get_current_editor():
+		%ContentListSection.hide()
+		return
+
 	var current_resource: Resource = editors_manager.get_current_editor().current_resource
 	if not current_resource is DialogicTimeline:
 		%ContentListSection.hide()

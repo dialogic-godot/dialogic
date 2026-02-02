@@ -37,7 +37,6 @@ var drag_allowed := false
 func something_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
 
-
 func save_timeline() -> void:
 	if !is_inside_tree():
 		return
@@ -217,7 +216,7 @@ func load_event_buttons() -> void:
 		child.queue_free()
 
 	# Event buttons
-	var button_scene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
+	var button_scene := load("uid://depcrpeh3f4rv")
 
 	var scripts := DialogicResourceUtil.get_event_cache()
 	var hidden_buttons: Array = DialogicUtil.get_editor_setting("hidden_event_buttons", DialogicUtil.SETTING_HIDDEN_BUTTONS_DEFAULT)

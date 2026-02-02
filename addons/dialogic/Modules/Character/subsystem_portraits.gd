@@ -533,11 +533,11 @@ func change_character_extradata(character:DialogicCharacter, extra_data:="") -> 
 func animate_character(character: DialogicCharacter, animation_path: String, length: float, repeats := 1, is_reversed := false, repeat_forever := false) -> DialogicAnimation:
 	if not is_character_joined(character):
 		return null
-	
+
 	animation_path = DialogicPortraitAnimationUtil.guess_animation(animation_path)
 
 	var character_node: Node = character_nodes[character.get_identifier()]
-	
+
 	return _animate_node(character_node, animation_path, length, repeats, is_reversed, repeat_forever)
 
 
@@ -679,7 +679,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 			continue
 		if portrait.is_empty():
 			if is_character_joined(speaker):
-				portrait = dialogic.current_state_info.portraits[speaker.get_identifier()].get("portrait", "")
+				portrait = portraits[speaker.get_identifier()].get("portrait", "")
 		if portrait.is_empty():
 			portrait = speaker.default_portrait
 

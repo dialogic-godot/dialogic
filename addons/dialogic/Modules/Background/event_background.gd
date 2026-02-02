@@ -13,7 +13,12 @@ extends DialogicEvent
 @export var scene := ""
 ## The argument that is passed to the background scene.
 ## For the default scene it's the path to the image to show.
-@export var argument := ""
+@export var argument := "":
+	set(a):
+		if a != argument:
+			argument = a
+			if _arg_type == ArgumentTypes.IMAGE:
+				ui_update_needed.emit()
 ## The time the fade animation will take. Leave at 0 for instant change.
 @export var fade: float = 0.0
 ## Name of the transition to use.
@@ -25,7 +30,7 @@ extends DialogicEvent
 enum ArgumentTypes {IMAGE, COLOR, STRING}
 var _arg_type := ArgumentTypes.IMAGE:
 	get:
-		if argument.begins_with("res://"):
+		if argument == "res://" or (argument.begins_with("res://") and argument.get_extension().to_lower() in ["png", "svg", "jpg", "jpeg"]):
 			return ArgumentTypes.IMAGE
 		elif argument.begins_with("#") and argument.is_valid_html_color():
 			return ArgumentTypes.COLOR
@@ -35,13 +40,14 @@ var _arg_type := ArgumentTypes.IMAGE:
 			return ArgumentTypes.STRING
 	set(value):
 		if value == ArgumentTypes.STRING:
-			if not argument.begins_with(" "):
-				argument = " "+argument
+			argument = ""
 		elif value == ArgumentTypes.COLOR:
 			if not (argument.is_valid_html_color() and argument.begins_with("#")):
 				argument = "#"+Color.BLACK.to_html()
 		elif value == ArgumentTypes.IMAGE:
-			if not argument.begins_with(" res://"):
+			if ResourceLoader.exists(argument.strip_edges()):
+				argument = argument.strip_edges()
+			else:
 				argument = "res://"
 
 		_arg_type = value
@@ -143,6 +149,7 @@ func build_event_editor() -> void:
 			{'file_filter':'*.tscn, *.scn; Scene Files',
 			'placeholder': "Custom scene",
 			'editor_icon': ["PackedScene", "EditorIcons"],
+			"type": "BackgroundScene, Background, Scene, Asset",
 			}, '_scene_type == SceneTypes.CUSTOM')
 	add_header_edit('_arg_type', ValueType.FIXED_OPTIONS, {
 		'left_text' : 'with',
@@ -167,6 +174,7 @@ func build_event_editor() -> void:
 			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr; Supported Image Files',
 			'placeholder': "No Image",
 			'editor_icon': ["Image", "EditorIcons"],
+			"type":"BackgroundImage, Background, Image, Asset",
 			},
 			'_arg_type == ArgumentTypes.IMAGE')
 	add_header_edit('_color_arg', ValueType.COLOR, {}, '_arg_type == ArgumentTypes.COLOR')

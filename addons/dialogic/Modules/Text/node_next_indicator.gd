@@ -57,13 +57,14 @@ func _ready() -> void:
 		texture_rect = icon
 
 	texture_rect.texture = texture
-	
+
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	Dialogic.Inputs.handle_node_gui_input(event)
+	DialogicUtil.autoload().Inputs.handle_node_gui_input(event)
+
 
 func _on_visibility_changed() -> void:
 	if visible:
