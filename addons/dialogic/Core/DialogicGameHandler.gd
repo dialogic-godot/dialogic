@@ -448,6 +448,15 @@ func get_subsystem(subsystem_name:String) -> DialogicSubsystem:
 
 ## Adds a subsystem node with the given [param subsystem_name] and [param script_path].
 func add_subsystem(subsystem_name:String, script_path:String) -> DialogicSubsystem:
+	var existing_subsystem_node = get_node_or_null(subsystem_name)
+	
+	# If two Subsystem have the same name, we override the existing one with the new one
+	if is_instance_valid(existing_subsystem_node):
+		existing_subsystem_node.set_script(load(script_path))
+		existing_subsystem_node.dialogic = self
+		existing_subsystem_node._ready()
+		return existing_subsystem_node
+	
 	var node: Node = Node.new()
 	node.name = subsystem_name
 	node.set_script(load(script_path))
