@@ -459,7 +459,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 	if property_path.is_empty():
 		property_path = property_info.name
 	var input: Control = null
-	print(property_info)
+	#print(property_info)
 	match property_info['type']:
 		TYPE_BOOL when false:
 			input = CheckBox.new()
@@ -664,7 +664,6 @@ static func set_property_edit_node_value(node:Control, value:Variant) -> void:
 	elif node is SpinBox:
 		node.value = value
 	elif node is EditorProperty:
-		print("RESET")
 		node.get_meta("object").property = value
 		node.update_property()
 

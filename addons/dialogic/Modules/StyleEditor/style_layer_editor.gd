@@ -5,6 +5,7 @@ extends HSplitContainer
 
 
 var current_style: DialogicStyle = null
+var current_layer_scene_path := ""
 
 var customization_editor_info := {}
 
@@ -16,6 +17,7 @@ var _minimum_tree_item_height: int
 
 @onready var tree: Tree = %LayerTree
 
+var _loading_layer := false
 
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
@@ -35,14 +37,15 @@ func _ready() -> void:
 	_minimum_tree_item_height = int(DialogicUtil.get_editor_scale() * 32)
 	%LayerTree.add_theme_constant_override("icon_max_width", _minimum_tree_item_height)
 
+	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_scene_saved)
+
+
 
 func load_style(style:DialogicStyle) -> void:
 	current_style = style
 
-	if current_style.has_meta("_latest_layer"):
-		current_layer_id = str(current_style.get_meta("_latest_layer", ""))
-	else:
-		current_layer_id = ""
+
+	current_layer_id = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/latest_layer", "")
 
 	%AddLayerButton.disabled = style.inherits_anything()
 	%ReplaceLayerButton.disabled = style.inherits_anything()
@@ -100,8 +103,10 @@ func _on_layer_selected() -> void:
 
 
 func load_layer(layer_id:=""):
+	_loading_layer = true
 	current_layer_id = layer_id
-	current_style.set_meta("_latest_layer", current_layer_id)
+	DialogicUtil.set_editor_setting("style_editor/"+current_style.name+"/latest_layer", current_layer_id)
+	#current_style.set_meta("_latest_layer", current_layer_id)
 
 	var layer_info := current_style.get_layer_inherited_info(layer_id)
 
@@ -131,6 +136,7 @@ func load_layer(layer_id:=""):
 			layer_info.path,
 			layer_info.overrides,
 			inherited_layer_info.overrides)
+	_loading_layer = false
 
 
 
@@ -339,9 +345,12 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		if pck_scn:
 			scene = pck_scn.instantiate()
 
+	if scene:
+		current_layer_scene_path = scene.scene_file_path
+
 	var settings := []
 	if scene and scene.script:
-		settings = collect_settings(scene.get_meta("style_customization", [] as Array[Dictionary]))
+		settings = collect_settings(scene)
 
 	if settings.is_empty():
 		var note := Label.new()
@@ -415,7 +424,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_grid.add_child(label, true)
 
 				var scene_value: Variant = get_value_on_node(current_node, property_name)
-				printt(property_name, scene_value)
+				#printt(property_name, scene_value)
 				customization_editor_info[property_path] = {}
 
 				if property_path in inherited_overrides:
@@ -445,6 +454,9 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				reset.pressed.connect(_on_export_override_reset.bind(property_path))
 				current_grid.add_child(input)
 
+	var latest_tab := DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
+
+	%LayerSettingsTabs.current_tab = min(latest_tab, %LayerSettingsTabs.get_tab_count()-1)
 	if scene:
 		scene.queue_free()
 
@@ -466,7 +478,10 @@ func get_value_on_node(node:Node, property:String) -> Variant:
 
 	return node.get(property)
 
-func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
+
+func collect_settings(scene:Node) -> Array[Dictionary]:
+	var properties: Array = scene.get_meta("style_customization", []) + scene.get_meta("base_style_customization", [])
+
 	var settings: Array[Dictionary] = []
 
 	var current_group := {}
@@ -517,8 +532,8 @@ func get_node_property_info(node:Node, property_name:String) -> Dictionary:
 
 	return {}
 
+
 func set_export_override(property_name:String, value:String = "") -> void:
-	#printt("Set", property_name, value)
 	if str_to_var(value) != customization_editor_info[property_name]["orig"]:
 		current_style.set_layer_setting(current_layer_id, property_name, value)
 		customization_editor_info[property_name]["reset"].disabled = false
@@ -531,9 +546,19 @@ func _on_export_override_reset(property_name:String) -> void:
 	current_style.remove_layer_setting(current_layer_id, property_name)
 	customization_editor_info[property_name]["reset"].disabled = true
 	var node: Node = customization_editor_info[property_name]["node"]
-	print(customization_editor_info[property_name])
 	DialogicUtil.set_property_edit_node_value(node, customization_editor_info[property_name]["orig"])
 
+
+func _on_scene_saved(path:String) -> void:
+	if path and path == current_layer_scene_path:
+		load_layer(current_layer_id)
+
+
+func _on_layer_settings_tabs_tab_changed(tab: int) -> void:
+	if _loading_layer:
+		return
+
+	DialogicUtil.set_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", tab)
 
 #endregion
 
@@ -554,6 +579,7 @@ func _on_layer_tree_layer_moved(from: int, to: int) -> void:
 func _on_layer_tree_button_clicked(item: TreeItem, _column: int, _id: int, _mouse_button_index: int) -> void:
 	if ResourceLoader.exists(item.get_meta("scene")):
 		EditorInterface.open_scene_from_path(item.get_meta("scene"))
+		await get_tree().process_frame
 		EditorInterface.set_main_screen_editor("2D")
 
 
