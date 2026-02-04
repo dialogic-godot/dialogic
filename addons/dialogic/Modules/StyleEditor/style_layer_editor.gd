@@ -341,7 +341,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 
 	var settings := []
 	if scene and scene.script:
-		settings = collect_settings(scene.script.get_script_property_list())
+		settings = collect_settings(scene.get_meta("style_customization", [] as Array[Dictionary]))
 
 	if settings.is_empty():
 		var note := Label.new()
@@ -364,7 +364,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	var current_group_name := ""
 	var current_subgroup_name := ""
 	customization_editor_info = {}
-
+	var current_node : Node = null
 	for i in settings:
 		match i["id"]:
 			&"GROUP":
@@ -390,10 +390,13 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 					current_grid.add_child(current_grid.get_child(-1).duplicate())
 
 				var title_label := Label.new()
-				title_label.text = i["name"]
+				title_label.text = i.display_name if i.display_name else i.name
 				title_label.theme_type_variation = "DialogicSection"
 				title_label.size_flags_horizontal = SIZE_EXPAND_FILL
 				current_grid.add_child(title_label, true)
+
+				current_node = scene.get_node(i["name"])
+				current_node.set_meta("style_identifier", i["name"])
 
 				# add spaced to the grid
 				current_grid.add_child(Control.new())
@@ -402,42 +405,66 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_subgroup_name = i["name"].to_snake_case()
 
 			&"SETTING":
+				var property_name: String = i["name"]
+				var property_path: String = current_node.get_meta("style_identifier")+":"+property_name
+				var property_display_name: String = i["display_name"]
+
 				var label := Label.new()
-				label.text = str(i["name"].trim_prefix(current_group_name+"_").trim_prefix(current_subgroup_name+"_")).capitalize()
+				#label.text = str(property_display_name.trim_prefix(current_group_name+"_").trim_prefix(current_subgroup_name+"_")).capitalize()
+				label.text = property_display_name
 				current_grid.add_child(label, true)
 
-				var scene_value: Variant = scene.get(i["name"])
-				customization_editor_info[i["name"]] = {}
+				var scene_value: Variant = get_value_on_node(current_node, property_name)
+				printt(property_name, scene_value)
+				customization_editor_info[property_path] = {}
 
-				if i["name"] in inherited_overrides:
-					customization_editor_info[i["name"]]["orig"] = str_to_var(inherited_overrides.get(i["name"]))
+				if property_path in inherited_overrides:
+					customization_editor_info[property_path]["orig"] = str_to_var(inherited_overrides.get(property_path))
 				else:
-					customization_editor_info[i["name"]]["orig"] = scene_value
+					customization_editor_info[property_path]["orig"] = scene_value
 
 				var current_value: Variant
-				if i["name"] in overrides:
-					current_value = str_to_var(overrides.get(i["name"]))
+				if property_path in overrides:
+					current_value = str_to_var(overrides.get(property_path))
 				else:
-					current_value = customization_editor_info[i["name"]]["orig"]
+					current_value = customization_editor_info[property_path]["orig"]
 
-				var input: Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
-
+				#EditorInspector.instantiate_property_editor(current_node, )
+				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(current_node, property_name), current_value, set_export_override, property_path)
+				#EditorInspector
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
-				customization_editor_info[i["name"]]["node"] = input
+				customization_editor_info[property_path]["node"] = input
 
 				var reset := Button.new()
 				reset.flat = true
 				reset.icon = get_theme_icon("Reload", "EditorIcons")
 				reset.tooltip_text = "Remove customization"
-				customization_editor_info[i["name"]]["reset"] = reset
-				reset.disabled = current_value == customization_editor_info[i["name"]]["orig"]
+				customization_editor_info[property_path]["reset"] = reset
+				reset.disabled = current_value == customization_editor_info[property_path]["orig"]
 				current_grid.add_child(reset)
-				reset.pressed.connect(_on_export_override_reset.bind(i["name"]))
+				reset.pressed.connect(_on_export_override_reset.bind(property_path))
 				current_grid.add_child(input)
 
 	if scene:
 		scene.queue_free()
 
+
+func get_value_on_node(node:Node, property:String) -> Variant:
+	if property.begins_with("theme_override_"):
+		if property.begins_with("theme_override_colors"):
+			return node.get_theme_color(property.get_slice("/", 1))
+		elif property.begins_with("theme_override_constants"):
+			return node.get_theme_constant(property.get_slice("/", 1))
+		elif property.begins_with("theme_override_fonts"):
+			return node.get_theme_font(property.get_slice("/", 1))
+		elif property.begins_with("theme_override_font_sizes"):
+			return node.get_theme_font_size(property.get_slice("/", 1))
+		elif property.begins_with("theme_override_icons"):
+			return node.get_theme_icon(property.get_slice("/", 1))
+		elif property.begins_with("theme_override_styles"):
+			return node.get_theme_stylebox(property.get_slice("/", 1))
+
+	return node.get(property)
 
 func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 	var settings: Array[Dictionary] = []
@@ -446,23 +473,23 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 	var current_subgroup := {}
 
 	for i in properties:
-		if i["usage"] & PROPERTY_USAGE_CATEGORY == PROPERTY_USAGE_CATEGORY:
-			continue
+		#if i["type"] & PROPERTY_USAGE_CATEGORY == PROPERTY_USAGE_CATEGORY:
+			#continue
 
-		if i["usage"] & PROPERTY_USAGE_GROUP == PROPERTY_USAGE_GROUP:
+		if i["type"] == "Category":
 			current_group = i
 			current_group["added"] = false
 			current_group["id"] = &"GROUP"
 			current_subgroup = {}
 
-		elif i["usage"] & PROPERTY_USAGE_SUBGROUP == PROPERTY_USAGE_SUBGROUP:
+		elif i["type"] == "Node":
 			current_subgroup = i
 			current_subgroup["added"] = false
 			current_subgroup["id"] = &"SUBGROUP"
 
-		elif i["usage"] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
-			if current_group.get("name", "") == "Private":
-				continue
+		elif i["type"] == "Property":
+			#if current_group.get("name", "") == "Private":
+				#continue
 
 			if current_group.is_empty():
 				current_group = {"name":"General", "added":false, "id":&"GROUP"}
@@ -483,7 +510,15 @@ func collect_settings(properties:Array[Dictionary]) -> Array[Dictionary]:
 	return settings
 
 
+func get_node_property_info(node:Node, property_name:String) -> Dictionary:
+	for i in node.get_property_list():
+		if i.name == property_name:
+			return i
+
+	return {}
+
 func set_export_override(property_name:String, value:String = "") -> void:
+	#printt("Set", property_name, value)
 	if str_to_var(value) != customization_editor_info[property_name]["orig"]:
 		current_style.set_layer_setting(current_layer_id, property_name, value)
 		customization_editor_info[property_name]["reset"].disabled = false
@@ -496,6 +531,7 @@ func _on_export_override_reset(property_name:String) -> void:
 	current_style.remove_layer_setting(current_layer_id, property_name)
 	customization_editor_info[property_name]["reset"].disabled = true
 	var node: Node = customization_editor_info[property_name]["node"]
+	print(customization_editor_info[property_name])
 	DialogicUtil.set_property_edit_node_value(node, customization_editor_info[property_name]["orig"])
 
 

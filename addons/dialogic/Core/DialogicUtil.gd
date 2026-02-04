@@ -304,8 +304,31 @@ static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
 	var default_info := get_scene_export_defaults(node)
-	if !node.script:
+
+	## NEW STYLE VERSION
+	if node.has_meta("style_customization"):
+		var current_node : Node
+		var current_node_path := ""
+		for i in node.get_meta("style_customization"):
+			if i.type == "Node":
+				current_node = node.get_node(i.name)
+				current_node_path = i.name
+			if i.type == "Property":
+				var path: String = current_node_path+":"+i.name
+				if path in export_overrides:
+					if str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
+						current_node.set(i.name, export_overrides[path])
+					else:
+						current_node.set(i.name, str_to_var(export_overrides[path]))
+				elif path in default_info:
+					current_node.set(i.name, default_info.get(path))
 		return
+
+
+	## OLD APPLY MECHANISM
+	if not node.script:
+		return
+
 	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
@@ -322,15 +345,34 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:
-	if !node.script:
-		return {}
 
 	if Engine.get_main_loop().has_meta('dialogic_scene_export_defaults') and \
 			node.scene_file_path in Engine.get_main_loop().get_meta('dialogic_scene_export_defaults'):
 		return Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.scene_file_path]
 
-	if !Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
+	if not Engine.get_main_loop().has_meta('dialogic_scene_export_defaults'):
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
+
+	## NEW STYLE VERSION
+	if node.has_meta("style_customization"):
+		var defaults := {}
+		var current_node : Node
+		var current_node_path := ""
+		for i in node.get_meta("style_customization"):
+			if i.type == "Node":
+				current_node = node.get_node(i.name)
+				current_node_path = i.name
+			if i.type == "Property":
+				defaults[current_node_path+":"+i.name] = current_node.get(i.name)
+		Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.scene_file_path] = defaults
+		return defaults
+
+
+
+	## OLD APPLY MECHANISM
+	if not node.script:
+		return {}
+
 	var defaults := {}
 	var property_info: Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
@@ -413,21 +455,24 @@ static func customize_file(original_file:String, target_file:String) -> String:
 #region INSPECTOR FIELDS
 ################################################################################
 
-static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, property_changed:Callable) -> Control:
+static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, property_changed:Callable, property_path := "") -> Control:
+	if property_path.is_empty():
+		property_path = property_info.name
 	var input: Control = null
+	print(property_info)
 	match property_info['type']:
-		TYPE_BOOL:
+		TYPE_BOOL when false:
 			input = CheckBox.new()
 			if value != null:
 				input.button_pressed = value
-			input.toggled.connect(DialogicUtil._on_export_bool_submitted.bind(property_info.name, property_changed))
-		TYPE_COLOR:
+			input.toggled.connect(DialogicUtil._on_export_bool_submitted.bind(property_path, property_changed))
+		TYPE_COLOR when false:
 			input = ColorPickerButton.new()
 			if value != null:
 				input.color = value
-			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_info.name, property_changed))
+			input.color_changed.connect(DialogicUtil._on_export_color_submitted.bind(property_path, property_changed))
 			input.custom_minimum_size.x = get_editor_scale() * 50
-		TYPE_INT:
+		TYPE_INT when false:
 			if property_info["hint"] & PROPERTY_HINT_ENUM == PROPERTY_HINT_ENUM:
 				input = OptionButton.new()
 				var idx := 0
@@ -439,10 +484,10 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 						input.select(idx)
 
 					idx += 1
-				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_info.name, property_changed, input))
+				input.item_selected.connect(DialogicUtil._on_export_int_enum_submitted.bind(property_path, property_changed, input))
 			else:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
-				input.property_name = property_info['name']
+				input.property_name = property_path
 				input.use_int_mode()
 
 				if ',' in property_info.hint_string:
@@ -458,9 +503,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				if value != null:
 					input.set_value(value)
 				input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_changed))
-		TYPE_FLOAT:
+		TYPE_FLOAT when false:
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_number.tscn").instantiate()
-			input.property_name = property_info['name']
+			input.property_name = property_path
 			input.use_float_mode()
 			input.step = 0.01
 			if ',' in property_info.hint_string:
@@ -471,20 +516,20 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			if value != null:
 				input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_number_submitted.bind(property_changed))
-		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
+		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4 when false:
 			var vectorSize: String = type_string(typeof(value))[-1]
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
-			input.property_name = property_info['name']
+			input.property_name = property_path
 			input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_vector_submitted.bind(property_changed))
-		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I:
+		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I when false:
 			var vectorSize: String = type_string(typeof(value))[-2]
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_vector" + vectorSize + ".tscn").instantiate()
 			input.step = 1
-			input.property_name = property_info['name']
+			input.property_name = property_path
 			input.set_value(value)
 			input.value_changed.connect(DialogicUtil._on_export_vectori_submitted.bind(property_changed))
-		TYPE_STRING:
+		TYPE_STRING when false:
 			if property_info['hint'] & PROPERTY_HINT_FILE== PROPERTY_HINT_FILE  or property_info['hint'] & PROPERTY_HINT_DIR == PROPERTY_HINT_DIR:
 				input = load("res://addons/dialogic/Editor/Events/Fields/field_file.tscn").instantiate()
 				input.show_editing_button = true
@@ -492,7 +537,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 				if property_info['hint'] == PROPERTY_HINT_DIR:
 					input.file_mode = FileDialog.FILE_MODE_OPEN_DIR
-				input.property_name = property_info['name']
+				input.property_name = property_path
 				input.placeholder = "Default"
 				input.hide_reset = true
 				if value != null:
@@ -506,32 +551,53 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 					input.add_item(options[-1])
 				if value != null:
 					input.select(options.find(value))
-				input.item_selected.connect(DialogicUtil._on_export_string_enum_submitted.bind(property_info.name, options, property_changed))
+				input.item_selected.connect(DialogicUtil._on_export_string_enum_submitted.bind(property_path, options, property_changed))
 			else:
 				input = LineEdit.new()
 				if value != null:
 					input.text = value
-				input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_info.name, property_changed))
-		TYPE_DICTIONARY:
+				input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_path, property_changed))
+		TYPE_DICTIONARY when false:
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn").instantiate()
-			input.property_name = property_info["name"]
+			input.property_name = property_path
 			input.set_value(value)
 			input.value_changed.connect(_on_export_dict_submitted.bind(property_changed))
-		TYPE_ARRAY:
+		TYPE_ARRAY when false:
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_array.tscn").instantiate()
-			input.property_name = property_info["name"]
+			input.property_name = property_path
 			input.set_value(value)
 			input.value_changed.connect(_on_export_array_submitted.bind(property_changed))
-		TYPE_OBJECT:
+		TYPE_OBJECT when false:
 			input = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 			input.hint_text = "Objects/Resources as settings are currently not supported. \nUse @export_file('*.extension') instead and load the resource once needed."
 
 		_:
-			input = LineEdit.new()
-			if value != null:
-				input.text = value
-			input.text_submitted.connect(_on_export_input_text_submitted.bind(property_info.name, property_changed))
+			var fake := DialogicFakeObject.new()
+			fake.property = value
+			var pi := property_info
+			input = EditorInspector.instantiate_property_editor(fake, pi.type, "property", pi.hint, pi.hint_string, pi.usage, true)
+			input.ready.connect(func():
+				input.set_object_and_property(fake, "property")
+				input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				input.set_meta("object", fake)
+				#input.tree_exited.connect(printt.bind("Leaving", fake))
+				#input.label = pi.name
+				input.draw_label = false
+				input.property_changed.connect(_on_export_inspector_changed.bind(property_path, property_changed, input))
+				#input.selected.connect(_prop_selected)
+				input.update_property()
+			)
+			#fake.property_changed.connect(_on_export_variant_submitted.bind(property_path, property_changed))
+			#input = LineEdit.new()
+			#if value != null:
+				#input.text = value
+			#input.text_submitted.connect(_on_export_input_text_submitted.bind(property_path, property_changed))
 	return input
+
+
+class DialogicFakeObject extends RefCounted:
+	@export var property : Variant = null
+
 
 
 static func _on_export_input_text_submitted(text:String, property_name:String, callable: Callable) -> void:
@@ -558,6 +624,7 @@ static func _on_export_string_enum_submitted(value:int, property_name:String, li
 static func _on_export_vector_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
+
 static func _on_export_vectori_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	match typeof(value):
 		TYPE_VECTOR2: value = Vector2i(value)
@@ -570,6 +637,16 @@ static func _on_export_dict_submitted(property_name:String, value:Variant, calla
 
 static func _on_export_array_submitted(property_name:String, value:Variant, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
+
+static func _on_export_variant_submitted(property_name:String, value:Variant, callable: Callable) -> void:
+	callable.call(property_name, var_to_str(value))
+
+
+static func _on_export_inspector_changed(name:String, value:Variant, field:String, changed:bool, path:String, callable:Callable, input_field:EditorProperty) -> void:
+	callable.call(path, var_to_str(value))
+	input_field.get_meta("object").property = value
+	input_field.update_property()
+
 
 static func set_property_edit_node_value(node:Control, value:Variant) -> void:
 	if node is CheckBox:
@@ -586,6 +663,10 @@ static func set_property_edit_node_value(node:Control, value:Variant) -> void:
 				node.select(i)
 	elif node is SpinBox:
 		node.value = value
+	elif node is EditorProperty:
+		print("RESET")
+		node.get_meta("object").property = value
+		node.update_property()
 
 
 #endregion
