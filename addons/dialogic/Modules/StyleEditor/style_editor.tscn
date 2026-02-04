@@ -38,7 +38,7 @@ offset_right = -3.0
 offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offsets = PackedInt32Array(150)
+split_offsets = PackedInt32Array(150, 0)
 split_offset = 150
 script = ExtResource("1_gy14f")
 
@@ -69,9 +69,9 @@ Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
 texture = null
 hint_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
-When one style is selected as default dialogic will use that style when calling Dialogic.start() otherwise a fallback is used.
+When one style is selected as default dialogic will use that style when calling [code]Dialogic.start()[/code] otherwise a fallback is used.
 You can change the style with the Change Style event, by setting a style on a character or by calling
-Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
+[code]Dialogic.Styles.load_style(\"Style Name\")[/code] before calling [code]Dialogic.start()[/code]."
 
 [node name="StyleButtons" type="HBoxContainer" parent="Panel/VBox" unique_id=1676966194]
 layout_mode = 2
@@ -124,7 +124,6 @@ item_0/text = "Style"
 
 [node name="StyleView" type="VBoxContainer" parent="." unique_id=58859596]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -266,7 +265,6 @@ size_flags_vertical = 3
 allow_rmb_select = true
 hide_folding = true
 enable_recursive_folding = false
-drop_mode_flags = 2
 script = ExtResource("4_kpoqn")
 
 [node name="LayerSettings" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor" unique_id=175949248]
@@ -402,6 +400,7 @@ unique_name_in_owner = true
 [connection signal="button_clicked" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerTree" to="StyleView/PanelContainer/StyleEditor" method="_on_layer_tree_button_clicked"]
 [connection signal="layer_moved" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerTree" to="StyleView/PanelContainer/StyleEditor" method="_on_layer_tree_layer_moved"]
 [connection signal="pressed" from="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader/ExpandLayerInfo" to="StyleView/PanelContainer/StyleEditor" method="_on_expand_layer_info_pressed"]
+[connection signal="tab_changed" from="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerSettingsTabs" to="StyleView/PanelContainer/StyleEditor" method="_on_layer_settings_tabs_tab_changed"]
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
 [connection signal="close_requested" from="StyleBrowserWindow" to="StyleBrowserWindow" method="_on_close_requested"]
 [connection signal="activate_part" from="StyleBrowserWindow/StyleBrowser" to="StyleBrowserWindow" method="_on_style_browser_activate_part"]

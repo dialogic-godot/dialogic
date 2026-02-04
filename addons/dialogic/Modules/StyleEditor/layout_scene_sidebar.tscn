@@ -6,7 +6,7 @@
 [node name="LayoutSceneSidebar" type="MarginContainer" unique_id=2056312676]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 204.0
+offset_right = 297.0
 grow_vertical = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -54,6 +54,24 @@ columns = 4
 column_titles_visible = true
 hide_root = true
 script = ExtResource("2_nc5pf")
+
+[node name="InfoLabel" type="Label" parent="VBoxContainer/PropertyTree" unique_id=1359787800]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = 39.0
+offset_right = -35.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Drag and drop properties from the inspector."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="AddCategory" type="Button" parent="VBoxContainer" unique_id=2028704367]
 layout_mode = 2
