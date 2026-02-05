@@ -1,0 +1,753 @@
+[gd_scene format=3 uid="uid://dc25nxmyte65g"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_dciif"]
+[ext_resource type="Script" uid="uid://b6hsfk37rf4ji" path="res://test-project/DialogicStyles/VisualNovelTextbox/animations.gd" id="2_dciif"]
+[ext_resource type="StyleBox" uid="uid://dkv1pl1c1dq6" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/vn_textbox_default_panel.tres" id="3_ty8tu"]
+[ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_0f4vc"]
+[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="4_dni5o"]
+[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="5_11ik0"]
+[ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_jsmpq"]
+[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="6_g3jov"]
+[ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_q03yw"]
+[ext_resource type="RichTextEffect" uid="uid://qegqrr4g2riu" path="res://addons/dialogic/Example Assets/bbcode_transitions/fade_in.tres" id="7_n57md"]
+[ext_resource type="RichTextEffect" uid="uid://c8b884puc720d" path="res://addons/dialogic/Example Assets/bbcode_transitions/fancy_in.tres" id="8_4jb6e"]
+[ext_resource type="RichTextEffect" uid="uid://dnxkgwncm1pt5" path="res://addons/dialogic/Example Assets/bbcode_transitions/shaky_in.tres" id="9_fh1x4"]
+[ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="10_dni5o"]
+[ext_resource type="RichTextEffect" uid="uid://hx8qyt5ry3h0" path="res://addons/dialogic/Example Assets/bbcode_transitions/fade_scale_in.tres" id="10_u13lk"]
+[ext_resource type="RichTextEffect" uid="uid://16tqaqoytwq7" path="res://test-project/crazy_in.tres" id="11_f15ma"]
+[ext_resource type="Script" uid="uid://dxs4th0botkt4" path="res://test-project/DialogicStyles/VisualNovelTextbox/autoadvance_indicator.gd" id="14_avvf6"]
+[ext_resource type="Texture2D" uid="uid://b0rpqfg4fhebk" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/next.svg" id="17_0v6i8"]
+
+[sub_resource type="Animation" id="Animation_au0a2"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin/DialogTextPanel:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OutsideMargin/DialogTextPanel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OutsideMargin:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_6kbwc"]
+resource_name = "new_text"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin/DialogTextPanel:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(3, 3, 3, 3, 3),
+"points": PackedFloat32Array(0, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, -0.005, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, 0, -0.025, 0, 0.025, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_g6k55"]
+resource_name = "textbox_fade_up"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin/DialogTextPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 200), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_htbgc"]
+resource_name = "textbox_pop"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin/DialogTextPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.26666668),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.26666668, 0.36666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 100), Vector2(0, -30), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OutsideMargin:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.29649553, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.01745329251994329, 0.01745329251994329, -0.01745329251994329, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p7syn"]
+_data = {
+&"RESET": SubResource("Animation_au0a2"),
+&"new_text": SubResource("Animation_6kbwc"),
+&"textbox_fade_up": SubResource("Animation_g6k55"),
+&"textbox_pop": SubResource("Animation_htbgc")
+}
+
+[sub_resource type="FontVariation" id="FontVariation_pwc6n"]
+base_font = ExtResource("6_g3jov")
+variation_opentype = {
+"weight": 700
+}
+variation_embolden = 1.3
+variation_transform = Transform2D(1, 0.075, 0, 0.95, 0, 0)
+opentype_features = {
+"calt": false,
+"ss04": true,
+"tnum": true
+}
+spacing_top = -1
+spacing_bottom = -1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2use"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pr1dn"]
+content_margin_left = 7.0
+content_margin_top = 3.0
+content_margin_right = 7.0
+content_margin_bottom = 3.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="FontVariation" id="FontVariation_bbxyv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_u1jye"]
+font_color = Color(0.86308134, 0.18720368, 0.777736, 1)
+
+[node name="VN_TextboxLayer" type="Node" unique_id=1844456958]
+script = ExtResource("1_dciif")
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/base_style_customization = [{
+"added": true,
+"id": &"GROUP",
+"name": "Layer",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "General",
+"id": &"SUBGROUP",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"id": &"SETTING",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/style_customization = Array[Dictionary]([{
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Text",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "Text",
+"id": &"SUBGROUP",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"id": &"SETTING",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Vertical Alignment",
+"id": &"SETTING",
+"name": "vertical_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Color",
+"id": &"SETTING",
+"name": "theme_override_colors/default_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"id": &"SETTING",
+"name": "font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Bold",
+"id": &"SETTING",
+"name": "theme_override_fonts/bold_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Normal",
+"id": &"SETTING",
+"name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Bold Italics",
+"id": &"SETTING",
+"name": "theme_override_fonts/bold_italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font",
+"id": &"SETTING",
+"name": "theme_override_fonts/italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Code",
+"id": &"SETTING",
+"name": "theme_override_fonts/mono_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "Outline",
+"id": &"SUBGROUP",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Font Outline Color",
+"id": &"SETTING",
+"name": "theme_override_colors/font_outline_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Outline Size",
+"id": &"SETTING",
+"name": "theme_override_constants/outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Box",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "TextBox",
+"id": &"SUBGROUP",
+"name": "%DialogTextPanel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Modulate",
+"id": &"SETTING",
+"name": "self_modulate",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Size",
+"id": &"SETTING",
+"name": "custom_minimum_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Panel Stylebox",
+"id": &"SETTING",
+"name": "theme_override_styles/panel",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "Animations",
+"id": &"SUBGROUP",
+"name": "%Animations",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Animation In",
+"id": &"SETTING",
+"name": "animation_in",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Animation Out",
+"id": &"SETTING",
+"name": "animation_out",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Animation New Text",
+"id": &"SETTING",
+"name": "animation_new_text",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "Margin",
+"id": &"SUBGROUP",
+"name": "%OutsideMargin",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Margin Bottom",
+"id": &"SETTING",
+"name": "theme_override_constants/margin_bottom",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "Name Label",
+"id": &"SUBGROUP",
+"name": "%DialogicNode_NameLabel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Hide When Empty",
+"id": &"SETTING",
+"name": "hide_when_empty",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Use Character Color",
+"id": &"SETTING",
+"name": "use_character_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"id": &"SETTING",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"id": &"SETTING",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"id": &"SETTING",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Horizontal Alignment",
+"id": &"SETTING",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Name Label",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"collapsed": true,
+"display_name": "Panel",
+"id": &"SUBGROUP",
+"name": "%NameLabelPanel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Stylebox Panel",
+"id": &"SETTING",
+"name": "theme_override_styles/panel",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Minimum Size",
+"id": &"SETTING",
+"name": "custom_minimum_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Modulate",
+"id": &"SETTING",
+"name": "self_modulate",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"collapsed": true,
+"display_name": "Position",
+"id": &"SUBGROUP",
+"name": "%NameLabelPositioner",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Alignment",
+"id": &"SETTING",
+"name": "alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Offset",
+"id": &"SETTING",
+"name": "position",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Indicators",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"collapsed": true,
+"display_name": "Next Indicator",
+"id": &"SUBGROUP",
+"name": "%NextIndicator",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"id": &"SETTING",
+"name": "enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Modulate",
+"id": &"SETTING",
+"name": "modulate",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show On Questions",
+"id": &"SETTING",
+"name": "show_on_questions",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show On Autoadvance",
+"id": &"SETTING",
+"name": "show_on_autoadvance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Animation",
+"id": &"SETTING",
+"name": "animation",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Texture",
+"id": &"SETTING",
+"name": "texture",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Texture Size",
+"id": &"SETTING",
+"name": "texture_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Indicator Offset",
+"id": &"SETTING",
+"name": "indicator_offset",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"collapsed": true,
+"display_name": "Auto Advance Indicator",
+"id": &"SUBGROUP",
+"name": "%AutoAdvanceProgressbar",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"id": &"SETTING",
+"name": "enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Sounds",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"collapsed": true,
+"display_name": "Type Sounds",
+"id": &"SUBGROUP",
+"name": "%DialogicNode_TypeSounds",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"id": &"SETTING",
+"name": "enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Mode",
+"id": &"SETTING",
+"name": "mode",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Sounds",
+"id": &"SETTING",
+"name": "sounds",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "End Sound",
+"id": &"SETTING",
+"name": "end_sound",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Play Every Character",
+"id": &"SETTING",
+"name": "play_every_character",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Pitch Variance",
+"id": &"SETTING",
+"name": "pitch_variance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Volume Variance",
+"id": &"SETTING",
+"name": "volume_variance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Ignore Characters",
+"id": &"SETTING",
+"name": "ignore_characters",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "End Sound",
+"id": &"SETTING",
+"name": "end_sound",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stream",
+"id": &"SETTING",
+"name": "stream",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="Animations" type="AnimationPlayer" parent="." unique_id=337384606]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_p7syn")
+autoplay = &"RESET"
+script = ExtResource("2_dciif")
+
+[node name="OutsideMargin" type="MarginContainer" parent="." unique_id=1942210453]
+unique_name_in_owner = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -46.0
+offset_right = 23.5
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 1)
+mouse_filter = 2
+theme_override_constants/margin_bottom = 15
+
+[node name="DialogTextPanel" type="Panel" parent="OutsideMargin" unique_id=1264938171]
+unique_name_in_owner = true
+self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+custom_minimum_size = Vector2(550, 110)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_ty8tu")
+metadata/_edit_layout_mode = 1
+
+[node name="Padding" type="MarginContainer" parent="OutsideMargin/DialogTextPanel" unique_id=1372397586]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="OutsideMargin/DialogTextPanel/Padding" unique_id=548111089 node_paths=PackedStringArray("textbox_root")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("4_dni5o")
+theme_override_fonts/bold_font = ExtResource("5_11ik0")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_pwc6n")
+theme_override_fonts/italics_font = ExtResource("6_g3jov")
+theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/bold_font_size = 20
+theme_override_font_sizes/bold_italics_font_size = 20
+theme_override_font_sizes/italics_font_size = 20
+theme_override_font_sizes/mono_font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_i2use")
+bbcode_enabled = true
+custom_effects = [ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma")]
+visible_characters_behavior = 1
+script = ExtResource("4_0f4vc")
+textbox_root = NodePath(".")
+font_size = 20
+
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="OutsideMargin/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=345539413]
+unique_name_in_owner = true
+bus = &"SFX"
+script = ExtResource("5_jsmpq")
+play_every_character = 0
+
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="OutsideMargin/DialogTextPanel/Padding" unique_id=1840095773]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.188235)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+max_value = 1.0
+step = 0.001
+value = 0.5
+show_percentage = false
+script = ExtResource("14_avvf6")
+
+[node name="NameLabelPositioner" type="HBoxContainer" parent="OutsideMargin/DialogTextPanel" unique_id=1051332123]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = -37.999996
+offset_right = -8.0
+offset_bottom = -0.9999962
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="NameLabelPanel" type="PanelContainer" parent="OutsideMargin/DialogTextPanel/NameLabelPositioner" unique_id=362456924]
+unique_name_in_owner = true
+self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pr1dn")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+metadata/_edit_group_ = true
+
+[node name="DialogicNode_NameLabel" type="Label" parent="OutsideMargin/DialogTextPanel/NameLabelPositioner/NameLabelPanel" unique_id=1071984656 node_paths=PackedStringArray("name_label_root")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_bbxyv")
+theme_override_font_sizes/font_size = 15
+text = "Example Name"
+label_settings = SubResource("LabelSettings_u1jye")
+script = ExtResource("10_dni5o")
+name_label_root = NodePath("..")
+
+[node name="NextIndicator" type="Control" parent="OutsideMargin/DialogTextPanel" unique_id=907207466]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 535.0
+offset_top = 95.0
+offset_right = 535.0
+offset_bottom = 95.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+script = ExtResource("6_q03yw")
+show_on_questions = true
+texture = ExtResource("17_0v6i8")
+metadata/_edit_layout_mode = 1

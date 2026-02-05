@@ -307,21 +307,25 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 
 	## NEW STYLE VERSION
 	if node.has_meta("style_customization"):
-		var current_node : Node
 		var current_node_path := ""
 		for i in node.get_meta("style_customization"):
 			if i.type == "Node":
-				current_node = node.get_node(i.name)
 				current_node_path = i.name
 			if i.type == "Property":
-				var path: String = current_node_path+":"+i.name
-				if path in export_overrides:
-					if str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
-						current_node.set(i.name, export_overrides[path])
-					else:
-						current_node.set(i.name, str_to_var(export_overrides[path]))
-				elif path in default_info:
-					current_node.set(i.name, default_info.get(path))
+				var nodes := []
+				if current_node_path.ends_with("/@all_children"):
+					nodes = node.get_node(current_node_path.trim_suffix("/@all_children")).get_children()
+				else:
+					nodes = [node.get_node(current_node_path)]
+				for current_node in nodes:
+					var path: String = current_node_path+":"+i.name
+					if path in export_overrides:
+						if str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
+							current_node.set(i.name, export_overrides[path])
+						else:
+							current_node.set(i.name, str_to_var(export_overrides[path]))
+					elif path in default_info:
+						current_node.set(i.name, default_info.get(path))
 		return
 
 
@@ -360,11 +364,14 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 		var current_node_path := ""
 		for i in node.get_meta("style_customization"):
 			if i.type == "Node":
-				current_node = node.get_node(i.name)
+				if i.name.ends_with("/@all_children"):
+					current_node = node.get_node(i.name.trim_suffix("/@all_children")).get_child(0)
+				else:
+					current_node = node.get_node(i.name)
 				current_node_path = i.name
 			if i.type == "Property":
 				defaults[current_node_path+":"+i.name] = current_node.get(i.name)
-		Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.scene_file_path] = defaults
+		Engine.get_main_loop().get_meta("dialogic_scene_export_defaults")[node.scene_file_path] = defaults
 		return defaults
 
 
@@ -459,7 +466,6 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 	if property_path.is_empty():
 		property_path = property_info.name
 	var input: Control = null
-	#print(property_info)
 	match property_info['type']:
 		TYPE_BOOL when false:
 			input = CheckBox.new()

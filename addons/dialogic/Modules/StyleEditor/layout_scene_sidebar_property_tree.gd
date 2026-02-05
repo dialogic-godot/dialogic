@@ -88,29 +88,45 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 						return true
 			"Property":
 				return true
-				if not drop_at:
-					return true
-				if drop_at.get_metadata(0).type == "Category":
-					if drop_section == -1 and drop_at.get_index() == 0:
-						return false
-					return true
-				elif drop_at.get_metadata(0).type == "Node":
-					if drop_section == -1 or drop_at.collapsed or drop_at.get_text(0) == data.get_parent().get_text(0):
-						return true
-				elif drop_at.get_metadata(0).type == "Property":
-					if drop_section == 1 and drop_at.get_index() == drop_at.get_parent().get_child_count()-1:
-						return true
-					elif drop_at.get_parent().get_text(0) == data.get_parent().get_text(0):
-						return true
+				#if not drop_at:
+					#return true
+				#if drop_at.get_metadata(0).type == "Category":
+					#if drop_section == -1 and drop_at.get_index() == 0:
+						#return false
+					#return true
+				#elif drop_at.get_metadata(0).type == "Node":
+					#if drop_section == -1 or drop_at.collapsed or drop_at.get_text(0) == data.get_parent().get_text(0):
+						#return true
+				#elif drop_at.get_metadata(0).type == "Property":
+					#if drop_section == 1 and drop_at.get_index() == drop_at.get_parent().get_child_count()-1:
+						#return true
+					#elif drop_at.get_parent().get_text(0) == data.get_parent().get_text(0):
+						#return true
 
 	if data is Dictionary:
 		if data.get("type", "") == "obj_property":
+			var obj := (data.get("object") as Node)
+			if data.get("object").get_class() == "MultiNodeEdit":
+				var nodes := EditorInterface.get_selection().get_selected_nodes()
+				var n := nodes[0].get_parent()
+				if nodes.any(func(x): return x.get_parent() != n):
+					return false
+				obj = nodes[0]
+				## TODO force multi-node property in this case
+			if not obj:
+				return false
+
+			%DropInfoLabel.visible = is_valid_multi_node_property(obj, data.get("property"))
+
 			drop_mode_flags = DROP_MODE_INBETWEEN
 			return true
+
 	return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
+	%DropInfoLabel.hide()
+
 	if data is TreeItem:
 		move_item(data, at_position)
 		return
@@ -131,7 +147,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 
 	if data.get("type", "") == "obj_property":
-		var node_path := get_scene_node_path(data.get("object"))
+		var node_path := get_scene_node_path(
+			data.get("object"), is_valid_multi_node_property(data.get("object"), data.get("property")) and Input.is_key_pressed(KEY_CTRL)
+			)
 
 		var node_parent_item := find_target_move_node_item(at_position, node_path)
 		var property_item := add_property_item(node_parent_item, {"name":data.get("property")})
@@ -276,6 +294,17 @@ func find_target_move_node_item(at_position:Vector2, node_path:String) -> TreeIt
 	return null
 
 
+## Returns true if all siblings of the given node also have the given property.
+func is_valid_multi_node_property(node:Node, property:String) -> bool:
+	if node.get_parent().get_child_count() > 1:
+		for sibling in node.get_parent().get_children():
+			if not property in sibling:
+				return false
+	else:
+		return false
+	return true
+
+
 func get_node_item(node:Node, parent:TreeItem = null) -> TreeItem:
 	if parent == null: parent = get_root()
 	for item in parent.get_children():
@@ -288,10 +317,13 @@ func get_node_item(node:Node, parent:TreeItem = null) -> TreeItem:
 	return null
 
 
-func get_scene_node_path(node:Node) -> String:
+func get_scene_node_path(node:Node, multi_node := false) -> String:
+	if multi_node: node = node.get_parent()
 	var node_path: NodePath = owner.scene_root.get_path_to(node , true)
 	if node.unique_name_in_owner:
 		node_path = "%"+node.name
+	if multi_node:
+		node_path = str(node_path) + "/@all_children"
 	return node_path
 
 
@@ -448,3 +480,7 @@ func highlight_property(node:Node, property:String) -> void:
 		i.uncollapse_tree()
 		i.select(0)
 		scroll_to_item(i)
+
+
+func _on_mouse_exited() -> void:
+	%DropInfoLabel.hide()

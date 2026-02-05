@@ -36,11 +36,11 @@ static func get_default_style_path() -> String:
 
 
 static func get_default_layout_base() -> PackedScene:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Base_Default/default_layout_base.tscn"))
+	return load(DialogicUtil.get_module_path('DefaultLayoutLayers').path_join("Base_Default/default_layout_base.tscn"))
 
 
 static func get_fallback_style_path() -> String:
-	return DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Style_VN_Default/default_vn_style.tres")
+	return DialogicUtil.get_module_path('DefaultLayoutLayers').path_join("Style_VN_Default/default_vn_style.tres")
 
 
 static func get_fallback_style() -> DialogicStyle:

@@ -51,8 +51,9 @@ theme_type_variation = &"DialogicPanelA"
 [node name="VBox" type="VBoxContainer" parent="Panel" unique_id=201626716]
 layout_mode = 2
 
-[node name="Title" type="HBoxContainer" parent="Panel/VBox" unique_id=153100260]
+[node name="Title" type="HFlowContainer" parent="Panel/VBox" unique_id=1773006578]
 layout_mode = 2
+theme_override_constants/h_separation = 2
 
 [node name="StyleListTitle" type="Label" parent="Panel/VBox/Title" unique_id=1425741460]
 layout_mode = 2
@@ -73,14 +74,16 @@ When one style is selected as default dialogic will use that style when calling 
 You can change the style with the Change Style event, by setting a style on a character or by calling
 [code]Dialogic.Styles.load_style(\"Style Name\")[/code] before calling [code]Dialogic.start()[/code]."
 
-[node name="StyleButtons" type="HBoxContainer" parent="Panel/VBox" unique_id=1676966194]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBox/Title" unique_id=454832469]
 layout_mode = 2
-alignment = 2
+theme_override_constants/separation = 0
 
-[node name="AddButton" type="MenuButton" parent="Panel/VBox/StyleButtons" unique_id=307379993]
+[node name="AddButton" type="MenuButton" parent="Panel/VBox/Title/HBoxContainer" unique_id=307379993]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add layout-style"
+theme_type_variation = &"FlatMenuButton"
+flat = false
 switch_on_hover = true
 item_count = 5
 popup/item_0/text = "ADD STYLE"
@@ -95,25 +98,25 @@ popup/item_3/id = 1
 popup/item_4/text = "Custom Style"
 popup/item_4/id = 2
 
-[node name="DuplicateButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1749418768]
+[node name="DuplicateButton" type="Button" parent="Panel/VBox/Title/HBoxContainer" unique_id=1749418768]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Duplicate style"
-flat = true
+theme_type_variation = &"FlatButton"
 
-[node name="RemoveButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1881793634]
+[node name="RemoveButton" type="Button" parent="Panel/VBox/Title/HBoxContainer" unique_id=1881793634]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Remove style from list"
-flat = true
+theme_type_variation = &"FlatButton"
 
-[node name="MakeDefaultButton" type="Button" parent="Panel/VBox/StyleButtons" unique_id=1399827181]
+[node name="MakeDefaultButton" type="Button" parent="Panel/VBox/Title/HBoxContainer" unique_id=1399827181]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Make Default"
+theme_type_variation = &"FlatButton"
 toggle_mode = true
-flat = true
 
 [node name="StyleList" type="ItemList" parent="Panel/VBox" unique_id=2118684691]
 unique_name_in_owner = true
@@ -182,8 +185,9 @@ theme_type_variation = &"DialogicPanelA"
 [node name="VBox" type="VBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel" unique_id=308885233]
 layout_mode = 2
 
-[node name="Title" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=899281465]
+[node name="Title" type="HFlowContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=809357736]
 layout_mode = 2
+theme_override_constants/h_separation = 2
 
 [node name="LayerListTitle" type="Label" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title" unique_id=1679594011]
 layout_mode = 2
@@ -198,14 +202,16 @@ texture = null
 hint_text = "Each layer is a scene and settings that will be applied to that scene.
 A layer can either be a premade scene or a scene you've made yourself."
 
-[node name="LayerButtons" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=1391203904]
+[node name="HBox" type="HBoxContainer" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title" unique_id=959313174]
 layout_mode = 2
-alignment = 2
+theme_override_constants/separation = 0
 
-[node name="AddLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=737538969]
+[node name="AddLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox" unique_id=737538969]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add Layer"
+theme_type_variation = &"FlatMenuButton"
+flat = false
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "ADD LAYER"
@@ -218,10 +224,12 @@ popup/item_2/id = 1
 popup/item_3/text = "Custom Layer"
 popup/item_3/id = 0
 
-[node name="ReplaceLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=718635805]
+[node name="ReplaceLayerButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox" unique_id=718635805]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Replace Layer"
+theme_type_variation = &"FlatMenuButton"
+flat = false
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "REPLACE LAYER"
@@ -234,10 +242,12 @@ popup/item_2/id = 0
 popup/item_3/text = "Custom Layer"
 popup/item_3/id = 1
 
-[node name="MakeCustomButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=1332622384]
+[node name="MakeCustomButton" type="MenuButton" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox" unique_id=1332622384]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Make Custom"
+theme_type_variation = &"FlatMenuButton"
+flat = false
 switch_on_hover = true
 item_count = 4
 popup/item_0/text = "MAKE CUSTOM"
@@ -250,12 +260,12 @@ popup/item_2/id = 0
 popup/item_3/text = "Full Layout"
 popup/item_3/id = 2
 
-[node name="DeleteLayerButton" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons" unique_id=22217721]
+[node name="DeleteLayerButton" type="Button" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox" unique_id=22217721]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete Layer (no undo!)"
+theme_type_variation = &"FlatButton"
 disabled = true
-flat = true
 
 [node name="LayerTree" type="Tree" parent="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox" unique_id=1030914327]
 unique_name_in_owner = true
@@ -388,15 +398,15 @@ script = ExtResource("5_qbwx0")
 [node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
 unique_name_in_owner = true
 
-[connection signal="pressed" from="Panel/VBox/StyleButtons/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/StyleButtons/RemoveButton" to="." method="_on_remove_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/StyleButtons/MakeDefaultButton" to="." method="_on_make_default_button_pressed"]
+[connection signal="pressed" from="Panel/VBox/Title/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
+[connection signal="pressed" from="Panel/VBox/Title/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="Panel/VBox/Title/HBoxContainer/MakeDefaultButton" to="." method="_on_make_default_button_pressed"]
 [connection signal="focus_exited" from="StyleView/HBox/LayoutStyleName" to="." method="_on_layout_style_name_focus_exited"]
 [connection signal="text_submitted" from="StyleView/HBox/LayoutStyleName" to="." method="_on_layout_style_name_text_submitted"]
 [connection signal="pressed" from="StyleView/HBox/EditNameButton" to="." method="_on_edit_name_button_pressed"]
 [connection signal="pressed" from="StyleView/HBox/TestStyleButton" to="." method="_on_test_style_button_pressed"]
-[connection signal="about_to_popup" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons/MakeCustomButton" to="StyleView/PanelContainer/StyleEditor" method="_on_make_custom_button_about_to_popup"]
-[connection signal="pressed" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerButtons/DeleteLayerButton" to="StyleView/PanelContainer/StyleEditor" method="_on_delete_layer_button_pressed"]
+[connection signal="about_to_popup" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox/MakeCustomButton" to="StyleView/PanelContainer/StyleEditor" method="_on_make_custom_button_about_to_popup"]
+[connection signal="pressed" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/Title/HBox/DeleteLayerButton" to="StyleView/PanelContainer/StyleEditor" method="_on_delete_layer_button_pressed"]
 [connection signal="button_clicked" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerTree" to="StyleView/PanelContainer/StyleEditor" method="_on_layer_tree_button_clicked"]
 [connection signal="layer_moved" from="StyleView/PanelContainer/StyleEditor/LayerPanel/VBox/LayerTree" to="StyleView/PanelContainer/StyleEditor" method="_on_layer_tree_layer_moved"]
 [connection signal="pressed" from="StyleView/PanelContainer/StyleEditor/LayerSettings/LayerInfoHeader/ExpandLayerInfo" to="StyleView/PanelContainer/StyleEditor" method="_on_expand_layer_info_pressed"]
