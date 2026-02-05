@@ -34,7 +34,7 @@ func _ready() -> void:
 	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
 	%MakeCustomButton.get_popup().index_pressed.connect(_on_make_custom_menu_pressed)
 	%LayerTree.item_selected.connect(_on_layer_selected)
-	_minimum_tree_item_height = int(DialogicUtil.get_editor_scale() * 32)
+	_minimum_tree_item_height = int(DialogicUtil.get_editor_scale() * 16)
 	%LayerTree.add_theme_constant_override("icon_max_width", _minimum_tree_item_height)
 
 	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_scene_saved)
@@ -88,6 +88,7 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[info.path].get("icon", "")):
 			item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[info.path].get("icon")))
 		item.set_text(0, %StyleBrowser.premade_scenes_reference[info.path].get("name", "Layer"))
+		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 
 	else:
 		item.set_text(0, clean_scene_name(info.path))
@@ -340,17 +341,17 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		child.queue_free()
 
 	var scene: Node = null
-	if !custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
+	if not custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
 		var pck_scn := load(custom_scene_path)
 		if pck_scn:
 			scene = pck_scn.instantiate()
 
+	var settings := []
 	if scene:
 		current_layer_scene_path = scene.scene_file_path
-
-	var settings := []
-	if scene and scene.script:
 		settings = collect_settings(scene)
+
+	#if scene and scene.script:
 
 	if settings.is_empty():
 		var note := Label.new()
@@ -370,10 +371,10 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	label_bg_style.content_margin_right = 5
 	label_bg_style.content_margin_top = 5
 
-	var current_group_name := ""
+	#var current_group_name := ""
 	var current_subgroup_name := ""
 	customization_editor_info = {}
-	var current_node : Node = null
+	var current_node_path : String = ""
 	for i in settings:
 		match i["id"]:
 			&"GROUP":
@@ -387,10 +388,15 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_grid.columns = 3
 				current_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				main_scroll.add_child(current_grid)
-				current_group_name = i["name"].to_snake_case()
+				#current_group_name = i["name"].to_snake_case(
 				current_subgroup_name = ""
 
 			&"SUBGROUP":
+				current_node_path = i["name"]
+
+				if (i.display_name.is_empty() or i.display_name == "-") and current_subgroup_name:
+					continue
+
 				# add separator
 				if current_subgroup_name:
 					current_grid.add_child(HSeparator.new())
@@ -404,8 +410,8 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				title_label.size_flags_horizontal = SIZE_EXPAND_FILL
 				current_grid.add_child(title_label, true)
 
-				current_node = scene.get_node(i["name"])
-				current_node.set_meta("style_identifier", i["name"])
+
+				#current_node.set_meta("style_identifier", i["name"])
 
 				# add spaced to the grid
 				current_grid.add_child(Control.new())
@@ -415,7 +421,11 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 
 			&"SETTING":
 				var property_name: String = i["name"]
-				var property_path: String = current_node.get_meta("style_identifier")+":"+property_name
+				var property_path: String = current_node_path+":"+property_name
+				var node := get_scene_node(scene, current_node_path)
+				if not property_name in node:
+					printerr("[Dialogic] Invalid node property exposed to style editor: "+property_path)
+					continue
 				var property_display_name: String = i["display_name"]
 
 				var label := Label.new()
@@ -423,8 +433,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				label.text = property_display_name
 				current_grid.add_child(label, true)
 
-				var scene_value: Variant = get_value_on_node(current_node, property_name)
-				#printt(property_name, scene_value)
+				var scene_value: Variant = get_value_on_node(node, property_name)
 				customization_editor_info[property_path] = {}
 
 				if property_path in inherited_overrides:
@@ -438,9 +447,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				else:
 					current_value = customization_editor_info[property_path]["orig"]
 
-				#EditorInspector.instantiate_property_editor(current_node, )
-				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(current_node, property_name), current_value, set_export_override, property_path)
-				#EditorInspector
+				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(node, property_name), current_value, set_export_override, property_path)
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
 				customization_editor_info[property_path]["node"] = input
 
@@ -454,7 +461,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				reset.pressed.connect(_on_export_override_reset.bind(property_path))
 				current_grid.add_child(input)
 
-	var latest_tab := DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
+	var latest_tab: int = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
 
 	%LayerSettingsTabs.current_tab = min(latest_tab, %LayerSettingsTabs.get_tab_count()-1)
 	if scene:
@@ -477,6 +484,12 @@ func get_value_on_node(node:Node, property:String) -> Variant:
 			return node.get_theme_stylebox(property.get_slice("/", 1))
 
 	return node.get(property)
+
+
+func get_scene_node(scene:Node, node_path:String) -> Node:
+	if node_path.ends_with("/@all_children"):
+		return scene.get_node(node_path.trim_suffix("/@all_children")).get_child(0)
+	return scene.get_node(node_path)
 
 
 func collect_settings(scene:Node) -> Array[Dictionary]:

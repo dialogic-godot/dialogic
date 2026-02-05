@@ -19,14 +19,15 @@ func _ready() -> void:
 	%Title.add_theme_font_size_override("font_size", get_theme_font_size("font_size", "HeaderLarge"))
 	%Title.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
 
+	%DropInfoLabel.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
 
 func _on_scene_changed(new_scene_root:Node) -> void:
-	if not new_scene_root or not (new_scene_root is DialogicLayoutBase or new_scene_root is DialogicLayoutLayer):
-		close()
-		hide()
-	else:
+	if new_scene_root and (new_scene_root is DialogicLayoutBase or new_scene_root is DialogicLayoutLayer or new_scene_root.has_meta("style_customization")):
 		show()
 		load_scene(new_scene_root)
+	else:
+		close()
+		hide()
 
 
 func load_scene(new_scene_root:Node) -> void:

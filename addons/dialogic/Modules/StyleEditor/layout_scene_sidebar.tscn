@@ -6,7 +6,7 @@
 [node name="LayoutSceneSidebar" type="MarginContainer" unique_id=2056312676]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 297.0
+offset_right = 294.0
 grow_vertical = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -73,6 +73,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
+[node name="DropInfoLabel" type="Label" parent="VBoxContainer" unique_id=2051895423]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hold CTRL when dropping to expose this property for all siblings as well."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
 [node name="AddCategory" type="Button" parent="VBoxContainer" unique_id=2028704367]
 layout_mode = 2
 text = "Add Category"
@@ -91,6 +99,7 @@ text = "Add Category"
 [connection signal="changed" from="VBoxContainer/PropertyTree" to="." method="_on_property_tree_changed"]
 [connection signal="column_title_clicked" from="VBoxContainer/PropertyTree" to="VBoxContainer/PropertyTree" method="_on_column_title_clicked"]
 [connection signal="item_edited" from="VBoxContainer/PropertyTree" to="VBoxContainer/PropertyTree" method="_on_item_edited"]
+[connection signal="mouse_exited" from="VBoxContainer/PropertyTree" to="VBoxContainer/PropertyTree" method="_on_mouse_exited"]
 [connection signal="pressed" from="VBoxContainer/AddCategory" to="." method="_on_add_category_pressed"]
 [connection signal="pressed" from="VBoxContainer/Print" to="." method="_on_print_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddGroup" to="." method="_on_add_category_pressed"]
