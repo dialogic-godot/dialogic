@@ -304,17 +304,17 @@ func is_valid_multi_node_property(node:Node, property:String) -> bool:
 		return false
 	return true
 
-
-func get_node_item(node:Node, parent:TreeItem = null) -> TreeItem:
-	if parent == null: parent = get_root()
-	for item in parent.get_children():
-		if item.get_metadata(0).type == "Node":
-			if get_scene_node(item.get_metadata(0).node_path) == node:
-				return item
-		if item.get_metadata(0).type == "Category":
-			var result := get_node_item(node, item)
-			if result: return result
-	return null
+#
+#func get_node_item(node:Node, parent:TreeItem = null) -> TreeItem:
+	#if parent == null: parent = get_root()
+	#for item in parent.get_children():
+		#if item.get_metadata(0).type == "Node":
+			#if get_scene_node(item.get_metadata(0).node_path) == node:
+				#return item
+		#if item.get_metadata(0).type == "Category":
+			#var result := get_node_item(node, item)
+			#if result: return result
+	#return null
 
 
 func get_scene_node_path(node:Node, multi_node := false) -> String:
@@ -328,6 +328,8 @@ func get_scene_node_path(node:Node, multi_node := false) -> String:
 
 
 func get_scene_node(node_path:String) -> Node:
+	if node_path.ends_with("/@all_children"):
+		return owner.scene_root.get_node(node_path.trim_suffix("/@all_children")).get_child(0)
 	return owner.scene_root.get_node(node_path)
 
 
@@ -464,13 +466,18 @@ func _on_item_edited() -> void:
 func highlight_property(node:Node, property:String) -> void:
 	var item := get_root().get_child(0)
 	var current_node: Node = null
+	var current_node_path := ""
 	var highlight_items := []
 	while item:
 		var dt: Dictionary = item.get_metadata(0)
 		if dt.type == "Node":
 			current_node = get_item_scene_node(item)
-		if dt.type == "Property" and current_node == node and item.get_text(0) == property:
-			highlight_items.append(item)
+			current_node_path = item.get_text(0)
+		if dt.type == "Property":
+			if item.get_text(0) == property:
+				if current_node == node or (current_node_path.ends_with("/@all_children") and current_node.get_parent() == node.get_parent()):
+					highlight_items.append(item)
+					break
 		item = item.get_next_in_tree()
 
 	if highlight_items.is_empty():
