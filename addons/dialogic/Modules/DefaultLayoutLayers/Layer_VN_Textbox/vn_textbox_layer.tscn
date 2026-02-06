@@ -9,12 +9,7 @@
 [ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_jsmpq"]
 [ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="6_g3jov"]
 [ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_q03yw"]
-[ext_resource type="RichTextEffect" uid="uid://qegqrr4g2riu" path="res://addons/dialogic/Example Assets/bbcode_transitions/fade_in.tres" id="7_n57md"]
-[ext_resource type="RichTextEffect" uid="uid://c8b884puc720d" path="res://addons/dialogic/Example Assets/bbcode_transitions/fancy_in.tres" id="8_4jb6e"]
-[ext_resource type="RichTextEffect" uid="uid://dnxkgwncm1pt5" path="res://addons/dialogic/Example Assets/bbcode_transitions/shaky_in.tres" id="9_fh1x4"]
 [ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="10_dni5o"]
-[ext_resource type="RichTextEffect" uid="uid://hx8qyt5ry3h0" path="res://addons/dialogic/Example Assets/bbcode_transitions/fade_scale_in.tres" id="10_u13lk"]
-[ext_resource type="RichTextEffect" uid="uid://16tqaqoytwq7" path="res://test-project/crazy_in.tres" id="11_f15ma"]
 [ext_resource type="Script" uid="uid://dxs4th0botkt4" path="res://test-project/DialogicStyles/VisualNovelTextbox/autoadvance_indicator.gd" id="14_avvf6"]
 [ext_resource type="Texture2D" uid="uid://b0rpqfg4fhebk" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/next.svg" id="17_0v6i8"]
 
@@ -192,7 +187,6 @@ font_color = Color(0.86308134, 0.18720368, 0.777736, 1)
 
 [node name="VN_TextboxLayer" type="Node" unique_id=1844456958]
 script = ExtResource("1_dciif")
-metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/base_style_customization = [{
 "added": true,
 "id": &"GROUP",
@@ -211,6 +205,7 @@ metadata/base_style_customization = [{
 "tooltip": "",
 "type": "Property"
 }]
+metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "added": true,
 "display_name": "",
@@ -680,7 +675,6 @@ theme_override_font_sizes/italics_font_size = 20
 theme_override_font_sizes/mono_font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_i2use")
 bbcode_enabled = true
-custom_effects = [ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma"), ExtResource("7_n57md"), ExtResource("8_4jb6e"), ExtResource("9_fh1x4"), ExtResource("10_u13lk"), ExtResource("11_f15ma")]
 visible_characters_behavior = 1
 script = ExtResource("4_0f4vc")
 textbox_root = NodePath(".")

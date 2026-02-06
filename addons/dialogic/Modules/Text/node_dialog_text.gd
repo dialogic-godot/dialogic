@@ -48,6 +48,9 @@ var speed_counter: float = 0
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
 	meta_hover_ended.connect(_on_meta_hover_ended)

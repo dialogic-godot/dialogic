@@ -86,9 +86,9 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
 	get_pointer().show()
 	get_title().text = entry_info.title
 	get_text().text = entry_info.text
-	get_text().text = ['', '[center]', '[right]'][text_alignment] + get_text().text
+	#get_text().text = ['', '[center]', '[right]'][text_alignment] + get_text().text
 	get_extra().text = entry_info.extra
-	get_extra().text = ['', '[center]', '[right]'][extra_alignment] + get_extra().text
+	#get_extra().text = ['', '[center]', '[right]'][extra_alignment] + get_extra().text
 	get_pointer().global_position = get_pointer().get_global_mouse_position()
 
 	if title_color_mode == TextColorModes.ENTRY:
@@ -121,57 +121,58 @@ func _on_dialogic_display_dialog_text_meta_hover_ended(_meta:String) -> void:
 
 
 func _apply_export_overrides() -> void:
-	# Apply fonts
-	var font: Font
-	var global_font_setting: String = get_global_setting(&"font", '')
-	if font_use_global and ResourceLoader.exists(global_font_setting):
-		font = load(global_font_setting)
-	elif ResourceLoader.exists(font_custom):
-		font = load(font_custom)
-
-	var title: Label = get_title()
-	if font:
-		title.add_theme_font_override(&"font", font)
-	title.horizontal_alignment = title_alignment as HorizontalAlignment
+	pass
+	## Apply fonts
+	#var font: Font
+	#var global_font_setting: String = get_global_setting(&"font", '')
+	#if font_use_global and ResourceLoader.exists(global_font_setting):
+		#font = load(global_font_setting)
+	#elif ResourceLoader.exists(font_custom):
+		#font = load(font_custom)
+#
+	#var title: Label = get_title()
+	#if font:
+		#title.add_theme_font_override(&"font", font)
+	#title.horizontal_alignment = title_alignment as HorizontalAlignment
 
 	# Apply font & sizes
-	title.add_theme_font_size_override(&"font_size", font_title_size)
-	var labels: Array[RichTextLabel] = [get_text(), get_extra()]
-	var sizes: PackedInt32Array = [font_text_size, font_extra_size]
-	for i : int in len(labels):
-		if font:
-			labels[i].add_theme_font_override(&'normal_font', font)
-
-		labels[i].add_theme_font_size_override(&"normal_font_size", sizes[i])
-		labels[i].add_theme_font_size_override(&"bold_font_size", sizes[i])
-		labels[i].add_theme_font_size_override(&"italics_font_size", sizes[i])
-		labels[i].add_theme_font_size_override(&"bold_italics_font_size", sizes[i])
-		labels[i].add_theme_font_size_override(&"mono_font_size", sizes[i])
+	#title.add_theme_font_size_override(&"font_size", font_title_size)
+	#var labels: Array[RichTextLabel] = [get_text(), get_extra()]
+	#var sizes: PackedInt32Array = [font_text_size, font_extra_size]
+	#for i : int in len(labels):
+		#if font:
+			#labels[i].add_theme_font_override(&'normal_font', font)
+#
+		#labels[i].add_theme_font_size_override(&"normal_font_size", sizes[i])
+		#labels[i].add_theme_font_size_override(&"bold_font_size", sizes[i])
+		#labels[i].add_theme_font_size_override(&"italics_font_size", sizes[i])
+		#labels[i].add_theme_font_size_override(&"bold_italics_font_size", sizes[i])
+		#labels[i].add_theme_font_size_override(&"mono_font_size", sizes[i])
 
 
 	# Apply text colors
 	# this applies Global or Custom colors, entry colors are applied on hover
-	var controls: Array[Control] = [get_title(), get_text(), get_extra()]
-	var settings: Array[StringName] = [&'font_color', &'default_color', &'default_color']
-	var color_modes: Array[TextColorModes] = [title_color_mode, text_color_mode, extra_color_mode]
-	var custom_colors: PackedColorArray = [title_custom_color, text_custom_color, extra_custom_color]
-	for i : int in len(controls):
-		match color_modes[i]:
-			TextColorModes.GLOBAL:
-				controls[i].add_theme_color_override(settings[i], get_global_setting(&'font_color', custom_colors[i]) as Color)
-			TextColorModes.CUSTOM:
-				controls[i].add_theme_color_override(settings[i], custom_colors[i])
-
-	# Apply box size
-	var panel: PanelContainer = get_panel()
-	panel.size.x = box_width
-	panel.position.x = -box_width/2.0
-
-	# Apply box coloring
-	match box_modulate_mode:
-		ModulateModes.BASE_COLOR_ONLY:
-			panel.self_modulate = box_base_modulate
-			get_panel_point().self_modulate = box_base_modulate
-		ModulateModes.GLOBAL_BG_COLOR:
-			panel.self_modulate = get_global_setting(&'bg_color', box_base_modulate)
-			get_panel_point().self_modulate = get_global_setting(&'bg_color', box_base_modulate)
+	#var controls: Array[Control] = [get_title(), get_text(), get_extra()]
+	#var settings: Array[StringName] = [&'font_color', &'default_color', &'default_color']
+	#var color_modes: Array[TextColorModes] = [title_color_mode, text_color_mode, extra_color_mode]
+	#var custom_colors: PackedColorArray = [title_custom_color, text_custom_color, extra_custom_color]
+	#for i : int in len(controls):
+		#match color_modes[i]:
+			#TextColorModes.GLOBAL:
+				#controls[i].add_theme_color_override(settings[i], get_global_setting(&'font_color', custom_colors[i]) as Color)
+			#TextColorModes.CUSTOM:
+				#controls[i].add_theme_color_override(settings[i], custom_colors[i])
+#
+	## Apply box size
+	#var panel: PanelContainer = get_panel()
+	#panel.size.x = box_width
+	#panel.position.x = -box_width/2.0
+#
+	## Apply box coloring
+	#match box_modulate_mode:
+		#ModulateModes.BASE_COLOR_ONLY:
+			#panel.self_modulate = box_base_modulate
+			#get_panel_point().self_modulate = box_base_modulate
+		#ModulateModes.GLOBAL_BG_COLOR:
+			#panel.self_modulate = get_global_setting(&'bg_color', box_base_modulate)
+			#get_panel_point().self_modulate = get_global_setting(&'bg_color', box_base_modulate)
