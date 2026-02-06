@@ -8,11 +8,9 @@ extends RichTextLabel
 signal started_revealing_text()
 signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
-enum Alignment {LEFT, CENTER, RIGHT}
 
 @export var enabled := true
 @export var identifier := "main"
-@export var alignment := Alignment.LEFT
 @export var textbox_root: Node = self
 
 
@@ -31,8 +29,28 @@ var active_speed: float = 0.01
 
 var speed_counter: float = 0
 
+## If set to anything bigger then 0, will set all the font size overrides at once.
+@export var font_size := 15:
+	set(fs):
+		if fs > 0:
+			add_theme_font_size_override("normal_font_size", fs)
+			add_theme_font_size_override("bold_font_size", fs)
+			add_theme_font_size_override("bold_italics_font_size", fs)
+			add_theme_font_size_override("italics_font_size", fs)
+			add_theme_font_size_override("mono_font_size", fs)
+		else:
+			remove_theme_font_size_override("normal_font_size")
+			remove_theme_font_size_override("bold_font_size")
+			remove_theme_font_size_override("bold_italics_font_size")
+			remove_theme_font_size_override("italics_font_size")
+			remove_theme_font_size_override("mono_font_size")
+		font_size = fs
+
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
 	meta_hover_ended.connect(_on_meta_hover_ended)
@@ -64,11 +82,6 @@ func reveal_text(_text: String, keep_previous:=false) -> void:
 	if not keep_previous:
 		text = _text
 		base_visible_characters = 0
-
-		if alignment == Alignment.CENTER:
-			text = '[center]'+text
-		elif alignment == Alignment.RIGHT:
-			text = '[right]'+text
 		visible_characters = 0
 
 	else:

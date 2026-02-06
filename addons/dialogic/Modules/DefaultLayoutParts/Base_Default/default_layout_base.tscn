@@ -1,6 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqpb3ie51rwl5"]
+[gd_scene format=3 uid="uid://cqpb3ie51rwl5"]
 
 [ext_resource type="Script" uid="uid://yivwmkfwrvfr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_Default/default_layout_base.gd" id="1_ifsho"]
 
-[node name="DefaultLayoutBase" type="CanvasLayer"]
+[node name="DefaultLayoutBase" type="CanvasLayer" unique_id=1443721113]
 script = ExtResource("1_ifsho")
+metadata/style_customization = Array[Dictionary]([{
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "Canvas Layer",
+"id": &"SUBGROUP",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Canvas Layer",
+"id": &"SETTING",
+"name": "canvas_layer",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Follow Viewport",
+"id": &"SETTING",
+"name": "follow_viewport_enabled",
+"tooltip": "",
+"type": "Property"
+}])

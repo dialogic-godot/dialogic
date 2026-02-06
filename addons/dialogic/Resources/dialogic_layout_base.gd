@@ -62,6 +62,7 @@ func _init() -> void:
 	_load_persistent_info(Engine.get_meta("dialogic_persistent_style_info", {}))
 
 
+
 func _exit_tree() -> void:
 	var info: Dictionary = Engine.get_meta("dialogic_persistent_style_info", {})
 	info.merge(_get_persistent_info(), true)

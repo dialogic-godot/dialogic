@@ -37,8 +37,8 @@ var texture_rect: TextureRect
 @export var indicator_offset := Vector2(0, 0):
 	set(_indicator_offset):
 		indicator_offset = _indicator_offset
-		if has_node('Texture'):
-			texture_rect.position = indicator_offset
+		#if has_node('Texture'):
+			#texture_rect.position = indicator_offset
 
 var tween: Tween
 

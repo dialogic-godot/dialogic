@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dyyrfc3vittet"]
+
+[ext_resource type="Script" uid="uid://dnj4rs4vn3ya5" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_Textbubble/text_bubble_layer.gd" id="1_3nsoe"]
+
+[node name="TextBubbleLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_3nsoe")

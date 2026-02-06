@@ -8,10 +8,12 @@ const PLUGIN_HANDLER_PATH := "res://addons/dialogic/Core/DialogicGameHandler.gd"
 const PLUGIN_ICON_PATH := "uid://dybg3l5pwetne"
 const PLUGIN_INSPECTOR_PATH := "uid://bok1je25mskp7"
 const EDITOR_EXPORT_PLUGIN := "uid://daxhncrord5lp"
+const LAYOUT_SCENE_SIDEBAR := "uid://cbpljhuwyvp8b"
 
 ## References used by various other scripts to quickly reference these things
 var editor_view: Control  # the root of the dialogic editor
 var inspector_plugin: EditorInspectorPlugin = null
+var layout_scene_sidebar: Control
 
 
 ## Initialization
@@ -33,6 +35,9 @@ func _disable_plugin() -> void:
 
 func _enter_tree() -> void:
 	add_autoload_singleton(PLUGIN_NAME, PLUGIN_HANDLER_PATH)
+	layout_scene_sidebar = load(LAYOUT_SCENE_SIDEBAR).instantiate()
+	layout_scene_sidebar.plugin_reference = self
+	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_SIDE_LEFT, layout_scene_sidebar)
 
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
@@ -53,6 +58,8 @@ func _exit_tree() -> void:
 	if inspector_plugin:
 		remove_inspector_plugin(inspector_plugin)
 
+	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_SIDE_LEFT, layout_scene_sidebar)
+	layout_scene_sidebar.queue_free()
 #endregion
 
 

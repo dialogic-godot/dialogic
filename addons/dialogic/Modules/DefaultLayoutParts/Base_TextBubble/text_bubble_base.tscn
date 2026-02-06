@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://syki6k0e6aac"]
+[gd_scene format=3 uid="uid://syki6k0e6aac"]
 
 [ext_resource type="Script" uid="uid://v8guu7n6gv8a" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_TextBubble/text_bubble_base.gd" id="1_urqwc"]
 
@@ -9,10 +9,10 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 0.654902)
 
-[node name="TextBubbleHolder" type="CanvasLayer"]
+[node name="TextBubbleHolder" type="CanvasLayer" unique_id=1095595446]
 script = ExtResource("1_urqwc")
 
-[node name="Example" type="Control" parent="."]
+[node name="Example" type="Control" parent="." unique_id=1806686462]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -21,7 +21,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="RichTextLabel" parent="Example"]
+[node name="Label" type="RichTextLabel" parent="Example" unique_id=1600738955]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -42,7 +42,7 @@ layout.register_character(character_resource, node)
 - [color=lightblue]node[/color] should be the 2D or 3D node the bubble should point at.
 	-> E.g. [color=darkgray]layout.register_character(load(\"res://path/to/my/character.dch\"), $BubbleMarker)"
 
-[node name="CRT" type="ColorRect" parent="Example"]
+[node name="CRT" type="ColorRect" parent="Example" unique_id=771118627]
 layout_mode = 0
 offset_left = 504.0
 offset_top = 290.0
@@ -51,5 +51,5 @@ offset_bottom = 324.0
 rotation = 0.785397
 color = Color(1, 0.313726, 1, 1)
 
-[node name="Marker" type="Marker2D" parent="Example/CRT"]
+[node name="Marker" type="Marker2D" parent="Example/CRT" unique_id=973373508]
 position = Vector2(10.6066, 9.1924)

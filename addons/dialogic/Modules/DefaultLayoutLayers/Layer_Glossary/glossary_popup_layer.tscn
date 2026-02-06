@@ -1,0 +1,270 @@
+[gd_scene format=3 uid="uid://mre8pwqtymqn"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_vrfca"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[node name="Glossary" type="Node" unique_id=1024385718]
+script = ExtResource("1_vrfca")
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/base_style_customization = [{
+"added": true,
+"id": &"GROUP",
+"name": "Layer",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "General",
+"id": &"SUBGROUP",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"id": &"SETTING",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Title",
+"name": "%Title",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Text",
+"name": "%Text",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Default Color",
+"name": "theme_override_colors/default_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Normal Font",
+"name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font",
+"name": "theme_override_fonts/bold_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font",
+"name": "theme_override_fonts/bold_italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font",
+"name": "theme_override_fonts/italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Normal Font Size",
+"name": "theme_override_font_sizes/normal_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font Size",
+"name": "theme_override_font_sizes/bold_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font Size",
+"name": "theme_override_font_sizes/bold_italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font Size",
+"name": "theme_override_font_sizes/italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Fit Content",
+"name": "fit_content",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Extra",
+"name": "%Extra",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Default Color",
+"name": "theme_override_colors/default_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Normal Font",
+"name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font",
+"name": "theme_override_fonts/bold_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font",
+"name": "theme_override_fonts/bold_italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font",
+"name": "theme_override_fonts/italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Normal Font Size",
+"name": "theme_override_font_sizes/normal_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font Size",
+"name": "theme_override_font_sizes/bold_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font Size",
+"name": "theme_override_font_sizes/bold_italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font Size",
+"name": "theme_override_font_sizes/italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Box",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Panel",
+"name": "%Panel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Target Size",
+"name": "custom_minimum_size",
+"tooltip": "Will grow vertically if scrolling is disabled.",
+"type": "Property"
+}])
+
+[node name="Pointer" type="Control" parent="." unique_id=1212166267]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="VBox" type="VBoxContainer" parent="Pointer" unique_id=714413505]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -10.5
+offset_top = -95.0
+offset_right = 12.5
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Panel" type="PanelContainer" parent="Pointer/VBox" unique_id=315156010]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
+metadata/_edit_use_custom_anchors = true
+metadata/_edit_layout_mode = 1
+
+[node name="VBox" type="VBoxContainer" parent="Pointer/VBox/Panel" unique_id=384793322]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Pointer/VBox/Panel/VBox" unique_id=1076266159]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Pointer/VBox/Panel/VBox" unique_id=1449279073]
+layout_mode = 2
+
+[node name="Text" type="RichTextLabel" parent="Pointer/VBox/Panel/VBox" unique_id=1509889823]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+
+[node name="Extra" type="RichTextLabel" parent="Pointer/VBox/Panel/VBox" unique_id=265963300]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+fit_content = true
+
+[node name="Control" type="Control" parent="Pointer/VBox/Panel" unique_id=942172629]
+show_behind_parent = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="PanelPoint" type="PanelContainer" parent="Pointer/VBox/Panel/Control" unique_id=575213289]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -0.999999
+offset_top = -14.0
+offset_right = 19.0
+offset_bottom = 6.0
+rotation = 0.75799
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
