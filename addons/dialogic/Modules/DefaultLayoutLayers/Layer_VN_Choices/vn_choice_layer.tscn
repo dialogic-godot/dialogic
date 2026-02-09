@@ -6,8 +6,6 @@
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="4_tllrf"]
 [ext_resource type="Script" uid="uid://bldt7xlfum7ov" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="5_cqkva"]
 
-[sub_resource type="AudioStream" id="AudioStream_pe27w"]
-
 [node name="VN_ChoiceLayer" type="Control" unique_id=140023903]
 layout_mode = 3
 anchors_preset = 15
@@ -231,6 +229,13 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }])
 
+[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="." unique_id=1669438078]
+unique_name_in_owner = true
+script = ExtResource("2_cqkva")
+sound_pressed = ExtResource("3_0evf0")
+sound_hover = ExtResource("4_tllrf")
+choice_reference = NodePath("../Choices")
+
 [node name="Choices" type="VBoxContainer" parent="." unique_id=1700034486]
 unique_name_in_owner = true
 layout_mode = 1
@@ -251,57 +256,60 @@ metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_ChoiceButton" type="Button" parent="Choices" unique_id=485140099]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="Choices" unique_id=899003319]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="Choices" unique_id=1456075754]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="Choices" unique_id=1503582594]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="Choices" unique_id=204141142]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="Choices" unique_id=1908585064]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton7" type="Button" parent="Choices" unique_id=235662536]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton8" type="Button" parent="Choices" unique_id=1361730476]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton9" type="Button" parent="Choices" unique_id=2103912342]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
 
 [node name="DialogicNode_ChoiceButton10" type="Button" parent="Choices" unique_id=581046187]
 layout_mode = 2
+text = "This is an awesome choice."
 script = ExtResource("5_cqkva")
 metadata/_custom_type_script = "uid://bldt7xlfum7ov"
-
-[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="Choices" unique_id=1669438078]
-unique_name_in_owner = true
-script = ExtResource("2_cqkva")
-sound_pressed = ExtResource("3_0evf0")
-sound_hover = ExtResource("4_tllrf")
-sound_focus = SubResource("AudioStream_pe27w")

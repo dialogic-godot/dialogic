@@ -224,11 +224,8 @@ func _on_make_custom_button_about_to_popup() -> void:
 func _on_make_custom_menu_pressed(index:int) -> void:
 	# This layer only
 	if index == 2:
-		find_parent("EditorView").godot_file_dialog(
-			_on_make_custom_layer_file_selected,
-			"",
-			EditorFileDialog.FILE_MODE_OPEN_DIR,
-			"Select folder for new copy of layer")
+		%CustomizeLayerPopup.popup_centered_clamped(Vector2(300, 200))
+
 	# The full layout
 	if index == 3:
 		find_parent("EditorView").godot_file_dialog(
@@ -238,15 +235,24 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 			"Select folder for new layout scene")
 
 
-func _on_make_custom_layer_file_selected(file:String) -> void:
-	make_layer_custom(file)
+func _on_customize_layer_popup_confirmed() -> void:
+
+	find_parent("EditorView").godot_file_dialog(
+		_on_make_custom_layer_file_selected.bind(%ApplySettings.button_pressed, %KeepSettingsExposed.button_pressed),
+		"",
+		EditorFileDialog.FILE_MODE_OPEN_DIR,
+		"Select folder for new copy of layer")
+
+
+func _on_make_custom_layer_file_selected(file:String, apply_settings:=true, keep_settings_exposed:=true) -> void:
+	make_layer_custom(file, "", apply_settings, keep_settings_exposed)
 
 
 func _on_make_custom_layout_file_selected(file:String) -> void:
 	make_layout_custom(file)
 
 
-func make_layer_custom(target_folder:String, custom_name := "") -> void:
+func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=true, keep_settings_exposed:=true) -> void:
 	var original_file: String = get_current_style().get_layer_info(get_current_layer_id()).path
 	var custom_new_folder := ""
 
@@ -260,6 +266,19 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 		custom_name,
 		custom_new_folder,
 		)
+
+	var scene: Node = load(result_path).instantiate()
+	var layer_info := get_current_style().get_layer_inherited_info(get_current_layer_id())
+	printt(apply_settings, keep_settings_exposed)
+	if apply_settings:
+		DialogicUtil.apply_scene_export_overrides(scene, layer_info.overrides)
+
+	if not keep_settings_exposed:
+		scene.remove_meta("style_customization")
+
+	var pckd_scn := PackedScene.new()
+	pckd_scn.pack(scene)
+	ResourceSaver.save(pckd_scn, result_path)
 
 	replace_layer(get_current_layer_id(), result_path)
 
@@ -297,7 +316,7 @@ func make_layout_custom(target_folder:String) -> void:
 		layer_scene.apply_overrides_on_ready = true
 
 		# Apply layer overrides
-		DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides, false)
+		DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
 
 	pckd_scn.pack(base_scene)
 	ResourceSaver.save(pckd_scn, target_path)
