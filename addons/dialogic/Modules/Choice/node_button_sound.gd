@@ -11,6 +11,10 @@ extends AudioStreamPlayer
 ## Sound to be played on focus. See [sound_pressed] for more.
 @export var sound_focus: AudioStream
 
+## Reference to the choice node or the node holding the choices.
+## If empty will default to it's parent.
+@export var choice_reference: NodePath = ""
+
 func _ready() -> void:
 	add_to_group('dialogic_button_sound')
 	_connect_all_buttons()
@@ -22,11 +26,24 @@ func play_sound(sound) -> void:
 		play()
 
 func _connect_all_buttons() -> void:
-	for child in get_parent().get_children():
-		if child is DialogicNode_ChoiceButton:
-			child.button_up.connect(_on_pressed.bind(child.sound_pressed))
-			child.mouse_entered.connect(_on_hover.bind(child.sound_hover))
-			child.focus_entered.connect(_on_focus.bind(child.sound_focus))
+	var target : Node
+	if choice_reference.is_empty():
+		target = get_parent()
+	else:
+		target = get_node(choice_reference)
+
+	if target == DialogicNode_ChoiceButton:
+		connect_choice_button(target)
+	else:
+		for child in target.get_children():
+			if child is DialogicNode_ChoiceButton:
+				connect_choice_button(child)
+
+
+func connect_choice_button(button:DialogicNode_ChoiceButton) -> void:
+	button.button_up.connect(_on_pressed.bind(button.sound_pressed))
+	button.mouse_entered.connect(_on_hover.bind(button.sound_hover))
+	button.focus_entered.connect(_on_focus.bind(button.sound_focus))
 
 
 #the custom_sound argument comes from the specifec button and get used
@@ -49,4 +66,3 @@ func _on_focus(custom_sound) -> void:
 		play_sound(custom_sound)
 	else:
 		play_sound(sound_focus)
-

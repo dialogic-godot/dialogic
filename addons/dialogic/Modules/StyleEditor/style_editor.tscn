@@ -513,6 +513,57 @@ script = ExtResource("5_qbwx0")
 [node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
 unique_name_in_owner = true
 
+[node name="CustomizeLayerPopup" type="ConfirmationDialog" parent="." unique_id=1516040291]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Customize Layer Scene"
+position = Vector2i(0, 24)
+size = Vector2i(418, 577)
+dialog_autowrap = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomizeLayerPopup" unique_id=1802024036]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=2077365224]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+text = "This will create a copy of this layers scene so you can edit it freely."
+autowrap_mode = 3
+
+[node name="ApplySettings" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1726289738]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Apply Settings"
+
+[node name="Label2" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1643292307]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_type_variation = &"DialogicHintText"
+text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
+autowrap_mode = 3
+
+[node name="KeepSettingsExposed" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer" unique_id=160574588]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Keep Settings Exposed"
+
+[node name="Label3" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1299849149]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_type_variation = &"DialogicHintText"
+text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
+autowrap_mode = 3
+
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/MakeDefaultButton" to="." method="make_current_default"]
@@ -537,3 +588,4 @@ unique_name_in_owner = true
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
 [connection signal="close_requested" from="StyleBrowserWindow" to="StyleBrowserWindow" method="_on_close_requested"]
 [connection signal="activate_part" from="StyleBrowserWindow/StyleBrowser" to="StyleBrowserWindow" method="_on_style_browser_activate_part"]
+[connection signal="confirmed" from="CustomizeLayerPopup" to="StyleView/LayerEditor/LayerList" method="_on_customize_layer_popup_confirmed"]

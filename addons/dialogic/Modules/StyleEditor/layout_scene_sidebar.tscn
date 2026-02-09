@@ -6,7 +6,7 @@
 [node name="LayoutSceneSidebar" type="MarginContainer" unique_id=2056312676]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 294.0
+offset_right = 400.0
 grow_vertical = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -28,7 +28,8 @@ autowrap_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Layout scenes can expose properties to the style editor for easier access."
+text = "Layout scenes can expose properties to the style editor here.
+To add more properties, "
 autowrap_mode = 2
 
 [node name="Internal" type="Label" parent="VBoxContainer" unique_id=1123826404]

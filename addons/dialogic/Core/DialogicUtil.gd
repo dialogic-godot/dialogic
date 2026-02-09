@@ -302,7 +302,7 @@ static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default
 #region SCENE EXPORT OVERRIDES
 ################################################################################
 
-static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
+static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
 	var default_info := get_scene_export_defaults(node)
 
 	## NEW STYLE VERSION
@@ -345,9 +345,9 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 					node.set(i['name'], str_to_var(export_overrides[i['name']]))
 			elif i['name'] in default_info:
 				node.set(i['name'], default_info.get(i['name']))
-	if apply:
-		if node.has_method('apply_export_overrides'):
-			node.apply_export_overrides()
+	#if apply:
+		#if node.has_method('apply_export_overrides'):
+			#node.apply_export_overrides()
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:

@@ -183,7 +183,6 @@ func setup_ui() -> void:
 
 
 func change_style(style:DialogicStyle) -> void:
-	print("WOWIE")
 	unre.create_action("Change Style", UndoRedo.MERGE_ALL)
 	unre.add_do_method(load_style.bind(style))
 	unre.add_undo_method(load_style.bind(current_style))
