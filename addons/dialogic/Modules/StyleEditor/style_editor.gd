@@ -46,6 +46,8 @@ func _ready() -> void:
 	collect_styles()
 	setup_ui()
 
+	unre.version_changed.connect(_on_unre_version_changed)
+
 
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
@@ -116,7 +118,7 @@ func save_style_list() -> void:
 
 
 func create_and_add_new_style(file_path:String, style:DialogicStyle, inherits:DialogicStyle = null) -> void:
-	style.name = _get_new_name(file_path.get_file().trim_suffix("."+file_path.get_extension()))
+	style.name = _get_new_name(file_path.get_file().trim_suffix("."+file_path.get_extension()).capitalize())
 	create_style(file_path, style, inherits)
 	add_style_to_list(style)
 
@@ -176,7 +178,16 @@ func setup_ui() -> void:
 	%InheritanceButton.get_popup().index_pressed.connect(_on_inheritance_index_pressed)
 
 	%StyleView.hide()
+	%StyleListSection.hide()
 	%NoStyleView.show()
+
+
+func change_style(style:DialogicStyle) -> void:
+	print("WOWIE")
+	unre.create_action("Change Style", UndoRedo.MERGE_ALL)
+	unre.add_do_method(load_style.bind(style))
+	unre.add_undo_method(load_style.bind(current_style))
+	unre.commit_action()
 
 
 func load_style(style:DialogicStyle) -> void:
@@ -204,8 +215,10 @@ func load_style(style:DialogicStyle) -> void:
 		%InheritanceButton.text = "Inherits " + style.inherits.name
 
 	set_latest_style(style.name)
+	%StyleList.select_style(style, true)
 
 	%StyleView.show()
+	%StyleListSection.show()
 	%NoStyleView.hide()
 
 #endregion
@@ -352,13 +365,7 @@ func _on_inheritance_index_pressed(index:int) -> void:
 ################################################################################
 
 func _on_start_styling_button_pressed() -> void:
-	var new_style := DialogicStylesUtil.get_fallback_style().clone()
-
-	find_parent("EditorView").godot_file_dialog(
-		create_and_add_new_style.bind(new_style),
-		"*.tres",
-		EditorFileDialog.FILE_MODE_SAVE_FILE,
-		"Select folder for new style")
+	_on_AddStyleMenu_selected(2)
 
 #endregion
 
@@ -382,6 +389,6 @@ func _get_new_name(base_name:String) -> String:
 #endregion
 
 
-func _on_open_pressed() -> void:
-	print(current_style.resource_path)
-	OS.shell_open(ProjectSettings.globalize_path(current_style.resource_path))
+func _on_unre_version_changed() -> void:
+	#printt(unre.get_current_action(), unre.get_current_action_name())
+	pass

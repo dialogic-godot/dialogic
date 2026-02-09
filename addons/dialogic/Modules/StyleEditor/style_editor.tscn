@@ -55,7 +55,7 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
 [sub_resource type="DPITexture" id="DPITexture_l60sj"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\"><path fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m4 9 3-3-3-3\"/></svg>
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\"><path fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m3 5 3 3 3-3\"/></svg>
 "
 saturation = 2.0
 
@@ -96,18 +96,19 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gy14f")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=725852057]
+[node name="StyleListSection" type="VBoxContainer" parent="." unique_id=725852057]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1822067876]
+[node name="HBoxContainer" type="HBoxContainer" parent="StyleListSection" unique_id=1822067876]
 layout_mode = 2
 
-[node name="StyleListTitle" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1425741460]
+[node name="StyleListTitle" type="Label" parent="StyleListSection/HBoxContainer" unique_id=1425741460]
 layout_mode = 2
 theme_type_variation = &"DialogicSection"
 text = "Styles"
 
-[node name="HintTooltip" parent="VBoxContainer/HBoxContainer" unique_id=1197251385 instance=ExtResource("2_g4mnt")]
+[node name="HintTooltip" parent="StyleListSection/HBoxContainer" unique_id=1197251385 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
 tooltip_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
@@ -121,22 +122,22 @@ When one style is selected as default dialogic will use that style when calling 
 You can change the style with the Change Style event, by setting a style on a character or by calling
 [code]Dialogic.Styles.load_style(\"Style Name\")[/code] before calling [code]Dialogic.start()[/code]."
 
-[node name="Panel" type="PanelContainer" parent="VBoxContainer" unique_id=59972207]
+[node name="Panel" type="PanelContainer" parent="StyleListSection" unique_id=59972207]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 theme_type_variation = &"DialogicPanelA"
 
-[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Panel" unique_id=201626716]
+[node name="VBox" type="VBoxContainer" parent="StyleListSection/Panel" unique_id=201626716]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBox" unique_id=454832469]
+[node name="HBoxContainer" type="HBoxContainer" parent="StyleListSection/Panel/VBox" unique_id=454832469]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="AddButton" type="MenuButton" parent="VBoxContainer/Panel/VBox/HBoxContainer" unique_id=307379993]
+[node name="AddButton" type="MenuButton" parent="StyleListSection/Panel/VBox/HBoxContainer" unique_id=307379993]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "New Style..."
@@ -156,19 +157,19 @@ popup/item_3/id = 1
 popup/item_4/text = "Custom Style..."
 popup/item_4/id = 2
 
-[node name="DuplicateButton" type="Button" parent="VBoxContainer/Panel/VBox/HBoxContainer" unique_id=1749418768]
+[node name="DuplicateButton" type="Button" parent="StyleListSection/Panel/VBox/HBoxContainer" unique_id=1749418768]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Duplicate style"
 theme_type_variation = &"FlatButton"
 
-[node name="RemoveButton" type="Button" parent="VBoxContainer/Panel/VBox/HBoxContainer" unique_id=1881793634]
+[node name="RemoveButton" type="Button" parent="StyleListSection/Panel/VBox/HBoxContainer" unique_id=1881793634]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Remove style from list"
 theme_type_variation = &"FlatButton"
 
-[node name="MakeDefaultButton" type="Button" parent="VBoxContainer/Panel/VBox/HBoxContainer" unique_id=1399827181]
+[node name="MakeDefaultButton" type="Button" parent="StyleListSection/Panel/VBox/HBoxContainer" unique_id=1399827181]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -176,7 +177,7 @@ tooltip_text = "Make Default"
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 
-[node name="StyleList" type="Tree" parent="VBoxContainer/Panel/VBox" unique_id=1661838488]
+[node name="StyleList" type="Tree" parent="StyleListSection/Panel/VBox" unique_id=1661838488]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -187,7 +188,7 @@ allow_rmb_select = true
 hide_root = true
 script = ExtResource("3_yj7mc")
 
-[node name="StyleListRightClickMenu" type="PopupMenu" parent="VBoxContainer/Panel/VBox/StyleList" unique_id=2096966752]
+[node name="StyleListRightClickMenu" type="PopupMenu" parent="StyleListSection/Panel/VBox/StyleList" unique_id=2096966752]
 unique_name_in_owner = true
 
 [node name="StyleView" type="VBoxContainer" parent="." unique_id=58859596]
@@ -246,11 +247,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "Play current timeline with this style"
 text = "Test Style"
-
-[node name="Open" type="Button" parent="StyleView/HBox" unique_id=2029363542]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Open"
 
 [node name="LayerEditor" type="HSplitContainer" parent="StyleView" unique_id=564533084]
 unique_name_in_owner = true
@@ -517,18 +513,17 @@ script = ExtResource("5_qbwx0")
 [node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
 unique_name_in_owner = true
 
-[connection signal="pressed" from="VBoxContainer/Panel/VBox/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Panel/VBox/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Panel/VBox/HBoxContainer/MakeDefaultButton" to="." method="make_current_default"]
-[connection signal="item_edited" from="VBoxContainer/Panel/VBox/StyleList" to="VBoxContainer/Panel/VBox/StyleList" method="_on_item_edited"]
-[connection signal="item_mouse_selected" from="VBoxContainer/Panel/VBox/StyleList" to="VBoxContainer/Panel/VBox/StyleList" method="_on_item_mouse_selected"]
-[connection signal="item_selected" from="VBoxContainer/Panel/VBox/StyleList" to="VBoxContainer/Panel/VBox/StyleList" method="_on_item_selected"]
-[connection signal="load_style" from="VBoxContainer/Panel/VBox/StyleList" to="." method="load_style"]
-[connection signal="rename_style" from="VBoxContainer/Panel/VBox/StyleList" to="." method="_on_style_list_rename_style"]
-[connection signal="id_pressed" from="VBoxContainer/Panel/VBox/StyleList/StyleListRightClickMenu" to="VBoxContainer/Panel/VBox/StyleList" method="_on_style_list_right_click_menu_id_pressed"]
+[connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
+[connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/MakeDefaultButton" to="." method="make_current_default"]
+[connection signal="item_edited" from="StyleListSection/Panel/VBox/StyleList" to="StyleListSection/Panel/VBox/StyleList" method="_on_item_edited"]
+[connection signal="item_mouse_selected" from="StyleListSection/Panel/VBox/StyleList" to="StyleListSection/Panel/VBox/StyleList" method="_on_item_mouse_selected"]
+[connection signal="item_selected" from="StyleListSection/Panel/VBox/StyleList" to="StyleListSection/Panel/VBox/StyleList" method="_on_item_selected"]
+[connection signal="load_style" from="StyleListSection/Panel/VBox/StyleList" to="." method="change_style"]
+[connection signal="rename_style" from="StyleListSection/Panel/VBox/StyleList" to="." method="_on_style_list_rename_style"]
+[connection signal="id_pressed" from="StyleListSection/Panel/VBox/StyleList/StyleListRightClickMenu" to="StyleListSection/Panel/VBox/StyleList" method="_on_style_list_right_click_menu_id_pressed"]
 [connection signal="pressed" from="StyleView/HBox/HBoxContainer/EditNameButton" to="." method="_on_edit_name_button_pressed"]
 [connection signal="pressed" from="StyleView/HBox/TestStyleButton" to="." method="_on_test_style_button_pressed"]
-[connection signal="pressed" from="StyleView/HBox/Open" to="." method="_on_open_pressed"]
 [connection signal="layer_selected" from="StyleView/LayerEditor/LayerList" to="StyleView/LayerEditor" method="_on_layer_list_layer_selected"]
 [connection signal="about_to_popup" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/MakeCustomButton" to="StyleView/LayerEditor" method="_on_make_custom_button_about_to_popup"]
 [connection signal="pressed" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/DeleteLayerButton" to="StyleView/LayerEditor" method="_on_delete_layer_button_pressed"]
@@ -537,7 +532,7 @@ unique_name_in_owner = true
 [connection signal="layer_moved" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" to="StyleView/LayerEditor/LayerList" method="_on_layer_tree_layer_moved"]
 [connection signal="id_pressed" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree/LayerListRightClickMenu" to="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" method="_on_layer_list_right_click_menu_id_pressed"]
 [connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerInfoHeader/ExpandLayerInfo" to="StyleView/LayerEditor/LayerView" method="toggle_layer_info"]
-[connection signal="tab_changed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs" to="StyleView/LayerEditor" method="_on_layer_settings_tabs_tab_changed"]
+[connection signal="tab_changed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs" to="StyleView/LayerEditor/LayerView" method="_on_layer_settings_tabs_tab_changed"]
 [connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/EditLayerButton" to="StyleView/LayerEditor/LayerView" method="_on_edit_layer_button_pressed"]
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
 [connection signal="close_requested" from="StyleBrowserWindow" to="StyleBrowserWindow" method="_on_close_requested"]

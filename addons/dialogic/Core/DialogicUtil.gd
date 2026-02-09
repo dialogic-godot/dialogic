@@ -686,9 +686,8 @@ static func _on_export_inspector_changed(_name:String, value:Variant, _field:Str
 		value = input_field.get_meta("object").property
 	callable.call(path, var_to_str(value))
 
-	if changed:
-		input_field.get_meta("object").property = value
-		input_field.update_property()
+	input_field.get_meta("object").property = value
+	input_field.update_property()
 
 
 static func set_property_edit_node_value(node:Control, value:Variant) -> void:
