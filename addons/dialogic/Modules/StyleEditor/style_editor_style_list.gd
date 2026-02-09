@@ -6,6 +6,8 @@ enum RightClickMenuItems {RENAME, DUPLICATE, DELETE, CLEAR_INHERITANCE, MAKE_DEF
 signal load_style(style:DialogicStyle)
 signal rename_style(style:DialogicStyle, new_name:String)
 
+var ignore_select := false
+
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
@@ -69,6 +71,7 @@ func load_style_list(styles:Array[DialogicStyle]) -> void:
 
 	if len(styles) == 0:
 		%StyleView.hide()
+		%StyleListSection.hide()
 		%NoStyleView.show()
 
 	elif not get_selected():
@@ -76,7 +79,8 @@ func load_style_list(styles:Array[DialogicStyle]) -> void:
 		load_style.emit(get_root().get_child(0).get_metadata(0))
 
 
-func select_style(style:DialogicStyle) -> void:
+func select_style(style:DialogicStyle, no_signal := false) -> void:
+	ignore_select = no_signal
 	DialogicUtil.set_editor_setting('latest_layout_style', style.name)
 	var item := get_root()
 	while item:
@@ -84,9 +88,11 @@ func select_style(style:DialogicStyle) -> void:
 			item.select(0)
 			break
 		item = item.get_next_in_tree()
+	ignore_select = false
 
 
 func _on_item_selected() -> void:
+	if ignore_select: return
 	load_style.emit(get_selected().get_metadata(0))
 
 

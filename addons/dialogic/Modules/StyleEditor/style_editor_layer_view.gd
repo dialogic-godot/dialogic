@@ -14,6 +14,8 @@ var _loading_layer := false
 
 @onready var no_settings_info := %NoSettings
 
+@onready var unre: UndoRedo = owner.unre
+
 func _ready() -> void:
 	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_scene_saved)
 	%ExpandLayerInfo.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
@@ -304,23 +306,38 @@ func get_node_property_info(node:Node, property_name:String) -> Dictionary:
 
 
 func set_export_override(property_name:String, value:String = "") -> void:
-	#printt(property_name, value)
-	if str_to_var(value) != customization_editor_info[property_name]["orig"]:
-		current_style.set_layer_setting(current_layer_id, property_name, str_to_var(value))
+	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
+	unre.create_action("Set Layer Property '{0}'".format([property_name.capitalize()]), unre.MERGE_ENDS)
+	unre.add_do_method(set_override_value.bind(property_name, str_to_var(value)))
+	if overrides.has(property_name):
+		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))
+	else:
+		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+	unre.commit_action()
+
+
+
+func set_override_value(property_name:String, value:Variant) -> void:
+	#printt(value, customization_editor_info[property_name]["orig"])
+	if value != customization_editor_info[property_name]["orig"]:
+		current_style.set_layer_setting(current_layer_id, property_name, value)
 		customization_editor_info[property_name]["reset"].disabled = false
 	else:
 		current_style.remove_layer_setting(current_layer_id, property_name)
 		customization_editor_info[property_name]["reset"].disabled = true
+	var node: Node = customization_editor_info[property_name]["node"]
+	DialogicUtil.set_property_edit_node_value(node, value)
 
 
 func _on_export_override_reset(property_name:String) -> void:
-	#if customization_editor_info[property_name]["node"].get_meta("object"):
-		#print(var_to_str(customization_editor_info[property_name]["node"].get_meta("object").property))
-	current_style.remove_layer_setting(current_layer_id, property_name)
-	customization_editor_info[property_name]["reset"].disabled = true
-	var node: Node = customization_editor_info[property_name]["node"]
-	DialogicUtil.set_property_edit_node_value(node, customization_editor_info[property_name]["orig"])
-
+	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
+	unre.create_action("Reset Layer Property '{0}'".format([property_name.capitalize()]))
+	unre.add_do_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+	if overrides.has(property_name):
+		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))
+	else:
+		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+	unre.commit_action()
 
 
 func _on_scene_saved(path:String) -> void:

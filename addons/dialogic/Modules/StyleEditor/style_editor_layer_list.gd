@@ -9,6 +9,8 @@ signal layer_selected(id:String)
 
 var unre : UndoRedo
 
+var ignore_select := false
+
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
@@ -76,17 +78,23 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.set_meta("id", info.id)
 
 
-func select_layer(id:String) -> void:
+func select_layer(id:String, no_signal:= false) -> void:
+	ignore_select = no_signal
 	if id == "":
 		tree.get_root().select(0)
-	else:
-		for child in tree.get_root().get_children():
-			if child.get_meta("id", "") == id:
-				child.select(0)
-				return
+		ignore_select = false
+		return
+
+	for child in tree.get_root().get_children():
+		if child.get_meta("id", "") == id:
+			child.select(0)
+			ignore_select = false
+			return
+
 
 
 func _on_layer_selected() -> void:
+	if ignore_select: return
 	var item: TreeItem = tree.get_selected()
 	layer_selected.emit(item.get_meta("id", ""))
 
@@ -253,14 +261,7 @@ func make_layer_custom(target_folder:String, custom_name := "") -> void:
 		custom_new_folder,
 		)
 
-	get_current_style().set_layer_scene(get_current_layer_id(), result_path)
-
-	load_style_layer_list()
-
-	if tree.get_selected() == tree.get_root():
-		tree.get_root().select(0)
-	else:
-		tree.get_root().get_child(tree.get_selected().get_index()).select(0)
+	replace_layer(get_current_layer_id(), result_path)
 
 
 func make_layout_custom(target_folder:String) -> void:

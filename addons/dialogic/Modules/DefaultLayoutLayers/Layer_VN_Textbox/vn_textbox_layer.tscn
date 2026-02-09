@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_dciif"]
 [ext_resource type="Script" uid="uid://b6hsfk37rf4ji" path="res://test-project/DialogicStyles/VisualNovelTextbox/animations.gd" id="2_dciif"]
-[ext_resource type="StyleBox" uid="uid://dkv1pl1c1dq6" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/vn_textbox_default_panel.tres" id="3_ty8tu"]
+[ext_resource type="StyleBox" uid="uid://bn7n43yieradv" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_VN_Textbox/vn_textbox_default_panel.tres" id="3_4ltxk"]
 [ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_0f4vc"]
 [ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="4_dni5o"]
 [ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="5_11ik0"]
@@ -10,8 +10,8 @@
 [ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="6_g3jov"]
 [ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_q03yw"]
 [ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="10_dni5o"]
+[ext_resource type="Texture2D" uid="uid://drod3f7ev1fn5" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_VN_Textbox/next.svg" id="12_4ltxk"]
 [ext_resource type="Script" uid="uid://dxs4th0botkt4" path="res://test-project/DialogicStyles/VisualNovelTextbox/autoadvance_indicator.gd" id="14_avvf6"]
-[ext_resource type="Texture2D" uid="uid://b0rpqfg4fhebk" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/next.svg" id="17_0v6i8"]
 
 [sub_resource type="Animation" id="Animation_au0a2"]
 length = 0.001
@@ -208,6 +208,7 @@ metadata/base_style_customization = [{
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "added": true,
+"collapsed": true,
 "display_name": "",
 "id": &"GROUP",
 "name": "Text",
@@ -245,15 +246,22 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "",
 "type": "Property"
 }, {
-"display_name": "Font Bold",
-"id": &"SETTING",
-"name": "theme_override_fonts/bold_font",
+"added": true,
+"display_name": "Fonts",
+"id": &"SUBGROUP",
+"name": "%DialogicNode_DialogText",
 "tooltip": "",
-"type": "Property"
+"type": "Node"
 }, {
 "display_name": "Font Normal",
 "id": &"SETTING",
 "name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Bold",
+"id": &"SETTING",
+"name": "theme_override_fonts/bold_font",
 "tooltip": "",
 "type": "Property"
 }, {
@@ -352,6 +360,37 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "added": true,
+"display_name": "Padding",
+"id": &"SUBGROUP",
+"name": "%Padding",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Left",
+"id": &"SETTING",
+"name": "theme_override_constants/margin_left",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Top",
+"id": &"SETTING",
+"name": "theme_override_constants/margin_top",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Right",
+"id": &"SETTING",
+"name": "theme_override_constants/margin_right",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bottom",
+"id": &"SETTING",
+"name": "theme_override_constants/margin_bottom",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
 "display_name": "Margin",
 "id": &"SUBGROUP",
 "name": "%OutsideMargin",
@@ -363,6 +402,13 @@ metadata/style_customization = Array[Dictionary]([{
 "name": "theme_override_constants/margin_bottom",
 "tooltip": "",
 "type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Name Label",
+"tooltip": "",
+"type": "Category"
 }, {
 "added": true,
 "display_name": "Name Label",
@@ -408,14 +454,6 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "added": true,
-"display_name": "",
-"id": &"GROUP",
-"name": "Name Label",
-"tooltip": "",
-"type": "Category"
-}, {
-"added": true,
-"collapsed": true,
 "display_name": "Panel",
 "id": &"SUBGROUP",
 "name": "%NameLabelPanel",
@@ -641,7 +679,7 @@ self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 custom_minimum_size = Vector2(550, 110)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("3_ty8tu")
+theme_override_styles/panel = ExtResource("3_4ltxk")
 metadata/_edit_layout_mode = 1
 
 [node name="Padding" type="MarginContainer" parent="OutsideMargin/DialogTextPanel" unique_id=1372397586]
@@ -663,7 +701,6 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 3
 theme_override_fonts/normal_font = ExtResource("4_dni5o")
 theme_override_fonts/bold_font = ExtResource("5_11ik0")
 theme_override_fonts/bold_italics_font = SubResource("FontVariation_pwc6n")
@@ -743,5 +780,5 @@ size_flags_vertical = 8
 mouse_filter = 2
 script = ExtResource("6_q03yw")
 show_on_questions = true
-texture = ExtResource("17_0v6i8")
+texture = ExtResource("12_4ltxk")
 metadata/_edit_layout_mode = 1
