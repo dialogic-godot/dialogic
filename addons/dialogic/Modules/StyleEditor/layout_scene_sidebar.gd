@@ -21,6 +21,9 @@ func _ready() -> void:
 
 	%DropInfoLabel.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
 
+	hide()
+
+
 func _on_scene_changed(new_scene_root:Node) -> void:
 	if new_scene_root and (new_scene_root is DialogicLayoutBase or new_scene_root is DialogicLayoutLayer or new_scene_root.has_meta("style_customization")):
 		show()

@@ -320,7 +320,9 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary,
 				for current_node in nodes:
 					var path: String = current_node_path+":"+i.name
 					if path in export_overrides:
-						if str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
+						if typeof(export_overrides[path]) != TYPE_STRING:
+							current_node.set(i.name, export_overrides[path])
+						elif str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
 							current_node.set(i.name, export_overrides[path])
 						else:
 							current_node.set(i.name, str_to_var(export_overrides[path]))
@@ -580,8 +582,11 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 		_:
 			var fake := DialogicFakeObject.new()
 			fake.property = value
+
 			var pi := property_info
 			input = EditorInspector.instantiate_property_editor(fake, pi.type, "property", pi.hint, pi.hint_string, pi.usage, true)
+			fake.editor_property = input
+
 			input.ready.connect(func():
 				input.set_object_and_property(fake, "property")
 				input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -592,7 +597,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.property_changed.connect(_on_export_inspector_changed.bind(property_path, property_changed, input))
 				#input.selected.connect(_prop_selected)
 				input.update_property()
+				fake.changed.connect(input.emit_changed.bind(pi.name, "//EMPTY", "", false))
 			)
+
 			#fake.property_changed.connect(_on_export_variant_submitted.bind(property_path, property_changed))
 			#input = LineEdit.new()
 			#if value != null:
@@ -602,7 +609,33 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 
 
 class DialogicFakeObject extends RefCounted:
-	@export var property : Variant = null
+	var prev := ""
+	@export var property : Variant = null:
+		set(p):
+			property = p
+			if property is Resource:
+				if not property.resource_path:
+					if not property.is_connected("changed", changed.emit):
+						property.changed.connect(changed.emit)
+	var editor_property: EditorProperty = null:
+		set(ep):
+			editor_property = ep
+			#if ep:
+				#var tm := Timer.new()
+				#tm.autostart = true
+				#editor_property.add_child(tm)
+				#tm.timeout.connect(recheck_for_changes)
+				#ep.gui_input.connect(_on_editor_property_gui_input)
+
+	signal changed
+
+	func recheck_for_changes() -> void:
+
+		#print("check")
+		if prev:
+			if var_to_str(property) != prev:
+				changed.emit()
+		prev = var_to_str(property)
 
 
 
@@ -648,10 +681,14 @@ static func _on_export_variant_submitted(property_name:String, value:Variant, ca
 	callable.call(property_name, var_to_str(value))
 
 
-static func _on_export_inspector_changed(name:String, value:Variant, field:String, changed:bool, path:String, callable:Callable, input_field:EditorProperty) -> void:
+static func _on_export_inspector_changed(_name:String, value:Variant, _field:String, changed:bool, path:String, callable:Callable, input_field:EditorProperty) -> void:
+	if typeof(value) == TYPE_STRING and  value == "//EMPTY":
+		value = input_field.get_meta("object").property
 	callable.call(path, var_to_str(value))
-	input_field.get_meta("object").property = value
-	input_field.update_property()
+
+	if changed:
+		input_field.get_meta("object").property = value
+		input_field.update_property()
 
 
 static func set_property_edit_node_value(node:Control, value:Variant) -> void:
