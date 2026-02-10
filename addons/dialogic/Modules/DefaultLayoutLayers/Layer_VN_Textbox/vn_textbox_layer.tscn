@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_dciif"]
 [ext_resource type="Script" uid="uid://b6hsfk37rf4ji" path="res://test-project/DialogicStyles/VisualNovelTextbox/animations.gd" id="2_dciif"]
-[ext_resource type="StyleBox" uid="uid://bn7n43yieradv" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_VN_Textbox/vn_textbox_default_panel.tres" id="3_4ltxk"]
 [ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_0f4vc"]
 [ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="4_dni5o"]
 [ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="5_11ik0"]
@@ -154,6 +153,13 @@ _data = {
 &"textbox_pop": SubResource("Animation_htbgc")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh8k1"]
+bg_color = Color(0, 0, 0, 0.8862745)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="FontVariation" id="FontVariation_pwc6n"]
 base_font = ExtResource("6_g3jov")
 variation_opentype = {
@@ -180,11 +186,6 @@ bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 
-[sub_resource type="FontVariation" id="FontVariation_bbxyv"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_u1jye"]
-font_color = Color(0.86308134, 0.18720368, 0.777736, 1)
-
 [node name="VN_TextboxLayer" type="Node" unique_id=1844456958]
 script = ExtResource("1_dciif")
 metadata/base_style_customization = [{
@@ -207,445 +208,356 @@ metadata/base_style_customization = [{
 }]
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
-"added": true,
-"collapsed": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Text",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "Text",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_DialogText",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Horizontal Alignment",
-"id": &"SETTING",
 "name": "horizontal_alignment",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Vertical Alignment",
-"id": &"SETTING",
 "name": "vertical_alignment",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Color",
-"id": &"SETTING",
 "name": "theme_override_colors/default_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Size",
-"id": &"SETTING",
 "name": "font_size",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Fonts",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_DialogText",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Font Normal",
-"id": &"SETTING",
 "name": "theme_override_fonts/normal_font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Bold",
-"id": &"SETTING",
 "name": "theme_override_fonts/bold_font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Bold Italics",
-"id": &"SETTING",
 "name": "theme_override_fonts/bold_italics_font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Italics Font",
-"id": &"SETTING",
 "name": "theme_override_fonts/italics_font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Code",
-"id": &"SETTING",
 "name": "theme_override_fonts/mono_font",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Outline",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_DialogText",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Font Outline Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_outline_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Outline Size",
-"id": &"SETTING",
 "name": "theme_override_constants/outline_size",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Box",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "TextBox",
-"id": &"SUBGROUP",
 "name": "%DialogTextPanel",
 "tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Modulate",
-"id": &"SETTING",
-"name": "self_modulate",
-"tooltip": "",
-"type": "Property"
-}, {
 "display_name": "Size",
-"id": &"SETTING",
 "name": "custom_minimum_size",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Panel Stylebox",
-"id": &"SETTING",
 "name": "theme_override_styles/panel",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
+"display_name": "Modulate",
+"name": "self_modulate",
+"tooltip": "This allows to tint the stylebox",
+"type": "Property"
+}, {
 "display_name": "Animations",
-"id": &"SUBGROUP",
 "name": "%Animations",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Animation In",
-"id": &"SETTING",
 "name": "animation_in",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Animation Out",
-"id": &"SETTING",
 "name": "animation_out",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Animation New Text",
-"id": &"SETTING",
 "name": "animation_new_text",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Padding",
-"id": &"SUBGROUP",
 "name": "%Padding",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Left",
-"id": &"SETTING",
 "name": "theme_override_constants/margin_left",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Top",
-"id": &"SETTING",
 "name": "theme_override_constants/margin_top",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Right",
-"id": &"SETTING",
 "name": "theme_override_constants/margin_right",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Bottom",
-"id": &"SETTING",
 "name": "theme_override_constants/margin_bottom",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Margin",
-"id": &"SUBGROUP",
 "name": "%OutsideMargin",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Margin Bottom",
-"id": &"SETTING",
 "name": "theme_override_constants/margin_bottom",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Name Label",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "Name Label",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_NameLabel",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Hide When Empty",
-"id": &"SETTING",
 "name": "hide_when_empty",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Use Character Color",
-"id": &"SETTING",
 "name": "use_character_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font",
-"id": &"SETTING",
 "name": "theme_override_fonts/font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Size",
-"id": &"SETTING",
 "name": "theme_override_font_sizes/font_size",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Horizontal Alignment",
-"id": &"SETTING",
 "name": "horizontal_alignment",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Panel",
-"id": &"SUBGROUP",
 "name": "%NameLabelPanel",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Stylebox Panel",
-"id": &"SETTING",
 "name": "theme_override_styles/panel",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Minimum Size",
-"id": &"SETTING",
 "name": "custom_minimum_size",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Modulate",
-"id": &"SETTING",
 "name": "self_modulate",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "collapsed": true,
 "display_name": "Position",
-"id": &"SUBGROUP",
 "name": "%NameLabelPositioner",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Alignment",
-"id": &"SETTING",
 "name": "alignment",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Offset",
-"id": &"SETTING",
 "name": "position",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Indicators",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "collapsed": true,
 "display_name": "Next Indicator",
-"id": &"SUBGROUP",
 "name": "%NextIndicator",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Enabled",
-"id": &"SETTING",
 "name": "enabled",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Modulate",
-"id": &"SETTING",
 "name": "modulate",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Show On Questions",
-"id": &"SETTING",
 "name": "show_on_questions",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Show On Autoadvance",
-"id": &"SETTING",
 "name": "show_on_autoadvance",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Animation",
-"id": &"SETTING",
 "name": "animation",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Texture",
-"id": &"SETTING",
 "name": "texture",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Texture Size",
-"id": &"SETTING",
 "name": "texture_size",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Indicator Offset",
-"id": &"SETTING",
 "name": "indicator_offset",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "collapsed": true,
 "display_name": "Auto Advance Indicator",
-"id": &"SUBGROUP",
 "name": "%AutoAdvanceProgressbar",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Enabled",
-"id": &"SETTING",
 "name": "enabled",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Sounds",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "collapsed": true,
 "display_name": "Type Sounds",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_TypeSounds",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Enabled",
-"id": &"SETTING",
 "name": "enabled",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Mode",
-"id": &"SETTING",
 "name": "mode",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Sounds",
-"id": &"SETTING",
 "name": "sounds",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "End Sound",
-"id": &"SETTING",
 "name": "end_sound",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Play Every Character",
-"id": &"SETTING",
 "name": "play_every_character",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Pitch Variance",
-"id": &"SETTING",
 "name": "pitch_variance",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Volume Variance",
-"id": &"SETTING",
 "name": "volume_variance",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Ignore Characters",
-"id": &"SETTING",
 "name": "ignore_characters",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "End Sound",
-"id": &"SETTING",
 "name": "end_sound",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stream",
-"id": &"SETTING",
 "name": "stream",
 "tooltip": "",
 "type": "Property"
@@ -675,11 +587,10 @@ theme_override_constants/margin_bottom = 15
 
 [node name="DialogTextPanel" type="Panel" parent="OutsideMargin" unique_id=1264938171]
 unique_name_in_owner = true
-self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 custom_minimum_size = Vector2(550, 110)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("3_4ltxk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nh8k1")
 metadata/_edit_layout_mode = 1
 
 [node name="Padding" type="MarginContainer" parent="OutsideMargin/DialogTextPanel" unique_id=1372397586]
@@ -700,7 +611,6 @@ theme_override_constants/margin_bottom = 15
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("4_dni5o")
 theme_override_fonts/bold_font = ExtResource("5_11ik0")
 theme_override_fonts/bold_italics_font = SubResource("FontVariation_pwc6n")
@@ -712,6 +622,7 @@ theme_override_font_sizes/italics_font_size = 20
 theme_override_font_sizes/mono_font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_i2use")
 bbcode_enabled = true
+text = "Some Example Text In the Textbox..."
 visible_characters_behavior = 1
 script = ExtResource("4_0f4vc")
 textbox_root = NodePath(".")
@@ -761,10 +672,9 @@ metadata/_edit_group_ = true
 [node name="DialogicNode_NameLabel" type="Label" parent="OutsideMargin/DialogTextPanel/NameLabelPositioner/NameLabelPanel" unique_id=1071984656 node_paths=PackedStringArray("name_label_root")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_fonts/font = SubResource("FontVariation_bbxyv")
+theme_override_fonts/font = ExtResource("4_dni5o")
 theme_override_font_sizes/font_size = 15
 text = "Example Name"
-label_settings = SubResource("LabelSettings_u1jye")
 script = ExtResource("10_dni5o")
 name_label_root = NodePath("..")
 

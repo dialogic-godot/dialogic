@@ -379,7 +379,6 @@ func add_node_item(parent:TreeItem, data := {}) -> TreeItem:
 	item.set_editable(1, true)
 
 	item.set_text(2, data.get("tooltip", ""))
-	item.set_editable(2, true)
 
 	item.set_custom_bg_color(0, get_theme_color("prop_subsection_stylebox_color", "Editor"))
 	item.set_custom_bg_color(1, get_theme_color("prop_subsection_stylebox_color", "Editor"))

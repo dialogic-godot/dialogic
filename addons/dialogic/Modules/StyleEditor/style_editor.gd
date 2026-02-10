@@ -46,8 +46,6 @@ func _ready() -> void:
 	collect_styles()
 	setup_ui()
 
-	unre.version_changed.connect(_on_unre_version_changed)
-
 
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
@@ -386,8 +384,3 @@ func _get_new_name(base_name:String) -> String:
 	return new_name
 
 #endregion
-
-
-func _on_unre_version_changed() -> void:
-	#printt(unre.get_current_action(), unre.get_current_action_name())
-	pass
