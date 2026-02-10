@@ -34,196 +34,152 @@ metadata/base_style_customization = [{
 "type": "Property"
 }]
 metadata/style_customization = Array[Dictionary]([{
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "General",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "Buttons",
-"id": &"SUBGROUP",
 "name": "%Choices/@all_children",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Text Alignment",
-"id": &"SETTING",
 "name": "alignment",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font",
-"id": &"SETTING",
 "name": "theme_override_fonts/font",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Size",
-"id": &"SETTING",
 "name": "theme_override_font_sizes/font_size",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Pressed Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_pressed_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Hover Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_hover_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Disabled Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_disabled_color",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Font Focus Color",
-"id": &"SETTING",
 "name": "theme_override_colors/font_focus_color",
 "tooltip": "",
 "type": "Property"
 }, {
-"display_name": "Stylebox Normal",
-"id": &"SETTING",
-"name": "theme_override_styles/normal",
-"tooltip": "",
-"type": "Property"
-}, {
-"added": true,
 "display_name": "Button Stylesboxes",
-"id": &"SUBGROUP",
 "name": "%Choices/@all_children",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Stretch-Mode",
-"id": &"SETTING",
 "name": "size_flags_horizontal",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stylebox Normal",
-"id": &"SETTING",
 "name": "theme_override_styles/normal",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stylebox Hover",
-"id": &"SETTING",
 "name": "theme_override_styles/hover",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stylebox Pressed",
-"id": &"SETTING",
 "name": "theme_override_styles/pressed",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stylebox Disabled",
-"id": &"SETTING",
 "name": "theme_override_styles/disabled",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Stylebox Focus",
-"id": &"SETTING",
 "name": "theme_override_styles/focus",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "Container",
-"id": &"SUBGROUP",
 "name": "%Choices",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Alignment",
-"id": &"SETTING",
 "name": "alignment",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Vertical Separation",
-"id": &"SETTING",
 "name": "theme_override_constants/separation",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "-",
-"id": &"SUBGROUP",
 "name": "%Choices/@all_children",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Minimum Size",
-"id": &"SETTING",
 "name": "custom_minimum_size",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "-",
-"id": &"SUBGROUP",
 "name": ".",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Offset",
-"id": &"SETTING",
 "name": "position",
 "tooltip": "",
 "type": "Property"
 }, {
-"added": true,
 "display_name": "",
-"id": &"GROUP",
 "name": "Sounds",
 "tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "DialogicNode_ButtonSound",
-"id": &"SUBGROUP",
 "name": "%DialogicNode_ButtonSound",
 "tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Volume Db",
-"id": &"SETTING",
 "name": "volume_db",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Sound Pressed",
-"id": &"SETTING",
 "name": "sound_pressed",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Sound Hover",
-"id": &"SETTING",
 "name": "sound_hover",
 "tooltip": "",
 "type": "Property"
 }, {
 "display_name": "Sound Focus",
-"id": &"SETTING",
 "name": "sound_focus",
 "tooltip": "",
 "type": "Property"
