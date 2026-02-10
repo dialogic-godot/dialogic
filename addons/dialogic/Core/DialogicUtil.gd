@@ -608,12 +608,10 @@ class DialogicFakeObject extends RefCounted:
 	@export var property : Variant = null:
 		set(p):
 			property = p
-			property_copy = p
 			if property is Resource and not property.resource_path:
 				if not property.is_connected("changed", changed.emit):
 					property.changed.connect(changed.emit)
 			ensure_button()
-	@export var property_copy : Variant
 
 	var editor_property: EditorProperty = null:
 		set(ep):
@@ -633,14 +631,10 @@ class DialogicFakeObject extends RefCounted:
 			if not editor_property.is_node_ready():
 				await editor_property.ready
 			make_unique_button = Button.new()
-			#make_unique_button.set_anchors_preset(Control.PRESET_FULL_RECT)
-			#make_unique_button.offset_right = -40
 			make_unique_button.tooltip_text = "Make unique"
 			make_unique_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 			make_unique_button.icon = editor_property.get_theme_icon("Instance", "EditorIcons")
 			make_unique_button.add_theme_stylebox_override("normal", editor_property.get_theme_stylebox("normal", "LineEdit"))
-			#editor_property.get_parent().add_child.call_deferred(make_unique_button)
-			#editor_property.get_parent().move_child.call_deferred(make_unique_button, 0)
 			editor_property.add_child(make_unique_button)
 			make_unique_button.pressed.connect(make_unique_manual)
 		elif make_unique_button:
