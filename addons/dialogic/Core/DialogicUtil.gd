@@ -613,10 +613,10 @@ class DialogicFakeObject extends RefCounted:
 	@export var property : Variant = null:
 		set(p):
 			property = p
-			if property is Resource:
-				if not property.resource_path:
-					if not property.is_connected("changed", changed.emit):
-						property.changed.connect(changed.emit)
+			if property is Resource and not property.resource_path:
+				if not property.is_connected("changed", changed.emit):
+					print("CHANGE GOT HERE")
+					property.changed.connect(changed.emit)
 	var editor_property: EditorProperty = null:
 		set(ep):
 			editor_property = ep

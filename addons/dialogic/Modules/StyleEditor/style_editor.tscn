@@ -86,6 +86,8 @@ image = SubResource("Image_5te7k")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7pmk1"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l60sj"]
+
 [node name="StyleEditor" type="HSplitContainer" unique_id=1865892929]
 anchors_preset = 15
 anchor_right = 1.0
@@ -475,6 +477,52 @@ fit_content = true
 [node name="EditLayerButton" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings" unique_id=1140197035]
 layout_mode = 2
 text = "Open Layer Scene"
+
+[node name="GridContainer" type="GridContainer" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings" unique_id=328037433]
+layout_mode = 2
+columns = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=1667884119]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer/VBoxContainer" unique_id=303296559]
+layout_mode = 2
+text = "Some Setting"
+
+[node name="Label2" type="Label" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer/VBoxContainer" unique_id=376224127]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_l60sj")
+text = "Some Setting"
+autowrap_mode = 3
+clip_text = true
+
+[node name="Button" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=855708666]
+layout_mode = 2
+text = "<<"
+
+[node name="OptionButton" type="OptionButton" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=1437271657]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=1521624390]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer/VBoxContainer2" unique_id=1702539180]
+layout_mode = 2
+text = "Some Setting"
+
+[node name="Button2" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=1167104924]
+layout_mode = 2
+text = "<<"
+
+[node name="OptionButton2" type="OptionButton" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/GridContainer" unique_id=269919197]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Margin2" type="Control" parent="StyleView/LayerEditor/LayerView" unique_id=88063671]
 custom_minimum_size = Vector2(0, 10)
