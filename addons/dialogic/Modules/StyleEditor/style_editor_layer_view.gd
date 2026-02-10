@@ -108,18 +108,20 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		no_settings_info.show()
 		no_settings_info.get_parent().remove_child(no_settings_info)
 		%LayerSettingsTabs.add_child(no_settings_info)
-		#var note := Label.new()
-		#note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		#note.text = "This layer has no exposed settings."
-		#if not %StyleBrowser.is_premade_style_part(custom_scene_path):
-			#note.text += "\n\nIf you want to expose settings, use the scenes sidebar."
-		#note.theme_type_variation = "DialogicHintText2"
-		#note.name = "General"
-		#%LayerSettingsTabs.add_child(note)
-		#var button := Button.new()
-		#button.text = "Open Scene"
-		#%LayerSettingsTabs.add_child(button)
 		return
+
+	var warning_label_base := Label.new()
+	#warning_label_base.text =
+	warning_label_base.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	warning_label_base.clip_text = true
+	warning_label_base.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	warning_label_base.theme_type_variation = "DialogicHintText"
+	warning_label_base.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+	var stylebox : StyleBox = get_theme_stylebox("normal", "Label").duplicate()
+	stylebox.content_margin_bottom = 0
+	stylebox.content_margin_top = 0
+	warning_label_base.add_theme_stylebox_override("normal", stylebox)
+
 
 	var current_grid: GridContainer = null
 
@@ -184,15 +186,21 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 					printerr("[Dialogic] Invalid node property exposed to style editor: "+property_path)
 					continue
 				var property_display_name: String = i["display_name"]
-
+				var vbox := VBoxContainer.new()
+				vbox.add_theme_constant_override("separation", 0)
 				var label := Label.new()
-				#label.text = str(property_display_name.trim_prefix(current_group_name+"_").trim_prefix(current_subgroup_name+"_")).capitalize()
 				label.text = property_display_name
-				current_grid.add_child(label, true)
+				vbox.add_child(label, true)
+				vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				current_grid.add_child(vbox)
 				label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+
+				var warning_label := warning_label_base.duplicate()
+				vbox.add_child(warning_label)
 
 				var scene_value: Variant = get_value_on_node(node, property_name)
 				customization_editor_info[property_path] = {}
+				customization_editor_info[property_path]["warning_label"] = warning_label
 
 				if property_path in inherited_overrides:
 					customization_editor_info[property_path]["orig"] = inherited_overrides.get(property_path)
@@ -220,6 +228,8 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				reset.pressed.connect(_on_export_override_reset.bind(property_path))
 				current_grid.add_child(input)
 
+				update_setting_warning(property_path)
+
 	var latest_tab: int = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
 
 	%LayerSettingsTabs.current_tab = min(latest_tab, %LayerSettingsTabs.get_tab_count()-1)
@@ -229,19 +239,23 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 
 func get_value_on_node(node:Node, property:String) -> Variant:
 	if property.begins_with("theme_override_"):
+		var value: Variant
 		if property.begins_with("theme_override_colors"):
-			return node.get_theme_color(property.get_slice("/", 1))
+			value =  node.get_theme_color(property.get_slice("/", 1))
 		elif property.begins_with("theme_override_constants"):
-			return node.get_theme_constant(property.get_slice("/", 1))
+			value = node.get_theme_constant(property.get_slice("/", 1))
 		elif property.begins_with("theme_override_fonts"):
-			return node.get_theme_font(property.get_slice("/", 1))
+			value = node.get_theme_font(property.get_slice("/", 1))
 		elif property.begins_with("theme_override_font_sizes"):
-			return node.get_theme_font_size(property.get_slice("/", 1))
+			value = node.get_theme_font_size(property.get_slice("/", 1))
 		elif property.begins_with("theme_override_icons"):
-			return node.get_theme_icon(property.get_slice("/", 1))
+			value = node.get_theme_icon(property.get_slice("/", 1))
 		elif property.begins_with("theme_override_styles"):
-			return node.get_theme_stylebox(property.get_slice("/", 1))
-
+			value = node.get_theme_stylebox(property.get_slice("/", 1))
+		if value is Resource:
+			if value.resource_path.is_empty():
+				return null
+		return value
 	return node.get(property)
 
 
@@ -252,7 +266,7 @@ func get_scene_node(scene:Node, node_path:String) -> Node:
 
 
 func collect_settings(scene:Node) -> Array[Dictionary]:
-	var properties: Array = scene.get_meta("style_customization", []) + scene.get_meta("base_style_customization", [])
+	var properties: Array = scene.get_meta("style_customization", []).duplicate(true) + scene.get_meta("base_style_customization", []).duplicate(true)
 
 	var settings: Array[Dictionary] = []
 
@@ -312,32 +326,57 @@ func set_export_override(property_name:String, value:String = "") -> void:
 	if overrides.has(property_name):
 		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))
 	else:
-		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name].orig))
 	unre.commit_action()
-
 
 
 func set_override_value(property_name:String, value:Variant) -> void:
 	#printt(value, customization_editor_info[property_name]["orig"])
-	if value != customization_editor_info[property_name]["orig"]:
+	if value != customization_editor_info[property_name].orig:
 		current_style.set_layer_setting(current_layer_id, property_name, value)
-		customization_editor_info[property_name]["reset"].disabled = false
+		customization_editor_info[property_name].reset.disabled = false
 	else:
 		current_style.remove_layer_setting(current_layer_id, property_name)
-		customization_editor_info[property_name]["reset"].disabled = true
-	var node: Node = customization_editor_info[property_name]["node"]
+		customization_editor_info[property_name].reset.disabled = true
+	var node: Node = customization_editor_info[property_name].node
 	DialogicUtil.set_property_edit_node_value(node, value)
+	update_setting_warning(property_name)
 
 
 func _on_export_override_reset(property_name:String) -> void:
 	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
 	unre.create_action("Reset Layer Property '{0}'".format([property_name.capitalize()]))
-	unre.add_do_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+	unre.add_do_method(set_override_value.bind(property_name, customization_editor_info[property_name].orig))
 	if overrides.has(property_name):
 		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))
 	else:
-		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name]["orig"]))
+		unre.add_undo_method(set_override_value.bind(property_name, customization_editor_info[property_name].orig))
 	unre.commit_action()
+
+
+func update_setting_warning(property_name:String) -> void:
+	if not property_name in customization_editor_info:
+		return
+	var warning_label: Label = customization_editor_info[property_name].warning_label
+	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
+	var override_value: Variant =  overrides.get(property_name, null)
+	var orig_value: Variant =  customization_editor_info[property_name].orig
+	if override_value is Resource:
+		if override_value.resource_path:
+			warning_label.text = "This resource is shared. \nMake it unique if you do not want it to change in other places."
+			warning_label.add_theme_color_override("font_color", get_theme_color("disabled_font_color", "Editor"))
+		else:
+			warning_label.text = ""
+	elif orig_value is Resource:
+		if orig_value.resource_path and not ".tscn::" in orig_value.resource_path:
+			warning_label.text = "This resource is shared. \nMake it unique if you do not want it to change in other places or the base scene."
+			warning_label.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+		else:
+			warning_label.text = "This resource is local to the scene. Make it unique or assign a different resource to start editing it."
+			warning_label.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+	else:
+		warning_label.text = ""
+	warning_label.text = "\n"+warning_label.text
 
 
 func _on_scene_saved(path:String) -> void:
