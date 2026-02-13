@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://btundhaynby5d"]
 
-[ext_resource type="Script" uid="uid://c8dso2dyoihy6" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_TextInput/text_input_layer.gd" id="1_qxe3h"]
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_qxe3h"]
 [ext_resource type="Script" uid="uid://biqpjv0qyefvf" path="res://addons/dialogic/Modules/TextInput/node_text_input.gd" id="2_db7dl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3dpjm"]
@@ -8,7 +8,7 @@ content_margin_left = 15.0
 content_margin_top = 15.0
 content_margin_right = 15.0
 content_margin_bottom = 15.0
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(0, 0, 0, 0.78039217)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -16,7 +16,7 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="Theme" id="Theme_8xwp1"]
 
-[node name="TextInputLayer" type="Control"]
+[node name="TextInputLayer" type="Control" unique_id=1560105481]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,52 +25,279 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_qxe3h")
+metadata/base_style_customization = [{
+"name": "Layer",
+"type": "Category"
+}, {
+"display_name": "General",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Panel",
+"name": "%TextInputPanel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Stylebox Panel",
+"name": "theme_override_styles/panel",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Minimum Size",
+"name": "custom_minimum_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Basics",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Theme",
+"name": "theme",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Label",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "TextLabel",
+"name": "%TextLabel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Input Field",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "InputField",
+"name": "DialogicNode_TextInput/CenterContainer/TextInputPanel/VBoxContainer/InputField",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Alignment",
+"name": "alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Max Length",
+"name": "max_length",
+"tooltip": "If 0 there is no limit.",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Selected Color",
+"name": "theme_override_colors/font_selected_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Placeholder Color",
+"name": "theme_override_colors/font_placeholder_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Caret Color",
+"name": "theme_override_colors/caret_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Selection Color",
+"name": "theme_override_colors/selection_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Normal",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Focus",
+"name": "theme_override_styles/focus",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "ConfirmButton",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "ConfirmationButton",
+"name": "DialogicNode_TextInput/CenterContainer/TextInputPanel/VBoxContainer/ConfirmationButton",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Text",
+"name": "text",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Icon",
+"name": "icon",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Horizontal Placement",
+"name": "size_flags_horizontal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Hover Color",
+"name": "theme_override_colors/font_hover_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Disabled Color",
+"name": "theme_override_colors/font_disabled_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Focus Color",
+"name": "theme_override_colors/font_focus_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Pressed Color",
+"name": "theme_override_colors/font_pressed_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Normal",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Pressed",
+"name": "theme_override_styles/pressed",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Hover",
+"name": "theme_override_styles/hover",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Hover Pressed",
+"name": "theme_override_styles/hover_pressed",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Disabled",
+"name": "theme_override_styles/disabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Focus",
+"name": "theme_override_styles/focus",
+"tooltip": "",
+"type": "Property"
+}])
 
-[node name="DialogicNode_TextInput" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -50.0
-offset_right = 210.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("2_db7dl")
-input_line_edit = NodePath("TextInputPanel/VBoxContainer/InputField")
-text_label = NodePath("TextInputPanel/VBoxContainer/TextLabel")
-confirmation_button = NodePath("TextInputPanel/VBoxContainer/ConfirmationButton")
-metadata/_edit_layout_mode = 1
-
-[node name="TextInputPanel" type="PanelContainer" parent="DialogicNode_TextInput"]
-unique_name_in_owner = true
-self_modulate = Color(0, 0, 0, 0.780392)
+[node name="DialogicNode_TextInput" type="Control" parent="." unique_id=1281887958]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_db7dl")
+input_line_edit = NodePath("CenterContainer/TextInputPanel/VBoxContainer/InputField")
+text_label = NodePath("CenterContainer/TextInputPanel/VBoxContainer/TextLabel")
+confirmation_button = NodePath("CenterContainer/TextInputPanel/VBoxContainer/ConfirmationButton")
+metadata/_edit_layout_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="DialogicNode_TextInput" unique_id=2000996499]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextInputPanel" type="PanelContainer" parent="DialogicNode_TextInput/CenterContainer" unique_id=1549170985]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3dpjm")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DialogicNode_TextInput/TextInputPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogicNode_TextInput/CenterContainer/TextInputPanel" unique_id=1504393231]
 layout_mode = 2
 
-[node name="TextLabel" type="Label" parent="DialogicNode_TextInput/TextInputPanel/VBoxContainer"]
+[node name="TextLabel" type="Label" parent="DialogicNode_TextInput/CenterContainer/TextInputPanel/VBoxContainer" unique_id=1046424160]
 unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_8xwp1")
 text = "Please enter some text:"
 autowrap_mode = 3
 
-[node name="InputField" type="LineEdit" parent="DialogicNode_TextInput/TextInputPanel/VBoxContainer"]
+[node name="InputField" type="LineEdit" parent="DialogicNode_TextInput/CenterContainer/TextInputPanel/VBoxContainer" unique_id=1615918558]
 layout_mode = 2
 
-[node name="ConfirmationButton" type="Button" parent="DialogicNode_TextInput/TextInputPanel/VBoxContainer"]
+[node name="ConfirmationButton" type="Button" parent="DialogicNode_TextInput/CenterContainer/TextInputPanel/VBoxContainer" unique_id=2110609596]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Confirm"

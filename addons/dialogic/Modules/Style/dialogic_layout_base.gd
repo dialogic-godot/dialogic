@@ -1,4 +1,5 @@
 @tool
+@icon("layout_layer_icon.svg")
 class_name DialogicLayoutBase
 extends Node
 

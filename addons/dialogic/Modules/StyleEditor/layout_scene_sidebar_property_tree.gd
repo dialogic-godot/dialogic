@@ -117,7 +117,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 				return false
 
 			%DropInfoLabel.visible = is_valid_multi_node_property(obj, data.get("property"))
-
+			%AddCategory.visible = not %DropInfoLabel.visible
 			drop_mode_flags = DROP_MODE_INBETWEEN
 			return true
 
@@ -126,6 +126,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	%DropInfoLabel.hide()
+	%AddCategory.show()
 
 	if data is TreeItem:
 		move_item(data, at_position)
@@ -490,3 +491,4 @@ func highlight_property(node:Node, property:String) -> void:
 
 func _on_mouse_exited() -> void:
 	%DropInfoLabel.hide()
+	%AddCategory.show()

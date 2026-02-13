@@ -2,10 +2,10 @@
 class_name DialogicNode_NextIndicator
 extends Control
 
-## Node that is shown when the text is fully revealed.
-## The default implementation allows to set an icon and animation.
+## A dialogic node that is shown when the text is fully revealed.
+## Allows to set an icon and animation.
 
-
+## If false, this indicator will not be used.
 @export var enabled := true
 
 ## If true the next indicator will also be shown if the text is a question.

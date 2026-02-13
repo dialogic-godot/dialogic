@@ -52,7 +52,8 @@ func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> v
 	manual_advance.disabled_until_next_event = false
 	manual_advance.system_enabled = true
 
-	dialogic_action_priority.connect(_secret_reveal)
+	if not dialogic_action_priority.is_connected(_secret_reveal):
+		dialogic_action_priority.connect(_secret_reveal)
 
 
 func _pause() -> void:

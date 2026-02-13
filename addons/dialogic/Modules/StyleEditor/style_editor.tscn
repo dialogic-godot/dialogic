@@ -66,7 +66,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="Image" id="Image_7pmk1"]
+[sub_resource type="Image" id="Image_5te7k"]
 data = {
 "data": PackedByteArray(0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255),
 "format": "RGBA8",
@@ -76,7 +76,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_yr3tj"]
-image = SubResource("Image_7pmk1")
+image = SubResource("Image_5te7k")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sg0tk"]
 
@@ -117,7 +117,6 @@ A style can inherit from another style (inherited styles can only overwrite sett
 When one style is selected as default dialogic will use that style when calling Dialogic.start() otherwise a fallback is used.
 You can change the style with the Change Style event, by setting a style on a character or by calling
 Dialogic.Styles.load_style(\"Style Name\") before calling Dialogic.start()."
-texture = null
 hint_text = "Each style consist of a list of layers and settings for each layer.
 A style can inherit from another style (inherited styles can only overwrite settings of their layers).
 When one style is selected as default dialogic will use that style when calling [code]Dialogic.start()[/code] otherwise a fallback is used.
@@ -211,7 +210,6 @@ text = "Layers"
 layout_mode = 2
 tooltip_text = "Each layer is a scene and settings that will be applied to that scene.
 A layer can either be a premade scene or a scene you've made yourself."
-texture = null
 hint_text = "Each layer is a scene and settings that will be applied to that scene.
 A layer can either be a premade scene or a scene you've made yourself."
 
@@ -566,7 +564,7 @@ unique_name_in_owner = true
 oversampling_override = 1.0
 title = "Customize Layer Scene"
 position = Vector2i(0, 24)
-size = Vector2i(418, 577)
+size = Vector2i(418, 175)
 dialog_autowrap = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CustomizeLayerPopup" unique_id=1802024036]
@@ -586,31 +584,32 @@ layout_mode = 2
 text = "This will create a copy of this layers scene so you can edit it freely."
 autowrap_mode = 3
 
-[node name="ApplySettings" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1726289738]
+[node name="HBoxContainer" type="HBoxContainer" parent="CustomizeLayerPopup/VBoxContainer" unique_id=512173517]
+layout_mode = 2
+
+[node name="ApplySettings" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer" unique_id=1726289738]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Apply Settings"
 
-[node name="Label2" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1643292307]
-custom_minimum_size = Vector2(400, 0)
+[node name="HintTooltip" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer" unique_id=71773321 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
-theme_type_variation = &"DialogicHintText"
-text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
-autowrap_mode = 3
+hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 
-[node name="KeepSettingsExposed" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer" unique_id=160574588]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1215416378]
+layout_mode = 2
+
+[node name="KeepSettingsExposed" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer2" unique_id=160574588]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Keep Settings Exposed"
 
-[node name="Label3" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1299849149]
-custom_minimum_size = Vector2(400, 0)
+[node name="HintTooltip" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer2" unique_id=1385432285 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
-theme_type_variation = &"DialogicHintText"
-text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
-autowrap_mode = 3
+tooltip_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
+hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
 
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

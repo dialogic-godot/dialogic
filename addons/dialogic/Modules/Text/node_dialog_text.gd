@@ -3,21 +3,26 @@
 class_name DialogicNode_DialogText
 extends RichTextLabel
 
-## Dialogic node that can reveal text at a given (changeable speed).
+## Dialogic node that can reveal text at a given (changable speed). Can also manage textbox visibility.
 
 signal started_revealing_text()
 signal continued_revealing_text(new_character : String)
 signal finished_revealing_text()
 
+## If `false` this node will not be used to display text.
 @export var enabled := true
+## The dialogic [subsytem Text] subsystem checks its [param active_textbox] agains this identifier (if set).
+## This allows you to switch which textbox is used via code.
 @export var identifier := "main"
+## The node that is hidden and shown based on [param start_hidden] and [param auto_visibility].
 @export var textbox_root: Node = self
 
 
-## If true, this node will call [method hide_textbox] on the Text subsystem on ready.
+## If `true`, this node will call [method hide_textbox] on the Text subsystem on ready.
 ## Note that textbox visiblity is shared by textboxes with the same identifier.
 @export var start_hidden := true
-## If true, dialogic will automatically call [method textbox_update_visibility] when changing the text.
+## If `true`, dialogic will automatically call [method textbox_update_visibility] when changing the text.
+## This results in the textbox being revealed if text is shown and hidden if no text is shown.
 @export var auto_visibility := true
 
 var revealing := false
@@ -176,6 +181,7 @@ func _on_meta_clicked(_meta:Variant) -> void:
 ## Handle mouse input
 func on_gui_input(event:InputEvent) -> void:
 	DialogicUtil.autoload().Inputs.handle_node_gui_input(event)
+
 
 
 func custom_fx_update() -> void:
