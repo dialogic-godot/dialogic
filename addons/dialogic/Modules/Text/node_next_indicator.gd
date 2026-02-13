@@ -1,3 +1,4 @@
+@tool
 @icon("node_next_indicator_icon.svg")
 class_name DialogicNode_NextIndicator
 extends Control

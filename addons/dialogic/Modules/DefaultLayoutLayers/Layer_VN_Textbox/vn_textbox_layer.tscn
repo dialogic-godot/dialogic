@@ -199,6 +199,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_nh8k1")
 metadata/base_style_customization = [{
 "name": "Layer",
@@ -387,7 +388,7 @@ metadata/style_customization = Array[Dictionary]([{
 }, {
 "display_name": "Use Character Color",
 "name": "use_character_color",
-"tooltip": "",
+"tooltip": "Because this uses modulate, if this is enabled font color should be white.",
 "type": "Property"
 }, {
 "display_name": "Font Color",
@@ -451,7 +452,6 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "",
 "type": "Category"
 }, {
-"collapsed": true,
 "display_name": "Next Indicator",
 "name": "%NextIndicator",
 "tooltip": "",
@@ -459,11 +459,6 @@ metadata/style_customization = Array[Dictionary]([{
 }, {
 "display_name": "Enabled",
 "name": "enabled",
-"tooltip": "",
-"type": "Property"
-}, {
-"display_name": "Modulate",
-"name": "modulate",
 "tooltip": "",
 "type": "Property"
 }, {
@@ -489,6 +484,11 @@ metadata/style_customization = Array[Dictionary]([{
 }, {
 "display_name": "Texture Size",
 "name": "texture_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Modulate",
+"name": "modulate",
 "tooltip": "",
 "type": "Property"
 }, {
@@ -558,7 +558,7 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "",
 "type": "Property"
 }, {
-"display_name": "Bus",
+"display_name": "Audio Bus",
 "name": "bus",
 "tooltip": "",
 "type": "Property"
@@ -588,9 +588,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -23.5
-offset_top = -46.0
-offset_right = 23.5
+offset_left = -275.0
+offset_top = -125.0
+offset_right = 275.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset_ratio = Vector2(0.5, 1)
