@@ -191,4 +191,6 @@ func get_first_node_in_layout(group_name: String) -> Node:
 func preload_style(name_or_path:String = "") -> void:
 	DialogicStylesUtil.start_style_preload(name_or_path)
 
+
+
 #endregion

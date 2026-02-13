@@ -1,3 +1,4 @@
+@icon("node_background_holder_icon.svg")
 class_name DialogicNode_BackgroundHolder
 extends ColorRect
 

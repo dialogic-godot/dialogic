@@ -1,3 +1,4 @@
+@icon("node_choice_button_icon.svg")
 class_name DialogicNode_ChoiceButton
 extends Button
 ## This button allows the player to make a choice in the Dialogic system.

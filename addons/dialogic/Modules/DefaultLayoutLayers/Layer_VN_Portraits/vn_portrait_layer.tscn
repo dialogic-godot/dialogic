@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://df15xrxbxo2cq"]
 
-[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_x7flx"]
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_x7flx"]
 [ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_t4o42"]
 
-[node name="VN_PortraitLayer" type="Node" unique_id=1259269366]
+[node name="VN_PortraitLayer" type="Control" unique_id=867161816]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_x7flx")
-metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/base_style_customization = [{
 "added": true,
 "id": &"GROUP",
@@ -24,6 +30,7 @@ metadata/base_style_customization = [{
 "tooltip": "",
 "type": "Property"
 }]
+metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
@@ -43,7 +50,7 @@ metadata/style_customization = Array[Dictionary]([{
 
 [node name="Portraits" type="Control" parent="." unique_id=47720675]
 unique_name_in_owner = true
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -51,19 +58,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="DialogicNode_PortraitContainer1" type="Control" parent="Portraits" unique_id=730793736]
+[node name="DialogicNode_PortraitContainer1" type="Control" parent="Portraits" unique_id=1219777309]
 layout_mode = 1
 anchor_right = 0.2
 anchor_bottom = 1.0
-offset_right = -1.52588e-05
+offset_right = -1.5258789e-05
 grow_vertical = 2
 pivot_offset = Vector2(115.2, 648)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("leftmost", "0")
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits" unique_id=1149825274]
+[node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits" unique_id=179089298]
 layout_mode = 1
 anchor_left = 0.2
 anchor_right = 0.4
@@ -73,9 +81,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("left", "1")
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits" unique_id=2053633179]
+[node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits" unique_id=1936417424]
 layout_mode = 1
 anchor_left = 0.4
 anchor_right = 0.6
@@ -85,9 +94,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("center", "middle", "2")
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits" unique_id=1325233336]
+[node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits" unique_id=1330103450]
 layout_mode = 1
 anchor_left = 0.6
 anchor_right = 0.8
@@ -97,9 +107,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("right", "3")
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits" unique_id=594483465]
+[node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits" unique_id=1806096288]
 layout_mode = 1
 anchor_left = 0.8
 anchor_right = 1.0
@@ -109,4 +120,5 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("rightmost", "4")
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true

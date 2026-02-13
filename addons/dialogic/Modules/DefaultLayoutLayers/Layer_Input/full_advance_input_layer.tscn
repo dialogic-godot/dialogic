@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://bskk8yingwg0u"]
 
-[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_8bbnl"]
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_8bbnl"]
 [ext_resource type="Script" uid="uid://ctog34kdg222q" path="res://addons/dialogic/Modules/Text/node_input.gd" id="2_0dt81"]
 
-[node name="FullAdvanceInputLayer" type="Node" unique_id=1508287143]
+[node name="FullAdvanceInputLayer" type="Control" unique_id=951318811]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_8bbnl")
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/base_style_customization = [{
@@ -21,7 +28,7 @@ metadata/base_style_customization = [{
 }]
 
 [node name="DialogicNode_Input" type="Control" parent="." unique_id=1440734987]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

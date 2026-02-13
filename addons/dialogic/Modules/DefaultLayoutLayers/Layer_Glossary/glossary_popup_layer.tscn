@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://mre8pwqtymqn"]
 
-[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Resources/dialogic_layout_layer.gd" id="1_vrfca"]
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_al8ow"]
+[ext_resource type="Script" uid="uid://crntq0lpyvjg" path="res://addons/dialogic/Modules/Glossary/node_glossary_receiver.gd" id="2_al8ow"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -17,23 +18,25 @@ expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
-[node name="Glossary" type="Node" unique_id=1024385718]
-script = ExtResource("1_vrfca")
-apply_overrides_on_ready = null
+[node name="Glossary" type="Control" unique_id=2082157319]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_al8ow")
 metadata/base_style_customization = [{
-"added": true,
-"id": &"GROUP",
 "name": "Layer",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "General",
-"id": &"SUBGROUP",
 "name": ".",
 "type": "Node"
 }, {
 "display_name": "Disabled",
-"id": &"SETTING",
 "name": "disabled",
 "tooltip": "",
 "type": "Property"
@@ -202,8 +205,11 @@ metadata/style_customization = Array[Dictionary]([{
 }])
 
 [node name="Pointer" type="Control" parent="." unique_id=1212166267]
-layout_mode = 3
 anchors_preset = 0
+offset_left = 842.0
+offset_top = 454.0
+offset_right = 842.0
+offset_bottom = 454.0
 
 [node name="VBox" type="VBoxContainer" parent="Pointer" unique_id=714413505]
 layout_mode = 1
@@ -221,7 +227,7 @@ grow_vertical = 0
 
 [node name="Panel" type="PanelContainer" parent="Pointer/VBox" unique_id=315156010]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
 metadata/_edit_use_custom_anchors = true
@@ -234,6 +240,8 @@ theme_override_constants/separation = 0
 [node name="Title" type="Label" parent="Pointer/VBox/Panel/VBox" unique_id=1076266159]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Glossary Entry"
 
 [node name="HSeparator" type="HSeparator" parent="Pointer/VBox/Panel/VBox" unique_id=1449279073]
 layout_mode = 2
@@ -242,14 +250,25 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/bold_font_size = 15
+theme_override_font_sizes/bold_italics_font_size = 15
+theme_override_font_sizes/italics_font_size = 15
+theme_override_font_sizes/mono_font_size = 15
 bbcode_enabled = true
+text = "Text describing the entry."
 fit_content = true
 
 [node name="Extra" type="RichTextLabel" parent="Pointer/VBox/Panel/VBox" unique_id=265963300]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
+theme_override_font_sizes/bold_italics_font_size = 14
+theme_override_font_sizes/italics_font_size = 14
+theme_override_font_sizes/mono_font_size = 14
 bbcode_enabled = true
+text = "Extra text at the bottom."
 fit_content = true
 
 [node name="Control" type="Control" parent="Pointer/VBox/Panel" unique_id=942172629]
@@ -269,3 +288,14 @@ rotation = 0.75799
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
+
+[node name="GlossaryReceiver" type="Node" parent="." unique_id=795706876]
+script = ExtResource("2_al8ow")
+glossary_holder = NodePath("../Pointer")
+text_nodes = Dictionary[String, NodePath]({
+"extra": NodePath("../Pointer/VBox/Panel/VBox/Extra"),
+"text": NodePath("../Pointer/VBox/Panel/VBox/Text"),
+"title": NodePath("../Pointer/VBox/Panel/VBox/Title")
+})
+modulate_nodes = Array[NodePath]([NodePath("../Pointer/VBox/Panel"), NodePath("../Pointer/VBox/Panel/Control/PanelPoint")])
+metadata/_custom_type_script = "uid://crntq0lpyvjg"

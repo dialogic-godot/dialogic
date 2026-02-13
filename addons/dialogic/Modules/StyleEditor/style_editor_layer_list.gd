@@ -22,7 +22,11 @@ func _ready() -> void:
 
 	%AddLayerButton.get_popup().index_pressed.connect(_on_add_layer_menu_pressed)
 	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
-	%MakeCustomButton.get_popup().index_pressed.connect(_on_make_custom_menu_pressed)
+	var make_custom_menu: PopupMenu = %MakeCustomButton.get_popup()
+	make_custom_menu.index_pressed.connect(_on_make_custom_menu_pressed)
+	make_custom_menu.set_item_tooltip(2, "Creates a copy of the selected layers scene, allowing you to edit it while keeping the other layers intact.")
+	make_custom_menu.set_item_tooltip(3, "Creates a new scene with the layer scenes instanced, allowing you to then selectively use 'Editable Children' or 'Make Local' on those scenes.")
+
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")

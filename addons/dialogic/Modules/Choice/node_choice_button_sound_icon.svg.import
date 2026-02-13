@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://k0g15mxi14ba"
-path="res://.godot/imported/node_name_label_icon.svg-d482939b74b41ec2da6edc97e41c8bf8.ctex"
+uid="uid://4ehkj13qmtl1"
+path="res://.godot/imported/node_choice_button_sound_icon.svg-8ab6e0d6e42f926097d4cfd173b86bb0.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/dialogic/Modules/Text/node_name_label_icon.svg"
-dest_files=["res://.godot/imported/node_name_label_icon.svg-d482939b74b41ec2da6edc97e41c8bf8.ctex"]
+source_file="res://addons/dialogic/Modules/Choice/node_choice_button_sound_icon.svg"
+dest_files=["res://.godot/imported/node_choice_button_sound_icon.svg-8ab6e0d6e42f926097d4cfd173b86bb0.ctex"]
 
 [params]
 

@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://wv16sgxejdju"]
 
-[ext_resource type="Script" uid="uid://jt32dmurqg0y" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_VN_Choices/vn_choice_layer.gd" id="1_o08mc"]
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_cqkva"]
 [ext_resource type="Script" uid="uid://b1stj4ljd2vo7" path="res://addons/dialogic/Modules/Choice/node_button_sound.gd" id="2_cqkva"]
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="3_0evf0"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="4_tllrf"]
 [ext_resource type="Script" uid="uid://bldt7xlfum7ov" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="5_cqkva"]
 
-[node name="VN_ChoiceLayer" type="Control" unique_id=140023903]
+[node name="VN_ChoiceLayer" type="Control" unique_id=1978726975]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,25 +14,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_o08mc")
+script = ExtResource("1_cqkva")
 metadata/base_style_customization = [{
-"added": true,
-"id": &"GROUP",
 "name": "Layer",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "General",
-"id": &"SUBGROUP",
 "name": ".",
 "type": "Node"
 }, {
 "display_name": "Disabled",
-"id": &"SETTING",
 "name": "disabled",
 "tooltip": "",
 "type": "Property"
 }]
+metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
@@ -185,12 +181,13 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }])
 
-[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="." unique_id=1669438078]
+[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="." unique_id=618457155]
 unique_name_in_owner = true
 script = ExtResource("2_cqkva")
 sound_pressed = ExtResource("3_0evf0")
 sound_hover = ExtResource("4_tllrf")
 choice_reference = NodePath("../Choices")
+metadata/_custom_type_script = "uid://b1stj4ljd2vo7"
 
 [node name="Choices" type="VBoxContainer" parent="." unique_id=1700034486]
 unique_name_in_owner = true

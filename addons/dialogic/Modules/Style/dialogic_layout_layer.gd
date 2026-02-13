@@ -1,6 +1,7 @@
 @tool
+@icon("layout_layer_icon.svg")
 class_name DialogicLayoutLayer
-extends Node
+extends Control
 
 ## Base class that should be extended by custom dialogic layout layers.
 
@@ -30,10 +31,9 @@ func _init() -> void:
 
 func _ready() -> void:
 	pass
-
-	## TODO: REMOVE
-	if apply_overrides_on_ready and not Engine.is_editor_hint():
-		_apply_export_overrides()
+	### TODO: REMOVE
+	#if apply_overrides_on_ready and not Engine.is_editor_hint():
+		#_apply_export_overrides()
 
 
 ## @deprecated

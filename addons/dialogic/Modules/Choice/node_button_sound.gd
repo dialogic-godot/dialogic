@@ -1,3 +1,4 @@
+@icon("node_choice_button_sound_icon.svg")
 class_name DialogicNode_ButtonSound
 extends AudioStreamPlayer
 
