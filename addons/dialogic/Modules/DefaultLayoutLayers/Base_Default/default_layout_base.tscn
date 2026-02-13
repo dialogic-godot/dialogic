@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://clujt7xkdgfbl"]
+
+[ext_resource type="Script" uid="uid://cniunhurvdl26" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Base_Default/default_layout_base.gd" id="1_lpuhu"]
+
+[node name="DefaultLayoutBase" type="CanvasLayer" unique_id=1443721113]
+script = ExtResource("1_lpuhu")
+metadata/style_customization = Array[Dictionary]([{
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "Canvas Layer",
+"id": &"SUBGROUP",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Canvas Layer",
+"id": &"SETTING",
+"name": "canvas_layer",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Follow Viewport",
+"id": &"SETTING",
+"name": "follow_viewport_enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "Theme",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "Theme",
+"id": &"SUBGROUP",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Theme",
+"id": &"SETTING",
+"name": "theme",
+"tooltip": "",
+"type": "Property"
+}])

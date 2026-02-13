@@ -30,7 +30,7 @@ func _ready() -> void:
 		i.add_theme_color_override("icon_hover_color", i.get_theme_color("font_hover_color"))
 		i.add_theme_color_override("icon_hover_pressed_color", i.get_theme_color("font_hover_pressed_color"))
 
-	%ExternalLink.icon = get_theme_icon("Help", "EditorIcons")
+	%ExternalLink.icon = get_theme_icon("ExternalLink", "EditorIcons")
 	%ShowInFileSystem.icon = get_theme_icon("ShowInFileSystem", "EditorIcons")
 	%Documentation.icon = get_theme_icon("Help", "EditorIcons")
 	%Open.icon = get_theme_icon("Script", "EditorIcons")
@@ -440,7 +440,6 @@ func load_event_settings(event:DialogicEvent) -> void:
 
 
 func set_event_default_override(prop:String, value:Variant) -> void:
-	value = str_to_var(value)
 	var event_default_overrides: Dictionary = ProjectSettings.get_setting("dialogic/event_default_overrides", {})
 	var event: DialogicEvent = %Tree.get_selected().get_metadata(0).event
 
@@ -462,26 +461,7 @@ func _on_export_override_reset(property_name:String) -> void:
 	var event: DialogicEvent = %Tree.get_selected().get_metadata(0).event
 	if event.event_name in event_default_overrides:
 		event_default_overrides[event.event_name].erase(property_name)
-		#current_style.remove_layer_setting(current_layer_id, property_name)
-		print(customization_editor_info.keys())
 		customization_editor_info[property_name]["reset"].disabled = true
-		set_customization_value(property_name, customization_editor_info[property_name]["orig"])
-
-
-func set_customization_value(property_name:String, value:Variant) -> void:
-	var node: Node = customization_editor_info[property_name]["node"]
-	if node is CheckBox:
-		node.button_pressed = value
-	elif node is LineEdit:
-		node.text = value
-	elif node.has_method("set_value"):
-		node.set_value(value)
-	elif node is ColorPickerButton:
-		node.color = value
-	elif node is OptionButton:
-		node.select(value)
-	elif node is SpinBox:
-		node.value = value
-
+		DialogicUtil.set_property_edit_node_value(customization_editor_info[property_name]["node"], customization_editor_info[property_name]["orig"])
 
 #endregion

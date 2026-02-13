@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://bstrhdhj683i2"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_c6nho"]
+[ext_resource type="Script" uid="uid://oxcjhq2817c7" path="res://addons/dialogic/Modules/Background/node_background_holder.gd" id="2_iaoa6"]
+
+[node name="BackgroundLayer" type="Control" unique_id=1069175684]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c6nho")
+metadata/base_style_customization = [{
+"name": "Layer",
+"type": "Category"
+}, {
+"display_name": "General",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/style_customization = Array[Dictionary]([{
+"added": true,
+"display_name": "",
+"id": &"GROUP",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"added": true,
+"display_name": "Background",
+"id": &"SUBGROUP",
+"name": "DialogicNode_BackgroundHolder",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Texture Filter",
+"id": &"SETTING",
+"name": "bg_texture_filter",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Texture Repeat",
+"id": &"SETTING",
+"name": "bg_texture_repeat",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="DialogicNode_BackgroundHolder" type="ColorRect" parent="." unique_id=237541635]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_iaoa6")

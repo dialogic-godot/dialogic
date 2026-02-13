@@ -130,6 +130,11 @@ func move_layer(from_index:int, to_index:int) -> void:
 	changed.emit()
 
 
+## Moves the given layer [param layer_id] to the given [param index].
+func set_layer_index(layer_id:String, index:int) -> void:
+	move_layer(get_layer_index(layer_id), index)
+
+
 ## Changes the scene property of the DialogicStyleLayer resource at [param layer_id].
 func set_layer_scene(layer_id:String, scene:String) -> void:
 	if not has_layer(layer_id):

@@ -1,4 +1,5 @@
 @tool
+@icon("node_portrait_container_icon.svg")
 class_name DialogicNode_PortraitContainer
 extends Control
 

@@ -1,0 +1,268 @@
+[gd_scene format=3 uid="uid://wv16sgxejdju"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_cqkva"]
+[ext_resource type="Script" uid="uid://b1stj4ljd2vo7" path="res://addons/dialogic/Modules/Choice/node_button_sound.gd" id="2_cqkva"]
+[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="3_0evf0"]
+[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="4_tllrf"]
+[ext_resource type="Script" uid="uid://bldt7xlfum7ov" path="res://addons/dialogic/Modules/Choice/node_choice_button.gd" id="5_cqkva"]
+
+[node name="VN_ChoiceLayer" type="Control" unique_id=1978726975]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_cqkva")
+metadata/base_style_customization = [{
+"name": "Layer",
+"type": "Category"
+}, {
+"display_name": "General",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Buttons",
+"name": "%Choices/@all_children",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Text Alignment",
+"name": "alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Pressed Color",
+"name": "theme_override_colors/font_pressed_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Hover Color",
+"name": "theme_override_colors/font_hover_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Disabled Color",
+"name": "theme_override_colors/font_disabled_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Focus Color",
+"name": "theme_override_colors/font_focus_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Button Stylesboxes",
+"name": "%Choices/@all_children",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Stretch-Mode",
+"name": "size_flags_horizontal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Normal",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Hover",
+"name": "theme_override_styles/hover",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Pressed",
+"name": "theme_override_styles/pressed",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Disabled",
+"name": "theme_override_styles/disabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Focus",
+"name": "theme_override_styles/focus",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Container",
+"name": "%Choices",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Alignment",
+"name": "alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Vertical Separation",
+"name": "theme_override_constants/separation",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "-",
+"name": "%Choices/@all_children",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Minimum Size",
+"name": "custom_minimum_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "-",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Offset",
+"name": "position",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Sounds",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "DialogicNode_ButtonSound",
+"name": "%DialogicNode_ButtonSound",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Volume Db",
+"name": "volume_db",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Sound Pressed",
+"name": "sound_pressed",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Sound Hover",
+"name": "sound_hover",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Sound Focus",
+"name": "sound_focus",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="." unique_id=618457155]
+unique_name_in_owner = true
+script = ExtResource("2_cqkva")
+sound_pressed = ExtResource("3_0evf0")
+sound_hover = ExtResource("4_tllrf")
+choice_reference = NodePath("../Choices")
+metadata/_custom_type_script = "uid://b1stj4ljd2vo7"
+
+[node name="Choices" type="VBoxContainer" parent="." unique_id=1700034486]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -47.0
+offset_right = 42.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="Choices" unique_id=485140099]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="Choices" unique_id=899003319]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="Choices" unique_id=1456075754]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="Choices" unique_id=1503582594]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="Choices" unique_id=204141142]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="Choices" unique_id=1908585064]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton7" type="Button" parent="Choices" unique_id=235662536]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton8" type="Button" parent="Choices" unique_id=1361730476]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton9" type="Button" parent="Choices" unique_id=2103912342]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"
+
+[node name="DialogicNode_ChoiceButton10" type="Button" parent="Choices" unique_id=581046187]
+layout_mode = 2
+text = "This is an awesome choice."
+script = ExtResource("5_cqkva")
+metadata/_custom_type_script = "uid://bldt7xlfum7ov"

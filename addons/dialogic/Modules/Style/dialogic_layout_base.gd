@@ -1,4 +1,5 @@
 @tool
+@icon("layout_layer_icon.svg")
 class_name DialogicLayoutBase
 extends Node
 
@@ -60,6 +61,7 @@ func _apply_export_overrides() -> void:
 
 func _init() -> void:
 	_load_persistent_info(Engine.get_meta("dialogic_persistent_style_info", {}))
+
 
 
 func _exit_tree() -> void:

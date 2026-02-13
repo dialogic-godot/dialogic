@@ -91,7 +91,7 @@ var parse_stack: Array[Dictionary] = []
 ####################################################################################################
 
 func _ready() -> void:
-	dialogic.event_handled.connect(hide_next_indicators)
+	#dialogic.event_handled.connect(hide_next_indicators)
 
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})

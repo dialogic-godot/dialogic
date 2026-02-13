@@ -52,6 +52,9 @@ func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> v
 	manual_advance.disabled_until_next_event = false
 	manual_advance.system_enabled = true
 
+	if not dialogic_action_priority.is_connected(_secret_reveal):
+		dialogic_action_priority.connect(_secret_reveal)
+
 
 func _pause() -> void:
 	auto_advance.autoadvance_timer.paused = true
@@ -254,4 +257,9 @@ func effect_autoadvance(_text_node: Control, _skipped:bool, argument:String) -> 
 	if argument.is_valid_float():
 		auto_advance.override_delay_for_current_event = float(argument)
 
+
+func _secret_reveal() -> void:
+	if Input.is_key_pressed(KEY_CTRL) and Input.is_key_pressed(KEY_D) and Input.is_key_pressed(KEY_A) and Input.is_key_pressed(KEY_C):
+		dialogic.Text.update_dialog_text("This game was made with Dialogic.")
+		action_was_consumed = true
 #endregion

@@ -1,0 +1,492 @@
+[gd_scene format=3 uid="uid://cr30mnnb8p75b"]
+
+[ext_resource type="Script" uid="uid://d0nj3vvjubden" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_SpeakerPortraitTextbox/speaker_portrait_textbox_layer.gd" id="1_yr37b"]
+[ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_yyo74"]
+[ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3_gfw0g"]
+[ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_dda54"]
+[ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_20ce6"]
+[ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_yyo74"]
+[ext_resource type="Texture2D" uid="uid://duvcdvtgy4h4b" path="res://addons/dialogic/Modules/Call/icon.png" id="7_gfw0g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yr37b"]
+bg_color = Color(0.08554942, 0.115575664, 0.1394721, 1)
+skew = Vector2(0.07, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmg1w"]
+bg_color = Color(0.254902, 0.254902, 0.254902, 1)
+skew = Vector2(0.073, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yr37b"]
+
+[node name="TextboxWithSpeakerPortrait" type="Control" unique_id=1153697108]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_yr37b")
+metadata/base_style_customization = [{
+"name": "Layer",
+"type": "Category"
+}, {
+"display_name": "General",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Textbox",
+"name": "%Panel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Stylebox Panel",
+"name": "theme_override_styles/panel",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Minimum Size",
+"name": "custom_minimum_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Margin",
+"name": "Margin",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Margin Bottom",
+"name": "theme_override_constants/margin_bottom",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Text",
+"tooltip": "",
+"type": "Category"
+}, {
+"collapsed": true,
+"display_name": "Text",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Font Size",
+"name": "font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Vertical Alignment",
+"name": "vertical_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Default Color",
+"name": "theme_override_colors/default_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Line Separation",
+"name": "theme_override_constants/line_separation",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Fonts",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Normal Font",
+"name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font",
+"name": "theme_override_fonts/bold_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font",
+"name": "theme_override_fonts/bold_italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font",
+"name": "theme_override_fonts/italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Outline",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Outline Size",
+"name": "theme_override_constants/outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Outline Color",
+"name": "theme_override_colors/font_outline_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Shadow",
+"name": "%DialogicNode_DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Shadow Color",
+"name": "theme_override_colors/font_shadow_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Size",
+"name": "theme_override_constants/shadow_outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset X",
+"name": "theme_override_constants/shadow_offset_x",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset Y",
+"name": "theme_override_constants/shadow_offset_y",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "NameLabel",
+"tooltip": "",
+"type": "Category"
+}, {
+"collapsed": true,
+"display_name": "General",
+"name": "%DialogicNode_NameLabel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Use Character Color",
+"name": "use_character_color",
+"tooltip": "Because this uses modulate, if this is enabled font color should be white.",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Outline",
+"name": "%DialogicNode_NameLabel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Outline Size",
+"name": "theme_override_constants/outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Outline Color",
+"name": "theme_override_colors/font_outline_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Shadow",
+"name": "%DialogicNode_NameLabel",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Shadow Size",
+"name": "theme_override_constants/shadow_outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset X",
+"name": "theme_override_constants/shadow_offset_x",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset Y",
+"name": "theme_override_constants/shadow_offset_y",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Color",
+"name": "theme_override_colors/font_shadow_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "",
+"name": "Indicators",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Next Indicator",
+"name": "%DialogicNode_NextIndicator",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"name": "enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show On Questions",
+"name": "show_on_questions",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show On Autoadvance",
+"name": "show_on_autoadvance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Animation",
+"name": "animation",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Texture",
+"name": "texture",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Texture Size",
+"name": "texture_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Modulate",
+"name": "modulate",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Indicator Offset",
+"name": "indicator_offset",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Sounds",
+"tooltip": "",
+"type": "Category"
+}, {
+"collapsed": true,
+"display_name": "Type Sounds",
+"name": "Margin/Panel/HBox/VBoxContainer/DialogicNode_DialogText/DialogicNode_TypeSounds",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"name": "enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Mode",
+"name": "mode",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Sounds",
+"name": "sounds",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "End Sound",
+"name": "end_sound",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Base Volume",
+"name": "volume_db",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Base Pitch",
+"name": "pitch_scale",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Audio Bus",
+"name": "bus",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Play Every Character",
+"name": "play_every_character",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Pitch Variance",
+"name": "pitch_variance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Volume Variance",
+"name": "volume_variance",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Ignore Characters",
+"name": "ignore_characters",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=444027929]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -52.0
+offset_right = 27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 20
+
+[node name="Panel" type="PanelContainer" parent="Margin" unique_id=1144353782]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yr37b")
+
+[node name="HBox" type="HBoxContainer" parent="Margin/Panel" unique_id=1653244874]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+
+[node name="PortraitPanel" type="Panel" parent="Margin/Panel/HBox" unique_id=2078959549]
+unique_name_in_owner = true
+clip_children = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dmg1w")
+
+[node name="PortraitBackgroundColor" type="ColorRect" parent="Margin/Panel/HBox/PortraitPanel" unique_id=1823015300]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -7.0
+offset_top = -3.0
+offset_right = 7.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.231373)
+
+[node name="DialogicNode_PortraitContainer" type="Control" parent="Margin/Panel/HBox/PortraitPanel/PortraitBackgroundColor" unique_id=172581074]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_yyo74")
+mode = 1
+container_ids = PackedStringArray("1")
+debug_character_portrait = "speaker"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Panel/HBox" unique_id=750296379]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="DialogicNode_NameLabel" type="Label" parent="Margin/Panel/HBox/VBoxContainer" unique_id=1911034531]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Name"
+script = ExtResource("3_gfw0g")
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="Margin/Panel/HBox/VBoxContainer" unique_id=939367759 node_paths=PackedStringArray("textbox_root")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/mono_font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yr37b")
+bbcode_enabled = true
+text = "Some text"
+scroll_following = true
+visible_characters_behavior = 1
+script = ExtResource("4_dda54")
+textbox_root = NodePath("../../..")
+font_size = 16
+
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="Margin/Panel/HBox/VBoxContainer/DialogicNode_DialogText" unique_id=232303573]
+bus = &"SFX"
+script = ExtResource("5_20ce6")
+
+[node name="DialogicNode_NextIndicator" type="Control" parent="Margin/Panel/HBox/VBoxContainer/DialogicNode_DialogText" unique_id=1851447227]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -23.0
+offset_right = -27.0
+offset_bottom = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("6_yyo74")
+enabled = false
+texture = ExtResource("7_gfw0g")
+metadata/_custom_type_script = "uid://dve1vwse2peji"
