@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bstrhdhj683i2" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_FullBackground/full_background_layer.tscn" id="2_j088i"]
 [ext_resource type="PackedScene" uid="uid://bskk8yingwg0u" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_Input/full_advance_input_layer.tscn" id="3_ws0fg"]
 [ext_resource type="PackedScene" uid="uid://cr30mnnb8p75b" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_SpeakerPortraitTextbox/textbox_with_speaker_portrait.tscn" id="4_2poxa"]
+[ext_resource type="Texture2D" uid="uid://duvcdvtgy4h4b" path="res://addons/dialogic/Modules/Call/icon.png" id="4_j088i"]
 [ext_resource type="PackedScene" uid="uid://mre8pwqtymqn" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_Glossary/glossary_popup_layer.tscn" id="5_yturc"]
 [ext_resource type="PackedScene" uid="uid://wv16sgxejdju" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_VN_Choices/vn_choice_layer.tscn" id="6_q3fu1"]
 [ext_resource type="PackedScene" uid="uid://btundhaynby5d" path="res://addons/dialogic/Modules/DefaultLayoutLayers/Layer_TextInput/text_input_layer.tscn" id="7_ed2gj"]
@@ -24,6 +25,13 @@ scene = ExtResource("3_ws0fg")
 [sub_resource type="Resource" id="Resource_iqsmu"]
 script = ExtResource("1_n68ym")
 scene = ExtResource("4_2poxa")
+overrides = {
+"%DialogicNode_NextIndicator:animation": 1,
+"%DialogicNode_NextIndicator:enabled": true,
+"%DialogicNode_NextIndicator:modulate": Color(8.663535e-07, 0.5131688, 0.71640986, 1),
+"%DialogicNode_NextIndicator:texture": ExtResource("4_j088i"),
+"%DialogicNode_NextIndicator:texture_size": Vector2(100, 100)
+}
 
 [sub_resource type="Resource" id="Resource_axty6"]
 script = ExtResource("1_n68ym")
