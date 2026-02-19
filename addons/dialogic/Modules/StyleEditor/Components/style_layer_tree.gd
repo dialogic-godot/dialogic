@@ -83,6 +83,6 @@ func _on_layer_list_right_click_menu_id_pressed(id: int) -> void:
 		RightClickMenuItems.DELETE:
 			%LayerList.delete_layer()
 		RightClickMenuItems.SHOW_IN_FILESYSTEM:
-			EditorInterface.get_file_system_dock().navigate_to_path(item.get_meta("scene"))
+			EditorInterface.get_file_system_dock().navigate_to_path(ResourceUID.uid_to_path(item.get_meta("scene")))
 		RightClickMenuItems.OPEN_SCENE:
 			%LayerEditor.edit_layer_scene(item.get_meta("scene"))

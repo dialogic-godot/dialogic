@@ -1,2 +1,0 @@
-@tool
-extends DialogicLayoutLayer

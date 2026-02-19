@@ -584,7 +584,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			fake.property = value
 
 			var pi := property_info
-			input = EditorInspector.instantiate_property_editor(fake, pi.type, "property", pi.hint, pi.hint_string, pi.usage, true)
+			input = EditorInspector.instantiate_property_editor(fake, pi.type, "property", pi.hint, pi.hint_string, PROPERTY_USAGE_EDITOR, true)
 			fake.editor_property = input
 			#var hbox := HBoxContainer.new()
 			#hbox.add_theme_constant_override("separation", 0)

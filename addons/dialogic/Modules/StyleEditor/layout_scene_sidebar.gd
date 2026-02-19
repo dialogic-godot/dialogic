@@ -21,6 +21,8 @@ func _ready() -> void:
 
 	%DropInfoLabel.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
 
+	%Collapse.icon = get_theme_icon("Forward", "EditorIcons")
+
 	hide()
 
 
@@ -81,3 +83,8 @@ func _on_print_pressed() -> void:
 
 func property_override_button_clicked(node:Node, property:String) -> void:
 	%PropertyTree.highlight_property(node, property)
+
+
+func _on_collapse_toggled(toggled_on: bool) -> void:
+	%Info.visible = toggled_on
+	%Collapse.icon = get_theme_icon("Collapse" if toggled_on else "Forward", "EditorIcons")

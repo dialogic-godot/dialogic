@@ -17,34 +17,44 @@ script = ExtResource("1_xui7s")
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2005906802]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="VBoxContainer" unique_id=1267388966]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer" unique_id=1133947708]
 layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/HBox" unique_id=1267388966]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "Dialogic Layout Scene Customizer"
 autowrap_mode = 2
+clip_text = true
 
-[node name="Note" type="Label" parent="VBoxContainer" unique_id=997426198]
+[node name="Collapse" type="Button" parent="VBoxContainer/HBox" unique_id=1656251768]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"FlatButton"
+toggle_mode = true
+
+[node name="Info" type="VBoxContainer" parent="VBoxContainer" unique_id=744795354]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Note" type="Label" parent="VBoxContainer/Info" unique_id=997426198]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Layout scenes can expose properties to the style editor here.
-To add more properties, "
+text = "Layout scenes can expose properties to the style editor here."
 autowrap_mode = 2
 
-[node name="Internal" type="Label" parent="VBoxContainer" unique_id=1123826404]
+[node name="Internal" type="Label" parent="VBoxContainer/Info" unique_id=1123826404]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "This is an internal Dialogic scene! Editing it directly means changes will be lost when updating the plugin!
 Consider making a copy by customizing it. "
 autowrap_mode = 2
-
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer" unique_id=1317499735]
-visible = false
-layout_mode = 2
-item_count = 1
-popup/item_0/id = 0
 
 [node name="PropertyTree" type="Tree" parent="VBoxContainer" unique_id=73237039]
 unique_name_in_owner = true
@@ -88,6 +98,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Add Category"
 
+[connection signal="toggled" from="VBoxContainer/HBox/Collapse" to="." method="_on_collapse_toggled"]
 [connection signal="button_clicked" from="VBoxContainer/PropertyTree" to="VBoxContainer/PropertyTree" method="_on_button_clicked"]
 [connection signal="changed" from="VBoxContainer/PropertyTree" to="." method="_on_property_tree_changed"]
 [connection signal="column_title_clicked" from="VBoxContainer/PropertyTree" to="VBoxContainer/PropertyTree" method="_on_column_title_clicked"]
