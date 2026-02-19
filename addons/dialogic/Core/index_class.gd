@@ -119,7 +119,7 @@ func _get_layout_parts() -> Array[Dictionary]:
 func scan_for_layout_parts() -> Array[Dictionary]:
 	var dir := DirAccess.open(this_folder)
 	var style_list: Array[Dictionary] = []
-	if !dir:
+	if not dir:
 		return style_list
 	dir.list_dir_begin()
 	var dir_name := dir.get_next()
@@ -130,11 +130,12 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 		var config := ConfigFile.new()
 		config.load(this_folder.path_join(dir_name).path_join('part_config.cfg'))
 		var default_image_path: String = this_folder.path_join(dir_name).path_join('preview.png')
+
 		style_list.append(
 			{
 				'type': config.get_value('style', 'type', 'Unknown type'),
 				'name': config.get_value('style', 'name', 'Unnamed Layout'),
-				'path': this_folder.path_join(dir_name).path_join(config.get_value('style', 'scene', '')),
+				'path': config.get_value('style', 'scene', ''),
 				'author': config.get_value('style', 'author', 'Anonymous'),
 				'description': config.get_value('style', 'description', 'No description'),
 				'preview_image': [config.get_value('style', 'image', default_image_path)],
@@ -142,8 +143,12 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 				'icon':this_folder.path_join(dir_name).path_join(config.get_value('style', 'icon', '')),
 			})
 
-		if not style_list[-1].style_path.begins_with('res://'):
-			style_list[-1].style_path = this_folder.path_join(dir_name).path_join(style_list[-1].style_path)
+		## TODO this is a compatibility thing for pre alpha 20
+		if not style_list[-1].path.begins_with("uid://"):
+			style_list[-1].path = ResourceUID.path_to_uid(this_folder.path_join(dir_name).path_join(style_list[-1].path))
+
+		if not style_list[-1].style_path.begins_with('uid://'):
+			style_list[-1].style_path = ResourceUID.path_to_uid(this_folder.path_join(dir_name).path_join(style_list[-1].style_path))
 
 		dir_name = dir.get_next()
 

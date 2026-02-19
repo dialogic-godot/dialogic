@@ -79,7 +79,7 @@ var debug_character_scene_node: Node = null
 var debug_origin: Sprite2D = null
 var default_portrait_scene: String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
 # Used if no debug character is specified
-var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
+var default_debug_character := load("uid://dykf1j17ct5mo")
 
 var ignore_resize := false
 
@@ -87,7 +87,6 @@ var debug_draw := false
 
 
 func _ready() -> void:
-	debug_draw = DialogicUtil.autoload().PortraitContainers.debug_draw
 	match mode:
 		PositionModes.POSITION:
 			add_to_group('dialogic_portrait_con_position')
@@ -107,6 +106,7 @@ func _ready() -> void:
 		_update_debug_origin()
 		_update_debug_portrait_scene()
 	else:
+		debug_draw = DialogicUtil.autoload().PortraitContainers.debug_draw
 		resized.connect(update_portrait_transforms)
 
 
@@ -183,7 +183,7 @@ func _draw():
 ## Loads the debug_character with the debug_character_portrait
 ## Creates a holder node and applies mirror
 func _update_debug_portrait_scene() -> void:
-	if !Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		return
 	if is_instance_valid(debug_character_holder_node):
 		for child in get_children():

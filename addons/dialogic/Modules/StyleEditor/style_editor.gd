@@ -346,7 +346,7 @@ func _on_test_style_button_pressed() -> void:
 	DialogicUtil.set_editor_setting("current_test_style", current_style.name)
 
 	EditorInterface.play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
-	await get_tree().create_timer(3).timeout
+	await get_tree().create_timer(6).timeout
 	DialogicUtil.set_editor_setting("current_test_style", "")
 
 #endregion

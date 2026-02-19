@@ -2,7 +2,23 @@
 
 [ext_resource type="Script" uid="uid://b0vm440bs3ckd" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.gd" id="1_x8t45"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5s34"]
+bg_color = Color(0.07888999, 0.07888999, 0.07888999, 1)
+border_width_left = 5
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.75)
+
+[sub_resource type="Theme" id="Theme_c5s34"]
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_c5s34")
+
 [node name="HintTooltip" type="TextureRect" unique_id=71773321]
 modulate = Color(0.450455, 0.450455, 0.450455, 1)
+mouse_filter = 0
+theme = SubResource("Theme_c5s34")
 stretch_mode = 3
 script = ExtResource("1_x8t45")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

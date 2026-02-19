@@ -17,6 +17,9 @@ var _loading_layer := false
 @onready var unre: UndoRedo = owner.unre
 
 func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
 	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_scene_saved)
 	%ExpandLayerInfo.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 
@@ -53,7 +56,6 @@ func show_layer_info() -> void:
 	if %StyleBrowser.is_premade_style_part(layer_info.get("path", "Unkown Layer")):
 		var premade_infos = %StyleBrowser.premade_scenes_reference[layer_info.get("path")]
 		%LayerName.text = premade_infos.get("name", "Unknown Layer")
-		%SmallLayerAuthor.text = "by "+premade_infos.get("author", "")
 		%SmallLayerDescription.text = premade_infos.get("description", "")
 
 		if premade_infos.get("preview_image", null) and ResourceLoader.exists(premade_infos.get("preview_image")[0]):
@@ -62,7 +64,6 @@ func show_layer_info() -> void:
 
 	else:
 		%LayerName.text = %LayerList.clean_scene_name(layer_info.get("path", "Unkown Layer"))
-		%SmallLayerAuthor.text = "Custom Layer"
 		%SmallLayerDescription.text = layer_info.get("path", "Unkown Layer")
 
 	%SmallLayerScene.text = layer_info.get("path", "Unkown Layer").get_file()
@@ -70,11 +71,11 @@ func show_layer_info() -> void:
 
 
 func toggle_layer_info() -> void:
-	if %LayerInfoBody.visible:
-		%LayerInfoBody.hide()
+	if %SmallLayerDescription.visible:
+		%SmallLayerDescription.hide()
 		%ExpandLayerInfo.icon = get_theme_icon("CodeFoldedRightArrow", "EditorIcons")
 	else:
-		%LayerInfoBody.show()
+		%SmallLayerDescription.show()
 		%ExpandLayerInfo.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
 	DialogicUtil.set_editor_setting("style_editor_expand_layer_info", %LayerInfoBody.visible)
 
@@ -113,8 +114,8 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	var warning_label_base := Label.new()
 	#warning_label_base.text =
 	warning_label_base.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	warning_label_base.clip_text = true
-	warning_label_base.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	#warning_label_base.clip_text = true
+	#warning_label_base.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	warning_label_base.theme_type_variation = "DialogicHintText"
 	warning_label_base.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	var stylebox : StyleBox = get_theme_stylebox("normal", "Label").duplicate()
@@ -171,7 +172,7 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				current_vbox.add_child(title_label, true)
 
 				current_grid = GridContainer.new()
-				current_grid.columns = 4
+				current_grid.columns = 2
 				current_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				current_vbox.add_child(current_grid)
 				#current_node.set_meta("style_identifier", i["name"])
@@ -188,20 +189,26 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				var property_path: String = current_node_path+":"+property_name
 				var node := get_scene_node(scene, current_node_path)
 				if not property_name in node:
+					printt(node, property_name)
 					printerr("[Dialogic] Invalid node property exposed to style editor: "+property_path)
 					continue
 				var property_display_name: String = i["display_name"]
+				var hbox := HBoxContainer.new()
+
 				var vbox := VBoxContainer.new()
 				vbox.add_theme_constant_override("separation", 0)
 				var label := Label.new()
 				label.text = property_display_name
-				vbox.add_child(label, true)
+				hbox.add_child(label, true)
 				vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				current_grid.add_child(vbox)
-				label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				vbox.add_child(hbox)
+				vbox.size_flags_stretch_ratio = 0.7
 
 				var warning_label := warning_label_base.duplicate()
+				warning_label.hide()
 				vbox.add_child(warning_label)
 
 				var scene_value: Variant = get_value_on_node(node, property_name)
@@ -221,14 +228,18 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 
 				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(node, property_name), current_value, set_export_override, property_path)
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
+				input.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+				input.minimum_size_changed.connect(update_setting_warning.bind(property_path))
 				customization_editor_info[property_path]["node"] = input
 
 				if i["tooltip"]:
-					var tooltip: Node = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
-					tooltip.hint_text = i["tooltip"]
-					current_grid.add_child(tooltip)
-				else:
-					current_grid.add_child(Control.new())
+					var tooltip: Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+					tooltip.hint_text = "#"+property_display_name+"\n"+i["tooltip"]
+					tooltip.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+					tooltip.custom_minimum_size.y = label.size.y
+					hbox.add_child(tooltip)
+				#else:
+					##current_grid.add_child(Control.new())
 
 				var reset := Button.new()
 				reset.flat = true
@@ -237,12 +248,12 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				reset.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 				customization_editor_info[property_path]["reset"] = reset
 				reset.disabled = current_value == customization_editor_info[property_path]["orig"]
-				current_grid.add_child(reset)
-				reset.pressed.connect(_on_export_override_reset.bind(property_path))
+				hbox.add_child(reset)
+				reset.pressed.connect(_on_export_override_reset.bind(property_path), CONNECT_DEFERRED)
 
 				current_grid.add_child(input)
 
-				update_setting_warning(property_path)
+				#update_setting_warning(property_path)
 
 	var latest_tab: int = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
 
@@ -280,6 +291,10 @@ func get_scene_node(scene:Node, node_path:String) -> Node:
 
 
 func get_node_property_info(node:Node, property_name:String) -> Dictionary:
+	if node.has_method("_get_property_list"):
+		for i in node._get_property_list():
+			if i.name == property_name:
+				return i
 	for i in node.get_property_list():
 		if i.name == property_name:
 			return i
@@ -332,12 +347,24 @@ func _on_export_override_reset(property_name:String) -> void:
 func update_setting_warning(property_name:String) -> void:
 	if not property_name in customization_editor_info:
 		return
+
+	var input: Control = customization_editor_info[property_name].node
+	var warning_section_visible := input.get_minimum_size().y > 100
 	var warning_label: Label = customization_editor_info[property_name].warning_label
 	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
 	var override_value: Variant =  overrides.get(property_name, null)
 	var orig_value: Variant =  customization_editor_info[property_name].orig
+	var button : Button
+	if warning_label.get_parent().get_child_count() > warning_label.get_index()+1:
+		button = warning_label.get_parent().get_child(warning_label.get_index()+1)
+	if button: button.hide()
+	if not warning_section_visible:
+		warning_label.hide()
+		return
+
+	warning_label.show()
 	if override_value is Resource:
-		if override_value.resource_path:
+		if override_value.resource_path and not override_value.resource_path.begins_with(current_style.resource_path) and not override_value.resource_path.begins_with("::"):
 			warning_label.text = "This resource is shared. \nMake it unique if you do not want it to change in other places."
 			warning_label.add_theme_color_override("font_color", get_theme_color("disabled_font_color", "Editor"))
 		else:
@@ -347,11 +374,30 @@ func update_setting_warning(property_name:String) -> void:
 			warning_label.text = "This resource is shared. \nMake it unique if you do not want it to change in other places or the base scene."
 			warning_label.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 		else:
-			warning_label.text = "This resource is local to the scene. Make it unique or assign a different resource to start editing it."
+			warning_label.text = "Make this {class_name} unique to start editing it or assign a new or external one.".format({"class_name":orig_value.get_class()})
 			warning_label.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
+			if button:
+				button.show()
+			else:
+				button = create_make_unique_button(property_name)
+				warning_label.get_parent().add_child(button)
 	else:
-		warning_label.text = ""
-	warning_label.text = "\n"+warning_label.text
+		warning_label.hide()
+
+
+func create_make_unique_button(property_name:String) -> Button:
+	var button := Button.new()
+	button.text = "Make Unique"
+	button.icon = get_theme_icon("Instance", "EditorIcons")
+	button.pressed.connect(
+		func():
+			var input: Control = customization_editor_info[property_name].node
+			if input.has_meta("object"):
+				input.get_meta("object").make_unique_manual()
+			)
+	button.tooltip_text = """In Godot resources like Textures, Fonts or Styleboxes are shared by default.
+	This resource is still embedded in the layer's scene. Making it unique allows to edit a local copy of this resource."""
+	return button
 
 
 func _on_scene_saved(path:String) -> void:
