@@ -1,5 +1,7 @@
 extends Range
-var enabled: bool = true
+
+
+@export var enabled: bool = true
 
 
 func _process(_delta : float) -> void:

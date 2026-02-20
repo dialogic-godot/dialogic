@@ -468,7 +468,9 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 	if property_path.is_empty():
 		property_path = property_info.name
 	var input: Control = null
-	match property_info['type']:
+	if property_info.type == TYPE_STRING and property_info.hint == PROPERTY_HINT_MULTILINE_TEXT:
+		property_info.hint = PROPERTY_HINT_NONE
+	match property_info.type:
 		#TYPE_BOOL when false:
 			#input = CheckBox.new()
 			#if value != null:

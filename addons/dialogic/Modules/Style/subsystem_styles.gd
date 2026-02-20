@@ -154,12 +154,12 @@ func reload_current_info_into_new_style() -> void:
 
 
 ## Returns the style currently in use
-func get_current_style() -> String:
+func get_current_style() -> DialogicStyle:
 	if has_active_layout_node():
 		var style_resource: DialogicStyle = get_layout_node().get_meta('style', null)
 		if style_resource:
-			return style_resource.name
-	return ''
+			return style_resource
+	return null
 
 
 func has_active_layout_node() -> bool:
