@@ -145,10 +145,10 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 
 		## TODO this is a compatibility thing for pre alpha 20
 		if not style_list[-1].path.begins_with("uid://"):
-			style_list[-1].path = ResourceUID.path_to_uid(this_folder.path_join(dir_name).path_join(style_list[-1].path))
+			style_list[-1].path = ResourceLoader.get_resource_uid(this_folder.path_join(dir_name).path_join(style_list[-1].path))
 
 		if not style_list[-1].style_path.begins_with('uid://'):
-			style_list[-1].style_path = ResourceUID.path_to_uid(this_folder.path_join(dir_name).path_join(style_list[-1].style_path))
+			style_list[-1].style_path = ResourceLoader.get_resource_uid(this_folder.path_join(dir_name).path_join(style_list[-1].style_path))
 
 		dir_name = dir.get_next()
 
