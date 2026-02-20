@@ -21,7 +21,6 @@ class_name DialogicStyle
 	"" : DialogicStyleLayer.new()
 }
 
-
 func _init(_name := "") -> void:
 	if not _name.is_empty():
 		name = _name
@@ -73,9 +72,9 @@ func get_layer_info(id:String) -> Dictionary:
 		var layer_resource: DialogicStyleLayer = layer_info[id]
 
 		if layer_resource.scene != null:
-			info.path = ResourceUID.path_to_uid(layer_resource.scene.resource_path)
+			info.path = ResourceLoader.get_resource_uid(layer_resource.scene.resource_path)
 		elif id == "":
-			info.path = ResourceUID.path_to_uid(DialogicStylesUtil.get_default_layout_base().resource_path)
+			info.path = ResourceLoader.get_resource_uid(DialogicStylesUtil.get_default_layout_base().resource_path)
 
 		info.overrides = layer_resource.overrides.duplicate()
 
