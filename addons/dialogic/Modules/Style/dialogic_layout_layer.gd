@@ -25,7 +25,8 @@ func _init() -> void:
 	set_meta("base_style_customization", [
 		{"type":"Category", "name":"Layer"},
 		{"type":"Node", "name":".", "display_name":"General"},
-		{"type":"Property", "name":"disabled", "display_name":"Disabled", "tooltip":""}
+		{"type":"Property", "name":"disabled", "display_name":"Disabled", "tooltip":"If disabled, the layer is hidden and processing is disabled."},
+		{"type":"Property", "name":"theme", "display_name":"Theme", "tooltip":"Set the theme of this layer if you know your way around godot themes."}
 		])
 
 

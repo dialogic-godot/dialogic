@@ -77,7 +77,7 @@ func toggle_layer_info() -> void:
 	else:
 		%SmallLayerDescription.show()
 		%ExpandLayerInfo.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
-	DialogicUtil.set_editor_setting("style_editor_expand_layer_info", %LayerInfoBody.visible)
+	DialogicUtil.set_editor_setting("style_editor_expand_layer_info", %SmallLayerDescription.visible)
 
 #endregion
 

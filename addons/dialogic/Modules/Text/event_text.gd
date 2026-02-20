@@ -210,7 +210,7 @@ func _execute() -> void:
 func _mark_as_read(character_name_text: String, final_text: String) -> void:
 	if dialogic.has_subsystem('History'):
 		if character:
-			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character_name_text, 'character_color':character.color})
+			dialogic.History.store_simple_history_entry(final_text, event_name, {"character":character_name_text, "character_color":character.color, "character_color_html":character.color.to_html()})
 		else:
 			dialogic.History.store_simple_history_entry(final_text, event_name)
 		dialogic.History.mark_event_as_visited()

@@ -660,6 +660,7 @@ autoplay = &"RESET"
 script = ExtResource("2_tf6vv")
 animation_in = "In Pop Up"
 animation_out = "Out Fade Down"
+full_clear = true
 
 [node name="OutsideMargin" type="MarginContainer" parent="." unique_id=1942210453]
 unique_name_in_owner = true

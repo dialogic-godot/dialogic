@@ -7,10 +7,22 @@ extends AnimationPlayer
 @export var animation_out := "None"
 @export var animation_new_text := "None"
 
+## Helpers for showing animation name list dropdowns in editor
+var _animations_list := ""
+var _update_animation_list := true
+
 var full_clear := true
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		## Helper connection to allow the animation dropdowns to update in editor
+		animation_list_changed.connect(func():
+			_update_animation_list = true
+			notify_property_list_changed())
+		return
+
+	## Do all necessary connections to trigger the animations in game
 	var text_system: Node = DialogicUtil.autoload().get(&'Text')
 	text_system.animation_textbox_hide.connect(_on_textbox_hide)
 	text_system.animation_textbox_show.connect(_on_textbox_show)
@@ -73,12 +85,12 @@ func _on_animation_interrupted() -> void:
 
 
 func _validate_property(property: Dictionary) -> void:
-	var animations: String = "None"
-	for i in get_animation_list():
-		if i == "RESET": continue
-		animations += ","+i
+	if _update_animation_list:
+		_animations_list = "None"
+		for i in get_animation_list():
+			if i == "RESET": continue
+			_animations_list += ","+i
 
-	if property.name.begins_with("animation_") and property.type == TYPE_STRING and property.hint_string != animations:
-		property.hint = PROPERTY_HINT_ENUM
-		property.hint_string = animations
-		notify_property_list_changed()
+		if property.name.begins_with("animation_") and property.type == TYPE_STRING:
+			property.hint = PROPERTY_HINT_ENUM
+			property.hint_string = _animations_list
