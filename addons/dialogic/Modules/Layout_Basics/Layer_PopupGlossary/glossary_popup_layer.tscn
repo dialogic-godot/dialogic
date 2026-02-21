@@ -18,7 +18,7 @@ expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
-[node name="Glossary" type="Control" unique_id=2082157319]
+[node name="PopupGlossaryLayer" type="Control" unique_id=2082157319]
 physics_interpolation_mode = 0
 layout_mode = 3
 anchors_preset = 15
@@ -28,19 +28,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_al8ow")
-metadata/base_style_customization = [{
-"name": "Layer",
-"type": "Category"
-}, {
-"display_name": "General",
-"name": ".",
-"type": "Node"
-}, {
-"display_name": "Disabled",
-"name": "disabled",
-"tooltip": "",
-"type": "Property"
-}]
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "display_name": "",

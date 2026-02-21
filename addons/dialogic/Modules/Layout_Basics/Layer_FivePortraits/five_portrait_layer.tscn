@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_x7flx"]
 [ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_t4o42"]
 
-[node name="VN_PortraitLayer" type="Control" unique_id=867161816]
+[node name="5PortraitsLayer" type="Control" unique_id=867161816]
 physics_interpolation_mode = 0
 layout_mode = 3
 anchors_preset = 15
@@ -12,24 +12,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x7flx")
-metadata/base_style_customization = [{
-"added": true,
-"id": &"GROUP",
-"name": "Layer",
-"type": "Category"
-}, {
-"added": true,
-"display_name": "General",
-"id": &"SUBGROUP",
-"name": ".",
-"type": "Node"
-}, {
-"display_name": "Disabled",
-"id": &"SETTING",
-"name": "disabled",
-"tooltip": "",
-"type": "Property"
-}]
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "display_name": "",

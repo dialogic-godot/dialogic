@@ -26,7 +26,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "display_name": "",
-"name": "Theme",
+"name": "Advanced",
 "tooltip": "",
 "type": "Category"
 }, {

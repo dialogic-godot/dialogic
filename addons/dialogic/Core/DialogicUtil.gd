@@ -308,7 +308,10 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 	## NEW STYLE VERSION
 	if node.has_meta("style_customization"):
 		var current_node_path := ""
-		for i in node.get_meta("style_customization"):
+		var customizations: Array = node.get_meta("style_customization")
+		if node.has_method("_get_base_customization"):
+			customizations += node._get_base_customization()
+		for i in customizations:
 			if i.type == "Node":
 				current_node_path = i.name
 			if i.type == "Property":
@@ -317,8 +320,8 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 					nodes = node.get_node(current_node_path.trim_suffix("/@all_children")).get_children()
 				else:
 					nodes = [node.get_node(current_node_path)]
+				var path: String = current_node_path+":"+i.name
 				for current_node in nodes:
-					var path: String = current_node_path+":"+i.name
 					if path in export_overrides:
 						if typeof(export_overrides[path]) != TYPE_STRING:
 							current_node.set(i.name, export_overrides[path])
@@ -328,6 +331,10 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 							current_node.set(i.name, str_to_var(export_overrides[path]))
 					elif path in default_info:
 						current_node.set(i.name, default_info.get(path))
+
+		if "customization_applied" in node:
+			node.customization_applied.emit()
+
 		return
 
 
@@ -345,9 +352,9 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 					node.set(i['name'], str_to_var(export_overrides[i['name']]))
 			elif i['name'] in default_info:
 				node.set(i['name'], default_info.get(i['name']))
-	#if apply:
-		#if node.has_method('apply_export_overrides'):
-			#node.apply_export_overrides()
+
+	if node.has_method('apply_export_overrides'):
+		node.apply_export_overrides()
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:
@@ -395,6 +402,10 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 #region MAKE CUSTOM
 
 static func make_file_custom(original_file:String, target_folder:String, new_file_name := "", new_folder_name := "") -> String:
+	var original_file_path := original_file
+	if original_file_path.begins_with("uid:"):
+		original_file_path = ResourceUID.uid_to_path(original_file_path)
+
 	if not ResourceLoader.exists(original_file):
 		push_error("[Dialogic] Unable to make file with invalid path custom!")
 		return ""
@@ -404,10 +415,10 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 		DirAccess.make_dir_absolute(target_folder)
 
 	if new_file_name.is_empty():
-		new_file_name = "custom_" + original_file.get_file()
+		new_file_name = "custom_" + original_file_path.get_file()
 
-	if not new_file_name.ends_with(original_file.get_extension()):
-		new_file_name += "." + original_file.get_extension()
+	if not new_file_name.ends_with(original_file_path.get_extension()):
+		new_file_name += "." + original_file_path.get_extension()
 
 	var target_file := target_folder.path_join(new_file_name)
 
@@ -419,10 +430,13 @@ static func make_file_custom(original_file:String, target_folder:String, new_fil
 
 
 static func customize_file(original_file:String, target_file:String) -> String:
-	#print("\nCUSTOMIZE FILE")
-	#printt(original_file, "->", target_file)
+	print("\nCUSTOMIZE FILE")
+	var original_file_path := original_file
+	if original_file_path.begins_with("uid:"):
+		original_file_path = ResourceUID.uid_to_path(original_file_path)
+	printt(original_file, original_file_path, "->", target_file)
 
-	DirAccess.copy_absolute(original_file, target_file)
+	DirAccess.copy_absolute(original_file_path, target_file)
 
 	var file := FileAccess.open(target_file, FileAccess.READ)
 	var file_text := file.get_as_text()
@@ -431,7 +445,7 @@ static func customize_file(original_file:String, target_file:String) -> String:
 	# If we are customizing a scene, we check for any resources used in that scene that are in the same folder.
 	# Those will be copied as well and the scene will be modified to point to them.
 	if file_text.begins_with('[gd_'):
-		var base_path: String = original_file.get_base_dir()
+		var base_path: String = original_file_path.get_base_dir()
 
 		var remove_uuid_regex := r'\[gd_.* (?<uid>uid="uid:[^"]*")'
 		var result := RegEx.create_from_string(remove_uuid_regex).search(file_text)

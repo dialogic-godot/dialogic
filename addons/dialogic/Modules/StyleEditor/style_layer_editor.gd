@@ -10,11 +10,15 @@ var current_style: DialogicStyle = null
 var current_layer_id := ""
 
 
+var loading := false
+
 func load_style(style:DialogicStyle) -> void:
+	loading = true
 	current_style = style
 	current_layer_id = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/latest_layer", "")
 
 	%LayerList.load_style_layer_list(current_style)
+	loading = false
 
 
 func change_layer(layer_id:String) -> void:
@@ -34,7 +38,10 @@ func load_layer(layer_id:=""):
 
 
 func _on_layer_list_layer_selected(layer_id: String) -> void:
-	change_layer(layer_id)
+	if loading:
+		load_layer(layer_id)
+	else:
+		change_layer(layer_id)
 
 
 func edit_layer_scene(scene_path:String) -> void:

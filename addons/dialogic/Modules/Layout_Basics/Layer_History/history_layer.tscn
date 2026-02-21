@@ -26,7 +26,7 @@ border_color = Color(0.38170326, 0.38170323, 0.38170317, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
-[node name="ExampleHistoryScene" type="Control" unique_id=741278651]
+[node name="OverlayHistoryLayer" type="Control" unique_id=741278651]
 layout_direction = 1
 layout_mode = 3
 anchors_preset = 15
@@ -87,8 +87,8 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "",
 "type": "Property"
 }, {
-"display_name": "Scroll To Bottom",
-"name": "scroll_to_bottom",
+"display_name": "Scroll To Bottom On Open",
+"name": "scroll_to_bottom_on_open",
 "tooltip": "",
 "type": "Property"
 }, {
