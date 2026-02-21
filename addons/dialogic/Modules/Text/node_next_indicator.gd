@@ -22,7 +22,7 @@ enum Animations {BOUNCE, BLINK, NONE}
 var texture_rect: TextureRect
 
 ## Set the image to use as the indicator.
-@export var texture: Texture2D = preload("res://addons/dialogic/Example Assets/next-indicator/next-indicator.png") as Texture2D:
+@export var texture: Texture2D:
 	set(_texture):
 		texture = _texture
 		if texture_rect:

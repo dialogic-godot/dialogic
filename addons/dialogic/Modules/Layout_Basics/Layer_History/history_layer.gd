@@ -7,7 +7,7 @@ extends DialogicLayoutLayer
 @export var show_all_choices: bool = true
 @export var show_join_and_leave: bool = true
 
-@export var scroll_to_bottom: bool = true
+@export var scroll_to_bottom_on_open: bool = true
 @export var show_name_colors: bool = true
 
 var scroll_to_bottom_flag: bool = false
@@ -126,8 +126,8 @@ func show_history() -> void:
 			log_item.text = log_text
 			%HistoryLog.add_child(log_item)
 
-	if scroll_to_bottom:
-		scroll_to_bottom_flag = true
+	if scroll_to_bottom_on_open:
+		%Scroll.ensure_control_visible(%HistoryLog.get_children()[-1] as Control)
 
 	%ShowHistory.hide()
 	%HistoryBox.show()
@@ -137,9 +137,10 @@ func show_history() -> void:
 func _process(_delta : float) -> void:
 	if Engine.is_editor_hint():
 		return
+	print("HALLOE")
 
-	## Make sure we are scrolled to the bottom.
-	if scroll_to_bottom_flag and %HistoryBox.visible and %HistoryLog.get_child_count():
-		await get_tree().process_frame
-		%Scroll.ensure_control_visible(%HistoryLog.get_children()[-1] as Control)
-		scroll_to_bottom_flag = false
+	### Make sure we are scrolled to the bottom.
+	#if scroll_to_bottom_flag and %HistoryBox.visible and %HistoryLog.get_child_count():
+		#await get_tree().process_frame
+#
+		#scroll_to_bottom_flag = false

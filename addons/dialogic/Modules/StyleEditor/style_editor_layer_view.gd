@@ -103,7 +103,9 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	var settings := []
 	if scene:
 		current_layer_scene_path = scene.scene_file_path
-		settings = scene.get_meta("style_customization", []).duplicate(true) + scene.get_meta("base_style_customization", []).duplicate(true)
+		settings = scene.get_meta("style_customization", []).duplicate(true)
+		if scene.has_method("_get_base_customization"):
+			settings += scene._get_base_customization().duplicate(true)
 
 	if settings.is_empty():
 		no_settings_info.show()
@@ -311,7 +313,7 @@ func set_export_override(property_name:String, value:Variant) -> void:
 			unre.add_undo_method(func(): push_warning("[Dialogic] Cannot undo edit done in sub-resources. Sorry."))
 			unre.commit_action()
 		return
-	unre.create_action("Set Style Override '{0}'".format([property_name.capitalize()]), unre.MERGE_ALL)
+	unre.create_action("Set Style Override '{0}'".format([property_name]), unre.MERGE_ALL)
 	unre.add_do_method(set_override_value.bind(property_name, value))
 	if overrides.has(property_name):
 		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))
@@ -335,7 +337,7 @@ func set_override_value(property_name:String, value:Variant) -> void:
 
 func _on_export_override_reset(property_name:String) -> void:
 	var overrides: Dictionary = current_style.get_layer_info(current_layer_id).overrides
-	unre.create_action("Reset Layer Property '{0}'".format([property_name.capitalize()]))
+	unre.create_action("Reset Layer Property '{0}'".format([property_name]))
 	unre.add_do_method(set_override_value.bind(property_name, customization_editor_info[property_name].orig))
 	if overrides.has(property_name):
 		unre.add_undo_method(set_override_value.bind(property_name, overrides.get(property_name)))

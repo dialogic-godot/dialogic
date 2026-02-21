@@ -46,6 +46,9 @@ func _ready() -> void:
 	collect_styles()
 	setup_ui()
 
+	## Useful for debugging undo/redo
+	unre.version_changed.connect(func(): print_rich("[color=dim_gray][Dialogic Style Editor] ", unre.get_current_action_name(), "[/color]"))
+
 
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():

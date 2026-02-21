@@ -67,7 +67,6 @@ func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 
 func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.custom_minimum_height = _minimum_tree_item_height
-
 	if %StyleBrowser.is_premade_style_part(info.path):
 		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[info.path].get("icon", "")):
 			item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[info.path].get("icon")))
@@ -144,11 +143,16 @@ func move_layer(from_idx:int, to_idx:int) -> void:
 	unre.commit_action()
 
 
-func replace_layer(layer_id:String, scene_path:String) -> void:
+func replace_layer(layer_id:String, scene_path:String, clear_overrides:=false) -> void:
 	unre.create_action("Replace Layer")
 	unre.add_do_method(get_current_style().set_layer_scene.bind(layer_id, scene_path))
+	if clear_overrides:
+		unre.add_do_method(get_current_style().set_layer_overrides.bind(layer_id, {}))
 	unre.add_do_method(load_style_layer_list)
-	unre.add_undo_method(get_current_style().set_layer_scene.bind(layer_id, get_current_style().get_layer_info(layer_id).path))
+	var current_info := get_current_style().get_layer_info(layer_id)
+	unre.add_undo_method(get_current_style().set_layer_scene.bind(layer_id, current_info.path))
+	if clear_overrides:
+		unre.add_undo_method(get_current_style().set_layer_overrides.bind(layer_id, current_info.overrides))
 	unre.add_undo_method(load_style_layer_list)
 	unre.commit_action()
 
@@ -240,16 +244,20 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 
 
 func _on_customize_layer_popup_confirmed() -> void:
+	var current_layer_file: String = get_current_style().get_layer_info(get_current_layer_id()).path
+	if current_layer_file.begins_with("uid:"):
+		current_layer_file = ResourceUID.uid_to_path(current_layer_file)
 
 	find_parent("EditorView").godot_file_dialog(
 		_on_make_custom_layer_file_selected.bind(%ApplySettings.button_pressed, %KeepSettingsExposed.button_pressed),
-		"",
-		EditorFileDialog.FILE_MODE_OPEN_DIR,
-		"Select folder for new copy of layer")
+		"*.tscn",
+		EditorFileDialog.FILE_MODE_SAVE_FILE,
+		"Create new copy of layer scene",
+		"custom_"+current_layer_file.get_file())
 
 
 func _on_make_custom_layer_file_selected(file:String, apply_settings:=true, keep_settings_exposed:=true) -> void:
-	make_layer_custom(file, "", apply_settings, keep_settings_exposed)
+	make_layer_custom(file.get_base_dir(), file.get_file(), apply_settings, keep_settings_exposed)
 
 
 func _on_make_custom_layout_file_selected(file:String) -> void:
@@ -258,17 +266,17 @@ func _on_make_custom_layout_file_selected(file:String) -> void:
 
 func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=true, keep_settings_exposed:=true) -> void:
 	var original_file: String = get_current_style().get_layer_info(get_current_layer_id()).path
-	var custom_new_folder := ""
+	#var custom_new_folder := ""
 
 	if custom_name.is_empty():
 		custom_name = "custom_"+%StyleBrowser.premade_scenes_reference[original_file].name.to_snake_case()
-		custom_new_folder = %StyleBrowser.premade_scenes_reference[original_file].name.to_pascal_case()
+		#custom_new_folder = %StyleBrowser.premade_scenes_reference[original_file].name.to_pascal_case()
 
 	var result_path := DialogicUtil.make_file_custom(
 		original_file,
 		target_folder,
 		custom_name,
-		custom_new_folder,
+		#custom_new_folder,
 		)
 
 	var scene: Node = load(result_path).instantiate()
@@ -284,7 +292,7 @@ func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=
 	pckd_scn.pack(scene)
 	ResourceSaver.save(pckd_scn, result_path)
 
-	replace_layer(get_current_layer_id(), result_path)
+	replace_layer(get_current_layer_id(), result_path, true)
 
 
 func make_layout_custom(target_folder:String) -> void:
@@ -361,6 +369,8 @@ func _on_layer_tree_button_clicked(item: TreeItem, _column: int, _id: int, _mous
 ################################################################################
 
 func clean_scene_name(file_path:String) -> String:
+	if file_path.begins_with("uid:"):
+		file_path = ResourceUID.uid_to_path(file_path)
 	return file_path.get_file().trim_suffix(".tscn").capitalize()
 
 #endregion

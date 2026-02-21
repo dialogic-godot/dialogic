@@ -1,21 +1,21 @@
 [gd_scene format=3 uid="uid://dc25nxmyte65g"]
 
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_nh8k1"]
-[ext_resource type="Script" uid="uid://clydtqjooilig" path="res://addons/dialogic/Modules/Layout_Basics/Layer_PanelTextbox/animations.gd" id="2_tf6vv"]
+[ext_resource type="Script" uid="uid://clydtqjooilig" path="res://addons/dialogic/example_assets/useful_scripts/textbox_animations.gd" id="2_tf6vv"]
 [ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_0f4vc"]
-[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="4_dni5o"]
-[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="5_11ik0"]
+[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/example_assets/fonts/Roboto-Regular.ttf" id="4_dni5o"]
+[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/example_assets/fonts/Roboto-Bold.ttf" id="5_11ik0"]
 [ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_jsmpq"]
-[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="6_g3jov"]
+[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/example_assets/fonts/Roboto-Italic.ttf" id="6_g3jov"]
 [ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_q03yw"]
-[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="8_tf6vv"]
-[ext_resource type="AudioStream" uid="uid://c3uw4nft0de13" path="res://addons/dialogic/Example Assets/sound-effects/typing2.wav" id="9_dciif"]
+[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/example_assets/type_sounds/typing1.wav" id="8_tf6vv"]
+[ext_resource type="AudioStream" uid="uid://c3uw4nft0de13" path="res://addons/dialogic/example_assets/type_sounds/typing2.wav" id="9_dciif"]
 [ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="10_dni5o"]
-[ext_resource type="AudioStream" uid="uid://dnboblpkf0fqi" path="res://addons/dialogic/Example Assets/sound-effects/typing3.wav" id="10_ty8tu"]
-[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11_dni5o"]
-[ext_resource type="Texture2D" uid="uid://drod3f7ev1fn5" path="res://addons/dialogic/Modules/Layout_Basics/Layer_PanelTextbox/next.svg" id="12_4ltxk"]
-[ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="12_11ik0"]
-[ext_resource type="Script" uid="uid://co3t5a51hwlnm" path="res://addons/dialogic/Modules/Layout_Basics/Layer_PanelTextbox/autoadvance_indicator.gd" id="14_dciif"]
+[ext_resource type="AudioStream" uid="uid://dnboblpkf0fqi" path="res://addons/dialogic/example_assets/type_sounds/typing3.wav" id="10_ty8tu"]
+[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/example_assets/type_sounds/typing4.wav" id="11_dni5o"]
+[ext_resource type="Texture2D" uid="uid://drod3f7ev1fn5" path="res://addons/dialogic/example_assets/next_indicators/arrow_down_white.svg" id="12_4ltxk"]
+[ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/example_assets/type_sounds/typing5.wav" id="12_11ik0"]
+[ext_resource type="Script" uid="uid://co3t5a51hwlnm" path="res://addons/dialogic/example_assets/useful_scripts/autoadvance_indicator.gd" id="14_dciif"]
 
 [sub_resource type="Animation" id="Animation_g6k55"]
 resource_name = "textbox_fade_up"
@@ -187,7 +187,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tf6vv"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p0wdm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh8k1"]
 bg_color = Color(0, 0, 0, 0.8862745)
@@ -227,7 +227,7 @@ corner_detail = 4
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[node name="VN_TextboxLayer" type="Control" unique_id=1178457061]
+[node name="BasicTextboxLayer" type="Control" unique_id=1178457061]
 physics_interpolation_mode = 0
 layout_mode = 3
 anchors_preset = 15
@@ -237,19 +237,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_nh8k1")
-metadata/base_style_customization = [{
-"name": "Layer",
-"type": "Category"
-}, {
-"display_name": "General",
-"name": ".",
-"type": "Node"
-}, {
-"display_name": "Disabled",
-"name": "disabled",
-"tooltip": "",
-"type": "Property"
-}]
 metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/style_customization = Array[Dictionary]([{
 "display_name": "",
@@ -517,6 +504,16 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "",
 "type": "Property"
 }, {
+"display_name": "Separator",
+"name": "%Separator",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Separation",
+"name": "theme_override_constants/separation",
+"tooltip": "The distance between the name label and textbox styleboxes.",
+"type": "Property"
+}, {
 "display_name": "",
 "name": "Indicators",
 "tooltip": "",
@@ -660,7 +657,6 @@ autoplay = &"RESET"
 script = ExtResource("2_tf6vv")
 animation_in = "In Pop Up"
 animation_out = "Out Fade Down"
-full_clear = true
 
 [node name="OutsideMargin" type="MarginContainer" parent="." unique_id=1942210453]
 unique_name_in_owner = true
@@ -670,9 +666,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -275.0
-offset_top = -125.0
-offset_right = 275.0
+offset_left = -15.5
+offset_top = -15.0
+offset_right = 15.5
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset_ratio = Vector2(0.5, 1)
@@ -699,16 +695,16 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_dni5o")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxEmpty_tf6vv")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p0wdm")
 text = "Example Name"
 script = ExtResource("10_dni5o")
 name_label_root = NodePath("..")
 metadata/_custom_type_script = "uid://bak74s0kcr0ao"
 
-[node name="DialogTextPanel" type="Panel" parent="OutsideMargin/Separator" unique_id=1264938171]
+[node name="DialogTextPanel" type="PanelContainer" parent="OutsideMargin/Separator" unique_id=220104592]
 unique_name_in_owner = true
 show_behind_parent = true
-custom_minimum_size = Vector2(550, 110)
+custom_minimum_size = Vector2(550, 150)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nh8k1")
@@ -716,12 +712,7 @@ metadata/_edit_layout_mode = 1
 
 [node name="Padding" type="MarginContainer" parent="OutsideMargin/Separator/DialogTextPanel" unique_id=1372397586]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -730,8 +721,8 @@ theme_override_constants/margin_bottom = 15
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="OutsideMargin/Separator/DialogTextPanel/Padding" unique_id=1518338739 node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
+clip_contents = false
 layout_mode = 2
-mouse_filter = 1
 theme_override_fonts/normal_font = ExtResource("4_dni5o")
 theme_override_fonts/bold_font = ExtResource("5_11ik0")
 theme_override_fonts/bold_italics_font = SubResource("FontVariation_pwc6n")
@@ -746,7 +737,7 @@ bbcode_enabled = true
 text = "Some Example Text In the Textbox..."
 visible_characters_behavior = 1
 script = ExtResource("4_0f4vc")
-textbox_root = NodePath("../..")
+textbox_root = NodePath(".")
 font_size = 20
 metadata/_custom_type_script = "uid://drhfq6rmdeuri"
 
@@ -759,10 +750,17 @@ sounds = Array[AudioStream]([ExtResource("8_tf6vv"), ExtResource("9_dciif"), Ext
 play_every_character = 0
 metadata/_custom_type_script = "uid://dpv2dfiv5dhmr"
 
-[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="OutsideMargin/Separator/DialogTextPanel/Padding" unique_id=1840095773]
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=1840095773]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_vertical = 8
 mouse_filter = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_dciif")
@@ -772,14 +770,14 @@ value = 0.5
 show_percentage = false
 script = ExtResource("14_dciif")
 
-[node name="NextIndicator" type="Control" parent="OutsideMargin/Separator/DialogTextPanel" unique_id=880957962]
+[node name="NextIndicator" type="Control" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=880957962]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0
-offset_left = 535.0
-offset_top = 95.0
-offset_right = 535.0
-offset_bottom = 95.0
+offset_left = 520.0
+offset_top = 87.45229
+offset_right = 520.0
+offset_bottom = 87.45229
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2

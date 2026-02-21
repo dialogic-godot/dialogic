@@ -72,9 +72,11 @@ func get_layer_info(id:String) -> Dictionary:
 		var layer_resource: DialogicStyleLayer = layer_info[id]
 
 		if layer_resource.scene != null:
-			info.path = ResourceLoader.get_resource_uid(layer_resource.scene.resource_path)
+			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
+			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(layer_resource.scene.resource_path))
 		elif id == "":
-			info.path = ResourceLoader.get_resource_uid(DialogicStylesUtil.get_default_layout_base().resource_path)
+			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
+			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(DialogicStylesUtil.get_default_layout_base().resource_path))
 
 		info.overrides = layer_resource.overrides.duplicate()
 
