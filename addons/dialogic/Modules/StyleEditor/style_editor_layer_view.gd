@@ -184,78 +184,83 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 				#current_grid.add_child(Control.new())
 				#current_grid.add_child(Control.new())
 
-				current_subgroup_name = i["name"].to_snake_case()
+				current_subgroup_name = i.name.to_snake_case()
 
 			"Property":
-				var property_name: String = i["name"]
-				var property_path: String = current_node_path+":"+property_name
+				var property_name: String = i.name
+				var property_path: String = current_node_path + ":" + property_name
 				var node := get_scene_node(scene, current_node_path)
 				if not property_name in node:
 					printt(node, property_name)
-					printerr("[Dialogic] Invalid node property exposed to style editor: "+property_path)
+					printerr("[Dialogic] Invalid node property exposed to style editor: " + property_path)
 					continue
-				var property_display_name: String = i["display_name"]
-				var hbox := HBoxContainer.new()
 
-				var vbox := VBoxContainer.new()
-				vbox.add_theme_constant_override("separation", 0)
-				var label := Label.new()
-				label.text = property_display_name
-				hbox.add_child(label, true)
-				vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-				vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				current_grid.add_child(vbox)
-				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				vbox.add_child(hbox)
-				vbox.size_flags_stretch_ratio = 0.7
-
-				var warning_label := warning_label_base.duplicate()
-				warning_label.hide()
-				vbox.add_child(warning_label)
-
+				## DETERMINE VALUE ----------------------------
 				var scene_value: Variant = get_value_on_node(node, property_name)
 				customization_editor_info[property_path] = {}
-				customization_editor_info[property_path]["warning_label"] = warning_label
 
 				if property_path in inherited_overrides:
-					customization_editor_info[property_path]["orig"] = inherited_overrides.get(property_path)
+					customization_editor_info[property_path].orig = inherited_overrides.get(property_path)
 				else:
-					customization_editor_info[property_path]["orig"] = scene_value
+					customization_editor_info[property_path].orig = scene_value
 
 				var current_value: Variant
 				if property_path in overrides:
 					current_value = overrides.get(property_path)
 				else:
-					current_value = customization_editor_info[property_path]["orig"]
+					current_value = customization_editor_info[property_path].orig
+
+
+				### LEFT SIDE (name, warning, tooltip) --------
+				var vbox := VBoxContainer.new()
+				vbox.add_theme_constant_override("separation", 0)
+				vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				#vbox.size_flags_stretch_ratio = 0.7
+				current_grid.add_child(vbox)
+
+				var hbox := HBoxContainer.new()
+				vbox.add_child(hbox)
+
+				var property_display_name: String = i.display_name
+				var label := Label.new()
+				label.text = property_display_name
+				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				hbox.add_child(label, true)
+
+				if i.tooltip:
+					var tooltip: Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
+					tooltip.hint_text = "#" + property_display_name + "\n" + i.tooltip
+					tooltip.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+					tooltip.custom_minimum_size.y = label.size.y
+					hbox.add_child(tooltip)
+
+				var reset := Button.new()
+				reset.icon = get_theme_icon("Reload", "EditorIcons")
+				reset.tooltip_text = "Remove customization"
+				reset.theme_type_variation = "FlatButton"
+				reset.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+				customization_editor_info[property_path]["reset"] = reset
+				reset.disabled = current_value == customization_editor_info[property_path].orig
+				reset.pressed.connect(_on_export_override_reset.bind(property_path), CONNECT_DEFERRED)
+				hbox.add_child(reset)
+
+				var warning_label := warning_label_base.duplicate()
+				warning_label.hide()
+				customization_editor_info[property_path]["warning_label"] = warning_label
+				vbox.add_child(warning_label)
+
+				## RIGHT SIDE (input field) -------------------
+				var hbox2 := HBoxContainer.new()
+				hbox2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				current_grid.add_child(hbox2)
 
 				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(node, property_name), current_value, set_export_override, property_path)
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
 				input.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 				input.minimum_size_changed.connect(update_setting_warning.bind(property_path))
 				customization_editor_info[property_path]["node"] = input
-
-				if i["tooltip"]:
-					var tooltip: Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
-					tooltip.hint_text = "#"+property_display_name+"\n"+i["tooltip"]
-					tooltip.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-					tooltip.custom_minimum_size.y = label.size.y
-					hbox.add_child(tooltip)
-				#else:
-					##current_grid.add_child(Control.new())
-
-				var reset := Button.new()
-				reset.flat = true
-				reset.icon = get_theme_icon("Reload", "EditorIcons")
-				reset.tooltip_text = "Remove customization"
-				reset.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-				customization_editor_info[property_path]["reset"] = reset
-				reset.disabled = current_value == customization_editor_info[property_path]["orig"]
-				hbox.add_child(reset)
-				reset.pressed.connect(_on_export_override_reset.bind(property_path), CONNECT_DEFERRED)
-
-				current_grid.add_child(input)
-
-				#update_setting_warning(property_path)
+				hbox2.add_child(input)
 
 	var latest_tab: int = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
 
