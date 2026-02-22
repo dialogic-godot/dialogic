@@ -20,11 +20,6 @@ metadata/style_customization = Array[Dictionary]([{
 "tooltip": "Godot sorts canvas layers based on this property. If you have UI in your game that should be on top of Dialogic, make sure it's inside a CanvasLayer node that has a higher layer. Learn more about [url=\"https://docs.godotengine.org/en/stable/tutorials/2d/canvas_layers.html\"]canvas layers here[/url].",
 "type": "Property"
 }, {
-"display_name": "Follow Viewport",
-"name": "follow_viewport_enabled",
-"tooltip": "",
-"type": "Property"
-}, {
 "display_name": "",
 "name": "Advanced",
 "tooltip": "",
@@ -34,6 +29,11 @@ metadata/style_customization = Array[Dictionary]([{
 "name": ".",
 "tooltip": "",
 "type": "Node"
+}, {
+"display_name": "Follow Viewport",
+"name": "follow_viewport_enabled",
+"tooltip": "",
+"type": "Property"
 }, {
 "display_name": "Theme",
 "name": "theme",

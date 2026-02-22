@@ -17,6 +17,72 @@
 [ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/example_assets/type_sounds/typing5.wav" id="12_11ik0"]
 [ext_resource type="Script" uid="uid://co3t5a51hwlnm" path="res://addons/dialogic/example_assets/useful_scripts/autoadvance_indicator.gd" id="14_dciif"]
 
+[sub_resource type="Animation" id="Animation_5nve1"]
+resource_name = "Action Hop"
+length = 0.2
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n6iq2"]
+resource_name = "Action Pop"
+length = 0.2
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.01, 1.01), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6kbwc"]
+resource_name = "Action Wiggle"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(3, 3, 3, 3, 3),
+"points": PackedFloat32Array(0, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, -0.005, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, 0, -0.025, 0, 0.025, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_p0wdm"]
+resource_name = "In Fade"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_g6k55"]
 resource_name = "textbox_fade_up"
 length = 0.7
@@ -39,10 +105,10 @@ tracks/1/path = NodePath(".:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.6333333),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.16666669, 0.36666667, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 200), Vector2(0, 0)]
+"values": [Vector2(0, 200), Vector2(0, 119.23813), Vector2(0, 26.900908), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_htbgc"]
@@ -83,6 +149,23 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, -0.01745329251994329, 0.01745329251994329, -0.01745329251994329, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_f7vnm"]
+resource_name = "Out Fade"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutsideMargin:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.39999998),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_tf6vv"]
@@ -151,29 +234,30 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.0]
 }
-
-[sub_resource type="Animation" id="Animation_6kbwc"]
-resource_name = "new_text"
-length = 0.4
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OutsideMargin:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(3, 3, 3, 3, 3),
-"points": PackedFloat32Array(0, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, -0.005, -0.025, 0, 0.025, 0, 0.005, -0.025, 0, 0.025, 0, 0, -0.025, 0, 0.025, 0),
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4)
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OutsideMargin:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p7syn"]
 _data = {
+&"Action Hop": SubResource("Animation_5nve1"),
+&"Action Pop": SubResource("Animation_n6iq2"),
+&"Action Wiggle": SubResource("Animation_6kbwc"),
+&"In Fade": SubResource("Animation_p0wdm"),
 &"In Fade Up": SubResource("Animation_g6k55"),
 &"In Pop Up": SubResource("Animation_htbgc"),
+&"Out Fade": SubResource("Animation_f7vnm"),
 &"Out Fade Down": SubResource("Animation_tf6vv"),
-&"RESET": SubResource("Animation_au0a2"),
-&"Wiggle": SubResource("Animation_6kbwc")
+&"RESET": SubResource("Animation_au0a2")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tf6vv"]
@@ -245,7 +329,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Category"
 }, {
 "display_name": "Text",
-"name": "%DialogicNode_DialogText",
+"name": "%DialogText",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -270,7 +354,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "display_name": "Fonts",
-"name": "%DialogicNode_DialogText",
+"name": "%DialogText",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -300,17 +384,42 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "display_name": "Outline",
-"name": "%DialogicNode_DialogText",
+"name": "%DialogText",
 "tooltip": "",
 "type": "Node"
+}, {
+"display_name": "Outline Size",
+"name": "theme_override_constants/outline_size",
+"tooltip": "",
+"type": "Property"
 }, {
 "display_name": "Font Outline Color",
 "name": "theme_override_colors/font_outline_color",
 "tooltip": "",
 "type": "Property"
 }, {
-"display_name": "Outline Size",
-"name": "theme_override_constants/outline_size",
+"display_name": "Shadow Outline",
+"name": "%DialogText",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Shadow Outline Size",
+"name": "theme_override_constants/shadow_outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Shadow Color",
+"name": "theme_override_colors/font_shadow_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset X",
+"name": "theme_override_constants/shadow_offset_x",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset Y",
+"name": "theme_override_constants/shadow_offset_y",
 "tooltip": "",
 "type": "Property"
 }, {
@@ -400,7 +509,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Category"
 }, {
 "display_name": "Name Label",
-"name": "%DialogicNode_NameLabel",
+"name": "%NameLabel",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -435,7 +544,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "display_name": "Outline",
-"name": "%DialogicNode_NameLabel",
+"name": "%NameLabel",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -450,7 +559,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Property"
 }, {
 "display_name": "Shadow",
-"name": "%DialogicNode_NameLabel",
+"name": "%NameLabel",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -590,7 +699,7 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Category"
 }, {
 "display_name": "Type Sounds",
-"name": "%DialogicNode_TypeSounds",
+"name": "%TypeSounds",
 "tooltip": "",
 "type": "Node"
 }, {
@@ -690,7 +799,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tf6vv")
 
-[node name="DialogicNode_NameLabel" type="Label" parent="OutsideMargin/Separator/NameLabelPositioner/NameLabelPanel" unique_id=701382121 node_paths=PackedStringArray("name_label_root")]
+[node name="NameLabel" type="Label" parent="OutsideMargin/Separator/NameLabelPositioner/NameLabelPanel" unique_id=701382121 node_paths=PackedStringArray("name_label_root")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_dni5o")
@@ -719,7 +828,7 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="OutsideMargin/Separator/DialogTextPanel/Padding" unique_id=1518338739 node_paths=PackedStringArray("textbox_root")]
+[node name="DialogText" type="RichTextLabel" parent="OutsideMargin/Separator/DialogTextPanel/Padding" unique_id=1518338739 node_paths=PackedStringArray("textbox_root")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
@@ -741,7 +850,7 @@ textbox_root = NodePath(".")
 font_size = 20
 metadata/_custom_type_script = "uid://drhfq6rmdeuri"
 
-[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=1248722908]
+[node name="TypeSounds" type="AudioStreamPlayer" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" unique_id=1248722908]
 unique_name_in_owner = true
 volume_db = -10.0
 bus = &"SFX"
@@ -750,9 +859,9 @@ sounds = Array[AudioStream]([ExtResource("8_tf6vv"), ExtResource("9_dciif"), Ext
 play_every_character = 0
 metadata/_custom_type_script = "uid://dpv2dfiv5dhmr"
 
-[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=1840095773]
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" unique_id=1840095773]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 10)
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -770,7 +879,7 @@ value = 0.5
 show_percentage = false
 script = ExtResource("14_dciif")
 
-[node name="NextIndicator" type="Control" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogicNode_DialogText" unique_id=880957962]
+[node name="NextIndicator" type="Control" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" unique_id=880957962]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0

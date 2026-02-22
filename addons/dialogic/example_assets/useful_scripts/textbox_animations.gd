@@ -35,8 +35,8 @@ func _ready() -> void:
 	animation_finished.connect(animation_system.animation_finished)
 
 
-func _on_textbox_show() -> void:
-	if animation_in == "NONE":
+func _on_textbox_show(info:Dictionary) -> void:
+	if animation_in == "NONE" or not is_identifier(info.textbox_identifier):
 		return
 
 	play("RESET")
@@ -48,8 +48,8 @@ func _on_textbox_show() -> void:
 	play(animation_in)
 
 
-func _on_textbox_hide() -> void:
-	if animation_out == "None":
+func _on_textbox_hide(info:Dictionary) -> void:
+	if animation_out == "None" or not is_identifier(info.textbox_identifier):
 		return
 
 	play("RESET")
@@ -64,18 +64,18 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 	full_clear = !info.append
 
 
-func _on_textbox_new_text() -> void:
+func _on_textbox_new_text(info:Dictionary) -> void:
 	if DialogicUtil.autoload().Inputs.auto_skip.enabled:
 		return
 
-	if animation_new_text == "None":
+	if animation_new_text == "None" or not is_identifier(info.textbox_identifier):
 		return
 
 	var animation_system: Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.start_animating()
 
 	if full_clear:
-		(%DialogicNode_DialogText as DialogicNode_DialogText).text = ""
+		%DialogText.text = ""
 
 	play(animation_new_text)
 
@@ -95,3 +95,7 @@ func _validate_property(property: Dictionary) -> void:
 		if property.name.begins_with("animation_") and property.type == TYPE_STRING:
 			property.hint = PROPERTY_HINT_ENUM
 			property.hint_string = _animations_list
+
+
+func is_identifier(textbox_identifier) -> bool:
+	return textbox_identifier.is_empty() or textbox_identifier == %DialogText.identifier

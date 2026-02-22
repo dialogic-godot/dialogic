@@ -21,7 +21,7 @@ func _ready() -> void:
 
 	%DropInfoLabel.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
 
-	%Collapse.icon = get_theme_icon("Forward", "EditorIcons")
+	%Collapse.icon = get_theme_icon("Collapse", "EditorIcons")
 
 	hide()
 
