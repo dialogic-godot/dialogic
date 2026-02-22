@@ -44,7 +44,10 @@ func _parse_begin(object: Object) -> void:
 	var path: String = "%"+object.name if object.unique_name_in_owner else str(base.get_path_to(object))
 
 	var correct_node: bool = false
-	for i in base.get_meta("style_customization") + base.get_meta("base_style_customization", []):
+	var customizations: Array = base.get_meta("style_customization")
+	if base.has_method("_get_base_customization"):
+		customizations += base._get_base_customization()
+	for i in customizations:
 		if i.type == "Node":
 			correct_node = i.name == path
 			if i.name.ends_with("/@all_children"):

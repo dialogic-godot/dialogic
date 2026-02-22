@@ -30,7 +30,7 @@ func _ready() -> void:
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")
-	%MakeCustomButton.icon = get_theme_icon("FileAccess", "EditorIcons")
+	%MakeCustomButton.icon = get_theme_icon("CreateNewSceneFrom", "EditorIcons")
 
 
 func get_current_style() -> DialogicStyle:
@@ -69,20 +69,21 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.custom_minimum_height = _minimum_tree_item_height
 	if %StyleBrowser.is_premade_style_part(info.path):
 		var part_info: Dictionary = %StyleBrowser.premade_scenes_reference[info.path]
-		print(part_info)
-		var palette := DialogicUtil.get_color_palette()
 		if ResourceLoader.exists(part_info.get("icon", "")):
 			item.set_icon(0, load(part_info.get("icon")))
-			if part_info.get("color", "") in palette:
+			if part_info.get("color", "") in DialogicUtil.get_color_palette():
 				item.set_icon_modulate(0, DialogicUtil.get_color(part_info.color))
 			elif part_info.get("color", ""):
 				item.set_icon_modulate(0, Color.from_string(part_info.color, Color.WHITE))
+		else:
+			item.set_icon(0, load(part_info.get("icon")))
 		item.set_text(0, part_info.get("name", "Layer"))
 		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 
 	else:
 		item.set_text(0, clean_scene_name(info.path))
-		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
+		item.set_icon(0, get_theme_icon("PackedScene", "EditorIcons"))
+		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 		item.set_button_tooltip_text(0, 0, "Open Scene")
 	item.set_meta("scene", info.path)
 	item.set_meta("id", info.id)
