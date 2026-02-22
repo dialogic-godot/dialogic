@@ -88,15 +88,19 @@ func load_part_info(info:Dictionary) -> void:
 		"General":
 			%ActivateButton.text = "Use this scene"
 			%TypeDescription.text = "This is a general use scene, it can be used directly."
+			%NewBasedButton.show()
 		"Preset":
-			%ActivateButton.text = "Customize this scene"
-			%TypeDescription.text = "This is a preset you can use for a custom portrait scene. Dialogic will promt you to save a copy of this scene that you can then use and customize."
+			%ActivateButton.hide() #text = "Customize this scene"
+			%TypeDescription.text = "This is a template you can use for a custom portrait scene. Dialogic will promt you to save a copy of this scene that you can then use and customize."
+			%NewBasedButton.show()
 		"Default":
 			%ActivateButton.text = "Use default scene"
 			%TypeDescription.text = ""
+			%NewBasedButton.hide()
 		"Custom":
 			%ActivateButton.text = "Select a custom scene"
 			%TypeDescription.text = ""
+			%NewBasedButton.hide()
 
 	if info.get("documentation", ""):
 		%DocumentationButton.show()
