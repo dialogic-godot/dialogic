@@ -18,10 +18,11 @@ func _ready() -> void:
 	var start_from_index: int = DialogicUtil.get_editor_setting("play_from_index", -1)
 	if not current_timeline:
 		get_tree().quit()
-	DialogicUtil.autoload().start(current_timeline, start_from_index)
 	DialogicUtil.autoload().timeline_ended.connect(get_tree().quit)
 	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
 	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
+	#await get_tree().create_timer(1).timeout
+	DialogicUtil.autoload().start(current_timeline, start_from_index)
 
 func receive_event_signal(argument:Variant) -> void:
 	print("[Dialogic] Encountered a signal event: ", argument)

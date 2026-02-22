@@ -79,11 +79,12 @@ func _recheck(data: Dictionary, force:=false):
 
 
 ## On any change, save the export override to the portrait items metadata.
-func set_export_override(property_name:String, value:String = "") -> void:
+func set_export_override(property_name:String, value:Variant) -> void:
+	value = var_to_str(value)
 	var data: Dictionary = selected_item.get_metadata(0)
-	if !data.has('export_overrides'):
+	if not data.has('export_overrides'):
 		data['export_overrides'] = {}
-	if !value.is_empty():
+	if not value.is_empty():
 		data.export_overrides[property_name] = value
 	else:
 		data.export_overrides.erase(property_name)

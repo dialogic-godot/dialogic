@@ -77,13 +77,15 @@ static func _update_autoload_subsystem_access() -> void:
 		printerr("[Dialogic] This function is only available in the editor.")
 		return
 
-	var script: Script = load("res://addons/dialogic/Core/DialogicGameHandler.gd")
+	var script: Script = load("uid://ds2q0uclmolvu") # DialogicGameHandler script
 	var new_subsystem_access_list := "#region SUBSYSTEMS\n"
 	var subsystems_sorted := []
 
 	for indexer: DialogicIndexer in get_indexers(true, true):
 
 		for subsystem: Dictionary in indexer._get_subsystems().duplicate(true):
+			if subsystem.script.begins_with("res://"):
+				subsystem.script = ResourceUID.path_to_uid(subsystem.script)
 			subsystems_sorted.append(subsystem)
 
 	subsystems_sorted.sort_custom(func (a: Dictionary, b: Dictionary) -> bool:
@@ -766,7 +768,7 @@ static func str_to_hash_set(source: String) -> Dictionary:
 static func get_character_suggestions(_search_text:String, current_value:DialogicCharacter = null, allow_none := true, allow_all:= false, editor_node:Node = null) -> Dictionary:
 	var suggestions := {}
 
-	var icon := load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+	var icon := load("uid://bbea0efx0ybu7")
 
 	if allow_none and current_value:
 		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
@@ -797,7 +799,7 @@ static func get_character_suggestions(_search_text:String, current_value:Dialogi
 
 
 static func get_portrait_suggestions(search_text:String, character:DialogicCharacter, allow_empty := false, empty_text := "Don't Change", allow_anything:=false) -> Dictionary:
-	var icon := load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	var icon := load("uid://dfi7fhfc4dbc3")
 	var suggestions := {}
 
 	if allow_empty:
