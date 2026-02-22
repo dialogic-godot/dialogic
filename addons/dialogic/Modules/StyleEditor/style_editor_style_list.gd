@@ -13,7 +13,7 @@ func _ready() -> void:
 		return
 
 	%StyleListRightClickMenu.clear()
-	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename", RightClickMenuItems.RENAME)
+	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename...", RightClickMenuItems.RENAME)
 	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), "Duplicate", RightClickMenuItems.DUPLICATE)
 	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", RightClickMenuItems.DELETE)
 	%StyleListRightClickMenu.add_separator()

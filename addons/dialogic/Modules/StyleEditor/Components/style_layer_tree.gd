@@ -4,7 +4,7 @@ extends Tree
 ## Script that handles drag and drop on the layer tree.
 
 
-enum RightClickMenuItems {RENAME, DELETE, OPEN_SCENE, SHOW_IN_FILESYSTEM}
+enum RightClickMenuItems {RENAME, DELETE, OPEN_SCENE, SHOW_IN_FILESYSTEM, MAKE_CUSTOM}
 
 signal layer_moved(from:int, to:int)
 
@@ -14,11 +14,13 @@ func _ready() -> void:
 		return
 
 	%LayerListRightClickMenu.clear()
-	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename", RightClickMenuItems.RENAME)
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename...", RightClickMenuItems.RENAME)
 	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", RightClickMenuItems.DELETE)
 	%LayerListRightClickMenu.add_separator()
 	%LayerListRightClickMenu.add_icon_item(get_theme_icon("PackedScene", "EditorIcons"), "Open Scene", RightClickMenuItems.OPEN_SCENE)
 	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", RightClickMenuItems.SHOW_IN_FILESYSTEM)
+	%LayerListRightClickMenu.add_separator()
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("CreateNewSceneFrom", "EditorIcons"), "Make Custom...", RightClickMenuItems.MAKE_CUSTOM)
 
 
 func _on_item_mouse_selected(mouse_position: Vector2, mouse_button_index: int) -> void:
@@ -86,3 +88,5 @@ func _on_layer_list_right_click_menu_id_pressed(id: int) -> void:
 			EditorInterface.get_file_system_dock().navigate_to_path(ResourceUID.uid_to_path(item.get_meta("scene")))
 		RightClickMenuItems.OPEN_SCENE:
 			%LayerEditor.edit_layer_scene(item.get_meta("scene"))
+		RightClickMenuItems.MAKE_CUSTOM:
+			%LayerEditor._on_make_custom_menu_pressed(2)
