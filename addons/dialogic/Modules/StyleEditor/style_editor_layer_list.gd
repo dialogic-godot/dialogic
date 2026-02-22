@@ -68,9 +68,16 @@ func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.custom_minimum_height = _minimum_tree_item_height
 	if %StyleBrowser.is_premade_style_part(info.path):
-		if ResourceLoader.exists(%StyleBrowser.premade_scenes_reference[info.path].get("icon", "")):
-			item.set_icon(0, load(%StyleBrowser.premade_scenes_reference[info.path].get("icon")))
-		item.set_text(0, %StyleBrowser.premade_scenes_reference[info.path].get("name", "Layer"))
+		var part_info: Dictionary = %StyleBrowser.premade_scenes_reference[info.path]
+		print(part_info)
+		var palette := DialogicUtil.get_color_palette()
+		if ResourceLoader.exists(part_info.get("icon", "")):
+			item.set_icon(0, load(part_info.get("icon")))
+			if part_info.get("color", "") in palette:
+				item.set_icon_modulate(0, DialogicUtil.get_color(part_info.color))
+			elif part_info.get("color", ""):
+				item.set_icon_modulate(0, Color.from_string(part_info.color, Color.WHITE))
+		item.set_text(0, part_info.get("name", "Layer"))
 		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 
 	else:
