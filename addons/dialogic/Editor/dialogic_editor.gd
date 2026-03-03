@@ -65,3 +65,8 @@ func _close() -> void:
 ## Although rarely used, sometimes you just want NO timeline to be open.
 func _clear() -> void:
 	pass
+
+
+## Overwrite.
+func _can_edit(resource:Resource) -> bool:
+	return false

@@ -46,6 +46,10 @@ image = SubResource("Image_7pmk1")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7pmk1"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6ynco"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5te7k"]
+
 [node name="StyleEditor" type="HSplitContainer" unique_id=1865892929]
 anchors_preset = 15
 anchor_right = 1.0
@@ -450,54 +454,72 @@ script = ExtResource("5_qbwx0")
 [node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
 unique_name_in_owner = true
 
-[node name="CustomizeLayerPopup" type="ConfirmationDialog" parent="." unique_id=1516040291]
+[node name="CustomizePopup" type="ConfirmationDialog" parent="." unique_id=1516040291]
 unique_name_in_owner = true
 oversampling_override = 1.0
 title = "Customize Layer Scene"
-position = Vector2i(0, 24)
-size = Vector2i(418, 175)
+position = Vector2i(0, 36)
+size = Vector2i(418, 249)
 dialog_autowrap = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CustomizeLayerPopup" unique_id=1802024036]
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomizePopup" unique_id=1802024036]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = 9.0
-offset_right = -9.0
-offset_bottom = -51.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CustomizeLayerPopup/VBoxContainer" unique_id=2077365224]
+[node name="MakeLayerCustomText" type="RichTextLabel" parent="CustomizePopup/VBoxContainer" unique_id=71648399]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-text = "This will create a copy of this layers scene so you can edit it freely."
-autowrap_mode = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6ynco")
+bbcode_enabled = true
+text = "This will create a copy of this layers scene so you can edit it freely.
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CustomizeLayerPopup/VBoxContainer" unique_id=512173517]
+[i]Can only be partially undone."
+fit_content = true
+
+[node name="MakeLayoutCustomText" type="RichTextLabel" parent="CustomizePopup/VBoxContainer" unique_id=22926331]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5te7k")
+bbcode_enabled = true
+text = "This will create a new scene that contains all the layers. This means your style will only contain one layer going forward.
+
+[i]All settings will be unexposed. Can only be partially undone."
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CustomizePopup/VBoxContainer" unique_id=512173517]
 layout_mode = 2
 
-[node name="ApplySettings" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer" unique_id=1726289738]
+[node name="ApplySettings" type="CheckBox" parent="CustomizePopup/VBoxContainer/HBoxContainer" unique_id=1726289738]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Apply Settings"
 
-[node name="HintTooltip" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer" unique_id=71773321 instance=ExtResource("2_g4mnt")]
+[node name="ApplySettingsHintTooltip" parent="CustomizePopup/VBoxContainer/HBoxContainer" unique_id=71773321 instance=ExtResource("2_g4mnt")]
+unique_name_in_owner = true
 layout_mode = 2
 hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CustomizeLayerPopup/VBoxContainer" unique_id=1215416378]
+[node name="KeepSettingsExposedSection" type="HBoxContainer" parent="CustomizePopup/VBoxContainer" unique_id=1215416378]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="KeepSettingsExposed" type="CheckBox" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer2" unique_id=160574588]
+[node name="KeepSettingsExposed" type="CheckBox" parent="CustomizePopup/VBoxContainer/KeepSettingsExposedSection" unique_id=160574588]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Keep Settings Exposed"
 
-[node name="HintTooltip" parent="CustomizeLayerPopup/VBoxContainer/HBoxContainer2" unique_id=1385432285 instance=ExtResource("2_g4mnt")]
+[node name="HintTooltip" parent="CustomizePopup/VBoxContainer/KeepSettingsExposedSection" unique_id=1385432285 instance=ExtResource("2_g4mnt")]
 layout_mode = 2
 hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
 
@@ -513,8 +535,8 @@ hint_text = "If you disable this, all the settings will be unexposed, so going f
 [connection signal="pressed" from="StyleView/HBox/HBoxContainer/EditNameButton" to="." method="_on_edit_name_button_pressed"]
 [connection signal="pressed" from="StyleView/HBox/TestStyleButton" to="." method="_on_test_style_button_pressed"]
 [connection signal="layer_selected" from="StyleView/LayerEditor/LayerList" to="StyleView/LayerEditor" method="_on_layer_list_layer_selected"]
-[connection signal="about_to_popup" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/MakeCustomButton" to="StyleView/LayerEditor" method="_on_make_custom_button_about_to_popup"]
-[connection signal="pressed" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/DeleteLayerButton" to="StyleView/LayerEditor" method="_on_delete_layer_button_pressed"]
+[connection signal="about_to_popup" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/MakeCustomButton" to="StyleView/LayerEditor/LayerList" method="_on_make_custom_button_about_to_popup"]
+[connection signal="pressed" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox/DeleteLayerButton" to="StyleView/LayerEditor/LayerList" method="_on_delete_layer_button_pressed"]
 [connection signal="button_clicked" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" to="StyleView/LayerEditor/LayerList" method="_on_layer_tree_button_clicked"]
 [connection signal="item_mouse_selected" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" to="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" method="_on_item_mouse_selected"]
 [connection signal="layer_moved" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" to="StyleView/LayerEditor/LayerList" method="_on_layer_tree_layer_moved"]
@@ -525,4 +547,4 @@ hint_text = "If you disable this, all the settings will be unexposed, so going f
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
 [connection signal="close_requested" from="StyleBrowserWindow" to="StyleBrowserWindow" method="_on_close_requested"]
 [connection signal="activate_part" from="StyleBrowserWindow/StyleBrowser" to="StyleBrowserWindow" method="_on_style_browser_activate_part"]
-[connection signal="confirmed" from="CustomizeLayerPopup" to="StyleView/LayerEditor/LayerList" method="_on_customize_layer_popup_confirmed"]
+[connection signal="confirmed" from="CustomizePopup" to="StyleView/LayerEditor/LayerList" method="_on_customize_layer_popup_confirmed"]

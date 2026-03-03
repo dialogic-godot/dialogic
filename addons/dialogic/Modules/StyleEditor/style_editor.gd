@@ -7,7 +7,7 @@ var unre := UndoRedo.new()
 
 
 var styles: Array[DialogicStyle] = []
-var current_style : DialogicStyle = null
+var current_style: DialogicStyle = null
 var default_style := ""
 
 
@@ -23,12 +23,24 @@ func _get_icon() -> Texture:
 
 
 func _register() -> void:
-	editors_manager.register_simple_editor(self)
+	editors_manager.register_resource_editor(self, "tres")
 	alternative_text = "Change the look of the dialog in your game"
+
+
+func _can_edit(resource:Resource) -> bool:
+	return resource is DialogicStyle
 
 
 func _open(_extra_info:Variant = null) -> void:
 	%StyleList.load_style_list(styles)
+
+
+func _open_resource(resource:Resource) -> void:
+	if not resource in styles:
+		add_style_to_list(resource)
+	
+	change_style(resource)
+	
 
 
 func _close() -> void:
@@ -277,11 +289,16 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 func _on_duplicate_button_pressed() -> void:
 	if not %StyleList.get_selected():
 		return
-	find_parent('EditorView').godot_file_dialog(
+	find_parent("EditorView").godot_file_dialog(
 		create_and_add_new_style.bind(current_style.clone(), null),
-		'*.tres',
+		"*.tres",
 		EditorFileDialog.FILE_MODE_SAVE_FILE,
-		"Select folder for new style")
+		"Select folder for new style",
+		current_style.name.to_snake_case()+"_copy",
+		false,
+		"",
+		current_style.resource_path.get_base_dir()
+		)
 
 #endregion
 

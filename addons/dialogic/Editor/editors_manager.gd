@@ -25,8 +25,7 @@ var supported_file_extensions := []
 enum ButtonPlacement {TOOLBAR_MAIN, SIDEBAR_LEFT_OF_FILTER, SIDEBAR_RIGHT_OF_FILTER}
 
 
-################################################################################
-## 						REGISTERING EDITORS
+#region REGISTERING EDITORS
 ################################################################################
 
 ## Asks all childs of the editor holder to register
@@ -75,7 +74,7 @@ func _add_editor(path:String) -> void:
 
 
 ## Call to register an editor/tab that edits a resource with a custom ending.
-func register_resource_editor(resource_extension:String, editor:DialogicEditor) -> void:
+func register_resource_editor(editor:DialogicEditor, resource_extension:String) -> void:
 	editors[editor.name] = {"node":editor, "buttons":[], "extension": resource_extension}
 	supported_file_extensions.append(resource_extension)
 	editor.resource_saved.connect(_on_resource_saved.bind(editor))
@@ -102,13 +101,16 @@ func add_button(icon:Texture, label:String, tooltip:String, editor:DialogicEdito
 
 
 func can_edit_resource(resource:Resource) -> bool:
-	return resource.resource_path.get_extension() in supported_file_extensions
+	for editor in editors.values():
+		if editor.node._can_edit(resource):
+			return true
+	return false
+
+#endregion
 
 
+#region OPENING/CLOSING
 ################################################################################
-## 						OPENING/CLOSING
-################################################################################
-
 
 func _on_editors_tab_changed(tab:int) -> void:
 	open_editor(editors_holder.get_child(tab))
@@ -121,15 +123,15 @@ func edit_resource(resource:Resource, save_previous:bool = true, silent:= false)
 		return
 
 	if current_editor and save_previous:
-		current_editor._save()
+		current_editor._save() 
 
 	## Open the correct editor
 	var extension: String = resource.resource_path.get_extension()
 	for editor in editors.values():
-		if editor.get("extension", "") == extension:
-			editor["node"]._open_resource(resource)
+		if editor.node._can_edit(resource):
+			editor.node._open_resource(resource)
 			if not silent:
-				open_editor(editor["node"], false)
+				open_editor(editor.node, false)
 	if not silent:
 		resource_opened.emit(resource)
 
@@ -256,11 +258,13 @@ func _on_file_removed(file_name:String) -> void:
 			sidebar.update_resource_list()
 			save_current_state()
 
+#endregion
 
 
 #region HELPERS
 ################################################################################
 
-
 func get_current_editor() -> DialogicEditor:
 	return current_editor
+
+#endregion
