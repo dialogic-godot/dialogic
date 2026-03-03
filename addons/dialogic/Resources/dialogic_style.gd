@@ -29,12 +29,23 @@ func _init(_name := "") -> void:
 #region BASE METHODS
 # These methods are local, meaning they do NOT take inheritance into account.
 
+
+## Clears layer list, info and inherits
 func clear() -> void:
 	layer_list = []
 	layer_info = {"" : DialogicStyleLayer.new()}
 	inherits = null
+	changed.emit()
 
 
+## Sets layer list, info and inherits (used to undo clear()).
+func setup(set_layer_list:Array, set_layer_info:Dictionary, set_inherits:DialogicStyle = null) -> void:
+	layer_list = set_layer_list
+	layer_info = set_layer_info
+	inherits = set_inherits
+	changed.emit()
+	
+	
 ## Returns the amount of layers (the base layer is not included).
 func get_layer_count() -> int:
 	return layer_list.size()
@@ -169,13 +180,13 @@ func remove_layer_setting(layer_id:String, setting:String) -> void:
 	layer_info[layer_id].overrides.erase(setting)
 	changed.emit()
 
-#
+
 #endregion
 
 
 #region INHERITANCE METHODS
+################################################################################
 # These methods are what you should usually use to get info about this style.
-
 
 ## Returns `true` if this style is inheriting from another style.
 func inherits_anything() -> bool:

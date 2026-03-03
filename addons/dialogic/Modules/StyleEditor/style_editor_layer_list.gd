@@ -24,7 +24,7 @@ func _ready() -> void:
 	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
 	var make_custom_menu: PopupMenu = %MakeCustomButton.get_popup()
 	make_custom_menu.index_pressed.connect(_on_make_custom_menu_pressed)
-	make_custom_menu.set_item_tooltip(2, "Creates a copy of the selected layers scene, allowing you to edit it while keeping the other layers intact.")
+	make_custom_menu.set_item_tooltip(2, "Creates a copy of the selected layers scene.")
 	make_custom_menu.set_item_tooltip(3, "Creates a new scene with the layer scenes instanced, allowing you to then selectively use 'Editable Children' or 'Make Local' on those scenes.")
 
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
@@ -47,7 +47,8 @@ func get_current_layer_id() -> String:
 func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 	%AddLayerButton.disabled = style.inherits_anything()
 	%ReplaceLayerButton.disabled = style.inherits_anything()
-	%MakeCustomButton.disabled = style.inherits_anything()
+	%MakeCustomButton.disabled = (style.inherits_anything() or (
+		style.layer_list.is_empty() and not %StyleBrowser.is_premade_style_part(style.get_layer_info("").path)))
 	%DeleteLayerButton.disabled = style.inherits_anything()
 
 	tree.clear()
@@ -62,7 +63,7 @@ func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 		var layer_item := tree.create_item(root)
 		setup_layer_tree_item(layer_info, layer_item)
 
-	select_layer(get_current_layer_id())
+	select_layer(get_current_layer_id(), true)
 
 
 func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
@@ -75,10 +76,10 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 				item.set_icon_modulate(0, DialogicUtil.get_color(part_info.color))
 			elif part_info.get("color", ""):
 				item.set_icon_modulate(0, Color.from_string(part_info.color, Color.WHITE))
-		else:
-			item.set_icon(0, load(part_info.get("icon")))
+		elif item.get_parent():
+			item.set_icon(0, get_theme_icon("Breakpoint", "EditorIcons"))
 		item.set_text(0, part_info.get("name", "Layer"))
-		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
+		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 
 	else:
 		item.set_text(0, clean_scene_name(info.path))
@@ -238,38 +239,56 @@ func _on_make_custom_button_about_to_popup() -> void:
 
 
 func _on_make_custom_menu_pressed(index:int) -> void:
+	%MakeLayerCustomText.hide()
+	%MakeLayoutCustomText.hide()
+	%KeepSettingsExposedSection.hide()
 	# This layer only
 	if index == 2:
-		%CustomizeLayerPopup.popup_centered_clamped(Vector2(300, 200))
-
+		%CustomizePopup.title = "Customize Layer Scene"
+		%CustomizePopup.popup_centered_clamped(Vector2(300, 200))
+		%MakeLayerCustomText.show()
+		%KeepSettingsExposedSection.show()
+		%CustomizePopup.set_meta("mode", "LAYER")
+		%ApplySettingsHintTooltip.hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 	# The full layout
 	if index == 3:
-		find_parent("EditorView").godot_file_dialog(
-			_on_make_custom_layout_file_selected,
-			"",
-			EditorFileDialog.FILE_MODE_OPEN_DIR,
-			"Select folder for new layout scene")
+		%CustomizePopup.title = "Customize Full Layout"
+		%CustomizePopup.popup_centered_clamped(Vector2(300, 100))
+		%MakeLayoutCustomText.show()
+		%CustomizePopup.set_meta("mode", "FULL_LAYOUT")
+		%ApplySettingsHintTooltip.hint_text = "If you have made adjustments to the overrides of any layer, that layer will have 'editable children' enabled. The settings will be applied but not be exposed to the style editor anymore. \n\n[color=red]If this is disabled, all adjustments/overrides will be lost and all layers will be instanced.[/color]\n\nYou could then make them local or use 'editable children' on them yourself."
 
 
 func _on_customize_layer_popup_confirmed() -> void:
-	var current_layer_file: String = get_current_style().get_layer_info(get_current_layer_id()).path
-	if current_layer_file.begins_with("uid:"):
-		current_layer_file = ResourceUID.uid_to_path(current_layer_file)
+	if %CustomizePopup.get_meta("mode", "") == "LAYER":
+		var current_layer_file: String = get_current_style().get_layer_info(get_current_layer_id()).path
+		if current_layer_file.begins_with("uid:"):
+			current_layer_file = ResourceUID.uid_to_path(current_layer_file)
 
-	find_parent("EditorView").godot_file_dialog(
-		_on_make_custom_layer_file_selected.bind(%ApplySettings.button_pressed, %KeepSettingsExposed.button_pressed),
-		"*.tscn",
-		EditorFileDialog.FILE_MODE_SAVE_FILE,
-		"Create new copy of layer scene",
-		"custom_"+current_layer_file.get_file())
+		find_parent("EditorView").godot_file_dialog(
+			_on_make_custom_layer_file_selected.bind(%ApplySettings.button_pressed, %KeepSettingsExposed.button_pressed),
+			"*.tscn",
+			EditorFileDialog.FILE_MODE_SAVE_FILE,
+			"Create new copy of layer scene",
+			"custom_"+current_layer_file.get_file())
+	
+	else:
+		var current_style_name: String = get_current_style().name.to_snake_case()
+		find_parent("EditorView").godot_file_dialog(
+			_on_make_custom_layout_file_selected.bind(%ApplySettings.button_pressed),
+			"*.tscn",
+			EditorFileDialog.FILE_MODE_SAVE_FILE,
+			"Create a new scene from all layers",
+			current_style_name+"_full_layout_customized"
+			)
 
 
 func _on_make_custom_layer_file_selected(file:String, apply_settings:=true, keep_settings_exposed:=true) -> void:
 	make_layer_custom(file.get_base_dir(), file.get_file(), apply_settings, keep_settings_exposed)
 
 
-func _on_make_custom_layout_file_selected(file:String) -> void:
-	make_layout_custom(file)
+func _on_make_custom_layout_file_selected(file:String, apply_settings:=true) -> void:
+	make_layout_custom(file, apply_settings)
 
 
 func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=true, keep_settings_exposed:=true) -> void:
@@ -303,24 +322,19 @@ func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=
 	replace_layer(get_current_layer_id(), result_path, true)
 
 
-func make_layout_custom(target_folder:String) -> void:
+func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 	var current_style := get_current_style()
-	target_folder = target_folder.path_join("Custom" + current_style.name.to_pascal_case())
-
-	DirAccess.make_dir_absolute(target_folder)
-	tree.get_root().select(0)
-	make_layer_custom(target_folder, "custom_" + current_style.name.to_snake_case())
-
+	
 	var base_layer_info := current_style.get_layer_info("")
-	var target_path: String = base_layer_info.path
-
+	var base_scene_uid: String = base_layer_info.path
+	
 	# Load base scene
 	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
-
-	var pckd_scn := PackedScene.new()
-	pckd_scn.take_over_path(target_path)
+	DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
+	base_scene.remove_meta("style_customization")
+	
 
 	# Load layers
 	for layer_id in current_style.get_layer_inherited_list():
@@ -329,28 +343,40 @@ func make_layout_custom(target_folder:String) -> void:
 		if not ResourceLoader.exists(layer_info.path):
 			continue
 
-		var layer_scene: DialogicLayoutLayer = load(layer_info.path).instantiate()
+		var layer_scene: DialogicLayoutLayer = load(layer_info.path).instantiate(PackedScene.GenEditState.GEN_EDIT_STATE_INSTANCE)
 
+		#layer_scene.apply_overrides_on_ready = true
 		base_scene.add_layer(layer_scene)
-		layer_scene.owner = base_scene
-		layer_scene.apply_overrides_on_ready = true
 
 		# Apply layer overrides
-		DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
-
+		if (not layer_info.overrides.is_empty()) and apply_settings:
+			base_scene.set_editable_instance(layer_scene, true)
+			DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
+		layer_scene.remove_meta("style_customization")
+		layer_scene.owner = base_scene
+	
+	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
+	pckd_scn.take_over_path(target_path)
 	ResourceSaver.save(pckd_scn, target_path)
-
-	current_style.clear()
-	current_style.set_layer_scene("", target_path)
-	current_style.changed.emit()
-
-	ResourceSaver.save(current_style)
-
-	load_style_layer_list()
-
-	tree.get_root().select(0)
 	EditorInterface.get_resource_filesystem().scan_sources()
+	
+	unre.create_action("Customize Full Layout")
+	unre.add_do_method(current_style.clear)
+	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
+	unre.add_do_method(load_style_layer_list)
+	unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
+	unre.add_undo_method(load_style_layer_list)
+	unre.add_undo_method(func(): print_rich("[color={0}][Dialogic Style] Undoing the full customization of your style will restore your style to it's previous state, but will not delete the new scene that was created.".format([get_theme_color("warning_color", "Editor").to_html()])))
+	unre.commit_action()
+	#current_style.clear()
+	#current_style.set_layer_scene("", target_path)
+	#current_style.changed.emit()
+
+	#ResourceSaver.save(current_style)
+
+	#tree.get_root().select(0)
+
 
 
 func _on_delete_layer_button_pressed() -> void:

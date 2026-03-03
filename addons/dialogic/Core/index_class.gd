@@ -140,7 +140,7 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 				"description": config.get_value("style", "description", "No description"),
 				"preview_image": [config.get_value("style", "image", default_image_path)],
 				"style_path":config.get_value("style", "style_path", ""),
-				"icon":this_folder.path_join(dir_name).path_join(config.get_value("style", "icon", "")),
+				"icon": this_folder.path_join(dir_name).path_join(config.get_value("style", "icon", "")),
 				"color": config.get_value("style", "color", "")
 			})
 

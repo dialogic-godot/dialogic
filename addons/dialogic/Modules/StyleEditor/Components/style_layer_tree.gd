@@ -89,4 +89,4 @@ func _on_layer_list_right_click_menu_id_pressed(id: int) -> void:
 		RightClickMenuItems.OPEN_SCENE:
 			%LayerEditor.edit_layer_scene(item.get_meta("scene"))
 		RightClickMenuItems.MAKE_CUSTOM:
-			%LayerEditor._on_make_custom_menu_pressed(2)
+			%LayerList._on_make_custom_menu_pressed(2)
