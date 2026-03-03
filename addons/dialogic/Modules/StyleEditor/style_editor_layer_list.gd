@@ -79,12 +79,12 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 		elif item.get_parent():
 			item.set_icon(0, get_theme_icon("Breakpoint", "EditorIcons"))
 		item.set_text(0, part_info.get("name", "Layer"))
-		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
+		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
 
 	else:
 		item.set_text(0, clean_scene_name(info.path))
 		item.set_icon(0, get_theme_icon("PackedScene", "EditorIcons"))
-		#item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"))
+		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"), -1, false, "Open Scene")
 		item.set_button_tooltip_text(0, 0, "Open Scene")
 	item.set_meta("scene", info.path)
 	item.set_meta("id", info.id)
@@ -271,7 +271,7 @@ func _on_customize_layer_popup_confirmed() -> void:
 			EditorFileDialog.FILE_MODE_SAVE_FILE,
 			"Create new copy of layer scene",
 			"custom_"+current_layer_file.get_file())
-	
+
 	else:
 		var current_style_name: String = get_current_style().name.to_snake_case()
 		find_parent("EditorView").godot_file_dialog(
@@ -324,17 +324,17 @@ func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=
 
 func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 	var current_style := get_current_style()
-	
+
 	var base_layer_info := current_style.get_layer_info("")
 	var base_scene_uid: String = base_layer_info.path
-	
+
 	# Load base scene
 	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
 	DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
 	base_scene.remove_meta("style_customization")
-	
+
 
 	# Load layers
 	for layer_id in current_style.get_layer_inherited_list():
@@ -354,13 +354,13 @@ func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 			DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
 		layer_scene.remove_meta("style_customization")
 		layer_scene.owner = base_scene
-	
+
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(base_scene)
 	pckd_scn.take_over_path(target_path)
 	ResourceSaver.save(pckd_scn, target_path)
 	EditorInterface.get_resource_filesystem().scan_sources()
-	
+
 	unre.create_action("Customize Full Layout")
 	unre.add_do_method(current_style.clear)
 	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))

@@ -96,6 +96,7 @@ func _ready() -> void:
 			add_to_group("dialogic_portrait_con_speaker")
 
 	if Engine.is_editor_hint():
+		_update_debug_portrait_scene()
 		if not ProjectSettings.get_setting("dialogic/portraits/default_portrait", "").is_empty():
 			default_portrait_scene = ProjectSettings.get_setting("dialogic/portraits/default_portrait", "")
 

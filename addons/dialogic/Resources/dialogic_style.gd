@@ -44,8 +44,8 @@ func setup(set_layer_list:Array, set_layer_info:Dictionary, set_inherits:Dialogi
 	layer_info = set_layer_info
 	inherits = set_inherits
 	changed.emit()
-	
-	
+
+
 ## Returns the amount of layers (the base layer is not included).
 func get_layer_count() -> int:
 	return layer_list.size()

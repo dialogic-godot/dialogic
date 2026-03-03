@@ -123,7 +123,7 @@ func edit_resource(resource:Resource, save_previous:bool = true, silent:= false)
 		return
 
 	if current_editor and save_previous:
-		current_editor._save() 
+		current_editor._save()
 
 	## Open the correct editor
 	var extension: String = resource.resource_path.get_extension()
