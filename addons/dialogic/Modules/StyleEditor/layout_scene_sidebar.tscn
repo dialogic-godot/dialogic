@@ -16,7 +16,7 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 [node name="LayoutSceneSidebar" type="MarginContainer" unique_id=2056312676]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 400.0
+offset_right = 205.0
 grow_vertical = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -30,15 +30,18 @@ layout_mode = 2
 [node name="HBox" type="HBoxContainer" parent="VBoxContainer" unique_id=1133947708]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="VBoxContainer/HBox" unique_id=1267388966]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 40)
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBox" unique_id=900758495]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="Title" type="Label" parent="VBoxContainer/HBox/ScrollContainer" unique_id=1267388966]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Dialogic Layout Scene Customizer"
-autowrap_mode = 2
-clip_text = true
+justification_flags = 3
 
 [node name="Collapse" type="Button" parent="VBoxContainer/HBox" unique_id=1656251768]
 unique_name_in_owner = true

@@ -26,6 +26,7 @@ var this_folder: String = get_script().resource_path.get_base_dir()
 
 
 ## Emitted after dialogic has applied customization
+@warning_ignore("unused_signal") # emitted by DialogicUtil.apply_scene_export_overrides()
 signal customization_applied
 
 

@@ -38,9 +38,9 @@ func _open(_extra_info:Variant = null) -> void:
 func _open_resource(resource:Resource) -> void:
 	if not resource in styles:
 		add_style_to_list(resource)
-	
+
 	change_style(resource)
-	
+
 
 
 func _close() -> void:
