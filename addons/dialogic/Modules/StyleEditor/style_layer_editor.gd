@@ -23,7 +23,7 @@ func load_style(style:DialogicStyle) -> void:
 
 func change_layer(layer_id:String) -> void:
 	var unre: UndoRedo = owner.unre
-	unre.create_action("Change Layer", UndoRedo.MERGE_ALL)
+	unre.create_action("Change Layer", UndoRedo.MERGE_ENDS)
 	unre.add_do_method(load_layer.bind(layer_id))
 	unre.add_undo_method(load_layer.bind(current_layer_id))
 	unre.commit_action()
@@ -33,7 +33,7 @@ func load_layer(layer_id:=""):
 	current_layer_id = layer_id
 	#print(current_style.get_layer_info(layer_id))
 	%LayerView.open_layer(current_style, layer_id)
-	%LayerList.select_layer(layer_id, true)
+	%LayerList.select_layer(layer_id, 0)
 	%DeleteLayerButton.disabled = layer_id == "" or current_style.inherits_anything()
 
 

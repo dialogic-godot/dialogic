@@ -171,7 +171,8 @@ func is_container(id:Variant) -> bool:
 func _draw():
 	if debug_draw or Engine.is_editor_hint():
 		draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
-		draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size())+Vector2(8,0) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
+		if container_ids:
+			draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size())+Vector2(8,0) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
 
 		var pivot_texture := get_theme_icon("EditorPivot", "EditorIcons")
 		var pivot_draw_size := 32

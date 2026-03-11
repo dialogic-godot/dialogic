@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddlxjde1cx035"]
+[gd_scene format=3 uid="uid://ddlxjde1cx035"]
 
 [ext_resource type="Script" uid="uid://ckthmmkodqqwt" path="res://addons/dialogic/Editor/Common/BrowserItem.gd" id="1_s3kf0"]
 
@@ -45,7 +45,7 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
-[node name="BrowserItem" type="MarginContainer"]
+[node name="BrowserItem" type="MarginContainer" unique_id=1728681983]
 custom_minimum_size = Vector2(200, 150)
 offset_left = 1.0
 offset_top = 1.0
@@ -59,20 +59,20 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 script = ExtResource("1_s3kf0")
 
-[node name="HoverBG" type="Panel" parent="."]
+[node name="HoverBG" type="Panel" parent="." unique_id=906894450]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pfw08")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1983019055]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Panel" type="PanelContainer" parent="VBox"]
+[node name="Panel" type="PanelContainer" parent="VBox" unique_id=1931604224]
 unique_name_in_owner = true
 self_modulate = Color(0.0705882, 0.0705882, 0.0705882, 1)
 clip_children = 2
@@ -81,7 +81,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ab24c")
 
-[node name="Image" type="TextureRect" parent="VBox/Panel"]
+[node name="Image" type="TextureRect" parent="VBox/Panel" unique_id=873470520]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -89,7 +89,7 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 6
 
-[node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image"]
+[node name="CurrentIcon" type="TextureRect" parent="VBox/Panel/Image" unique_id=621067229]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -104,7 +104,7 @@ grow_horizontal = 0
 tooltip_text = "Currently in use"
 stretch_mode = 2
 
-[node name="Panel" type="Panel" parent="VBox/Panel/Image"]
+[node name="Panel" type="Panel" parent="VBox/Panel/Image" unique_id=569530034]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -117,9 +117,10 @@ offset_right = -7.0
 offset_bottom = -6.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qnehp")
 
-[node name="Icon" type="TextureRect" parent="VBox/Panel/Image/Panel"]
+[node name="Icon" type="TextureRect" parent="VBox/Panel/Image/Panel" unique_id=1345896675]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -131,16 +132,17 @@ offset_right = -4.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="VBox"]
+[node name="Name" type="Label" parent="VBox" unique_id=1478043373]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Dialogic Theme"
 horizontal_alignment = 1
 
-[node name="FocusFG" type="Panel" parent="."]
+[node name="FocusFG" type="Panel" parent="." unique_id=2037755213]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

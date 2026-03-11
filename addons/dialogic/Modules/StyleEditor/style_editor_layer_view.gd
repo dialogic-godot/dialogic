@@ -12,7 +12,7 @@ var current_style : DialogicStyle
 
 var _loading_layer := false
 
-@onready var no_settings_info := %NoSettings
+@onready var no_settings_info := %"No Settings"
 
 @onready var unre: UndoRedo = owner.unre
 
@@ -22,6 +22,8 @@ func _ready() -> void:
 
 	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_scene_saved)
 	%ExpandLayerInfo.icon = get_theme_icon("CodeFoldDownArrow", "EditorIcons")
+
+	%NoSettingsNote.add_theme_color_override("default_color", get_theme_color("font_readonly_color", "Editor"))
 
 	if not DialogicUtil.get_editor_setting("style_editor_expand_layer_info", true):
 		toggle_layer_info()
@@ -63,8 +65,8 @@ func show_layer_info() -> void:
 			%SmallLayerPreview.show()
 
 	else:
-		%LayerName.text = %LayerList.clean_scene_name(layer_info.get("path", "Unkown Layer"))
-		%SmallLayerDescription.text = layer_info.get("path", "Unkown Layer")
+		%LayerName.text = %LayerList.clean_scene_name(ResourceUID.uid_to_path(layer_info.get("path", "Unkown Layer")))
+		%SmallLayerDescription.text = ResourceUID.uid_to_path(layer_info.get("path", "Unkown Layer"))
 
 	%SmallLayerScene.text = layer_info.get("path", "Unkown Layer").get_file()
 	%SmallLayerScene.tooltip_text = layer_info.get("path", "")
