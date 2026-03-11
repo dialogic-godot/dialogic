@@ -59,7 +59,7 @@ func _ready() -> void:
 	setup_ui()
 
 	## Useful for debugging undo/redo
-	unre.version_changed.connect(func(): print_rich("[color=dim_gray][Dialogic Style Editor] ", unre.get_current_action_name(), "[/color]"))
+	unre.version_changed.connect(print_unre_update)
 
 
 func _input(event: InputEvent) -> void:
@@ -71,7 +71,22 @@ func _input(event: InputEvent) -> void:
 	elif EditorInterface.get_editor_settings().get_shortcut("ui_redo").matches_event(event) and event.is_pressed():
 		unre.redo()
 		accept_event()
+	elif event is InputEventKey and event.pressed and Input.is_key_pressed(KEY_CTRL) and Input.is_key_pressed(KEY_F):
+		print_unre_update()
 
+
+func print_unre_update() -> void:
+	#print("----------------------")
+	#for i in range(unre.get_history_count()):
+		#if i == unre.get_current_action():
+			#print_rich("[color=orange]", i, " ", unre.get_action_name(i))
+		#else:
+			#print_rich("[color=dim_gray]", i, " ", unre.get_action_name(i))
+
+	if unre.is_committing_action():
+		print_rich("[color=dim_gray][Dialogic Style Editor] ", unre.get_current_action_name(), "[/color]")
+	else:
+		print_rich("[color=dim_gray][Dialogic Style Editor] Undo ", unre.get_action_name(unre.get_current_action()+1), "[/color]")
 
 
 #region STYLE MANAGEMENT METHODS
@@ -246,10 +261,8 @@ func _on_AddStyleMenu_about_to_popup() -> void:
 func _on_AddStyleMenu_selected(index:int) -> void:
 	# add preset style
 	if index == 2:
-		%StyleBrowserWindow.popup_centered_ratio(0.6)
-		%StyleBrowser.current_type = 1
-		%StyleBrowser.load_parts()
-		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
+		%StyleBrowser.browse_styles()
+		var picked_info: Dictionary = await %StyleBrowser.get_picked_item_info()
 		if not picked_info.has("style_path"):
 			return
 

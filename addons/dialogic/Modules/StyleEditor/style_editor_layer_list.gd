@@ -11,6 +11,12 @@ var unre : UndoRedo
 
 var ignore_select := false
 
+enum SelectLayerMode {
+	VISUAL_ONLY, # Used when only the lists needs a visual update, but the rest of the editor stays the same
+	LOAD_WITHOUT_UNDO, # Use when called from a do/undo action, reloads the layer but doesn't add another undo action
+	NEW_UNDO_ACTION, # Use when triggered by clicking the ui, creates a new undo-redo action.
+	}
+
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
@@ -21,7 +27,7 @@ func _ready() -> void:
 	tree.item_selected.connect(_on_layer_selected)
 
 	%AddLayerButton.get_popup().index_pressed.connect(_on_add_layer_menu_pressed)
-	%ReplaceLayerButton.get_popup().index_pressed.connect(_on_replace_layer_menu_pressed)
+	%ReplaceLayerButton.get_popup().id_pressed.connect(_on_replace_layer_menu_pressed)
 	var make_custom_menu: PopupMenu = %MakeCustomButton.get_popup()
 	make_custom_menu.index_pressed.connect(_on_make_custom_menu_pressed)
 	make_custom_menu.set_item_tooltip(2, "Creates a copy of the selected layers scene.")
@@ -30,7 +36,7 @@ func _ready() -> void:
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")
-	%MakeCustomButton.icon = get_theme_icon("CreateNewSceneFrom", "EditorIcons")
+	%MakeCustomButton.icon = get_theme_icon("InstanceOptions", "EditorIcons")
 
 
 func get_current_style() -> DialogicStyle:
@@ -51,8 +57,13 @@ func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 		style.layer_list.is_empty() and not %StyleBrowser.is_premade_style_part(style.get_layer_info("").path)))
 	%DeleteLayerButton.disabled = style.inherits_anything()
 
-	tree.clear()
+	reload_list(true, SelectLayerMode.LOAD_WITHOUT_UNDO)
 
+
+func reload_list(auto_select_layer := false, mode := SelectLayerMode.VISUAL_ONLY) -> void:
+	var style := get_current_style()
+
+	tree.clear()
 	var root := tree.create_item()
 
 	var base_layer_info := style.get_layer_inherited_info("")
@@ -63,7 +74,8 @@ func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
 		var layer_item := tree.create_item(root)
 		setup_layer_tree_item(layer_info, layer_item)
 
-	select_layer(get_current_layer_id(), true)
+	if auto_select_layer:
+		select_layer(get_current_layer_id(), mode)
 
 
 func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
@@ -90,19 +102,23 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.set_meta("id", info.id)
 
 
-func select_layer(id:String, no_signal:= false) -> void:
-	ignore_select = no_signal
+
+func select_layer(id:String, mode := SelectLayerMode.LOAD_WITHOUT_UNDO) -> void:
+	ignore_select = true
+
 	if id == "":
 		tree.get_root().select(0)
-		ignore_select = false
-		return
+	else:
+		for child in tree.get_root().get_children():
+			if child.get_meta("id", "") == id:
+				child.select(0)
 
-	for child in tree.get_root().get_children():
-		if child.get_meta("id", "") == id:
-			child.select(0)
-			ignore_select = false
-			return
+	ignore_select = false
 
+	if mode == SelectLayerMode.LOAD_WITHOUT_UNDO:
+		%LayerEditor.load_layer(id)
+	elif mode == SelectLayerMode.NEW_UNDO_ACTION:
+		layer_selected.emit(id)
 
 
 func _on_layer_selected() -> void:
@@ -120,10 +136,10 @@ func add_layer(scene_path:="", overrides:= {}):
 	var new_id := get_current_style().get_new_layer_id()
 	unre.create_action("Add Layer")
 	unre.add_do_method(get_current_style().add_layer.bind(scene_path, overrides, new_id))
-	unre.add_do_method(load_style_layer_list)
+	unre.add_do_method(reload_list)
 	unre.add_do_method(select_layer.bind(new_id))
 	unre.add_undo_method(get_current_style().delete_layer.bind(new_id))
-	unre.add_undo_method(load_style_layer_list)
+	unre.add_undo_method(reload_list)
 	unre.add_undo_method(select_layer.bind(get_current_layer_id()))
 	unre.commit_action()
 
@@ -134,11 +150,11 @@ func delete_layer() -> void:
 	var layer_info := get_current_style().get_layer_info(get_current_layer_id())
 	unre.create_action("Delete Layer")
 	unre.add_do_method(get_current_style().delete_layer.bind(get_current_layer_id()))
-	unre.add_do_method(load_style_layer_list)
+	unre.add_do_method(reload_list)
 	unre.add_do_method(select_layer.bind(""))
 	unre.add_undo_method(get_current_style().add_layer.bind(layer_info.path, layer_info.overrides, layer_info.id))
 	unre.add_undo_method(get_current_style().set_layer_index.bind(layer_info.id, get_current_style().get_layer_index(layer_info.id)))
-	unre.add_undo_method(load_style_layer_list)
+	unre.add_undo_method(reload_list)
 	unre.add_undo_method(select_layer.bind(get_current_layer_id()))
 	unre.commit_action()
 
@@ -146,9 +162,9 @@ func delete_layer() -> void:
 func move_layer(from_idx:int, to_idx:int) -> void:
 	unre.create_action("Move Layer")
 	unre.add_do_method(get_current_style().move_layer.bind(from_idx, to_idx))
-	unre.add_do_method(load_style_layer_list)
+	unre.add_do_method(reload_list)
 	unre.add_undo_method(get_current_style().move_layer.bind(to_idx, from_idx))
-	unre.add_undo_method(load_style_layer_list)
+	unre.add_undo_method(reload_list)
 	unre.commit_action()
 
 
@@ -157,12 +173,12 @@ func replace_layer(layer_id:String, scene_path:String, clear_overrides:=false) -
 	unre.add_do_method(get_current_style().set_layer_scene.bind(layer_id, scene_path))
 	if clear_overrides:
 		unre.add_do_method(get_current_style().set_layer_overrides.bind(layer_id, {}))
-	unre.add_do_method(load_style_layer_list)
+	unre.add_do_method(reload_list.bind(true, SelectLayerMode.LOAD_WITHOUT_UNDO))
 	var current_info := get_current_style().get_layer_info(layer_id)
 	unre.add_undo_method(get_current_style().set_layer_scene.bind(layer_id, current_info.path))
 	if clear_overrides:
 		unre.add_undo_method(get_current_style().set_layer_overrides.bind(layer_id, current_info.overrides))
-	unre.add_undo_method(load_style_layer_list)
+	unre.add_undo_method(reload_list.bind(true, SelectLayerMode.LOAD_WITHOUT_UNDO))
 	unre.commit_action()
 
 #endregion
@@ -174,10 +190,8 @@ func replace_layer(layer_id:String, scene_path:String, clear_overrides:=false) -
 func _on_add_layer_menu_pressed(index:int) -> void:
 	# Adding a premade layer
 	if index == 2:
-		%StyleBrowserWindow.popup_centered_ratio(0.6)
-		%StyleBrowser.current_type = 2
-		%StyleBrowser.load_parts()
-		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
+		%StyleBrowser.browse_layers()
+		var picked_info: Dictionary = await %StyleBrowser.get_picked_item_info()
 		if not picked_info.is_empty():
 			add_layer(picked_info.get("path", ""))
 
@@ -199,21 +213,19 @@ func _on_add_custom_layer_file_selected(file_path:String) -> void:
 #region REPLACE LAYER MENU
 ################################################################################
 
-func _on_replace_layer_menu_pressed(index:int) -> void:
+func _on_replace_layer_menu_pressed(id:int) -> void:
 	# Adding a premade layer
-	if index == 2:
-		%StyleBrowserWindow.popup_centered_ratio(0.6)
+	if id == 1:
 		if tree.get_selected() == tree.get_root():
-			%StyleBrowser.current_type = 3
+			%StyleBrowser.browse_layout_bases()
 		else:
-			%StyleBrowser.current_type = 2
-		%StyleBrowser.load_parts()
-		var picked_info: Dictionary = await %StyleBrowserWindow.get_picked_info()
+			%StyleBrowser.browse_layers()
+		var picked_info: Dictionary = await %StyleBrowser.get_picked_item_info()
 		if not picked_info.is_empty():
 			replace_layer(tree.get_selected().get_meta("id", ""), picked_info.get("path", ""))
 
 	# Adding a custom scene as a layer
-	else:
+	elif id == 2:
 		find_parent("EditorView").godot_file_dialog(
 			_on_replace_custom_layer_file_selected,
 			"*.tscn, Scenes",
@@ -326,7 +338,7 @@ func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 	var current_style := get_current_style()
 
 	var base_layer_info := current_style.get_layer_info("")
-	var base_scene_uid: String = base_layer_info.path
+	#var base_scene_uid: String = base_layer_info.path
 
 	# Load base scene
 	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()

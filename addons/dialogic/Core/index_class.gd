@@ -138,11 +138,14 @@ func scan_for_layout_parts() -> Array[Dictionary]:
 				"path": config.get_value("style", "scene", ""),
 				"author": config.get_value("style", "author", "Anonymous"),
 				"description": config.get_value("style", "description", "No description"),
-				"preview_image": [config.get_value("style", "image", default_image_path)],
+				"preview_image": config.get_value("style", "image", default_image_path),
 				"style_path":config.get_value("style", "style_path", ""),
 				"icon": this_folder.path_join(dir_name).path_join(config.get_value("style", "icon", "")),
 				"color": config.get_value("style", "color", "")
 			})
+
+		if typeof(style_list[-1].preview_image) == TYPE_STRING:
+			style_list[-1].preview_image = [style_list[-1].preview_image]
 
 		## TODO this is a compatibility thing for pre alpha 20
 		if not style_list[-1].path.begins_with("uid://"):

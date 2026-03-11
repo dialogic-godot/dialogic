@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bm86mdt8kv812"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_wylsx"]
+[ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_rwyq4"]
+
+[node name="SpeakerPortraitOverlayLayer" type="Control" unique_id=1240389437]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wylsx")
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Portrait",
+"name": "DialogicNode_PortraitContainer",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Portrait Prefix",
+"name": "portrait_prefix",
+"tooltip": "Use this if you want to use full-body and face portraits at the same time. When a portrait is set (e.g. \"Happy\") dialogic will attempt to instead load a portrait with this prefix (e.g. \"Faces/Happy\" if this is set to Faces/). ",
+"type": "Property"
+}, {
+"display_name": "Size Mode",
+"name": "size_mode",
+"tooltip": "Defines how the portrait will be scaled in the container.",
+"type": "Property"
+}, {
+"display_name": "Positioning",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Offset",
+"name": "position",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="DialogicNode_PortraitContainer" type="Control" parent="." unique_id=1646828542]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 25.0
+offset_right = -835.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_rwyq4")
+mode = 1
+container_ids = PackedStringArray()
+debug_character_portrait = "speaker"
+metadata/_custom_type_script = "uid://d0ptqnbudhkyj"

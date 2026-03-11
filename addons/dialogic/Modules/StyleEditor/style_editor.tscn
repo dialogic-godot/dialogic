@@ -6,9 +6,9 @@
 [ext_resource type="Script" uid="uid://bv5h4upxnhohc" path="res://addons/dialogic/Modules/StyleEditor/style_editor_style_list.gd" id="3_yj7mc"]
 [ext_resource type="Script" uid="uid://orsplfberna" path="res://addons/dialogic/Modules/StyleEditor/Components/style_layer_tree.gd" id="4_kpoqn"]
 [ext_resource type="Script" uid="uid://dkleyc3cmnigl" path="res://addons/dialogic/Modules/StyleEditor/style_editor_layer_list.gd" id="5_7pmk1"]
-[ext_resource type="Script" uid="uid://i2qxk6l78uax" path="res://addons/dialogic/Modules/StyleEditor/Components/style_browser_window.gd" id="5_qbwx0"]
 [ext_resource type="Script" uid="uid://bik70f7ngn2h2" path="res://addons/dialogic/Modules/StyleEditor/style_editor_layer_view.gd" id="6_3jl8n"]
-[ext_resource type="PackedScene" uid="uid://cs381i3h7sveq" path="res://addons/dialogic/Modules/StyleEditor/Components/style_browser.tscn" id="6_p6lia"]
+[ext_resource type="PackedScene" uid="uid://bms3xcvgktcui" path="res://addons/dialogic/Editor/Common/browser.tscn" id="8_7pmk1"]
+[ext_resource type="Script" uid="uid://dpuqnw4cshljm" path="res://addons/dialogic/Modules/StyleEditor/Components/style_browser.gd" id="9_sg0tk"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_yj7mc"]
 
@@ -255,9 +255,9 @@ popup/item_0/disabled = true
 popup/item_1/id = 0
 popup/item_1/separator = true
 popup/item_2/text = "Premade Layer..."
-popup/item_2/id = 0
+popup/item_2/id = 1
 popup/item_3/text = "Custom Layer..."
-popup/item_3/id = 1
+popup/item_3/id = 2
 
 [node name="MakeCustomButton" type="MenuButton" parent="StyleView/LayerEditor/LayerList/LayerPanel/VBox/HBox" unique_id=1332622384]
 unique_name_in_owner = true
@@ -385,12 +385,13 @@ layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="NoSettings" type="VBoxContainer" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs" unique_id=1835463628]
+[node name="No Settings" type="VBoxContainer" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs" unique_id=1835463628]
 unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Note" type="RichTextLabel" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings" unique_id=1836550989]
+[node name="NoSettingsNote" type="RichTextLabel" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/No Settings" unique_id=1836550989]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_7pmk1")
 bbcode_enabled = true
@@ -400,9 +401,9 @@ If you want to expose settings, edit the scene and drag settings into the Dialog
 "
 fit_content = true
 
-[node name="EditLayerButton" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings" unique_id=1140197035]
+[node name="EditLayerButton" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/No Settings" unique_id=1140197035]
 layout_mode = 2
-text = "Open Layer Scene"
+text = "Open Scene"
 
 [node name="Margin2" type="Control" parent="StyleView/LayerEditor/LayerView" unique_id=88063671]
 custom_minimum_size = Vector2(0, 10)
@@ -426,20 +427,12 @@ size_flags_horizontal = 4
 tooltip_text = "Make a custom style from a variation of the fallback."
 text = "Make my own!"
 
-[node name="StyleBrowserWindow" type="Window" parent="." unique_id=1444985267]
+[node name="StyleBrowser" parent="." unique_id=210901023 instance=ExtResource("8_7pmk1")]
 unique_name_in_owner = true
-oversampling_override = 1.0
 title = "Style Browser"
-position = Vector2i(0, 36)
-size = Vector2i(500, 400)
 visible = false
-wrap_controls = true
-transient = true
-popup_window = true
-script = ExtResource("5_qbwx0")
-
-[node name="StyleBrowser" parent="StyleBrowserWindow" unique_id=495141198 instance=ExtResource("6_p6lia")]
-unique_name_in_owner = true
+maximize_disabled = false
+script = ExtResource("9_sg0tk")
 
 [node name="CustomizePopup" type="ConfirmationDialog" parent="." unique_id=1516040291]
 unique_name_in_owner = true
@@ -477,7 +470,7 @@ custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_5te7k")
 bbcode_enabled = true
-text = "This will create a new scene that contains all the layers. This means your style will only contain one layer going forward.
+text = "This will create a new scene that contains all the layers. This means your style will only contain one layer going forward and you cannot edit the layers settings in the style editor anymore.
 
 [i]All settings will be unexposed. Can only be partially undone."
 fit_content = true
@@ -530,8 +523,6 @@ hint_text = "If you disable this, all the settings will be unexposed, so going f
 [connection signal="id_pressed" from="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree/LayerListRightClickMenu" to="StyleView/LayerEditor/LayerList/LayerPanel/VBox/LayerTree" method="_on_layer_list_right_click_menu_id_pressed"]
 [connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/MarginContainer/HBoxContainer/VBoxContainer/LayerInfoHeader/ExpandLayerInfo" to="StyleView/LayerEditor/LayerView" method="toggle_layer_info"]
 [connection signal="tab_changed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs" to="StyleView/LayerEditor/LayerView" method="_on_layer_settings_tabs_tab_changed"]
-[connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/NoSettings/EditLayerButton" to="StyleView/LayerEditor/LayerView" method="_on_edit_layer_button_pressed"]
+[connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/No Settings/EditLayerButton" to="StyleView/LayerEditor/LayerView" method="_on_edit_layer_button_pressed"]
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
-[connection signal="close_requested" from="StyleBrowserWindow" to="StyleBrowserWindow" method="_on_close_requested"]
-[connection signal="activate_part" from="StyleBrowserWindow/StyleBrowser" to="StyleBrowserWindow" method="_on_style_browser_activate_part"]
 [connection signal="confirmed" from="CustomizePopup" to="StyleView/LayerEditor/LayerList" method="_on_customize_layer_popup_confirmed"]
