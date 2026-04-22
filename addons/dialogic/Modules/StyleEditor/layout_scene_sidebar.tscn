@@ -63,6 +63,13 @@ layout_mode = 2
 text = "Layout scenes can expose properties to the style editor here."
 autowrap_mode = 2
 
+[node name="Instanced" type="Label" parent="VBoxContainer/Info" unique_id=945504410]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "This node is instanced, so this list is read-only."
+autowrap_mode = 2
+
 [node name="Internal" type="Label" parent="VBoxContainer/Info" unique_id=1123826404]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)

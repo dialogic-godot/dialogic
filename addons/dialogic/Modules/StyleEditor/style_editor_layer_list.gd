@@ -17,6 +17,9 @@ enum SelectLayerMode {
 	NEW_UNDO_ACTION, # Use when triggered by clicking the ui, creates a new undo-redo action.
 	}
 
+var base_layer_instance: DialogicLayoutBase
+
+
 func _ready() -> void:
 	if owner.get_parent() is SubViewport:
 		return
@@ -32,11 +35,13 @@ func _ready() -> void:
 	make_custom_menu.index_pressed.connect(_on_make_custom_menu_pressed)
 	make_custom_menu.set_item_tooltip(2, "Creates a copy of the selected layers scene.")
 	make_custom_menu.set_item_tooltip(3, "Creates a new scene with the layer scenes instanced, allowing you to then selectively use 'Editable Children' or 'Make Local' on those scenes.")
-
+	%MoreSettings.get_popup().id_pressed.connect(_on_more_settings_menu_pressed)
+	%MoreSettings.get_popup().set_item_tooltip(0, "Allows fully customized scenes to still expose their 'DialogicLayoutLayer' children and their settings in the style editor.")
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")
 	%MakeCustomButton.icon = get_theme_icon("InstanceOptions", "EditorIcons")
+	%MoreSettings.icon = get_theme_icon("GuiTabMenu", "EditorIcons")
 
 
 func get_current_style() -> DialogicStyle:
@@ -51,12 +56,10 @@ func get_current_layer_id() -> String:
 ################################################################################
 
 func load_style_layer_list(style:DialogicStyle = get_current_style()) -> void:
-	%AddLayerButton.disabled = style.inherits_anything()
-	%ReplaceLayerButton.disabled = style.inherits_anything()
-	%MakeCustomButton.disabled = (style.inherits_anything() or (
-		style.layer_list.is_empty() and not %StyleBrowser.is_premade_style_part(style.get_layer_info("").path)))
-	%DeleteLayerButton.disabled = style.inherits_anything()
+	if base_layer_instance:
+		base_layer_instance.queue_free()
 
+	base_layer_instance = load(style.get_layer_inherited_info("").path).instantiate()
 	reload_list(true, SelectLayerMode.LOAD_WITHOUT_UNDO)
 
 
@@ -68,11 +71,15 @@ func reload_list(auto_select_layer := false, mode := SelectLayerMode.VISUAL_ONLY
 
 	var base_layer_info := style.get_layer_inherited_info("")
 	setup_layer_tree_item(base_layer_info, root)
-
-	for layer_id in style.get_layer_inherited_list():
-		var layer_info := style.get_layer_inherited_info(layer_id)
-		var layer_item := tree.create_item(root)
-		setup_layer_tree_item(layer_info, layer_item)
+	if style.get_inheritance_root().use_base_scene_children_as_layers:
+		for i in base_layer_instance.get_layers():
+			var layer_item := tree.create_item(root)
+			setup_layer_tree_item({"path":i.name, "id":i.get_meta("style_layer_id", i.name)}, layer_item)
+	else:
+		for layer_id in style.get_layer_inherited_list():
+			var layer_info := style.get_layer_inherited_info(layer_id)
+			var layer_item := tree.create_item(root)
+			setup_layer_tree_item(layer_info, layer_item)
 
 	if auto_select_layer:
 		select_layer(get_current_layer_id(), mode)
@@ -80,7 +87,11 @@ func reload_list(auto_select_layer := false, mode := SelectLayerMode.VISUAL_ONLY
 
 func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	item.custom_minimum_height = _minimum_tree_item_height
-	if %StyleBrowser.is_premade_style_part(info.path):
+
+	if get_current_style().get_inheritance_root().use_base_scene_children_as_layers and not item == tree.get_root():
+		item.set_text(0, clean_scene_name(info.path))
+		item.set_icon(0, get_theme_icon("NodeDisabled", "EditorIcons"))
+	elif %StyleBrowser.is_premade_style_part(info.path):
 		var part_info: Dictionary = %StyleBrowser.premade_scenes_reference[info.path]
 		if ResourceLoader.exists(part_info.get("icon", "")):
 			item.set_icon(0, load(part_info.get("icon")))
@@ -170,14 +181,19 @@ func move_layer(from_idx:int, to_idx:int) -> void:
 
 func replace_layer(layer_id:String, scene_path:String, clear_overrides:=false) -> void:
 	unre.create_action("Replace Layer")
+	if get_current_style().use_base_scene_children_as_layers:
+		unre.add_do_property(get_current_style(), "use_base_scene_children_as_layers", false)
 	unre.add_do_method(get_current_style().set_layer_scene.bind(layer_id, scene_path))
 	if clear_overrides:
 		unre.add_do_method(get_current_style().set_layer_overrides.bind(layer_id, {}))
 	unre.add_do_method(reload_list.bind(true, SelectLayerMode.LOAD_WITHOUT_UNDO))
+
 	var current_info := get_current_style().get_layer_info(layer_id)
 	unre.add_undo_method(get_current_style().set_layer_scene.bind(layer_id, current_info.path))
 	if clear_overrides:
-		unre.add_undo_method(get_current_style().set_layer_overrides.bind(layer_id, current_info.overrides))
+		unre.add_undo_property(get_current_style(), "use_base_scene_children_as_layers", true)
+	if get_current_style().use_base_scene_children_as_layers:
+		unre.add_undo_method(get_current_style().enable_base_scene_children_as_layers)
 	unre.add_undo_method(reload_list.bind(true, SelectLayerMode.LOAD_WITHOUT_UNDO))
 	unre.commit_action()
 
@@ -334,7 +350,7 @@ func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=
 	replace_layer(get_current_layer_id(), result_path, true)
 
 
-func make_layout_custom(target_path:String, apply_settings:bool) -> void:
+func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_exposed:=true) -> void:
 	var current_style := get_current_style()
 
 	var base_layer_info := current_style.get_layer_info("")
@@ -345,8 +361,9 @@ func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
 	DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
-	base_scene.remove_meta("style_customization")
 
+	if not keep_settings_exposed:
+		base_scene.remove_meta("style_customization")
 
 	# Load layers
 	for layer_id in current_style.get_layer_inherited_list():
@@ -364,7 +381,8 @@ func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 		if (not layer_info.overrides.is_empty()) and apply_settings:
 			base_scene.set_editable_instance(layer_scene, true)
 			DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
-		layer_scene.remove_meta("style_customization")
+		#layer_scene.remove_meta("style_customization")
+		layer_scene.set_meta("style_layer_id", layer_id)
 		layer_scene.owner = base_scene
 
 	var pckd_scn := PackedScene.new()
@@ -376,24 +394,53 @@ func make_layout_custom(target_path:String, apply_settings:bool) -> void:
 	unre.create_action("Customize Full Layout")
 	unre.add_do_method(current_style.clear)
 	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
+	unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
 	unre.add_do_method(load_style_layer_list)
+	unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
 	unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
 	unre.add_undo_method(load_style_layer_list)
 	unre.add_undo_method(func(): print_rich("[color={0}][Dialogic Style] Undoing the full customization of your style will restore your style to it's previous state, but will not delete the new scene that was created.".format([get_theme_color("warning_color", "Editor").to_html()])))
 	unre.commit_action()
-	#current_style.clear()
-	#current_style.set_layer_scene("", target_path)
-	#current_style.changed.emit()
-
-	#ResourceSaver.save(current_style)
-
-	#tree.get_root().select(0)
-
 
 
 func _on_delete_layer_button_pressed() -> void:
 	delete_layer()
 
+#endregion
+
+
+#region MORE SETTINGS MENU
+################################################################################
+func _on_more_settings_about_to_popup() -> void:
+	var popup: PopupMenu = %MoreSettings.get_popup()
+	var current_style := get_current_style()
+	popup.set_item_disabled(0, not (current_style.use_base_scene_children_as_layers or \
+		((not %StyleBrowser.is_premade_style_part(current_style.get_layer_info("").path)) and current_style.layer_list.is_empty())))
+	popup.set_item_checked(0, current_style.use_base_scene_children_as_layers)
+
+
+func _on_more_settings_menu_pressed(id:int) -> void:
+	var popup: PopupMenu = %MoreSettings.get_popup()
+	var current_style := get_current_style()
+	if id == 0:
+		var checked := not popup.is_item_checked(0)
+		popup.set_item_checked(0, checked)
+		if checked:
+			unre.create_action("Style Enable Base Scene Children as Layers")
+			unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
+			unre.add_do_method(current_style.setup.bind([], {"":current_style.get_layer_info("")}, current_style.inherits))
+			unre.add_do_method(reload_list)
+			unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
+			unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
+			unre.add_undo_method(reload_list)
+			unre.commit_action()
+		else:
+			unre.create_action("Style Disable Base Scene Children as Layers")
+			unre.add_do_property(get_current_style(), "use_base_scene_children_as_layers", false)
+			unre.add_do_method(reload_list)
+			unre.add_undo_property(get_current_style(), "use_base_scene_children_as_layers", true)
+			unre.add_undo_method(reload_list)
+			unre.commit_action()
 #endregion
 
 

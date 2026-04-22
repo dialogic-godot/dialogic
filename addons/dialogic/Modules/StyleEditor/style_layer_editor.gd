@@ -17,6 +17,7 @@ func load_style(style:DialogicStyle) -> void:
 	current_style = style
 	current_layer_id = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/latest_layer", "")
 
+
 	%LayerList.load_style_layer_list(current_style)
 	loading = false
 
@@ -31,11 +32,14 @@ func change_layer(layer_id:String) -> void:
 
 func load_layer(layer_id:=""):
 	current_layer_id = layer_id
-	#print(current_style.get_layer_info(layer_id))
 	%LayerView.open_layer(current_style, layer_id)
-	%LayerList.select_layer(layer_id, 0)
-	%DeleteLayerButton.disabled = layer_id == "" or current_style.inherits_anything()
 
+	%LayerList.select_layer(layer_id, 0)
+
+	%AddLayerButton.disabled = current_style.inherits_anything() or current_style.use_base_scene_children_as_layers
+	%ReplaceLayerButton.disabled = current_style.inherits_anything() or (current_style.use_base_scene_children_as_layers and layer_id != "")
+	%MakeCustomButton.disabled = current_style.inherits_anything() or (not %StyleBrowser.is_premade_style_part(current_style.get_layer_info(layer_id).path)) or current_style.use_base_scene_children_as_layers
+	%DeleteLayerButton.disabled = layer_id == "" or current_style.inherits_anything() or current_style.use_base_scene_children_as_layers
 
 func _on_layer_list_layer_selected(layer_id: String) -> void:
 	if loading:

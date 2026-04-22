@@ -36,7 +36,12 @@ func _parse_begin(object: Object) -> void:
 	if not object is Node:
 		return
 
-	var base: Node = object.owner if object.owner else object
+	var base: Node = find_style_customization_base(object)
+	#if object is DialogicLayoutLayer:
+		#base = object
+	#elif object.owner:
+		#base = object.owner
+	#object.owner if object.owner else object
 
 	if not base or not base.has_meta("style_customization"):
 		return
@@ -74,3 +79,15 @@ func add_style_override_indicator_button(after_node:Control, object:Node, proper
 	next_node.draw_warning = true
 
 	after_node.queue_free()
+
+
+func find_style_customization_base(node:Node) -> Node:
+	#var base : Node
+	#base = node
+	while node:
+		if node is DialogicLayoutLayer or node is DialogicLayoutBase:
+			return node
+		if node == EditorInterface.get_edited_scene_root():
+			return null
+		node = node.get_parent()
+	return null

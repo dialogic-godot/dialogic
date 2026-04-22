@@ -107,7 +107,6 @@ func collect_styles() -> void:
 	default_style = ProjectSettings.get_setting("dialogic/layout/default_style", "Default")
 
 
-
 func save_style() -> void:
 	if current_style == null:
 		return

@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func _on_item_mouse_selected(mouse_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
-		%LayerListRightClickMenu.set_item_disabled(1, get_item_at_position(mouse_position).get_meta("id").is_empty())
+		%LayerListRightClickMenu.set_item_disabled(0, get_item_at_position(mouse_position).get_meta("id").is_empty())
 		%LayerListRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 		%LayerListRightClickMenu.set_meta("item", get_item_at_position(mouse_position))
 

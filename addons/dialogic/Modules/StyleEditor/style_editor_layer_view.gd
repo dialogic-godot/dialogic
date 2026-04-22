@@ -8,7 +8,7 @@ var customization_editor_info := {}
 ## The id of the currently selected layer.
 ## "" is the base scene.
 var current_layer_id := ""
-var current_style : DialogicStyle
+var current_style: DialogicStyle
 
 var _loading_layer := false
 
@@ -40,10 +40,18 @@ func open_layer(style:DialogicStyle, layer_id:String) -> void:
 	show_layer_info()
 
 	var inherited_layer_info := current_style.get_layer_inherited_info(layer_id, true)
-	load_layout_scene_customization(
-			layer_info.path,
-			layer_info.overrides,
-			inherited_layer_info.overrides)
+
+	if current_style.get_inheritance_root().use_base_scene_children_as_layers and layer_id != "":
+		#print(layer_id)
+		#print(layer_info)
+		#print(inherited_layer_info)
+		load_layout_node_customization(%LayerList.base_layer_instance.get_layer_by_id(layer_id), layer_info.overrides, inherited_layer_info.overrides)
+	else:
+
+		load_layout_scene_customization(
+				layer_info.path,
+				layer_info.overrides,
+				inherited_layer_info.overrides)
 
 	_loading_layer = false
 
@@ -55,7 +63,12 @@ func show_layer_info() -> void:
 	var layer_info := current_style.get_layer_inherited_info(current_layer_id)
 
 	%SmallLayerPreview.hide()
-	if %StyleBrowser.is_premade_style_part(layer_info.get("path", "Unkown Layer")):
+	if current_style.get_inheritance_root().use_base_scene_children_as_layers and current_layer_id != "":
+		var node: DialogicLayoutLayer = %LayerList.base_layer_instance.get_layer_by_id(current_layer_id)
+		%LayerName.text = "Child Node: "+ node.name
+		%SmallLayerDescription.text = node.editor_description
+
+	elif %StyleBrowser.is_premade_style_part(layer_info.get("path", "Unkown Layer")):
 		var premade_infos = %StyleBrowser.premade_scenes_reference[layer_info.get("path")]
 		%LayerName.text = premade_infos.get("name", "Unknown Layer")
 		%SmallLayerDescription.text = premade_infos.get("description", "")
@@ -88,6 +101,16 @@ func toggle_layer_info() -> void:
 ################################################################################
 
 func load_layout_scene_customization(custom_scene_path:String, overrides:Dictionary = {}, inherited_overrides:Dictionary = {}) -> void:
+	var scene: Node = null
+	if not custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
+		var pck_scn := load(custom_scene_path)
+		if pck_scn:
+			scene = pck_scn.instantiate()
+
+	load_layout_node_customization(scene, overrides, inherited_overrides)
+
+
+func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_overrides:Dictionary = {}) -> void:
 	for child in %LayerSettingsTabs.get_children():
 		child.get_parent().remove_child(child)
 		if child == no_settings_info:
@@ -96,15 +119,12 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 		else:
 			child.queue_free()
 
-	var scene: Node = null
-	if not custom_scene_path.is_empty() and ResourceLoader.exists(custom_scene_path):
-		var pck_scn := load(custom_scene_path)
-		if pck_scn:
-			scene = pck_scn.instantiate()
-
 	var settings := []
 	if scene:
-		current_layer_scene_path = scene.scene_file_path
+		if scene.owner:
+			current_layer_scene_path = scene.owner.scene_file_path
+		else:
+			current_layer_scene_path = scene.scene_file_path
 		settings = scene.get_meta("style_customization", []).duplicate(true)
 		if scene.has_method("_get_base_customization"):
 			settings += scene._get_base_customization().duplicate(true)
@@ -267,7 +287,8 @@ func load_layout_scene_customization(custom_scene_path:String, overrides:Diction
 	var latest_tab: int = DialogicUtil.get_editor_setting("style_editor/"+current_style.name+"/layer_"+current_layer_id+"/selected_tab", 0)
 
 	%LayerSettingsTabs.current_tab = min(latest_tab, %LayerSettingsTabs.get_tab_count()-1)
-	if scene:
+	if scene and not scene.get_parent():
+		print("Remove scene ", scene)
 		scene.queue_free()
 
 
@@ -410,6 +431,7 @@ func create_make_unique_button(property_name:String) -> Button:
 
 
 func _on_scene_saved(path:String) -> void:
+	#prints(path, current_layer_scene_path)
 	if path and path == current_layer_scene_path:
 		open_layer(current_style, current_layer_id)
 
