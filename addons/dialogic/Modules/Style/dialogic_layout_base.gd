@@ -31,6 +31,17 @@ func get_layers() -> Array[DialogicLayoutLayer]:
 	return layers
 
 
+func get_layer_id_list() -> PackedStringArray:
+	return PackedStringArray(get_layers().map(func(x) -> String: return x.get_meta("style_layer_id", x.name)))
+
+
+func get_layer_by_id(id:String) -> DialogicLayoutLayer:
+	for child in get_children():
+		if child is DialogicLayoutLayer and child.get_meta("style_layer_id", child.name) == id:
+			return child
+	return null
+
+
 func _on_customization_applied() -> void:
 	if not is_node_ready():
 		await ready

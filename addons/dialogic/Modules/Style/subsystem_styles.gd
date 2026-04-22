@@ -135,6 +135,10 @@ func create_layout(style_resource: DialogicStyle, parent: Node = null) -> Dialog
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.overrides)
 
+	if style_resource.get_inheritance_root().use_base_scene_children_as_layers:
+		for layer_id in base_scene.get_layer_id_list():
+			var node := base_scene.get_layer_by_id(layer_id)
+			DialogicUtil.apply_scene_export_overrides(node, style_resource.get_layer_inherited_info(layer_id).overrides)
 	base_scene.set_meta('style', style_resource)
 
 	if parent == null:

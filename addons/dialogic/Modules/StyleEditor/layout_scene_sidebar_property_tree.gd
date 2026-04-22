@@ -320,7 +320,7 @@ func is_valid_multi_node_property(node:Node, property:String) -> bool:
 
 func get_scene_node_path(node:Node, multi_node := false) -> String:
 	if multi_node: node = node.get_parent()
-	var node_path: NodePath = owner.scene_root.get_path_to(node , true)
+	var node_path: NodePath = owner.current_base_node.get_path_to(node , true)
 	if node.unique_name_in_owner:
 		node_path = "%"+node.name
 	if multi_node:
@@ -330,8 +330,8 @@ func get_scene_node_path(node:Node, multi_node := false) -> String:
 
 func get_scene_node(node_path:String) -> Node:
 	if node_path.ends_with("/@all_children"):
-		return owner.scene_root.get_node(node_path.trim_suffix("/@all_children")).get_child(0)
-	return owner.scene_root.get_node(node_path)
+		return owner.current_base_node.get_node(node_path.trim_suffix("/@all_children")).get_child(0)
+	return owner.current_base_node.get_node(node_path)
 
 
 func get_item_scene_node(item:TreeItem) -> Node:
