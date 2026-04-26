@@ -108,7 +108,7 @@ func _execute() -> void:
 
 	_connect_signals()
 
-	var character_name_text := dialogic.Text.get_character_name_parsed(character)
+	var character_name_text = dialogic.Text.get_character_name_parsed(character)
 	var final_text: String = get_property_translated('text')
 	if ProjectSettings.get_setting('dialogic/text/split_at_new_lines', false):
 		match ProjectSettings.get_setting('dialogic/text/split_at_new_lines_as', 0):

@@ -38,7 +38,7 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 		var character_info: Dictionary = portraits_info[character_identifier]
 		var character: DialogicCharacter = DialogicResourceUtil.get_character_resource(character_identifier)
 		if character:
-			var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
+			var container = dialogic.PortraitContainers.load_position_container(character.get_character_name())
 			await add_character(character, container, character_info.portrait, character_info.position_id)
 			change_character_mirror(character, character_info.get('custom_mirror', false))
 			change_character_z_index(character, character_info.get('z_index', 0))
@@ -415,7 +415,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_id:S
 		change_character_mirror(character, mirrored)
 		return
 
-	var container := dialogic.PortraitContainers.add_container(character.get_character_name())
+	var container = dialogic.PortraitContainers.add_container(character.get_character_name())
 	var character_node := await add_character(character, container, portrait, position_id)
 	if character_node == null:
 		return null
@@ -738,7 +738,7 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 ## Called from the [portrait=something] text effect.
 func text_effect_portrait(_text_node:Control, _skipped:bool, argument:String) -> void:
 	if argument:
-		var current_speaker := dialogic.Text.get_current_speaker()
+		var current_speaker = dialogic.Text.get_current_speaker()
 		if current_speaker:
 			change_character_portrait(current_speaker, argument)
 			change_speaker(current_speaker, argument)
