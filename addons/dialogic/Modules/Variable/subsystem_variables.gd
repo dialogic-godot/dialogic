@@ -178,6 +178,7 @@ func _set(property, value) -> bool:
 ## Allows to get dialogic built-in variables
 func _get(property):
 	property = str(property)
+	if not dialogic: return
 	if property in var_storage.keys():
 		if typeof(var_storage[property]) == TYPE_DICTIONARY:
 			return VariableFolder.new(var_storage[property], property, self)
