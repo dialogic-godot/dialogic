@@ -763,6 +763,22 @@ static func get_autoload_property_suggestions(_filter:String, autoload_name:Stri
 	return suggestions
 
 
+static func get_autoload_signal_suggestions(filter:String, autoload_name:String) -> Dictionary:
+	var suggestions := {}
+
+	var script := get_autoload_script_resource(autoload_name)
+	if script:
+		for script_signal in script.get_script_signal_list():
+			if script_signal.name.begins_with('@') or script_signal.name.begins_with('_'):
+				continue
+				suggestions[script_signal.name] = {'value': script_signal.name, 'tooltip':script_signal.name, 'editor_icon': ["Callable", "EditorIcons"]}
+
+				if not filter.is_empty():
+					suggestions[filter] = {'value': filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
+
+					return suggestions
+
+
 static func get_audio_bus_suggestions(_filter:= "") -> Dictionary:
 	var bus_name_list := {}
 	for i in range(AudioServer.bus_count):
