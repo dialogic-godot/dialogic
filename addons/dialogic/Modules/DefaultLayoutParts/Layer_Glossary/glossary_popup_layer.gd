@@ -78,7 +78,7 @@ func _ready() -> void:
 
 ## Method that shows the bubble and fills in the info
 func _on_dialogic_display_dialog_text_meta_hover_started(meta: String) -> void:
-	var entry_info = DialogicUtil.autoload().Glossary.get_entry(meta)
+	var entry_info := DialogicUtil.autoload().Glossary.get_entry(meta)
 
 	if entry_info.is_empty():
 		return

@@ -94,61 +94,80 @@ signal text_signal(argument: String)
 # Careful, this section is repopulated automatically at certain moments.
 #region SUBSYSTEMS
 
-var Animations : DialogicSubsystem:
+const AnimationSubsystem = preload("res://addons/dialogic/Modules/Core/subsystem_animation.gd")
+var Animations: AnimationSubsystem:
 	get: return get_subsystem("Animations")
 
-var Audio : DialogicSubsystem:
+const AudioSubsystem = preload("res://addons/dialogic/Modules/Audio/subsystem_audio.gd")
+var Audio: AudioSubsystem:
 	get: return get_subsystem("Audio")
 
-var Backgrounds : DialogicSubsystem:
+const BackgroundsSubsystem = preload("res://addons/dialogic/Modules/Background/subsystem_backgrounds.gd")
+var Backgrounds: BackgroundsSubsystem:
 	get: return get_subsystem("Backgrounds")
 
-var Choices : DialogicSubsystem:
+const ChoicesSubsystem = preload("res://addons/dialogic/Modules/Choice/subsystem_choices.gd")
+var Choices: ChoicesSubsystem:
 	get: return get_subsystem("Choices")
 
-var Expressions : DialogicSubsystem:
+const ExpressionSubsystem = preload("res://addons/dialogic/Modules/Core/subsystem_expression.gd")
+var Expressions: ExpressionSubsystem:
 	get: return get_subsystem("Expressions")
 
-var Glossary : DialogicSubsystem:
+const GlossarySubsystem = preload("res://addons/dialogic/Modules/Glossary/subsystem_glossary.gd")
+var Glossary: GlossarySubsystem:
 	get: return get_subsystem("Glossary")
 
-var History : DialogicSubsystem:
+const HistorySubsystem = preload("res://addons/dialogic/Modules/History/subsystem_history.gd")
+var History: HistorySubsystem:
 	get: return get_subsystem("History")
 
-var Inputs : DialogicSubsystem:
+const InputsSubsystem = preload("res://addons/dialogic/Modules/Core/subsystem_input.gd")
+var Inputs: InputsSubsystem:
 	get: return get_subsystem("Inputs")
 
-var Jump : DialogicSubsystem:
+const JumpSubsystem = preload("res://addons/dialogic/Modules/Jump/subsystem_jump.gd")
+var Jump: JumpSubsystem:
 	get: return get_subsystem("Jump")
 
-var PortraitContainers : DialogicSubsystem:
+const PortraitContainersSubsystem = preload("res://addons/dialogic/Modules/Character/subsystem_containers.gd")
+var PortraitContainers: PortraitContainersSubsystem:
 	get: return get_subsystem("PortraitContainers")
 
-var Portraits : DialogicSubsystem:
+const PortraitsSubsystem = preload("res://addons/dialogic/Modules/Character/subsystem_portraits.gd")
+var Portraits: PortraitsSubsystem:
 	get: return get_subsystem("Portraits")
 
-var Save : DialogicSubsystem:
+const SaveSubsystem = preload("res://addons/dialogic/Modules/Save/subsystem_save.gd")
+var Save: SaveSubsystem:
 	get: return get_subsystem("Save")
 
-var Settings : DialogicSubsystem:
+const SettingsSubsystem = preload("res://addons/dialogic/Modules/Settings/subsystem_settings.gd")
+var Settings: SettingsSubsystem:
 	get: return get_subsystem("Settings")
 
-var Styles : DialogicSubsystem:
+const StylesSubsystem = preload("res://addons/dialogic/Modules/Style/subsystem_styles.gd")
+var Styles: StylesSubsystem:
 	get: return get_subsystem("Styles")
 
-var Text : DialogicSubsystem:
+const TextSubsystem = preload("res://addons/dialogic/Modules/Text/subsystem_text.gd")
+var Text: TextSubsystem:
 	get: return get_subsystem("Text")
 
-var TextInput : DialogicSubsystem:
+const TextInputSubsystem = preload("res://addons/dialogic/Modules/TextInput/subsystem_text_input.gd")
+var TextInput: TextInputSubsystem:
 	get: return get_subsystem("TextInput")
 
-var VAR : DialogicSubsystem:
+const VARSubsystem = preload("res://addons/dialogic/Modules/Variable/subsystem_variables.gd")
+var VAR: VARSubsystem:
 	get: return get_subsystem("VAR")
 
-var Voice : DialogicSubsystem:
+const VoiceSubsystem = preload("res://addons/dialogic/Modules/Voice/subsystem_voice.gd")
+var Voice: VoiceSubsystem:
 	get: return get_subsystem("Voice")
 
-var Wait : DialogicSubsystem:
+const WaitSubsystem = preload("res://addons/dialogic/Modules/Wait/subsystem_wait.gd")
+var Wait: WaitSubsystem:
 	get: return get_subsystem("Wait")
 
 #endregion
