@@ -23,5 +23,4 @@ func _set(property, what):
 		else:
 			name_label_root.show()
 		return true
-	else:
-		return false
+	return false
