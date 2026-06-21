@@ -356,16 +356,14 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 			if subsystem is DialogicSubsystem:
 				(subsystem as DialogicSubsystem)._clear_state(clear_flags)
 
-	var timeline := current_timeline
-
-	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
 	current_state = States.IDLE
 
 	# Resetting variables
-	if timeline:
-		await timeline.clean()
+	if current_timeline:
+		await current_timeline.clean()
+	current_timeline = null
 
 
 ## Cleanup after previous event (if any).
