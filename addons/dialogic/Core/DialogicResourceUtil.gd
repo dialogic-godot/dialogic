@@ -304,7 +304,7 @@ static func guess_special_resource(type: String, string: String, default := {}, 
 
 	if string.begins_with('res://'):
 		for i in resources.values():
-			if i.path == string:
+			if i.path == string or i.path == string+'c':
 				return i
 		printerr("[Dialogic] Unable to find ", type, " at path '", string, "'.")
 		return default
