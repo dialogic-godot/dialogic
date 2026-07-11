@@ -14,6 +14,9 @@ extends AudioStreamPlayer
 func _ready() -> void:
 	add_to_group('dialogic_button_sound')
 	_connect_all_buttons()
+	if bus == "Master":
+		bus = ProjectSettings.get_setting("dialogic/audio/type_sound_bus", "Master")
+
 
 #basic play sound
 func play_sound(sound) -> void:
