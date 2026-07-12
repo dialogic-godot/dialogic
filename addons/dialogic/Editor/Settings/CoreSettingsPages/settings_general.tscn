@@ -76,6 +76,7 @@ selected = 0
 fit_to_longest_item = false
 item_count = 3
 popup/item_0/text = "Delete Layout Node"
+popup/item_0/id = 0
 popup/item_1/text = "Hide Layout Node"
 popup/item_1/id = 1
 popup/item_2/text = "Keep Layout Node"
@@ -188,6 +189,7 @@ layout_mode = 2
 selected = 0
 item_count = 4
 popup/item_0/text = "Event only"
+popup/item_0/id = 0
 popup/item_1/text = "Event+Subsystem"
 popup/item_1/id = 1
 popup/item_2/text = "Subsystem only"
@@ -199,6 +201,14 @@ popup/item_3/id = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Create"
+
+[node name="WarningMessage" type="RichTextLabel" parent="HBoxContainer6/ExtensionsPanel/VBox/ExtensionCreator"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=yellow]Warning: Extension <name> is the same as an existing subsystem. If you do not intend to override the base subsystem, choose a new name."
+fit_content = true
 
 [node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
