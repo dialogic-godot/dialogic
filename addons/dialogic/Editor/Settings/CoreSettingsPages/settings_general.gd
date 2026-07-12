@@ -28,9 +28,9 @@ func _ready() -> void:
 	%ExtensionCreator.hide()
 	
 	# Grab subsystems that exist for later use
-	for prop in Dialogic.get_script().get_script_property_list():
-		if prop.class_name == 'Node':
-			DIALOGIC_RESERVED_WORDS.push_back(prop.name)
+	for indexer in DialogicUtil.get_indexers():
+		for sub in indexer._get_subsystems():
+			DIALOGIC_RESERVED_WORDS.append(sub.name)
 
 
 func _refresh() -> void:
