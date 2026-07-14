@@ -70,7 +70,7 @@ func update_background(new_scene := "", new_argument := "", fade_time := 0.0, tr
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 
-	var info := {'scene':new_scene, 'argument':new_scene, 'fade_time':fade_time, 'same_scene':false}
+	var info := {'scene':new_scene, 'argument':new_argument, 'fade_time':fade_time, 'same_scene':false}
 	if background_holder == null:
 		background_changed.emit(info)
 		return
