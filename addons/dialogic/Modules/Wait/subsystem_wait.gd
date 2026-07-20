@@ -45,7 +45,6 @@ func update_wait(time: float, hide_text: bool, skippable: bool) -> void:
 	dialogic.current_state = dialogic.States.WAITING
 
 	if hide_text and dialogic.has_subsystem("Text"):
-		dialogic.Text.update_dialog_text("", true)
 		dialogic.Text.hide_textbox()
 
 	_timer.start(final_wait_time)
