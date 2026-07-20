@@ -53,7 +53,7 @@ enum NameLabelColorModes {GLOBAL_COLOR, CHARACTER_COLOR, CUSTOM_COLOR}
 func _apply_export_overrides() -> void:
 	## FONT SETTINGS
 	var dialog_text: DialogicNode_DialogText = %DialogicNode_DialogText
-	dialog_text.alignment = text_alignment as DialogicNode_DialogText.Alignment
+	dialog_text.alignment = text_alignment as HorizontalAlignment
 
 	var text_size: int = text_custom_size
 	if text_use_global_size:

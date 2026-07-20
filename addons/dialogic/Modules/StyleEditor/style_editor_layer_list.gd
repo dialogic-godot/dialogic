@@ -41,7 +41,7 @@ func _ready() -> void:
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")
 	%MakeCustomButton.icon = get_theme_icon("InstanceOptions", "EditorIcons")
-	%MoreSettings.icon = get_theme_icon("GuiTabMenu", "EditorIcons")
+	%MoreSettings.icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
 
 
 func get_current_style() -> DialogicStyle:

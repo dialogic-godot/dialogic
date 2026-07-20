@@ -288,7 +288,7 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 
 	%LayerSettingsTabs.current_tab = min(latest_tab, %LayerSettingsTabs.get_tab_count()-1)
 	if scene and not scene.get_parent():
-		print("Remove scene ", scene)
+		#print("Remove scene ", scene)
 		scene.queue_free()
 
 

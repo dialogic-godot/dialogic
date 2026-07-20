@@ -281,3 +281,4 @@ text = "Use"
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="pressed" from="HSplit/Margin/VBox/HBox2/ReloadButton" to="." method="_on_reload_button_pressed"]
 [connection signal="pressed" from="HSplit/Margin/VBox/Buttons/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="HSplit/ItemDetailsSection/VBox/ActivateButton" to="." method="_on_activate_button_pressed"]
