@@ -81,10 +81,10 @@ func get_layer_id_at_index(index:int) -> String:
 
 
 func get_layer_info(id:String) -> Dictionary:
-	var info := {"id": id, "path": "", "overrides": {}}
+	var info := {"id": id, "path": "", "overrides": {}}.duplicate()
 
 	if has_layer(id):
-		if get_inheritance_root().use_base_scene_children_as_layers and id != "":
+		if get_inheritance_root().use_base_scene_children_as_layers:
 			return info.merged(layer_info[id], true)
 
 		var layer_resource: DialogicStyleLayer = layer_info[id]
@@ -236,10 +236,10 @@ func merge_layer_infos(new_layer_info:Dictionary, ancestor_info:Dictionary) -> D
 ## If [param inherited_only] is `true`, the local info is not included.
 func get_layer_inherited_info(id:String, inherited_only := false) -> Dictionary:
 	var style := self
-	var info := {"id": id, "path": "", "overrides": {}}
+	var info := {"id": id, "path": "", "overrides": {}}.duplicate()
 
 	if not inherited_only:
-		info = get_layer_info(id)
+		info = info.merged(get_layer_info(id), true)
 
 	while style.inherits_anything():
 		style = style.inherits

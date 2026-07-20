@@ -846,7 +846,7 @@ bbcode_enabled = true
 text = "Some Example Text In the Textbox..."
 visible_characters_behavior = 1
 script = ExtResource("4_0f4vc")
-textbox_root = NodePath(".")
+textbox_root = NodePath("../..")
 font_size = 20
 metadata/_custom_type_script = "uid://drhfq6rmdeuri"
 
@@ -881,12 +881,12 @@ script = ExtResource("14_dciif")
 
 [node name="NextIndicator" type="Control" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" unique_id=880957962]
 unique_name_in_owner = true
-visible = false
-anchors_preset = 0
-offset_left = 520.0
-offset_top = 87.45229
-offset_right = 520.0
-offset_bottom = 87.45229
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2

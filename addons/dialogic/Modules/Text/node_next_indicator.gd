@@ -44,6 +44,8 @@ var texture_rect: TextureRect
 var tween: Tween
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	add_to_group('dialogic_next_indicator')
 	gui_input.connect(_on_gui_input)
 	# Creating TextureRect if missing

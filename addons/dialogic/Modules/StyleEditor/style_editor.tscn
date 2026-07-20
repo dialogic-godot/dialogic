@@ -443,6 +443,7 @@ text = "Make my own!"
 [node name="StyleBrowser" parent="." unique_id=210901023 instance=ExtResource("8_7pmk1")]
 unique_name_in_owner = true
 title = "Style Browser"
+size = Vector2i(844, 573)
 visible = false
 maximize_disabled = false
 script = ExtResource("9_sg0tk")
@@ -452,17 +453,17 @@ unique_name_in_owner = true
 oversampling_override = 1.0
 title = "Customize Layer Scene"
 position = Vector2i(0, 36)
-size = Vector2i(418, 249)
+size = Vector2i(418, 286)
 dialog_autowrap = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CustomizePopup" unique_id=1802024036]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -49.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
 

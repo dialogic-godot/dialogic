@@ -137,7 +137,6 @@ func show_history() -> void:
 func _process(_delta : float) -> void:
 	if Engine.is_editor_hint():
 		return
-	print("HALLOE")
 
 	### Make sure we are scrolled to the bottom.
 	#if scroll_to_bottom_flag and %HistoryBox.visible and %HistoryLog.get_child_count():
