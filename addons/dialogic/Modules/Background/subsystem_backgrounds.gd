@@ -213,7 +213,7 @@ func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHo
 
 ## Whether a background is set.
 func has_background() -> bool:
-	return not scene.is_empty() or argument.is_empty()
+	return not (scene.is_empty() and argument.is_empty())
 
 
 func get_background_node() -> DialogicBackground:
