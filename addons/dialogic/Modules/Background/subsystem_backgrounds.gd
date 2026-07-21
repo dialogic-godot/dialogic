@@ -191,13 +191,13 @@ func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHo
 	viewport.disable_3d = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
-	if parent.get_parent().get("bg_texture_filter") != null and parent.get_parent().bg_texture_filter > -1:
-		viewport.canvas_item_default_texture_filter = parent.get_parent().bg_texture_filter
+	if parent.bg_texture_filter > -1:
+		viewport.canvas_item_default_texture_filter = (parent.bg_texture_filter as Viewport.DefaultCanvasItemTextureFilter)
 	else:
 		viewport.canvas_item_default_texture_filter = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter")
 
-	if parent.get_parent().get("bg_texture_repeat") != null and parent.get_parent().bg_texture_repeat > -1:
-		viewport.canvas_item_default_texture_repeat = parent.get_parent().bg_texture_repeat
+	if parent.bg_texture_repeat > -1:
+		viewport.canvas_item_default_texture_repeat = (parent.bg_texture_repeat as Viewport.DefaultCanvasItemTextureRepeat)
 	else:
 		viewport.canvas_item_default_texture_repeat = ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_repeat")
 

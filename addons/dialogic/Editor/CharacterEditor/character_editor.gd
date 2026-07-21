@@ -24,7 +24,7 @@ var def_portrait_path: String = DialogicUtil.get_module_path('Character').path_j
 func _register() -> void:
 	## Makes the editor open this when a .dch file is selected.
 	## Then _open_resource() is called.
-	editors_manager.register_resource_editor("dch", self)
+	editors_manager.register_resource_editor(self, "dch")
 
 	## Add an "add character" button
 	var add_character_button: Button = editors_manager.add_button(
@@ -49,6 +49,10 @@ func _get_title() -> String:
 
 func _get_icon() -> Texture:
 	return load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+
+func _can_edit(resource:Resource) -> bool:
+	return resource is DialogicCharacter
 
 
 ## Called when a character is opened somehow

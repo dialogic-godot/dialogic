@@ -1,0 +1,284 @@
+[gd_scene format=3 uid="uid://bms3xcvgktcui"]
+
+[ext_resource type="Script" uid="uid://c2d52kmmsi1n5" path="res://addons/dialogic/Editor/Common/browser.gd" id="1_p6vny"]
+[ext_resource type="Texture2D" uid="uid://o2853ofw8kkn" path="res://addons/dialogic/Modules/Layout_Basics/Layer_CenteredChoices/preview.png" id="2_4liw5"]
+
+[sub_resource type="Gradient" id="Gradient_0o1u0"]
+colors = PackedColorArray(0.296448, 0.231485, 0.52887, 1, 0.100572, 0.303996, 0.476999, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vd6co"]
+gradient = SubResource("Gradient_0o1u0")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e858"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.615686)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3eoa"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="DPITexture" id="DPITexture_4liw5"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M10.168 8.754a5 5 0 1 0-1.414 1.414l4.316 4.316 1.414-1.414zM6 3a3 3 0 0 1 0 6 3 3 0 0 1 0-6z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_s35od"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"none\" stroke=\"#e0e0e0\" stroke-width=\"2\" d=\"m3 3 10 10M3 13 13 3\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mavtr"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.060333323, 0.032, 0.1, 0.6509804)
+border_width_left = 2
+anti_aliasing_size = 2.332
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqdat"]
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.5764706)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.992157, 0.992157, 0.992157, 0.101961)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otau4"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s35od"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4liw5"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
+[node name="ItemBrowser" type="Window" unique_id=210901023]
+oversampling_override = 1.0
+title = "Browser"
+initial_position = 2
+size = Vector2i(844, 389)
+wrap_controls = true
+transient = true
+popup_window = true
+minimize_disabled = true
+maximize_disabled = true
+script = ExtResource("1_p6vny")
+
+[node name="Background" type="TextureRect" parent="." unique_id=917126793]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_vd6co")
+
+[node name="HSplit" type="HSplitContainer" parent="." unique_id=772487318]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="HSplit" unique_id=423558221]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="HSplit/Margin" unique_id=1738928581]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBox2" type="HBoxContainer" parent="HSplit/Margin/VBox" unique_id=1289530351]
+layout_mode = 2
+
+[node name="BrowserTitle" type="Label" parent="HSplit/Margin/VBox/HBox2" unique_id=2081425593]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DialogicSubTitle"
+theme_override_font_sizes/font_size = 25
+text = "Style Browser"
+
+[node name="ReloadButton" type="Button" parent="HSplit/Margin/VBox/HBox2" unique_id=95924174]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Refresh"
+theme_type_variation = &"FlatButton"
+
+[node name="HBox" type="HBoxContainer" parent="HSplit/Margin/VBox" unique_id=791019994]
+layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="HSplit/Margin/VBox/HBox" unique_id=1497283663]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_4e858")
+theme_override_styles/focus = SubResource("StyleBoxFlat_t3eoa")
+placeholder_text = "Search"
+right_icon = SubResource("DPITexture_4liw5")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplit/Margin/VBox" unique_id=1616644418]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemGrid" type="HFlowContainer" parent="HSplit/Margin/VBox/ScrollContainer" unique_id=818528577]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Buttons" type="HBoxContainer" parent="HSplit/Margin/VBox" unique_id=1364377802]
+layout_mode = 2
+alignment = 1
+
+[node name="CloseButton" type="Button" parent="HSplit/Margin/VBox/Buttons" unique_id=1196270559]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+text = "Close"
+icon = SubResource("DPITexture_s35od")
+
+[node name="ItemDetailsSection" type="PanelContainer" parent="HSplit" unique_id=1889026675]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_mavtr")
+
+[node name="VBox" type="VBoxContainer" parent="HSplit/ItemDetailsSection" unique_id=798191962]
+layout_mode = 2
+alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="HSplit/ItemDetailsSection/VBox" unique_id=185399018]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dqdat")
+
+[node name="Panel" type="PanelContainer" parent="HSplit/ItemDetailsSection/VBox/Panel" unique_id=83397940]
+clip_children = 1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_otau4")
+
+[node name="PreviewImage" type="TextureRect" parent="HSplit/ItemDetailsSection/VBox/Panel/Panel" unique_id=734639500]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_4liw5")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="MultiImageSelects" type="ScrollContainer" parent="HSplit/ItemDetailsSection/VBox" unique_id=1437585907]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_s35od")
+vertical_scroll_mode = 0
+
+[node name="SmallPreviews" type="HBoxContainer" parent="HSplit/ItemDetailsSection/VBox/MultiImageSelects" unique_id=202968780]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="HFlowContainer" type="HFlowContainer" parent="HSplit/ItemDetailsSection/VBox" unique_id=720927114]
+layout_mode = 2
+
+[node name="ItemTitle" type="Label" parent="HSplit/ItemDetailsSection/VBox/HFlowContainer" unique_id=18297707]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"DialogicTitle"
+text = "Cool Style Part"
+
+[node name="ItemAuthor" type="Label" parent="HSplit/ItemDetailsSection/VBox/HFlowContainer" unique_id=1238112153]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"DialogicHintText"
+text = "by Jowan"
+
+[node name="ItemType" type="Label" parent="HSplit/ItemDetailsSection/VBox/HFlowContainer" unique_id=1845980661]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"DialogicHintText"
+text = "a style"
+
+[node name="ItemDescription" type="RichTextLabel" parent="HSplit/ItemDetailsSection/VBox" unique_id=31353729]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_type_variation = &"DialogicHintText2"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_4liw5")
+bbcode_enabled = true
+text = "A cool textbox layer"
+fit_content = true
+
+[node name="ActivateButton" type="Button" parent="HSplit/ItemDetailsSection/VBox" unique_id=563102989]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Use"
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="pressed" from="HSplit/Margin/VBox/HBox2/ReloadButton" to="." method="_on_reload_button_pressed"]
+[connection signal="pressed" from="HSplit/Margin/VBox/Buttons/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="HSplit/ItemDetailsSection/VBox/ActivateButton" to="." method="_on_activate_button_pressed"]

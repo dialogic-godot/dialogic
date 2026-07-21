@@ -275,7 +275,6 @@ func _on_delete_glossary_entry_pressed() -> void:
 				%EntryList.select(previous_item_index)
 
 
-
 func _on_entry_search_text_changed(new_text: String) -> void:
 	if new_text.is_empty() or new_text.to_lower() in %EntryList.get_item_text(%EntryList.get_selected_items()[0]).to_lower():
 		return

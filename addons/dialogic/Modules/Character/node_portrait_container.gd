@@ -1,4 +1,5 @@
 @tool
+@icon("node_portrait_container_icon.svg")
 class_name DialogicNode_PortraitContainer
 extends Control
 
@@ -11,20 +12,20 @@ enum PositionModes {
 
 @export var mode := PositionModes.POSITION
 
-@export_subgroup('Mode: Position')
+@export_subgroup("Mode: Position")
 ## The position this node corresponds to.
 @export var container_ids: PackedStringArray = ["1"]
 
 
-@export_subgroup('Mode: Speaker')
+@export_subgroup("Mode: Speaker")
 ## Can be used to use a different portrait.
 ## E.g. "Faces/" would mean instead of "happy" it will use portrait "Faces/happy"
-@export var portrait_prefix := ''
+@export var portrait_prefix := ""
 
-@export_subgroup('Portrait Placement')
+@export_subgroup("Portrait Placement")
 enum SizeModes {
 	KEEP, ## The height and width of the container have no effect, only the origin.
-	FIT_STRETCH, ## The portrait will be fitted into the container, ignoring it's aspect ratio and the character/portrait scale.
+	FIT_STRETCH, ## The portrait will be fitted into the container, ignoring it"s aspect ratio and the character/portrait scale.
 	FIT_IGNORE_SCALE, ## The portrait will be fitted into the container, ignoring the character/portrait scale, but preserving the aspect ratio.
 	FIT_SCALE_HEIGHT ## Recommended. The portrait will be scaled to fit the container height. A character/portrait scale of 100% means 100% container height. Aspect ratio will be preserved.
 	}
@@ -41,28 +42,32 @@ enum SizeModes {
 		_update_debug_portrait_scene()
 
 
-@export_group('Origin', 'origin')
+@export_group("Origin", "origin")
 enum OriginAnchors {TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT_MIDDLE, CENTER, RIGHT_MIDDLE, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT}
 ## The portrait will be placed relative to this point in the container.
 @export var origin_anchor: OriginAnchors = OriginAnchors.BOTTOM_CENTER :
 	set(anchor):
 		origin_anchor = anchor
-		_update_debug_origin()
+		queue_redraw()
 
 ## An offset to apply to the origin. Rarely useful.
 @export var origin_offset := Vector2() :
 	set(offset):
 		origin_offset = offset
-		_update_debug_origin()
+		queue_redraw()
 
-enum PivotModes {AT_ORIGIN, PERCENTAGE, PIXELS}
+enum PivotModes {
+	AT_ORIGIN, ## The portrait will pivot (rotate/scale) around the origin.
+	PERCENTAGE, ## The portrait will pivot (rotate/scale) around the given pivot_value which is relative to this containers size. E.g (0,0) is top left, (0.5,0.5) is center and (1,1) is bottom right.
+	PIXELS ## The portrait will pivot (rotate/scale) around the given pivot_value in pixels (relative to this container).
+}
 ## Usually you want to rotate or scale around the portrait origin.
 ## For the moments where that is not the case, set the mode to PERCENTAGE or PIXELS and use [member pivot_value].
 @export var pivot_mode: PivotModes = PivotModes.AT_ORIGIN
 ## Only has an effect when [member pivot_mode] is not AT_ORIGIN. Meaning depends on whether [member pivot_mode] is PERCENTAGE or PIXELS.
 @export var pivot_value := Vector2()
 
-@export_group('Debug', 'debug')
+@export_group("Debug", "debug")
 ## A character that will be displayed in the editor, useful for getting the right size.
 @export var debug_character: DialogicCharacter = null:
 	set(character):
@@ -75,10 +80,8 @@ enum PivotModes {AT_ORIGIN, PERCENTAGE, PIXELS}
 
 var debug_character_holder_node: Node2D = null
 var debug_character_scene_node: Node = null
-var debug_origin: Sprite2D = null
-var default_portrait_scene: String = DialogicUtil.get_module_path('Character').path_join("default_portrait.tscn")
-# Used if no debug character is specified
-var default_debug_character := load(DialogicUtil.get_module_path('Character').path_join("preview_character.tres"))
+var default_portrait_scene: String = DialogicUtil.get_module_path("Character").path_join("default_portrait.tscn")
+var default_debug_character := load("uid://dykf1j17ct5mo")
 
 var ignore_resize := false
 
@@ -86,31 +89,23 @@ var debug_draw := false
 
 
 func _ready() -> void:
-	debug_draw = DialogicUtil.autoload().PortraitContainers.debug_draw
 	match mode:
 		PositionModes.POSITION:
-			add_to_group('dialogic_portrait_con_position')
+			add_to_group("dialogic_portrait_con_position")
 		PositionModes.SPEAKER:
-			add_to_group('dialogic_portrait_con_speaker')
+			add_to_group("dialogic_portrait_con_speaker")
 
 	if Engine.is_editor_hint():
-		resized.connect(_update_debug_origin)
-
-		if !ProjectSettings.get_setting('dialogic/portraits/default_portrait', '').is_empty():
-			default_portrait_scene = ProjectSettings.get_setting('dialogic/portraits/default_portrait', '')
-
-		debug_origin = Sprite2D.new()
-		add_child(debug_origin)
-		debug_origin.texture = load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")
-
-		_update_debug_origin()
 		_update_debug_portrait_scene()
+		if not ProjectSettings.get_setting("dialogic/portraits/default_portrait", "").is_empty():
+			default_portrait_scene = ProjectSettings.get_setting("dialogic/portraits/default_portrait", "")
+
 	else:
+		debug_draw = DialogicUtil.autoload().PortraitContainers.debug_draw
 		resized.connect(update_portrait_transforms)
 
 
-################################################################################
-##						MAIN METHODS
+#region MAIN METHODS
 ################################################################################
 
 func update_portrait_transforms() -> void:
@@ -166,28 +161,33 @@ func _get_origin_position(rect_size = null) -> Vector2:
 func is_container(id:Variant) -> bool:
 	return str(id) in container_ids
 
+#endregion
+
+
 #region DEBUG METHODS
 ################################################################################
 ### USE THIS TO DEBUG THE POSITIONS
 
 func _draw():
-	if debug_draw:
+	if debug_draw or Engine.is_editor_hint():
 		draw_rect(Rect2(Vector2(), size), Color(1, 0.3098039329052, 1), false, 2)
-		draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size())+Vector2(8,0) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
-#
-#func _process(delta:float) -> void:
-	#queue_redraw()
+		if container_ids:
+			draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size())+Vector2(8,0) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
+
+		var pivot_texture := get_theme_icon("EditorPivot", "EditorIcons")
+		var pivot_draw_size := 32
+		draw_texture_rect(pivot_texture, Rect2(_get_origin_position()-Vector2.ONE*pivot_draw_size*0.5, Vector2.ONE*pivot_draw_size), false, Color(1, 0.3098039329052, 1))
+		_update_debug_portrait_transform()
 
 
 ## Loads the debug_character with the debug_character_portrait
 ## Creates a holder node and applies mirror
 func _update_debug_portrait_scene() -> void:
-	if !Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		return
 	if is_instance_valid(debug_character_holder_node):
 		for child in get_children():
-			if child != debug_origin:
-				child.free()
+			child.free()
 
 	# Get character
 	var character := _get_debug_character()
@@ -207,53 +207,44 @@ func _update_debug_portrait_scene() -> void:
 	var portrait_info: Dictionary = character.get_portrait_info(debug_portrait)
 
 	# Determine scene
-	var portrait_scene_path: String = portrait_info.get('scene', default_portrait_scene)
+	var portrait_scene_path: String = portrait_info.get("scene", default_portrait_scene)
 	if portrait_scene_path.is_empty():
 		portrait_scene_path = default_portrait_scene
 
 	debug_character_scene_node = load(portrait_scene_path).instantiate()
 
-	if !is_instance_valid(debug_character_scene_node):
+	if not is_instance_valid(debug_character_scene_node):
 		return
 
 	# Load portrait
-	DialogicUtil.apply_scene_export_overrides(debug_character_scene_node, character.portraits[debug_portrait].get('export_overrides', {}))
+	DialogicUtil.apply_scene_export_overrides(debug_character_scene_node, character.portraits[debug_portrait].get("export_overrides", {}))
 	debug_character_scene_node._update_portrait(character, debug_portrait)
 
 	# Add character node
-	if !is_instance_valid(debug_character_holder_node):
+	if not is_instance_valid(debug_character_holder_node):
 		debug_character_holder_node = Node2D.new()
 		add_child(debug_character_holder_node)
 
 	# Add portrait node
 	debug_character_holder_node.add_child(debug_character_scene_node)
 	move_child(debug_character_holder_node, 0)
-	debug_character_scene_node._set_mirror(character.mirror != mirrored != portrait_info.get('mirror', false))
+	debug_character_scene_node._set_mirror(character.mirror != mirrored != portrait_info.get("mirror", false))
 
 	_update_debug_portrait_transform()
 
 
-## Set's the size and position of the holder and scene node
+## Set"s the size and position of the holder and scene node
 ## according to the size_mode
 func _update_debug_portrait_transform() -> void:
-	if !Engine.is_editor_hint() or !is_instance_valid(debug_character_scene_node) or !is_instance_valid(debug_origin):
+	if not Engine.is_editor_hint() or not is_instance_valid(debug_character_scene_node):
 		return
 	var character := _get_debug_character()
 	var portrait_info := character.get_portrait_info(debug_character_portrait)
-	var transform := get_local_portrait_transform(debug_character_scene_node._get_covered_rect(), character.scale*portrait_info.get('scale', 1))
+	var transform := get_local_portrait_transform(debug_character_scene_node._get_covered_rect(), character.scale*portrait_info.get("scale", 1))
 	debug_character_holder_node.position = transform.position
-	debug_character_scene_node.position = portrait_info.get('offset', Vector2())+character.offset
+	debug_character_scene_node.position = portrait_info.get("offset", Vector2())+character.offset
 
 	debug_character_holder_node.scale = transform.size
-
-
-## Updates the debug origins position. Also calls _update_debug_portrait_transform()
-func _update_debug_origin() -> void:
-	if !Engine.is_editor_hint() or !is_instance_valid(debug_origin):
-		return
-	debug_origin.position = _get_origin_position()
-	_update_debug_portrait_transform()
-
 
 
 ## Returns the debug character or the default debug character

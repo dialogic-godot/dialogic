@@ -21,6 +21,7 @@ class_name DialogicStyle
 	"" : DialogicStyleLayer.new()
 }
 
+@export var use_base_scene_children_as_layers := false
 
 func _init(_name := "") -> void:
 	if not _name.is_empty():
@@ -30,10 +31,21 @@ func _init(_name := "") -> void:
 #region BASE METHODS
 # These methods are local, meaning they do NOT take inheritance into account.
 
+
+## Clears layer list, info and inherits
 func clear() -> void:
 	layer_list = []
 	layer_info = {"" : DialogicStyleLayer.new()}
 	inherits = null
+	changed.emit()
+
+
+## Sets layer list, info and inherits (used to undo clear()).
+func setup(set_layer_list:Array, set_layer_info:Dictionary, set_inherits:DialogicStyle = null) -> void:
+	layer_list = Array(set_layer_list, TYPE_STRING, "", null)
+	layer_info = set_layer_info
+	inherits = set_inherits
+	changed.emit()
 
 
 ## Returns the amount of layers (the base layer is not included).
@@ -49,7 +61,9 @@ func get_layer_index(id:String) -> int:
 
 ## Returns `true` if [param id] is a valid id for a layer.
 func has_layer(id:String) -> bool:
-	return id in layer_info or id == ""
+	if get_inheritance_root().use_base_scene_children_as_layers and id != "" and not id in layer_info:
+		layer_info[id] = {"path":"", "id":"", "overrides":{}}
+	return id in layer_info or id == "" or get_inheritance_root().use_base_scene_children_as_layers
 
 
 ## Returns `true` if [param index] is a valid index for a layer.
@@ -67,19 +81,35 @@ func get_layer_id_at_index(index:int) -> String:
 
 
 func get_layer_info(id:String) -> Dictionary:
-	var info := {"id": id, "path": "", "overrides": {}}
+	var info := {"id": id, "path": "", "overrides": {}}.duplicate()
 
 	if has_layer(id):
-		var layer_resource: DialogicStyleLayer = layer_info[id]
+		if get_inheritance_root().use_base_scene_children_as_layers:
+			return info.merged(layer_info[id], true)
 
+		var layer_resource: DialogicStyleLayer = layer_info[id]
 		if layer_resource.scene != null:
-			info.path = layer_resource.scene.resource_path
+			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
+			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(layer_resource.scene.resource_path))
 		elif id == "":
-			info.path = DialogicStylesUtil.get_default_layout_base().resource_path
+			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
+			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(DialogicStylesUtil.get_default_layout_base().resource_path))
 
 		info.overrides = layer_resource.overrides.duplicate()
 
 	return info
+
+#
+#func enable_base_scene_children_as_layers() -> void:
+	#use_base_scene_children_as_layers = true
+#
+#
+#func disable_base_scene_children_as_layers() -> void:
+	#use_base_scene_children_as_layers = false
+	#var new_layer_info := {}
+	#new_layer_info[""] = layer_info[""]
+	#layer_info = new_layer_info
+	#layer_list.clear()
 
 #endregion
 
@@ -130,6 +160,11 @@ func move_layer(from_index:int, to_index:int) -> void:
 	changed.emit()
 
 
+## Moves the given layer [param layer_id] to the given [param index].
+func set_layer_index(layer_id:String, index:int) -> void:
+	move_layer(get_layer_index(layer_id), index)
+
+
 ## Changes the scene property of the DialogicStyleLayer resource at [param layer_id].
 func set_layer_scene(layer_id:String, scene:String) -> void:
 	if not has_layer(layer_id):
@@ -163,13 +198,12 @@ func remove_layer_setting(layer_id:String, setting:String) -> void:
 	layer_info[layer_id].overrides.erase(setting)
 	changed.emit()
 
-#
 #endregion
 
 
 #region INHERITANCE METHODS
+################################################################################
 # These methods are what you should usually use to get info about this style.
-
 
 ## Returns `true` if this style is inheriting from another style.
 func inherits_anything() -> bool:
@@ -202,10 +236,10 @@ func merge_layer_infos(new_layer_info:Dictionary, ancestor_info:Dictionary) -> D
 ## If [param inherited_only] is `true`, the local info is not included.
 func get_layer_inherited_info(id:String, inherited_only := false) -> Dictionary:
 	var style := self
-	var info := {"id": id, "path": "", "overrides": {}}
+	var info := {"id": id, "path": "", "overrides": {}}.duplicate()
 
 	if not inherited_only:
-		info = get_layer_info(id)
+		info = info.merged(get_layer_info(id), true)
 
 	while style.inherits_anything():
 		style = style.inherits

@@ -8,7 +8,7 @@ static var style_directory := {}
 ################################################################################
 
 static func update_style_directory() -> void:
-	style_directory = ProjectSettings.get_setting('dialogic/layout/style_directory', {})
+	style_directory = ProjectSettings.get_setting("dialogic/layout/style_directory", {})
 
 
 static func build_style_directory() -> void:
@@ -18,7 +18,7 @@ static func build_style_directory() -> void:
 	if ResourceLoader.exists(default):
 		style_directory[""] = default
 
-	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
+	var styles: Array = ProjectSettings.get_setting("dialogic/layout/style_list", [])
 	for style_path in styles:
 		if not ResourceLoader.exists(style_path):
 			continue
@@ -27,20 +27,20 @@ static func build_style_directory() -> void:
 		style_directory[resource.name] = style_path
 
 	if Engine.is_editor_hint():
-		ProjectSettings.set_setting('dialogic/layout/style_directory', style_directory)
+		ProjectSettings.set_setting("dialogic/layout/style_directory", style_directory)
 		ProjectSettings.save()
 
 
 static func get_default_style_path() -> String:
-	return ProjectSettings.get_setting('dialogic/layout/default_style', '')
+	return ProjectSettings.get_setting("dialogic/layout/default_style", "")
 
 
 static func get_default_layout_base() -> PackedScene:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Base_Default/default_layout_base.tscn"))
+	return load("uid://clujt7xkdgfbl")
 
 
 static func get_fallback_style_path() -> String:
-	return DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Style_VN_Default/default_vn_style.tres")
+	return "uid://dyrqmp07snnun"
 
 
 static func get_fallback_style() -> DialogicStyle:

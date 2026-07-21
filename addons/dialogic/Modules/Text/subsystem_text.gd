@@ -32,11 +32,11 @@ signal textbox_visibility_changed(visible:bool)
 ## Use this together with the Animations subsystem to implement animations.
 ## If you start an animation and want dialogic to wait for it to finish before showing text,
 ## call Dialogic.Animations.start_animating() and then Dialogic.animation_finished() once it's done.
-signal animation_textbox_show
+signal animation_textbox_show(info:Dictionary)
 ## Emitted when the textbox is hiding. Use like [signal animation_textbox_show].
-signal animation_textbox_hide
+signal animation_textbox_hide(info:Dictionary)
 ## Emitted when a new text starts. Use like [signal animation_textbox_show].
-signal animation_textbox_new_text
+signal animation_textbox_new_text(info:Dictionary)
 
 ## Emitted when a meta text on any DialogText node is hovered.
 @warning_ignore("unused_signal") # These are emitted by the NodeDialogText
@@ -91,7 +91,7 @@ var parse_stack: Array[Dictionary] = []
 ####################################################################################################
 
 func _ready() -> void:
-	dialogic.event_handled.connect(hide_next_indicators)
+	#dialogic.event_handled.connect(hide_next_indicators)
 
 	_autopauses = {}
 	var autopause_data: Dictionary = ProjectSettings.get_setting('dialogic/text/autopauses', {})
@@ -214,12 +214,6 @@ func textbox_update_visibility(visible := true, instant := false, identifier:=ac
 	else:
 		await hide_textbox(instant, identifier)
 
-		if not dialog_text.is_empty():
-			animation_textbox_new_text.emit()
-
-			if dialogic.Animations.is_animating():
-				await dialogic.Animations.finished
-
 
 func textbox_handle_auto_visibility(text: String, identifier:=active_textbox) -> void:
 	if get_textboxes(identifier) and get_textboxes(identifier)[0].auto_visibility:
@@ -238,7 +232,7 @@ func show_textbox(instant:=false, identifier:=active_textbox) -> void:
 		if not text_node.enabled:
 			continue
 		if not text_node.textbox_root.visible and not emitted:
-			animation_textbox_show.emit()
+			animation_textbox_show.emit({"textbox_identifier":identifier})
 			text_node.textbox_root.show()
 		else:
 			text_node.textbox_root.show()
@@ -252,7 +246,7 @@ func show_textbox(instant:=false, identifier:=active_textbox) -> void:
 func hide_textbox(instant:=false, identifier:=active_textbox) -> void:
 	var emitted := instant
 	if not emitted and not get_textboxes(identifier).is_empty() and get_textboxes(identifier)[0].textbox_root.visible:
-		animation_textbox_hide.emit()
+		animation_textbox_hide.emit({"textbox_identifier":identifier})
 		if dialogic.Animations.is_animating():
 			await dialogic.Animations.finished
 	for text_node in get_textboxes(identifier):
@@ -264,6 +258,16 @@ func hide_textbox(instant:=false, identifier:=active_textbox) -> void:
 
 func is_textbox_visible(identifier:="") -> bool:
 	return get_textboxes(identifier).any(func(x): return x.textbox_root.visible)
+
+
+## This triggers potentially implemented New Text animations
+## (see [signal animation_textbox_new_text] and [subsystem Animations]).
+## This is separate from [method update_dialog_text] so that one doesn't have to be a coroutine.
+func new_text_animation( additional := false, textbox_identifier := active_textbox) -> void:
+	animation_textbox_new_text.emit({"additional":additional, "textbox_identifier":textbox_identifier})
+
+	if dialogic.Animations.is_animating():
+		await dialogic.Animations.finished
 
 #endregion
 

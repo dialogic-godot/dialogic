@@ -135,6 +135,10 @@ func create_layout(style_resource: DialogicStyle, parent: Node = null) -> Dialog
 		# Apply layer overrides
 		DialogicUtil.apply_scene_export_overrides(layer_scene, layer.overrides)
 
+	if style_resource.get_inheritance_root().use_base_scene_children_as_layers:
+		for layer_id in base_scene.get_layer_id_list():
+			var node := base_scene.get_layer_by_id(layer_id)
+			DialogicUtil.apply_scene_export_overrides(node, style_resource.get_layer_inherited_info(layer_id).overrides)
 	base_scene.set_meta('style', style_resource)
 
 	if parent == null:
@@ -154,12 +158,12 @@ func reload_current_info_into_new_style() -> void:
 
 
 ## Returns the style currently in use
-func get_current_style() -> String:
+func get_current_style() -> DialogicStyle:
 	if has_active_layout_node():
 		var style_resource: DialogicStyle = get_layout_node().get_meta('style', null)
 		if style_resource:
-			return style_resource.name
-	return ''
+			return style_resource
+	return null
 
 
 func has_active_layout_node() -> bool:
@@ -190,5 +194,7 @@ func get_first_node_in_layout(group_name: String) -> Node:
 
 func preload_style(name_or_path:String = "") -> void:
 	DialogicStylesUtil.start_style_preload(name_or_path)
+
+
 
 #endregion

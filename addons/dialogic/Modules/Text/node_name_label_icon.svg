@@ -1,3 +1,40 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.00003 3C5.73484 3.00006 5.48052 3.10545 5.29303 3.293L1.29303 7.293C1.10556 7.48053 1.00024 7.73484 1.00024 8C1.00024 8.26516 1.10556 8.51947 1.29303 8.707L5.29303 12.707C5.48052 12.8945 5.73484 12.9999 6.00003 13H14C14.2652 13 14.5196 12.8946 14.7071 12.7071C14.8947 12.5196 15 12.2652 15 12V4C15 3.73478 14.8947 3.48043 14.7071 3.29289C14.5196 3.10536 14.2652 3 14 3H6.00003ZM5.00003 7C5.26525 7 5.5196 7.10536 5.70714 7.29289C5.89467 7.48043 6.00003 7.73478 6.00003 8C6.00003 8.26522 5.89467 8.51957 5.70714 8.70711C5.5196 8.89464 5.26525 9 5.00003 9C4.73481 9 4.48046 8.89464 4.29292 8.70711C4.10539 8.51957 4.00003 8.26522 4.00003 8C4.00003 7.73478 4.10539 7.48043 4.29292 7.29289C4.48046 7.10536 4.73481 7 5.00003 7Z" fill="#7DFFF7"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  width="16"
+  height="16"
+  viewBox="0 0 16 16"
+  fill="none"
+  version="1.1"
+  id="svg1"
+  sodipodi:docname="node_name_label_icon.svg"
+  inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+ <defs
+   id="defs1" />
+ <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#505050"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="52.625"
+   inkscape:cx="8"
+   inkscape:cy="8"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg1" />
+ <path
+   d="M6.00003 3C5.73484 3.00006 5.48052 3.10545 5.29303 3.293L1.29303 7.293C1.10556 7.48053 1.00024 7.73484 1.00024 8C1.00024 8.26516 1.10556 8.51947 1.29303 8.707L5.29303 12.707C5.48052 12.8945 5.73484 12.9999 6.00003 13H14C14.2652 13 14.5196 12.8946 14.7071 12.7071C14.8947 12.5196 15 12.2652 15 12V4C15 3.73478 14.8947 3.48043 14.7071 3.29289C14.5196 3.10536 14.2652 3 14 3H6.00003ZM5.00003 7C5.26525 7 5.5196 7.10536 5.70714 7.29289C5.89467 7.48043 6.00003 7.73478 6.00003 8C6.00003 8.26522 5.89467 8.51957 5.70714 8.70711C5.5196 8.89464 5.26525 9 5.00003 9C4.73481 9 4.48046 8.89464 4.29292 8.70711C4.10539 8.51957 4.00003 8.26522 4.00003 8C4.00003 7.73478 4.10539 7.48043 4.29292 7.29289C4.48046 7.10536 4.73481 7 5.00003 7Z"
+   fill="#7DFFF7"
+   id="path1"
+   style="fill:#62aeff;fill-opacity:1" />
 </svg>

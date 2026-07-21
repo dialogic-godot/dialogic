@@ -4,34 +4,64 @@ extends Tree
 ## Script that handles drag and drop on the layer tree.
 
 
+enum RightClickMenuItems {DELETE, OPEN_SCENE, REPLACE_LAYER, SHOW_IN_FILESYSTEM, MAKE_CUSTOM}
+
 signal layer_moved(from:int, to:int)
+
+
+func _ready() -> void:
+	if owner.get_parent() is SubViewport:
+		return
+
+	%LayerListRightClickMenu.clear()
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", RightClickMenuItems.DELETE)
+	%LayerListRightClickMenu.add_separator()
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("InstanceOptions", "EditorIcons"), "Make Custom...", RightClickMenuItems.MAKE_CUSTOM)
+	var submenu := PopupMenu.new()
+	submenu.add_item("Premade Layer...", 1)
+	submenu.add_item("Custom Layer...", 1)
+	submenu.id_pressed.connect(%LayerList._on_replace_layer_menu_pressed)
+	%LayerListRightClickMenu.add_submenu_node_item("Replace...", submenu)
+	%LayerListRightClickMenu.set_item_icon(3, get_theme_icon("Loop", "EditorIcons"))
+	#%LayerListRightClickMenu.add_icon_item(get_theme_icon("Loop", "EditorIcons"), "Replace", RightClickMenuItems.MAKE_CUSTOM)
+	%LayerListRightClickMenu.add_separator()
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("PackedScene", "EditorIcons"), "Open Scene", RightClickMenuItems.OPEN_SCENE)
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", RightClickMenuItems.SHOW_IN_FILESYSTEM)
+
+
+func _on_item_mouse_selected(mouse_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index == MOUSE_BUTTON_RIGHT:
+		%LayerListRightClickMenu.set_item_disabled(0, get_item_at_position(mouse_position).get_meta("id").is_empty())
+		%LayerListRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
+		%LayerListRightClickMenu.set_meta("item", get_item_at_position(mouse_position))
+
 
 #region DRAG AND DROP
 ################################################################################
 
-func _get_drag_data(position:Vector2) -> Variant:
+func _get_drag_data(_at_position:Vector2) -> Variant:
 	if get_selected() == null or get_selected() == get_root():
 		return
 
-	if find_parent('StyleEditor').current_style.inherits != null:
+	if find_parent("StyleEditor").current_style.inherits != null:
 		return
 
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+get_selected().get_text(0)
-	preview.add_theme_stylebox_override('normal', get_theme_stylebox("Background", "EditorStyles"))
+	preview.add_theme_stylebox_override("normal", get_theme_stylebox("Background", "EditorStyles"))
 	set_drag_preview(preview)
 
 	return get_selected()
 
 
-func _can_drop_data(position:Vector2, data:Variant) -> bool:
+func _can_drop_data(_at_position:Vector2, data:Variant) -> bool:
 	return data is TreeItem
 
 
-func _drop_data(position:Vector2, item:Variant) -> void:
-	var to_item := get_item_at_position(position)
-	var drop_section := get_drop_section_at_position(position)
+func _drop_data(at_position:Vector2, item:Variant) -> void:
+	var to_item := get_item_at_position(at_position)
+	var drop_section := get_drop_section_at_position(at_position)
 
 	if to_item == get_root():
 		if item.get_index() != 0:
@@ -51,3 +81,16 @@ func _drop_data(position:Vector2, item:Variant) -> void:
 		layer_moved.emit(item.get_index(), to_idx)
 
 #endregion
+
+
+func _on_layer_list_right_click_menu_id_pressed(id: int) -> void:
+	var item: TreeItem = %LayerListRightClickMenu.get_meta("item", null)
+	match id:
+		RightClickMenuItems.DELETE:
+			%LayerList.delete_layer()
+		RightClickMenuItems.SHOW_IN_FILESYSTEM:
+			EditorInterface.get_file_system_dock().navigate_to_path(ResourceUID.uid_to_path(item.get_meta("scene")))
+		RightClickMenuItems.OPEN_SCENE:
+			%LayerEditor.edit_layer_scene(item.get_meta("scene"))
+		RightClickMenuItems.MAKE_CUSTOM:
+			%LayerList._on_make_custom_menu_pressed(2)

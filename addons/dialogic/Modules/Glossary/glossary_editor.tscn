@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://due48ce7jiudt"]
+[gd_scene format=3 uid="uid://due48ce7jiudt"]
 
 [ext_resource type="Script" uid="uid://bqu863yjcjc8y" path="res://addons/dialogic/Modules/Glossary/glossary_editor.gd" id="1_tf3p1"]
 
@@ -12,6 +12,7 @@ script = ExtResource("1_tf3p1")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+split_offsets = PackedInt32Array(-200)
 split_offset = -200
 
 [node name="Settings" type="VBoxContainer" parent="Entries" unique_id=158192512]

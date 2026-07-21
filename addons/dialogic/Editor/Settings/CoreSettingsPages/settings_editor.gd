@@ -131,7 +131,7 @@ func update_color_palette() -> void:
 		button.color = DialogicUtil.get_color(color)
 		button.popup_closed.connect(_on_palette_color_popup_closed)
 		if color in color_users:
-			button.tooltip_text = "Used by " + str(color_users[color])
+			button.tooltip_text = "'"+color+"' Used by " + str(color_users[color])
 
 
 func _on_palette_color_popup_closed() -> void:

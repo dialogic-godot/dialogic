@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="100" height="100" viewBox="0 0 26.458333 26.458333" version="1.1" id="svg13076" inkscape:export-filename="input_layer_icon.svg" inkscape:export-xdpi="96" inkscape:export-ydpi="96" inkscape:version="1.2.2 (732a01da63, 2022-12-09)" sodipodi:docname="text_bubble_layer_icon.svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview id="namedview13078" pagecolor="#505050" bordercolor="#eeeeee" borderopacity="1" inkscape:showpageshadow="0" inkscape:pageopacity="0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#505050" inkscape:document-units="mm" showgrid="true" inkscape:zoom="5.9184838" inkscape:cx="61.502239" inkscape:cy="68.598651" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="layer1">
+    <inkscape:grid type="xygrid" id="grid14286" />
+  </sodipodi:namedview>
+  <defs id="defs13073" />
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <rect x="4.0595255" y="7.3477197" width="18.477333" height="10.384831" rx="1.759746" stroke="#ffffff" stroke-width="1.46627" id="rect30126" style="fill:#ffffff;fill-opacity:1" />
+    <rect x="4.4799924" y="3.1119337" width="6.9150147" height="2.1797333" rx="0.65857279" stroke="#ffffff" stroke-width="0.410954" id="rect1570" style="fill:#ffffff;fill-opacity:1" />
+    <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:1.88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.2" d="m 5.8208333,22.489583 c 2.507191,-1.706008 3.833717,-3.283474 4.7624997,-5.291666 l 5.820833,-1e-6 c 0.106809,2.563666 -4.892406,4.003771 -10.5833327,5.291667" id="path1626" sodipodi:nodetypes="cccc" />
+  </g>
+</svg>
