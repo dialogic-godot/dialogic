@@ -122,13 +122,15 @@ func show_history() -> void:
 			"Choice":
 				var choices_text: String = ""
 				if show_all_choices:
-					for i : String in info['all_choices']:
-						if i.ends_with('#disabled'):
-							choices_text += "-  [i]("+i.trim_suffix('#disabled')+")[/i]\n"
-						elif i == info['text']:
-							choices_text += "-> [b]"+i+"[/b]\n"
+					for i:Dictionary in info['all_choices']:
+						if not i.visible:
+							continue
+						if i.disabled:
+							choices_text += "-  [i]("+i.text+")[/i]\n"
+						elif i.text == info['text']:
+							choices_text += "-> [b]"+i.text+"[/b]\n"
 						else:
-							choices_text += "-> "+i+"\n"
+							choices_text += "-> "+i.text+"\n"
 				else:
 					choices_text += "- [b]"+info['text']+"[/b]\n"
 				history_item.call(&'load_info', choices_text)

@@ -70,7 +70,7 @@ func update_background(new_scene := "", new_argument := "", fade_time := 0.0, tr
 	else:
 		background_holder = get_tree().get_first_node_in_group('dialogic_background_holders')
 
-	var info := {'scene':new_scene, 'argument':new_scene, 'fade_time':fade_time, 'same_scene':false}
+	var info := {'scene':new_scene, 'argument':new_argument, 'fade_time':fade_time, 'same_scene':false}
 	if background_holder == null:
 		background_changed.emit(info)
 		return
@@ -213,7 +213,7 @@ func add_background_node(new_scene:PackedScene, parent:DialogicNode_BackgroundHo
 
 ## Whether a background is set.
 func has_background() -> bool:
-	return not scene.is_empty() or argument.is_empty()
+	return not (scene.is_empty() and argument.is_empty())
 
 
 func get_background_node() -> DialogicBackground:

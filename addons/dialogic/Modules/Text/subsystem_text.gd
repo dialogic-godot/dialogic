@@ -245,8 +245,6 @@ func show_textbox(instant:=false, identifier:=active_textbox) -> void:
 ## Instant skips the signal and thus possible animations
 func hide_textbox(instant:=false, identifier:=active_textbox) -> void:
 	var emitted := instant
-	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-		name_label.text = ""
 	if not emitted and not get_textboxes(identifier).is_empty() and get_textboxes(identifier)[0].textbox_root.visible:
 		animation_textbox_hide.emit({"textbox_identifier":identifier})
 		if dialogic.Animations.is_animating():
