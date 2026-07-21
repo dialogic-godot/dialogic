@@ -15,11 +15,11 @@ func _ready() -> void:
 	plugin_reference.scene_changed.connect(_on_scene_changed)
 	unre = EditorInterface.get_editor_undo_redo()
 
-	%Internal.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
 	%Title.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
 	%Title.add_theme_font_size_override("font_size", get_theme_font_size("font_size", "HeaderLarge"))
 	%Title.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
 	%Instanced.add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"))
+	%Internal.add_theme_color_override("font_color", get_theme_color("error_color", "Editor"))
 
 	%DropInfoLabel.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
 

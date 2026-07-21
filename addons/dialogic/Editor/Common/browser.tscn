@@ -241,6 +241,7 @@ alignment = 1
 
 [node name="HFlowContainer" type="HFlowContainer" parent="HSplit/ItemDetailsSection/VBox" unique_id=720927114]
 layout_mode = 2
+theme_override_constants/h_separation = 0
 
 [node name="ItemTitle" type="Label" parent="HSplit/ItemDetailsSection/VBox/HFlowContainer" unique_id=18297707]
 unique_name_in_owner = true

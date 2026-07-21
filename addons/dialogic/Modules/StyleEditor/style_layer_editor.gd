@@ -41,6 +41,7 @@ func load_layer(layer_id:=""):
 	%MakeCustomButton.disabled = current_style.inherits_anything() or (not %StyleBrowser.is_premade_style_part(current_style.get_layer_info(layer_id).path)) or current_style.use_base_scene_children_as_layers
 	%DeleteLayerButton.disabled = layer_id == "" or current_style.inherits_anything() or current_style.use_base_scene_children_as_layers
 
+
 func _on_layer_list_layer_selected(layer_id: String) -> void:
 	if loading:
 		load_layer(layer_id)

@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	pass
-	base_style = ""
+	#base_style = ""
 
 
 func _load_state(load_flag := LoadFlags.FULL_LOAD) -> void:

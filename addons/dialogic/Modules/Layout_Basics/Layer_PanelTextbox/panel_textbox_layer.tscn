@@ -509,6 +509,16 @@ metadata/style_customization = Array[Dictionary]([{
 "type": "Category"
 }, {
 "display_name": "Name Label",
+"name": "%NameLabelPositioner",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Enabled",
+"name": "visible",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "-",
 "name": "%NameLabel",
 "tooltip": "",
 "type": "Node"

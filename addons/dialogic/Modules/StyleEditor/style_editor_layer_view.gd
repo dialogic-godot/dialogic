@@ -129,11 +129,13 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 		if scene.has_method("_get_base_customization"):
 			settings += scene._get_base_customization().duplicate(true)
 
-	if settings.is_empty():
+	#print(settings)
+	if settings.is_empty() or (settings[0].type == "Category" and settings[0].name == "Layer" and not current_layer_scene_path.begins_with("res://addons/dialogic/")):
 		no_settings_info.show()
 		no_settings_info.get_parent().remove_child(no_settings_info)
 		%LayerSettingsTabs.add_child(no_settings_info)
-		return
+		if settings.is_empty():
+			return
 
 	var warning_label_base := Label.new()
 	#warning_label_base.text =
