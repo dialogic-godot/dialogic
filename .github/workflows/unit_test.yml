@@ -8,5 +8,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
-          godot-version: '4.2.1'
+          godot-version: '4.5'
           paths: 'res://Tests'
