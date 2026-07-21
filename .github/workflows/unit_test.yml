@@ -1,12 +1,41 @@
-name: GdUnit4 Tests
-on: [push, pull_request]
+name: ci-pr-example
+run-name: ${{ github.head_ref || github.ref_name }}-ci-pr-example
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.yml'
+      - '**.md'
+  workflow_dispatch:
+
+
+concurrency:
+  group: ci-pr-example${{ github.event.number }}
+  cancel-in-progress: true
+
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  unit-test:
+    name: "CI Unit Test"
+    runs-on: 'ubuntu-22.04'
+    timeout-minutes: 10 # The overall timeout
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+
     steps:
+      # checkout your repository
       - uses: actions/checkout@v4
+        with:
+          lfs: true
+      # run tests by using the gdUnit4-action with Godot version 4.5 and the latest GdUnit4 release 
       - uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
           godot-version: '4.5'
-          paths: 'res://Tests'
+          paths: |
+            res://Tests/
+          timeout: 5
+          report-name: test_report.xml      
