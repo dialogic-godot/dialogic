@@ -10,7 +10,7 @@ var _timer: Timer = Timer.new()
 #region STATE
 ####################################################################################################
 
-func _clear_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	_timer.stop()
 
 
