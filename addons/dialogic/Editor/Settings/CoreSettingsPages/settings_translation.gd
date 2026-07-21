@@ -376,6 +376,7 @@ func update_csv_files() -> void:
 
 	%StatusMessage.text = status_message.format(status_message_args)
 	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
+	ProjectSettings.save()
 
 
 ## Iterates over all character resource files and creates or updates CSV files

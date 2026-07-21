@@ -19,9 +19,9 @@ var shortcuts := [
 	{"shortcut":"Ctrl+F", 			"text":"Search"},
 	{"shortcut":"Ctrl+R", 			"text":"Replace"},
 	{},
-	{"shortcut":"Ctrl+F5", 			"text":"Play timeline", "platform":"-macOS"},
+	{"shortcut":"Ctrl+F6", 			"text":"Play timeline", "platform":"-macOS"},
 	{"shortcut":"Ctrl+B", 			"text":"Play timeline", "platform":"macOS"},
-	{"shortcut":"Ctrl+F6", 			"text":"Play timeline from here", "platform":"-macOS"},
+	{"shortcut":"Ctrl+Shift+F6", 	"text":"Play timeline from here", "platform":"-macOS"},
 	{"shortcut":"Ctrl+Shift+B", 	"text":"Play timeline from here", "platform":"macOS"},
 
 	{},

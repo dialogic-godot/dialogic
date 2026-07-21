@@ -4,7 +4,7 @@ func _ready() -> void:
 	print("[Dialogic] Testing scene was started.")
 	if not ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
-	$PauseIndictator.hide()
+	%PauseIndictator.hide()
 
 	var scene: Node = DialogicUtil.autoload().Styles.load_style(DialogicUtil.get_editor_setting('current_test_style', ''))
 	if not scene is CanvasLayer:
@@ -32,7 +32,7 @@ func receive_text_signal(argument:String) -> void:
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		DialogicUtil.autoload().paused = !DialogicUtil.autoload().paused
-		$PauseIndictator.visible = DialogicUtil.autoload().paused
+		%PauseIndictator.visible = DialogicUtil.autoload().paused
 
 	if (event is InputEventMouseButton
 	and event.is_pressed()

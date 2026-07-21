@@ -105,10 +105,12 @@ func _gui_input(event):
 		"Ctrl+Shift+D", "Ctrl+D":
 			duplicate_lines()
 
-		"Ctrl+F6" when OS.get_name() != "macOS": # Play from here
+		"Ctrl+Shift+F6" when OS.get_name() != "macOS": # Play from here
 			play_from_here()
+			get_viewport().set_input_as_handled()
 		"Ctrl+Shift+B" when OS.get_name() == "macOS": # Play from here
 			play_from_here()
+			get_viewport().set_input_as_handled()
 		"Enter":
 			if get_code_completion_options():
 				return

@@ -25,7 +25,7 @@ func animate() -> void:
 
 	(tween.tween_property(node, "scale", end_scale, time)
 		.set_trans(Tween.TRANS_SPRING)
-		.set_ease(Tween.EASE_OUT))
+		.set_ease(Tween.EASE_IN if is_reversed else Tween.EASE_OUT))
 	tween.tween_property(node, modulation_property + ":a", end_modulate_alpha, time)
 
 	await tween.finished

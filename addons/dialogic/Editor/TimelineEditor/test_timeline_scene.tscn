@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://ud18ke1g2nw4"]
+[gd_scene format=3 uid="uid://ud18ke1g2nw4"]
 
 [ext_resource type="Script" uid="uid://cbq0n68r4pwu7" path="res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.gd" id="1_bamud"]
 
-[node name="TestTimelineScene" type="Control"]
+[node name="TestTimelineScene" type="Control" unique_id=1948298457]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,8 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bamud")
 
-[node name="PauseIndictator" type="Label" parent="."]
-layout_mode = 1
+[node name="OverlayUI" type="CanvasLayer" parent="." unique_id=1508099505]
+layer = 99
+
+[node name="PauseIndictator" type="Label" parent="OverlayUI" unique_id=1521879484]
+unique_name_in_owner = true
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0

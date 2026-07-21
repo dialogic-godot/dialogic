@@ -10,15 +10,15 @@ var _timer: Timer = Timer.new()
 #region STATE
 ####################################################################################################
 
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
+func _clear_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	_timer.stop()
 
 
-func pause() -> void:
+func _pause() -> void:
 	_timer.paused = true
 
 
-func resume() -> void:
+func _resume() -> void:
 	_timer.paused = false
 
 #endregion
@@ -45,7 +45,6 @@ func update_wait(time: float, hide_text: bool, skippable: bool) -> void:
 	dialogic.current_state = dialogic.States.WAITING
 
 	if hide_text and dialogic.has_subsystem("Text"):
-		dialogic.Text.update_dialog_text('', true)
 		dialogic.Text.hide_textbox()
 
 	_timer.start(final_wait_time)
@@ -58,5 +57,4 @@ func update_wait(time: float, hide_text: bool, skippable: bool) -> void:
 
 	if skippable:
 		dialogic.Inputs.dialogic_action.disconnect(timeout.emit)
-
 #endregion
