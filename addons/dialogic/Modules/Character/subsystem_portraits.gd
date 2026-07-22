@@ -179,7 +179,7 @@ func _change_portrait(character_node: Node2D, portrait: String, fade_animation:=
 		if not portrait_node.is_inside_tree():
 			character_node.add_child(portrait_node)
 
-		_update_portrait_transform(portrait_node)
+		_update_portrait_transform(portrait_node, 0.0, not info["same_scene"])
 
 		## Handle Cross-Animating
 		if previous_portrait and previous_portrait != portrait_node:
@@ -223,7 +223,7 @@ func _update_character_transform(character_node:Node, time := 0.0) -> void:
 		_update_portrait_transform(child, time)
 
 
-func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
+func _update_portrait_transform(portrait_node: Node, time:float = 0.0, is_new_node: bool = false) -> void:
 	var character_node: Node = portrait_node.get_parent()
 
 	var character: DialogicCharacter = character_node.get_meta('character')
@@ -255,6 +255,14 @@ func _update_portrait_transform(portrait_node: Node, time:float = 0.0) -> void:
 		tween.tween_method(DialogicUtil.multitween.bind(character_node, "position", "base"), character_node.position, transform.position, time)
 		tween.tween_property(portrait_node, 'position',character.offset + portrait_info.get('offset', Vector2()), time)
 		tween.tween_property(portrait_node, 'scale', transform.size, time)
+		if is_new_node:
+			# New portrait nodes start with default position/scale (Vector2(0,0) / Vector2(1,1)).
+			# Tweening from those defaults causes visual artifacts, so set them immediately.
+			portrait_node.position = character.offset + portrait_info.get('offset', Vector2())
+			portrait_node.scale = transform.size
+		else:
+			tween.tween_property(portrait_node, 'position',character.offset + portrait_info.get('offset', Vector2()), time)
+			tween.tween_property(portrait_node, 'scale', transform.size, time)
 
 
 ## Animates the node with the given animation.
