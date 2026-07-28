@@ -31,16 +31,18 @@ jobs:
         with:
           lfs: true
 
-      # Ensure CI uses a fresh GdUnit4 addon installation instead of any local vendored copy.
-      - name: Prepare a clean GdUnit4 install
+      - name: Show repository layout for debugging
         shell: bash
         run: |
-          if [ -d addons/gdUnit4 ]; then
-            rm -rf addons/gdUnit4
-          fi
+          echo "Repository root: $PWD"
+          ls -la
+          echo "--- addons ---"
+          find addons -maxdepth 2 -type f | sort | head -200
+          echo "--- tests ---"
+          find Tests -maxdepth 3 -type f | sort
 
-      # run tests by using the gdUnit4-action against the project root and the unit test suite
-      - uses: godot-gdunit-labs/gdUnit4-action@v1
+      - name: Run GdUnit4 tests
+        uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
           godot-version: '4.5'
           version: 'v6.1.3'
