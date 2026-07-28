@@ -20,6 +20,7 @@ func _ready() -> void:
 	get_menu().add_icon_item(get_theme_icon("PlayStart", "EditorIcons"), "Play from here", 42)
 	get_menu().id_pressed.connect(_on_context_menu_id_pressed)
 
+	add_comment_delimiter("#", "", true)
 
 func _on_text_editor_text_changed() -> void:
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.UNSAVED
@@ -59,17 +60,17 @@ func save_timeline() -> void:
 	DialogicResourceUtil.update_directory('dtl')
 
 
-func text_timeline_to_array(text:String) -> Array:
+func text_timeline_to_array(orig_text:String) -> Array:
 	# Parse the lines down into an array
 	var events := []
 
-	var lines := text.split('\n', true)
+	var lines := orig_text.split('\n', true)
 	var idx := -1
 
 	while idx < len(lines)-1:
 		idx += 1
 		var line: String = lines[idx]
-		var line_stripped: String = line.strip_edges(true, true)
+		#var line_stripped: String = line.strip_edges(true, true)
 		events.append(line)
 
 	return events
@@ -92,15 +93,12 @@ func _gui_input(event):
 	if not event is InputEventKey: return
 	if not event.is_pressed(): return
 	match event.as_text():
-		"Ctrl+K", "Ctrl+Slash":
+		"Ctrl+K", "Ctrl+Slash", "Ctrl+NumberSign":
 			toggle_comment()
-		# TODO clean this up when dropping 4.2 support
 		"Alt+Up":
-			if has_method("move_lines_up"):
-				call("move_lines_up")
+			move_lines_up()
 		"Alt+Down":
-			if has_method("move_lines_down"):
-				call("move_lines_down")
+			move_lines_down()
 
 		"Ctrl+Shift+D", "Ctrl+D":
 			duplicate_lines()
@@ -129,45 +127,72 @@ func _gui_input(event):
 
 # Toggle the selected lines as comments
 func toggle_comment() -> void:
-	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
-	var selection := Rect2i(
-		Vector2i(get_selection_line(), get_selection_column()),
-		# TODO When ditching godot 4.2, switch to this, the above methods have been deprecated in 4.3
-		#Vector2i(get_selection_origin_line(), get_selection_origin_column()),
-		Vector2i(get_caret_line(), get_caret_column()))
-	var from: int = cursor.y
-	var to: int = cursor.y
-	if has_selection():
-		from = get_selection_from_line()
-		to = get_selection_to_line()
+	begin_complex_operation()
 
-	var lines: PackedStringArray = text.split("\n")
-	var will_comment: bool = false
-	for i in range(from, to+1):
-		if not lines[i].begins_with("#"):
-			will_comment = true
+	var comment_delimiter: String = delimiter_comments[0]
+	var is_first_line: bool = true
+	var will_comment: bool = true
+	var selections: Array = []
+	var line_offsets: Dictionary = {}
 
-	for i in range(from, to + 1):
-		if will_comment:
-			lines[i] = "#" + lines[i]
-		else:
-			lines[i] = lines[i].trim_prefix("#")
+	for caret_index: int in range(0, get_caret_count()):
+		var from_line: int = get_caret_line(caret_index)
+		var from_column: int = get_caret_column(caret_index)
+		var to_line: int = get_caret_line(caret_index)
+		var to_column: int = get_caret_column(caret_index)
 
-	text = "\n".join(lines)
-	if will_comment:
-		cursor.x += 1
-		selection.position.y += 1
-		selection.size.y += 1
-	else:
-		cursor.x -= 1
-		selection.position.y -= 1
-		selection.size.y -= 1
-	select(selection.position.x, selection.position.y, selection.size.x, selection.size.y)
+		if has_selection(caret_index):
+			#from_line = get_selection_from_line(caret_index)
+			to_line = get_selection_to_line(caret_index)
+			from_column = get_selection_from_column(caret_index)
+			to_column = get_selection_to_column(caret_index)
+
+		selections.append({
+			from_line = from_line,
+			from_column = from_column,
+			to_line = to_line,
+			to_column = to_column
+		})
+
+		for line_number: int in range(from_line, to_line + 1):
+			if line_offsets.has(line_number): continue
+
+			var line_text: String = get_line(line_number)
+
+			# The first line determines if we are commenting or uncommentingg
+			if is_first_line:
+				is_first_line = false
+				will_comment = not line_text.strip_edges().begins_with(comment_delimiter)
+
+			# Only comment/uncomment if the current line needs to
+			if will_comment:
+				set_line(line_number, comment_delimiter + line_text)
+				line_offsets[line_number] = 1
+			elif line_text.begins_with(comment_delimiter):
+				set_line(line_number, line_text.substr(comment_delimiter.length()))
+				line_offsets[line_number] = -1
+			else:
+				line_offsets[line_number] = 0
+
+	for caret_index: int in range(0, get_caret_count()):
+		var selection: Dictionary = selections[caret_index]
+		select(
+			selection.from_line,
+			selection.from_column + line_offsets[selection.from_line],
+			selection.to_line,
+			selection.to_column + line_offsets[selection.to_line],
+			caret_index
+		)
+		set_caret_column(selection.from_column + line_offsets[selection.from_line], false, caret_index)
+
+	end_complex_operation()
+
+	text_set.emit()
 	text_changed.emit()
 
 
 ## Allows dragging files into the editor
-func _can_drop_data(at_position:Vector2, data:Variant) -> bool:
+func _can_drop_data(_at_position:Vector2, data:Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
 		return true
 	return false
@@ -317,7 +342,6 @@ func replace(replace_text:String) -> void:
 func replace_all(replace_text:String) -> void:
 	begin_complex_operation()
 	var next_pos := get_next_search_position()
-	var counter := 0
 	while next_pos.y != -1:
 		insert_text("@@", next_pos.y, next_pos.x)
 		if get_meta("current_search_flags") & SEARCH_MATCH_CASE:
@@ -349,8 +373,8 @@ func _filter_code_completion_candidates(candidates:Array) -> Array:
 
 ## Called when code completion was activated
 ## Inserts the selected item
-func _confirm_code_completion(replace:bool) -> void:
-	code_completion_helper.confirm_code_completion(replace, self)
+func _confirm_code_completion(should_replace:bool) -> void:
+	code_completion_helper.confirm_code_completion(should_replace, self)
 
 
 ################################################################################

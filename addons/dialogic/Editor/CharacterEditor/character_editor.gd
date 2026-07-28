@@ -146,9 +146,7 @@ func _ready() -> void:
 		return
 
 	DialogicUtil.get_dialogic_plugin().resource_saved.connect(_on_some_resource_saved)
-	# NOTE: This check is required because up to 4.2 this signal is not exposed.
-	if DialogicUtil.get_dialogic_plugin().has_signal("scene_saved"):
-		DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
+	DialogicUtil.get_dialogic_plugin().scene_saved.connect(_on_some_resource_saved)
 
 	$NoCharacterScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
 	$NoCharacterScreen.show()

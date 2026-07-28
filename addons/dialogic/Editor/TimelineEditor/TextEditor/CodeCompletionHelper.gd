@@ -66,7 +66,7 @@ func get_line_untill_caret(line:String) -> String:
 # Adds all kinds of options depending on the
 #   content of the current line, the last word and the symbol that came before
 # Triggers opening of the popup
-func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIGHTING) -> void:
+func request_code_completion(_force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIGHTING) -> void:
 	## TODO remove this once https://github.com/godotengine/godot/issues/38560 is fixed
 	if mode != Modes.FULL_HIGHLIGHTING:
 		return
@@ -123,20 +123,20 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode, shortcode_events[shortcode].event_color.lerp(syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
 				else:
 					text.add_code_completion_option(CodeEdit.KIND_MEMBER, shortcode, shortcode+" ", shortcode_events[shortcode].event_color.lerp(syntax_highlighter.normal_color, 0.3), shortcode_events[shortcode]._get_icon())
-		else:
+		elif line_part.count("[") != line_part.count("]"):
 			var full_event_text: String = syntax_highlighter.get_full_event(text.get_caret_line())
 			var current_shortcode := completion_shortcode_getter_regex.search(full_event_text)
-			if !current_shortcode:
+			if not current_shortcode:
 				text.update_code_completion_options(false)
 				return
 
 			var code := current_shortcode.get_string('code')
-			if !code in shortcode_events.keys():
+			if not code in shortcode_events.keys():
 				text.update_code_completion_options(false)
 				return
 
 			# suggest parameters
-			if symbol == ' ' and line.count('"')%2 == 0:
+			if symbol == " " and line.count('"')%2 == 0:
 				var parameters: Array = shortcode_events[code].get_shortcode_parameters().keys()
 				for param in parameters:
 					if !param+'=' in full_event_text:
@@ -154,7 +154,7 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 
 
 	for event in custom_syntax_events:
-		if mode == Modes.TEXT_EVENT_ONLY and !event is DialogicTextEvent:
+		if mode == Modes.TEXT_EVENT_ONLY and not event is DialogicTextEvent:
 			continue
 
 		if not ' ' in line_part:
@@ -171,7 +171,6 @@ func request_code_completion(force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLIG
 	#print(text.get_code_completion_options().map(func(x):return "{display_text}".format(x)))
 
 
-
 # Helper that adds all characters as options
 func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, event:DialogicEvent=null) -> void:
 	for character in DialogicResourceUtil.get_character_directory():
@@ -183,6 +182,7 @@ func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, event:Dialo
 		elif event and event is DialogicCharacterEvent:
 			result += " "
 		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+
 
 # Helper that adds all timelines as options
 func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:
@@ -274,7 +274,7 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 
 # Called when code completion was activated
 # Inserts the selected item
-func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
+func confirm_code_completion(_replace:bool, text:CodeEdit) -> void:
 	# Note: I decided to ALWAYS use replace mode, as dialogic is supposed to be beginner friendly
 
 	var code_completion := text.get_code_completion_option(text.get_code_completion_selected_index())
@@ -285,14 +285,7 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 
 	text.remove_text(text.get_caret_line(), text.get_caret_column()-len(word), text.get_caret_line(), text.get_caret_column())
 
-	# Something has changed between 4.2 and 4.3
-	# Probably about how carets are reset when text is removed or idk.
-	# To keep compatibility with 4.2 for at least a while this should do the trick:
-	# TODO: Remove once compatibility for 4.2 is dropped.
-	if Engine.get_version_info().hex >= 0x040300:
-		text.set_caret_column(text.get_caret_column())
-	else:
-		text.set_caret_column(text.get_caret_column()-len(word))
+	text.set_caret_column(text.get_caret_column())
 
 	text.insert_text_at_caret(code_completion.insert_text)
 
@@ -310,7 +303,7 @@ func confirm_code_completion(replace:bool, text:CodeEdit) -> void:
 ################################################################################
 
 # Performs an action (like opening a link) when a valid symbol was clicked
-func symbol_lookup(symbol:String, line:int, column:int) -> void:
+func symbol_lookup(symbol:String, _line:int, _column:int) -> void:
 	if symbol in shortcode_events.keys():
 		if !shortcode_events[symbol].help_page_path.is_empty():
 			OS.shell_open(shortcode_events[symbol].help_page_path)
