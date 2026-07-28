@@ -44,8 +44,7 @@ jobs:
       - name: Run GdUnit4 tests
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
-          godot-version: '4.5'
-          version: 'v6.1.3'
+          godot-version: '4.5.1'
           project_dir: .
           paths: |
             res://Tests/Unit
