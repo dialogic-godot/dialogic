@@ -350,10 +350,9 @@ func get_audio_channel_suggestions(filter:String) -> Dictionary:
 		"value":"",
 		"tooltip": "Used for one shot sounds effects. Plays each sound in its own AudioStreamPlayer.",
 		"editor_icon": ["GuiRadioUnchecked", "EditorIcons"]
-		}
-	# TODO use .merged after dropping 4.2 support
-	suggestions.merge(DialogicUtil.get_audio_channel_suggestions(filter))
+		}.merged(DialogicUtil.get_audio_channel_suggestions(filter))
 	return suggestions
+
 
 func get_sync_audio_channel_suggestions(filter:="") -> Dictionary:
 	return DialogicUtil.get_audio_channel_suggestions(filter)
