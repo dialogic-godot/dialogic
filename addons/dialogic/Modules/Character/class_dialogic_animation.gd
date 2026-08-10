@@ -49,6 +49,7 @@ func finished_one_loop() -> void:
 
 	else:
 		finished.emit()
+		queue_free()
 
 
 func pause() -> void:
@@ -95,7 +96,7 @@ func get_node_origin() -> Vector2:
 	if not node:
 		return Vector2()
 	if node.get_parent() is DialogicNode_PortraitContainer:
-		return node.get_parent()._get_origin_position()
+		return node.get_parent().current_settings._get_origin_position()
 	return Vector2()
 
 

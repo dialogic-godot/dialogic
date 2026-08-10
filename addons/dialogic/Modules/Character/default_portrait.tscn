@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b32paf0ll6um8"]
+[gd_scene format=3 uid="uid://b32paf0ll6um8"]
 
 [ext_resource type="Script" uid="uid://cork0heubbx7f" path="res://addons/dialogic/Modules/Character/default_portrait.gd" id="1_wn77n"]
 
-[node name="DefaultPortrait" type="Node2D"]
+[node name="DefaultPortrait" type="Node2D" unique_id=341737770]
 script = ExtResource("1_wn77n")
 
-[node name="Portrait" type="Sprite2D" parent="."]
+[node name="Portrait" type="Sprite2D" parent="." unique_id=1751347309]
 centered = false
