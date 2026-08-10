@@ -18,6 +18,7 @@ func _get_text_effects() -> Array[Dictionary]:
 	return [
 		{'command':'aa', 'subsystem':'Inputs', 'method':'effect_autoadvance'},
 		{'command':'ns', 'subsystem':'Inputs', 'method':'effect_noskip'},
+		{'command':'nrs', 'subsystem':'Inputs', 'method':'effect_norevealskip'},
 		{'command':'input', 'subsystem':'Inputs', 'method':'effect_input'},
 	]
 

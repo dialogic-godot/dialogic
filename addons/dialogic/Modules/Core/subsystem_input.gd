@@ -242,6 +242,11 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	effect_autoadvance(text_node, skipped, argument)
 
 
+## The no reveal skip effect (`[nrs]`) disables reveal skipping for one event.
+func effect_norevealskip(_text_node:Control, _skipped:bool, _argument:String) -> void:
+	dialogic.Text.set_text_reveal_skippable(false, true)
+
+
 ## The autoadvance effect (`[aa]` enables autoadvance for one event (while still allowing manual advance and skipping).
 ## An argument can be given to control the delay of the autoadvance.
 ## If the argument ends with `?` the effect will not enable auto-advance and only set the delay for an already enable auto advance.
