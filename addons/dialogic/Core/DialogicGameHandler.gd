@@ -184,6 +184,9 @@ func _ready() -> void:
 	dialog_ending_timeline = DialogicTimeline.new()
 	dialog_ending_timeline.from_text("[clear]")
 
+	if OS.is_debug_build():
+		instantiate_debug_overlay()
+
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
@@ -361,9 +364,10 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	current_state = States.IDLE
 
 	# Resetting variables
-	if current_timeline:
-		await current_timeline.clean()
+	var previous_timeline := current_timeline
 	current_timeline = null
+	if previous_timeline:
+		await previous_timeline.clean()
 
 
 ## Cleanup after previous event (if any).
@@ -406,7 +410,7 @@ func get_full_state() -> DialogicSaveState:
 ## Will automatically start a timeline and add a layout if a timeline was running when
 ## the dictionary was retrieved with [method get_full_state].
 func load_full_state(state:DialogicSaveState) -> void:
-	clear()
+	await clear()
 
 	if state == null:
 		printerr("[Dialogic] Attempted to load state, but given state was [null].")
@@ -505,5 +509,10 @@ func print_debug_moment() -> void:
 			"line":current_timeline.get_text_line_from_index(current_event_idx+1)
 		}))
 	print("\n")
+
+
+func instantiate_debug_overlay() -> void:
+	var overlay: Node = load("res://addons/dialogic/Editor/TimelineEditor/dialogic_debug_overlay.tscn").instantiate()
+	get_parent().add_child.call_deferred(overlay)
 
 #endregion

@@ -1,0 +1,243 @@
+[gd_scene format=3 uid="uid://cliaalmppwnoy"]
+
+[ext_resource type="Script" uid="uid://6klrmb85wxl8" path="res://addons/dialogic/Editor/TimelineEditor/dialogic_debug_overlay.gd" id="1_t0677"]
+[ext_resource type="Script" uid="uid://dyng2eojryyv5" path="res://addons/dialogic/Editor/TimelineEditor/RuntimeDebug/debug_main_panel.gd" id="2_vmrg7"]
+[ext_resource type="Script" uid="uid://c6xr8clcl4lnj" path="res://addons/dialogic/Editor/TimelineEditor/RuntimeDebug/debug_variables_panel.gd" id="3_qqlpn"]
+[ext_resource type="Script" uid="uid://dsco281inw6cq" path="res://addons/dialogic/Editor/TimelineEditor/RuntimeDebug/debug_labels_panel.gd" id="4_76qod"]
+[ext_resource type="Script" uid="uid://bi0o77lgxy8xh" path="res://addons/dialogic/Editor/TimelineEditor/RuntimeDebug/debug_save_load_panel.gd" id="5_hiwq7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tskq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tskq"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.7647059)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Theme" id="Theme_3a2e0"]
+default_font_size = 14
+Button/font_sizes/font_size = 13
+CheckButton/font_sizes/font_size = 13
+CheckButton/styles/disabled = SubResource("StyleBoxEmpty_5tskq")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_5tskq")
+CheckButton/styles/hover = SubResource("StyleBoxEmpty_5tskq")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_5tskq")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_5tskq")
+CheckButton/styles/pressed = SubResource("StyleBoxEmpty_5tskq")
+InfoLabel/base_type = &"Label"
+InfoLabel/colors/font_color = Color(1, 1, 1, 0.5921569)
+InfoLabel/font_sizes/font_size = 13
+ItemList/font_sizes/font_size = 13
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_5tskq")
+PanelTitle/base_type = &"Label"
+PanelTitle/colors/font_color = Color(0.22503078, 0.61077327, 0.88835037, 1)
+PanelTitle/font_sizes/font_size = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kg6hn"]
+
+[node name="DialogicDebugOverlay" type="CanvasLayer" unique_id=55390077]
+layer = 999
+script = ExtResource("1_t0677")
+
+[node name="DebugOverlay" type="HSplitContainer" parent="." unique_id=1353716423]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Debug" type="ScrollContainer" parent="DebugOverlay" unique_id=2113722277]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = SubResource("Theme_3a2e0")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugOverlay/Debug" unique_id=1260971235]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainPanel" type="PanelContainer" parent="DebugOverlay/Debug/VBoxContainer" unique_id=668840119]
+layout_mode = 2
+script = ExtResource("2_vmrg7")
+
+[node name="VBox" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/MainPanel" unique_id=966294446]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox" unique_id=335198869]
+layout_mode = 2
+theme_type_variation = &"PanelTitle"
+text = "General"
+
+[node name="InspectGeneral" type="CheckButton" parent="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox/Title" unique_id=492663978]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimelineInfo" type="Label" parent="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox" unique_id=152547057]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InfoLabel"
+
+[node name="StateInfo" type="Label" parent="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox" unique_id=250501643]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InfoLabel"
+
+[node name="PortraitContainers" type="CheckButton" parent="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox" unique_id=2086582127]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_kg6hn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_kg6hn")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_kg6hn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_kg6hn")
+text = "Portrait Containers"
+
+[node name="VariablesPanel" type="PanelContainer" parent="DebugOverlay/Debug/VBoxContainer" unique_id=455933102]
+layout_mode = 2
+script = ExtResource("3_qqlpn")
+
+[node name="VBox" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/VariablesPanel" unique_id=105070502]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox" unique_id=1459596567]
+layout_mode = 2
+theme_type_variation = &"PanelTitle"
+text = "Variables"
+
+[node name="InspectVariables" type="CheckButton" parent="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox/Title" unique_id=891432340]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VariablesPanel" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox" unique_id=1653783899]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VariablesTree" type="Tree" parent="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox/VariablesPanel" unique_id=794938001]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+columns = 2
+hide_root = true
+
+[node name="LabelsPanel" type="PanelContainer" parent="DebugOverlay/Debug/VBoxContainer" unique_id=1207052599]
+layout_mode = 2
+script = ExtResource("4_76qod")
+
+[node name="VBox" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel" unique_id=7248725]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox" unique_id=1349472707]
+layout_mode = 2
+theme_type_variation = &"PanelTitle"
+text = "Labels"
+
+[node name="InspectLabels" type="CheckButton" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox/Title" unique_id=2012108787]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelsPanel" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox" unique_id=904141858]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelList" type="ItemList" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox/LabelsPanel" unique_id=2035080169]
+unique_name_in_owner = true
+layout_mode = 2
+auto_height = true
+item_count = 4
+item_0/text = "asd"
+item_1/text = "asd"
+item_2/text = "asd"
+
+[node name="LabelInfo" type="Label" parent="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox/LabelsPanel" unique_id=198424446]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InfoLabel"
+text = "No labels in timeline."
+
+[node name="SaveLoadPanel" type="PanelContainer" parent="DebugOverlay/Debug/VBoxContainer" unique_id=1937045620]
+layout_mode = 2
+script = ExtResource("5_hiwq7")
+
+[node name="VBox" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel" unique_id=1892407405]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox" unique_id=2100283454]
+layout_mode = 2
+theme_type_variation = &"PanelTitle"
+text = "SaveLoad"
+
+[node name="SaveLoad" type="CheckButton" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/Title" unique_id=1209589782]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveLoadPanel" type="VBoxContainer" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox" unique_id=1426564563]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SaveList" type="ItemList" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel" unique_id=493326864]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+item_count = 4
+item_0/text = "asd"
+item_1/text = "asd"
+item_2/text = "asd"
+
+[node name="HintLabel" type="Label" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel" unique_id=361315284]
+layout_mode = 2
+theme_type_variation = &"InfoLabel"
+text = "Doubleclick to load
+Middleclick to delete"
+
+[node name="NewSave" type="Button" parent="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel" unique_id=2133340149]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Save"
+
+[node name="Control" type="Control" parent="DebugOverlay" unique_id=789195495]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+mouse_filter = 2
+
+[connection signal="toggled" from="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox/Title/InspectGeneral" to="DebugOverlay/Debug/VBoxContainer/VariablesPanel" method="_on_inspect_variables_toggled"]
+[connection signal="toggled" from="DebugOverlay/Debug/VBoxContainer/MainPanel/VBox/PortraitContainers" to="DebugOverlay/Debug/VBoxContainer/MainPanel" method="_on_portrait_containers_toggled"]
+[connection signal="toggled" from="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox/Title/InspectVariables" to="DebugOverlay/Debug/VBoxContainer/VariablesPanel" method="_on_inspect_variables_toggled"]
+[connection signal="item_collapsed" from="DebugOverlay/Debug/VBoxContainer/VariablesPanel/VBox/VariablesPanel/VariablesTree" to="DebugOverlay/Debug/VBoxContainer/VariablesPanel" method="_on_variables_tree_item_collapsed"]
+[connection signal="toggled" from="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox/Title/InspectLabels" to="DebugOverlay/Debug/VBoxContainer/LabelsPanel" method="_on_inspect_labels_toggled"]
+[connection signal="item_activated" from="DebugOverlay/Debug/VBoxContainer/LabelsPanel/VBox/LabelsPanel/LabelList" to="DebugOverlay/Debug/VBoxContainer/LabelsPanel" method="_on_label_list_item_activated"]
+[connection signal="toggled" from="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/Title/SaveLoad" to="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel" method="_on_save_load_toggled"]
+[connection signal="item_activated" from="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel/SaveList" to="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel" method="_on_save_list_item_activated"]
+[connection signal="item_clicked" from="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel/SaveList" to="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel" method="_on_save_list_item_clicked"]
+[connection signal="pressed" from="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel/VBox/SaveLoadPanel/NewSave" to="DebugOverlay/Debug/VBoxContainer/SaveLoadPanel" method="_on_new_save_pressed"]
