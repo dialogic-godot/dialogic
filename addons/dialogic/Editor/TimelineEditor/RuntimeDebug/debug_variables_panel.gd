@@ -6,7 +6,7 @@ var building = false
 
 
 func _ready() -> void:
-	%InspectVariables.button_pressed = %Debug.settings.get("inspect_variables", false)
+	%InspectVariables.button_pressed = owner.settings.get("inspect_variables", false)
 	%VariablesPanel.visible = %InspectVariables.button_pressed
 
 	Dialogic.VAR.variable_changed.connect(_on_variable_changed)
@@ -16,8 +16,8 @@ func _ready() -> void:
 
 func _on_inspect_variables_toggled(toggled_on: bool) -> void:
 	%VariablesPanel.visible = toggled_on
-	%Debug.settings["inspect_variables"] = toggled_on
-	%Debug.save()
+	owner.settings["inspect_variables"] = toggled_on
+	owner.save()
 
 
 func _on_variable_changed(info:Dictionary) -> void:
@@ -29,7 +29,7 @@ func _on_variable_changed(info:Dictionary) -> void:
 
 func build_variable_list(_ignore="") -> void:
 	building = true
-	var folded_items: Array = %Debug.settings.get("folded_variable_folders", [])
+	var folded_items: Array = owner.settings.get("folded_variable_folders", [])
 	%VariablesTree.clear()
 	%VariablesTree.create_item()
 
@@ -74,7 +74,7 @@ func get_folded_items(item:TreeItem) -> Array:
 func update_branch(item:TreeItem) -> void:
 	for i in item.get_children():
 		if typeof(i.get_metadata(1)) == TYPE_STRING:
-			var path := i.get_metadata(1)
+			var path: String = i.get_metadata(1)
 			i.set_text(1, str(Dialogic.VAR.get_variable(path)))
 			if path in recent:
 				i.set_custom_bg_color(1, Color.DARK_GREEN.lerp(Color.WEB_PURPLE, (recent.find(path)+1)/float(recent.size())))
@@ -86,9 +86,9 @@ func update_branch(item:TreeItem) -> void:
 		else:
 			update_branch(i)
 
-func _on_variables_tree_item_collapsed(item: TreeItem) -> void:
+func _on_variables_tree_item_collapsed(_item: TreeItem) -> void:
 	if building:
 		return
 
-	%Debug.settings["folded_variable_folders"] = get_folded_items(%VariablesTree.get_root())
-	%Debug.save()
+	owner.settings["folded_variable_folders"] = get_folded_items(%VariablesTree.get_root())
+	owner.save()

@@ -4,7 +4,7 @@ extends PanelContainer
 var last_label := ""
 
 func _ready() -> void:
-	%InspectLabels.button_pressed = %Debug.settings.get("show_labels", false)
+	%InspectLabels.button_pressed = owner.settings.get("show_labels", false)
 	%LabelsPanel.visible = %InspectLabels.button_pressed
 
 	Dialogic.Jump.passed_label.connect(func(x):last_label = x.identifier)
@@ -19,8 +19,8 @@ func _ready() -> void:
 
 func _on_inspect_labels_toggled(toggled_on: bool) -> void:
 	%LabelsPanel.visible = toggled_on
-	%Debug.settings["show_labels"] = toggled_on
-	%Debug.save()
+	owner.settings["show_labels"] = toggled_on
+	owner.save()
 
 
 func update_label_list(_ignore="") -> void:

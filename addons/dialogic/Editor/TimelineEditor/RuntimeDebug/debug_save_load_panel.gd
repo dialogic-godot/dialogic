@@ -3,7 +3,7 @@ extends PanelContainer
 var last_loaded := ""
 
 func _ready() -> void:
-	%SaveLoad.button_pressed = %Debug.settings.get("show_save_load", false)
+	%SaveLoad.button_pressed = owner.settings.get("show_save_load", false)
 	%SaveLoadPanel.visible = %SaveLoad.button_pressed
 
 	Dialogic.Save.saved.connect(update_save_list)
@@ -15,8 +15,8 @@ func _ready() -> void:
 
 func _on_save_load_toggled(toggled_on: bool) -> void:
 	%SaveLoadPanel.visible = toggled_on
-	%Debug.settings["show_save_load"] = toggled_on
-	%Debug.save()
+	owner.settings["show_save_load"] = toggled_on
+	owner.save()
 
 
 func update_save_list(_ignore="") -> void:
@@ -46,7 +46,7 @@ func get_new_slot_name() -> String:
 	return "DebugSave"+str(i)
 
 
-func _on_save_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+func _on_save_list_item_clicked(index: int, _at_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_MIDDLE:
 		Dialogic.Save.delete_slot(%SaveList.get_item_text(index))
 		update_save_list()

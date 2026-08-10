@@ -184,6 +184,9 @@ func _ready() -> void:
 	dialog_ending_timeline = DialogicTimeline.new()
 	dialog_ending_timeline.from_text("[clear]")
 
+	if OS.is_debug_build():
+		instantiate_debug_overlay()
+
 
 #region TIMELINE & EVENT HANDLING
 ################################################################################
@@ -506,5 +509,10 @@ func print_debug_moment() -> void:
 			"line":current_timeline.get_text_line_from_index(current_event_idx+1)
 		}))
 	print("\n")
+
+
+func instantiate_debug_overlay() -> void:
+	var overlay: Node = load("res://addons/dialogic/Editor/TimelineEditor/dialogic_debug_overlay.tscn").instantiate()
+	get_parent().add_child.call_deferred(overlay)
 
 #endregion
