@@ -123,7 +123,8 @@ var debug_character_scene_node: Node = null
 var default_portrait_scene: String = DialogicUtil.get_module_path("Character").path_join("default_portrait.tscn")
 var default_debug_character := load("uid://dykf1j17ct5mo")
 
-
+## If true the outline, position-name and origin icon are drawn in-game like they are in the editor.
+## This value can be controlled for all containers by setting Dialogic.PortraitContainers.debug_draw
 var debug_draw := false
 #endregion
 
@@ -131,8 +132,10 @@ var debug_draw := false
 var ignore_resize := false
 var ignore_transform_change := false
 
-var current_settings : ContainerSettings
-var target_settings : ContainerSettings
+## Usually contains the containers current settings as a ContainerSettings
+var current_settings: ContainerSettings
+## While moving, this contains the containers target transform
+var target_settings: ContainerSettings
 
 func _ready() -> void:
 	if not container_position.changed.is_connected(update_transform_from_properties):
@@ -173,6 +176,7 @@ func _ready() -> void:
 
 	connect_parent_resize()
 
+
 func connect_parent_resize() -> void:
 	if not get_parent().resized.is_connected(_on_parent_resized):
 		get_parent().resized.connect(_on_parent_resized)
@@ -181,6 +185,155 @@ func connect_parent_resize() -> void:
 #region MAIN METHODS
 ################################################################################
 
+
+## Tweens the containers values to [param to_settings] values.
+func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE, set_z_index:=true, set_mirror:=true) -> void:
+	if movement_tween and movement_tween.is_running():
+		movement_tween.kill()
+
+	## This handles moving the container to a different parent if necessary.
+	if to_settings.reference_position_id:
+		var ref_con := DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
+		if ref_con.get_parent() != get_parent():
+			var global_origin: Vector2 = global_position+current_settings._get_origin_position()
+			var global_size := container_size.as_pixels()
+			get_parent().remove_child(self)
+			ref_con.get_parent().add_child(self)
+			connect_parent_resize()
+			set_parent_size(get_parent_control().size)
+			container_position.overwrite_from_vector(global_origin-get_parent().global_position)
+			container_size.overwrite_from_vector(global_size)
+
+	movement_tween = create_tween()
+	movement_time = time
+	movement_tween.set_parallel(true).set_ease(easing).set_trans(trans)
+
+	target_settings = to_settings
+	to_settings.set_parent_size(get_parent_control().size)
+
+	movement_tween.tween_property(self, "size_mode", to_settings.size_mode, time)
+
+	container_position.make_similar(to_settings.position)
+	movement_tween.tween_property(container_position, "x_value", to_settings.position.x_value, time)
+	movement_tween.tween_property(container_position, "y_value", to_settings.position.y_value, time)
+
+	movement_tween.tween_property(self, 'container_rotation', to_settings.rotation, time)
+
+	container_size.make_similar(to_settings.size)
+	movement_tween.tween_property(container_size, "x_value", to_settings.size.x_value, time)
+	movement_tween.tween_property(container_size, "y_value", to_settings.size.y_value, time)
+
+	if set_mirror:
+		mirrored = to_settings.mirrored
+
+	container_origin.make_similar(to_settings.origin)
+	movement_tween.tween_property(container_origin, "x_value", to_settings.origin.x_value, time)
+	movement_tween.tween_property(container_origin, "y_value", to_settings.origin.y_value, time)
+
+	if set_z_index:
+		container_z_index = to_settings.z_index
+
+	movement_tween.finished.connect(current_settings.update_from_container.bind(self))
+	movement_tween.finished.connect(set.bind("target_settings", null))
+
+	# tween the portraits transforms towards their final transforms in to_settings.
+	for character_node in get_children():
+		if not character_node.has_meta("character"): continue
+		movement_tween.tween_property(character_node, "position", to_settings._get_origin_position(), time)
+		for portrait_node in character_node.get_children():
+			if not portrait_node is DialogicPortrait: continue
+			update_portrait_transform(portrait_node, to_settings, movement_tween, time)
+
+	# if time is zero, make the movement_tween finish instantly
+	if time == 0:
+		movement_tween.custom_step(99)
+
+
+## Tween the scale and position ofthe given [param portrait_node] to fit into [param container_settings].
+func update_portrait_transform(portrait_node:DialogicPortrait, container_settings:ContainerSettings, tween:Tween=null, time:float=0.0) -> void:
+	var character: DialogicCharacter = portrait_node.get_parent().get_meta("character")
+
+	var target_pos: Vector2 = character.offset + character.get_portrait_info(portrait_node.portrait).get("offset", Vector2())
+	var target_scale := container_settings.get_portrait_scale(portrait_node)
+	if tween == null or time == 0:
+		portrait_node.position = target_pos
+		portrait_node.scale = target_scale
+	else:
+		tween.tween_property(portrait_node, "position", target_pos, time)
+		tween.tween_property(portrait_node, "scale", target_scale, time)
+
+
+## When the container is resized during the game
+## make sure to reposition the character nodes at the origin and update the portrait transform.
+func container_resized_during_game() -> void:
+	current_settings.update_from_container(self)
+	for child in get_children():
+		# reposition character nodes at the origin
+		if child.has_meta("character"):
+			child.position = current_settings._get_origin_position()
+
+		# update portrait transforms
+		for grand_child in child.get_children():
+			if grand_child is DialogicPortrait:
+				update_portrait_transform(grand_child, current_settings)
+
+
+## When a new character is added to this container,
+## position it correctly and start listening to children (portraits) being added to it.
+func _child_entered_tree(child:Node) -> void:
+	if child.has_meta("character"):
+		# positon character node at the origin
+		current_settings.update_from_container(self)
+		child.position = current_settings._get_origin_position()
+
+		# start listening to children (portraits) being added.
+		if not child.child_entered_tree.is_connected(_portrait_entered_tree):
+			child.child_entered_tree.connect(_portrait_entered_tree)
+
+
+## When portraits are added to a character, update their transforms and mirror.
+func _portrait_entered_tree(grand_child:Node) -> void:
+	if grand_child is DialogicPortrait:
+		current_settings.update_from_container(self)
+		update_portrait_transform(grand_child, current_settings, null, 0)
+		update_mirror()
+
+
+## Update the mirror of all the portraits in this container.
+func update_mirror() -> void:
+	if current_settings: current_settings.update_from_container(self)
+
+	for character_node in get_children():
+		if not character_node.has_meta("character"):
+			continue
+
+		for portrait_node in character_node.get_children():
+			if not portrait_node is DialogicPortrait:
+				continue
+
+			var info: Dictionary = portrait_node.character.get_portrait_info(portrait_node.portrait)
+			var resulting_mirror: bool = mirrored != portrait_node.character.mirror != info.get("mirror", false)
+
+			portrait_node._set_mirror(resulting_mirror)
+
+
+## Update the sorting of this node and its PortraitContainer siblings based on their z-index variable.
+func update_z_index() -> void:
+	if current_settings: current_settings.update_from_container(self)
+	var sorted_children := get_parent().get_children().filter(func(x): return x is DialogicNode_PortraitContainer)
+	sorted_children.sort_custom(func(con1, con2): return con1.container_z_index < con2.container_z_index)
+	var idx := 0
+	for con in sorted_children:
+		con.get_parent().move_child(con, idx)
+		idx += 1
+
+
+func _on_parent_resized() -> void:
+	update_transform_from_properties()
+
+
+## Updates [member container_size], [member container_position], [member container_container_origin]
+## and [member container_rotation] based on the transform (position, size, rotation) of this node.
 func update_properties_from_transform() -> void:
 	if ignore_transform_change:
 		return
@@ -194,10 +347,8 @@ func update_properties_from_transform() -> void:
 	ignore_transform_change = false
 
 
-func _on_parent_resized() -> void:
-	update_transform_from_properties()
-
-
+## Updates size, position and rotation based on [member container_size], [member container_position],
+## [member container_container_origin] and [member container_rotation].
 func update_transform_from_properties() -> void:
 	if ignore_transform_change:
 		return
@@ -212,6 +363,7 @@ func update_transform_from_properties() -> void:
 	queue_redraw()
 
 
+## Returns true if the given [param id] is one of the container_id's of this container.
 func is_container(id:Variant) -> bool:
 	return str(id) in container_ids
 
@@ -307,147 +459,6 @@ func _update_debug_portrait_transform() -> void:
 func _get_debug_character() -> DialogicCharacter:
 	return debug_character if debug_character != null else default_debug_character
 
-#endregion
-
-
-
-class ContainerSettings extends Resource:
-	## A resource that allows transfering, storing and loading all settings relevant to a PortraitContainer.
-
-	@export var position := DialogicFlexVector.new()
-	@export var size := DialogicFlexVector.new()
-	@export var rotation := 0.0
-	@export var mirrored := false
-	## The portrait will be placed relative to this point in the container.
-	@export var origin := DialogicFlexVector.new()
-
-	## Defines how to affect the scale of the portrait
-	@export var size_mode: SizeModes = SizeModes.FIT_SCALE_HEIGHT
-
-	@export var z_index := 0
-
-	@export var reference_position_id := ""
-	var derived_from : DialogicNode_PortraitContainer = null
-
-	static var _transform_regex := r"(?<part>position|pos|size|siz|rotation|rot|ori|origin|mod|size_mode|mir|mirror|mirrored|sort|sor|z)\W*=(?<value>((?!(pos|siz|rot|mir|ori|mod|z|sor)).)*)"
-
-
-	## Creates a new ContainerSetting and set it's values from the given [param container].
-	static func from_container(container:DialogicNode_PortraitContainer) -> ContainerSettings:
-		var new := ContainerSettings.new()
-		new.update_from_container(container)
-		return new
-
-
-	## Copies the settings from the given PortraitContainer node [param container] to this ContainerSetting.
-	func update_from_container(container:DialogicNode_PortraitContainer) -> void:
-		position = container.container_position.copy()
-		size = container.container_size.copy()
-		mirrored = container.mirrored
-		rotation = container.container_rotation
-		origin = container.container_origin
-		size_mode = container.size_mode
-		z_index = container.container_z_index
-		if container.mode != DialogicNode_PortraitContainer.PositionModes._CHARACTER:
-			derived_from = container
-			reference_position_id = container.container_ids[0] if container.container_ids else ""
-
-
-	## Creates a new ContainerSetting and set it's values from the string. See [method update_from_string]
-	static func from_string(string:="") -> ContainerSettings:
-		var new := ContainerSettings.new()
-		new.update_from_string(string)
-		return new
-
-
-	## Applies settings from the given string to this ContainerSetting.
-	## The supported tags are pos/position, rot/rotation, siz/size, ori/origin, mir/mirrored, mod/size_mode.
-	func update_from_string(string:="") -> void:
-		var regex := RegEx.create_from_string(_transform_regex)
-		for found in regex.search_all(string):
-			match found.get_string("part"):
-				"pos", "position":
-					position.overwrite_from_string(found.get_string("value"))
-				"rot", "rotation":
-					rotation = float(found.get_string("value"))
-				"siz", "size":
-					size.overwrite_from_string(found.get_string("value"))
-				"ori", "origin":
-					origin.overwrite_from_string(found.get_string("value"))
-				"mir", "mirror", "mirrored":
-					mirrored = found.get_string("value").to_lower().strip_edges() == "true"
-				"mod", "mode", "size_mode":
-					size_mode = int(found.get_string("value"))
-				"sor", "sort", "z":
-					z_index = int(found.get_string("value"))
-				"ref", "reference":
-					reference_position_id = found.get_string("value").strip_edges()
-
-
-	## Returns the current origin position relative to this containers top left corner.
-	func _get_origin_position(rect_size = null) -> Vector2:
-		if rect_size == null:
-			rect_size = size
-		return origin.as_pixels()
-
-
-	## Returns the top left position of this container relative to it's parent.
-	func _get_top_left_position(rect_size = null) -> Vector2:
-		if rect_size == null:
-			rect_size = size
-		return position.as_pixels() - _get_origin_position(rect_size).rotated(deg_to_rad(rotation))
-
-
-	## Returns a scaling vector, that can be applied to the portrait node to fit it inside this container.
-	func get_portrait_scale(portrait_node:DialogicPortrait) -> Vector2:
-		var portrait_rect := portrait_node._get_covered_rect()
-		var character := portrait_node.character
-		var portrait_info := character.get_portrait_info(portrait_node.portrait)
-		var apply_character_scale: bool = not portrait_info.get("ignore_char_scale", false)
-
-		var character_scale : float =  character.scale * portrait_info.get("scale", 1) * int(apply_character_scale) + portrait_info.get("scale", 1) * int(!apply_character_scale)
-
-		var scale_vec := Vector2()
-
-		# Mode that ignores the containers size
-		if size_mode == SizeModes.KEEP:
-			scale_vec = Vector2(1,1) * character_scale
-
-		# Mode that makes sure neither height nor width go out of container
-		elif size_mode == SizeModes.FIT_IGNORE_SCALE:
-			if size.as_pixels().x/size.as_pixels().y < portrait_rect.size.x/portrait_rect.size.y:
-				scale_vec = Vector2(1,1) * size.as_pixels().x/portrait_rect.size.x
-			else:
-				scale_vec = Vector2(1,1) * size.as_pixels().y/portrait_rect.size.y
-
-		# Mode that stretches the portrait to fill the whole container
-		elif size_mode == SizeModes.FIT_STRETCH:
-			scale_vec = size.as_pixels()/portrait_rect.size
-
-		# Mode that size the character so 100% size fills the height
-		elif size_mode == SizeModes.FIT_SCALE_HEIGHT:
-			scale_vec = Vector2(1,1) * size.as_pixels().y / portrait_rect.size.y*character_scale
-
-		return scale_vec
-
-
-	func set_parent_size(parent_size:Vector2) -> void:
-		position.container_size = parent_size
-		size.container_size = parent_size
-		origin.container_size = size.as_pixels()
-
-
-	func _validate_property(property: Dictionary) -> void:
-		if property.name in ["position", "size", "origin"]:
-			property.usage = property.usage | PROPERTY_USAGE_ALWAYS_DUPLICATE
-
-
-	func as_string() -> String:
-		return "pos={pos} siz={siz} rot={rot} mir={mir} ori={ori} mod={mod} z={z} ref={ref}".format({
-			"pos":str(position), "siz":str(size), "rot":str(rotation), "mir":str(mirrored), "ori":str(origin), "mod":str(size_mode), "z":str(z_index), "ref":reference_position_id
-		})
-
-
 func set_parent_size(parent_size:Vector2) -> void:
 	container_position.container_size = parent_size
 	container_size.container_size = parent_size
@@ -503,141 +514,141 @@ func get_portrait_transform(settings:ContainerSettings, character: DialogicChara
 
 	return transform
 
-
-func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE, set_z_index:=true, set_mirror:=true) -> void:
-	if movement_tween and movement_tween.is_running():
-		movement_tween.kill()
-
-	## This handles moving the container to a different parent if necessary.
-	if to_settings.reference_position_id:
-		var ref_con := DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
-		if ref_con.get_parent() != get_parent():
-			var global_origin: Vector2 = global_position+current_settings._get_origin_position()
-			var global_size := container_size.as_pixels()
-			get_parent().remove_child(self)
-			ref_con.get_parent().add_child(self)
-			connect_parent_resize()
-			set_parent_size(get_parent_control().size)
-			container_position.overwrite_from_vector(global_origin-get_parent().global_position)
-			container_size.overwrite_from_vector(global_size)
-
-	movement_tween = create_tween()
-	movement_time = time
-	movement_tween.set_parallel(true).set_ease(easing).set_trans(trans)
-
-	target_settings = to_settings
-	to_settings.set_parent_size(get_parent_control().size)
-
-	movement_tween.tween_property(self, "size_mode", to_settings.size_mode, time)
-
-	container_position.make_similar(to_settings.position)
-	movement_tween.tween_property(container_position, "x_value", to_settings.position.x_value, time)
-	movement_tween.tween_property(container_position, "y_value", to_settings.position.y_value, time)
-
-	movement_tween.tween_property(self, 'container_rotation', to_settings.rotation, time)
-
-	container_size.make_similar(to_settings.size)
-	movement_tween.tween_property(container_size, "x_value", to_settings.size.x_value, time)
-	movement_tween.tween_property(container_size, "y_value", to_settings.size.y_value, time)
-
-	if set_mirror:
-	mirrored = to_settings.mirrored
-
-	container_origin.make_similar(to_settings.origin)
-	movement_tween.tween_property(container_origin, "x_value", to_settings.origin.x_value, time)
-	movement_tween.tween_property(container_origin, "y_value", to_settings.origin.y_value, time)
-
-	if set_z_index:
-	container_z_index = to_settings.z_index
-
-	movement_tween.finished.connect(current_settings.update_from_container.bind(self))
-	movement_tween.finished.connect(set.bind("target_settings", null))
-
-	for character_node in get_children():
-		if not character_node.has_meta("character"): continue
-		movement_tween.tween_property(character_node, "position", to_settings._get_origin_position(), time)
-		for portrait_node in character_node.get_children():
-			if not portrait_node is DialogicPortrait: continue
-			update_portrait_transform(portrait_node, to_settings, movement_tween, time)
-
-	if time == 0:
-		movement_tween.custom_step(99)
+#endregion
 
 
-func update_portrait_transform(portrait_node:DialogicPortrait, container_settings:ContainerSettings, tween:Tween=null, time:float=0.0) -> void:
-	var character: DialogicCharacter = portrait_node.get_parent().get_meta("character")
-	var portrait_info := character.get_portrait_info(portrait_node.portrait)
-	var apply_character_scale: bool = not portrait_info.get("ignore_char_scale", false)
+#region CONTAINER SETTINGS
+################################################################################
 
-	var target_pos := get_portrait_offset(character, portrait_node.portrait)
-	var target_scale := container_settings.get_portrait_scale(portrait_node)
-	if tween == null or time == 0:
-		portrait_node.position = target_pos
-		portrait_node.scale = target_scale
-	else:
-		tween.tween_property(portrait_node, "position", target_pos, time)
-		tween.tween_property(portrait_node, "scale", target_scale, time)
+class ContainerSettings extends Resource:
+	## A resource that allows transfering, storing and loading all settings relevant to a PortraitContainer.
 
+	@export var position := DialogicFlexVector.new()
+	@export var size := DialogicFlexVector.new()
+	@export var rotation := 0.0
+	@export var mirrored := false
+	@export var origin := DialogicFlexVector.new()
+	@export var size_mode: SizeModes = SizeModes.FIT_SCALE_HEIGHT
+	@export var z_index := 0
+	@export var reference_position_id := ""
 
-func get_portrait_offset(character:DialogicCharacter, portrait:String) -> Vector2:
-	return character.offset + character.get_portrait_info(portrait).get("offset", Vector2())
+	var derived_from : DialogicNode_PortraitContainer = null
 
-
-func container_resized_during_game() -> void:
-	current_settings.update_from_container(self)
-	for child in get_children():
-		if child.has_meta("character"):
-			child.position = current_settings._get_origin_position()
-		for grand_child in child.get_children():
-			if grand_child is DialogicPortrait:
-				current_settings.update_from_container(self)
-				grand_child.position = get_portrait_offset(grand_child.character, grand_child.portrait)
-				grand_child.scale = current_settings.get_portrait_scale(grand_child)
+	static var _transform_regex := r"(?<part>position|pos|size|siz|rotation|rot|ori|origin|mod|size_mode|mir|mirror|mirrored|sort|sor|z)\W*=(?<value>((?!(pos|siz|rot|mir|ori|mod|z|sor)).)*)"
 
 
-func _child_entered_tree(child:Node) -> void:
-	if child.has_meta("character"):
-		current_settings.update_from_container(self)
-		if not child.child_entered_tree.is_connected(_portrait_entered_tree):
-			child.child_entered_tree.connect(_portrait_entered_tree)
-		child.position = current_settings._get_origin_position()
+	## Creates a new ContainerSetting and set its values from the given [param container].
+	static func from_container(container:DialogicNode_PortraitContainer) -> ContainerSettings:
+		var new := ContainerSettings.new()
+		new.update_from_container(container)
+		return new
 
 
-func _portrait_entered_tree(grand_child:Node) -> void:
-	if grand_child is DialogicPortrait:
-		current_settings.update_from_container(self)
-		grand_child.position = get_portrait_offset(grand_child.character, grand_child.portrait)
-		grand_child.scale = current_settings.get_portrait_scale(grand_child)
-		if movement_tween and target_settings:
-			update_portrait_transform(grand_child, target_settings, movement_tween, movement_time - movement_tween.get_total_elapsed_time())
-		update_mirror()
+	## Copies the settings from the given PortraitContainer node [param container] to this ContainerSetting.
+	func update_from_container(container:DialogicNode_PortraitContainer) -> void:
+		position = container.container_position.copy()
+		size = container.container_size.copy()
+		mirrored = container.mirrored
+		rotation = container.container_rotation
+		origin = container.container_origin
+		size_mode = container.size_mode
+		z_index = container.container_z_index
+		if container.mode != DialogicNode_PortraitContainer.PositionModes._CHARACTER:
+			derived_from = container
+			reference_position_id = container.container_ids[0] if container.container_ids else ""
 
 
-func update_mirror() -> void:
-	if current_settings: current_settings.update_from_container(self)
-	for character_node in get_children():
-		if not character_node.has_meta("character"):
-			continue
-		var character: DialogicCharacter = character_node.get_meta("character", null)
-		for portrait_node in character_node.get_children():
-			if not portrait_node is DialogicPortrait:
-				continue
-			portrait_node = portrait_node as DialogicPortrait
-			var info: Dictionary = portrait_node.character.get_portrait_info(portrait_node.portrait)
-			var resulting_mirror: bool = mirrored != portrait_node.character.mirror != info.get('mirror', false)
-
-			portrait_node._set_mirror(resulting_mirror)
+	## Creates a new ContainerSetting and set its values from the string. See [method update_from_string]
+	static func from_string(string:="") -> ContainerSettings:
+		var new := ContainerSettings.new()
+		new.update_from_string(string)
+		return new
 
 
-func update_z_index() -> void:
-	if current_settings: current_settings.update_from_container(self)
-	var sorted_children := get_parent().get_children().filter(func(x): return x is DialogicNode_PortraitContainer)
-	sorted_children.sort_custom(z_sort_portrait_containers)
-	var idx := 0
-	for con in sorted_children:
-		con.get_parent().move_child(con, idx)
-		idx += 1
+	## Applies settings from the given string to this ContainerSetting.
+	## The supported tags are pos/position, rot/rotation, siz/size, ori/origin, mir/mirrored, mod/size_mode.
+	func update_from_string(string:="") -> void:
+		var regex := RegEx.create_from_string(_transform_regex)
+		for found in regex.search_all(string):
+			match found.get_string("part"):
+				"pos", "position":
+					position.overwrite_from_string(found.get_string("value"))
+				"rot", "rotation":
+					rotation = float(found.get_string("value"))
+				"siz", "size":
+					size.overwrite_from_string(found.get_string("value"))
+				"ori", "origin":
+					origin.overwrite_from_string(found.get_string("value"))
+				"mir", "mirror", "mirrored":
+					mirrored = found.get_string("value").to_lower().strip_edges() == "true"
+				"mod", "mode", "size_mode":
+					size_mode = (int(found.get_string("value")) as SizeModes)
+				"sor", "sort", "z":
+					z_index = int(found.get_string("value"))
+				"ref", "reference":
+					reference_position_id = found.get_string("value").strip_edges()
 
 
-func z_sort_portrait_containers(con1: DialogicNode_PortraitContainer, con2: DialogicNode_PortraitContainer) -> bool:
-	return con1.container_z_index < con2.container_z_index
+	## Returns the current origin position relative to this containers top left corner.
+	func _get_origin_position(rect_size = null) -> Vector2:
+		if rect_size == null:
+			rect_size = size
+		return origin.as_pixels()
+
+
+	## Returns the top left position of this container relative to its parent.
+	func _get_top_left_position(rect_size = null) -> Vector2:
+		if rect_size == null:
+			rect_size = size
+		return position.as_pixels() - _get_origin_position(rect_size).rotated(deg_to_rad(rotation))
+
+
+	## Returns a scaling vector, that can be applied to the portrait node to fit it inside this container.
+	func get_portrait_scale(portrait_node:DialogicPortrait) -> Vector2:
+		var portrait_rect := portrait_node._get_covered_rect()
+		var character := portrait_node.character
+		var portrait_info := character.get_portrait_info(portrait_node.portrait)
+		var apply_character_scale: bool = not portrait_info.get("ignore_char_scale", false)
+
+		var character_scale : float =  character.scale * portrait_info.get("scale", 1) * int(apply_character_scale) + portrait_info.get("scale", 1) * int(!apply_character_scale)
+
+		var scale_vec := Vector2()
+
+		# Mode that ignores the containers size
+		if size_mode == SizeModes.KEEP:
+			scale_vec = Vector2(1,1) * character_scale
+
+		# Mode that makes sure neither height nor width go out of container
+		elif size_mode == SizeModes.FIT_IGNORE_SCALE:
+			if size.as_pixels().x/size.as_pixels().y < portrait_rect.size.x/portrait_rect.size.y:
+				scale_vec = Vector2(1,1) * size.as_pixels().x/portrait_rect.size.x
+			else:
+				scale_vec = Vector2(1,1) * size.as_pixels().y/portrait_rect.size.y
+
+		# Mode that stretches the portrait to fill the whole container
+		elif size_mode == SizeModes.FIT_STRETCH:
+			scale_vec = size.as_pixels()/portrait_rect.size
+
+		# Mode that size the character so 100% size fills the height
+		elif size_mode == SizeModes.FIT_SCALE_HEIGHT:
+			scale_vec = Vector2(1,1) * size.as_pixels().y / portrait_rect.size.y*character_scale
+
+		return scale_vec
+
+
+	func set_parent_size(parent_size:Vector2) -> void:
+		position.container_size = parent_size
+		size.container_size = parent_size
+		origin.container_size = size.as_pixels()
+
+
+	func _validate_property(property: Dictionary) -> void:
+		if property.name in ["position", "size", "origin"]:
+			property.usage = property.usage | PROPERTY_USAGE_ALWAYS_DUPLICATE
+
+
+	func as_string() -> String:
+		return "pos={pos} siz={siz} rot={rot} mir={mir} ori={ori} mod={mod} z={z} ref={ref}".format({
+			"pos":str(position), "siz":str(size), "rot":str(rotation), "mir":str(mirrored), "ori":str(origin), "mod":str(size_mode), "z":str(z_index), "ref":reference_position_id
+		})
+#endregion

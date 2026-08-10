@@ -10,6 +10,8 @@ var transform_regex := r"(?<part>position|pos|size|siz|rotation|rot)\W*=(?<value
 @export_group("State")
 @export var container_info := {}
 
+
+## Use this to update the debug_draw setting on all PortraitContainers currently in the tree.
 var debug_draw := false :
 	set(x):
 		debug_draw = x
