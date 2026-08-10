@@ -18,12 +18,6 @@ jobs:
     name: "CI Unit Test"
     runs-on: 'ubuntu-22.04'
     timeout-minutes: 10 # The overall timeout
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      pull-requests: write
-      statuses: write
 
     steps:
       # Checkout the repository
