@@ -20,6 +20,9 @@ jobs:
     timeout-minutes: 10 # The overall timeout
 
     steps:
+      # Checkout the repository
+      - uses: actions/checkout@v4
+
       - name: Copy CI project.godot
         run: cp .github/workflows/resources/project.godot .
 
