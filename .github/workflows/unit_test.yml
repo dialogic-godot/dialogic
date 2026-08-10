@@ -30,6 +30,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
+      
+      - name: Copy CI project.godot
+        run: cp .github/workflows/resources/project.godot .
 
       - name: Show repository layout for debugging
         shell: bash
