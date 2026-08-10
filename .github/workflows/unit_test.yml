@@ -35,3 +35,13 @@ jobs:
             res://Tests/Unit
           timeout: 10
           report-name: test_report.xml
+        
+      - name: "Upload Unit Test Reports"
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Test Reports"
+          path: |
+            reports/**
+            /var/lib/systemd/coredump/**
+            /var/log/syslog
