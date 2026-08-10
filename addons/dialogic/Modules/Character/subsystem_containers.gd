@@ -61,13 +61,17 @@ func add_container(position_id: String) -> DialogicNode_PortraitContainer:
 
 
 ## Moves the [container] to the [destionation] (using [tween] and [time]).
-## The destination can be a position_id (e.g. "center") or translation, roataion and scale.
-func update_container(container:DialogicNode_PortraitContainer, destination:String, time:float=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE) -> void:
+## The destination can be a position_id (e.g. "center") or translation, rotation and scale.
+## If full_update is false, the mirror and z_index will be preserved.
+func update_container(container:DialogicNode_PortraitContainer, destination:String, time:float=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE, full_update:=true) -> void:
 	var to_settings : DialogicNode_PortraitContainer.ContainerSettings
 
 	var destination_container := get_container(destination)
 	if destination_container:
 		to_settings = destination_container.current_settings.duplicate(true)
+		if not full_update:
+			to_settings.mirrored = container.current_settings.mirrored
+			to_settings.z_index = container.current_settings.z_index
 	else:
 		to_settings = container.current_settings.duplicate(true)
 		to_settings.update_from_string(destination)

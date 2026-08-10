@@ -27,7 +27,7 @@ enum PositionModes {
 @export_subgroup("Portrait Placement")
 enum SizeModes {
 	KEEP, ## The height and width of the container have no effect, only the origin.
-	FIT_STRETCH, ## The portrait will be fitted into the container, ignoring it"s aspect ratio and the character/portrait scale.
+	FIT_STRETCH, ## The portrait will be fitted into the container, ignoring its aspect ratio and the character/portrait scale.
 	FIT_IGNORE_SCALE, ## The portrait will be fitted into the container, ignoring the character/portrait scale, but preserving the aspect ratio.
 	FIT_SCALE_HEIGHT ## Recommended. The portrait will be scaled to fit the container height. A character/portrait scale of 100% means 100% container height. Aspect ratio will be preserved.
 	}
@@ -95,7 +95,7 @@ enum SizeModes {
 ## Can be set at runtime. Will adjust the ordering of this container and all its siblings
 var container_z_index := 0:
 	set(z):
-		if z_index != z:
+		if container_z_index != z:
 			container_z_index = z
 			update_z_index()
 		else:
@@ -460,21 +460,6 @@ func _validate_property(property: Dictionary) -> void:
 		property.usage = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_READ_ONLY
 
 
-## TODO check if we really need both
-func set_rotation(rot:float) -> void:
-	rotation = rot
-	if ignore_transform_change:
-		return
-	update_properties_from_transform()
-
-
-func set_rotation_degrees(rot:float) -> void:
-	rotation_degrees = rot
-	if ignore_transform_change:
-		return
-	update_properties_from_transform()
-
-
 func _update_character_transform(settings:ContainerSettings, character_node: Node, tween:Tween = null, time:float = 0.0) -> void:
 	var character: DialogicCharacter = character_node.get_meta("character")
 
@@ -519,7 +504,7 @@ func get_portrait_transform(settings:ContainerSettings, character: DialogicChara
 	return transform
 
 
-func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE) -> void:
+func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.EASE_IN_OUT, trans:=Tween.TRANS_SINE, set_z_index:=true, set_mirror:=true) -> void:
 	if movement_tween and movement_tween.is_running():
 		movement_tween.kill()
 
@@ -546,7 +531,6 @@ func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.E
 	movement_tween.tween_property(self, "size_mode", to_settings.size_mode, time)
 
 	container_position.make_similar(to_settings.position)
-	## TODO make sure this converts incoming FlexVectors to the correct type!
 	movement_tween.tween_property(container_position, "x_value", to_settings.position.x_value, time)
 	movement_tween.tween_property(container_position, "y_value", to_settings.position.y_value, time)
 
@@ -556,12 +540,14 @@ func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.E
 	movement_tween.tween_property(container_size, "x_value", to_settings.size.x_value, time)
 	movement_tween.tween_property(container_size, "y_value", to_settings.size.y_value, time)
 
+	if set_mirror:
 	mirrored = to_settings.mirrored
 
 	container_origin.make_similar(to_settings.origin)
 	movement_tween.tween_property(container_origin, "x_value", to_settings.origin.x_value, time)
 	movement_tween.tween_property(container_origin, "y_value", to_settings.origin.y_value, time)
 
+	if set_z_index:
 	container_z_index = to_settings.z_index
 
 	movement_tween.finished.connect(current_settings.update_from_container.bind(self))

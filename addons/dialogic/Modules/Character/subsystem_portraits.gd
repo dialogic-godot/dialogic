@@ -245,7 +245,7 @@ func _animate_node(node: Node, animation_path: String, length: float, repeats :=
 ## Moves the given portrait to the given container.
 func _move_character(character_node: Node2D, transform:="", time := 0.0, easing:= Tween.EASE_IN_OUT, trans:= Tween.TRANS_SINE) -> void:
 	var container: DialogicNode_PortraitContainer = character_node.get_parent()
-	dialogic.PortraitContainers.update_container(container, transform, time, easing, trans)
+	dialogic.PortraitContainers.update_container(container, transform, time, easing, trans)#, false)
 
 
 ## Changes the given characters z_index.
