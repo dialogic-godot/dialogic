@@ -16,6 +16,14 @@ extends DialogicSubsystem
 ## `is_autosave` | [type bool]   | `true`, if the save was an autosave. [br]
 signal saved(info: Dictionary)
 
+## Emitted when a load happened with the following info:
+## [br]
+## Key           |   Value Type  | Value [br]
+## -----------   | ------------- | ----- [br]
+## `slot_name`   | [type String] | The name of the slot that the game state was loaded from. [br]
+signal loaded(info: Dictionary)
+
+
 
 ## The directory that will be saved to.
 const SAVE_SLOTS_DIR := "user://dialogic/saves/"
@@ -144,7 +152,7 @@ func save(slot_name := "", is_autosave := false, thumbnail_mode := ThumbnailMode
 func load(slot_name := "") -> Error:
 	if slot_name.is_empty(): slot_name = get_default_slot()
 
-	if !has_slot(slot_name):
+	if not has_slot(slot_name):
 		printerr("[Dialogic Error] Tried loading from invalid save slot '"+slot_name+"'.")
 		return ERR_FILE_NOT_FOUND
 
@@ -161,6 +169,9 @@ func load(slot_name := "") -> Error:
 
 	var state: DialogicSaveState = load_file(slot_name, 'state.txt', {})
 	dialogic.load_full_state(state)
+
+	loaded.emit({"slot_name": slot_name})
+	print('[Dialogic] Loaded from slot "'+slot_name+'".')
 
 	if not state:
 		return FAILED

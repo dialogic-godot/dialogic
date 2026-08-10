@@ -202,8 +202,12 @@ func show_current_question(instant:=true) -> void:
 		if invalid_choice_behaviour == InvalidChoiceBehaviour.AUTO_SKIP:
 			skip_question()
 
+	# TODO Investigate how to hide choices when jumping somewhere while they are visible.
+	# Same problem probably applies to text input event
+
 	if missing_button:
 		printerr("[Dialogic] The layout you are using doesn't have enough Choice Buttons for the choices you are trying to display.")
+
 
 
 ## Skips to the end of the current question.

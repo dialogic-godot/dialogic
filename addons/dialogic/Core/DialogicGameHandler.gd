@@ -361,9 +361,10 @@ func clear(clear_flags := ClearFlags.FULL_CLEAR) -> void:
 	current_state = States.IDLE
 
 	# Resetting variables
-	if current_timeline:
-		await current_timeline.clean()
+	var previous_timeline := current_timeline
 	current_timeline = null
+	if previous_timeline:
+		await previous_timeline.clean()
 
 
 ## Cleanup after previous event (if any).
@@ -406,7 +407,7 @@ func get_full_state() -> DialogicSaveState:
 ## Will automatically start a timeline and add a layout if a timeline was running when
 ## the dictionary was retrieved with [method get_full_state].
 func load_full_state(state:DialogicSaveState) -> void:
-	clear()
+	await clear()
 
 	if state == null:
 		printerr("[Dialogic] Attempted to load state, but given state was [null].")

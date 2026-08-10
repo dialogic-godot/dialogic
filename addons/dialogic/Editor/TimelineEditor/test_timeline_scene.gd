@@ -23,11 +23,14 @@ func _ready() -> void:
 	DialogicUtil.autoload().signal_event.connect(receive_event_signal)
 	DialogicUtil.autoload().text_signal.connect(receive_text_signal)
 
+
 func receive_event_signal(argument:Variant) -> void:
 	print("[Dialogic] Encountered a signal event: ", argument)
 
+
 func receive_text_signal(argument:String) -> void:
 	print("[Dialogic] Encountered a signal in text: ", argument)
+
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
