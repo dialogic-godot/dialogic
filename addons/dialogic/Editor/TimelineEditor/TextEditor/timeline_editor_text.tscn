@@ -18,11 +18,18 @@ symbol_lookup_on_click = true
 line_folding = true
 gutters_draw_line_numbers = true
 gutters_draw_fold_gutter = true
+delimiter_strings = Array[String](["\" \""])
 code_completion_enabled = true
 code_completion_prefixes = Array[String](["[", "{"])
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"(": ")",
+"[": "]",
+"{": "}"
+}
 script = ExtResource("1_1kbx2")
 
 [node name="UpdateTimer" type="Timer" parent="." unique_id=2015408251]
