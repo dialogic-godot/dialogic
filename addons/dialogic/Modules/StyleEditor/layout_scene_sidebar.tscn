@@ -118,6 +118,7 @@ autowrap_mode = 3
 [node name="AddCategory" type="Button" parent="VBoxContainer" unique_id=2028704367]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Add Category"
 
 [connection signal="toggled" from="VBoxContainer/HBox/Collapse" to="." method="_on_collapse_toggled"]

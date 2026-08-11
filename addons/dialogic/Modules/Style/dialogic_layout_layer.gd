@@ -37,7 +37,7 @@ func _get_base_customization() -> Array[Dictionary]:
 		{"type":"Property", "name":"disabled", "display_name":"Disabled", "tooltip":"If disabled, the layer is hidden and processing is disabled."},
 		{"type":"Property", "name":"theme", "display_name":"Theme", "tooltip":"Set the theme of this layer if you know your way around godot themes."},
 		{"type":"Property", "name":"texture_filter", "display_name":"Texture Filter", "tooltip":"If you use pixel-art textures, set this to 'Nearest' so they are not blurry."}
-		]
+	]
 
 
 func _ready() -> void:

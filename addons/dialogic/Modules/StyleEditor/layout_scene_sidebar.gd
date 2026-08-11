@@ -56,9 +56,6 @@ func _on_node_changed() -> void:
 		load_of_node(n)
 
 
-
-
-
 func load_of_node(node:Node) -> void:
 	current_base_node = node
 
@@ -67,13 +64,18 @@ func load_of_node(node:Node) -> void:
 
 	%PropertyTree.load_data(node.get_meta("style_customization", []))
 
+	%AddCategory.disabled = is_shown_on_instance()
+
 
 func close():
 	scene_root = null
 
 
 func _on_add_category_pressed() -> void:
-	%PropertyTree.add_category_item()
+	if %PropertyTree.get_root().get_child_count() == 0:
+		%PropertyTree.add_category_item({"name":"General"}, true)
+	else:
+		%PropertyTree.add_category_item({"name":"New Category"}, true)
 
 
 func _on_property_tree_changed() -> void:

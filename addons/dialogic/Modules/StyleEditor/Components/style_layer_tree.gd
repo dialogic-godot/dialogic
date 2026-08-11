@@ -21,7 +21,7 @@ func _ready() -> void:
 	submenu.add_item("Premade Layer...", 1)
 	submenu.add_item("Custom Layer...", 1)
 	submenu.id_pressed.connect(%LayerList._on_replace_layer_menu_pressed)
-	%LayerListRightClickMenu.add_submenu_node_item("Replace...", submenu)
+	%LayerListRightClickMenu.add_submenu_node_item("Replace...", submenu, RightClickMenuItems.REPLACE_LAYER)
 	%LayerListRightClickMenu.set_item_icon(3, get_theme_icon("Loop", "EditorIcons"))
 	#%LayerListRightClickMenu.add_icon_item(get_theme_icon("Loop", "EditorIcons"), "Replace", RightClickMenuItems.MAKE_CUSTOM)
 	%LayerListRightClickMenu.add_separator()
@@ -34,6 +34,16 @@ func _on_item_mouse_selected(mouse_position: Vector2, mouse_button_index: int) -
 		%LayerListRightClickMenu.set_item_disabled(0, get_item_at_position(mouse_position).get_meta("id").is_empty())
 		%LayerListRightClickMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 		%LayerListRightClickMenu.set_meta("item", get_item_at_position(mouse_position))
+
+		%LayerListRightClickMenu.set_item_disabled(
+			%LayerListRightClickMenu.get_item_index(RightClickMenuItems.DELETE),
+			%DeleteLayerButton.disabled)
+		%LayerListRightClickMenu.set_item_disabled(
+			%LayerListRightClickMenu.get_item_index(RightClickMenuItems.MAKE_CUSTOM),
+			%MakeCustomButton.disabled)
+		%LayerListRightClickMenu.set_item_disabled(
+			%LayerListRightClickMenu.get_item_index(RightClickMenuItems.REPLACE_LAYER),
+			%DeleteLayerButton.disabled)
 
 
 #region DRAG AND DROP

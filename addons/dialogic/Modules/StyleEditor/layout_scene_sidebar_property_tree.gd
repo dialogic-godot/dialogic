@@ -357,15 +357,9 @@ func add_category_item(data := {}) -> TreeItem:
 
 	item.collapsed = data.get("collapsed", false)
 
-	if data.get("name", "").is_empty():
-		get_tree().process_frame.connect(func():
-			if not item:
-				return;
-			await get_tree().process_frame
-			item.select(0); edit_selected(), CONNECT_ONE_SHOT)
-
 	if not loading:
 		changed.emit()
+
 	return item
 
 

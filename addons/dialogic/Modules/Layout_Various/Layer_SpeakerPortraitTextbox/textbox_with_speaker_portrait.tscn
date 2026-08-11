@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_bg6gt"]
 [ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_yyo74"]
+[ext_resource type="Script" uid="uid://diexbgvrksk2k" path="res://addons/dialogic/Resources/flex_vector.gd" id="3_drfit"]
 [ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3_gfw0g"]
 [ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_dda54"]
 [ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_20ce6"]
@@ -27,6 +28,21 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="Resource" id="Resource_fk7rj"]
+script = ExtResource("3_drfit")
+x_value = 1.0
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_r36hk"]
+script = ExtResource("3_drfit")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_45ejk"]
+script = ExtResource("3_drfit")
+x_value = 0.5
+y_value = 1.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bg6gt"]
 
@@ -444,15 +460,19 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dmg1w")
 [node name="SpeakerPortrait" type="Control" parent="Margin/Panel/HBox/PortraitPanel" unique_id=581821027]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_right = 109.0
+offset_bottom = 140.0
 grow_horizontal = 2
 grow_vertical = 2
+size = Vector2(109, 140)
 mouse_filter = 2
 script = ExtResource("2_yyo74")
 mode = 1
 container_ids = PackedStringArray("1")
+container_size = SubResource("Resource_fk7rj")
+container_position = SubResource("Resource_r36hk")
+container_origin = SubResource("Resource_45ejk")
 debug_character_portrait = "speaker"
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 

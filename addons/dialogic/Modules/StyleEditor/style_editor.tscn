@@ -518,6 +518,35 @@ unique_name_in_owner = true
 layout_mode = 2
 hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
 
+[node name="RealizeInheritancePopup" type="ConfirmationDialog" parent="." unique_id=932286596]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Realize Inheritance"
+position = Vector2i(0, 36)
+size = Vector2i(418, 108)
+dialog_autowrap = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RealizeInheritancePopup" unique_id=1809366957]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MakeLayerCustomText" type="RichTextLabel" parent="RealizeInheritancePopup/VBoxContainer" unique_id=1444961989]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6ynco")
+bbcode_enabled = true
+text = "This will apply any settings that this style inherits. You can then move, delete or replace its layers, but it will no longer sync with its parent style. 
+
+This can currently NOT be undone! Proceed with care."
+fit_content = true
+
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
 [connection signal="pressed" from="StyleListSection/Panel/VBox/HBoxContainer/MakeDefaultButton" to="." method="make_current_default"]
@@ -542,3 +571,4 @@ hint_text = "If you disable this, all the settings will be unexposed, so going f
 [connection signal="pressed" from="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/LayerSettingsTabs/No Settings/EditLayerButton" to="StyleView/LayerEditor/LayerView" method="_on_edit_layer_button_pressed"]
 [connection signal="pressed" from="NoStyleView/StartStylingButton" to="." method="_on_start_styling_button_pressed"]
 [connection signal="confirmed" from="CustomizePopup" to="StyleView/LayerEditor/LayerList" method="_on_customize_layer_popup_confirmed"]
+[connection signal="confirmed" from="RealizeInheritancePopup" to="." method="_on_realize_inheritance_popup_confirmed"]

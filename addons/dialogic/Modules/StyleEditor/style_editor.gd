@@ -129,11 +129,15 @@ func create_style(file_path:String, style:DialogicStyle, inherits:DialogicStyle 
 	ResourceSaver.save(style, file_path)
 
 
+func _on_realize_inheritance_popup_confirmed() -> void:
+	realize_style()
+
+
 ## TODO: Make this undoable
 func realize_style() -> void:
 	current_style.realize_inheritance()
 	#%StyleList.select_style(current_style)
-	%StyleList.load_style_list()
+	%StyleList.load_style_list(styles)
 
 
 #endregion
@@ -391,7 +395,7 @@ func _on_test_style_button_pressed() -> void:
 
 func _on_inheritance_index_pressed(index:int) -> void:
 	if index == 0:
-		realize_style()
+		%RealizeInheritancePopup.popup_centered_clamped(Vector2(300, 100))
 
 
 #region NO STYLE VIEW
