@@ -1,9 +1,85 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy1y14inwkplb"]
+[gd_scene format=3 uid="uid://cy1y14inwkplb"]
 
 [ext_resource type="Script" uid="uid://cx1i44s2olq2d" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.gd" id="1_1i7em"]
 [ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="1_rxdcc"]
+[ext_resource type="Script" uid="uid://diexbgvrksk2k" path="res://addons/dialogic/Resources/flex_vector.gd" id="3_j0v32"]
 
-[node name="VN_PortraitLayer" type="Control"]
+[sub_resource type="Resource" id="Resource_nf3k4"]
+script = ExtResource("3_j0v32")
+x_value = 0.2
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_j0v32"]
+script = ExtResource("3_j0v32")
+x_value = 0.1
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_kwhsf"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_np73d"]
+script = ExtResource("3_j0v32")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_pw8le"]
+script = ExtResource("3_j0v32")
+x_value = 0.3
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_u26y7"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_46qkt"]
+script = ExtResource("3_j0v32")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_vcdlt"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_vnd0q"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_w5lxs"]
+script = ExtResource("3_j0v32")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_2ixhv"]
+script = ExtResource("3_j0v32")
+x_value = 0.7
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_ssa17"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_y7160"]
+script = ExtResource("3_j0v32")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_owffp"]
+script = ExtResource("3_j0v32")
+x_value = 0.9
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_wacbv"]
+script = ExtResource("3_j0v32")
+x_value = 0.5
+y_value = 1.0
+
+[node name="VN_PortraitLayer" type="Control" unique_id=770308938]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +89,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_1i7em")
 
-[node name="Portraits" type="Control" parent="."]
+[node name="Portraits" type="Control" parent="." unique_id=1118283014]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -23,62 +99,80 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="DialogicNode_PortraitContainer1" type="Control" parent="Portraits"]
+[node name="leftmost" type="Control" parent="Portraits" unique_id=1680326072]
 layout_mode = 1
-anchor_right = 0.2
-anchor_bottom = 1.0
-offset_right = -1.52588e-05
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 230.4
+offset_bottom = 648.0
+size = Vector2(230.4, 648)
 pivot_offset = Vector2(115.2, 648)
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
 container_ids = PackedStringArray("leftmost", "0")
-metadata/_edit_use_anchors_ = true
+container_size = SubResource("Resource_nf3k4")
+container_position = SubResource("Resource_j0v32")
+container_origin = SubResource("Resource_kwhsf")
 
-[node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits"]
+[node name="left" type="Control" parent="Portraits" unique_id=2147382048]
 layout_mode = 1
-anchor_left = 0.2
-anchor_right = 0.4
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 230.40001
+offset_right = 460.8
+offset_bottom = 648.0
+size = Vector2(230.39998, 648)
+position = Vector2(230.40001, 0)
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
 container_ids = PackedStringArray("left", "1")
+container_size = SubResource("Resource_np73d")
+container_position = SubResource("Resource_pw8le")
+container_origin = SubResource("Resource_u26y7")
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits"]
+[node name="center" type="Control" parent="Portraits" unique_id=452412182]
 layout_mode = 1
-anchor_left = 0.4
-anchor_right = 0.6
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 460.8
+offset_right = 691.19995
+offset_bottom = 648.0
+size = Vector2(230.39996, 648)
+position = Vector2(460.8, 0)
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
 container_ids = PackedStringArray("center", "middle", "2")
+container_size = SubResource("Resource_46qkt")
+container_position = SubResource("Resource_vcdlt")
+container_origin = SubResource("Resource_vnd0q")
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits"]
+[node name="right" type="Control" parent="Portraits" unique_id=1797107823]
 layout_mode = 1
-anchor_left = 0.6
-anchor_right = 0.8
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 691.2
+offset_right = 921.6
+offset_bottom = 648.0
+size = Vector2(230.39996, 648)
+position = Vector2(691.2, 0)
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
 container_ids = PackedStringArray("right", "3")
+container_size = SubResource("Resource_w5lxs")
+container_position = SubResource("Resource_2ixhv")
+container_origin = SubResource("Resource_ssa17")
 metadata/_edit_use_anchors_ = true
 
-[node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits"]
+[node name="rightmost" type="Control" parent="Portraits" unique_id=1200320127]
 layout_mode = 1
-anchor_left = 0.8
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 921.60004
+offset_right = 1152.0
+offset_bottom = 648.0
+size = Vector2(230.39996, 648)
+position = Vector2(921.60004, 0)
 mouse_filter = 2
 script = ExtResource("1_rxdcc")
 container_ids = PackedStringArray("rightmost", "4")
+container_size = SubResource("Resource_y7160")
+container_position = SubResource("Resource_owffp")
+container_origin = SubResource("Resource_wacbv")
 metadata/_edit_use_anchors_ = true
