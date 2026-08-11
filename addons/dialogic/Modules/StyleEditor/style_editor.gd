@@ -84,8 +84,12 @@ func print_unre_update() -> void:
 			#print_rich("[color=dim_gray]", i, " ", unre.get_action_name(i))
 
 	if unre.is_committing_action():
+		if unre.get_current_action_name() in ["Change Style", "Change Layer"]:
+			return
 		print_rich("[color=dim_gray][Dialogic Style Editor] ", unre.get_current_action_name(), "[/color]")
 	else:
+		if unre.get_current_action_name() in ["Change Style", "Change Layer"]:
+			return
 		print_rich("[color=dim_gray][Dialogic Style Editor] Undo ", unre.get_action_name(unre.get_current_action()+1), "[/color]")
 
 

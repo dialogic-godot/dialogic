@@ -513,7 +513,8 @@ layout_mode = 2
 button_pressed = true
 text = "Keep Settings Exposed"
 
-[node name="HintTooltip" parent="CustomizePopup/VBoxContainer/KeepSettingsExposedSection" unique_id=1385432285 instance=ExtResource("2_g4mnt")]
+[node name="KeepSettingsExposedHintTooltip" parent="CustomizePopup/VBoxContainer/KeepSettingsExposedSection" unique_id=1385432285 instance=ExtResource("2_g4mnt")]
+unique_name_in_owner = true
 layout_mode = 2
 hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
 

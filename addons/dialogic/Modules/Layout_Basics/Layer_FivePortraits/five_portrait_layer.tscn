@@ -2,6 +2,82 @@
 
 [ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_x7flx"]
 [ext_resource type="Script" uid="uid://d0ptqnbudhkyj" path="res://addons/dialogic/Modules/Character/node_portrait_container.gd" id="2_t4o42"]
+[ext_resource type="Script" uid="uid://diexbgvrksk2k" path="res://addons/dialogic/Resources/flex_vector.gd" id="3_nqduq"]
+
+[sub_resource type="Resource" id="Resource_ig04m"]
+script = ExtResource("3_nqduq")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_sy8tv"]
+script = ExtResource("3_nqduq")
+x_value = 0.099999994
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_mtjus"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_agcfh"]
+script = ExtResource("3_nqduq")
+x_value = 0.2
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_vsrnn"]
+script = ExtResource("3_nqduq")
+x_value = 0.3
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_0njtn"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_3683h"]
+script = ExtResource("3_nqduq")
+x_value = 0.19999999
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_jtpou"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_qj1fa"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_npq4i"]
+script = ExtResource("3_nqduq")
+x_value = 0.20000002
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_5bxdb"]
+script = ExtResource("3_nqduq")
+x_value = 0.70000005
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_vxeu5"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_dyvel"]
+script = ExtResource("3_nqduq")
+x_value = 0.19999997
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_hipfh"]
+script = ExtResource("3_nqduq")
+x_value = 0.90000004
+y_value = 1.0
+
+[sub_resource type="Resource" id="Resource_jft0c"]
+script = ExtResource("3_nqduq")
+x_value = 0.5
+y_value = 1.0
 
 [node name="5PortraitsLayer" type="Control" unique_id=867161816]
 physics_interpolation_mode = 0
@@ -42,64 +118,92 @@ mouse_filter = 2
 
 [node name="PortraitContainer1" type="Control" parent="Portraits" unique_id=1219777309]
 layout_mode = 1
-anchor_right = 0.19184028
-anchor_bottom = 1.0
-offset_right = 9.399994
+anchors_preset = 0
+offset_right = 230.4
+offset_bottom = 648.0
 grow_vertical = 2
+size = Vector2(230.4, 648)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("leftmost", "0")
+container_size = SubResource("Resource_ig04m")
+container_position = SubResource("Resource_sy8tv")
+container_origin = SubResource("Resource_mtjus")
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
 [node name="PortraitContainer2" type="Control" parent="Portraits" unique_id=179089298]
 layout_mode = 1
-anchor_left = 0.2
-anchor_right = 0.4
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_left = 230.4
+offset_right = 460.8
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
+size = Vector2(230.4, 648)
+position = Vector2(230.4, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("left", "1")
+container_size = SubResource("Resource_agcfh")
+container_position = SubResource("Resource_vsrnn")
+container_origin = SubResource("Resource_0njtn")
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
 [node name="PortraitContainer3" type="Control" parent="Portraits" unique_id=1936417424]
 layout_mode = 1
-anchor_left = 0.4
-anchor_right = 0.6
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_left = 460.8
+offset_right = 691.19995
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
+size = Vector2(230.39996, 648)
+position = Vector2(460.8, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("center", "middle", "2")
+container_size = SubResource("Resource_3683h")
+container_position = SubResource("Resource_jtpou")
+container_origin = SubResource("Resource_qj1fa")
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
 [node name="PortraitContainer4" type="Control" parent="Portraits" unique_id=1330103450]
 layout_mode = 1
-anchor_left = 0.6
-anchor_right = 0.8
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_left = 691.2
+offset_right = 921.60004
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
+size = Vector2(230.40002, 648)
+position = Vector2(691.2, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("right", "3")
+container_size = SubResource("Resource_npq4i")
+container_position = SubResource("Resource_5bxdb")
+container_origin = SubResource("Resource_vxeu5")
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true
 
 [node name="PortraitContainer5" type="Control" parent="Portraits" unique_id=1806096288]
 layout_mode = 1
-anchor_left = 0.8
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_left = 921.6001
+offset_right = 1152.0
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
+size = Vector2(230.3999, 648)
+position = Vector2(921.6001, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("rightmost", "4")
+container_size = SubResource("Resource_dyvel")
+container_position = SubResource("Resource_hipfh")
+container_origin = SubResource("Resource_jft0c")
 metadata/_custom_type_script = "uid://d0ptqnbudhkyj"
 metadata/_edit_use_anchors_ = true

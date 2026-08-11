@@ -269,14 +269,14 @@ func _on_make_custom_button_about_to_popup() -> void:
 func _on_make_custom_menu_pressed(index:int) -> void:
 	%MakeLayerCustomText.hide()
 	%MakeLayoutCustomText.hide()
-	%KeepSettingsExposedSection.hide()
 	# This layer only
 	if index == 2:
+		%CustomizePopup.set_meta("mode", "LAYER")
 		%CustomizePopup.title = "Customize Layer Scene"
 		%CustomizePopup.popup_centered_clamped(Vector2(300, 200))
 		%MakeLayerCustomText.show()
-		%KeepSettingsExposedSection.show()
-		%CustomizePopup.set_meta("mode", "LAYER")
+		%KeepSettingsExposed.button_pressed = true
+		%KeepSettingsExposedHintTooltip.hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
 		%ApplySettingsHintTooltip.hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 	# The full layout
 	if index == 3:
@@ -284,6 +284,8 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 		%CustomizePopup.popup_centered_clamped(Vector2(300, 100))
 		%MakeLayoutCustomText.show()
 		%CustomizePopup.set_meta("mode", "FULL_LAYOUT")
+		%KeepSettingsExposed.button_pressed = false
+		%KeepSettingsExposedHintTooltip.hint_text = "If you enable this, the settings of the root scenes children will be exposed as if they where layers."
 		%ApplySettingsHintTooltip.hint_text = "If you have made adjustments to the overrides of any layer, that layer will have 'editable children' enabled. The settings will be applied but not be exposed to the style editor anymore. \n\n[color=red]If this is disabled, all adjustments/overrides will be lost and all layers will be instanced.[/color]\n\nYou could then make them local or use 'editable children' on them yourself."
 
 
@@ -315,8 +317,8 @@ func _on_make_custom_layer_file_selected(file:String, apply_settings:=true, keep
 	make_layer_custom(file.get_base_dir(), file.get_file(), apply_settings, keep_settings_exposed)
 
 
-func _on_make_custom_layout_file_selected(file:String, apply_settings:=true) -> void:
-	make_layout_custom(file, apply_settings)
+func _on_make_custom_layout_file_selected(file:String, apply_settings:=true, keep_settings_exposed:= false) -> void:
+	make_layout_custom(file, apply_settings, keep_settings_exposed)
 
 
 func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=true, keep_settings_exposed:=true) -> void:
@@ -394,9 +396,11 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 	unre.create_action("Customize Full Layout")
 	unre.add_do_method(current_style.clear)
 	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
-	unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
+	if keep_settings_exposed:
+		unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
 	unre.add_do_method(load_style_layer_list)
-	unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
+	if keep_settings_exposed:
+		unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
 	unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
 	unre.add_undo_method(load_style_layer_list)
 	unre.add_undo_method(func(): print_rich("[color={0}][Dialogic Style] Undoing the full customization of your style will restore your style to it's previous state, but will not delete the new scene that was created.".format([get_theme_color("warning_color", "Editor").to_html()])))
