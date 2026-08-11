@@ -62,16 +62,8 @@ func _on_node_changed() -> void:
 func load_of_node(node:Node) -> void:
 	current_base_node = node
 
-	# Show warning for internal scenes
-	if scene_root.scene_file_path and scene_root.scene_file_path.begins_with("res://addons/dialogic/"):
-		%Internal.show()
-	else:
-		%Internal.hide()
-
-	if current_base_node.scene_file_path and current_base_node != scene_root:
-		%Instanced.show()
-	else:
-		%Instanced.hide()
+	%Internal.visible = is_shown_on_internal_scene()
+	%Instanced.visible = is_shown_on_instance()
 
 	%PropertyTree.load_data(node.get_meta("style_customization", []))
 
@@ -106,10 +98,6 @@ func update_inspector() -> void:
 		EditorInterface.edit_node(edited_object)
 
 
-func _on_print_pressed() -> void:
-	print(%PropertyTree.get_data())
-
-
 func property_override_button_clicked(node:Node, property:String) -> void:
 	%PropertyTree.highlight_property(node, property)
 
@@ -117,3 +105,11 @@ func property_override_button_clicked(node:Node, property:String) -> void:
 func _on_collapse_toggled(toggled_on: bool) -> void:
 	%Info.visible = toggled_on
 	%Collapse.icon = get_theme_icon("Collapse" if toggled_on else "Forward", "EditorIcons")
+
+
+func is_shown_on_internal_scene() -> bool:
+	return scene_root.scene_file_path and scene_root.scene_file_path.begins_with("res://addons/dialogic/")
+
+
+func is_shown_on_instance() -> bool:
+	return current_base_node.scene_file_path and current_base_node != scene_root

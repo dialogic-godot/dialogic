@@ -192,7 +192,7 @@ func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.E
 
 	## This handles moving the container to a different parent if necessary.
 	if to_settings.reference_position_id:
-		var ref_con := DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
+		var ref_con: DialogicNode_PortraitContainer = DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
 		if ref_con.get_parent() != get_parent():
 			var global_origin: Vector2 = global_position+current_settings._get_origin_position()
 			var global_size := container_size.as_pixels()
@@ -379,10 +379,6 @@ func _draw():
 		if container_ids:
 			draw_string(get_theme_default_font(),get_theme_default_font().get_string_size(container_ids[0], HORIZONTAL_ALIGNMENT_LEFT, 1, get_theme_default_font_size())+Vector2(8,0) , container_ids[0], HORIZONTAL_ALIGNMENT_CENTER)
 
-		var pivot_texture := get_theme_icon("EditorPivot", "EditorIcons")
-		var pivot_draw_size := 32
-		draw_texture_rect(pivot_texture, Rect2(_get_origin_position()-Vector2.ONE*pivot_draw_size*0.5, Vector2.ONE*pivot_draw_size), false, Color(1, 0.3098039329052, 1))
-		_update_debug_portrait_transform()
 
 		var pivot_draw_size := 32
 		draw_texture_rect(pivot_texture, Rect2(current_settings._get_origin_position()-Vector2.ONE*pivot_draw_size*0.5, Vector2.ONE*pivot_draw_size), false, Color(1.0, 0.966, 0.997, 1.0))

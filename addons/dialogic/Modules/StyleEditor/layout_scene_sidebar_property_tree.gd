@@ -343,13 +343,15 @@ func add_category_item(data := {}) -> TreeItem:
 
 	item.set_text(0, data.get("name", ""))
 	item.set_custom_font(0, get_theme_font("bold", "EditorFonts"))
-	item.set_editable(0, true)
+	item.set_editable(0, not owner.is_shown_on_instance())
 
 	item.set_custom_bg_color(0, get_theme_color("disabled_highlight_color", "Editor"))
 	item.set_custom_bg_color(1, get_theme_color("disabled_highlight_color", "Editor"))
 	item.set_custom_bg_color(2, get_theme_color("disabled_highlight_color", "Editor"))
 
 	item.add_button(3, get_theme_icon("Remove", "EditorIcons"), Buttons.DELETE, false, "Delete All Node Customization")
+	item.set_button_disabled(3, item.get_button_by_id(3, Buttons.DELETE), owner.is_shown_on_instance())
+
 	item.set_metadata(0, {"type":"Category"})
 	item.set_cell_mode(3, TreeItem.CELL_MODE_CUSTOM)
 
@@ -371,13 +373,13 @@ func add_node_item(parent:TreeItem, data := {}) -> TreeItem:
 	var item := create_item(parent)
 
 	item.set_text(0, data.name)
-	item.set_editable(0, true)
+	item.set_editable(0, not owner.is_shown_on_instance())
 
 	if data.get("display_name", ""):
 		item.set_text(1, data.display_name)
 	else:
 		item.set_text(1, data.name.trim_prefix("%").get_slice("/", data.name.get_slice_count("/")-1))
-	item.set_editable(1, true)
+	item.set_editable(1, not owner.is_shown_on_instance())
 
 	item.set_text(2, data.get("tooltip", ""))
 
@@ -387,6 +389,7 @@ func add_node_item(parent:TreeItem, data := {}) -> TreeItem:
 
 	item.add_button(3, get_theme_icon("ToolSelect", "EditorIcons"), Buttons.SELECT, false, "Select")
 	item.add_button(3, get_theme_icon("Remove", "EditorIcons"), Buttons.DELETE, false, "Delete All Node Customization")
+	item.set_button_disabled(3, item.get_button_by_id(3, Buttons.DELETE), owner.is_shown_on_instance())
 
 	item.set_metadata(0, {"type":"Node", "node_path":data.name})
 	item.set_cell_mode(3, TreeItem.CELL_MODE_CUSTOM)
@@ -403,19 +406,21 @@ func add_property_item(parent:TreeItem, data := {}) -> TreeItem:
 	var item := create_item(parent)
 
 	item.set_text(0, data.name)
-	item.set_editable(0, true)
+	item.set_editable(0, not owner.is_shown_on_instance())
 	item.set_custom_color(0, get_theme_color("font_placeholder_color", "Editor"))
 
 	if data.get("display_name", ""):
 		item.set_text(1, data.display_name)
 	else:
 		item.set_text(1, simplify_name(data.name))
-	item.set_editable(1, true)
+	item.set_editable(1, not owner.is_shown_on_instance())
 
 	item.set_text(2, data.get("tooltip", ""))
-	item.set_editable(2, true)
+	item.set_editable(2, not owner.is_shown_on_instance())
 
 	item.add_button(3, get_theme_icon("Remove", "EditorIcons"), Buttons.DELETE, false, "Delete This Property Customization")
+	item.set_button_disabled(3, item.get_button_by_id(3, Buttons.DELETE), owner.is_shown_on_instance())
+
 	item.set_metadata(0, {"type":"Property"})
 	item.set_cell_mode(3, TreeItem.CELL_MODE_CUSTOM)
 
