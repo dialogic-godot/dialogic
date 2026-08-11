@@ -128,9 +128,8 @@ var default_debug_character := load("uid://dykf1j17ct5mo")
 var debug_draw := false
 #endregion
 
-
-var ignore_resize := false
-var ignore_transform_change := false
+## Used to avoid infinitely loops when updating transforms.
+var _ignore_transform_change := false
 
 ## Usually contains the containers current settings as a ContainerSettings
 var current_settings: ContainerSettings
@@ -335,31 +334,31 @@ func _on_parent_resized() -> void:
 ## Updates [member container_size], [member container_position], [member container_container_origin]
 ## and [member container_rotation] based on the transform (position, size, rotation) of this node.
 func update_properties_from_transform() -> void:
-	if ignore_transform_change:
+	if _ignore_transform_change:
 		return
 	current_settings.update_from_container(self)
-	ignore_transform_change = true
+	_ignore_transform_change = true
 	set_parent_size(get_parent_control().size)
 	container_size.overwrite_from_vector(size)
 	container_origin.container_size = container_size.as_pixels()
 	container_rotation = rotation_degrees
 	container_position.overwrite_from_vector(position+current_settings._get_origin_position().rotated(rotation))
-	ignore_transform_change = false
+	_ignore_transform_change = false
 
 
 ## Updates size, position and rotation based on [member container_size], [member container_position],
 ## [member container_container_origin] and [member container_rotation].
 func update_transform_from_properties() -> void:
-	if ignore_transform_change:
+	if _ignore_transform_change:
 		return
 	if not is_node_ready():
 		await ready
 	current_settings.update_from_container(self)
-	ignore_transform_change = true
+	_ignore_transform_change = true
 	set_parent_size(get_parent_control().size)
 	size = container_size.as_pixels()
 	position = current_settings._get_top_left_position()
-	ignore_transform_change = false
+	_ignore_transform_change = false
 	queue_redraw()
 
 
