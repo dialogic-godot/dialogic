@@ -18,14 +18,14 @@ func _ready() -> void:
 	%LayerListRightClickMenu.add_separator()
 	var submenu := PopupMenu.new()
 	submenu.add_item("Premade Layer...", 1)
-	submenu.add_item("Custom Layer...", 1)
+	submenu.add_item("Custom Layer...", 2)
 	submenu.id_pressed.connect(%LayerList._on_replace_layer_menu_pressed)
 	%LayerListRightClickMenu.add_submenu_node_item("Replace...", submenu, RightClickMenuItems.REPLACE_LAYER)
 	%LayerListRightClickMenu.set_item_icon(2, get_theme_icon("Loop", "EditorIcons"))
-	%LayerListRightClickMenu.add_icon_item(get_theme_icon("InstanceOptions", "EditorIcons"), "Make Custom...", RightClickMenuItems.MAKE_CUSTOM)
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("CreateNewSceneFrom", "EditorIcons"), "Make Custom...", RightClickMenuItems.MAKE_CUSTOM)
 	#%LayerListRightClickMenu.add_icon_item(get_theme_icon("Loop", "EditorIcons"), "Replace", RightClickMenuItems.MAKE_CUSTOM)
 	%LayerListRightClickMenu.add_separator()
-	%LayerListRightClickMenu.add_icon_item(get_theme_icon("PackedScene", "EditorIcons"), "Open Scene", RightClickMenuItems.OPEN_SCENE)
+	%LayerListRightClickMenu.add_icon_item(get_theme_icon("InstanceOptions", "EditorIcons"), "Open Scene", RightClickMenuItems.OPEN_SCENE)
 	%LayerListRightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem", RightClickMenuItems.SHOW_IN_FILESYSTEM)
 
 

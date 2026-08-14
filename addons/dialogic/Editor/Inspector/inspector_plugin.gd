@@ -50,7 +50,7 @@ func _parse_begin(object: Object) -> void:
 
 	var correct_node: bool = false
 	var customizations: Array = base.get_meta("style_customization")
-	if base.has_method("_get_base_customization"):
+	if base.has_method("_get_base_customization") and base.get_script().is_tool():
 		customizations += base._get_base_customization()
 	for i in customizations:
 		if i.type == "Node":

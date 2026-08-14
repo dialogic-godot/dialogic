@@ -158,12 +158,14 @@ func create_and_add_new_style(file_path:String, style:DialogicStyle, inherits:Di
 	style.name = _get_new_name(file_path.get_file().trim_suffix("."+file_path.get_extension()).capitalize())
 	create_style(file_path, style, inherits)
 	add_style_to_list(style)
+	change_style(style)
 
 
 func add_style_to_list(style:DialogicStyle) -> void:
 	var new_list := styles.duplicate()
 	new_list.append(style)
 	set_style_list_undoable(new_list)
+	%StyleList
 
 
 func remove_from_style_list(style:DialogicStyle) -> void:
@@ -174,9 +176,9 @@ func remove_from_style_list(style:DialogicStyle) -> void:
 
 func set_style_list_undoable(list:Array) -> void:
 	unre.create_action("Add Style To List")
-	unre.add_do_method(set_latest_style.bind(get_latest_style()))
+	#unre.add_do_method(set_latest_style.bind(get_latest_style()))
 	unre.add_do_method(set_style_list.bind(list))
-	unre.add_undo_method(set_latest_style.bind(get_latest_style()))
+	#unre.add_undo_method(set_latest_style.bind(get_latest_style()))
 	unre.add_undo_method(set_style_list.bind(styles.duplicate()))
 	unre.commit_action()
 
@@ -285,7 +287,7 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 			"*.tres",
 			EditorFileDialog.FILE_MODE_SAVE_FILE,
 			"Select folder for new style")
-
+	
 	if index == 3:
 		if not %StyleList.get_selected():
 			return

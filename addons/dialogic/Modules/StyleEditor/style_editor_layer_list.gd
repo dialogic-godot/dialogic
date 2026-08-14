@@ -40,7 +40,7 @@ func _ready() -> void:
 	%AddLayerButton.icon = get_theme_icon("Add", "EditorIcons")
 	%DeleteLayerButton.icon = get_theme_icon("Remove", "EditorIcons")
 	%ReplaceLayerButton.icon = get_theme_icon("Loop", "EditorIcons")
-	%MakeCustomButton.icon = get_theme_icon("InstanceOptions", "EditorIcons")
+	%MakeCustomButton.icon = get_theme_icon("CreateNewSceneFrom", "EditorIcons")
 	%MoreSettings.icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
 
 
@@ -107,7 +107,7 @@ func setup_layer_tree_item(info:Dictionary, item:TreeItem) -> void:
 	else:
 		item.set_text(0, clean_scene_name(info.path))
 		item.set_icon(0, get_theme_icon("PackedScene", "EditorIcons"))
-		item.add_button(0, get_theme_icon("PackedScene", "EditorIcons"), -1, false, "Open Scene")
+		item.add_button(0, get_theme_icon("InstanceOptions", "EditorIcons"), -1, false, "Open Scene")
 		item.set_button_tooltip_text(0, 0, "Open Scene")
 	item.set_meta("scene", info.path)
 	item.set_meta("id", info.id)
@@ -192,8 +192,8 @@ func replace_layer(layer_id:String, scene_path:String, clear_overrides:=false) -
 	unre.add_undo_method(get_current_style().set_layer_scene.bind(layer_id, current_info.path))
 	if clear_overrides:
 		unre.add_undo_property(get_current_style(), "use_base_scene_children_as_layers", true)
-	if get_current_style().use_base_scene_children_as_layers:
-		unre.add_undo_method(get_current_style().enable_base_scene_children_as_layers)
+	#if get_current_style().use_base_scene_children_as_layers:
+		#unre.add_undo_method(get_current_style().enable_base_scene_children_as_layers)
 	unre.add_undo_method(reload_list.bind(true, SelectLayerMode.LOAD_WITHOUT_UNDO))
 	unre.commit_action()
 
@@ -275,19 +275,19 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 		%CustomizePopup.title = "Customize Layer Scene"
 		%CustomizePopup.popup_centered_clamped(Vector2(300, 200))
 		%MakeLayerCustomText.show()
+		%ApplySettingsHintTooltip.hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 		%KeepSettingsExposed.button_pressed = true
 		%KeepSettingsExposedHintTooltip.hint_text = "If you disable this, all the settings will be unexposed, so going forward the style editor won't show them and you can only edit your scene directly. If in doubt, leave this enabled, you can unexpose the settings later on manually."
-		%ApplySettingsHintTooltip.hint_text = "If you have made any adjustments to the overrides of this scene, this will apply them to the nodes in the new scene, essentially making those values the new default."
 	# The full layout
 	if index == 3:
+		%CustomizePopup.set_meta("mode", "FULL_LAYOUT")
 		%CustomizePopup.title = "Customize Full Layout"
 		%CustomizePopup.popup_centered_clamped(Vector2(300, 100))
 		%MakeLayoutCustomText.show()
-		%CustomizePopup.set_meta("mode", "FULL_LAYOUT")
+		%ApplySettingsHintTooltip.hint_text = "If this is enabled, any layer with overrides will have 'editable children' enabled and those overrides will be applied to their nodes."
 		%KeepSettingsExposed.button_pressed = false
-		%KeepSettingsExposedHintTooltip.hint_text = "If you enable this, the settings of the root scenes children will be exposed as if they where layers."
-		%ApplySettingsHintTooltip.hint_text = "If you have made adjustments to the overrides of any layer, that layer will have 'editable children' enabled. The settings will be applied but not be exposed to the style editor anymore. \n\n[color=red]If this is disabled, all adjustments/overrides will be lost and all layers will be instanced.[/color]\n\nYou could then make them local or use 'editable children' on them yourself."
-
+		%KeepSettingsExposedHintTooltip.hint_text = "If you enable this, the settings will keep being exposed in the style editor."
+		
 
 func _on_customize_layer_popup_confirmed() -> void:
 	if %CustomizePopup.get_meta("mode", "") == "LAYER":
@@ -305,7 +305,7 @@ func _on_customize_layer_popup_confirmed() -> void:
 	else:
 		var current_style_name: String = get_current_style().name.to_snake_case()
 		find_parent("EditorView").godot_file_dialog(
-			_on_make_custom_layout_file_selected.bind(%ApplySettings.button_pressed),
+			_on_make_custom_layout_file_selected.bind(%ApplySettings.button_pressed, %KeepSettingsExposed.button_pressed),
 			"*.tscn",
 			EditorFileDialog.FILE_MODE_SAVE_FILE,
 			"Create a new scene from all layers",
@@ -361,8 +361,10 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 	# Load base scene
 	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()
 	var base_scene := base_scene_pck.instantiate()
-	base_scene.name = "Custom" + clean_scene_name(base_scene_pck.resource_path).to_pascal_case()
-	DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
+	base_scene.name = current_style.name.to_pascal_case()
+	
+	if apply_settings:
+		DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
 
 	if not keep_settings_exposed:
 		base_scene.remove_meta("style_customization")
@@ -373,7 +375,7 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 
 		if not ResourceLoader.exists(layer_info.path):
 			continue
-
+		print(layer_info.path)
 		var layer_scene: DialogicLayoutLayer = load(layer_info.path).instantiate(PackedScene.GenEditState.GEN_EDIT_STATE_INSTANCE)
 
 		#layer_scene.apply_overrides_on_ready = true
@@ -383,7 +385,6 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 		if (not layer_info.overrides.is_empty()) and apply_settings:
 			base_scene.set_editable_instance(layer_scene, true)
 			DialogicUtil.apply_scene_export_overrides(layer_scene, layer_info.overrides)
-		#layer_scene.remove_meta("style_customization")
 		layer_scene.set_meta("style_layer_id", layer_id)
 		layer_scene.owner = base_scene
 
@@ -394,11 +395,13 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 	EditorInterface.get_resource_filesystem().scan_sources()
 
 	unre.create_action("Customize Full Layout")
+	var layer_info := current_style.layer_info
 	if keep_settings_exposed:
 		unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
-	else:
-		unre.add_do_method(current_style.clear)
-		unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
+	unre.add_do_method(current_style.clear)
+	if keep_settings_exposed:
+		unre.add_do_property(current_style, "layer_info", layer_info)
+	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
 	unre.add_do_method(load_style_layer_list)
 	if keep_settings_exposed:
 		unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
@@ -434,7 +437,7 @@ func _on_more_settings_menu_pressed(id:int) -> void:
 		if checked:
 			unre.create_action("Style Enable Base Scene Children as Layers")
 			unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
-			unre.add_do_method(current_style.setup.bind([], {"":current_style.get_layer_info("")}, current_style.inherits))
+			unre.add_do_method(current_style.setup.bind([], {"":current_style.layer_info[""]}, current_style.inherits))
 			unre.add_do_method(reload_list)
 			unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
 			unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))

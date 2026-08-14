@@ -17,11 +17,15 @@ class_name DialogicStyle
 ## Stores the layer order
 @export var layer_list: Array[String] = []
 ## Stores the layer infos
-@export var layer_info := {
+@export var layer_info := { #making this typed has only led to tears
 	"" : DialogicStyleLayer.new()
 }
 
-@export var use_base_scene_children_as_layers := false
+@export var use_base_scene_children_as_layers := false:
+	set(x):
+		use_base_scene_children_as_layers = x
+		for i in layer_info:
+			layer_info[i].child_of_base = x
 
 func _init(_name := "") -> void:
 	if not _name.is_empty():
@@ -62,8 +66,9 @@ func get_layer_index(id:String) -> int:
 ## Returns `true` if [param id] is a valid id for a layer.
 func has_layer(id:String) -> bool:
 	if get_inheritance_root().use_base_scene_children_as_layers and id != "" and not id in layer_info:
-		layer_info[id] = {"path":"", "id":"", "overrides":{}}
-	return id in layer_info or id == "" or get_inheritance_root().use_base_scene_children_as_layers
+		layer_info[id] = DialogicStyleLayer.new()
+		layer_info[id].child_of_base = true
+	return id in layer_info# or get_inheritance_root().use_base_scene_children_as_layers
 
 
 ## Returns `true` if [param index] is a valid index for a layer.
@@ -86,24 +91,26 @@ func get_layer_info(id:String) -> Dictionary:
 	if has_layer(id):
 		var layer_resource: DialogicStyleLayer = layer_info[id]
 		if layer_resource.scene != null:
-			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
-			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(layer_resource.scene.resource_path))
+			info.path = ResourceUID.path_to_uid(layer_resource.scene.resource_path)
 		elif id == "":
-			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
-			info.path = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(DialogicStylesUtil.get_default_layout_base().resource_path))
+			info.path = ResourceUID.path_to_uid(DialogicStylesUtil.get_default_layout_base().resource_path)
 
 		info.overrides = layer_resource.overrides.duplicate()
 
 	return info
 
+##
+#func enable_base_scene_children_as_layers() -> void:
+	#use_base_scene_children_as_layers = true
+	#for i in layer_info:
+		#layer_info[i].child_of_root = true
 #
-func enable_base_scene_children_as_layers() -> void:
-	use_base_scene_children_as_layers = true
-
-
-
+#
 #func disable_base_scene_children_as_layers() -> void:
 	#use_base_scene_children_as_layers = false
+	#for i in layer_info:
+		#layer_info[i].child_of_root = false
+#
 	#var new_layer_info := {}
 	#new_layer_info[""] = layer_info[""]
 	#layer_info = new_layer_info
