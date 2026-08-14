@@ -63,7 +63,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree():
+	if not is_visible_in_tree() or not is_ancestor_of(get_viewport().gui_get_focus_owner()):
 		return
 	if EditorInterface.get_editor_settings().get_shortcut("ui_undo").matches_event(event) and event.is_pressed():
 		unre.undo()
@@ -73,6 +73,8 @@ func _input(event: InputEvent) -> void:
 		accept_event()
 	elif event is InputEventKey and event.pressed and Input.is_key_pressed(KEY_CTRL) and Input.is_key_pressed(KEY_F):
 		print_unre_update()
+	elif EditorInterface.get_editor_settings().get_shortcut("ui_text_delete").matches_event(event):
+		accept_event()
 
 
 func print_unre_update() -> void:

@@ -84,9 +84,6 @@ func get_layer_info(id:String) -> Dictionary:
 	var info := {"id": id, "path": "", "overrides": {}}.duplicate()
 
 	if has_layer(id):
-		if get_inheritance_root().use_base_scene_children_as_layers:
-			return info.merged(layer_info[id], true)
-
 		var layer_resource: DialogicStyleLayer = layer_info[id]
 		if layer_resource.scene != null:
 			# TODO replace with ResourceUID.path_to_uid() when dropping 4.4 support
@@ -100,10 +97,11 @@ func get_layer_info(id:String) -> Dictionary:
 	return info
 
 #
-#func enable_base_scene_children_as_layers() -> void:
-	#use_base_scene_children_as_layers = true
-#
-#
+func enable_base_scene_children_as_layers() -> void:
+	use_base_scene_children_as_layers = true
+
+
+
 #func disable_base_scene_children_as_layers() -> void:
 	#use_base_scene_children_as_layers = false
 	#var new_layer_info := {}

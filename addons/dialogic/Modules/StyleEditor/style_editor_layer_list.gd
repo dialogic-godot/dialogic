@@ -394,14 +394,16 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 	EditorInterface.get_resource_filesystem().scan_sources()
 
 	unre.create_action("Customize Full Layout")
-	unre.add_do_method(current_style.clear)
-	unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
 	if keep_settings_exposed:
 		unre.add_do_property(current_style, "use_base_scene_children_as_layers", true)
+	else:
+		unre.add_do_method(current_style.clear)
+		unre.add_do_method(current_style.set_layer_scene.bind("", target_path))
 	unre.add_do_method(load_style_layer_list)
 	if keep_settings_exposed:
 		unre.add_undo_property(current_style, "use_base_scene_children_as_layers", false)
-	unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
+	else:
+		unre.add_undo_method(current_style.setup.bind(current_style.layer_list, current_style.layer_info, current_style.inherits))
 	unre.add_undo_method(load_style_layer_list)
 	unre.add_undo_method(func(): print_rich("[color={0}][Dialogic Style] Undoing the full customization of your style will restore your style to it's previous state, but will not delete the new scene that was created.".format([get_theme_color("warning_color", "Editor").to_html()])))
 	unre.commit_action()
