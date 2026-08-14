@@ -23,6 +23,7 @@ func _execute() -> void:
 
 	if dialogic.Animations.is_animating():
 		dialogic.Animations.stop_animation()
+
 	dialogic.current_state = dialogic.States.IDLE
 
 	finish()

@@ -1,11 +1,12 @@
+@tool
 @icon("node_next_indicator_icon.svg")
 class_name DialogicNode_NextIndicator
 extends Control
 
-## Node that is shown when the text is fully revealed.
-## The default implementation allows to set an icon and animation.
+## A dialogic node that is shown when the text is fully revealed.
+## Allows to set an icon and animation.
 
-
+## If false, this indicator will not be used.
 @export var enabled := true
 
 ## If true the next indicator will also be shown if the text is a question.
@@ -21,7 +22,7 @@ enum Animations {BOUNCE, BLINK, NONE}
 var texture_rect: TextureRect
 
 ## Set the image to use as the indicator.
-@export var texture: Texture2D = preload("res://addons/dialogic/Example Assets/next-indicator/next-indicator.png") as Texture2D:
+@export var texture: Texture2D:
 	set(_texture):
 		texture = _texture
 		if texture_rect:
@@ -37,12 +38,14 @@ var texture_rect: TextureRect
 @export var indicator_offset := Vector2(0, 0):
 	set(_indicator_offset):
 		indicator_offset = _indicator_offset
-		if has_node('Texture'):
-			texture_rect.position = indicator_offset
+		#if has_node('Texture'):
+			#texture_rect.position = indicator_offset
 
 var tween: Tween
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	add_to_group('dialogic_next_indicator')
 	gui_input.connect(_on_gui_input)
 	# Creating TextureRect if missing

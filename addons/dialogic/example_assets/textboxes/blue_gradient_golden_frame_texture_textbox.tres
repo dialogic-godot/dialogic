@@ -1,0 +1,14 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://dtsbdeg7bpsg3"]
+
+[ext_resource type="Texture2D" uid="uid://dyytt8jjvavsu" path="res://addons/dialogic/example_assets/textboxes/blue_gradient_golden_frame_textbox.png" id="1_fa38k"]
+
+[resource]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+texture = ExtResource("1_fa38k")
+texture_margin_left = 26.0
+texture_margin_top = 28.0
+texture_margin_right = 26.0
+texture_margin_bottom = 28.0

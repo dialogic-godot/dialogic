@@ -192,7 +192,7 @@ func update_container(to_settings: ContainerSettings, time:=0.0, easing:=Tween.E
 
 	## This handles moving the container to a different parent if necessary.
 	if to_settings.reference_position_id:
-		var ref_con := DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
+		var ref_con: DialogicNode_PortraitContainer = DialogicUtil.autoload().PortraitContainers.get_container(to_settings.reference_position_id)
 		if ref_con.get_parent() != get_parent():
 			var global_origin: Vector2 = global_position+current_settings._get_origin_position()
 			var global_size := container_size.as_pixels()

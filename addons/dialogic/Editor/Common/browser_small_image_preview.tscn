@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bk0flv1l60mri"]
+
+[ext_resource type="Texture2D" uid="uid://o2853ofw8kkn" path="res://addons/dialogic/Modules/Layout_Basics/Layer_CenteredChoices/preview.png" id="1_yp2g6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp2g6"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.33971, 0.33971, 0.33971, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+shadow_color = Color(0, 0, 0, 0.005)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[node name="SmallImagePreviewBase" type="Button" unique_id=326794714]
+clip_children = 2
+custom_minimum_size = Vector2(60, 60)
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yp2g6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yp2g6")
+toggle_mode = true
+
+[node name="PreviewImage" type="TextureRect" parent="." unique_id=1636627642]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_yp2g6")
+expand_mode = 1
+stretch_mode = 6
