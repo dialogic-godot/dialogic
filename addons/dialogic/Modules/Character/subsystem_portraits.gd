@@ -24,7 +24,9 @@ var default_portrait_scene: PackedScene = load(get_script().resource_path.get_ba
 
 func _clear_state(_clear_flag := DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	for character_node in character_nodes.values():
-		_remove_character(character_node)
+		# The node can already be freed (e.g. the scene was changed).
+		if is_instance_valid(character_node):
+			_remove_character(character_node)
 	portraits.clear()
 	character_nodes.clear()
 
@@ -39,8 +41,10 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 		var character: DialogicCharacter = DialogicResourceUtil.get_character_resource(character_identifier)
 		if character:
 			var container := dialogic.PortraitContainers.load_position_container(character.get_character_name())
-			await add_character(character, container, character_info.portrait, character_info.position_id)
-			character_nodes[character.get_identifier()].get_child(-1)._load_state(portrait_states.get(character.get_identifier(), {}))
+			var character_node := await add_character(character, container, character_info.portrait, character_info.position_id)
+			# The character can fail to re-join (e.g. it's position container is not available).
+			if character_node and character_node.get_child_count() > 0:
+				character_node.get_child(-1)._load_state(portrait_states.get(character.get_identifier(), {}))
 		else:
 			push_error('[Dialogic] Failed to load character "' + str(character_identifier) + '".')
 
@@ -499,6 +503,10 @@ func move_character(character:DialogicCharacter, position_id:String, time:= 0.0,
 ## Removes a character with a given animation or the default animation.
 func leave_character(character: DialogicCharacter, animation_name:= "", animation_length:= 0.0, animation_wait := false) -> void:
 	if not is_character_joined(character):
+		if character:
+			# Clean up an entry that lost it's node (e.g. after a scene change).
+			character_nodes.erase(character.get_identifier())
+			portraits.erase(character.get_identifier())
 		return
 
 	var character_node := get_character_node(character)
@@ -539,17 +547,20 @@ func leave_all_characters(animation_name:="", animation_length:=0.0, animation_w
 ## Return `null` if the [param character] is not part of the scene.
 func get_character_node(character: DialogicCharacter) -> Node:
 	if is_character_joined(character):
-		if is_instance_valid(character_nodes[character.get_identifier()]):
-			return character_nodes[character.get_identifier()]
+		return character_nodes[character.get_identifier()]
 	return null
 
 
 ## Returns true if the given character is currently joined.
+## A character is only joined while it also has a valid portrait node:
+## entries left without one (e.g. after a scene change) are not joined.
 func is_character_joined(character: DialogicCharacter) -> bool:
-	if character == null or not character.get_identifier() in portraits:
+	if character == null:
 		return false
-
-	return true
+	var id := character.get_identifier()
+	if not id in portraits:
+		return false
+	return character_nodes.has(id) and is_instance_valid(character_nodes[id])
 
 
 ## Returns a list of the joined charcters (as resources)
