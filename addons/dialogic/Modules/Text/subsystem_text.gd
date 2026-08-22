@@ -211,14 +211,14 @@ func get_textboxes(identifier:="") -> Array[Node]:
 func textbox_update_visibility(visible := true, instant := false, identifier:=active_textbox) -> void:
 	if visible:
 		await show_textbox(instant, identifier)
-	else:
-		await hide_textbox(instant, identifier)
 
 		if not dialog_text.is_empty():
 			animation_textbox_new_text.emit()
 
 			if dialogic.Animations.is_animating():
 				await dialogic.Animations.finished
+	else:
+		await hide_textbox(instant, identifier)
 
 
 func textbox_handle_auto_visibility(text: String, identifier:=active_textbox) -> void:
