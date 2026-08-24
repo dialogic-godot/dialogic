@@ -39,6 +39,9 @@ func set_placeholder(placeholder:String) -> void:
 func set_default(default:String) -> void:
 	if get_node(input_line_edit) is LineEdit:
 		get_node(input_line_edit).text = default
+		# Assigning `text` resets the caret to column 0. Put it after the default
+		# so a prefilled field can be typed into or backspaced straight away.
+		get_node(input_line_edit).caret_column = default.length()
 		_on_input_text_changed(default)
 
 
