@@ -138,8 +138,28 @@ func set_layer_scene(layer_id:String, scene:String) -> void:
 	changed.emit()
 
 
+## Ensures that inherited layers have local placeholders for storing overrides.
+func _ensure_local_layer_info(layer_id: String) -> bool:
+	if has_layer(layer_id):
+		return true
+
+	if not inherits_anything():
+		return false
+
+	var inherited_layer_list := get_layer_inherited_list()
+	if layer_id not in inherited_layer_list:
+		return false
+
+	for inherited_layer_id in inherited_layer_list:
+		if inherited_layer_id not in layer_info:
+			layer_info[inherited_layer_id] = DialogicStyleLayer.new()
+
+	layer_list = inherited_layer_list.duplicate()
+	return true
+
+
 func set_layer_overrides(layer_id:String, overrides:Dictionary) -> void:
-	if not has_layer(layer_id):
+	if not _ensure_local_layer_info(layer_id):
 		return
 
 	layer_info[layer_id].overrides = overrides
@@ -148,7 +168,7 @@ func set_layer_overrides(layer_id:String, overrides:Dictionary) -> void:
 
 ## Changes an override of the DialogicStyleLayer resource at [param layer_id].
 func set_layer_setting(layer_id:String, setting:String, value:Variant) -> void:
-	if not has_layer(layer_id):
+	if not _ensure_local_layer_info(layer_id):
 		return
 
 	layer_info[layer_id].overrides[setting] = value
