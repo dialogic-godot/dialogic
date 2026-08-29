@@ -1,0 +1,14 @@
+# Credits Textboxes
+All assets in this folder are CC-0, credit is given anyways.
+
+- blue_gradient_golden_frame_textbox.png by Grahhhhh
+	@ https://opengameart.org/content/dialog-box
+
+- bordered_textbox_*.png's by Kenney
+	@ https://kenney.nl/assets/fantasy-ui-borders (many more in there)
+
+- space_blue_top_metal_textbox.png by Kenney
+	@ https://kenney.nl/assets/ui-pack-sci-fi (many more in there)
+
+- pixelart_textbox_*.png's by Kenney
+	@https://kenney.nl/assets/ui-pack-pixel-adventure (many more in there)

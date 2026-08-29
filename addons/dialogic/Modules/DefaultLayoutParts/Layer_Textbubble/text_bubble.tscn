@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dlx7jcvm52tyw"]
+[gd_scene format=3 uid="uid://dlx7jcvm52tyw"]
 
 [ext_resource type="Script" uid="uid://bminl7x3r40vc" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gd" id="1_jdhpk"]
 [ext_resource type="Shader" uid="uid://byskpb7ypvuab" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Textbubble/text_bubble.gdshader" id="2_1mhvf"]

@@ -2,8 +2,13 @@
 class_name DialogicStyleLayer
 extends Resource
 
+## Reference to the scene that this layer uses.
 @export var scene: PackedScene = null
+## Dictionary of all the overrides for this layer.
 @export var overrides := {}
+## If true, this layer doesn't instance a scene but is already a child of the styles root layer
+## it will only carry the overrides that should be applied to that node.
+@export var child_of_base := false
 
 
 func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
@@ -16,6 +21,8 @@ func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
 
 func _to_string() -> String:
 	if scene:
-		return "<Layer:" + scene.resource_path + " {" + str(len(overrides)) + " overrides} >"
+		return "<Layer:" + scene.resource_path + " {" + str(len(overrides)) + " overrides}>"
+	elif child_of_base:
+		return "<Layer: Child of root layer {" + str(len(overrides)) + " overrides}>"
 	else:
 		return "<Layer:no-scene>"

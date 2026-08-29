@@ -1,0 +1,15 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://y6cxi77m02cc"]
+
+[ext_resource type="Texture2D" uid="uid://llggewg04u1r" path="res://addons/dialogic/example_assets/textboxes/bordered_textbox_c.png" id="1_3f2bu"]
+
+[resource]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("1_3f2bu")
+texture_margin_left = 22.621223
+texture_margin_top = 22.594267
+texture_margin_right = 22.999659
+texture_margin_bottom = 22.431665
+modulate_color = Color(0.05443278, 0.1712063, 0.26334202, 1)

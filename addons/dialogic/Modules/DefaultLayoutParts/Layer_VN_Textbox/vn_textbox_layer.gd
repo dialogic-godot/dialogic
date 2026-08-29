@@ -215,7 +215,7 @@ func _apply_name_label_settings() -> void:
 ## Applies all text settings to the scene.
 func _apply_text_settings() -> void:
 	var dialog_text: DialogicNode_DialogText = %DialogicNode_DialogText
-	dialog_text.alignment = text_alignment as DialogicNode_DialogText.Alignment
+	dialog_text.horizontal_alignment = text_alignment as HorizontalAlignment
 
 	if text_use_global_size:
 		text_size = get_global_setting(&'font_size', text_size)

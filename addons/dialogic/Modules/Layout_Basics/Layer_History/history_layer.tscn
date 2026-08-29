@@ -1,0 +1,407 @@
+[gd_scene format=3 uid="uid://re6erytawoa2"]
+
+[ext_resource type="Script" uid="uid://dvkr3tyqha6rm" path="res://addons/dialogic/Modules/Layout_Basics/Layer_History/history_layer.gd" id="1_addty"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5tq7"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.01, 0.01, 0.01, 0.7137255)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.18039216)
+shadow_size = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcjat"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.03, 0.03, 0.03, 0.5372549)
+border_width_left = 1
+border_color = Color(0.38170326, 0.38170323, 0.38170317, 1)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+
+[node name="OverlayHistoryLayer" type="Control" unique_id=741278651]
+layout_direction = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_addty")
+metadata/base_style_customization = [{
+"name": "Layer",
+"type": "Category"
+}, {
+"display_name": "General",
+"name": ".",
+"type": "Node"
+}, {
+"display_name": "Disabled",
+"name": "disabled",
+"tooltip": "",
+"type": "Property"
+}]
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Panel",
+"name": "%HistoryBox",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Background Panel",
+"name": "theme_override_styles/panel",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Behaviour",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Show Name Colors",
+"name": "show_name_colors",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show All Choices",
+"name": "show_all_choices",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Show Join And Leave",
+"name": "show_join_and_leave",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Scroll To Bottom On Open",
+"name": "scroll_to_bottom_on_open",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "Title",
+"name": "%Title",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Visible",
+"name": "visible",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Text",
+"name": "text",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Outline Color",
+"name": "theme_override_colors/font_outline_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Outline Size",
+"name": "theme_override_constants/outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Outline Size",
+"name": "theme_override_constants/shadow_outline_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Shadow Color",
+"name": "theme_override_colors/font_shadow_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset X",
+"name": "theme_override_constants/shadow_offset_x",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Shadow Offset Y",
+"name": "theme_override_constants/shadow_offset_y",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "",
+"name": "Log Items",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "History Item",
+"name": "%BaseHistoryItem",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Horizontal Alignment",
+"name": "horizontal_alignment",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Default Color",
+"name": "theme_override_colors/default_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Panel",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "%BaseHistoryItem",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Normal Font",
+"name": "theme_override_fonts/normal_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font",
+"name": "theme_override_fonts/bold_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font",
+"name": "theme_override_fonts/bold_italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font",
+"name": "theme_override_fonts/italics_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Mono Font",
+"name": "theme_override_fonts/mono_font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Normal Font Size",
+"name": "theme_override_font_sizes/normal_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Font Size",
+"name": "theme_override_font_sizes/bold_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Bold Italics Font Size",
+"name": "theme_override_font_sizes/bold_italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Italics Font Size",
+"name": "theme_override_font_sizes/italics_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Mono Font Size",
+"name": "theme_override_font_sizes/mono_font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"collapsed": true,
+"display_name": "",
+"name": "Buttons",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Open Button",
+"name": "%ShowHistory",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Text",
+"name": "text",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Icon",
+"name": "icon",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Close Button",
+"name": "%HideHistory",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Text",
+"name": "text",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Icon",
+"name": "icon",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font and Styleboxes",
+"name": "./@all_children",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Font Color",
+"name": "theme_override_colors/font_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Pressed Color",
+"name": "theme_override_colors/font_pressed_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Hover Color",
+"name": "theme_override_colors/font_hover_color",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font",
+"name": "theme_override_fonts/font",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Font Size",
+"name": "theme_override_font_sizes/font_size",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Normal",
+"name": "theme_override_styles/normal",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Pressed",
+"name": "theme_override_styles/pressed",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Hover",
+"name": "theme_override_styles/hover",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Stylebox Focus",
+"name": "theme_override_styles/focus",
+"tooltip": "",
+"type": "Property"
+}])
+
+[node name="ShowHistory" type="Button" parent="." unique_id=1718422786]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -73.0
+offset_top = 7.0
+offset_right = -9.0
+offset_bottom = 40.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "History"
+
+[node name="HistoryBox" type="PanelContainer" parent="." unique_id=467377296]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 73.0
+offset_top = 61.0
+offset_right = -73.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k5tq7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HistoryBox" unique_id=1990825779]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="HistoryBox/VBoxContainer" unique_id=443292979]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "History"
+
+[node name="Scroll" type="ScrollContainer" parent="HistoryBox/VBoxContainer" unique_id=37149783]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HistoryLog" type="VBoxContainer" parent="HistoryBox/VBoxContainer/Scroll" unique_id=1695988162]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BaseHistoryItem" type="RichTextLabel" parent="HistoryBox/VBoxContainer/Scroll/HistoryLog" unique_id=1008299094]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_kcjat")
+bbcode_enabled = true
+text = "[color=red]Jamie[/color]: I've said some things, haven't I."
+fit_content = true
+
+[node name="HideHistory" type="Button" parent="." unique_id=147434528]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -124.0
+offset_top = 54.0
+offset_right = -63.0
+offset_bottom = 87.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Return"
+
+[connection signal="pressed" from="ShowHistory" to="." method="_on_show_history_pressed"]
+[connection signal="pressed" from="HideHistory" to="." method="_on_hide_history_pressed"]

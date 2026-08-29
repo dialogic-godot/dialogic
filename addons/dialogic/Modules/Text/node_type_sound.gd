@@ -1,4 +1,5 @@
 @tool
+@icon("node_type_sound_icon.svg")
 class_name DialogicNode_TypeSounds
 extends AudioStreamPlayer
 
@@ -20,15 +21,16 @@ enum Modes {INTERRUPT, OVERLAP, AWAIT}
 @export_range(0, 3, 0.01) var pitch_variance := 0.0
 ## Allows changing the volume by a random value from (volume - volume_variance) to (volume + volume_variance)
 @export_range(0, 10, 0.01) var volume_variance := 0.0
-## Characters that don't increase the 'characters_since_last_sound' variable, useful for the space or fullstop
+## Characters that don't increase the '_characters_since_last_sound' variable, useful for the space or fullstop
 @export var ignore_characters: String = ' .,'
 
-var characters_since_last_sound: int = 0
+var _characters_since_last_sound: int = 0
+## The base pitch
 var base_pitch: float = pitch_scale
 var base_volume: float = volume_db
-var RNG := RandomNumberGenerator.new()
+var _RNG := RandomNumberGenerator.new()
 
-var current_overwrite_data := {}
+var _current_overwrite_data := {}
 
 func _ready() -> void:
 	# add to necessary group
@@ -46,7 +48,7 @@ func _ready() -> void:
 func _on_started_revealing_text() -> void:
 	if !enabled or (get_parent() is DialogicNode_DialogText and !get_parent().enabled):
 		return
-	characters_since_last_sound = current_overwrite_data.get('skip_characters', play_every_character-1)+1
+	_characters_since_last_sound = _current_overwrite_data.get('skip_characters', play_every_character-1)+1
 
 
 func _on_continued_revealing_text(new_character:String) -> void:
@@ -63,42 +65,42 @@ func _on_continued_revealing_text(new_character:String) -> void:
 			return
 
 	# if sound playing and can't interrupt
-	if playing and current_overwrite_data.get('mode', mode) == Modes.AWAIT:
+	if playing and _current_overwrite_data.get('mode', mode) == Modes.AWAIT:
 		return
 
 	# if no sounds were given
-	if current_overwrite_data.get('sounds', sounds).size() == 0:
+	if _current_overwrite_data.get('sounds', sounds).size() == 0:
 		return
 
 	# if the new character is not allowed
 	if new_character in ignore_characters:
 		return
 
-	characters_since_last_sound += 1
-	if characters_since_last_sound < current_overwrite_data.get('skip_characters', play_every_character-1)+1:
+	_characters_since_last_sound += 1
+	if _characters_since_last_sound < _current_overwrite_data.get('skip_characters', play_every_character-1)+1:
 		return
 
-	characters_since_last_sound = 0
+	_characters_since_last_sound = 0
 
 	var audio_player: AudioStreamPlayer = self
-	if current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
+	if _current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
 		audio_player = AudioStreamPlayer.new()
 		audio_player.bus = bus
 		add_child(audio_player)
-	elif current_overwrite_data.get('mode', mode) == Modes.INTERRUPT:
+	elif _current_overwrite_data.get('mode', mode) == Modes.INTERRUPT:
 		stop()
 
 	#choose the random sound
-	audio_player.stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, current_overwrite_data.get('sounds', sounds).size() - 1)]
+	audio_player.stream = _current_overwrite_data.get('sounds', sounds)[_RNG.randi_range(0, _current_overwrite_data.get('sounds', sounds).size() - 1)]
 
 	#choose a random pitch and volume
-	audio_player.pitch_scale = max(0.0001, current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0))
-	audio_player.volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
+	audio_player.pitch_scale = max(0.0001, _current_overwrite_data.get('pitch_base', base_pitch) + _current_overwrite_data.get('pitch_variance', pitch_variance) * _RNG.randf_range(-1.0, 1.0))
+	audio_player.volume_db = _current_overwrite_data.get('volume_base', base_volume) + _current_overwrite_data.get('volume_variance',volume_variance) * _RNG.randf_range(-1.0, 1.0)
 
 	#play the sound
 	audio_player.play(0)
 
-	if current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
+	if _current_overwrite_data.get('mode', mode) == Modes.OVERLAP:
 		audio_player.finished.connect(audio_player.queue_free)
 
 
@@ -113,9 +115,9 @@ func _on_finished_revealing_text() -> void:
 
 
 func load_overwrite(dictionary:Dictionary) -> void:
-	current_overwrite_data = dictionary
+	_current_overwrite_data = dictionary
 	if dictionary.has('sound_path'):
-		current_overwrite_data['sounds'] = DialogicNode_TypeSounds.load_sounds_from_path(dictionary.sound_path)
+		_current_overwrite_data['sounds'] = DialogicNode_TypeSounds.load_sounds_from_path(dictionary.sound_path)
 
 
 static func load_sounds_from_path(path:String) -> Array[AudioStream]:

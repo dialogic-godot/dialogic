@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://clujt7xkdgfbl"]
+
+[ext_resource type="Script" uid="uid://cniunhurvdl26" path="res://addons/dialogic/Modules/Layout_Basics/Base_CanvasLayer/canvas_layer_base.gd" id="1_8lcea"]
+
+[node name="DefaultLayoutBase" type="CanvasLayer" unique_id=1443721113]
+script = ExtResource("1_8lcea")
+metadata/style_customization = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Canvas Layer",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Canvas Layer",
+"name": "layer",
+"tooltip": "Godot sorts canvas layers based on this property. If you have UI in your game that should be on top of Dialogic, make sure it's inside a CanvasLayer node that has a higher layer. Learn more about [url=\"https://docs.godotengine.org/en/stable/tutorials/2d/canvas_layers.html\"]canvas layers here[/url].",
+"type": "Property"
+}, {
+"display_name": "",
+"name": "Advanced",
+"tooltip": "",
+"type": "Category"
+}, {
+"display_name": "Theme",
+"name": ".",
+"tooltip": "",
+"type": "Node"
+}, {
+"display_name": "Follow Viewport",
+"name": "follow_viewport_enabled",
+"tooltip": "",
+"type": "Property"
+}, {
+"display_name": "Theme",
+"name": "theme",
+"tooltip": "Godot themes are powerful, but not very intuitive. \\n\\nIf you're new to godot, I'd recommend to overwrite the settings on the layers directly.",
+"type": "Property"
+}])

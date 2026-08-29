@@ -16,7 +16,7 @@ func _register() -> void:
 	resource_saved.connect(_on_resource_saved)
 
 	# register editor
-	editors_manager.register_resource_editor('dtl', self)
+	editors_manager.register_resource_editor(self, "dtl")
 	# add timeline button
 	var add_timeline_button: Button = editors_manager.add_button(
 		load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg"),
@@ -66,6 +66,10 @@ func _get_title() -> String:
 
 func _get_icon() -> Texture:
 	return preload("uid://j7ym07anlusi")
+
+
+func _can_edit(resource:Resource) -> bool:
+	return resource is DialogicTimeline
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)

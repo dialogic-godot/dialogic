@@ -126,7 +126,7 @@ func from_text(string:String) -> void:
 
 
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges().begins_with("do"):
+	if string.strip_edges().begins_with("do "):
 		return true
 	return false
 
