@@ -1,0 +1,208 @@
+[gd_scene format=3 uid="uid://cge3ftwxytcgn"]
+
+[ext_resource type="Script" uid="uid://c8d470kti274h" path="res://addons/dialogic/Modules/Style/dialogic_layout_layer.gd" id="1_7cdvi"]
+[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/example_assets/fonts/Roboto-Regular.ttf" id="2_86s86"]
+[ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3_7xc07"]
+[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/example_assets/fonts/Roboto-Bold.ttf" id="4_axsfm"]
+[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/example_assets/fonts/Roboto-Italic.ttf" id="5_87wlh"]
+[ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="6_hewki"]
+[ext_resource type="Script" uid="uid://lbfyyh8pak0r" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="7_7xc07"]
+[ext_resource type="Texture2D" uid="uid://drod3f7ev1fn5" path="res://addons/dialogic/example_assets/next_indicators/arrow_down_white.svg" id="8_axsfm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fg08"]
+
+[sub_resource type="FontVariation" id="FontVariation_ikc5x"]
+base_font = ExtResource("4_axsfm")
+variation_transform = Transform2D(1, 0.145, 0, 1, 0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_86s86"]
+
+[node name="SimpleText" type="Control" unique_id=1330579359]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_7cdvi")
+metadata/_custom_type_script = "uid://c8d470kti274h"
+metadata/export_overrides = Array[Dictionary]([{
+"display_name": "",
+"name": "General",
+"type": "Category"
+}, {
+"display_name": "Dialog Text",
+"name": "%DialogText",
+"type": "Node"
+}, {
+"name": "theme_override_colors/default_color"
+}, {
+"name": "font_size"
+}, {
+"name": "theme_override_styles/normal"
+}, {
+"display_name": "Font",
+"name": "%DialogText",
+"type": "Node"
+}, {
+"display_name": "Font Normal",
+"name": "theme_override_fonts/normal_font"
+}, {
+"display_name": "Font Bold",
+"name": "theme_override_fonts/bold_font"
+}, {
+"display_name": "Font Bold Italics",
+"name": "theme_override_fonts/bold_italics_font"
+}, {
+"display_name": "Font Italics",
+"name": "theme_override_fonts/italics_font"
+}, {
+"name": "theme_override_constants/line_separation"
+}, {
+"display_name": "Text Outline",
+"name": "%DialogText",
+"type": "Node"
+}, {
+"name": "theme_override_colors/font_outline_color"
+}, {
+"name": "theme_override_constants/outline_size"
+}, {
+"display_name": "Text Shadow",
+"name": "%DialogText",
+"type": "Node"
+}, {
+"name": "theme_override_colors/font_shadow_color"
+}, {
+"name": "theme_override_constants/shadow_outline_size"
+}, {
+"name": "theme_override_constants/shadow_offset_x"
+}, {
+"name": "theme_override_constants/shadow_offset_y"
+}, {
+"display_name": "",
+"name": "NameLabel",
+"type": "Category"
+}, {
+"display_name": "name Label",
+"name": "%NameLabel",
+"type": "Node"
+}, {
+"name": "use_character_color"
+}, {
+"name": "suffix"
+}, {
+"name": "theme_override_font_sizes/font_size"
+}, {
+"name": "theme_override_colors/font_color"
+}, {
+"name": "theme_override_fonts/font"
+}, {
+"name": "theme_override_styles/normal"
+}, {
+"display_name": "NameLabel",
+"name": "%NameLabel",
+"type": "Node"
+}, {
+"name": "theme_override_colors/font_shadow_color"
+}, {
+"name": "theme_override_constants/shadow_outline_size"
+}, {
+"name": "theme_override_constants/shadow_offset_x"
+}, {
+"name": "theme_override_constants/shadow_offset_y"
+}, {
+"display_name": "NameLabel",
+"name": "%NameLabel",
+"type": "Node"
+}, {
+"name": "theme_override_constants/outline_size"
+}, {
+"name": "theme_override_colors/font_outline_color"
+}, {
+"display_name": "",
+"name": "Layout",
+"type": "Category"
+}, {
+"display_name": "Position & Size",
+"name": "VBoxContainer",
+"type": "Node"
+}, {
+"name": "position"
+}, {
+"name": "size"
+}])
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=755966063]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -281.0
+offset_top = -119.0
+offset_right = 277.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer" unique_id=1081695764]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.3372549)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_86s86")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2fg08")
+text = "Character:"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_7xc07")
+suffix = ":"
+metadata/_custom_type_script = "uid://bak74s0kcr0ao"
+
+[node name="DialogText" type="RichTextLabel" parent="VBoxContainer" unique_id=963618866 node_paths=PackedStringArray("textbox_root")]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.3372549)
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 1
+theme_override_fonts/normal_font = ExtResource("2_86s86")
+theme_override_fonts/bold_font = ExtResource("4_axsfm")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_ikc5x")
+theme_override_fonts/italics_font = ExtResource("5_87wlh")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_86s86")
+bbcode_enabled = true
+text = "Hi [b]Main Character[/b], could you bring me [i]24 [b]orange[/b] flowers[/i] from the valley?"
+fit_content = true
+horizontal_alignment = 1
+script = ExtResource("6_hewki")
+textbox_root = NodePath("..")
+start_hidden = false
+metadata/_custom_type_script = "uid://drhfq6rmdeuri"
+
+[node name="DialogicNode_NextIndicator" type="Control" parent="VBoxContainer" unique_id=868098603]
+layout_mode = 2
+size_flags_horizontal = 4
+script = ExtResource("7_7xc07")
+metadata/_custom_type_script = "uid://lbfyyh8pak0r"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DialogicNode_NextIndicator" unique_id=1351327284]
+layout_mode = 0
+offset_left = -5.0
+offset_top = 2.0
+offset_right = 5.0
+offset_bottom = 12.0
+texture = ExtResource("8_axsfm")
+expand_mode = 1
+stretch_mode = 5

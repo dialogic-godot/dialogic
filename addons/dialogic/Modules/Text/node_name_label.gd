@@ -11,6 +11,7 @@ class_name DialogicNode_NameLabel
 ## If true [param self_modulate] is set to the current speakers color (set in the character editor).
 @export var use_character_color := true
 
+@export var suffix := ""
 
 func _ready() -> void:
 	add_to_group('dialogic_name_label')
@@ -21,7 +22,7 @@ func _ready() -> void:
 
 func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
-		text = what
+		text = what + suffix
 		if hide_when_empty:
 			name_label_root.visible = !what.is_empty()
 		else:
