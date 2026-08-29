@@ -322,451 +322,254 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_nh8k1")
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "Text",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Text",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Vertical Alignment",
-"name": "vertical_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "vertical_alignment"
 }, {
 "display_name": "Color",
-"name": "theme_override_colors/default_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/default_color"
 }, {
-"display_name": "Font Size",
-"name": "font_size",
-"tooltip": "",
-"type": "Property"
+"name": "font_size"
 }, {
 "display_name": "Fonts",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Font Normal",
-"name": "theme_override_fonts/normal_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/normal_font"
 }, {
 "display_name": "Font Bold",
-"name": "theme_override_fonts/bold_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_font"
 }, {
 "display_name": "Font Bold Italics",
-"name": "theme_override_fonts/bold_italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_italics_font"
 }, {
-"display_name": "Italics Font",
-"name": "theme_override_fonts/italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/italics_font"
 }, {
 "display_name": "Font Code",
-"name": "theme_override_fonts/mono_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/mono_font"
 }, {
 "display_name": "Outline",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Outline Size",
-"name": "theme_override_constants/outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/outline_size"
 }, {
-"display_name": "Font Outline Color",
-"name": "theme_override_colors/font_outline_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_outline_color"
 }, {
 "display_name": "Shadow Outline",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Shadow Outline Size",
-"name": "theme_override_constants/shadow_outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_outline_size"
 }, {
-"display_name": "Font Shadow Color",
-"name": "theme_override_colors/font_shadow_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_shadow_color"
 }, {
-"display_name": "Shadow Offset X",
-"name": "theme_override_constants/shadow_offset_x",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_x"
 }, {
-"display_name": "Shadow Offset Y",
-"name": "theme_override_constants/shadow_offset_y",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_y"
 }, {
 "display_name": "",
 "name": "Box",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "TextBox",
 "name": "%DialogTextPanel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Size",
-"name": "custom_minimum_size",
-"tooltip": "",
-"type": "Property"
+"name": "custom_minimum_size"
 }, {
 "display_name": "Panel Stylebox",
-"name": "theme_override_styles/panel",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/panel"
 }, {
 "display_name": "Modulate",
 "name": "self_modulate",
-"tooltip": "This allows to tint the stylebox. \\n\\nFor optimal effect, the stylebox must be white.",
-"type": "Property"
+"tooltip": "This allows to tint the stylebox. \\n\\nFor optimal effect, the stylebox must be white."
 }, {
 "display_name": "Animations",
 "name": "%Animations",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Animation In",
-"name": "animation_in",
-"tooltip": "",
-"type": "Property"
+"name": "animation_in"
 }, {
-"display_name": "Animation Out",
-"name": "animation_out",
-"tooltip": "",
-"type": "Property"
+"name": "animation_out"
 }, {
-"display_name": "Animation New Text",
-"name": "animation_new_text",
-"tooltip": "",
-"type": "Property"
+"name": "animation_new_text"
 }, {
 "display_name": "Padding",
 "name": "%Padding",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Left",
-"name": "theme_override_constants/margin_left",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_left"
 }, {
 "display_name": "Top",
-"name": "theme_override_constants/margin_top",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_top"
 }, {
 "display_name": "Right",
-"name": "theme_override_constants/margin_right",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_right"
 }, {
 "display_name": "Bottom",
-"name": "theme_override_constants/margin_bottom",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_bottom"
 }, {
 "display_name": "Margin",
 "name": "%OutsideMargin",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Margin Bottom",
-"name": "theme_override_constants/margin_bottom",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_bottom"
 }, {
 "display_name": "",
 "name": "Name Label",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Name Label",
 "name": "%NameLabelPositioner",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Enabled",
-"name": "visible",
-"tooltip": "",
-"type": "Property"
+"name": "visible"
 }, {
 "display_name": "-",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Hide When Empty",
-"name": "hide_when_empty",
-"tooltip": "",
-"type": "Property"
+"name": "hide_when_empty"
 }, {
-"display_name": "Use Character Color",
 "name": "use_character_color",
-"tooltip": "Because this uses modulate, if this is enabled font color should be white.",
-"type": "Property"
+"tooltip": "Because this uses modulate, if this is enabled font color should be white."
 }, {
-"display_name": "Font Color",
-"name": "theme_override_colors/font_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_color"
 }, {
-"display_name": "Font",
-"name": "theme_override_fonts/font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/font"
 }, {
-"display_name": "Font Size",
-"name": "theme_override_font_sizes/font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/font_size"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
 "display_name": "Outline",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Outline Color",
-"name": "theme_override_colors/font_outline_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_outline_color"
 }, {
-"display_name": "Outline Size",
-"name": "theme_override_constants/outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/outline_size"
 }, {
 "display_name": "Shadow",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Shadow Color",
-"name": "theme_override_colors/font_shadow_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_shadow_color"
 }, {
-"display_name": "Shadow Outline Size",
-"name": "theme_override_constants/shadow_outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_outline_size"
 }, {
-"display_name": "Shadow Offset X",
-"name": "theme_override_constants/shadow_offset_x",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_x"
 }, {
-"display_name": "Shadow Offset Y",
-"name": "theme_override_constants/shadow_offset_y",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_y"
 }, {
 "display_name": "Panel",
 "name": "%NameLabelPanel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Panel Stylebox",
-"name": "theme_override_styles/panel",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/panel"
 }, {
 "display_name": "Minimum Size",
-"name": "custom_minimum_size",
-"tooltip": "",
-"type": "Property"
+"name": "custom_minimum_size"
 }, {
 "display_name": "Position",
 "name": "%NameLabelPositioner",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Alignment",
-"name": "alignment",
-"tooltip": "",
-"type": "Property"
+"name": "alignment"
 }, {
 "display_name": "Offset",
-"name": "position",
-"tooltip": "",
-"type": "Property"
+"name": "position"
 }, {
 "display_name": "Separator",
 "name": "%Separator",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Separation",
 "name": "theme_override_constants/separation",
-"tooltip": "The distance between the name label and textbox styleboxes.",
-"type": "Property"
+"tooltip": "The distance between the name label and textbox styleboxes."
 }, {
 "display_name": "",
 "name": "Indicators",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Next Indicator",
 "name": "%NextIndicator",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Enabled",
-"name": "enabled",
-"tooltip": "",
-"type": "Property"
+"name": "enabled"
 }, {
-"display_name": "Show On Questions",
-"name": "show_on_questions",
-"tooltip": "",
-"type": "Property"
+"name": "show_on_questions"
 }, {
-"display_name": "Show On Autoadvance",
-"name": "show_on_autoadvance",
-"tooltip": "",
-"type": "Property"
+"name": "show_on_autoadvance"
 }, {
-"display_name": "Animation",
-"name": "animation",
-"tooltip": "",
-"type": "Property"
+"name": "animation"
 }, {
-"display_name": "Texture",
-"name": "texture",
-"tooltip": "",
-"type": "Property"
+"name": "texture"
 }, {
-"display_name": "Texture Size",
-"name": "texture_size",
-"tooltip": "",
-"type": "Property"
+"name": "texture_size"
 }, {
-"display_name": "Modulate",
-"name": "modulate",
-"tooltip": "",
-"type": "Property"
+"name": "modulate"
 }, {
-"display_name": "Indicator Offset",
-"name": "indicator_offset",
-"tooltip": "",
-"type": "Property"
+"name": "indicator_offset"
 }, {
 "display_name": "Auto Advance Indicator",
 "name": "%AutoAdvanceProgressbar",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Enabled",
-"name": "enabled",
-"tooltip": "",
-"type": "Property"
+"name": "enabled"
 }, {
-"display_name": "Stylebox Fill",
-"name": "theme_override_styles/fill",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/fill"
 }, {
-"display_name": "Stylebox Background",
-"name": "theme_override_styles/background",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/background"
 }, {
 "display_name": "",
 "name": "Sounds",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Type Sounds",
 "name": "%TypeSounds",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Enabled",
-"name": "enabled",
-"tooltip": "",
-"type": "Property"
+"name": "enabled"
 }, {
-"display_name": "Mode",
-"name": "mode",
-"tooltip": "",
-"type": "Property"
+"name": "mode"
 }, {
-"display_name": "Sounds",
-"name": "sounds",
-"tooltip": "",
-"type": "Property"
+"name": "sounds"
 }, {
-"display_name": "End Sound",
-"name": "end_sound",
-"tooltip": "",
-"type": "Property"
+"name": "end_sound"
 }, {
 "display_name": "Base Volume",
-"name": "volume_db",
-"tooltip": "",
-"type": "Property"
+"name": "volume_db"
 }, {
-"display_name": "Volume Variance",
-"name": "volume_variance",
-"tooltip": "",
-"type": "Property"
+"name": "volume_variance"
 }, {
 "display_name": "Base Pitch",
-"name": "pitch_scale",
-"tooltip": "",
-"type": "Property"
+"name": "pitch_scale"
 }, {
-"display_name": "Pitch Variance",
-"name": "pitch_variance",
-"tooltip": "",
-"type": "Property"
+"name": "pitch_variance"
 }, {
 "display_name": "Audio Bus",
-"name": "bus",
-"tooltip": "",
-"type": "Property"
+"name": "bus"
 }, {
-"display_name": "Play Every Character",
-"name": "play_every_character",
-"tooltip": "",
-"type": "Property"
+"name": "play_every_character"
 }, {
-"display_name": "Ignore Characters",
-"name": "ignore_characters",
-"tooltip": "",
-"type": "Property"
+"name": "ignore_characters"
 }])
 
 [node name="Animations" type="AnimationPlayer" parent="." unique_id=337384606]

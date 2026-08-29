@@ -14,32 +14,20 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_c6nho")
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
-"added": true,
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
-"id": &"GROUP",
 "name": "General",
-"tooltip": "",
 "type": "Category"
 }, {
-"added": true,
 "display_name": "Background",
-"id": &"SUBGROUP",
 "name": "DialogicNode_BackgroundHolder",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Texture Filter",
-"id": &"SETTING",
-"name": "bg_texture_filter",
-"tooltip": "",
-"type": "Property"
+"name": "bg_texture_filter"
 }, {
 "display_name": "Texture Repeat",
-"id": &"SETTING",
-"name": "bg_texture_repeat",
-"tooltip": "",
-"type": "Property"
+"name": "bg_texture_repeat"
 }])
 
 [node name="DialogicNode_BackgroundHolder" type="ColorRect" parent="." unique_id=237541635]

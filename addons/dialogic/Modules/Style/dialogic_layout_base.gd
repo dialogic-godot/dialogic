@@ -6,12 +6,11 @@ extends Node
 ## Base class that should be extended by custom layouts.
 
 
-## Emitted after dialogic has applied customization
-signal customization_applied
-
+## Emitted after dialogic has applied export overrides
+signal overrides_applied
 
 func _init() -> void:
-	customization_applied.connect(_on_customization_applied)
+	overrides_applied.connect(_on_overrides_applied)
 
 	_load_persistent_info(Engine.get_meta("dialogic_persistent_style_info", {}))
 
@@ -42,7 +41,7 @@ func get_layer_by_id(id:String) -> DialogicLayoutLayer:
 	return null
 
 
-func _on_customization_applied() -> void:
+func _on_overrides_applied() -> void:
 	if not is_node_ready():
 		await ready
 
@@ -53,8 +52,8 @@ func _on_customization_applied() -> void:
 			layer.process_mode = Node.PROCESS_MODE_INHERIT
 
 
-## TODO REMOVE
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ## Method that is called to load the export overrides.
 ## This happens when the style is first introduced,
 ## but also when switching to a different style using the same scene!
@@ -65,8 +64,8 @@ func apply_export_overrides() -> void:
 			child._apply_export_overrides()
 
 
-## TODO REMOVE
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ## Returns a setting on this base.
 ## This is useful so that layers can share settings like base_color, etc.
 func get_global_setting(setting:StringName, default:Variant) -> Variant:
@@ -81,8 +80,8 @@ func get_global_setting(setting:StringName, default:Variant) -> Variant:
 
 	return default
 
-## TODO REMOVE
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ## To be overwritten. Apply the settings to your scene here.
 func _apply_export_overrides() -> void:
 	pass

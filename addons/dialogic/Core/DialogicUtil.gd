@@ -131,6 +131,18 @@ static func pretty_name(file_path: String) -> String:
 
 	return _name
 
+
+
+static func pretty_property_name(property_path:String) -> String:
+	property_path = property_path.replace("theme_override_styles/", "Stylebox ")
+	property_path = property_path.replace("theme_override_colors/", "")
+	property_path = property_path.replace("theme_override_constants/", "")
+	property_path = property_path.replace("theme_override_fonts/", "")
+	property_path = property_path.replace("theme_override_font_sizes/", "")
+	property_path = property_path.replace("theme_override_icons/", "Icon ")
+	property_path = property_path.capitalize()
+	return property_path
+
 #endregion
 
 
@@ -308,37 +320,37 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 	var default_info := get_scene_export_defaults(node)
 
 	## NEW STYLE VERSION
-	if node.has_meta("style_customization"):
+	if node.has_meta("export_overrides"):
 		var current_node_path := ""
-		var customizations: Array = node.get_meta("style_customization")
-		if node.has_method("_get_base_customization"):
-			customizations += node._get_base_customization()
-		for i in customizations:
-			if i.type == "Node":
-				current_node_path = i.name
-			if i.type == "Property":
-				var nodes := []
-				if current_node_path.ends_with("/@all_children"):
-					nodes = node.get_node(current_node_path.trim_suffix("/@all_children")).get_children()
-				else:
-					nodes = [node.get_node(current_node_path)]
-				var path: String = current_node_path+":"+i.name
-				for current_node in nodes:
-					if path in export_overrides:
-						if typeof(export_overrides[path]) != TYPE_STRING:
-							current_node.set(i.name, export_overrides[path])
-						elif str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
-							current_node.set(i.name, export_overrides[path])
-						else:
-							current_node.set(i.name, str_to_var(export_overrides[path]))
-					elif path in default_info:
-						current_node.set(i.name, default_info.get(path))
+		var exposed_export_overrides: Array = node.get_meta("export_overrides")
+		if node.has_method("_get_base_export_overrides"):
+			exposed_export_overrides += node._get_base_customization()
+		for i in exposed_export_overrides:
+			match i.get("type", "Property"):
+				"Node":
+					current_node_path = i.name
+				"Property":
+					var nodes := []
+					if current_node_path.ends_with("/@all_children"):
+						nodes = node.get_node(current_node_path.trim_suffix("/@all_children")).get_children()
+					else:
+						nodes = [node.get_node(current_node_path)]
+					var path: String = current_node_path+":"+i.name
+					for current_node in nodes:
+						if path in export_overrides:
+							if typeof(export_overrides[path]) != TYPE_STRING:
+								current_node.set(i.name, export_overrides[path])
+							elif str_to_var(export_overrides[path]) == null and typeof(current_node.get(i.name)) == TYPE_STRING:
+								current_node.set(i.name, export_overrides[path])
+							else:
+								current_node.set(i.name, str_to_var(export_overrides[path]))
+						elif path in default_info:
+							current_node.set(i.name, default_info.get(path))
 
-		if "customization_applied" in node:
-			node.customization_applied.emit()
+		if "overrides_applied" in node:
+			node.overrides_applied.emit()
 
 		return
-
 
 	## OLD APPLY MECHANISM
 	if not node.script:
@@ -369,18 +381,18 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 		Engine.get_main_loop().set_meta('dialogic_scene_export_defaults', {})
 
 	## NEW STYLE VERSION
-	if node.has_meta("style_customization"):
+	if node.has_meta("export_overrides"):
 		var defaults := {}
 		var current_node : Node
 		var current_node_path := ""
-		for i in node.get_meta("style_customization"):
-			if i.type == "Node":
+		for i in node.get_meta("export_overrides"):
+			if i.get("type", "Property") == "Node":
 				if i.name.ends_with("/@all_children"):
 					current_node = node.get_node(i.name.trim_suffix("/@all_children")).get_child(0)
 				else:
 					current_node = node.get_node(i.name)
 				current_node_path = i.name
-			if i.type == "Property":
+			if i.get("type", "Property") == "Property":
 				defaults[current_node_path+":"+i.name] = current_node.get(i.name)
 		Engine.get_main_loop().get_meta("dialogic_scene_export_defaults")[node.scene_file_path] = defaults
 		return defaults
@@ -772,7 +784,7 @@ static func get_character_suggestions(search_text:String, current_value:Dialogic
 
 	if allow_none and current_value:
 		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
+
 	if "{" in search_text:
 		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 

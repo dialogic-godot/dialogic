@@ -30,7 +30,7 @@ func _ready() -> void:
 
 
 func _on_scene_changed(new_scene_root:Node) -> void:
-	if new_scene_root and (new_scene_root is DialogicLayoutBase or new_scene_root is DialogicLayoutLayer or new_scene_root.has_meta("style_customization")):
+	if new_scene_root and (new_scene_root is DialogicLayoutBase or new_scene_root is DialogicLayoutLayer or new_scene_root.has_meta("export_overrides")):
 		show()
 		scene_root = new_scene_root
 		_on_node_changed()
@@ -62,7 +62,7 @@ func load_of_node(node:Node) -> void:
 	%Internal.visible = is_shown_on_internal_scene()
 	%Instanced.visible = is_shown_on_instance()
 
-	%PropertyTree.load_data(node.get_meta("style_customization", []))
+	%PropertyTree.load_data(node.get_meta("export_overrides", []))
 
 	%AddCategory.disabled = is_shown_on_instance()
 
@@ -80,12 +80,12 @@ func _on_add_category_pressed() -> void:
 
 func _on_property_tree_changed() -> void:
 	var new_data: Array = %PropertyTree.get_data()
-	var old_data: Array = current_base_node.get_meta("style_customization", [])
+	var old_data: Array = current_base_node.get_meta("export_overrides", [])
 	unre.create_action("Set Dialogic Style Customization Options")
-	unre.add_do_method(current_base_node, "set_meta", "style_customization", new_data)
+	unre.add_do_method(current_base_node, "set_meta", "export_overrides", new_data)
 	unre.add_do_method(self, "update_inspector")
 	unre.add_do_method(%PropertyTree, "load_data", new_data)
-	unre.add_undo_method(current_base_node, "set_meta", "style_customization", old_data)
+	unre.add_undo_method(current_base_node, "set_meta", "export_overrides", old_data)
 	unre.add_undo_method(%PropertyTree, "load_data", old_data)
 	unre.add_undo_method(self, "update_inspector")
 	unre.commit_action()

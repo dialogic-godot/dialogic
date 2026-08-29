@@ -89,21 +89,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x7flx")
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Portraits",
 "name": "%Portraits/@all_children",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Size Mode",
 "name": "size_mode",
-"tooltip": "Defines how the portraits will be scaled in the containers.",
-"type": "Property"
+"tooltip": "Defines how the portraits will be scaled in the containers."
 }])
 
 [node name="Portraits" type="Control" parent="." unique_id=47720675]
@@ -123,6 +119,7 @@ offset_right = 230.4
 offset_bottom = 648.0
 grow_vertical = 2
 size = Vector2(230.4, 648)
+position = Vector2(-7.6293945e-06, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("leftmost", "0")
@@ -135,13 +132,13 @@ metadata/_edit_use_anchors_ = true
 [node name="PortraitContainer2" type="Control" parent="Portraits" unique_id=179089298]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 230.4
+offset_left = 230.40001
 offset_right = 460.8
 offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
-size = Vector2(230.4, 648)
-position = Vector2(230.4, 0)
+size = Vector2(230.39998, 648)
+position = Vector2(230.40001, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("left", "1")
@@ -173,13 +170,13 @@ metadata/_edit_use_anchors_ = true
 [node name="PortraitContainer4" type="Control" parent="Portraits" unique_id=1330103450]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 691.2
-offset_right = 921.60004
+offset_left = 691.2001
+offset_right = 921.6001
 offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
 size = Vector2(230.40002, 648)
-position = Vector2(691.2, 0)
+position = Vector2(691.2001, 0)
 mouse_filter = 2
 script = ExtResource("2_t4o42")
 container_ids = PackedStringArray("right", "3")

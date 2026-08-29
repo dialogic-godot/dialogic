@@ -29,166 +29,85 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_al8ow")
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Title",
 "name": "%Title",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Font Color",
-"name": "theme_override_colors/font_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_color"
 }, {
-"display_name": "Font",
-"name": "theme_override_fonts/font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/font"
 }, {
-"display_name": "Font Size",
-"name": "theme_override_font_sizes/font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/font_size"
 }, {
 "display_name": "Text",
 "name": "%Text",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Default Color",
-"name": "theme_override_colors/default_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/default_color"
 }, {
-"display_name": "Normal Font",
-"name": "theme_override_fonts/normal_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/normal_font"
 }, {
-"display_name": "Bold Font",
-"name": "theme_override_fonts/bold_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_font"
 }, {
-"display_name": "Bold Italics Font",
-"name": "theme_override_fonts/bold_italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_italics_font"
 }, {
-"display_name": "Italics Font",
-"name": "theme_override_fonts/italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/italics_font"
 }, {
-"display_name": "Normal Font Size",
-"name": "theme_override_font_sizes/normal_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/normal_font_size"
 }, {
-"display_name": "Bold Font Size",
-"name": "theme_override_font_sizes/bold_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/bold_font_size"
 }, {
-"display_name": "Bold Italics Font Size",
-"name": "theme_override_font_sizes/bold_italics_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/bold_italics_font_size"
 }, {
-"display_name": "Italics Font Size",
-"name": "theme_override_font_sizes/italics_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/italics_font_size"
 }, {
-"display_name": "Fit Content",
 "name": "fit_content",
-"tooltip": "While enabled, the box will grow vertically to fit the text. If disabled, a scrollbar might appear. ",
-"type": "Property"
+"tooltip": "While enabled, the box will grow vertically to fit the text. If disabled, a scrollbar might appear. "
 }, {
 "display_name": "Extra",
 "name": "%Extra",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Default Color",
-"name": "theme_override_colors/default_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/default_color"
 }, {
-"display_name": "Normal Font",
-"name": "theme_override_fonts/normal_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/normal_font"
 }, {
-"display_name": "Bold Font",
-"name": "theme_override_fonts/bold_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_font"
 }, {
-"display_name": "Bold Italics Font",
-"name": "theme_override_fonts/bold_italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_italics_font"
 }, {
-"display_name": "Italics Font",
-"name": "theme_override_fonts/italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/italics_font"
 }, {
-"display_name": "Normal Font Size",
-"name": "theme_override_font_sizes/normal_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/normal_font_size"
 }, {
-"display_name": "Bold Font Size",
-"name": "theme_override_font_sizes/bold_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/bold_font_size"
 }, {
-"display_name": "Bold Italics Font Size",
-"name": "theme_override_font_sizes/bold_italics_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/bold_italics_font_size"
 }, {
-"display_name": "Italics Font Size",
-"name": "theme_override_font_sizes/italics_font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/italics_font_size"
 }, {
 "display_name": "",
 "name": "Box",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Panel",
 "name": "%Panel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Target Size",
 "name": "custom_minimum_size",
-"tooltip": "Will grow vertically if General>Text>Fit Content is enabled.",
-"type": "Property"
+"tooltip": "Will grow vertically if General>Text>Fit Content is enabled."
 }])
 
 [node name="Pointer" type="Control" parent="." unique_id=1212166267]

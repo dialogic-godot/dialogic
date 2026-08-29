@@ -287,7 +287,7 @@ func _on_make_custom_menu_pressed(index:int) -> void:
 		%ApplySettingsHintTooltip.hint_text = "If this is enabled, any layer with overrides will have 'editable children' enabled and those overrides will be applied to their nodes."
 		%KeepSettingsExposed.button_pressed = false
 		%KeepSettingsExposedHintTooltip.hint_text = "If you enable this, the settings will keep being exposed in the style editor."
-		
+
 
 func _on_customize_layer_popup_confirmed() -> void:
 	if %CustomizePopup.get_meta("mode", "") == "LAYER":
@@ -343,7 +343,7 @@ func make_layer_custom(target_folder:String, custom_name := "", apply_settings:=
 		DialogicUtil.apply_scene_export_overrides(scene, layer_info.overrides)
 
 	if not keep_settings_exposed:
-		scene.remove_meta("style_customization")
+		scene.remove_meta("export_overrides")
 
 	var pckd_scn := PackedScene.new()
 	pckd_scn.pack(scene)
@@ -362,12 +362,12 @@ func make_layout_custom(target_path:String, apply_settings:bool, keep_settings_e
 	var base_scene_pck: PackedScene = load(base_layer_info.path).duplicate()
 	var base_scene := base_scene_pck.instantiate()
 	base_scene.name = current_style.name.to_pascal_case()
-	
+
 	if apply_settings:
 		DialogicUtil.apply_scene_export_overrides(base_scene, base_layer_info.overrides)
 
 	if not keep_settings_exposed:
-		base_scene.remove_meta("style_customization")
+		base_scene.remove_meta("export_overrides")
 
 	# Load layers
 	for layer_id in current_style.get_layer_inherited_list():

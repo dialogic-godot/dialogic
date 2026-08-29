@@ -125,12 +125,12 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 			current_layer_scene_path = scene.owner.scene_file_path
 		else:
 			current_layer_scene_path = scene.scene_file_path
-		settings = scene.get_meta("style_customization", []).duplicate(true)
-		if scene.has_method("_get_base_customization"):
-			settings += scene._get_base_customization().duplicate(true)
+		settings = scene.get_meta("export_overrides", []).duplicate(true)
+		if scene.has_method("_get_base_export_overrides"):
+			settings += scene._get_base_export_overrides().duplicate(true)
 
 	#print(settings)
-	if settings.is_empty() or (settings[0].type == "Category" and settings[0].name == "Layer" and not current_layer_scene_path.begins_with("res://addons/dialogic/")):
+	if settings.is_empty() or (settings[0].get("type", "Property") == "Category" and settings[0].name == "Layer" and not current_layer_scene_path.begins_with("res://addons/dialogic/")):
 		no_settings_info.show()
 		no_settings_info.get_parent().remove_child(no_settings_info)
 		%LayerSettingsTabs.add_child(no_settings_info)
@@ -160,13 +160,14 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 	var current_subgroup_name := ""
 	customization_editor_info = {}
 	var current_node_path : String = ""
-	for i in settings:
-		match i["type"]:
+	for i:Dictionary in settings:
+		var display_name := i.get("display_name", DialogicUtil.pretty_property_name(i.name))
+		match i.get("type", "Property"):
 			"Category":
 				var main_scroll := ScrollContainer.new()
 				main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				main_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				main_scroll.name = i["name"]
+				main_scroll.name = i.name
 				%LayerSettingsTabs.add_child(main_scroll, true)
 
 				current_vbox = VBoxContainer.new()
@@ -178,9 +179,10 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 				current_subgroup_name = ""
 
 			"Node":
-				current_node_path = i["name"]
+				current_node_path = i.name
 
-				if (i.display_name.is_empty() or i.display_name == "-") and current_subgroup_name:
+
+				if (display_name.is_empty() or display_name == "-") and current_subgroup_name:
 					continue
 
 				# add separator
@@ -192,7 +194,7 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 					#current_grid.add_child(current_grid.get_child(-1).duplicate())
 
 				var title_label := Label.new()
-				title_label.text = i.display_name if i.display_name else i.name
+				title_label.text = display_name if display_name else i.name
 				title_label.theme_type_variation = "DialogicSection"
 				title_label.size_flags_horizontal = SIZE_EXPAND_FILL
 				current_vbox.add_child(title_label, true)
@@ -246,13 +248,13 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 				var hbox := HBoxContainer.new()
 				vbox.add_child(hbox)
 
-				var property_display_name: String = i.display_name
+				var property_display_name: String = display_name
 				var label := Label.new()
 				label.text = property_display_name
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				hbox.add_child(label, true)
 
-				if i.tooltip:
+				if i.has("tooltip"):
 					var tooltip: Control = load("res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn").instantiate()
 					tooltip.hint_text = "#" + property_display_name + "\n" + i.tooltip
 					tooltip.size_flags_vertical = Control.SIZE_SHRINK_BEGIN

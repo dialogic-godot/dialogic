@@ -43,23 +43,23 @@ func _parse_begin(object: Object) -> void:
 		#base = object.owner
 	#object.owner if object.owner else object
 
-	if not base or not base.has_meta("style_customization"):
+	if not base or not base.has_meta("export_overrides"):
 		return
 
 	var path: String = "%"+object.name if object.unique_name_in_owner else str(base.get_path_to(object))
 
 	var correct_node: bool = false
-	var customizations: Array = base.get_meta("style_customization")
-	if base.has_method("_get_base_customization") and base.get_script().is_tool():
-		customizations += base._get_base_customization()
-	for i in customizations:
-		if i.type == "Node":
+	var exposed_export_overrides: Array = base.get_meta("export_overrides")
+	if base.has_method("_get_base_export_overrides") and base.get_script().is_tool():
+		exposed_export_overrides += base._get_base_export_overrides()
+	for i in exposed_export_overrides:
+		if i.get("type", "Property") == "Node":
 			correct_node = i.name == path
 			if i.name.ends_with("/@all_children"):
 				if base.get_node(i.name.trim_suffix("/@all_children")) == object.get_parent():
 					correct_node = true
 
-		if correct_node and i.type == "Property":
+		if correct_node and i.get("type", "Property") == "Property":
 			style_exposed_props.append(i.name)
 
 

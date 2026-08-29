@@ -57,369 +57,203 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_bg6gt")
-metadata/base_style_customization = [{
-"name": "Layer",
-"type": "Category"
-}, {
-"display_name": "General",
-"name": ".",
-"type": "Node"
-}, {
-"display_name": "Disabled",
-"name": "disabled",
-"tooltip": "",
-"type": "Property"
-}]
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Textbox",
 "name": "%Panel",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Stylebox Panel",
-"name": "theme_override_styles/panel",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/panel"
 }, {
 "display_name": "Minimum Size",
-"name": "custom_minimum_size",
-"tooltip": "",
-"type": "Property"
+"name": "custom_minimum_size"
 }, {
 "display_name": "Portrait Panel",
 "name": "%PortraitPanel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Portrait Background Stylebox",
 "name": "theme_override_styles/panel",
-"tooltip": "This panel is on the left side of the textbox and contains the speaker portrait.",
-"type": "Property"
+"tooltip": "This panel is on the left side of the textbox and contains the speaker portrait."
 }, {
 "display_name": "Clip Portrait",
 "name": "clip_children",
-"tooltip": "You can use this to clip the portrait using the panel stylebox.",
-"type": "Property"
+"tooltip": "You can use this to clip the portrait using the panel stylebox."
 }, {
 "display_name": "-",
 "name": "%SpeakerPortrait",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Portrait Prefix",
 "name": "portrait_prefix",
-"tooltip": "Use this if you want to use full-body and face portraits at the same time. When a portrait is set (e.g. \"Happy\") dialogic will attempt to instead load a portrait with this prefix (e.g. \"Faces/Happy\" if this is set to Faces/). ",
-"type": "Property"
+"tooltip": "Use this if you want to use full-body and face portraits at the same time. When a portrait is set (e.g. \"Happy\") dialogic will attempt to instead load a portrait with this prefix (e.g. \"Faces/Happy\" if this is set to Faces/). "
 }, {
-"display_name": "Margin",
 "name": "Margin",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Margin Bottom",
-"name": "theme_override_constants/margin_bottom",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/margin_bottom"
 }, {
 "collapsed": true,
 "display_name": "",
 "name": "Text",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Text",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Font Size",
-"name": "font_size",
-"tooltip": "",
-"type": "Property"
+"name": "font_size"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Vertical Alignment",
-"name": "vertical_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "vertical_alignment"
 }, {
-"display_name": "Default Color",
-"name": "theme_override_colors/default_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/default_color"
 }, {
-"display_name": "Line Separation",
-"name": "theme_override_constants/line_separation",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/line_separation"
 }, {
 "collapsed": true,
 "display_name": "Fonts",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Normal Font",
-"name": "theme_override_fonts/normal_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/normal_font"
 }, {
-"display_name": "Bold Font",
-"name": "theme_override_fonts/bold_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_font"
 }, {
-"display_name": "Bold Italics Font",
-"name": "theme_override_fonts/bold_italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/bold_italics_font"
 }, {
-"display_name": "Italics Font",
-"name": "theme_override_fonts/italics_font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/italics_font"
 }, {
 "collapsed": true,
 "display_name": "Outline",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Outline Size",
-"name": "theme_override_constants/outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/outline_size"
 }, {
 "display_name": "Outline Color",
-"name": "theme_override_colors/font_outline_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_outline_color"
 }, {
 "collapsed": true,
 "display_name": "Shadow",
 "name": "%DialogText",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Shadow Color",
-"name": "theme_override_colors/font_shadow_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_shadow_color"
 }, {
 "display_name": "Shadow Size",
-"name": "theme_override_constants/shadow_outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_outline_size"
 }, {
-"display_name": "Shadow Offset X",
-"name": "theme_override_constants/shadow_offset_x",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_x"
 }, {
-"display_name": "Shadow Offset Y",
-"name": "theme_override_constants/shadow_offset_y",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_y"
 }, {
 "display_name": "",
 "name": "NameLabel",
-"tooltip": "",
 "type": "Category"
 }, {
 "collapsed": true,
 "display_name": "General",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Horizontal Alignment",
-"name": "horizontal_alignment",
-"tooltip": "",
-"type": "Property"
+"name": "horizontal_alignment"
 }, {
-"display_name": "Font",
-"name": "theme_override_fonts/font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/font"
 }, {
-"display_name": "Font Color",
-"name": "theme_override_colors/font_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_color"
 }, {
-"display_name": "Use Character Color",
 "name": "use_character_color",
-"tooltip": "Because this uses modulate, if this is enabled font color should be white.",
-"type": "Property"
+"tooltip": "Because this uses modulate, if this is enabled font color should be white."
 }, {
 "collapsed": true,
 "display_name": "Outline",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Outline Size",
-"name": "theme_override_constants/outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/outline_size"
 }, {
 "display_name": "Outline Color",
-"name": "theme_override_colors/font_outline_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_outline_color"
 }, {
 "collapsed": true,
 "display_name": "Shadow",
 "name": "%NameLabel",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Shadow Size",
-"name": "theme_override_constants/shadow_outline_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_outline_size"
 }, {
-"display_name": "Shadow Offset X",
-"name": "theme_override_constants/shadow_offset_x",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_x"
 }, {
-"display_name": "Shadow Offset Y",
-"name": "theme_override_constants/shadow_offset_y",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/shadow_offset_y"
 }, {
 "display_name": "Shadow Color",
-"name": "theme_override_colors/font_shadow_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_shadow_color"
 }, {
 "display_name": "",
 "name": "Indicators",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Next Indicator",
 "name": "%NextIndicator",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Enabled",
-"name": "enabled",
-"tooltip": "",
-"type": "Property"
+"name": "enabled"
 }, {
-"display_name": "Show On Questions",
-"name": "show_on_questions",
-"tooltip": "",
-"type": "Property"
+"name": "show_on_questions"
 }, {
-"display_name": "Show On Autoadvance",
-"name": "show_on_autoadvance",
-"tooltip": "",
-"type": "Property"
+"name": "show_on_autoadvance"
 }, {
-"display_name": "Animation",
-"name": "animation",
-"tooltip": "",
-"type": "Property"
+"name": "animation"
 }, {
-"display_name": "Texture",
-"name": "texture",
-"tooltip": "",
-"type": "Property"
+"name": "texture"
 }, {
-"display_name": "Texture Size",
-"name": "texture_size",
-"tooltip": "",
-"type": "Property"
+"name": "texture_size"
 }, {
-"display_name": "Modulate",
-"name": "modulate",
-"tooltip": "",
-"type": "Property"
+"name": "modulate"
 }, {
-"display_name": "Indicator Offset",
-"name": "indicator_offset",
-"tooltip": "",
-"type": "Property"
+"name": "indicator_offset"
 }, {
 "collapsed": true,
 "display_name": "",
 "name": "Sounds",
-"tooltip": "",
 "type": "Category"
 }, {
 "collapsed": true,
 "display_name": "Type Sounds",
 "name": "%TypeSounds",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Enabled",
-"name": "enabled",
-"tooltip": "",
-"type": "Property"
+"name": "enabled"
 }, {
-"display_name": "Mode",
-"name": "mode",
-"tooltip": "",
-"type": "Property"
+"name": "mode"
 }, {
-"display_name": "Sounds",
-"name": "sounds",
-"tooltip": "",
-"type": "Property"
+"name": "sounds"
 }, {
-"display_name": "End Sound",
-"name": "end_sound",
-"tooltip": "",
-"type": "Property"
+"name": "end_sound"
 }, {
 "display_name": "Base Volume",
-"name": "volume_db",
-"tooltip": "",
-"type": "Property"
+"name": "volume_db"
 }, {
 "display_name": "Base Pitch",
-"name": "pitch_scale",
-"tooltip": "",
-"type": "Property"
+"name": "pitch_scale"
 }, {
 "display_name": "Audio Bus",
-"name": "bus",
-"tooltip": "",
-"type": "Property"
+"name": "bus"
 }, {
-"display_name": "Play Every Character",
-"name": "play_every_character",
-"tooltip": "",
-"type": "Property"
+"name": "play_every_character"
 }, {
-"display_name": "Pitch Variance",
-"name": "pitch_variance",
-"tooltip": "",
-"type": "Property"
+"name": "pitch_variance"
 }, {
-"display_name": "Volume Variance",
-"name": "volume_variance",
-"tooltip": "",
-"type": "Property"
+"name": "volume_variance"
 }, {
-"display_name": "Ignore Characters",
-"name": "ignore_characters",
-"tooltip": "",
-"type": "Property"
+"name": "ignore_characters"
 }])
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=444027929]

@@ -12,8 +12,8 @@ extends Control
 		visible = not disabled
 
 
-## TODO remove
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ### If [code]true[/code] [method _apply_export_overrides] is called on _ready(). [br]
 ### When a layer is used in a style, [method _apply_export_overrides] is called
 ### by the base layer on style changes. However when a style is made custom,
@@ -22,15 +22,15 @@ extends Control
 var apply_overrides_on_ready := false
 
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 var this_folder: String = get_script().resource_path.get_base_dir()
 
 
-## Emitted after dialogic has applied customization
+## Emitted after dialogic has applied export_overrides
 @warning_ignore("unused_signal") # emitted by DialogicUtil.apply_scene_export_overrides()
-signal customization_applied
+signal overrides_applied
 
-
-func _get_base_customization() -> Array[Dictionary]:
+func _get_base_export_overrides() -> Array[Dictionary]:
 	return [
 		{"type":"Category", "name":"Layer"},
 		{"type":"Node", "name":".", "display_name":"General"},
@@ -47,17 +47,20 @@ func _ready() -> void:
 
 
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ## Override this and load all your exported settings (apply them to the scene) TODO: REMOVE
 func _apply_export_overrides() -> void:
 	pass
 
 
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 func apply_export_overrides() -> void:
 	_apply_export_overrides()
 
 
 ## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
 ## Use this to get potential global settings. TODO: REMOVE
 func get_global_setting(setting_name:StringName, default:Variant) -> Variant:
 	return get_parent().get_global_setting(setting_name, default)

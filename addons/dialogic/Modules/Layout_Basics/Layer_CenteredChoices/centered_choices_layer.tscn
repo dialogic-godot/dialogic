@@ -16,156 +16,87 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_cqkva")
 metadata/_custom_type_script = "uid://c8d470kti274h"
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "Buttons",
 "name": "%Choices/@all_children",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Text Alignment",
-"name": "alignment",
-"tooltip": "",
-"type": "Property"
+"name": "alignment"
 }, {
-"display_name": "Font",
-"name": "theme_override_fonts/font",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_fonts/font"
 }, {
-"display_name": "Font Size",
-"name": "theme_override_font_sizes/font_size",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_font_sizes/font_size"
 }, {
-"display_name": "Font Color",
-"name": "theme_override_colors/font_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_color"
 }, {
-"display_name": "Font Pressed Color",
-"name": "theme_override_colors/font_pressed_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_pressed_color"
 }, {
-"display_name": "Font Hover Color",
-"name": "theme_override_colors/font_hover_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_hover_color"
 }, {
-"display_name": "Font Disabled Color",
-"name": "theme_override_colors/font_disabled_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_disabled_color"
 }, {
-"display_name": "Font Focus Color",
-"name": "theme_override_colors/font_focus_color",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_colors/font_focus_color"
 }, {
 "display_name": "Button Stylesboxes",
 "name": "%Choices/@all_children",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Stretch-Mode",
-"name": "size_flags_horizontal",
-"tooltip": "",
-"type": "Property"
+"name": "size_flags_horizontal"
 }, {
-"display_name": "Stylebox Normal",
-"name": "theme_override_styles/normal",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/normal"
 }, {
-"display_name": "Stylebox Hover",
-"name": "theme_override_styles/hover",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/hover"
 }, {
-"display_name": "Stylebox Pressed",
-"name": "theme_override_styles/pressed",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/pressed"
 }, {
-"display_name": "Stylebox Disabled",
-"name": "theme_override_styles/disabled",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/disabled"
 }, {
-"display_name": "Stylebox Focus",
-"name": "theme_override_styles/focus",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_styles/focus"
 }, {
 "display_name": "Container",
 "name": "%Choices",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Alignment",
-"name": "alignment",
-"tooltip": "",
-"type": "Property"
+"name": "alignment"
 }, {
 "display_name": "Vertical Separation",
-"name": "theme_override_constants/separation",
-"tooltip": "",
-"type": "Property"
+"name": "theme_override_constants/separation"
 }, {
 "display_name": "-",
 "name": "%Choices/@all_children",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Minimum Size",
-"name": "custom_minimum_size",
-"tooltip": "",
-"type": "Property"
+"name": "custom_minimum_size"
 }, {
 "display_name": "-",
 "name": ".",
-"tooltip": "",
 "type": "Node"
 }, {
 "display_name": "Offset",
-"name": "position",
-"tooltip": "",
-"type": "Property"
+"name": "position"
 }, {
 "display_name": "",
 "name": "Sounds",
-"tooltip": "",
 "type": "Category"
 }, {
 "display_name": "DialogicNode_ButtonSound",
 "name": "%DialogicNode_ButtonSound",
-"tooltip": "",
 "type": "Node"
 }, {
-"display_name": "Volume Db",
-"name": "volume_db",
-"tooltip": "",
-"type": "Property"
+"name": "volume_db"
 }, {
-"display_name": "Sound Pressed",
-"name": "sound_pressed",
-"tooltip": "",
-"type": "Property"
+"name": "sound_pressed"
 }, {
-"display_name": "Sound Hover",
-"name": "sound_hover",
-"tooltip": "",
-"type": "Property"
+"name": "sound_hover"
 }, {
-"display_name": "Sound Focus",
-"name": "sound_focus",
-"tooltip": "",
-"type": "Property"
+"name": "sound_focus"
 }])
 
 [node name="DialogicNode_ButtonSound" type="AudioStreamPlayer" parent="." unique_id=618457155]

@@ -33,7 +33,7 @@ func load_data(data:Array) -> void:
 	var current_node : TreeItem = null
 
 	for i in data:
-		match i.type:
+		match i.get("type", "Property"):
 			"Category":
 				current_category = add_category_item(i)
 			"Node":
@@ -50,11 +50,14 @@ func get_data() -> Array[Dictionary]:
 	var item := get_root()
 	while item:
 		if item.get_metadata(0):
-			current_data.append({
-				"name":item.get_text(0),
-				"display_name":item.get_text(1),
-				"type":item.get_metadata(0).type,
-				"tooltip":item.get_text(2)})
+			current_data.append({"name": item.get_text(0)})
+			if item.get_text(1) != DialogicUtil.pretty_property_name(item.get_text(0)):
+				printt(item.get_text(1), "unequal", DialogicUtil.pretty_property_name(item.get_text(0)))
+				current_data[-1]["display_name"] = item.get_text(1)
+			if item.get_metadata(0).type != "Property":
+				current_data[-1]["type"] = item.get_metadata(0).type
+			if item.get_text(2):
+				current_data[-1]["tooltip"] = item.get_text(2)
 			if item.collapsed:
 				current_data[-1]["collapsed"] = true
 		item = item.get_next_in_tree()
@@ -406,7 +409,7 @@ func add_property_item(parent:TreeItem, data := {}) -> TreeItem:
 	if data.get("display_name", ""):
 		item.set_text(1, data.display_name)
 	else:
-		item.set_text(1, simplify_name(data.name))
+		item.set_text(1, DialogicUtil.pretty_property_name(data.name))
 	item.set_editable(1, not owner.is_shown_on_instance())
 
 	item.set_text(2, data.get("tooltip", ""))
@@ -438,15 +441,6 @@ func _on_button_clicked(item: TreeItem, _column: int, id: int, _mouse_button_ind
 			EditorInterface.get_selection().add_node(node)
 
 
-func simplify_name(property_path:String) -> String:
-	property_path = property_path.replace("theme_override_styles/", "Stylebox ")
-	property_path = property_path.replace("theme_override_colors/", "")
-	property_path = property_path.replace("theme_override_constants/", "")
-	property_path = property_path.replace("theme_override_fonts/", "")
-	property_path = property_path.replace("theme_override_font_sizes/", "")
-	property_path = property_path.replace("theme_override_icons/", "Icon ")
-	property_path = property_path.capitalize()
-	return property_path
 
 
 func _on_column_title_clicked(column: int, _mouse_button_index: int) -> void:
@@ -469,10 +463,10 @@ func highlight_property(node:Node, property:String) -> void:
 	var highlight_items := []
 	while item:
 		var dt: Dictionary = item.get_metadata(0)
-		if dt.type == "Node":
+		if dt.get("type", "Property") == "Node":
 			current_node = get_item_scene_node(item)
 			current_node_path = item.get_text(0)
-		if dt.type == "Property":
+		if dt.get("type", "Property") == "Property":
 			if item.get_text(0) == property:
 				if current_node == node or (current_node_path.ends_with("/@all_children") and current_node.get_parent() == node.get_parent()):
 					highlight_items.append(item)
