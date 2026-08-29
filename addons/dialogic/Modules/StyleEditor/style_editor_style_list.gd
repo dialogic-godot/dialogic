@@ -1,7 +1,7 @@
 @tool
 extends Tree
 
-enum RightClickMenuItems {RENAME, DUPLICATE, DELETE, CLEAR_INHERITANCE, MAKE_DEFAULT, SHOW_IN_FILESYSTEM}
+enum RightClickMenuItems {RENAME, DUPLICATE, DELETE, CLEAR_INHERITANCE, MAKE_DEFAULT, ADD_INHERITED_STYLE, SHOW_IN_FILESYSTEM}
 
 signal load_style(style:DialogicStyle)
 signal rename_style(style:DialogicStyle, new_name:String)
@@ -18,6 +18,8 @@ func _ready() -> void:
 	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", RightClickMenuItems.DELETE)
 	%StyleListRightClickMenu.add_separator()
 	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Favorites", "EditorIcons"), "Make Default",  RightClickMenuItems.MAKE_DEFAULT)
+	%StyleListRightClickMenu.add_separator()
+	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Add", "EditorIcons"), "Create New Inherited Style",  RightClickMenuItems.ADD_INHERITED_STYLE)
 	%StyleListRightClickMenu.add_separator()
 	%StyleListRightClickMenu.add_icon_item(get_theme_icon("Filesystem", "EditorIcons"), "Show in FileSystem",  RightClickMenuItems.SHOW_IN_FILESYSTEM)
 
@@ -116,6 +118,8 @@ func _on_style_list_right_click_menu_id_pressed(id: int) -> void:
 			owner._on_remove_button_pressed()
 		RightClickMenuItems.MAKE_DEFAULT:
 			owner.make_current_default()
+		RightClickMenuItems.ADD_INHERITED_STYLE:
+			owner.promt_save_new_style(DialogicStyle.new(), item.get_metadata(0))
 		RightClickMenuItems.SHOW_IN_FILESYSTEM:
 			EditorInterface.get_file_system_dock().navigate_to_path(item.get_metadata(0).resource_path)
 

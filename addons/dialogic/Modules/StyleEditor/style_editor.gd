@@ -281,28 +281,22 @@ func _on_AddStyleMenu_selected(index:int) -> void:
 			return
 
 		var new_style: DialogicStyle = load(picked_info.style_path).clone()
+		promt_save_new_style(new_style)
 
-		find_parent("EditorView").godot_file_dialog(
-			create_and_add_new_style.bind(new_style),
-			"*.tres",
-			EditorFileDialog.FILE_MODE_SAVE_FILE,
-			"Select folder for new style")
-	
 	if index == 3:
 		if not %StyleList.get_selected():
 			return
-		find_parent("EditorView").godot_file_dialog(
-			create_and_add_new_style.bind(DialogicStyle.new(), current_style),
-			"*.tres",
-			EditorFileDialog.FILE_MODE_SAVE_FILE,
-			"Select folder for new style")
+		promt_save_new_style(DialogicStyle.new(), current_style)
 
 	if index == 4:
-		find_parent("EditorView").godot_file_dialog(
-			create_and_add_new_style.bind(DialogicStyle.new()),
-			"*.tres",
-			EditorFileDialog.FILE_MODE_SAVE_FILE,
-			"Select folder for new style")
+		promt_save_new_style(DialogicStyle.new())
+
+func promt_save_new_style(style:DialogicStyle, inherits_from:DialogicStyle = null) -> void:
+	find_parent("EditorView").godot_file_dialog(
+		create_and_add_new_style.bind(style, inherits_from),
+		"*.tres",
+		EditorFileDialog.FILE_MODE_SAVE_FILE,
+		"Select folder for new style")
 
 #endregion
 

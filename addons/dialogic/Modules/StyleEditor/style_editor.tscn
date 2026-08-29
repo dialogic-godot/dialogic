@@ -357,7 +357,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"DialogicSubTitle"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_jsofm")
 text = "Default Layout Base"
-text_overrun_behavior = 3
+text_overrun_behavior = 5
 
 [node name="ExpandLayerInfo" type="Button" parent="StyleView/LayerEditor/LayerView/PanelContainer/LayerSettings/MarginContainer/HBoxContainer/VBoxContainer/LayerInfoHeader" unique_id=1214843466]
 unique_name_in_owner = true
