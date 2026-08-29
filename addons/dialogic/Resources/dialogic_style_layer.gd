@@ -34,10 +34,9 @@ func update_to_alpha21() -> void:
 		return
 	var new_overrides := {}
 	for i in overrides:
-		print("Update ", i, " with value ", overrides[i])
 		if typeof(overrides[i]) == TYPE_STRING:
 			new_overrides[".:"+i] = str_to_var(overrides[i])
 		else:
 			new_overrides[".:"+i] = overrides[i]
 	overrides = new_overrides
-	print("updating layer ", self)
+	print("[Dialogic] Updating style layer overrides: ", self)

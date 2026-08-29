@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://bak74s0kcr0ao" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="3_gfw0g"]
 [ext_resource type="Script" uid="uid://drhfq6rmdeuri" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="4_dda54"]
 [ext_resource type="Script" uid="uid://dpv2dfiv5dhmr" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_20ce6"]
-[ext_resource type="Script" uid="uid://dve1vwse2peji" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="6_yyo74"]
-[ext_resource type="Texture2D" uid="uid://duvcdvtgy4h4b" path="res://addons/dialogic/Modules/Call/icon.png" id="7_gfw0g"]
+[ext_resource type="Script" uid="uid://lbfyyh8pak0r" path="res://addons/dialogic/Modules/Text/node_next_indicator.gd" id="7_drfit"]
+[ext_resource type="Texture2D" uid="uid://drod3f7ev1fn5" path="res://addons/dialogic/example_assets/next_indicators/arrow_down_white.svg" id="8_fk7rj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yr37b"]
 content_margin_left = 5.0
@@ -48,6 +48,135 @@ y_value = 1.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yr37b"]
 
+[sub_resource type="Animation" id="Animation_nxllh"]
+resource_name = "Blink Fade"
+length = 1.5
+loop_mode = 1
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NextIndicatorIcon:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.36666667, 0.73333335, 1.1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ydqag"]
+resource_name = "Float"
+length = 2.0
+loop_mode = 1
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NextIndicatorIcon:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.96666664, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -8), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_uaqh7"]
+resource_name = "None"
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dp7k7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NextIndicatorIcon:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NextIndicatorIcon:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("NextIndicatorIcon:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_v3aoe"]
+resource_name = "Spin"
+loop_mode = 1
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NextIndicatorIcon:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.283185307179586]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r36hk"]
+_data = {
+&"Blink Fade": SubResource("Animation_nxllh"),
+&"Float": SubResource("Animation_ydqag"),
+&"None": SubResource("Animation_uaqh7"),
+&"RESET": SubResource("Animation_dp7k7"),
+&"Spin": SubResource("Animation_v3aoe")
+}
+
 [node name="TextboxWithSpeakerPortrait" type="Control" unique_id=1498291065]
 layout_mode = 3
 anchors_preset = 15
@@ -57,7 +186,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_bg6gt")
-metadata/_custom_type_script = "uid://c8d470kti274h"
 metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
@@ -200,7 +328,7 @@ metadata/export_overrides = Array[Dictionary]([{
 "name": "Indicators",
 "type": "Category"
 }, {
-"display_name": "Next Indicator",
+"display_name": "Behaviour",
 "name": "%NextIndicator",
 "type": "Node"
 }, {
@@ -210,15 +338,28 @@ metadata/export_overrides = Array[Dictionary]([{
 }, {
 "name": "show_on_autoadvance"
 }, {
-"name": "animation"
-}, {
-"name": "texture"
-}, {
-"name": "texture_size"
+"display_name": "Look",
+"name": "%NextIndicator",
+"type": "Node"
 }, {
 "name": "modulate"
 }, {
-"name": "indicator_offset"
+"display_name": "Offset",
+"name": "offset_transform_position"
+}, {
+"display_name": "-",
+"name": "%NextIndicatorIcon",
+"type": "Node"
+}, {
+"name": "texture"
+}, {
+"name": "size"
+}, {
+"display_name": "-",
+"name": "%NextIndicatorAnimation",
+"type": "Node"
+}, {
+"name": "current_animation"
 }, {
 "collapsed": true,
 "display_name": "",
@@ -255,6 +396,7 @@ metadata/export_overrides = Array[Dictionary]([{
 }, {
 "name": "ignore_characters"
 }])
+metadata/_custom_type_script = "uid://c8d470kti274h"
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=444027929]
 layout_mode = 1
@@ -349,7 +491,7 @@ bus = &"SFX"
 script = ExtResource("5_20ce6")
 metadata/_custom_type_script = "uid://dpv2dfiv5dhmr"
 
-[node name="NextIndicator" type="Control" parent="Margin/Panel/HBox/VBoxContainer/DialogText" unique_id=1851447227]
+[node name="NextIndicator" type="Control" parent="Margin/Panel/HBox/VBoxContainer/DialogText" unique_id=1835045131]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
@@ -357,13 +499,29 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -27.0
-offset_top = -22.997116
-offset_right = -27.0
-offset_bottom = -22.997116
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("6_yyo74")
-enabled = false
-texture = ExtResource("7_gfw0g")
-metadata/_custom_type_script = "uid://dve1vwse2peji"
+offset_transform_enabled = true
+offset_transform_position = Vector2(-32, -32)
+offset_transform_visual_only = false
+script = ExtResource("7_drfit")
+metadata/_custom_type_script = "uid://lbfyyh8pak0r"
+
+[node name="NextIndicatorIcon" type="TextureRect" parent="Margin/Panel/HBox/VBoxContainer/DialogText/NextIndicator" unique_id=613777062]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("8_fk7rj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NextIndicatorAnimation" type="AnimationPlayer" parent="Margin/Panel/HBox/VBoxContainer/DialogText/NextIndicator" unique_id=1737212762]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_r36hk")

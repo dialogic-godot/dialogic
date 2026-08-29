@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://cwauhxkscwco4"]
+
+[ext_resource type="PackedScene" uid="uid://dc25nxmyte65g" path="res://addons/dialogic/Modules/Layout_Basics/Layer_PanelTextbox/panel_textbox_layer.tscn" id="1_4q0rw"]
+[ext_resource type="Texture2D" uid="uid://caicad5hctx1u" path="res://addons/dialogic/example_assets/textboxes/pixelart_textbox_b.png" id="2_6pik7"]
+[ext_resource type="FontFile" uid="uid://x3k8tcox0qrf" path="res://addons/dialogic/example_assets/fonts/Kenney Mini.ttf" id="3_2116u"]
+[ext_resource type="StyleBox" uid="uid://cs7itvdramxg" path="res://addons/dialogic/example_assets/textboxes/pixelart_textbox.tres" id="4_rabeo"]
+[ext_resource type="Texture2D" uid="uid://dymqgwi3xufdu" path="res://addons/dialogic/example_assets/textboxes/bordered_textbox_b.png" id="5_6pik7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4axot"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+texture = ExtResource("2_6pik7")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2116u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pik7"]
+bg_color = Color(0.42745098, 0.29411766, 0.15294118, 1)
+corner_detail = 4
+
+[node name="BasicPixelArtTextboxLayer" unique_id=1178457061 instance=ExtResource("1_4q0rw")]
+texture_filter = 1
+
+[node name="OutsideMargin" parent="." index="1" unique_id=1942210453]
+theme_override_constants/margin_bottom = 5
+
+[node name="Separator" parent="OutsideMargin" index="0" unique_id=1638024296]
+theme_override_constants/separation = 2
+
+[node name="NameLabelPanel" parent="OutsideMargin/Separator/NameLabelPositioner" parent_id_path=PackedInt32Array(1051332123) index="0" unique_id=828219355]
+theme_override_styles/panel = SubResource("StyleBoxTexture_4axot")
+
+[node name="NameLabel" parent="OutsideMargin/Separator/NameLabelPositioner/NameLabelPanel" index="0" unique_id=701382121]
+theme_override_fonts/font = ExtResource("3_2116u")
+theme_override_font_sizes/font_size = 8
+
+[node name="DialogTextPanel" parent="OutsideMargin/Separator" index="1" unique_id=220104592]
+custom_minimum_size = Vector2(150, 50)
+theme_override_styles/panel = ExtResource("4_rabeo")
+
+[node name="Padding" parent="OutsideMargin/Separator/DialogTextPanel" index="0" unique_id=1372397586]
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="DialogText" parent="OutsideMargin/Separator/DialogTextPanel/Padding" index="0" unique_id=1518338739]
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 0.7490196)
+theme_override_fonts/normal_font = ExtResource("3_2116u")
+theme_override_fonts/bold_font = ExtResource("3_2116u")
+theme_override_fonts/bold_italics_font = ExtResource("3_2116u")
+theme_override_fonts/italics_font = ExtResource("3_2116u")
+theme_override_font_sizes/normal_font_size = 8
+theme_override_font_sizes/bold_font_size = 8
+theme_override_font_sizes/bold_italics_font_size = 8
+theme_override_font_sizes/italics_font_size = 8
+theme_override_font_sizes/mono_font_size = 8
+font_size = 8
+
+[node name="AutoAdvanceProgressbar" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" index="3" unique_id=1840095773]
+custom_minimum_size = Vector2(0, 2)
+offset_left = -4.0
+offset_top = 1.0
+offset_right = 4.0
+offset_bottom = 4.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_2116u")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6pik7")
+
+[node name="NextIndicator" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText" index="4" unique_id=1307988264]
+offset_transform_position = Vector2(-6, -6)
+
+[node name="NextIndicatorIcon" parent="OutsideMargin/Separator/DialogTextPanel/Padding/DialogText/NextIndicator" index="0" unique_id=1870935753]
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("5_6pik7")

@@ -336,6 +336,11 @@ func get_scene_node(node_path:String) -> Node:
 	return owner.current_base_node.get_node(node_path)
 
 
+func has_scene_node(node_path:String) -> bool:
+	if node_path.ends_with("/@all_children"):
+		return owner.current_base_node.has_node(node_path.trim_suffix("/@all_children"))
+	return owner.current_base_node.has_node(node_path)
+
 func get_item_scene_node(item:TreeItem) -> Node:
 	return get_scene_node(item.get_metadata(0).get("node_path"))
 
@@ -383,6 +388,12 @@ func add_node_item(parent:TreeItem, data := {}) -> TreeItem:
 	item.set_custom_bg_color(1, get_theme_color("prop_subsection_stylebox_color", "Editor"))
 	item.set_custom_bg_color(2, get_theme_color("prop_subsection_stylebox_color", "Editor"))
 
+	if not has_scene_node(data.name):
+		item.set_custom_color(0, get_theme_color("error_color", "Editor"))
+		item.set_custom_color(1, get_theme_color("error_color", "Editor"))
+		item.set_custom_color(2, get_theme_color("error_color", "Editor"))
+		item.add_button(0, get_theme_icon("StatusError", "EditorIcons"), 99, false, "This override points at a node that doesn't exist.")
+
 	item.add_button(3, get_theme_icon("ToolSelect", "EditorIcons"), Buttons.SELECT, false, "Select")
 	item.add_button(3, get_theme_icon("Remove", "EditorIcons"), Buttons.DELETE, false, "Delete All Node Customization")
 	item.set_button_disabled(3, item.get_button_by_id(3, Buttons.DELETE), owner.is_shown_on_instance())
@@ -420,6 +431,17 @@ func add_property_item(parent:TreeItem, data := {}) -> TreeItem:
 	item.set_metadata(0, {"type":"Property"})
 	item.set_cell_mode(3, TreeItem.CELL_MODE_CUSTOM)
 
+	if not has_scene_node(parent.get_metadata(0).node_path):
+		item.set_custom_color(0, get_theme_color("error_color", "Editor"))
+		item.set_custom_color(1, get_theme_color("error_color", "Editor"))
+		item.set_custom_color(2, get_theme_color("error_color", "Editor"))
+	elif not data.name in get_scene_node(parent.get_metadata(0).node_path):
+		item.set_custom_color(0, get_theme_color("warning_color", "Editor"))
+		item.set_custom_color(1, get_theme_color("warning_color", "Editor"))
+		item.set_custom_color(2, get_theme_color("warning_color", "Editor"))
+		item.add_button(0, get_theme_icon("StatusError", "EditorIcons"), 99, false, "This node doesn't have a property '{0}'.".format([data.name]))
+
+
 	item.collapsed = data.get("collapsed", false)
 
 	if not loading:
@@ -438,8 +460,6 @@ func _on_button_clicked(item: TreeItem, _column: int, id: int, _mouse_button_ind
 			EditorInterface.get_inspector().edit(node)
 			EditorInterface.get_selection().clear()
 			EditorInterface.get_selection().add_node(node)
-
-
 
 
 func _on_column_title_clicked(column: int, _mouse_button_index: int) -> void:

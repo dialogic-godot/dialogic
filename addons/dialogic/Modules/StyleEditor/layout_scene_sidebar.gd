@@ -73,9 +73,9 @@ func close():
 
 func _on_add_category_pressed() -> void:
 	if %PropertyTree.get_root().get_child_count() == 0:
-		%PropertyTree.add_category_item({"name":"General"}, true)
+		%PropertyTree.add_category_item({"name":"General"})
 	else:
-		%PropertyTree.add_category_item({"name":"New Category"}, true)
+		%PropertyTree.add_category_item({"name":"New Category"})
 
 
 func _on_property_tree_changed() -> void:

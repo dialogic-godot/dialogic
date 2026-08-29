@@ -112,6 +112,6 @@ func update_export_overrides() -> Array[Dictionary]:
 			settings.append({"type":"Property", "name":i.get("name", "")},
 		)
 	set_meta("export_overrides", settings)
-	print("Updated layer scene ", get_script().resource_path)
+	#print("[Dialogic] Updated layer scene exports: ", get_script().resource_path)
 
 	return settings
