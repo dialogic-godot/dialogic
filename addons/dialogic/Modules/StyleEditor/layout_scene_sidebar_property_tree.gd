@@ -52,7 +52,6 @@ func get_data() -> Array[Dictionary]:
 		if item.get_metadata(0):
 			current_data.append({"name": item.get_text(0)})
 			if item.get_text(1) != DialogicUtil.pretty_property_name(item.get_text(0)):
-				printt(item.get_text(1), "unequal", DialogicUtil.pretty_property_name(item.get_text(0)))
 				current_data[-1]["display_name"] = item.get_text(1)
 			if item.get_metadata(0).type != "Property":
 				current_data[-1]["type"] = item.get_metadata(0).type

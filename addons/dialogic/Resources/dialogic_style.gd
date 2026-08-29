@@ -336,4 +336,9 @@ func update_from_pre_alpha16() -> void:
 		base_overrides.clear()
 
 
+func update_from_pre_alpha21() -> void:
+	for i in layer_info:
+		layer_info[i].update_to_alpha21()
+
+
 #endregion

@@ -39,7 +39,8 @@ func load_style_list(styles:Array[DialogicStyle]) -> void:
 	var style_to_item_map := {}
 	for style in styles:
 		## TODO remove when going Beta
-		#style.update_from_pre_alpha16()
+		style.update_from_pre_alpha16()
+		style.update_from_pre_alpha21()
 		var item := create_item()
 		item.set_text(0, style.name)
 		item.set_icon(0, get_theme_icon("PopupMenu", "EditorIcons"))

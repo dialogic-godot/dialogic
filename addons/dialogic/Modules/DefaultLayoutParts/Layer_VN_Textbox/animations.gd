@@ -32,7 +32,7 @@ func _ready() -> void:
 	animation_system.connect(&'animation_interrupted', _on_animation_interrupted)
 
 
-func _on_textbox_show() -> void:
+func _on_textbox_show(_info:Dictionary) -> void:
 	if animation_in == AnimationsIn.NONE:
 		return
 	play('RESET')
@@ -49,7 +49,7 @@ func _on_textbox_show() -> void:
 		animation_finished.connect(Callable(animation_system, &'animation_finished'), CONNECT_ONE_SHOT)
 
 
-func _on_textbox_hide() -> void:
+func _on_textbox_hide(_info:Dictionary) -> void:
 	if animation_out == AnimationsOut.NONE:
 		return
 	play('RESET')
@@ -69,7 +69,7 @@ func _on_about_to_show_text(info:Dictionary) -> void:
 	full_clear = !info.append
 
 
-func _on_textbox_new_text() -> void:
+func _on_textbox_new_text(_info:Dictionary) -> void:
 	if DialogicUtil.autoload().Inputs.auto_skip.enabled:
 		return
 

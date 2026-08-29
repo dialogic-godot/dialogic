@@ -14,6 +14,9 @@ var _update_animation_list := true
 
 var full_clear := true
 
+## Reference to the dialog text node
+@export var dialogic_text_node : DialogicNode_DialogText = null
+
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -44,7 +47,6 @@ func _on_textbox_show(info:Dictionary) -> void:
 	var animation_system: Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.start_animating()
 
-	%OutsideMargin.modulate = Color.TRANSPARENT
 	play(animation_in)
 
 
@@ -75,7 +77,7 @@ func _on_textbox_new_text(info:Dictionary) -> void:
 	animation_system.start_animating()
 
 	if full_clear:
-		%DialogText.text = ""
+		dialogic_text_node.text = ""
 
 	play(animation_new_text)
 
@@ -98,4 +100,4 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func is_identifier(textbox_identifier) -> bool:
-	return textbox_identifier.is_empty() or textbox_identifier == %DialogText.identifier
+	return textbox_identifier.is_empty() or textbox_identifier == dialogic_text_node.identifier

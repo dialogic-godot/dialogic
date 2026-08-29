@@ -572,13 +572,14 @@ metadata/export_overrides = Array[Dictionary]([{
 "name": "ignore_characters"
 }])
 
-[node name="Animations" type="AnimationPlayer" parent="." unique_id=337384606]
+[node name="Animations" type="AnimationPlayer" parent="." unique_id=337384606 node_paths=PackedStringArray("dialogic_text_node")]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_p7syn")
 autoplay = &"RESET"
 script = ExtResource("2_tf6vv")
 animation_in = "In Pop Up"
 animation_out = "Out Fade Down"
+dialogic_text_node = NodePath("../OutsideMargin/Separator/DialogTextPanel/Padding/DialogText")
 
 [node name="OutsideMargin" type="MarginContainer" parent="." unique_id=1942210453]
 unique_name_in_owner = true

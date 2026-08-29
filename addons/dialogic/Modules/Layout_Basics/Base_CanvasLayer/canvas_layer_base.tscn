@@ -4,7 +4,7 @@
 
 [node name="DefaultLayoutBase" type="CanvasLayer" unique_id=1443721113]
 script = ExtResource("1_8lcea")
-metadata/style_customization = Array[Dictionary]([{
+metadata/export_overrides = Array[Dictionary]([{
 "display_name": "",
 "name": "General",
 "tooltip": "",

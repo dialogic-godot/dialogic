@@ -10,6 +10,11 @@ extends Node
 signal overrides_applied
 
 func _init() -> void:
+
+	## This is to attempt upgrading old style scenes to the new system.
+	if not has_meta("export_overrides"):
+		update_export_overrides()
+
 	overrides_applied.connect(_on_overrides_applied)
 
 	_load_persistent_info(Engine.get_meta("dialogic_persistent_style_info", {}))
@@ -108,3 +113,44 @@ func _load_persistent_info(_info: Dictionary) -> void:
 	pass
 
 #endregion
+
+## @deprecated
+## TODO: Remove when dropping support for pre alpha 21 Styles
+func update_export_overrides() -> Array[Dictionary]:
+	var properties: Array[Dictionary] = self.script.get_script_property_list()
+	var settings: Array[Dictionary] = []
+
+	var current_group := {}
+	var current_subgroup := {}
+
+	for i in properties:
+		if i["usage"] & PROPERTY_USAGE_CATEGORY == PROPERTY_USAGE_CATEGORY:
+			continue
+
+		if i["usage"] & PROPERTY_USAGE_GROUP == PROPERTY_USAGE_GROUP:
+			settings.append({"type":"Category", "name":i.get("name", "General")})
+			current_group = i
+			current_subgroup = {}
+
+		elif i["usage"] & PROPERTY_USAGE_SUBGROUP == PROPERTY_USAGE_SUBGROUP:
+			settings.append({"type":"Node", "name":".", "display_name":i.get("name", "")},)
+			current_subgroup = i
+
+		elif i["usage"] & PROPERTY_USAGE_EDITOR == PROPERTY_USAGE_EDITOR:
+			if current_group.get("name", "") == "Private":
+				continue
+
+			if current_group.is_empty():
+				settings.append({"type":"Category", "name":"General"})
+				current_group = {"name":"General"}
+
+			if current_subgroup.is_empty():
+				settings.append({"type":"Node", "name":".", "display_name":"General"})
+				current_subgroup = {"name":"General"}
+
+			settings.append({"type":"Property", "name":i.get("name", "")},
+		)
+	set_meta("export_overrides", settings)
+	print("Updated layer scene ", get_script().resource_path)
+
+	return settings

@@ -324,7 +324,7 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 		var current_node_path := ""
 		var exposed_export_overrides: Array = node.get_meta("export_overrides")
 		if node.has_method("_get_base_export_overrides"):
-			exposed_export_overrides += node._get_base_customization()
+			exposed_export_overrides += node._get_base_export_overrides()
 		for i in exposed_export_overrides:
 			match i.get("type", "Property"):
 				"Node":
@@ -349,7 +349,6 @@ static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary)
 
 		if "overrides_applied" in node:
 			node.overrides_applied.emit()
-
 		return
 
 	## OLD APPLY MECHANISM

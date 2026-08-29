@@ -26,3 +26,18 @@ func _to_string() -> String:
 		return "<Layer: Child of root layer {" + str(len(overrides)) + " overrides}>"
 	else:
 		return "<Layer:no-scene>"
+
+
+## Attempt updating overrides from alpha 20 or earlier.
+func update_to_alpha21() -> void:
+	if overrides.is_empty() or ":" in overrides.keys()[0]:
+		return
+	var new_overrides := {}
+	for i in overrides:
+		print("Update ", i, " with value ", overrides[i])
+		if typeof(overrides[i]) == TYPE_STRING:
+			new_overrides[".:"+i] = str_to_var(overrides[i])
+		else:
+			new_overrides[".:"+i] = overrides[i]
+	overrides = new_overrides
+	print("updating layer ", self)
