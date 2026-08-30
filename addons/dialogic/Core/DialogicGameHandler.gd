@@ -446,7 +446,7 @@ func load_full_state(state:DialogicSaveState) -> void:
 #endregion
 
 
-#region SUB-SYTSEMS
+#region SUB-SYSTEMS
 ################################################################################
 
 func _collect_subsystems() -> void:
