@@ -68,11 +68,12 @@ func load_style(style_name := "", parent: Node = null, is_base_style := true, st
 		# If this has the same scene setup, just apply the new overrides
 		elif previous_layout.get_meta('style') == style_resource.get_inheritance_root() or previous_layout.get_meta('style').get_inheritance_root() == style_resource.get_inheritance_root():
 			DialogicUtil.apply_scene_export_overrides(previous_layout, style_resource.get_layer_inherited_info("").overrides)
+			var layer_ids := style_resource.get_layer_inherited_list()
 			var index := 0
 			for layer in previous_layout.get_layers():
 				DialogicUtil.apply_scene_export_overrides(
 					layer,
-					style_resource.get_layer_inherited_info(style_resource.get_layer_id_at_index(index)).overrides)
+					style_resource.get_layer_inherited_info(layer_ids[index]).overrides)
 				index += 1
 
 			previous_layout.set_meta('style', style_resource)
