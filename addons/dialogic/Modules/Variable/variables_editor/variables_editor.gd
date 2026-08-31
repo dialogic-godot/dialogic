@@ -20,7 +20,11 @@ func _register() -> void:
 
 func _open(_argument:Variant = null) -> void:
 	%ReferenceInfo.hide()
-	%Tree.load_info(ProjectSettings.get_setting('dialogic/variables', {}))
+	var var_info: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
+	var_info.merge({"@CHARACTER":{}, "@TIMELINE":{}})
+	var_info["@CHARACTER"].merge({})
+	var_info["@TIMELINE"].merge({"visited":0})
+	%Tree.load_info(var_info)
 
 
 func _save() -> void:
