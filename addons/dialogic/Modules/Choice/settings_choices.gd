@@ -3,6 +3,7 @@ extends DialogicSettingsPage
 
 func _refresh() -> void:
 	%Autofocus.button_pressed = ProjectSettings.get_setting('dialogic/choices/autofocus_first', true)
+	%UseInputAction.button_pressed = ProjectSettings.get_setting('dialogic/choices/use_input_action', false)
 	%Delay.value = ProjectSettings.get_setting('dialogic/choices/delay', 0.2)
 	%FalseBehaviour.select(ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', 0))
 	%HotkeyType.select(ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', 0))
@@ -22,6 +23,11 @@ func _refresh() -> void:
 
 func _on_Autofocus_toggled(button_pressed: bool) -> void:
 	ProjectSettings.set_setting('dialogic/choices/autofocus_first', button_pressed)
+	ProjectSettings.save()
+
+
+func _on_UseInputAction_toggled(button_pressed: bool) -> void:
+	ProjectSettings.set_setting('dialogic/choices/use_input_action', button_pressed)
 	ProjectSettings.save()
 
 

@@ -56,6 +56,7 @@ func _ready() -> void:
 	reveal_by_input = ProjectSettings.get_setting('dialogic/choices/reveal_by_input', reveal_by_input)
 	block_delay = ProjectSettings.get_setting('dialogic/choices/delay', block_delay)
 	autofocus_first_choice = ProjectSettings.get_setting('dialogic/choices/autofocus_first', autofocus_first_choice)
+	use_input_action = ProjectSettings.get_setting('dialogic/choices/use_input_action', use_input_action)
 	hotkey_behaviour = ProjectSettings.get_setting('dialogic/choices/hotkey_behaviour', hotkey_behaviour)
 	default_false_behaviour = ProjectSettings.get_setting('dialogic/choices/def_false_behaviour', default_false_behaviour)
 

@@ -48,6 +48,17 @@ text = "Autofocus first choice"
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="UseInputActionLabel" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/UseInputActionLabel"]
+layout_mode = 2
+text = "Use input action"
+
+[node name="UseInputAction" type="CheckBox" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="AppearModeLabel" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
@@ -169,6 +180,7 @@ popup/item_1/text = "Default (1-9)"
 popup/item_1/id = 1
 
 [connection signal="toggled" from="VBoxContainer/Autofocus" to="." method="_on_Autofocus_toggled"]
+[connection signal="toggled" from="VBoxContainer/UseInputAction" to="." method="_on_UseInputAction_toggled"]
 [connection signal="item_selected" from="VBoxContainer/RevealDelayLabel/AppearMode" to="." method="_on_appear_mode_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/RevealDelayLabel/RevealDelay" to="." method="_on_reveal_delay_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/Delay" to="." method="_on_Delay_value_changed"]
