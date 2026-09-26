@@ -76,6 +76,7 @@ theme_override_constants/separation = 15
 
 [node name="PortraitPanel" type="Panel" parent="Anchor/Panel/HBox" unique_id=1942071493]
 unique_name_in_owner = true
+clip_children = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3

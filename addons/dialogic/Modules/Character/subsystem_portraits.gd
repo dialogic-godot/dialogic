@@ -35,6 +35,8 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 	portraits = {}
 	var portrait_states: Dictionary = get_extra_state().get("portrait_state", {})
 	for character_identifier in portraits_info:
+		if not portraits_info.get("joined", true):
+			continue
 		var character_info: Dictionary = portraits_info[character_identifier]
 		var character: DialogicCharacter = DialogicResourceUtil.get_character_resource(character_identifier)
 		if character:
@@ -46,10 +48,12 @@ func _load_state(_load_flag := LoadFlags.FULL_LOAD) -> void:
 
 	# Load Speaker Portrait
 	var speaker: Variant = dialogic.Text.speaker_identifier
+	var speaker_char: DialogicCharacter = DialogicResourceUtil.get_character_resource(speaker)
 	if speaker:
 		# TODO ??
 		dialogic.Text.speaker_identifier = ""
-		change_speaker(DialogicResourceUtil.get_character_resource(speaker))
+		change_speaker(speaker_char, portraits_info.get(speaker_char.get_identifier(), {}).get("portrait", ""))
+
 	dialogic.Text.speaker_identifier = speaker
 
 
@@ -366,7 +370,7 @@ func join_character(character:DialogicCharacter, portrait:String,  position_id:S
 	if character_node == null:
 		return null
 
-	portraits[character.get_identifier()] = {'portrait':portrait, 'position_id':position_id}
+	portraits[character.get_identifier()] = {"portrait":portrait, "position_id":position_id, "joined":true}
 	character_nodes[character.get_identifier()] = character_node
 
 	_change_portrait_mirror(character_node, mirrored)
@@ -414,7 +418,7 @@ func add_character(character: DialogicCharacter, container: DialogicNode_Portrai
 		printerr('[Dialogic] Failed to join character to position ', transform, ". Could not find position container.")
 		return null
 
-	portraits[character.get_identifier()] = {'portrait': portrait, 'position_id': transform}
+	portraits[character.get_identifier()] = {"portrait": portrait, "position_id": transform, "joined":true}
 	character_nodes[character.get_identifier()] = character_node
 
 	_move_character(character_node, transform)
@@ -546,9 +550,8 @@ func get_character_node(character: DialogicCharacter) -> Node:
 
 ## Returns true if the given character is currently joined.
 func is_character_joined(character: DialogicCharacter) -> bool:
-	if character == null or not character.get_identifier() in portraits:
+	if character == null or not character.get_identifier() in portraits or portraits[character.get_identifier()].get("joined", true) == false:
 		return false
-
 	return true
 
 
@@ -557,6 +560,8 @@ func get_joined_characters() -> Array[DialogicCharacter]:
 	var chars: Array[DialogicCharacter] = []
 
 	for char_identifier: String in portraits.keys():
+		if portraits[char_identifier].get("joined", true):
+			continue
 		chars.append(DialogicResourceUtil.get_character_resource(char_identifier))
 
 	return chars
@@ -568,10 +573,10 @@ func get_joined_characters() -> Array[DialogicCharacter]:
 func get_character_info(character:DialogicCharacter) -> Dictionary:
 	if is_character_joined(character):
 		var info: Dictionary = portraits[character.get_identifier()]
-		info['joined'] = true
+		info["joined"] = true
 		return info
 	else:
-		return {'joined':false}
+		return {"joined":false}
 
 #endregion
 
@@ -592,10 +597,12 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 				if leave_animation and leave_animation_length:
 					var animate_out := _animate_node(character_node, leave_animation, leave_animation_length, 1, true)
 					await animate_out.finished
-					character_node.queue_free()
+					if is_instance_valid(character_node):
+						character_node.queue_free()
 				else:
 					character_node.get_parent().remove_child(character_node)
-					character_node.queue_free()
+					if is_instance_valid(character_node):
+						character_node.queue_free()
 			else:
 				just_joined = false
 
@@ -604,11 +611,11 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 
 		if just_joined:
 			_create_character_node(speaker, container)
-
 		elif portrait.is_empty():
 			continue
+
 		if portrait.is_empty():
-			if is_character_joined(speaker):
+			if speaker.get_identifier() in portraits:
 				portrait = portraits[speaker.get_identifier()].get("portrait", "")
 		if portrait.is_empty():
 			portrait = speaker.default_portrait
@@ -622,6 +629,10 @@ func change_speaker(speaker: DialogicCharacter = null, portrait := "") -> void:
 
 		if container.portrait_prefix + portrait in speaker.portraits:
 			portrait = container.portrait_prefix + portrait
+
+		if not is_character_joined(speaker):
+			portraits[speaker.get_identifier()] = {"joined":false}
+		portraits[speaker.get_identifier()]["portrait"] = portrait
 
 		await _change_portrait(character_node, portrait, fade_animation, fade_length)
 
