@@ -243,11 +243,11 @@ func _apply_text_settings() -> void:
 
 ## Applies all indicator settings to the scene.
 func _apply_indicator_settings() -> void:
-	var next_indicator: DialogicNode_NextIndicator = %NextIndicator
+	var next_indicator = %NextIndicator
 	next_indicator.enabled = next_indicator_enabled
 
 	if next_indicator_enabled:
-		next_indicator.animation = next_indicator_animation as DialogicNode_NextIndicator.Animations
+		next_indicator.animation = next_indicator_animation
 		if ResourceLoader.exists(next_indicator_texture):
 			next_indicator.texture = load(next_indicator_texture)
 		next_indicator.show_on_questions = next_indicator_show_on_questions

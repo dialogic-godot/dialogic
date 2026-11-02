@@ -2,6 +2,7 @@
 class_name DialogicStyleLayer
 extends Resource
 
+@export var name: String = ""
 ## Reference to the scene that this layer uses.
 @export var scene: PackedScene = null
 ## Dictionary of all the overrides for this layer.
@@ -17,6 +18,8 @@ func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
 	elif scene_path is String and ResourceLoader.exists(scene_path):
 		scene = load(scene_path)
 	overrides = scene_overrides
+	if name.is_empty():
+		name = scene.resource_path.get_file().trim_suffix(scene.resource_path.get_extension()).capitalize()
 
 
 func _to_string() -> String:
