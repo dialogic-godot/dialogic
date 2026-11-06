@@ -1165,6 +1165,8 @@ func _input(event:InputEvent) -> void:
 	var focus_owner: Control = get_viewport().gui_get_focus_owner()
 	if focus_owner is TextEdit or focus_owner is LineEdit or (focus_owner is Button and focus_owner.get_parent_control().name == "Spin"):
 		return
+	if focus_owner != null and not is_ancestor_of(focus_owner):
+		return
 
 	match event.as_text():
 		"Ctrl+Z", "Command+Z":  # UNDO
