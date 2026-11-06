@@ -19,9 +19,3 @@ func _update_timeline_info_label(_ignore="") -> void:
 
 func _update_state_label(new_state:int) -> void:
 	%StateInfo.text = "State: "+["Idle", "RevealingText", "Animating", "AwaitingChoice", "Waiting"][new_state]
-
-
-func _on_portrait_containers_toggled(toggled_on: bool) -> void:
-	Dialogic.PortraitContainers.debug_draw = toggled_on
-	owner.settings["portrait_container_debug"] = toggled_on
-	owner.save()
