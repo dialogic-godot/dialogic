@@ -35,7 +35,7 @@ func _ready() -> void:
 func _on_textbox_show() -> void:
 	if animation_in == AnimationsIn.NONE:
 		return
-	play('RESET')
+	play(&'RESET')
 	var animation_system: Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.call(&'start_animating')
 	get_text_panel().get_parent().get_parent().set(&'modulate', Color.TRANSPARENT)
@@ -52,7 +52,7 @@ func _on_textbox_show() -> void:
 func _on_textbox_hide() -> void:
 	if animation_out == AnimationsOut.NONE:
 		return
-	play('RESET')
+	play(&'RESET')
 	var animation_system: Node = DialogicUtil.autoload().get(&'Animations')
 	animation_system.call(&'start_animating')
 	match animation_out:
@@ -90,4 +90,4 @@ func _on_textbox_new_text() -> void:
 
 func _on_animation_interrupted() -> void:
 	if is_playing():
-		stop()
+		play(&'RESET')
