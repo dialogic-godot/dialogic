@@ -398,7 +398,12 @@ static func customize_file(original_file:String, target_file:String) -> String:
 			# Files found in this file will ALSO be customized.
 			customize_file(found_file_path, target_file_path)
 
-			file_text = file_text.replace(found_file_path, target_file_path)
+			# Drop the original UID together with the path. Godot resolves a UID
+			# before its text path, so keeping it would still attach the template
+			# resource even though the copied scene names the customized path.
+			file_text = file_text.replace(
+				result.get_string(0), 'path="%s"' % target_file_path
+			)
 
 			result = RegEx.create_from_string(file_regex).search(file_text)
 
