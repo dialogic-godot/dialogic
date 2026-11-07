@@ -105,6 +105,10 @@ func _post_install() -> void:
 	collect_text_effects()
 	collect_text_modifiers()
 
+	dialogic.Expressions.add_preserved_expression("has_speaker", func(): return get_current_speaker() != null)
+	dialogic.Expressions.add_preserved_expression("speaker_name", func(): return get_current_speaker().get_display_name_translated() if get_current_speaker() else "")
+	dialogic.Expressions.add_preserved_expression("speaker_color", func(): return get_current_speaker().color.to_html() if get_current_speaker() else "")
+
 
 func _clear_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
 	dialog_text = ""

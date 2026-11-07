@@ -4,6 +4,8 @@ extends DialogicSubsystem
 ## This is used by conditions and to allow expresions as variables.
 
 
+var preserved_expressions: Dictionary[String, Callable] = {}
+
 #region MAIN METHODS
 ####################################################################################################
 
@@ -14,6 +16,9 @@ func execute_string(string:String, default: Variant = null, no_warning := false)
 	string = string.replace('len(', 'd_len(')
 	string = string.replace('regex(', 'd_regex(')
 
+	for i in preserved_expressions:
+		if i in string:
+			string = string.replace(i, var_to_str(preserved_expressions[i].call()))
 
 	var regex: RegEx = RegEx.create_from_string('{([^{}]*)}')
 
@@ -23,6 +28,9 @@ func execute_string(string:String, default: Variant = null, no_warning := false)
 
 	if string.begins_with("{") and string.ends_with('}') and string.count("{") == 1:
 		string = string.trim_prefix("{").trim_suffix("}")
+
+	if string.strip_edges().is_empty():
+		return ""
 
 	var expr := Expression.new()
 
@@ -53,7 +61,11 @@ func execute_condition(condition:String) -> bool:
 	return false
 
 
-var condition_modifier_regex := RegEx.create_from_string(r"(?(DEFINE)(?<nobraces>([^{}]|\{(?P>nobraces)\})*))\[if *(?<condition>(\{(?P>nobraces)\}|true\b|false\b))(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
+func add_preserved_expression(identifier:String, method:Callable) -> void:
+	preserved_expressions["@"+identifier] = method
+
+
+var condition_modifier_regex := RegEx.create_from_string(r"(?(DEFINE)(?<nobraces>([^{}]|\{(?P>nobraces)\})*))\[if *(?<condition>(\{(?P>nobraces)\}|true\b|false\b) ?)(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
 func modifier_condition(text:String) -> String:
 	for find in condition_modifier_regex.search_all(text):
 		var insert := ""
@@ -62,11 +74,13 @@ func modifier_condition(text:String) -> String:
 		else:
 			insert = find.get_string("falsetext")
 
+		insert = insert.replace("\\/", "/").replace("\\]", "]")
+
 		# Avoid double spaces at the insert position if the insert is empty.
-		if not insert.strip_edges() and " "+find.get_string()+" " in text:
-			text = text.replace(find.get_string()+" ", insert.strip_edges())
+		if not insert and " "+find.get_string()+" " in text:
+			text = text.replace(find.get_string()+" ", insert)
 		else:
-			text = text.replace(find.get_string(), insert.strip_edges())
+			text = text.replace(find.get_string(), insert)
 
 	return text
 #endregion
@@ -83,6 +97,7 @@ func d_range(a1, a2=null,a3=null,a4=null) -> Array:
 		return range(a1, a2, a3)
 	else:
 		return range(a1, a2, a3, a4)
+
 
 func d_len(arg:Variant) -> int:
 	return len(arg)

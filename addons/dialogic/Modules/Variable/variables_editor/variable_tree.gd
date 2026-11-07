@@ -20,8 +20,8 @@ func _ready() -> void:
 	set_column_title(2, "Default Value")
 	set_column_expand(1, false)
 	set_column_expand_ratio(2, 2)
-	set_column_title_alignment(0, 0)
-	set_column_title_alignment(2, 0)
+	set_column_title_alignment(0, HorizontalAlignment.HORIZONTAL_ALIGNMENT_LEFT)
+	set_column_title_alignment(2, HorizontalAlignment.HORIZONTAL_ALIGNMENT_LEFT)
 
 	%ChangeTypePopup.self_modulate = get_theme_color("dark_color_3", "Editor")
 	%ChangeTypePopup.theme.set_stylebox("pressed", "Button", get_theme_stylebox("LaunchPadMovieMode", "EditorStyles"))
@@ -80,8 +80,13 @@ func add_variable_item(item_name:String, value:Variant, parent:TreeItem) -> Tree
 
 
 func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
+	var is_built_in := item_name.begins_with("@")
 	var item := create_item(parent)
 	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
+	if item_name == "@CHARACTER":
+		item.set_icon(0, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+	elif item_name == "@TIMELINE":
+		item.set_icon(0, load("res://addons/dialogic/Editor/Images/Resources/timeline.svg"))
 	item.set_meta("type", "FOLDER")
 	item.set_text(0, item_name)
 	item.set_metadata(0, item_name)
@@ -121,8 +126,8 @@ func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
 
 	item.add_button(2, load(self.get_script().get_path().get_base_dir().get_base_dir() + "/add-variable.svg"), TreeButtons.ADD_VARIABLE, false, "Add Variable")
 	item.add_button(2, load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg"), TreeButtons.ADD_FOLDER, false, "Add Group")
-	item.add_button(2, get_theme_icon("Duplicate", "EditorIcons"), TreeButtons.DUPLICATE_FOLDER, item == get_root(), "Duplicate Group")
-	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE, item == get_root(), "Delete Group")
+	item.add_button(2, get_theme_icon("Duplicate", "EditorIcons"), TreeButtons.DUPLICATE_FOLDER, item == get_root() or is_built_in, "Duplicate Group")
+	item.add_button(2, get_theme_icon("Remove", "EditorIcons"), TreeButtons.DELETE, item == get_root() or is_built_in, "Delete Group")
 
 	return item
 
@@ -416,6 +421,8 @@ func get_info(item:TreeItem = null) -> Dictionary:
 ################################################################################
 
 func _get_drag_data(_position:Vector2) -> Variant:
+	if get_selected() == get_root():
+		return
 	drop_mode_flags = DROP_MODE_INBETWEEN
 	var preview := Label.new()
 	preview.text = "     "+get_selected().get_text(0)
@@ -446,6 +453,8 @@ func _drop_data(drop_position:Vector2, item:Variant) -> void:
 	var test_item := to_item
 	while true:
 		if test_item == item:
+			return
+		if test_item == null:
 			return
 		test_item = test_item.get_parent()
 		if test_item == get_root():

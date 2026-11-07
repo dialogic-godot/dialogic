@@ -81,7 +81,12 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
 
-	# Second assume this is an autoload variable
+	elif variable_name.begins_with("C("):
+		return set_special_variable("CHARACTER", variable_name.get_slice(")", 0).trim_prefix("C(").strip_edges(), variable_name.get_slice(")", 1).trim_prefix("."), value)
+	elif variable_name.begins_with("T("):
+		return set_special_variable("TIMELINE", variable_name.get_slice(")", 0).trim_prefix("T(").strip_edges(), variable_name.get_slice(")", 1).trim_prefix("."), value)
+
+	# Then assume this is an autoload variable
 	elif '.' in variable_name:
 		var from := variable_name.get_slice('.', 0)
 		var variable := variable_name.trim_prefix(from+'.')
@@ -138,6 +143,10 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, var_storage)
 	if value != null:
 		return value
+	elif variable_path.begins_with("C("):
+		return get_special_variable("CHARACTER", variable_path.get_slice(")", 0).trim_prefix("C(").strip_edges(), variable_path.get_slice(")", 1).trim_prefix("."), default)
+	elif variable_path.begins_with("T("):
+		return get_special_variable("TIMELINE", variable_path.get_slice(")", 0).trim_prefix("T(").strip_edges(), variable_path.get_slice(")", 1).trim_prefix("."), default)
 
 	# Second assume this is an expression.
 	else:
@@ -147,6 +156,62 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 
 	return default
 
+
+func get_special_variable(type:String, identifier:String, variable_path:String, default:Variant = null) -> Variant:
+	if not "@"+type in var_storage:
+		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
+		return default
+
+	var folder: VariableFolder
+	if type == "CHARACTER":
+		if not identifier in DialogicResourceUtil.get_character_directory():
+			printerr("[Dialogic] Attempt to access special variable of character with identifier {0} but wasn't found.".format([identifier]))
+			return default
+
+		folder = get("@CHARACTER")
+
+	elif type == "TIMELINE":
+		if not identifier in DialogicResourceUtil.get_timeline_directory():
+			printerr("[Dialogic] Attempt to access special variable of timeline with identifier {0} but wasn't found.".format([identifier]))
+			return default
+
+		folder = get("@TIMELINE")
+
+	if not folder.has(variable_path):
+		printerr("[Dialogic] Attempt to access special variable '{0}' on a {1}, which is not setup.".format([variable_path, type]))
+		return default
+
+
+	var default_value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, folder.data, default)
+
+	return DialogicUtil._get_value_in_dictionary("@"+identifier+"."+variable_path, folder.data, default_value)
+
+
+
+func set_special_variable(type:String, identifier:String, variable_path:String, value:Variant) -> bool:
+	if not "@"+type in var_storage:
+		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
+		return false
+
+	var folder: VariableFolder
+	folder = get("@"+type)
+
+	if type == "CHARACTER":
+		if not identifier in DialogicResourceUtil.get_character_directory():
+			printerr("[Dialogic] Attempt to access special variable of character with identifier {0} but wasn't found.".format([identifier]))
+			return false
+
+	elif type == "TIMELINE":
+		if not identifier in DialogicResourceUtil.get_timeline_directory():
+			printerr("[Dialogic] Attempt to access special variable of timeline with identifier {0} but wasn't found.".format([identifier]))
+			return false
+
+	if not folder.has(variable_path):
+		printerr("[Dialogic] Attempt to access special variable '{0}' on a {1}, which is not setup.".format([variable_path, type]))
+		return false
+
+	DialogicUtil._set_value_in_dictionary("@"+type+".@"+identifier+"."+variable_path, var_storage, value, true)
+	return true
 
 ## Resets all variables or a specific variable to the value(s) defined in the variable editor
 func reset(variable:="") -> void:
@@ -159,7 +224,6 @@ func reset(variable:="") -> void:
 ## Returns true if a variable with the given path exists
 func has(variable:="") -> bool:
 	return DialogicUtil._get_value_in_dictionary(variable, var_storage) != null
-
 
 
 ## Allows to set dialogic built-in variables
@@ -256,6 +320,13 @@ class VariableFolder:
 
 
 	func has(key:String) -> bool:
+		if not "." in key:
+			return key in data
+
+		var next := key.get_slice(".", 0)
+		if next in data:
+			var folder: VariableFolder = self.get(next)
+			return folder.has(key.trim_prefix(next+"."))
 		return key in data
 
 
