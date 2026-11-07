@@ -430,7 +430,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 		%EventDefaults.add_child(reset)
 
 		# Editing field
-		var editor_node: Node = DialogicUtil.setup_script_property_edit_node(
+		var editor_node: Node = DialogicEditorUtil.setup_script_property_edit_node(
 			property_list.filter(func(x): return x.name == prop_name)[0], current_value, set_event_default_override)
 		editor_node.size_flags_horizontal = SIZE_EXPAND_FILL
 		customization_editor_info[prop_name]["node"] = editor_node
@@ -462,6 +462,6 @@ func _on_export_override_reset(property_name:String) -> void:
 	if event.event_name in event_default_overrides:
 		event_default_overrides[event.event_name].erase(property_name)
 		customization_editor_info[property_name]["reset"].disabled = true
-		DialogicUtil.set_property_edit_node_value(customization_editor_info[property_name]["node"], customization_editor_info[property_name]["orig"])
+		DialogicEditorUtil.set_property_edit_node_value(customization_editor_info[property_name]["node"], customization_editor_info[property_name]["orig"])
 
 #endregion

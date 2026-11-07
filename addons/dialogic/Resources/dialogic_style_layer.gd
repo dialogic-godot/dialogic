@@ -18,7 +18,7 @@ func _init(scene_path:Variant=null, scene_overrides:Dictionary={}):
 	elif scene_path is String and ResourceLoader.exists(scene_path):
 		scene = load(scene_path)
 	overrides = scene_overrides
-	if name.is_empty():
+	if name.is_empty() and scene:
 		name = scene.resource_path.get_file().trim_suffix(scene.resource_path.get_extension()).capitalize()
 
 

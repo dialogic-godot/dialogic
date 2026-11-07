@@ -281,7 +281,7 @@ func load_layout_node_customization(scene:Node, overrides:Dictionary, inherited_
 				hbox2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				current_grid.add_child(hbox2)
 
-				var input: Node = DialogicUtil.setup_script_property_edit_node(get_node_property_info(node, property_name), current_value, set_export_override, property_path)
+				var input: Node = DialogicEditorUtil.setup_script_property_edit_node(get_node_property_info(node, property_name), current_value, set_export_override, property_path)
 				input.size_flags_horizontal = SIZE_EXPAND_FILL
 				input.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 				input.minimum_size_changed.connect(update_setting_warning.bind(property_path))
@@ -362,7 +362,7 @@ func set_override_value(property_name:String, value:Variant) -> void:
 		current_style.remove_layer_setting(current_layer_id, property_name)
 		customization_editor_info[property_name].reset.disabled = true
 	var node: Node = customization_editor_info[property_name].node
-	DialogicUtil.set_property_edit_node_value(node, value)
+	DialogicEditorUtil.set_property_edit_node_value(node, value)
 	update_setting_warning(property_name)
 	current_style.emit_changed()
 

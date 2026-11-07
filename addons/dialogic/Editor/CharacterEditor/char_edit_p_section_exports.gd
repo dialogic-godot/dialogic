@@ -58,7 +58,7 @@ func _recheck(data: Dictionary, force:=false):
 				if current_value == null and typeof(scene.get(i['name'])) == TYPE_STRING:
 					current_value = current_portrait_data['export_overrides'][i['name']]
 
-			var input: Node = DialogicUtil.setup_script_property_edit_node(i, current_value, set_export_override)
+			var input: Node = DialogicEditorUtil.setup_script_property_edit_node(i, current_value, set_export_override)
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			$Grid.add_child(input)
 
