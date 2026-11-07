@@ -259,7 +259,6 @@ class CsvUpdateData:
 
 
 func update_csv_files() -> void:
-	_unique_locales = []
 	var orig_locale: String = ProjectSettings.get_setting('dialogic/translation/original_locale', '').strip_edges()
 	var save_location_mode: SaveLocationModes = ProjectSettings.get_setting('dialogic/translation/save_mode', SaveLocationModes.NEXT_TO_TIMELINE)
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
@@ -375,7 +374,6 @@ func update_csv_files() -> void:
 	}
 
 	%StatusMessage.text = status_message.format(status_message_args)
-	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
 	ProjectSettings.save()
 
 
@@ -414,6 +412,7 @@ func _handle_character_names(
 
 
 func collect_translations() -> void:
+	_unique_locales = []
 	var translation_files := []
 	var translation_mode: TranslationModes = ProjectSettings.get_setting('dialogic/translation/file_mode', TranslationModes.PER_PROJECT)
 
@@ -465,6 +464,7 @@ func collect_translations() -> void:
 
 	var valid_translation_files := PackedStringArray(all_translation_files)
 	ProjectSettings.set_setting('internationalization/locale/translations', valid_translation_files)
+	ProjectSettings.set_setting(_USED_LOCALES_SETTING, _unique_locales)
 	ProjectSettings.save()
 
 	%StatusMessage.text = (
