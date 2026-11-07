@@ -391,6 +391,7 @@ static func customize_file(original_file:String, target_file:String) -> String:
 		var file_regex := r'(uid="[^"]*" )?\Qpath="'+base_path+r'\E(?<file>[^"]*)"'
 		result = RegEx.create_from_string(file_regex).search(file_text)
 		while result:
+			var found_reference := result.get_string()
 			var found_file_name := result.get_string('file')
 			var found_file_path := base_path.path_join(found_file_name)
 			var target_file_path := target_file.get_base_dir().path_join(found_file_name)
@@ -398,7 +399,9 @@ static func customize_file(original_file:String, target_file:String) -> String:
 			# Files found in this file will ALSO be customized.
 			customize_file(found_file_path, target_file_path)
 
-			file_text = file_text.replace(found_file_path, target_file_path)
+			# Remove the copied resource's old UID as well as replacing its path.
+			# Otherwise Godot resolves the UID back to the original resource.
+			file_text = file_text.replace(found_reference, 'path="'+target_file_path+'"')
 
 			result = RegEx.create_from_string(file_regex).search(file_text)
 
