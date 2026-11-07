@@ -104,6 +104,7 @@ func load_layer(layer_id:=""):
 	current_style.set_meta("_latest_layer", current_layer_id)
 
 	var layer_info := current_style.get_layer_inherited_info(layer_id)
+	var local_layer_info := current_style.get_layer_info(layer_id)
 
 	%SmallLayerPreview.hide()
 	if %StyleBrowser.is_premade_style_part(layer_info.get("path", "Unkown Layer")):
@@ -129,7 +130,7 @@ func load_layer(layer_id:=""):
 	var inherited_layer_info := current_style.get_layer_inherited_info(layer_id, true)
 	load_layout_scene_customization(
 			layer_info.path,
-			layer_info.overrides,
+			local_layer_info.overrides,
 			inherited_layer_info.overrides)
 
 
