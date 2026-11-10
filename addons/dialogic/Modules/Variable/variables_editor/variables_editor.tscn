@@ -52,8 +52,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offsets = PackedInt32Array(12)
-split_offset = 12
+split_offsets = PackedInt32Array(4)
+split_offset = 4
 script = ExtResource("2")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1972038904]
@@ -155,27 +155,34 @@ autowrap_mode = 3
 layout_mode = 2
 text = "Reference Manager"
 
-[node name="Info" type="VBoxContainer" parent="." unique_id=227696553]
+[node name="HelpSection" type="VBoxContainer" parent="." unique_id=227696553]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.7
 
-[node name="HBox" type="HBoxContainer" parent="Info" unique_id=362730822]
+[node name="HBox" type="HBoxContainer" parent="HelpSection" unique_id=362730822]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Info/HBox" unique_id=695119999]
+[node name="Title" type="Label" parent="HelpSection/HBox" unique_id=695119999]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"DialogicSection"
 text = "How to use variables"
 
-[node name="Documentation" type="Button" parent="Info/HBox" unique_id=754140705]
+[node name="Documentation" type="Button" parent="HelpSection/HBox" unique_id=754140705]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 text = "Online Docs"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Info" unique_id=2046774878]
+[node name="CloseButton" type="Button" parent="HelpSection/HBox" unique_id=1099260916]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Hide Sidebar"
+theme_type_variation = &"FlatButton"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HelpSection" unique_id=2046774878]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/text_highlight_h_padding = 3
@@ -196,10 +203,20 @@ You can create variable groups with [img]res://addons/dialogic/Editor/Images/Pie
 [code][color=web_gray][color=turquoise]{MyGroup.MyVariable}[/color] # in some text
 [code]print([color=goldenrod]Dialogic[/color].[color=olive_drab]VAR[/color].[color=turquoise]MyGroup[/color].[color=turquoise]MyVariable[/color])[/code] # in a script[/color][/code]"
 
+[node name="OpenButton" type="Button" parent="." unique_id=244018212]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Show Sidebar"
+theme_type_variation = &"FlatButton"
+theme_override_constants/icon_max_width = 20
+
 [connection signal="text_changed" from="PanelContainer/Editor/Search" to="." method="_on_search_text_changed"]
 [connection signal="button_clicked" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_button_clicked"]
 [connection signal="gui_input" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_gui_input"]
 [connection signal="item_edited" from="PanelContainer/Editor/Tree" to="PanelContainer/Editor/Tree" method="_on_item_edited"]
 [connection signal="id_pressed" from="PanelContainer/Editor/Tree/RightClickMenu" to="PanelContainer/Editor/Tree" method="_on_right_click_menu_id_pressed"]
 [connection signal="pressed" from="PanelContainer/Editor/ReferenceInfo/ReferenceManager" to="." method="_on_reference_manager_pressed"]
-[connection signal="pressed" from="Info/HBox/Documentation" to="." method="_on_documentation_pressed"]
+[connection signal="pressed" from="HelpSection/HBox/Documentation" to="." method="_on_documentation_pressed"]

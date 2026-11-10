@@ -19,7 +19,7 @@ func _ready() -> void:
 	set_column_title(1, "")
 	set_column_title(2, "Default Value")
 	set_column_expand(1, false)
-	set_column_expand_ratio(2, 2)
+	set_column_expand_ratio(2, 1.5)
 	set_column_title_alignment(0, HorizontalAlignment.HORIZONTAL_ALIGNMENT_LEFT)
 	set_column_title_alignment(2, HorizontalAlignment.HORIZONTAL_ALIGNMENT_LEFT)
 
@@ -66,6 +66,8 @@ func add_variable_item(item_name:String, value:Variant, parent:TreeItem) -> Tree
 	item.set_metadata(0, item_name)
 	item.set_icon(0, load(DialogicUtil.get_module_path("Variable").path_join("variable.svg")))
 
+	printt(item_name, get_item_path(item))
+
 	var folder_color: Color = parent.get_meta("color", Color.TRANSPARENT)
 	folder_color.a *= 0.5
 	item.set_custom_bg_color(0, folder_color.lerp(get_theme_color("background", "Editor"), 0.5))
@@ -80,7 +82,6 @@ func add_variable_item(item_name:String, value:Variant, parent:TreeItem) -> Tree
 
 
 func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
-	var is_built_in := item_name.begins_with("@")
 	var item := create_item(parent)
 	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 	if item_name == "@CHARACTER":
@@ -91,6 +92,8 @@ func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
 	item.set_text(0, item_name)
 	item.set_metadata(0, item_name)
 	item.set_editable(0, item != get_root())
+	printt(item_name, get_item_path(item))
+	var is_built_in := item_name.begins_with("@")
 
 	var folder_color := Color.TRANSPARENT
 	if parent == null:
