@@ -47,7 +47,8 @@ var event_node_as_text := ""
 var event_node_ready := false
 ## How many empty lines are before this event
 var empty_lines_above: int = 0
-
+## The level of indent in this event
+var indent: int = 0
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## The description that is displayed in the editor tooltip.
@@ -310,9 +311,9 @@ func get_shortcode_parameters() -> Dictionary:
 func to_text() -> String:
 	var shortcode := store_to_shortcode_parameters()
 	if shortcode:
-		return "[" + self.get_shortcode() + " " + store_to_shortcode_parameters() + "]"
+		return " ".repeat(indent) + "[" + self.get_shortcode() + " " + store_to_shortcode_parameters() + "]"
 	else:
-		return "[" + self.get_shortcode() + "]"
+		return " ".repeat(indent) + "[" + self.get_shortcode() + "]"
 
 
 ## Loads the variables from the string stored by [method to_text].
@@ -382,6 +383,8 @@ func value_to_string(value: Variant, suggestions := Callable()) -> String:
 
 
 func load_from_shortcode_parameters(string:String) -> void:
+	indent = len(string) - len(string.strip_edges(true, false))
+
 	var data: Dictionary = parse_shortcode_parameters(string)
 	var params: Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
