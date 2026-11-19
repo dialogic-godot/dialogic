@@ -247,8 +247,8 @@ func start_timeline(timeline:Variant, label_or_idx:Variant = "") -> void:
 
 	## Up visit count
 	if has_subsystem("VAR"):
-		var visit_count: int = VAR.get_special_variable("TIMELINE", current_timeline.get_identifier(), "visited")
-		VAR.set_special_variable("TIMELINE", current_timeline.get_identifier(), "visited", visit_count+1)
+		var visit_count: int = VAR.get_special_variable("$TIMELINE", current_timeline.get_identifier(), "visited", 0)
+		VAR.set_special_variable("$TIMELINE", current_timeline.get_identifier(), "visited", visit_count+1)
 
 	if typeof(label_or_idx) in [TYPE_STRING, TYPE_STRING_NAME]:
 		if label_or_idx:

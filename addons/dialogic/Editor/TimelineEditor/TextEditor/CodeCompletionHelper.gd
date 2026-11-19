@@ -11,6 +11,7 @@ var text_syntax_highlighter: SyntaxHighlighter = load("res://addons/dialogic/Edi
 
 # To find the currently typed word and the symbol before
 var completion_word_regex := RegEx.new()
+var completion_word_dynamic_regex := RegEx.new()
 # To find the shortcode of the current shortcode event (basically the type)
 var completion_shortcode_getter_regex := RegEx.new()
 # To find the parameter name of the current if typing a value
@@ -42,9 +43,28 @@ func get_code_completion_line(text:CodeEdit) -> String:
 
 
 # Helper that gets the currently typed word
-func get_code_completion_word(text:CodeEdit) -> String:
-	var result := completion_word_regex.search(get_code_completion_line(text))
-	return result.get_string('word') if result else ""
+func get_code_completion_word(text:CodeEdit, allow:="") -> String:
+	var result : RegExMatch
+	if allow:
+		completion_word_dynamic_regex.compile(r"(?<s>(\W)|^)(?<word>([\w]|["+allow+r"])*)\x{FFFF}")
+		result = completion_word_dynamic_regex.search(get_code_completion_line(text))
+		return result.get_string("word") if result else ""
+	result = completion_word_regex.search(get_code_completion_line(text))
+	return result.get_string("word") if result else ""
+
+
+func get_code_completeion_word_lenient(text:CodeEdit, insert:String) -> String:
+	var word_allowed := ""
+	if "." in insert:
+		word_allowed += r"\."
+	if '"' in insert:
+		word_allowed += '"'
+	if '-' in insert:
+		word_allowed += '-'
+	if ' ' in insert:
+		word_allowed += ' '
+	return get_code_completion_word(text, word_allowed)
+
 
 # Helper that gets the currently typed parameter
 func get_code_completion_parameter_value(text:CodeEdit) -> String:
@@ -172,22 +192,27 @@ func request_code_completion(_force:bool, text:CodeEdit, mode:=Modes.FULL_HIGHLI
 
 
 # Helper that adds all characters as options
-func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, event:DialogicEvent=null) -> void:
+func suggest_characters(text:CodeEdit, type := CodeEdit.KIND_MEMBER, suffix := "", quote_spaces := true) -> void:
 	for character in DialogicResourceUtil.get_character_directory():
 		var result: String = character
-		if " " in character:
+		if " " in character and quote_spaces:
 			result = '"'+character+'"'
-		if event and event is DialogicTextEvent and load(DialogicResourceUtil.get_character_directory()[character]).portraits.is_empty():
-			result += ': '
-		elif event and event is DialogicCharacterEvent:
-			result += " "
+		if suffix == ":?":
+			if len(load(DialogicResourceUtil.get_character_directory()[character]).portraits) < 2:
+				result += ': '
+			else:
+				result += " "
+		else:
+			result += suffix
 		text.add_code_completion_option(type, character, result, syntax_highlighter.character_name_color, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 
 
 # Helper that adds all timelines as options
-func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color()) -> void:
+func suggest_timelines(text:CodeEdit, type := CodeEdit.KIND_MEMBER, color:=Color(), suffix := "/", quote_spaces := false) -> void:
 	for timeline in DialogicResourceUtil.get_timeline_directory():
-		text.add_code_completion_option(type, timeline, timeline+'/', color, text.get_theme_icon("TripleBar", "EditorIcons"))
+		text.add_code_completion_option(type, timeline,
+			timeline+suffix if not (" " in timeline and quote_spaces) else '"'+timeline+'"'+suffix,
+			color, text.get_theme_icon("TripleBar", "EditorIcons"))
 
 
 func suggest_labels(text:CodeEdit, timeline:String='', end:='', color:=Color()) -> void:
@@ -209,8 +234,31 @@ func suggest_portraits(text:CodeEdit, character_name:String, end_check:=')') -> 
 
 # Helper that adds all variable paths as options
 func suggest_variables(text:CodeEdit):
-	for variable in DialogicUtil.list_variables(ProjectSettings.get_setting('dialogic/variables')):
-		text.add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
+	var already_typed: String = get_code_completion_word(text, r'\.@$-_" ')
+	var is_character := false
+	var is_timeline := false
+	var res_name := ""
+	printt(already_typed)
+	if already_typed.begins_with("@"):
+		if not "." in already_typed: suggest_characters(text, CodeEdit.KIND_MEMBER, ".", true)
+		res_name = already_typed.get_slice(".", 0).trim_prefix("@")
+		#if " " in res_name: res_name = '"'+res_name+'"'
+		is_character = true
+	elif already_typed.begins_with("$"):
+		if not "." in already_typed: suggest_timelines(text, CodeEdit.KIND_MEMBER, syntax_highlighter.variable_color, ".", true)
+		res_name = already_typed.get_slice(".", 0).trim_prefix("$")
+		#if " " in res_name: res_name = '"'+res_name+'"'
+		is_timeline = true
+	for variable:String in DialogicUtil.list_variables(ProjectSettings.get_setting('dialogic/variables')):
+		if variable.begins_with("@") or variable.begins_with("$"):
+			if not "." in already_typed:
+				continue
+			if (is_timeline and variable.begins_with("$TIMELINE")) or (is_character and variable.begins_with("@CHARACTER")):
+				var correct_path: String = variable.replace(variable.get_slice(".", 0), res_name)
+				text.add_code_completion_option(CodeEdit.KIND_MEMBER, "@"+correct_path if is_character else "$"+correct_path, correct_path, syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
+		elif not (is_character or is_timeline):
+			text.add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, text.get_theme_icon("MemberProperty", "EditorIcons"), '}')
+
 
 
 # Helper that adds true and false as options
@@ -251,10 +299,13 @@ func suggest_shortcode_values(text:CodeEdit, event:DialogicEvent, line:String, w
 func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array:
 	var valid_candidates := []
 
-	var current_word := get_code_completion_word(text)
+
+
 	for candidate in candidates:
+		var current_word := get_code_completeion_word_lenient(text, candidate.insert_text)
+
 		if candidate.kind == text.KIND_PLAIN_TEXT:
-			if !current_word.is_empty() and candidate.insert_text.begins_with(current_word):
+			if not current_word.is_empty() and candidate.insert_text.begins_with(current_word):
 				valid_candidates.append(candidate)
 		elif candidate.kind == text.KIND_MEMBER:
 			if current_word.is_empty() or current_word.to_lower() in candidate.insert_text.to_lower():
@@ -267,7 +318,7 @@ func filter_code_completion_candidates(candidates:Array, text:CodeEdit) -> Array
 			if current_word.is_empty() or candidate.insert_text.begins_with(current_word):
 				valid_candidates.append(candidate)
 		elif candidate.kind == text.KIND_CLASS:
-			if !current_word.is_empty() and current_word.to_lower() in candidate.insert_text.to_lower():
+			if not current_word.is_empty() and current_word.to_lower() in candidate.insert_text.to_lower():
 				valid_candidates.append(candidate)
 	return valid_candidates
 
@@ -279,9 +330,11 @@ func confirm_code_completion(_replace:bool, text:CodeEdit) -> void:
 
 	var code_completion := text.get_code_completion_option(text.get_code_completion_selected_index())
 
-	var word := get_code_completion_word(text)
+	var word := ""
 	if code_completion.kind == CodeEdit.KIND_VARIABLE:
 		word = get_code_completion_parameter_value(text)
+	else:
+		word = get_code_completeion_word_lenient(text, code_completion.insert_text)
 
 	text.remove_text(text.get_caret_line(), text.get_caret_column()-len(word), text.get_caret_line(), text.get_caret_column())
 

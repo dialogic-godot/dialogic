@@ -66,8 +66,6 @@ func add_variable_item(item_name:String, value:Variant, parent:TreeItem) -> Tree
 	item.set_metadata(0, item_name)
 	item.set_icon(0, load(DialogicUtil.get_module_path("Variable").path_join("variable.svg")))
 
-	printt(item_name, get_item_path(item))
-
 	var folder_color: Color = parent.get_meta("color", Color.TRANSPARENT)
 	folder_color.a *= 0.5
 	item.set_custom_bg_color(0, folder_color.lerp(get_theme_color("background", "Editor"), 0.5))
@@ -86,14 +84,14 @@ func add_folder_item(item_name:String, parent:TreeItem) -> TreeItem:
 	item.set_icon(0, get_theme_icon("Folder", "EditorIcons"))
 	if item_name == "@CHARACTER":
 		item.set_icon(0, load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
-	elif item_name == "@TIMELINE":
+	elif item_name == "$TIMELINE":
 		item.set_icon(0, load("res://addons/dialogic/Editor/Images/Resources/timeline.svg"))
 	item.set_meta("type", "FOLDER")
 	item.set_text(0, item_name)
 	item.set_metadata(0, item_name)
 	item.set_editable(0, item != get_root())
 	printt(item_name, get_item_path(item))
-	var is_built_in := item_name.begins_with("@")
+	var is_built_in := item_name.begins_with("@") or item_name.begins_with("$")
 
 	var folder_color := Color.TRANSPARENT
 	if parent == null:

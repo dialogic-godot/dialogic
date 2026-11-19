@@ -75,7 +75,7 @@ func open() -> void:
 	%CheckButton.disabled = reference_changes.is_empty()
 
 
-func _on_change_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
+func _on_change_tree_button_clicked(item:TreeItem, _column:int, id:int, _mouse_button_index:int) -> void:
 	if id == 0:
 		reference_changes.erase(item.get_metadata(0))
 		if item.get_parent().get_child_count() == 1:
@@ -134,7 +134,7 @@ func open_finder(replacements:Array[Dictionary]) -> void:
 	finder_thread.start(search_timelines.bind(search_regexes))
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if finder_thread and finder_thread.is_started():
 		if finder_thread.is_alive():
 			progress_mutex.lock()
@@ -234,7 +234,6 @@ func search_timelines(regexes:Array[Array]) -> Array[Dictionary]:
 
 		var timeline_file := FileAccess.open(timeline_path, FileAccess.READ)
 		var timeline_text: String = timeline_file.get_as_text()
-		var timeline_event: PackedStringArray = timeline_text.split('\n')
 		timeline_file.close()
 
 		for regex_info in regexes:
@@ -324,7 +323,6 @@ func replace(timelines:Array[String], replacement_info:Array[Dictionary]) -> voi
 
 		var timeline_file := FileAccess.open(timeline_path, FileAccess.READ_WRITE)
 		var timeline_text: String = timeline_file.get_as_text()
-		var timeline_events := timeline_text.split('\n')
 		timeline_file.close()
 
 		var idx := 1

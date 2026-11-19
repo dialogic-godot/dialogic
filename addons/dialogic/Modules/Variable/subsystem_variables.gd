@@ -25,6 +25,8 @@ signal variable_was_set(info:Dictionary)
 @export_group("State")
 @export var var_storage := {}
 
+var special_variable_regex := RegEx.create_from_string(r"(?<type>@|\$)(?<identifier>\w+)")
+
 #region STATE
 ####################################################################################################
 
@@ -81,10 +83,12 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 		return true
 
-	elif variable_name.begins_with("C("):
-		return set_special_variable("CHARACTER", variable_name.get_slice(")", 0).trim_prefix("C(").strip_edges(), variable_name.get_slice(")", 1).trim_prefix("."), value)
-	elif variable_name.begins_with("T("):
-		return set_special_variable("TIMELINE", variable_name.get_slice(")", 0).trim_prefix("T(").strip_edges(), variable_name.get_slice(")", 1).trim_prefix("."), value)
+	elif variable_name.begins_with("$") or variable_name.begins_with("@"):
+		var result := special_variable_regex.search(variable_name)
+		if result.get_string("type") == "@":
+			return set_special_variable("@CHARACTER", result.get_string("identifier"), variable_name.trim_prefix(result.get_string()).trim_prefix("."), value)
+		else:
+			return set_special_variable("$TIMELINE", result.get_string("identifier"), variable_name.trim_prefix(result.get_string()).trim_prefix("."), value)
 
 	# Then assume this is an autoload variable
 	elif '.' in variable_name:
@@ -143,10 +147,12 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 	var value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, var_storage)
 	if value != null:
 		return value
-	elif variable_path.begins_with("C("):
-		return get_special_variable("CHARACTER", variable_path.get_slice(")", 0).trim_prefix("C(").strip_edges(), variable_path.get_slice(")", 1).trim_prefix("."), default)
-	elif variable_path.begins_with("T("):
-		return get_special_variable("TIMELINE", variable_path.get_slice(")", 0).trim_prefix("T(").strip_edges(), variable_path.get_slice(")", 1).trim_prefix("."), default)
+	elif variable_path.begins_with("$") or variable_path.begins_with("@"):
+		var result := special_variable_regex.search(variable_path)
+		if result.get_string("type") == "@":
+			return get_special_variable("@CHARACTER", result.get_string("identifier"), variable_path.trim_prefix(result.get_string()).trim_prefix("."), default)
+		else:
+			return get_special_variable("$TIMELINE", result.get_string("identifier"), variable_path.trim_prefix(result.get_string()).trim_prefix("."), default)
 
 	# Second assume this is an expression.
 	else:
@@ -158,50 +164,49 @@ func get_variable(variable_path:String, default: Variant = null, no_warning := f
 
 
 func get_special_variable(type:String, identifier:String, variable_path:String, default:Variant = null) -> Variant:
-	if not "@"+type in var_storage:
+	if not type in var_storage:
 		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
 		return default
 
 	var folder: VariableFolder
-	if type == "CHARACTER":
+	if type == "@CHARACTER":
 		if not identifier in DialogicResourceUtil.get_character_directory():
 			printerr("[Dialogic] Attempt to access special variable of character with identifier {0} but wasn't found.".format([identifier]))
 			return default
 
 		folder = get("@CHARACTER")
 
-	elif type == "TIMELINE":
+	elif type == "$TIMELINE":
 		if not identifier in DialogicResourceUtil.get_timeline_directory():
 			printerr("[Dialogic] Attempt to access special variable of timeline with identifier {0} but wasn't found.".format([identifier]))
 			return default
 
-		folder = get("@TIMELINE")
+		folder = get("$TIMELINE")
 
 	if not folder.has(variable_path):
 		printerr("[Dialogic] Attempt to access special variable '{0}' on a {1}, which is not setup.".format([variable_path, type]))
 		return default
 
-
 	var default_value: Variant = DialogicUtil._get_value_in_dictionary(variable_path, folder.data, default)
 
-	return DialogicUtil._get_value_in_dictionary("@"+identifier+"."+variable_path, folder.data, default_value)
+	return DialogicUtil._get_value_in_dictionary(type[0]+identifier+"."+variable_path, folder.data, default_value)
 
 
 
 func set_special_variable(type:String, identifier:String, variable_path:String, value:Variant) -> bool:
-	if not "@"+type in var_storage:
+	if not type in var_storage:
 		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
 		return false
 
 	var folder: VariableFolder
-	folder = get("@"+type)
+	folder = get(type)
 
-	if type == "CHARACTER":
+	if type == "@CHARACTER":
 		if not identifier in DialogicResourceUtil.get_character_directory():
 			printerr("[Dialogic] Attempt to access special variable of character with identifier {0} but wasn't found.".format([identifier]))
 			return false
 
-	elif type == "TIMELINE":
+	elif type == "$TIMELINE":
 		if not identifier in DialogicResourceUtil.get_timeline_directory():
 			printerr("[Dialogic] Attempt to access special variable of timeline with identifier {0} but wasn't found.".format([identifier]))
 			return false
@@ -210,8 +215,9 @@ func set_special_variable(type:String, identifier:String, variable_path:String, 
 		printerr("[Dialogic] Attempt to access special variable '{0}' on a {1}, which is not setup.".format([variable_path, type]))
 		return false
 
-	DialogicUtil._set_value_in_dictionary("@"+type+".@"+identifier+"."+variable_path, var_storage, value, true)
+	DialogicUtil._set_value_in_dictionary(type+"."+type[0]+identifier+"."+variable_path, var_storage, value, true)
 	return true
+
 
 ## Resets all variables or a specific variable to the value(s) defined in the variable editor
 func reset(variable:="") -> void:

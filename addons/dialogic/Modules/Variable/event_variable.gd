@@ -385,16 +385,15 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
 		for i in autoloads:
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+'.', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("Node", "EditorIcons"))
-
-	if (line_until_caret.ends_with(".") or symbol == "."):
+	elif "{" in line_until_caret and not "}" in line_until_caret:
+		CodeCompletionHelper.suggest_variables(TextNode)
+	elif (line_until_caret.ends_with(".") or symbol == "."):
 		var autoload_name := line_until_caret.split(" ")[-1].split(".")[0]
 		if autoload_name in autoloads:
 			var properties := DialogicUtil.get_autoload_property_suggestions("", autoload_name)
 			for i in properties.keys():
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, i, i+" ", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.3), TextNode.get_theme_icon("MemberMethod", "EditorIcons"))
 
-	elif symbol == '{':
-		CodeCompletionHelper.suggest_variables(TextNode)
 
 
 func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
