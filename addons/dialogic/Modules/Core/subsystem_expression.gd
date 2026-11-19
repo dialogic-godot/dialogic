@@ -62,7 +62,7 @@ func execute_condition(condition:String) -> bool:
 
 
 func add_preserved_expression(identifier:String, method:Callable) -> void:
-	preserved_expressions["@"+identifier] = method
+	preserved_expressions["?"+identifier] = method
 
 
 var condition_modifier_regex := RegEx.create_from_string(r"(?(DEFINE)(?<nobraces>([^{}]|\{(?P>nobraces)\})*))\[if *(?<condition>(\{(?P>nobraces)\}|true\b|false\b) ?)(?<truetext>(\\\]|\\\/|[^\]\/])*)(\/(?<falsetext>(\\\]|[^\]])*))?\]")
