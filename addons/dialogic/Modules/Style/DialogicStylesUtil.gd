@@ -24,6 +24,9 @@ static func build_style_directory() -> void:
 			continue
 		# TODO this is bad
 		var resource: DialogicStyle = load(style_path)
+		if not resource:
+			printerr("[Dialogic] Error loading dialogic style at '{0}'.".format([style_path]))
+			continue
 		style_directory[resource.name] = style_path
 
 	if Engine.is_editor_hint():
