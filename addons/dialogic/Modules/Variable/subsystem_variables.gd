@@ -25,7 +25,7 @@ signal variable_was_set(info:Dictionary)
 @export_group("State")
 @export var var_storage := {}
 
-var special_variable_regex := RegEx.create_from_string(r"(?<type>@|\$)(?<identifier>\w+)")
+var special_variable_regex := RegEx.create_from_string(r'(?<type>@|\$)(?<identifier>(\w+)|("[^\}"]+"))')
 
 #region STATE
 ####################################################################################################
@@ -168,6 +168,9 @@ func get_special_variable(type:String, identifier:String, variable_path:String, 
 		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
 		return default
 
+	if identifier.begins_with('"'):
+		identifier = identifier.trim_prefix('"').trim_suffix('"')
+
 	var folder: VariableFolder
 	if type == "@CHARACTER":
 		if not identifier in DialogicResourceUtil.get_character_directory():
@@ -197,6 +200,9 @@ func set_special_variable(type:String, identifier:String, variable_path:String, 
 	if not type in var_storage:
 		printerr("[Dialogic] Attempt to access special varible of type {0} that doesn't exist. ({2}.{3})".format([type, identifier, variable_path]))
 		return false
+
+	if identifier.begins_with('"'):
+		identifier = identifier.trim_prefix('"').trim_suffix('"')
 
 	var folder: VariableFolder
 	folder = get(type)
