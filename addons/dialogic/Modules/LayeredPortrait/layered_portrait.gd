@@ -215,24 +215,34 @@ func _find_largest_coverage_rect() -> Rect2:
 		return _cached_coverage_rect
 
 	var coverage_rect := Rect2(0, 0, 0, 0)
+	var has_coverage := false
 
 	for sprite: Sprite2D in _find_sprites_recursively(self):
-		var sprite_size := sprite.get_rect().size
-		var sprite_position: Vector2 = sprite.global_position-self.global_position
+		# Global transforms can be invalid for tool nodes while the editor is
+		# rebuilding a portrait preview. Build the transform from local values so
+		# coverage stays finite even before the nodes enter the scene tree.
+		var relative_transform := sprite.transform
+		var parent := sprite.get_parent()
+		while parent != self:
+			if parent is Node2D:
+				relative_transform = parent.transform * relative_transform
+			parent = parent.get_parent()
 
-		if sprite.centered:
-			sprite_position -= sprite_size/2
-
-		var sprite_width := sprite_size.x * sprite.scale.x
-		var sprite_height := sprite_size.y * sprite.scale.y
-
-		var texture_rect := Rect2(
-			sprite_position.x,
-			sprite_position.y,
-			sprite_width,
-			sprite_height
+		var sprite_rect := sprite.get_rect()
+		var first_corner := relative_transform * sprite_rect.position
+		var texture_rect := Rect2(first_corner, Vector2.ZERO)
+		texture_rect = texture_rect.expand(relative_transform * sprite_rect.end)
+		texture_rect = texture_rect.expand(
+			relative_transform * Vector2(sprite_rect.end.x, sprite_rect.position.y)
 		)
-		coverage_rect = coverage_rect.merge(texture_rect)
+		texture_rect = texture_rect.expand(
+			relative_transform * Vector2(sprite_rect.position.x, sprite_rect.end.y)
+		)
+		if has_coverage:
+			coverage_rect = coverage_rect.merge(texture_rect)
+		else:
+			coverage_rect = texture_rect
+			has_coverage = true
 
 	coverage_rect.position = _reposition_with_rect(coverage_rect)
 
