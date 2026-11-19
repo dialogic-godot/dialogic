@@ -106,7 +106,7 @@ var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name
 func _execute() -> void:
 	if character_identifier.begins_with("{"):
 		character = DialogicResourceUtil.get_character_resource(dialogic.Expressions.execute_string(character_identifier))
-		
+
 	if not character and not character_identifier == "--All--":
 		finish()
 		return
@@ -118,7 +118,7 @@ func _execute() -> void:
 		var max_time: float = dialogic.Inputs.auto_skip.time_per_event
 		final_animation_length = min(max_time, animation_length)
 		final_position_move_time = min(max_time, transform_time)
-	
+
 	if portrait.begins_with("{"):
 		portrait = str(dialogic.Expressions.execute_string(portrait))
 
@@ -248,10 +248,10 @@ func to_text() -> String:
 				name = '"' + name + '"'
 
 			result_string += name
-		
+
 		else:
 			result_string += character_identifier
-		
+
 
 		# PORTRAIT
 		if portrait.strip_edges() != default_values.get("portrait", ""):
@@ -479,7 +479,7 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var empty_text := "Don't Change"
 	if action == Actions.JOIN:
 		empty_text = "Default"
-	
+
 	return DialogicUtil.get_portrait_suggestions(search_text, character, true, empty_text, character_identifier.begins_with("{"))
 
 
@@ -511,7 +511,7 @@ func get_fade_suggestions(search_text:String='') -> Dictionary:
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
 	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
 	if symbol == ' ' and line_until_caret.count(" ") == 1:
-		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER, self)
+		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER, " ")
 		if line.begins_with('leave'):
 			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
 

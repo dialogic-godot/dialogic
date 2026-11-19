@@ -462,6 +462,8 @@ func get_portrait_suggestions(search_text:String) -> Dictionary:
 var completion_text_character_getter_regex := RegEx.new()
 var completion_text_effects := {}
 func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
+	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
+
 	if completion_text_character_getter_regex.get_pattern().is_empty():
 		completion_text_character_getter_regex.compile("(\"[^\"]*\"|[^\\s:]*)")
 
@@ -482,7 +484,8 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 			else:
 				TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, effect.command, effect.command, TextNode.syntax_highlighter.normal_color, TextNode.get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 
-	if symbol == '{':
+	if line_until_caret.count("{") > line_until_caret.count("}") and symbol != " ":
+
 		CodeCompletionHelper.suggest_variables(TextNode)
 
 	if symbol == '=':
@@ -492,7 +495,7 @@ func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:Str
 
 
 func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_CLASS, self)
+	CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_CLASS, ":?")
 
 
 func suggest_bbcode(TextNode:CodeEdit):

@@ -273,13 +273,15 @@ static func get_variable_type(path:String, dict:Dictionary={}) -> VarTypes:
 
 ## This will set a value in a dictionary (or a sub-dictionary based on the path)
 ## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
+static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value:Variant, create_if_necessary:=false):
 	if '.' in path:
 		var from := path.split('.')[0]
+		if not from in dictionary.keys() and create_if_necessary:
+			dictionary[from] = {}
 		if from in dictionary.keys():
-			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
+			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value, create_if_necessary)
 	else:
-		if path in dictionary.keys():
+		if path in dictionary.keys() or create_if_necessary:
 			dictionary[path] = value
 	return dictionary
 
@@ -645,7 +647,7 @@ static func get_character_suggestions(search_text:String, current_value:Dialogic
 
 	if allow_none and current_value:
 		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
+
 	if "{" in search_text:
 		suggestions[search_text] = {'value':search_text, 'editor_icon':["Variant", "EditorIcons"]}
 
