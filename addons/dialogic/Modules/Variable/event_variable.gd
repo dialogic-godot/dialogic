@@ -101,9 +101,11 @@ func _execute() -> void:
 			finish()
 			return
 		else:
+			var original_is_int: bool = original_value is int
+			
 			original_value = float(original_value)
 			interpreted_value = float(interpreted_value)
-
+				
 			match operation:
 				Operations.ADD:
 					result = original_value + interpreted_value
@@ -113,6 +115,12 @@ func _execute() -> void:
 					result = original_value * interpreted_value
 				Operations.DIVIDE:
 					result = original_value / interpreted_value
+			
+			if original_is_int: # Preserves the original numeric type.
+				if result != int(result):
+					push_warning("Integer operation. %s is an int. Decimal part is discarded." % name)
+				result = int(result)
+
 
 		dialogic.VAR.set_variable(name, result)
 		dialogic.VAR.variable_was_set.emit(
