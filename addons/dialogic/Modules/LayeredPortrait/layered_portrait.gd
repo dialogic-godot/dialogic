@@ -217,27 +217,30 @@ func _find_largest_coverage_rect() -> Rect2:
 	var coverage_rect := Rect2(0, 0, 0, 0)
 
 	for sprite: Sprite2D in _find_sprites_recursively(self):
-		var sprite_size := sprite.get_rect().size
-		var sprite_position: Vector2 = sprite.global_position-self.global_position
-
-		if sprite.centered:
-			sprite_position -= sprite_size/2
-
-		var sprite_width := sprite_size.x * sprite.scale.x
-		var sprite_height := sprite_size.y * sprite.scale.y
-
-		var texture_rect := Rect2(
-			sprite_position.x,
-			sprite_position.y,
-			sprite_width,
-			sprite_height
-		)
+		# Keep coverage independent from the portrait's transform in the preview.
+		# A fitted empty portrait may temporarily receive an invalid global scale,
+		# while this relative transform remains valid and includes nested Node2Ds.
+		var sprite_transform := sprite.get_relative_transform_to_parent(self)
+		var sprite_rect := sprite.get_rect()
+		var corners := [
+			sprite_rect.position,
+			sprite_rect.position + Vector2(sprite_rect.size.x, 0),
+			sprite_rect.end,
+			sprite_rect.position + Vector2(0, sprite_rect.size.y),
+		]
+		var first_corner: Vector2 = sprite_transform * corners[0]
+		var texture_rect := Rect2(first_corner, Vector2.ZERO)
+		for corner: Vector2 in corners.slice(1):
+			texture_rect = texture_rect.expand(sprite_transform * corner)
 		coverage_rect = coverage_rect.merge(texture_rect)
 
 	coverage_rect.position = _reposition_with_rect(coverage_rect)
 
-	_is_coverage_rect_cached = true
-	_cached_coverage_rect = coverage_rect
+	# An empty portrait can receive inherited layer textures after this first
+	# lookup. Do not freeze the zero-sized placeholder in the cache.
+	if coverage_rect.size.x > 0 and coverage_rect.size.y > 0:
+		_is_coverage_rect_cached = true
+		_cached_coverage_rect = coverage_rect
 
 	return coverage_rect
 

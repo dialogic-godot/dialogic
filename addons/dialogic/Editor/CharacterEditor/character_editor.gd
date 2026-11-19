@@ -630,10 +630,16 @@ func update_preview(force := false, ignore_settings_reload := false) -> void:
 				if not scene.get_script() == null and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
 					var rect: Rect2 = scene._get_covered_rect()
 					var available_rect: Rect2 = %FullPreviewAvailableRect.get_rect()
-					scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
-					%RealPreviewPivot.position = (rect.position)*-1*scene.scale
-					%RealPreviewPivot.position.x = %FullPreviewAvailableRect.size.x/2
-					scene.position = Vector2()
+					if rect.position.is_finite() and rect.size.is_finite() and rect.size.x > 0 and rect.size.y > 0:
+						scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
+						%RealPreviewPivot.position = (rect.position)*-1*scene.scale
+						%RealPreviewPivot.position.x = %FullPreviewAvailableRect.size.x/2
+						scene.position = Vector2()
+					else:
+						# Empty portraits have no area to fit. Keep their transform finite so
+						# the same scene can be reused when a populated portrait is selected.
+						scene.position = Vector2() + offset
+						scene.scale = Vector2(1,1) * scale
 
 				else:
 					%ScenePreviewWarning.show()
