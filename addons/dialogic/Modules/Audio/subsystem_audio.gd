@@ -131,11 +131,11 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		one_shot_audio_node.add_child(new_player)
 
 	var file := load(path)
-	if file == null:
+	if file == null or file is not AudioStream:
 		printerr("[Dialogic] Audio file \"%s\" failed to load." % path)
 		return
 
-	new_player.stream = load(path)
+	new_player.stream = file
 
 	## Apply audio settings
 
