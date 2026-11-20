@@ -121,7 +121,6 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 		return
 
 	info[channel_name] = {'path':path, 'settings_overrides':settings_overrides}
-	audio_started.emit({'path':path, 'channel':channel_name}.merged(audio_settings))
 
 	var new_player := AudioStreamPlayer.new()
 	if channel_name:
@@ -179,6 +178,7 @@ func update_audio(channel_name:= "", path := "", settings_overrides := {}) -> vo
 	else:
 		new_player.play()
 
+	audio_started.emit({'path':path, 'channel':channel_name}.merged(audio_settings))
 	new_player.finished.connect(_on_audio_finished.bind(new_player, channel_name, path))
 
 	if channel_name:
